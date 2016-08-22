@@ -50,7 +50,7 @@ baiding-web/
  |   ├──vendor.ts              * 第三方文件，所有第三方库都在此引入
  │   │
  │   ├──app/                   * app文件夹
- │   |   ├──base               * base文件夹，用于存放公共component，任何使用两次以上的component建议存放于此
+ │   |   ├──shared             * shared文件夹，用于存放公共component，任何使用两次以上的component建议存放于此
  │   |   ├──sub-components     * 其余子组件文件夹
  │   |   ├──app.module.ts      * app主模块定义文件，其他子模块在此引入
  │   |   ├──app.route.ts       * app根路由文件，此文件不存放任何子路由，只存放一个空地址重定向到app主页面
@@ -62,9 +62,8 @@ baiding-web/
  │       ├──icon/              * 图标
  │       ├──img/               * 图片
  │       ├──mock-data/         * 用于测试的伪数据
- │       ├──service-worker.js  * ignore this. Web App service worker that's not complete yet
  │       ├──robots.txt         * for search engines to crawl your website
- │       └──humans.txt          * for humans to know who the developers are
+ │       └──humans.txt         * for humans to know who the developers are
  │
  │
  ├──tslint.json                * typescript lint config
