@@ -1,13 +1,13 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Live }           from '../lives.classes';
+import { LiveModel }           from '../../shared/lives.model';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class LiveAllService {
   constructor (private http: Http) {}
   private mockUrl = 'assets/mock-data/lives.json';  // URL to web API
-  getLives (): Promise<Live[]> {
+  getLives (): Promise<LiveModel[]> {
     return this.http.get(this.mockUrl)
                     .toPromise()
                     .then(this.extractData)

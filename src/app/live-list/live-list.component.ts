@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  templateUrl: './lives.component.html'
+  templateUrl: './live-list.component.html'
 })
 
-export class LivesComponent {
+export class LiveComponent {
   constructor() {
 
   }

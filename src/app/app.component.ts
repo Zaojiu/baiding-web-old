@@ -8,7 +8,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
  * Top Level Component
  */
 @Component({
-  selector: 'app',
+  selector: 'bd-app',
   encapsulation: ViewEncapsulation.None,
   template: '<router-outlet></router-outlet>'
 })
