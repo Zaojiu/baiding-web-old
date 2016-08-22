@@ -1,0 +1,28 @@
+import { Injectable }     from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Live }           from '../lives.classes';
+import 'rxjs/add/operator/toPromise';
+
+@Injectable()
+export class LiveAllService {
+  constructor (private http: Http) {}
+  private mockUrl = 'assets/mock-data/lives.json';  // URL to web API
+  getLives (): Promise<Live[]> {
+    return this.http.get(this.mockUrl)
+                    .toPromise()
+                    .then(this.extractData)
+                    .catch(this.handleError);
+  }
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.data || { };
+  }
+  private handleError (error: any) {
+    // In a real world app, we might use a remote logging infrastructure
+    // We'd also dig deeper into the error to get a better message
+    let errMsg = (error.message) ? error.message :
+        error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg); // log to console instead
+    return Promise.reject(errMsg);
+  }
+}

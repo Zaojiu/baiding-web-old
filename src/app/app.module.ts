@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -15,8 +12,8 @@ import { ROUTES, ROUTING_PROVIDERS } from './app.routes';
 import { App } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState } from './app.service';
-import { Home } from './home';
-import { NoContent } from './no-content';
+
+import { LivesModule } from './lives/lives.module'
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -31,14 +28,11 @@ const APP_PROVIDERS = [
   bootstrap: [ App ],
   declarations: [
     App,
-    Home,
-    NoContent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
-    FormsModule,
-    HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true })
+    LivesModule,
+    ROUTES
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     PLATFORM_PROVIDERS,
@@ -47,5 +41,6 @@ const APP_PROVIDERS = [
     APP_PROVIDERS
   ]
 })
+
 export class AppModule {
 }
