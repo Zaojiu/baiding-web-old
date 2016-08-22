@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { LivesComponent } from './lives.component'
+import { LiveListComponent } from './live-list.component'
 import { LiveAllComponent } from './live-all/live-all.component'
 import { LiveCountDownComponent } from './live-count-down/live-count-down.component'
 import { LiveInComponent } from './live-in/live-in.component'
-import { ROUTES as LivesRoute } from './lives.route'
+import { ROUTES as LiveRoute } from './live-list.route'
 
 
 @NgModule({
   imports: [
-    LivesRoute,
+    LiveRoute,
     BrowserModule
   ],
   declarations: [
-    LivesComponent,
+    LiveListComponent,
     LiveAllComponent,
     LiveCountDownComponent,
     LiveInComponent
   ]
 })
 
-export class LivesModule {
+export class LiveListModule {
 }

@@ -1,14 +1,14 @@
 import { Routes, RouterModule } from '@angular/router';
-import { LivesComponent } from './lives.component';
+import { LiveListComponent } from './live-list.component';
 import { LiveAllComponent } from './live-all/live-all.component';
 import { LiveCountDownComponent } from './live-count-down/live-count-down.component';
 import { LiveInComponent } from './live-in/live-in.component';
 
 
-const livesRoute: Routes = [
+const liveRoute: Routes = [
   {
     path: 'lives',
-    component: LivesComponent,
+    component: LiveListComponent,
     children: [
       { path: 'all', component: LiveAllComponent },
       { path: 'count-down', component: LiveCountDownComponent },
@@ -17,4 +17,4 @@ const livesRoute: Routes = [
   }
 ]
 
-export const ROUTES = RouterModule.forChild(livesRoute);
+export const ROUTES = RouterModule.forChild(liveRoute);

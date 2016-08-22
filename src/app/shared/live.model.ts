@@ -1,5 +1,5 @@
 import { LiveStatus } from './live.enums';
-import { UserInfoModel } from './user.model';
+import { UserInfoModel } from './user-info.model';
 
 export class LiveModel {
   id: number;

@@ -1,6 +1,6 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { LiveModel }           from '../../shared/lives.model';
+import { LiveModel }           from '../../shared/live.model';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()

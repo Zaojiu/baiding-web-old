@@ -13,7 +13,7 @@ import { App } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState } from './app.service';
 
-import { LivesModule } from './lives/lives.module'
+import { LiveListModule } from './live-list/live-list.module'
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -31,7 +31,7 @@ const APP_PROVIDERS = [
   ],
   imports: [ // import Angular's modules
     BrowserModule,
-    LivesModule,
+    LiveListModule,
     ROUTES
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection

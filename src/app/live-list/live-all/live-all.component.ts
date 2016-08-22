@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Live } from '../lives.classes';
+import { LiveModel } from '../../shared/live.model';
 import { LiveAllService } from './live-all.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { LiveAllService } from './live-all.service';
 })
 
 export class LiveAllComponent implements OnInit {
-  lives: Live[];
+  lives: LiveModel[];
 
   constructor(private liveService: LiveAllService) {}
 

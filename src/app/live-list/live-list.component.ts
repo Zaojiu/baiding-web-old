@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   templateUrl: './live-list.component.html'
 })
 
-export class LiveComponent {
+export class LiveListComponent {
   constructor() {
 
   }
