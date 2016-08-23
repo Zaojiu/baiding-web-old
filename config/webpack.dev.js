@@ -5,6 +5,7 @@
 const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
+const autoprefixer = require('autoprefixer');
 
 /**
  * Webpack Plugins
@@ -31,7 +32,6 @@ const METADATA = webpackMerge(commonConfig.metadata, {
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
 module.exports = webpackMerge(commonConfig, {
-
   /**
    * Merged metadata from webpack.common.js for index.html
    *
@@ -94,6 +94,8 @@ module.exports = webpackMerge(commonConfig, {
     library: 'ac_[name]',
     libraryTarget: 'var',
   },
+
+  postcss: [autoprefixer],  // this is inside module.exports object
 
   plugins: [
 
