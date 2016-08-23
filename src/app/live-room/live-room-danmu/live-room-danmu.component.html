@@ -1,0 +1,6 @@
+<div class="live-room-danmu-container">
+  <div class="live-room-danmu" *ngFor="let danmu of danmus">
+    <p class="live-room-danmu-content">{{danmu.content}}</p>
+    <img class="live-room-danmu-avatar" [src]="danmu.avatar">
+  </div>
+</div>
