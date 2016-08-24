@@ -1,0 +1,45 @@
+.live-room-audience-bottom-bar {
+  box-sizing: border-box;
+  border-top: solid 1px rgba(143, 143, 143, .3);
+  font-size: 0;
+  background-color: rgb(250, 250, 250);
+  height: 50px;
+  line-height: 50px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar, &::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  .share-btn, .thumbs-up-btn {
+    display: inline-block;
+    text-align: center;
+    font-size: medium;
+    width: 15.38%;
+  }
+
+  .comment-input-container {
+    display: inline-block;
+    font-size: medium;
+    width: 61.54%;
+    vertical-align: top;
+    padding-top: 12.5px;
+    padding-bottom: 12.5px;
+
+    .comment-input {
+      vertical-align: top;
+      width: 100%;
+      height: 25px;
+      box-sizing: border-box;
+      background-color: rgb(255, 255, 255);
+      border: solid 1px rgb(224, 229, 234);
+      border-radius: 10px;
+    }
+  }
+
+  .thumbs-up-btn {
+
+  }
+}

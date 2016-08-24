@@ -1,1 +1,12 @@
 @import "../../node_modules/bootstrap/scss/_normalize.scss";
+
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+input, text-area {
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

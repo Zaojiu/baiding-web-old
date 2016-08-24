@@ -1,3 +1,21 @@
+.live-room-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+
+  .top-bar, .live-room-editor-bottom-bar-component, .live-room-audience-bottom-bar-component {
+    flex-shrink: 0;
+  }
+
+  .live-room-timeline-component {
+    flex-grow: 1;
+  }
+}
+
 .top-bar {
   text-align: right;
   padding: 14px;
