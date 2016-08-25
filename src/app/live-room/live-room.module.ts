@@ -7,7 +7,8 @@ import { LiveRoomDanmuComponent } from './live-room-danmu/live-room-danmu.compon
 import { LiveRoomEditorBottomBarComponent } from './live-room-editor-bottom-bar/live-room-editor-bottom-bar.component';
 import { LiveRoomAudienceBottomBarComponent } from './live-room-audience-bottom-bar/live-room-audience-bottom-bar.component';
 import { LiveRoomTimelineComponent } from './live-room-timeline/live-room-timeline.component';
-
+import { LiveRoomPushCommentComponent } from './live-room-push-comment/live-room-push-comment.component';
+import { EmptyComponent } from '../shared/empty/empty.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,9 @@ import { LiveRoomTimelineComponent } from './live-room-timeline/live-room-timeli
     LiveRoomDanmuComponent,
     LiveRoomTimelineComponent,
     LiveRoomEditorBottomBarComponent,
-    LiveRoomAudienceBottomBarComponent
+    LiveRoomAudienceBottomBarComponent,
+    LiveRoomPushCommentComponent,
+    EmptyComponent
   ]
 })
 
