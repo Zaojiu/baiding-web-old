@@ -13,6 +13,7 @@
 
   .live-room-timeline-component {
     flex-grow: 1;
+    overflow: scroll;
   }
 }
 
@@ -24,8 +25,4 @@
     height: 30px;
     line-height: 30px;
   }
-}
-
-.live-room-timeline-component {
-  overflow: scroll;
 }

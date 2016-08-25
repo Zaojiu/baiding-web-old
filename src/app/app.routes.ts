@@ -10,7 +10,7 @@ const appRoutes: Routes = [
   { path: '', redirectTo: '/lives/all', pathMatch: 'full' },
 ];
 
-export const ROUTES = RouterModule.forRoot(appRoutes);
+export const ROUTES = RouterModule.forRoot(appRoutes, { useHash: true });
 
 // ------------- starter 保留异步加载路由，勿删 ---------------
 const asyncRoutes: AsyncRoutes = {
