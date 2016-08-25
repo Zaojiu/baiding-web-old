@@ -19,4 +19,8 @@ export class LiveRoomEditorBottomBarComponent implements OnInit {
   gotoPushComment() {
     this.router.navigate(['/lives/' + this.id + '/push-comment']);
   }
+
+  gotoPostComment() {
+    this.router.navigate(['/lives/' + this.id + '/post-comment']);
+  }
 }

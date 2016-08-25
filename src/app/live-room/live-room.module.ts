@@ -8,6 +8,7 @@ import { LiveRoomEditorBottomBarComponent } from './live-room-editor-bottom-bar/
 import { LiveRoomAudienceBottomBarComponent } from './live-room-audience-bottom-bar/live-room-audience-bottom-bar.component';
 import { LiveRoomTimelineComponent } from './live-room-timeline/live-room-timeline.component';
 import { LiveRoomPushCommentComponent } from './live-room-push-comment/live-room-push-comment.component';
+import { LiveRoomPostCommentComponent } from './live-room-post-comment/live-room-post-comment.component';
 import { EmptyComponent } from '../shared/empty/empty.component';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { EmptyComponent } from '../shared/empty/empty.component';
     LiveRoomEditorBottomBarComponent,
     LiveRoomAudienceBottomBarComponent,
     LiveRoomPushCommentComponent,
+    LiveRoomPostCommentComponent,
     EmptyComponent
   ]
 })
