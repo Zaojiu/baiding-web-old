@@ -13,8 +13,9 @@ import { App } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState } from './app.service';
 
-import { LiveListModule } from './live-list/live-list.module'
-import { LiveRoomModule } from './live-room/live-room.module'
+import { LiveListModule } from './live-list/live-list.module';
+import { LiveRoomModule } from './live-room/live-room.module';
+import { BottomPopupSelectorComponent } from './shared/bottom-popup-selector/bottom-popup-selector.component';
 
 
 // Application wide providers
@@ -30,6 +31,7 @@ const APP_PROVIDERS = [
   bootstrap: [ App ],
   declarations: [
     App,
+    BottomPopupSelectorComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,

@@ -2,6 +2,7 @@
  * Angular 2 decorators and services
  */
 import { Component, ViewEncapsulation } from '@angular/core';
+import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service'
 
 /*
  * App Component
@@ -11,7 +12,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
   selector: 'bd-app',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./app.component.scss'],
-  template: '<router-outlet></router-outlet>'
+  templateUrl: './app.component.html',
+  providers: [ BottomPopupSelectorService ]
 })
 
 export class App {

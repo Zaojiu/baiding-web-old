@@ -1,0 +1,5 @@
+<div class="bottom-popup-selector-container" [ngClass]="{'has-bottom-bar': hasBottomBar, 'is-popup': isPopup}" (click)="close()">
+  <ul class="popup-selecter-items">
+    <li *ngFor="let item of items; let i = index" (click)="selectItem(i)">{{item}}</li>
+  </ul>
+</div>

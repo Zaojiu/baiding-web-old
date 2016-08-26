@@ -10,7 +10,7 @@ const liveRoomRoute: Routes = [
     component: LiveRoomComponent,
     children: [
       { path: '', component: EmptyComponent },
-      { path: 'push-comment', component: LiveRoomPushCommentComponent }
+      { path: 'push-comment', component: LiveRoomPushCommentComponent },
       { path: 'post-comment', component: LiveRoomPostCommentComponent }
     ]
   }
