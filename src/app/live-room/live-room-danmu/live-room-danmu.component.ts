@@ -20,8 +20,6 @@ export class LiveRoomDanmuComponent implements OnInit {
   }
 
   appendDanmu(danmu: LiveRoomDanmuModel) {
-    console.log(this.danmus, danmu)
-
     if (this.danmus.length >= this.maxDanmuAmount) {
       this.danmus.shift()
     }
