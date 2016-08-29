@@ -1,0 +1,126 @@
+<div class="timeline-comment-container">
+  <div class="comment" [ngClass]="{'has-reply': comment.firstReply, 'mime': comment.user.uid == ''}">
+    <div class="avatar-container">
+      <img class="avatar" [src]="comment.user.avatar">
+      <span class="role">{{comment.user.role}}</span>
+    </div>
+    <div class="content-container">
+      <div class="content-info">
+        <p class="name">{{comment.user.nick}}</p>
+        <time>{{comment.createdAt}}</time>
+      </div>
+
+      <div class="content">{{comment.content}}</div>
+    </div>
+    <div class="thumbs-up">
+      <a class="thumbs-up-btn" [ngClass]="{'had-thumbs-up': comment.hadThumbsUp}">赞</a>
+      <span class="thumbs-up-count">{{comment.praisedAmout}}</span>
+    </div>
+  </div>
+  <div class="comment-reply" *ngIf="comment.firstReply" [ngClass]="{'mime': comment.firstReply.user.uid == ''}">
+    <div class="avatar-container">
+      <img class="avatar" [src]="comment.firstReply.user.uid">
+      <span class="role">{{comment.firstReply.user.role}}</span>
+    </div>
+    <div class="content-container">
+      <div class="content">{{comment.firstReply.user.nick}} @{{comment.user.nick}}<br/>{{comment.firstReply.content}}</div>
+    </div>
+  </div>
+
+  <div class="operation-bar">
+    <a class="share-btn" href="">享</a>
+    <a class="comment-btn" href="">评</a>
+    <div class="thumbs-up-users" *ngIf="comment.hadPraised">
+      <img class="avatar" [src]="userInfo.avatar">
+      <img class="avatar" *ngFor="let user of comment.praisedAvatars" [src]="user.avatar">
+    </div>
+    <div class="thumbs-up-users" *ngIf="!comment.hadPraised">
+      <img class="avatar" *ngFor="let user of comment.praisedAvatars" [src]="user.avatar">
+    </div>
+  </div>
+</div>
+
+<!--
+  <div class="operation-row">
+    <div class="comment has-reply mime">
+      <div class="avatar-container">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <span class="role">主持人</span>
+      </div>
+      <div class="content-container">
+        <div class="content-info">
+          <p class="name">吧吧吧吧吧吧吧</p>
+          <time>29分钟前</time>
+        </div>
+
+        <div class="content">测试测试实测</div>
+      </div>
+      <div class="thumbs-up">
+        <a class="thumbs-up-btn hand" href="">赞</a>
+        <span class="thumbs-up-count">999+</span>
+      </div>
+    </div>
+    <div class="comment-reply">
+      <div class="avatar-container">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <span class="role">嘉宾</span>
+      </div>
+      <div class="content-container">
+        <div class="content">杜晓峰 @吧吧吧吧吧吧吧<br/>测试测试实测</div>
+      </div>
+    </div>
+
+    <div class="operation-bar">
+      <a class="share-btn" href="">享</a>
+      <a class="comment-btn" href="">评</a>
+      <div class="thumbs-up-users">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+      </div>
+    </div>
+  </div>
+
+  <div class="operation-row">
+    <div class="comment has-reply">
+      <div class="avatar-container">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <span class="role">主持人</span>
+      </div>
+      <div class="content-container">
+        <div class="content-info">
+          <p class="name">吧吧吧吧吧吧吧</p>
+          <time>29分钟前</time>
+        </div>
+
+        <div class="content">测试测试实测</div>
+      </div>
+      <div class="thumbs-up">
+        <a class="thumbs-up-btn hand" href="">赞</a>
+        <span class="thumbs-up-count">999+</span>
+      </div>
+    </div>
+    <div class="comment-reply">
+      <div class="avatar-container">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <span class="role">嘉宾</span>
+      </div>
+      <div class="content-container">
+        <div class="content">杜晓峰 @吧吧吧吧吧吧吧<br/>测试测试实测</div>
+      </div>
+    </div>
+
+    <div class="operation-bar">
+      <a class="share-btn" href="">享</a>
+      <a class="comment-btn" href="">评</a>
+      <div class="thumbs-up-users">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+      </div>
+    </div>
+  </div> -->

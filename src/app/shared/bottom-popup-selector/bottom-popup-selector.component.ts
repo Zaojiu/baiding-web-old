@@ -28,7 +28,7 @@ export class BottomPopupSelectorComponent implements OnInit {
     );
 
     this.bottomPopupService.needClose$.subscribe(
-      _ => {
+      () => {
         if (!this.isPopup) { return }
 
         this.isPopup = false;

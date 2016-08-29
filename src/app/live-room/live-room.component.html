@@ -1,10 +1,10 @@
 <div class="live-room-container">
   <div class="top-bar">
-    <a class="danmu-btn" href="">弹幕</a>
+    <a class="danmu-btn" (click)="isDanmuOpened = !isDanmuOpened">{{isDanmuOpened ? '关' : '开'}}弹幕</a>
     <a class="room-thumbs-up-btn" href="">点赞</a>
   </div>
 
-  <live-room-danmu></live-room-danmu>
+  <live-room-danmu *ngIf="isDanmuOpened"></live-room-danmu>
 
   <live-room-timeline class="live-room-timeline-component"></live-room-timeline>
 

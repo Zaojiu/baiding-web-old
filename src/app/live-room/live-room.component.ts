@@ -11,17 +11,23 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   id: string;
   isChildrenActived: boolean;
   routerSubscription: Subscription;
+  isDanmuOpened: boolean = true;
+  urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post-comment)$');
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    this.routerSubscription = this.router.events.subscribe((event: Event) => {
-      const urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post-comment)$');
-      if(event instanceof NavigationStart) {
-        this.isChildrenActived = urlRegex.test(event.url);
+    // 监控router变化，如果route换了，那么设置 isChildrenActived
+    // 此属性会控制父底栏是否显示，以免子弹出层的底栏和父窗口底栏同时显示，导致跑版
+    this.isChildrenActived = this.urlRegex.test(this.router.url);
+    this.routerSubscription = this.router.events.subscribe(
+      event => {
+        if ( event instanceof NavigationStart ) {
+          this.isChildrenActived = this.urlRegex.test(event.url);
+        }
       }
-    });
+    );
   }
 
   ngOnDestroy() {
