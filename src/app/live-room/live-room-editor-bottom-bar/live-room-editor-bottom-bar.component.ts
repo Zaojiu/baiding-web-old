@@ -21,13 +21,14 @@ export class LiveRoomEditorBottomBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    this.routerSubscription = this.router.events.subscribe((event: Event) => {
-      if(event instanceof NavigationStart) {
-        if (!this.bottomPopupService.isClosed) {
-          this.bottomPopupService.close();
+    // 监控router变化，如果route换了，那么关闭全局弹出层
+    this.routerSubscription = this.router.events.subscribe(
+      event => {
+        if ( event instanceof NavigationStart ) {
+          if (!this.bottomPopupService.isClosed) this.bottomPopupService.close();
         }
       }
-    });
+    );
   }
 
   ngOnDestroy() {
@@ -56,7 +57,7 @@ export class LiveRoomEditorBottomBarComponent implements OnInit, OnDestroy {
         }
       );
       this.closeSelectorSubscription = this.bottomPopupService.needClose$.subscribe(
-        _ => {
+        () => {
           this.popupSelectorSubscription.unsubscribe();
           this.closeSelectorSubscription.unsubscribe();
         }
