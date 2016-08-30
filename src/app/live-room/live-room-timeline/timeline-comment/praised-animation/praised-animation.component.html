@@ -1,0 +1,3 @@
+<span class="animation" [ngClass]="{'animation1': randomAnimation && !isMine, 'animation2': !randomAnimation && !isMine, 'mine-animation1': randomAnimation && isMine, 'mine-animation2': !randomAnimation && isMine }" [style.right]="getXAxisOffset()">
+  <img class="animation-image" [src]="user.avatar">
+</span>

@@ -13,7 +13,7 @@ export class UserInfoService {
     this.userInfo = new UserInfoModel();
     this.userInfo.nick = '杜先生';
     this.userInfo.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
-    this.userInfo.uid = 123;
+    this.userInfo.uid = '12345';
 
     return Promise.resolve(this.userInfo);
   }

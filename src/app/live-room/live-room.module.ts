@@ -10,6 +10,8 @@ import { LiveRoomTimelineComponent } from './live-room-timeline/live-room-timeli
 import { TimelineCommentComponent } from './live-room-timeline/timeline-comment/timeline-comment.component';
 import { LiveRoomPushCommentComponent } from './live-room-push-comment/live-room-push-comment.component';
 import { LiveRoomPostCommentComponent } from './live-room-post-comment/live-room-post-comment.component';
+import { PraisedAnimationsDirective } from './live-room-timeline/timeline-comment/praised-animations.directive';
+import { PraisedAnimationComponent } from './live-room-timeline/timeline-comment/praised-animation/praised-animation.component';
 import { EmptyComponent } from '../shared/empty/empty.component';
 
 @NgModule({
@@ -26,7 +28,9 @@ import { EmptyComponent } from '../shared/empty/empty.component';
     LiveRoomPushCommentComponent,
     LiveRoomPostCommentComponent,
     TimelineCommentComponent,
-    EmptyComponent
+    EmptyComponent,
+    PraisedAnimationsDirective,
+    PraisedAnimationComponent
   ]
 })
 

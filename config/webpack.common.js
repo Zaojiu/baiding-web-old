@@ -13,7 +13,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlElementsPlugin = require('./html-elements-plugin');
-const ProvidePlugin = require('webpack/lib/ProvidePlugin'); 
+const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 
 /*
  * Webpack Constants
@@ -137,7 +137,7 @@ module.exports = {
       /*
        * Typescript loader support for .ts and Angular 2 async routes via .async.ts
        * Replace templateUrl and stylesUrl with require()
-       * 
+       *
        * See: https://github.com/s-panferov/awesome-typescript-loader
        * See: https://github.com/TheLarkInn/angular2-template-loader
        */
@@ -177,7 +177,7 @@ module.exports = {
         loader: 'raw-loader',
         exclude: [helpers.root('src/index.html')]
       },
-      
+
       /* File loader for supporting images, for example, in CSS files.
       */
       {
@@ -192,7 +192,7 @@ module.exports = {
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
+        loaders: ['raw-loader', 'postcss', 'sass-loader'] // sass-loader not scss-loader
       }
     ]
 
@@ -293,7 +293,8 @@ module.exports = {
         $: 'jquery',
         jquery: 'jquery',
         "Tether": 'tether',
-        "window.Tether": "tether"
+        "window.Tether": "tether",
+        _: 'lodash'
     }),
   ],
 

@@ -8,32 +8,57 @@ import { TimelineCommentUserType, TimelineCommentType } from './timeline-comment
 export class LiveRoomTimelineService {
   // Observable string sources
   private receivedCommentSource = new Subject<TimelineCommentModel>();
+  private receivedPraisedUserSource = new Subject<PraisedUserModel>();
   // Observable string streams
   receivedComment$ = this.receivedCommentSource.asObservable();
+  receivedPraisedUser$ = this.receivedPraisedUserSource.asObservable();
 
   constructor (private http: Http) {}
 
   onReceive () {
-    setInterval(() => {
+    const praisedCommentId = '1234';
+    var index = 0;
+    var timer;
+
+    timer = setInterval(() => {
+      if ( index>=5 ) {
+        clearInterval(timer);
+        return
+      }
+
+      let needInsert = index === 3;
       var user = new TimelineCommentUserInfoModel();
-      user.uid = 1234;
+      user.uid = '1234';
       user.nick = 'test';
       user.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
       user.role = TimelineCommentUserType.Host;
 
-      var praisedUser = new PraisedUserModel()
+      var praisedUser = new PraisedUserModel();
+      praisedUser.commentId = '1234';
       praisedUser.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
 
       var comment = new TimelineCommentModel();
+      comment.id = needInsert ? '1234' : '2345';
       comment.user = user;
       comment.content = '打算打算打算的撒的撒打算打算打算的撒大大是打算打算打算打算打算打算打算的';
       comment.type = TimelineCommentType.Text;
-      comment.hadPraised = true;
+      comment.hadPraised = needInsert;
       comment.praisedAmout = 101;
       comment.praisedAnimations = [praisedUser];
       comment.praisedAvatars = [praisedUser];
       comment.createdAt = '2006-01-02T15:04:05Z07:00';
       this.receivedCommentSource.next(comment);
+
+      index++
     }, 500);
+
+    setInterval(() => {
+      var praisedUser = new PraisedUserModel();
+      praisedUser.uid = '1234';
+      praisedUser.commentId = '1234';
+      praisedUser.avatar = 'https://www.gravatar.com/avatar/6119b06e8b42066dec1211a26ca99ba3?s=200';
+
+      this.receivedPraisedUserSource.next(praisedUser);
+    }, 200);
   }
 }
