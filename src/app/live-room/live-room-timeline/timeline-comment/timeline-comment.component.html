@@ -13,8 +13,11 @@
       <div class="content">{{comment.content}}</div>
     </div>
     <div class="thumbs-up">
-      <a class="thumbs-up-btn" [ngClass]="{'had-thumbs-up': comment.hadThumbsUp}">赞</a>
-      <span class="thumbs-up-count">{{comment.praisedAmout}}</span>
+      <div class="thumbs-up-animations" [praisedAnimations]="comment.praisedAnimations">
+        <praised-animation *ngFor="let user of comment.praisedAnimations" [user]="user"></praised-animation>
+      </div>
+      <a class="thumbs-up-btn" [ngClass]="{'had-thumbs-up': comment.hadThumbsUp}" (click)="setThumbsUp()">赞</a>
+      <span class="thumbs-up-count" (click)="setThumbsUp()">{{comment.praisedAmout}}</span>
     </div>
   </div>
   <div class="comment-reply" *ngIf="comment.firstReply" [ngClass]="{'mime': comment.firstReply.user.uid == ''}">
@@ -31,11 +34,11 @@
     <a class="share-btn" href="">享</a>
     <a class="comment-btn" href="">评</a>
     <div class="thumbs-up-users" *ngIf="comment.hadPraised">
+      <img class="avatar" *ngFor="let user of getPraisedAvatars" [src]="user.avatar">
       <img class="avatar" [src]="userInfo.avatar">
-      <img class="avatar" *ngFor="let user of comment.praisedAvatars" [src]="user.avatar">
     </div>
     <div class="thumbs-up-users" *ngIf="!comment.hadPraised">
-      <img class="avatar" *ngFor="let user of comment.praisedAvatars" [src]="user.avatar">
+      <img class="avatar" *ngFor="let user of getPraisedAvatars" [src]="user.avatar">
     </div>
   </div>
 </div>

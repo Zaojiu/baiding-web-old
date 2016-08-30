@@ -34,9 +34,25 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    position: relative;
+
+    .thumbs-up-animations {
+      position: absolute;
+      width: 70px;
+      height: 200px;
+      bottom: 45px;
+      right: 0;
+      overflow: hidden;
+    }
 
     .thumbs-up-btn, .thumbs-up-count {
+      position: relative;
+      z-index: 1;
       flex-shrink: 0;
+    }
+
+    .thumbs-up-btn {
+      padding-bottom: 10px;
     }
   }
 }
