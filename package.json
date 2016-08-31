@@ -93,6 +93,7 @@
     "@types/uglify-js": "^2.0.27",
     "@types/webpack": "^1.12.29",
     "angular2-hmr": "~0.8.0",
+    "autoprefixer": "^6.4.0",
     "awesome-typescript-loader": "1.1.1",
     "codelyzer": "~0.0.21",
     "copy-webpack-plugin": "^3.0.1",
