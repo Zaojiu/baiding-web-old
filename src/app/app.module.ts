@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserXhr, HTTP_PROVIDERS } from '@angular/http';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -25,6 +26,15 @@ const APP_PROVIDERS = [
   AppConfig
 ];
 
+@Injectable()
+class CORSBrowserXHR extends BrowserXhr{
+    build(): any{
+        var xhr:any = super.build();
+        xhr.withCredentials = true;
+        return xhr;
+    }
+}
+
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
@@ -41,10 +51,12 @@ const APP_PROVIDERS = [
     ROUTES
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
+    HTTP_PROVIDERS,
     PLATFORM_PROVIDERS,
     ENV_PROVIDERS,
     ROUTING_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    { provide: BrowserXhr, useClass: CORSBrowserXHR } // provide(BrowserXhr, {useClass: CORSBrowserXHR})
   ]
 })
 

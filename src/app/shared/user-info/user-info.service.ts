@@ -12,7 +12,7 @@ export class UserInfoService {
   private userInfoUrl: string;
 
   constructor (private http: Http, private config: AppConfig, private store: StoreService) {
-    this.userInfoUrl = `${config.urlPrefix.auth}/api/user`;
+    this.userInfoUrl = `${config.urlPrefix.io}/api/user`;
   }
 
   goWechatAuth() {
