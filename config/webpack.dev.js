@@ -148,19 +148,7 @@ module.exports = webpackMerge(commonConfig, {
       aggregateTimeout: 300,
       poll: 1000
     },
-    outputPath: helpers.root('dist'),
-    proxy: {
-      '/api/accountd/*': {
-        target: 'http://localhost:2000',
-        changeOrigin: true,
-        pathRewrite: {'^/api/accountd' : ''}
-      },
-      '/api/*': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-        pathRewrite: {'^/api' : ''}
-      }
-    }
+    outputPath: helpers.root('dist')
   },
 
   /*

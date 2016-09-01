@@ -8,8 +8,8 @@ export class AppConfig {
 
   constructor() {
     this.urlPrefix = new UrlPrefix();
-    this.urlPrefix.auth = '/api/accountd';
-    this.urlPrefix.io = '/api';
+    this.urlPrefix.auth = 'http://auth.zaojiu.io';
+    this.urlPrefix.io = 'http://io.zaojiu.io';
   }
 }
 
