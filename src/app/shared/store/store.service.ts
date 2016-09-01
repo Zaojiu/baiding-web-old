@@ -4,7 +4,9 @@ import { Injectable } from '@angular/core';
 export class StoreService {
   private memoryStore: any;
 
-  constructor () {}
+  constructor () {
+    this.memoryStore = {};
+  }
 
   set(key: string, value: any) {
     this.memoryStore[key] = value;

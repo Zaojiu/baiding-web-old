@@ -4,7 +4,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { AppConfig } from '../../app.config'
 import { UserInfoModel } from './user-info.model';
-import { StoreService } from './shared/store/store.service';
+import { StoreService } from '../store/store.service';
 
 
 @Injectable()
