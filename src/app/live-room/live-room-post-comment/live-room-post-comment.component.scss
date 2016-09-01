@@ -67,6 +67,8 @@
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+    position: relative;
+    padding-right: 72px;
 
     &::-webkit-scrollbar, &::-webkit-scrollbar-track {
       display: none;
@@ -75,6 +77,17 @@
     .add-image, .face {
       font-size: medium;
       padding: 20px;
+    }
+
+    .post-btn {
+      position: fixed;
+      height: 50px;
+      padding: 0 20px;
+      right: 0;
+      font-size: medium;
+      color: rgb(33, 150, 243);
+      background-color: rgb(242, 246, 249);
+      box-shadow: -2px 0px 2px rgba(221, 221, 221, .5);
     }
   }
 }

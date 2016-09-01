@@ -17,7 +17,7 @@ const DefinePlugin = require('webpack/lib/DefinePlugin');
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 9000;
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig.metadata, {
   host: HOST,
@@ -148,7 +148,19 @@ module.exports = webpackMerge(commonConfig, {
       aggregateTimeout: 300,
       poll: 1000
     },
-    outputPath: helpers.root('dist')
+    outputPath: helpers.root('dist'),
+    proxy: {
+      '/api/accountd/*': {
+        target: 'http://localhost:2000',
+        changeOrigin: true,
+        pathRewrite: {'^/api/accountd' : ''}
+      },
+      '/api/*': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        pathRewrite: {'^/api' : ''}
+      }
+    }
   },
 
   /*

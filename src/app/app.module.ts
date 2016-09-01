@@ -12,16 +12,17 @@ import { ROUTES, ROUTING_PROVIDERS } from './app.routes';
 import { App } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState } from './app.service';
+import { AppConfig } from './app.config';
 
 import { LiveListModule } from './live-list/live-list.module';
 import { LiveRoomModule } from './live-room/live-room.module';
 import { BottomPopupSelectorComponent } from './shared/bottom-popup-selector/bottom-popup-selector.component';
 
-
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
-  AppState
+  AppState,
+  AppConfig
 ];
 
 /**

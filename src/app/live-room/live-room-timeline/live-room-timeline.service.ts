@@ -28,7 +28,7 @@ export class LiveRoomTimelineService {
 
       let needInsert = index === 3;
       var user = new TimelineCommentUserInfoModel();
-      user.uid = '1234';
+      user.uid = 1234;
       user.nick = 'test';
       user.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
       user.role = TimelineCommentUserType.Host;
@@ -54,7 +54,7 @@ export class LiveRoomTimelineService {
 
     setInterval(() => {
       var praisedUser = new PraisedUserModel();
-      praisedUser.uid = '1234';
+      praisedUser.uid = 1234;
       praisedUser.commentId = '1234';
       praisedUser.avatar = 'https://www.gravatar.com/avatar/6119b06e8b42066dec1211a26ca99ba3?s=200';
 

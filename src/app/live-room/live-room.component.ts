@@ -1,20 +1,28 @@
 import { Component, OnInit, OnDestroy }      from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { Subscription }   from 'rxjs/Subscription';
+import { LiveService } from '../shared/live/live.service';
+import { LiveInfoModel } from '../shared/live/live.model';
 
 @Component({
   templateUrl: './live-room.component.html',
-  styleUrls: ['./live-room.component.scss']
+  styleUrls: ['./live-room.component.scss'],
+  providers: [ LiveService ]
 })
 
 export class LiveRoomComponent implements OnInit, OnDestroy {
   id: string;
+  liveInfo: LiveInfoModel;
   isChildrenActived: boolean;
   routerSubscription: Subscription;
   isDanmuOpened: boolean = true;
-  urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post-comment)$');
+  urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post-comment|history|invitation)$');
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService) {}
+
+  getLiveInfo() {
+    this.liveService.getLiveInfo(this.id).then(info => this.liveInfo = info);
+  }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -28,6 +36,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.getLiveInfo();
   }
 
   ngOnDestroy() {

@@ -20,7 +20,7 @@ export class TimelineCommentComponent {
 
   confirmThumbsUp() {
     var praisedUser = new PraisedUserModel();
-    praisedUser.uid = '12345';
+    praisedUser.uid = 12345;
     praisedUser.commentId = '1234';
     praisedUser.avatar = 'https://www.gravatar.com/avatar/6119b06e8b42066dec1211a26ca99ba3?s=200';
 
