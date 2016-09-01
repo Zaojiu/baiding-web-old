@@ -22,9 +22,9 @@ export class PraisedAnimationComponent implements OnInit {
   ngOnInit() {
     this.randomAnimation = _.random(0, 1, false);
     this.randomXAxisOffset = _.random(10, 44, false);
-    this.userInfoService.getUserInfo().then(userInfo => {
-      this.isMine = this.user.uid === userInfo.uid;
-    })
+    // this.userInfoService.getUserInfo().then(userInfo => {
+    //   this.isMine = this.user.uid === userInfo.uid;
+    // })
   }
 
   getXAxisOffset() {

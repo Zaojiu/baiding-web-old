@@ -193,6 +193,10 @@ module.exports = {
         test: /\.scss$/,
         exclude: /node_modules/,
         loaders: ['raw-loader', 'postcss', 'sass-loader'] // sass-loader not scss-loader
+      },
+      {
+        test: /\.font\.(js|json)$/,
+        loader: "style!css!fontgen"
       }
     ]
 

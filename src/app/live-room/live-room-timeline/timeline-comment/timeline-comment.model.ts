@@ -1,13 +1,13 @@
 import { TimelineCommentType, TimelineCommentUserType } from './timeline-comment.enum';
 
 export class PraisedUserModel {
-  uid: string;
+  uid: number;
   commentId: string;
   avatar: string;
 }
 
 export class TimelineCommentUserInfoModel {
-  uid: string;
+  uid: number;
   nick: string;
   avatar: string;
   role: TimelineCommentUserType;

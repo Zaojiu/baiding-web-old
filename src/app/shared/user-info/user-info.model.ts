@@ -1,5 +1,5 @@
 export class UserInfoModel {
-  uid: string;
+  uid: number;
   nick: string;
   avatar: string;
 }

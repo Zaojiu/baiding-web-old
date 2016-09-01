@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { LiveModel } from '../../shared/live.model';
-import { LiveAllService } from './live-all.service';
+import { LiveInfoModel } from '../../shared/live/live.model';
 
 @Component({
-  providers: [ LiveAllService ],
   templateUrl: './live-all.component.html'
 })
 
 export class LiveAllComponent implements OnInit {
-  lives: LiveModel[];
+  lives: LiveInfoModel[];
 
-  constructor(private liveService: LiveAllService) {}
+  constructor() {}
 
   getLives() {
-    this.liveService.getLives().then(lives => this.lives = lives)
+    // this.liveService.getLives().then(lives => this.lives = lives)
   }
 
   ngOnInit() {
-    this.getLives();
+    // this.getLives();
   }
 }

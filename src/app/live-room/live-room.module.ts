@@ -12,6 +12,8 @@ import { LiveRoomPushCommentComponent } from './live-room-push-comment/live-room
 import { LiveRoomPostCommentComponent } from './live-room-post-comment/live-room-post-comment.component';
 import { PraisedAnimationsDirective } from './live-room-timeline/timeline-comment/praised-animations.directive';
 import { PraisedAnimationComponent } from './live-room-timeline/timeline-comment/praised-animation/praised-animation.component';
+import { HistoryComponent } from './history/history.component';
+import { InviteComponent } from './invite/invite.component';
 import { EmptyComponent } from '../shared/empty/empty.component';
 
 @NgModule({
@@ -30,7 +32,9 @@ import { EmptyComponent } from '../shared/empty/empty.component';
     TimelineCommentComponent,
     EmptyComponent,
     PraisedAnimationsDirective,
-    PraisedAnimationComponent
+    PraisedAnimationComponent,
+    HistoryComponent,
+    InviteComponent
   ]
 })
 

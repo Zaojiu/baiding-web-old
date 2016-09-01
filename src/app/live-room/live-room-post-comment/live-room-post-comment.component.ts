@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LiveRoomInfoModel } from '../live-room.model';
 
 @Component({
   templateUrl: './live-room-post-comment.component.html',
@@ -8,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class LiveRoomPostCommentComponent implements OnInit {
   id: string;
+  @Input() liveInfo: LiveRoomInfoModel;
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
@@ -17,5 +19,9 @@ export class LiveRoomPostCommentComponent implements OnInit {
 
   backToMainScreen() {
     this.router.navigate(['/lives/' + this.id]);
+  }
+
+  postComment() {
+
   }
 }

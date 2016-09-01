@@ -1,8 +1,10 @@
 /*
  * Angular 2 decorators and services
  */
-import { Component } from '@angular/core';
-import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service'
+import { Component, OnInit } from '@angular/core';
+import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service';
+import { UserInfoService } from './shared/user-info/user-info.service';
+import { StoreService } from './shared/store/store.service';
 
 /*
  * App Component
@@ -10,14 +12,20 @@ import { BottomPopupSelectorService } from './shared/bottom-popup-selector/botto
  */
 @Component({
   selector: 'bd-app',
-  styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html',
-  providers: [ BottomPopupSelectorService ]
+  providers: [ BottomPopupSelectorService, UserInfoService, StoreService ]
 })
 
-export class App {
-  constructor() {
+export class App implements OnInit {
+  constructor(private userInfoService: UserInfoService) {}
 
+  isInWechat(): boolean {
+    return /micromessenger/i.test(window.navigator.userAgent);
+  }
+
+  ngOnInit() {
+    const needWechatAuth = this.isInWechat();
+    this.userInfoService.getUserInfo(needWechatAuth);
   }
 }
 
