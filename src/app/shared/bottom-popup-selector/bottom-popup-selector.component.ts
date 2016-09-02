@@ -38,8 +38,8 @@ export class BottomPopupSelectorComponent implements OnInit {
     );
   }
 
-  selectItem(index) {
-    this.bottomPopupService.selectItem(index);
+  selectItem(item: string) {
+    this.bottomPopupService.selectItem(item);
   }
 
   close() {

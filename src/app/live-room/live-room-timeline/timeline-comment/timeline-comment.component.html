@@ -2,12 +2,12 @@
   <div class="comment" [ngClass]="{'has-reply': comment.firstReply, 'mime': comment.user.uid == ''}">
     <div class="avatar-container">
       <img class="avatar" [src]="comment.user.avatar">
-      <span class="role">{{comment.user.role}}</span>
+      <span class="role">{{comment.user | role: liveInfo}}</span>
     </div>
     <div class="content-container">
       <div class="content-info">
         <p class="name">{{comment.user.nick}}</p>
-        <time>{{comment.createdAt}}</time>
+        <time>{{comment.createdAt | time}}</time>
       </div>
 
       <div class="content">{{comment.content}}</div>
@@ -17,7 +17,7 @@
         <praised-animation *ngFor="let user of comment.praisedAnimations" [user]="user"></praised-animation>
       </div>
       <a class="thumbs-up-btn" [ngClass]="{'had-thumbs-up': comment.hadThumbsUp}" (click)="setThumbsUp()">赞</a>
-      <span class="thumbs-up-count" (click)="setThumbsUp()">{{comment.praisedAmout}}</span>
+      <span class="thumbs-up-count" (click)="setThumbsUp()">{{comment.praisedAmount}}</span>
     </div>
   </div>
   <div class="comment-reply" *ngIf="comment.firstReply" [ngClass]="{'mime': comment.firstReply.user.uid == ''}">

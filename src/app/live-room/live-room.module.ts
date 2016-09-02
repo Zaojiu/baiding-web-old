@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
 
 import { ROUTES as LiveRoomRoute } from './live-room.route';
 import { LiveRoomComponent } from './live-room.component';
@@ -15,11 +16,16 @@ import { PraisedAnimationComponent } from './live-room-timeline/timeline-comment
 import { HistoryComponent } from './history/history.component';
 import { InviteComponent } from './invite/invite.component';
 import { EmptyComponent } from '../shared/empty/empty.component';
+import { TimelineCommentRolePipe } from './live-room-timeline/timeline-comment/timeline-comment-role.pipe';
+import { TimelineCommentTimePipe } from './live-room-timeline/timeline-comment/timeline-comment-time.pipe';
+import { TimelineScrollerDirective } from './live-room-timeline/timeline.directive';
+
 
 @NgModule({
   imports: [
     LiveRoomRoute,
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   declarations: [
     LiveRoomComponent,
@@ -34,7 +40,10 @@ import { EmptyComponent } from '../shared/empty/empty.component';
     PraisedAnimationsDirective,
     PraisedAnimationComponent,
     HistoryComponent,
-    InviteComponent
+    InviteComponent,
+    TimelineCommentRolePipe,
+    TimelineCommentTimePipe,
+    TimelineScrollerDirective
   ]
 })
 
