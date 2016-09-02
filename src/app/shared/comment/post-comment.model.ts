@@ -16,7 +16,7 @@ export class PostCommentAudioModel {
 export class PostCommentModel {
   type: string;
   content: string;
-  audio: PostAudioCommentModel;
+  audio: PostCommentAudioModel;
   image: PostCommentImageModel;
   nice: PostCommentNiceModel;
 }

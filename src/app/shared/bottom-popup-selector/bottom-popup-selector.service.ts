@@ -7,7 +7,7 @@ export class BottomPopupSelectorService {
   // Observable string sources
   private popupSource = new Subject<BottomPopupSelectorModel>();
   private closeSource = new Subject<string>();
-  private itemSelectedSource = new Subject<number>();
+  private itemSelectedSource = new Subject<string>();
   // Observable string streams
   needPopup$ = this.popupSource.asObservable();
   itemSelected$ = this.itemSelectedSource.asObservable();
@@ -24,7 +24,7 @@ export class BottomPopupSelectorService {
     this.isClosed = true;
   }
 
-  selectItem(index: number) {
-    this.itemSelectedSource.next(index);
+  selectItem(item: string) {
+    this.itemSelectedSource.next(item);
   }
 }

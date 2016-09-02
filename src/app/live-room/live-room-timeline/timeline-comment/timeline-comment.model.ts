@@ -1,4 +1,5 @@
-import { TimelineCommentType, TimelineCommentUserType } from './timeline-comment.enum';
+import { TimelineCommentType } from './timeline-comment.enum';
+import { UserInfoModel } from '../../../shared/user-info/user-info.model'
 
 export class PraisedUserModel {
   uid: number;
@@ -6,22 +7,16 @@ export class PraisedUserModel {
   avatar: string;
 }
 
-export class TimelineCommentUserInfoModel {
-  uid: number;
-  nick: string;
-  avatar: string;
-  role: TimelineCommentUserType;
-}
-
 export class TimelineCommentModel {
   id: string;
-  user: TimelineCommentUserInfoModel;
+  isReceived: boolean; // 用于判断是否为服务器拉取下来的信息，或者是本地发送时的信息。
+  user: UserInfoModel;
   content: string;
   type: TimelineCommentType;
   hadPraised: boolean;
-  praisedAmout: number;
-  praisedAnimations: PraisedUserModel[];
-  praisedAvatars: PraisedUserModel[];
-  firstReply: TimelineCommentModel;
+  praisedAmount: number;
+  praisedAnimations: UserInfoModel[];
+  praisedAvatars: UserInfoModel[];
+  reply: TimelineCommentModel[];
   createdAt: string;
 }

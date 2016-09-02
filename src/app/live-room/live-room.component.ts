@@ -3,11 +3,13 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { Subscription }   from 'rxjs/Subscription';
 import { LiveService } from '../shared/live/live.service';
 import { LiveInfoModel } from '../shared/live/live.model';
+import { LiveRoomTimelineService } from './live-room-timeline/live-room-timeline.service';
+import { UserInfoService } from '../shared/user-info/user-info.service';
 
 @Component({
   templateUrl: './live-room.component.html',
   styleUrls: ['./live-room.component.scss'],
-  providers: [ LiveService ]
+  providers: [ LiveService, LiveRoomTimelineService, UserInfoService ]
 })
 
 export class LiveRoomComponent implements OnInit, OnDestroy {

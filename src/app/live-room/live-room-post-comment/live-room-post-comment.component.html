@@ -1,11 +1,10 @@
-<div class="live-room-post-comment-container">
+<form class="live-room-post-comment-container" (ngSubmit)="postComment()">
   <div class="top-bar">
-    <span class="reply-info">回复 Louis Sandoval</span>
     <a class="close-btn" (click)="backToMainScreen()">关闭</a>
   </div>
 
   <div class="comment-input-container">
-    <textarea class="comment-input" placeholder="请输入你的评论"></textarea>
+    <textarea class="comment-input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content"></textarea>
   </div>
 
   <div class="bottom-bar">
@@ -18,6 +17,6 @@
     <a class="face" href="">脸</a>
     <a class="face" href="">脸</a>
     <a class="face" href="">脸</a>
-    <button class="post-btn">发送</button>
+    <button class="post-btn" [disabled]="!content">发送</button>
   </div>
-</div>
+</form>
