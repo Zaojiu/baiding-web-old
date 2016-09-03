@@ -19,12 +19,13 @@ import '@angularclass/request-idle-callback';
 // RxJS
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+require("leancloud-realtime");
+require("leancloud-push");
 
 (<any>window).wx = require('weixin-js-sdk')
 
 if ('production' === ENV) {
   // Production
-
 
 } else {
   // Development
