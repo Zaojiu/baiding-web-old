@@ -1,28 +1,33 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Subject }        from 'rxjs/Subject';
+import { Subscription }   from 'rxjs/Subscription';
 import { TimelineCommentModel } from './timeline-comment/timeline-comment.model';
 import { TimelineCommentType } from './timeline-comment/timeline-comment.enum';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
+import { MqService } from '../../shared/mq/mq.service';
 
 
 
 @Injectable()
 export class LiveRoomTimelineService {
   // Observable string sources
-  private receivedCommentSource = new Subject<TimelineCommentModel>();
+  private receivedMessageSource = new Subject<TimelineCommentModel>();
   private scrollerSource = new Subject<boolean>();
   private scrollToSource = new Subject<boolean>();
   private timelineSource = new Subject<boolean>();
-  private receivedPraisedUserSource = new Subject<UserInfoModel>();
+  private praisesSource = new Subject<UserInfoModel>();
   // Observable string streams
-  receivedComment$ = this.receivedCommentSource.asObservable();
+  private receivedMessage$ = this.receivedMessageSource.asObservable();
   scroller$ = this.scrollerSource.asObservable();
   scrollTo$ = this.scrollToSource.asObservable();
   timeline$ = this.timelineSource.asObservable();
-  receivedPraisedUser$ = this.receivedPraisedUserSource.asObservable();
+  private receivedPraises$ = this.praisesSource.asObservable();
 
-  constructor (private http: Http) {}
+  private receviedMessageSubscription: Subscription;
+  private receviedPraisedUserSubscription: Subscription;
+
+  constructor(private http: Http) { }
 
   notifyScrollerOnTop() {
     this.scrollerSource.next(true);
@@ -50,14 +55,47 @@ export class LiveRoomTimelineService {
 
   pushComment(comment: TimelineCommentModel) {
     console.log(comment)
-    this.receivedCommentSource.next(comment);
+    this.receivedMessageSource.next(comment);
   }
 
   // pushPraisedUser(praisedUser: PraisedUserModel) {
   //   this.receivedCommentSource.next(praisedUser);
   // }
 
-  onReceive () {
+
+
+  // startReceiveComment() {
+  //   this.receviedCommentSubscription = this.timelineService.receivedMessage$.subscribe(
+  //     comment => {
+  //       this.comments.push(comment);
+  //     }
+  //   );
+  // }
+
+  // startReceivePraisedUser() {
+    // this.receviedPraisedUserSubscription = this.timelineService.receivedPraisedUser$.subscribe(
+    //   praisedUser => {
+    //     for (var comment of this.comments) {
+    //       if (praisedUser.commentId == comment.id) {
+    //         // 数组只保留5个，如果自己点过赞，则保留4个
+    //         const limit = comment.hadPraised ? 4 : 5;
+    //         if (comment.praisedAvatars.length >= limit) {
+    //           comment.praisedAvatars.shift();
+    //         }
+    //         comment.praisedAmount += 1;
+    //         comment.praisedAnimations.push(praisedUser);
+    //         // 推入数组后会产生动画，动画完成后，由directive移除掉元素
+    //         comment.praisedAvatars.push(praisedUser);
+    //       }
+    //     }
+    //   }
+    // );
+  // }
+
+  startReceive(id: string) {
+    MqService.subscribeMessages(id, this.timelineSource)
+    MqService.subscribePraises(id, this.praisesSource)
+
     // const praisedCommentId = '1234';
     // var index = 0;
     // var timer;
@@ -89,17 +127,38 @@ export class LiveRoomTimelineService {
     //   comment.praisedAnimations = [praisedUser];
     //   comment.praisedAvatars = [praisedUser];
     //   comment.createdAt = '2006-01-02T15:04:05Z07:00';
-    //   this.receivedCommentSource.next(comment);
+    // this.receivedCommentSource.next(comment);
 
     //   index++
     // }, 500);
 
-    setInterval(() => {
-      var praisedUser = new UserInfoModel();
-      praisedUser.uid = 1234;
-      praisedUser.avatar = 'https://www.gravatar.com/avatar/6119b06e8b42066dec1211a26ca99ba3?s=200';
+    // setInterval(() => {
+    //   var praisedUser = new PraisedUserModel();
+    //   praisedUser.uid = 1234;
+      // praisedUser.avatar = 'https://www.gravatar.com/avatar/6119b06e8b42066dec1211a26ca99ba3?s=200';
 
-      // this.receivedPraisedUserSource.next(praisedUser);
-    }, 200);
+    //   this.praisesSource.next(praisedUser);
+    // }, 200);
+  }
+
+  stopReceive(id: string) {
+    MqService.unsubscribeMessages(id)
+    MqService.unsubscribePraises(id)
+
+    if (this.receviedMessageSubscription) {
+      this.receviedMessageSubscription.unsubscribe()
+    }
+
+    if (this.receviedPraisedUserSubscription) {
+      this.receviedPraisedUserSubscription.unsubscribe()
+    }
+  }
+
+  onReceivedMessage(f: any) {
+    this.receviedMessageSubscription = this.receivedMessage$.subscribe(f)
+  }
+
+  onReceivedPraises(f: any) {
+    this.receviedPraisedUserSubscription = this.receivedPraises$.subscribe(f)
   }
 }

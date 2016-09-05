@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription }   from 'rxjs/Subscription';
 
 import { LiveRoomDanmuModel } from './live-room-danmu.model';
-import { LiveRoomDanmuService } from './live-room-danmu.service';
+import { LiveRoomCommentService } from './live-room-danmu.service';
 
 @Component({
   selector: 'live-room-danmu',
@@ -11,32 +11,29 @@ import { LiveRoomDanmuService } from './live-room-danmu.service';
 })
 
 export class LiveRoomDanmuComponent implements OnInit, OnDestroy {
-  @Input() liveId: string;
+  @Input() streamId: string;
+
   maxDanmuAmount: number = 3;
   danmus: LiveRoomDanmuModel[] = [];
-  danmuSubscription: Subscription;
 
-  constructor(private liveRoomDanmuService: LiveRoomDanmuService) {}
-
-  startReceiveComment() {
-    this.liveRoomDanmuService.onReceive();
-
-    this.danmuSubscription = this.liveRoomDanmuService.receivedDanmu$.subscribe(
-      danmu => {
-        if (this.danmus.length >= this.maxDanmuAmount) {
-          this.danmus.shift();
-        }
-
-        this.danmus.push(danmu);
-      }
-    );
-  }
+  constructor(private liveRoomCommentService: LiveRoomCommentService) { }
 
   ngOnInit() {
-    this.startReceiveComment();
+    this.liveRoomCommentService.startReceive(this.streamId);
+    this.liveRoomCommentService.onReceiveComments(comment => {
+        this.onReceiveComments(comment)
+    });
   }
 
   ngOnDestroy() {
-    this.danmuSubscription.unsubscribe();
+    this.liveRoomCommentService.stopReceive(this.streamId)
+  }
+
+  onReceiveComments(comment: LiveRoomDanmuModel) {
+    if (this.danmus.length >= this.maxDanmuAmount) {
+      this.danmus.shift();
+    }
+
+    this.danmus.push(comment);
   }
 }

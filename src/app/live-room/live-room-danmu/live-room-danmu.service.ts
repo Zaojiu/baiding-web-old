@@ -1,30 +1,40 @@
-import { Injectable }     from '@angular/core';
+import { Injectable, Input }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Subject }        from 'rxjs/Subject';
+import { Subscription }   from 'rxjs/Subscription';
 
 import { LiveRoomDanmuModel }      from './live-room-danmu.model';
 import { UserInfoModel }  from '../../shared/user-info/user-info.model';
+import { MqService } from '../../shared/mq/mq.service';
 
 @Injectable()
-export class LiveRoomDanmuService {
+export class LiveRoomCommentService {
   // Observable string sources
-  private receivedDanmuSource = new Subject<LiveRoomDanmuModel>();
+  private receivedCommentSource = new Subject<LiveRoomDanmuModel>();
   // Observable string streams
-  receivedDanmu$ = this.receivedDanmuSource.asObservable();
+  private receivedComment$ = this.receivedCommentSource.asObservable();
 
-  constructor (private http: Http) {}
+  private receivedCommentSub: Subscription;
 
-  pushDanmu(danmu: LiveRoomDanmuModel) {
-    this.receivedDanmuSource.next(danmu);
+  constructor(private http: Http) { }
+
+  pushComment(comment: LiveRoomDanmuModel) {
+    this.receivedCommentSource.next(comment)
   }
 
-  onReceive () {
-    // setInterval(() => {
-    //   var danmu = new LiveRoomDanmuModel();
-    //   danmu.content = '白丁弹幕首测' + Date.now();
-    //   danmu.user = new UserInfoModel();
-    //   danmu.user.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
-    //   this.pushDanmu(danmu);
-    // }, 500);
+  startReceive(streamId: string) {
+    MqService.subscribeComments(streamId, this.receivedCommentSource)
+  }
+
+  stopReceive(streamId: string) {
+    MqService.unsubscribeComments(streamId)
+
+    if (this.receivedCommentSub) {
+      this.receivedCommentSub.unsubscribe();
+    }
+  }
+
+  onReceiveComments(f: any) {
+    this.receivedCommentSub = this.receivedComment$.subscribe(f)
   }
 }
