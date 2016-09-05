@@ -4,6 +4,7 @@ import { TimelineCommentModel } from './timeline-comment.model';
 import { UserInfoModel } from '../../../shared/user-info/user-info.model';
 import { LiveInfoModel } from '../../../shared/live/live.model';
 import { TimelineCommmentService } from './timeline-comment.service';
+import { MqService } from '../../../shared/mq/mq.service';
 
 @Component({
   selector: 'timeline-comment',

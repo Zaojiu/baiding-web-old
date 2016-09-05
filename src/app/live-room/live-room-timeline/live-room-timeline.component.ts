@@ -9,12 +9,13 @@ import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { LiveService } from '../../shared/live/live.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
 import { GetCommentService } from '../../shared/comment/get-comment.service'
+import { MqService } from '../../shared/mq/mq.service';
 
 @Component({
   selector: 'live-room-timeline',
   templateUrl: './live-room-timeline.component.html',
   styleUrls: ['./live-room-timeline.component.scss'],
-  providers: [ GetCommentService ]
+  providers: [GetCommentService]
 })
 
 export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
@@ -22,8 +23,6 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   comments: TimelineCommentModel[] = [];
-  receviedCommentSubscription: Subscription;
-  receviedPraisedUserSubscription: Subscription;
   scrollSubscription: Subscription;
   timelineSubscription: Subscription;
   isOnBottom: boolean;
@@ -32,7 +31,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private timelineService: LiveRoomTimelineService,
     private userInfoService: UserInfoService, private liveService: LiveService,
-    private getCommentService: GetCommentService) {}
+    private getCommentService: GetCommentService) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -40,27 +39,43 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
     let userInfoPromise = this.userInfoService.getUserInfo();
     let liveInfoPromise = this.liveService.getLiveInfo(this.id);
 
+    // TODO reject ??
     Promise.all([userInfoPromise, liveInfoPromise]).then(result => {
       let userInfo = result[0];
       let liveInfo = result[1];
-
       this.userInfo = userInfo;
       this.liveInfo = liveInfo;
-      this.timelineService.onReceive();
-      this.gotoLatestComments();
+
+      this.timelineService.startReceive(this.id);
+      this.timelineService.onReceivedMessage(message => {
+        this.onReceivedMessage(message)
+      })
+      this.timelineService.onReceivedPraises(prised => {
+        this.onReceivedPraises(prised)
+      })
+
+      // this.gotoLastestComments();
       setTimeout(() => this.timelineService.scrollToBottom(), 200);
       this.startObserveTimelineScroll();
       this.startObserveTimelineAction();
-      this.startReceivePraisedUser();
-      this.startReceiveComment();
+
+      this.gotoLatestComments()
     });
   }
 
   ngOnDestroy() {
-    this.receviedCommentSubscription.unsubscribe();
-    this.receviedPraisedUserSubscription.unsubscribe();
+    this.timelineService.stopReceive(this.id)
+
     this.stopObserveTimelineScroll();
     this.timelineSubscription.unsubscribe();
+  }
+
+  onReceivedMessage(message: TimelineCommentModel) {
+    this.comments.push(message)
+  }
+
+  onReceivedPraises(user: UserInfoModel) {
+    console.log("ppp", user)
   }
 
   gotoLatestComments() {
@@ -135,7 +150,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
           this.getPrevComments(`$lt${firstComment.createdAt}`, 20, ['-createdAt']);
         } else {
           if (this.comments.length === 0) return;
-          let lastComment = this.comments[this.comments.length-1];
+          let lastComment = this.comments[this.comments.length - 1];
           this.getNextComments(`$gt${lastComment.createdAt}`, 20, ['createdAt']);
         }
       }
@@ -164,36 +179,6 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
             this.startObserveTimelineScroll();
           }, 200);
         }
-      }
-    );
-  }
-
-  startReceiveComment() {
-    this.receviedCommentSubscription = this.timelineService.receivedComment$.subscribe(
-      comment => {
-        this.comments.push(comment);
-      }
-    );
-  }
-
-  startReceivePraisedUser() {
-    this.receviedPraisedUserSubscription = this.timelineService.receivedPraisedUser$.subscribe(
-      praisedUser => {
-        if (!this.comments) return;
-        let comment = this.comments[this.comments.length - 1];
-        // // for (var comment of this.comments) {
-        // //   if (praisedUser.commentId == comment.id) {
-        //     // 数组只保留5个，如果自己点过赞，则保留4个
-        //     const limit = comment.hadPraised ? 4 : 5;
-        //     if (comment.praisedAvatars.length >= limit) {
-        //       comment.praisedAvatars.shift();
-        //     }
-            comment.praisedAmount += 1;
-            comment.praisedAnimations.push(praisedUser);
-        //     // 推入数组后会产生动画，动画完成后，由directive移除掉元素
-            // comment.praisedAvatars.push(praisedUser);
-        //   // }
-        // // }
       }
     );
   }
