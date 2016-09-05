@@ -8,7 +8,6 @@ import { UserInfoService } from '../../shared/user-info/user-info.service';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { LiveService } from '../../shared/live/live.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
-import { TimelineStatus } from './timeline.enum';
 import { GetCommentService } from '../../shared/comment/get-comment.service'
 
 @Component({
@@ -48,12 +47,12 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
       this.userInfo = userInfo;
       this.liveInfo = liveInfo;
       this.timelineService.onReceive();
-      this.startReceiveComment();
-      this.startReceivePraisedUser();
-      this.gotoLastestComments();
+      this.gotoLatestComments();
       setTimeout(() => this.timelineService.scrollToBottom(), 200);
       this.startObserveTimelineScroll();
       this.startObserveTimelineAction();
+      this.startReceivePraisedUser();
+      this.startReceiveComment();
     });
   }
 
@@ -64,7 +63,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
     this.timelineSubscription.unsubscribe();
   }
 
-  gotoLastestComments() {
+  gotoLatestComments() {
     if (this.isLoading) return;
 
     this.isLoading = true;
@@ -159,7 +158,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
             this.startObserveTimelineScroll();
           }, 200);
         } else {
-          this.gotoLastestComments();
+          this.gotoLatestComments();
           setTimeout(() => {
             this.timelineService.scrollToBottom();
             this.startObserveTimelineScroll();
@@ -178,22 +177,24 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   }
 
   startReceivePraisedUser() {
-    // this.receviedPraisedUserSubscription = this.timelineService.receivedPraisedUser$.subscribe(
-    //   praisedUser => {
-    //     for (var comment of this.comments) {
-    //       if (praisedUser.commentId == comment.id) {
-    //         // 数组只保留5个，如果自己点过赞，则保留4个
-    //         const limit = comment.hadPraised ? 4 : 5;
-    //         if (comment.praisedAvatars.length >= limit) {
-    //           comment.praisedAvatars.shift();
-    //         }
-    //         comment.praisedAmount += 1;
-    //         comment.praisedAnimations.push(praisedUser);
-    //         // 推入数组后会产生动画，动画完成后，由directive移除掉元素
-    //         comment.praisedAvatars.push(praisedUser);
-    //       }
-    //     }
-    //   }
-    // );
+    this.receviedPraisedUserSubscription = this.timelineService.receivedPraisedUser$.subscribe(
+      praisedUser => {
+        if (!this.comments) return;
+        let comment = this.comments[this.comments.length - 1];
+        // // for (var comment of this.comments) {
+        // //   if (praisedUser.commentId == comment.id) {
+        //     // 数组只保留5个，如果自己点过赞，则保留4个
+        //     const limit = comment.hadPraised ? 4 : 5;
+        //     if (comment.praisedAvatars.length >= limit) {
+        //       comment.praisedAvatars.shift();
+        //     }
+            comment.praisedAmount += 1;
+            comment.praisedAnimations.push(praisedUser);
+        //     // 推入数组后会产生动画，动画完成后，由directive移除掉元素
+            // comment.praisedAvatars.push(praisedUser);
+        //   // }
+        // // }
+      }
+    );
   }
 }

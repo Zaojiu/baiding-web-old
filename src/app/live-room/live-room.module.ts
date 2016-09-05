@@ -8,8 +8,9 @@ import { LiveRoomDanmuComponent } from './live-room-danmu/live-room-danmu.compon
 import { LiveRoomEditorBottomBarComponent } from './live-room-editor-bottom-bar/live-room-editor-bottom-bar.component';
 import { LiveRoomAudienceBottomBarComponent } from './live-room-audience-bottom-bar/live-room-audience-bottom-bar.component';
 import { LiveRoomTimelineComponent } from './live-room-timeline/live-room-timeline.component';
+import { AudioCommentComponent } from './live-room-timeline/timeline-comment/audio-comment/audio-comment.component';
 import { TimelineCommentComponent } from './live-room-timeline/timeline-comment/timeline-comment.component';
-import { LiveRoomPushCommentComponent } from './live-room-push-comment/live-room-push-comment.component';
+import { LiveRoomPushDanmuComponent } from './live-room-push-danmu/live-room-push-danmu.component';
 import { LiveRoomPostCommentComponent } from './live-room-post-comment/live-room-post-comment.component';
 import { PraisedAnimationsDirective } from './live-room-timeline/timeline-comment/praised-animations.directive';
 import { PraisedAnimationComponent } from './live-room-timeline/timeline-comment/praised-animation/praised-animation.component';
@@ -33,7 +34,7 @@ import { TimelineScrollerDirective } from './live-room-timeline/timeline.directi
     LiveRoomTimelineComponent,
     LiveRoomEditorBottomBarComponent,
     LiveRoomAudienceBottomBarComponent,
-    LiveRoomPushCommentComponent,
+    LiveRoomPushDanmuComponent,
     LiveRoomPostCommentComponent,
     TimelineCommentComponent,
     EmptyComponent,
@@ -43,7 +44,8 @@ import { TimelineScrollerDirective } from './live-room-timeline/timeline.directi
     InviteComponent,
     TimelineCommentRolePipe,
     TimelineCommentTimePipe,
-    TimelineScrollerDirective
+    TimelineScrollerDirective,
+    AudioCommentComponent
   ]
 })
 

@@ -6,12 +6,24 @@
     <a class="room-thumbs-up-btn" href="">点赞</a>
   </div>
 
-  <live-room-danmu *ngIf="isDanmuOpened"></live-room-danmu>
+  <live-room-danmu *ngIf="isDanmuOpened" [liveId]="id"></live-room-danmu>
 
   <live-room-timeline class="live-room-timeline-component" timelineScroller #timeline></live-room-timeline>
 
-  <!-- <live-room-audience-bottom-bar *ngIf="!isChildrenActived" class="live-room-audience-bottom-bar-component"></live-room-audience-bottom-bar> -->
-  <live-room-editor-bottom-bar *ngIf="!isChildrenActived" class="live-room-editor-bottom-bar-component" [isOnBottom]="timeline.isOnBottom" [isOnTop]="timeline.isOnTop"></live-room-editor-bottom-bar>
+  <live-room-audience-bottom-bar
+    *ngIf="!isChildrenActived && isAudience()"
+    class="live-room-audience-bottom-bar-component"
+    [isOnBottom]="timeline.isOnBottom"
+    [isOnTop]="timeline.isOnTop"
+  ></live-room-audience-bottom-bar>
+
+  <live-room-editor-bottom-bar
+    *ngIf="!isChildrenActived && isEditor()"
+    class="live-room-editor-bottom-bar-component"
+    [liveId]="id"
+    [isOnBottom]="timeline.isOnBottom"
+    [isOnTop]="timeline.isOnTop"
+  ></live-room-editor-bottom-bar>
 </div>
 
 <router-outlet></router-outlet>

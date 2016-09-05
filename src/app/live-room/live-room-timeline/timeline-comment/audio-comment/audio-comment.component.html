@@ -1,0 +1,12 @@
+<div class="audio-comment-container">
+  <div class="play-btn" (click)="audio.localId && audio.localId === playingId() ? stopVoice() : playVoice()">
+    <i class="baiding-icon baiding-icon-wave"></i>
+    <span *ngIf="audio.localId && audio.localId === playingId()">
+      <i class="baiding-icon baiding-icon-play"></i>
+    </span>
+    <span *ngIf="!audio.localId || audio.localId !== playingId()">
+      <i class="baiding-icon baiding-icon-play"></i>
+    </span>
+  </div>
+  <div class="translate">{{audio.translateResult}}</div>
+</div>

@@ -19,14 +19,18 @@ export class UserInfoService {
     location.href = `${this.config.urlPrefix.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(window.location.href)}`;
   }
 
+  getUserInfoCache(): UserInfoModel {
+    return this.store.get('userinfo') as UserInfoModel;
+  }
+
   getUserInfo(needWechatAuth?: boolean, needRefresh?: boolean): Promise<UserInfoModel> {
     let userInfoCache = this.store.get('userinfo') as UserInfoModel;
     if ( userInfoCache && !needRefresh ) { return Promise.resolve(userInfoCache); }
 
     return this.http.get(this.userInfoUrl).toPromise()
       .then(res => {
-        let userInfo = res.json() as UserInfoModel
-        this.store.set('userinfo', userInfo)
+        let userInfo = res.json() as UserInfoModel;
+        this.store.set('userinfo', userInfo);
         return userInfo;
       })
       .catch(res => {

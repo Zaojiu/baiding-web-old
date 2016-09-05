@@ -13,33 +13,10 @@
     display: none;
   }
 
-  .share-btn, .thumbs-up-btn {
+  .bottom-bar-btn {
     display: inline-block;
     text-align: center;
     font-size: medium;
-    width: 15.38%;
-  }
-
-  .comment-input-container {
-    display: inline-block;
-    font-size: medium;
-    width: 61.54%;
-    vertical-align: top;
-    padding-top: 12.5px;
-    padding-bottom: 12.5px;
-
-    .comment-input {
-      vertical-align: top;
-      width: 100%;
-      height: 25px;
-      box-sizing: border-box;
-      background-color: rgb(255, 255, 255);
-      border: solid 1px rgb(224, 229, 234);
-      border-radius: 10px;
-    }
-  }
-
-  .thumbs-up-btn {
-
+    width: 18.18%;
   }
 }

@@ -3,6 +3,9 @@ import { Http, Response } from '@angular/http';
 import { Subject }        from 'rxjs/Subject';
 import { TimelineCommentModel } from './timeline-comment/timeline-comment.model';
 import { TimelineCommentType } from './timeline-comment/timeline-comment.enum';
+import { UserInfoModel } from '../../shared/user-info/user-info.model';
+
+
 
 @Injectable()
 export class LiveRoomTimelineService {
@@ -11,13 +14,13 @@ export class LiveRoomTimelineService {
   private scrollerSource = new Subject<boolean>();
   private scrollToSource = new Subject<boolean>();
   private timelineSource = new Subject<boolean>();
-  // private receivedPraisedUserSource = new Subject<PraisedUserModel>();
+  private receivedPraisedUserSource = new Subject<UserInfoModel>();
   // Observable string streams
   receivedComment$ = this.receivedCommentSource.asObservable();
   scroller$ = this.scrollerSource.asObservable();
   scrollTo$ = this.scrollToSource.asObservable();
   timeline$ = this.timelineSource.asObservable();
-  // receivedPraisedUser$ = this.receivedPraisedUserSource.asObservable();
+  receivedPraisedUser$ = this.receivedPraisedUserSource.asObservable();
 
   constructor (private http: Http) {}
 
@@ -46,6 +49,7 @@ export class LiveRoomTimelineService {
   }
 
   pushComment(comment: TimelineCommentModel) {
+    console.log(comment)
     this.receivedCommentSource.next(comment);
   }
 
@@ -90,13 +94,12 @@ export class LiveRoomTimelineService {
     //   index++
     // }, 500);
 
-    // setInterval(() => {
-    //   var praisedUser = new PraisedUserModel();
-    //   praisedUser.uid = 1234;
-    //   praisedUser.commentId = '1234';
-    //   praisedUser.avatar = 'https://www.gravatar.com/avatar/6119b06e8b42066dec1211a26ca99ba3?s=200';
+    setInterval(() => {
+      var praisedUser = new UserInfoModel();
+      praisedUser.uid = 1234;
+      praisedUser.avatar = 'https://www.gravatar.com/avatar/6119b06e8b42066dec1211a26ca99ba3?s=200';
 
-    //   this.receivedPraisedUserSource.next(praisedUser);
-    // }, 200);
+      // this.receivedPraisedUserSource.next(praisedUser);
+    }, 200);
   }
 }
