@@ -5,9 +5,11 @@ import { Routes, RouterModule } from '@angular/router';
 // // AngularClass
 import { provideWebpack } from '@angularclass/webpack-toolkit';
 import { providePrefetchIdleCallbacks } from '@angularclass/request-idle-callback';
+import { NotFoundComponent } from "./notfound/notfound.component";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/lives/all', pathMatch: 'full' },
+  { path: '**', component: NotFoundComponent },
 ];
 
 export const ROUTES = RouterModule.forRoot(appRoutes, { useHash: true });

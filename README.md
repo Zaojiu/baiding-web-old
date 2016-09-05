@@ -1,6 +1,6 @@
 # 白丁项目Web前端
 
-* 项目由 [angular2-weboack-starter](https://github.com/angularclass/angular2-webpack-starter) 搭建
+* 项目由 [angular2-webpack-starter](https://github.com/angularclass/angular2-webpack-starter) 搭建
 
 ## 克隆仓库：
 ```bash
