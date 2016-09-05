@@ -6,12 +6,32 @@ import { LiveInfoModel } from './live.model';
 import { UserInfoModel } from '../user-info/user-info.model';
 import { AppConfig } from '../../app.config';
 import { StoreService } from '../store/store.service';
-import { LiveStatus } from './live.enums'
+import { LiveStatus } from './live.enums';
+import { UserInfoService } from '../user-info/user-info.service';
 
 @Injectable()
 export class LiveService {
-  private mockUrl: string = '../../../assets/mock-data/live-room-info.json';
-  constructor (private http: Http, private config: AppConfig, private store: StoreService) {}
+  constructor (private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {}
+
+  isEditor(id: string) {
+    let userInfo = this.userInfoService.getUserInfoCache();
+    let liveInfo = this.getLiveInfoCache(id);
+
+    if (!userInfo || !liveInfo) return false;
+
+    var isEditor = false;
+
+    if (userInfo.uid === liveInfo.admin.uid) isEditor = true;
+    for (let editor of liveInfo.editors) {
+      if (userInfo.uid === editor.uid) isEditor = true;
+    }
+
+    return isEditor;
+  }
+
+  isAudience(id: string) {
+    return !this.isEditor(id);
+  }
 
   parseLiveInfo(data: any): LiveInfoModel {
     let liveInfo = new LiveInfoModel;
@@ -21,9 +41,9 @@ export class LiveService {
     liveInfo.kind = data.kind;
     liveInfo.owner = data.users[data.owner] as UserInfoModel;
     liveInfo.admin = data.users[data.admin] as UserInfoModel;
+    liveInfo.editors = [];
     for (let uid of data.editors) {
       let user = data.users[uid];
-      liveInfo.editors = liveInfo.editors || [];
       liveInfo.editors.push(user);
     }
     liveInfo.expectStartAt = data.expectStartAt;
@@ -40,6 +60,11 @@ export class LiveService {
     liveInfo.lcConvId = data.lcConvId;
 
     return liveInfo
+  }
+
+  getLiveInfoCache(id: string): LiveInfoModel {
+    let lives = this.store.get('lives') || {};
+    return lives[id] as LiveInfoModel;
   }
 
   getLiveInfo(id: string, needRefresh?: boolean): Promise<LiveInfoModel> {
@@ -61,7 +86,6 @@ export class LiveService {
   }
 
   closeLive(id: string): Promise<any> {
-    console.log(id);
     const url = `${this.config.urlPrefix.io}/api/streams/${id}/close`;
     return this.http.patch(url, null).toPromise().then(res => {
       let data = res.json();

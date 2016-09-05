@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { BottomPopupSelectorService } from './bottom-popup-selector.service'
+import { Router, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
+import { BottomPopupSelectorService } from './bottom-popup-selector.service';
 
 @Component({
   selector: 'bottom-popup-selector',
@@ -11,12 +14,12 @@ export class BottomPopupSelectorComponent implements OnInit {
   items: string[];
   hasBottomBar: boolean;
   isPopup: boolean;
+  routerSubscription: Subscription;
 
-  constructor(private bottomPopupService: BottomPopupSelectorService) {}
+  constructor(private router: Router, private bottomPopupService: BottomPopupSelectorService) {}
 
   ngOnInit() {
     // 此组件由于是全局组件，生命周期与app一样长，所以不需退订。
-
     this.bottomPopupService.needPopup$.subscribe(
       model => {
         if (this.isPopup) { return }
@@ -34,6 +37,15 @@ export class BottomPopupSelectorComponent implements OnInit {
         this.isPopup = false;
         this.items = [];
         this.hasBottomBar = false;
+      }
+    );
+
+    // 监控router变化，如果route换了，那么关闭全局弹出层
+    this.routerSubscription = this.router.events.subscribe(
+      event => {
+        if ( event instanceof NavigationStart ) {
+          if (!this.bottomPopupService.isClosed) this.bottomPopupService.close();
+        }
       }
     );
   }

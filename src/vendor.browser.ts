@@ -20,6 +20,8 @@ import '@angularclass/request-idle-callback';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
+(<any>window).wx = require('weixin-js-sdk')
+
 if ('production' === ENV) {
   // Production
 

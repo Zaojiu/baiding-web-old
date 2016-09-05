@@ -1,5 +1,5 @@
 import { NgModule, Injectable } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserXhr, HTTP_PROVIDERS } from '@angular/http';
 
 /*
@@ -56,6 +56,7 @@ class CORSBrowserXHR extends BrowserXhr{
     ENV_PROVIDERS,
     ROUTING_PROVIDERS,
     APP_PROVIDERS,
+    Title,
     { provide: BrowserXhr, useClass: CORSBrowserXHR } // provide(BrowserXhr, {useClass: CORSBrowserXHR})
   ]
 })

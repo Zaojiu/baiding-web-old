@@ -1,10 +1,10 @@
 import { TimelineCommentType } from './timeline-comment.enum';
 import { UserInfoModel } from '../../../shared/user-info/user-info.model'
 
-export class PraisedUserModel {
-  uid: number;
-  commentId: string;
-  avatar: string;
+export class TimelineCommentAudioModel {
+  localId: string;
+  serverId: string;
+  translateResult: string;
 }
 
 export class TimelineCommentModel {
@@ -13,6 +13,7 @@ export class TimelineCommentModel {
   user: UserInfoModel;
   content: string;
   type: TimelineCommentType;
+  audio: TimelineCommentAudioModel;
   hadPraised: boolean;
   praisedAmount: number;
   praisedAnimations: UserInfoModel[];

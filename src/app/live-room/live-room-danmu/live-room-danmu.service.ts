@@ -14,13 +14,17 @@ export class LiveRoomDanmuService {
 
   constructor (private http: Http) {}
 
+  pushDanmu(danmu: LiveRoomDanmuModel) {
+    this.receivedDanmuSource.next(danmu);
+  }
+
   onReceive () {
-    setInterval(() => {
-      var danmu = new LiveRoomDanmuModel();
-      danmu.content = '白丁弹幕首测' + Date.now();
-      danmu.user = new UserInfoModel();
-      danmu.user.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
-      this.receivedDanmuSource.next(danmu);
-    }, 500);
+    // setInterval(() => {
+    //   var danmu = new LiveRoomDanmuModel();
+    //   danmu.content = '白丁弹幕首测' + Date.now();
+    //   danmu.user = new UserInfoModel();
+    //   danmu.user.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
+    //   this.pushDanmu(danmu);
+    // }, 500);
   }
 }

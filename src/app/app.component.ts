@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service';
 import { UserInfoService } from './shared/user-info/user-info.service';
 import { StoreService } from './shared/store/store.service';
+import { WechatService } from './shared/wechat/wechat.service';
 
 /*
  * App Component
@@ -13,11 +14,11 @@ import { StoreService } from './shared/store/store.service';
 @Component({
   selector: 'bd-app',
   templateUrl: './app.component.html',
-  providers: [ BottomPopupSelectorService, UserInfoService, StoreService ]
+  providers: [ BottomPopupSelectorService, UserInfoService, StoreService, WechatService ]
 })
 
 export class App implements OnInit {
-  constructor(private userInfoService: UserInfoService) {}
+  constructor(private userInfoService: UserInfoService, private wechatService: WechatService) {}
 
   isInWechat(): boolean {
     return /micromessenger/i.test(window.navigator.userAgent);
@@ -26,6 +27,7 @@ export class App implements OnInit {
   ngOnInit() {
     const needWechatAuth = this.isInWechat();
     this.userInfoService.getUserInfo(needWechatAuth);
+    this.wechatService.initWechat()
   }
 }
 

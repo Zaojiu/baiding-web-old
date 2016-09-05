@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { AppConfig } from '../../app.config'
 import { TimelineCommentType } from '../../live-room/live-room-timeline/timeline-comment/timeline-comment.enum';
-import { TimelineCommentModel } from '../../live-room/live-room-timeline/timeline-comment/timeline-comment.model';
+import { TimelineCommentModel, TimelineCommentAudioModel } from '../../live-room/live-room-timeline/timeline-comment/timeline-comment.model';
 
 declare var $:any;
 
@@ -21,7 +21,13 @@ export class GetCommentService {
     comment.content = data.content;
     if (data.type === 'text') comment.type = TimelineCommentType.Text;
     if (data.type === 'image') comment.type = TimelineCommentType.Image;
-    if (data.type === 'audio') comment.type = TimelineCommentType.Audio;
+    if (data.type === 'audio') {
+      comment.type = TimelineCommentType.Audio
+      comment.audio = new TimelineCommentAudioModel()
+      comment.audio.localId = ''
+      comment.audio.serverId = data.audio.weixinId
+      comment.audio.translateResult = data.audio.text
+    }
     if (data.type === 'nice') comment.type = TimelineCommentType.Nice;
     comment.hadPraised = data.myPraisedId !== '';
     comment.praisedAmount = data.praised;

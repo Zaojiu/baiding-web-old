@@ -1,5 +1,5 @@
 <div class="timeline-comment-container">
-  <div class="comment" [ngClass]="{'has-reply': comment.firstReply, 'mime': comment.user.uid == ''}">
+  <div class="comment" [ngClass]="{'has-reply': comment.firstReply, 'mime': comment.user.uid == userInfo.uid}">
     <div class="avatar-container">
       <img class="avatar" [src]="comment.user.avatar">
       <span class="role">{{comment.user | role: liveInfo}}</span>
@@ -10,14 +10,15 @@
         <time>{{comment.createdAt | time}}</time>
       </div>
 
-      <div class="content">{{comment.content}}</div>
+      <div class="content" *ngIf="comment.type === 0">{{comment.content}}</div>
+      <div class="content" *ngIf="comment.type === 2"><audio-comment [audio]="comment.audio"></audio-comment></div>
     </div>
     <div class="thumbs-up">
       <div class="thumbs-up-animations" [praisedAnimations]="comment.praisedAnimations">
         <praised-animation *ngFor="let user of comment.praisedAnimations" [user]="user"></praised-animation>
       </div>
-      <a class="thumbs-up-btn" [ngClass]="{'had-thumbs-up': comment.hadThumbsUp}" (click)="setThumbsUp()">赞</a>
-      <span class="thumbs-up-count" (click)="setThumbsUp()">{{comment.praisedAmount}}</span>
+      <a class="thumbs-up-btn" [ngClass]="{'had-thumbs-up': comment.hadThumbsUp}" (click)="setPraise()">赞</a>
+      <span class="thumbs-up-count" (click)="setPraise()">{{comment.praisedAmount}}</span>
     </div>
   </div>
   <div class="comment-reply" *ngIf="comment.firstReply" [ngClass]="{'mime': comment.firstReply.user.uid == ''}">
