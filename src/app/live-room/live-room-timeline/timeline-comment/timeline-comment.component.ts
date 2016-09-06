@@ -10,7 +10,7 @@ import { MqService } from '../../../shared/mq/mq.service';
   selector: 'timeline-comment',
   templateUrl: './timeline-comment.component.html',
   styleUrls: ['./timeline-comment.component.scss'],
-  providers: [ TimelineCommmentService ]
+  providers: [TimelineCommmentService]
 })
 
 export class TimelineCommentComponent {
@@ -19,12 +19,7 @@ export class TimelineCommentComponent {
   @Input() liveInfo: LiveInfoModel;
   isLoading: boolean;
 
-  constructor(private timelineCommentService: TimelineCommmentService) {}
-
-  public get getPraisedAvatars() {
-    if (!this.comment.praisedAvatars) { return }
-    return this.comment.praisedAvatars.filter((item, index) => index < (this.comment.hadPraised ? 4 : 5) )
-  }
+  constructor(private timelineCommentService: TimelineCommmentService) { }
 
   confirmPraise() {
     if (!this.comment.hadPraised) {

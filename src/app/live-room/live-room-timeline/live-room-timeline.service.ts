@@ -5,7 +5,7 @@ import { Subscription }   from 'rxjs/Subscription';
 import { TimelineCommentModel } from './timeline-comment/timeline-comment.model';
 import { TimelineCommentType } from './timeline-comment/timeline-comment.enum';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
-import { MqService } from '../../shared/mq/mq.service';
+import { MqService, MqEvent } from '../../shared/mq/mq.service';
 
 
 
@@ -17,15 +17,18 @@ export class LiveRoomTimelineService {
   private scrollToSource = new Subject<boolean>();
   private timelineSource = new Subject<boolean>();
   private praisesSource = new Subject<UserInfoModel>();
+  private eventSource = new Subject<MqEvent>();
   // Observable string streams
   private receivedMessage$ = this.receivedMessageSource.asObservable();
   scroller$ = this.scrollerSource.asObservable();
   scrollTo$ = this.scrollToSource.asObservable();
   timeline$ = this.timelineSource.asObservable();
   private receivedPraises$ = this.praisesSource.asObservable();
+  private event$ = this.eventSource.asObservable()
 
   private receviedMessageSubscription: Subscription;
   private receviedPraisedUserSubscription: Subscription;
+  private receivedEventSub: Subscription
 
   constructor(private http: Http) { }
 
@@ -54,7 +57,6 @@ export class LiveRoomTimelineService {
   }
 
   pushComment(comment: TimelineCommentModel) {
-    console.log(comment)
     this.receivedMessageSource.next(comment);
   }
 
@@ -93,8 +95,8 @@ export class LiveRoomTimelineService {
   // }
 
   startReceive(id: string) {
-    MqService.subscribeMessages(id, this.timelineSource)
-    MqService.subscribePraises(id, this.praisesSource)
+    MqService.subscribeLiveEvents(id, this.eventSource)
+    MqService.subscribeLivePraises(id, this.praisesSource)
 
     // const praisedCommentId = '1234';
     // var index = 0;
@@ -142,11 +144,11 @@ export class LiveRoomTimelineService {
   }
 
   stopReceive(id: string) {
-    MqService.unsubscribeMessages(id)
-    MqService.unsubscribePraises(id)
+    MqService.unsubscribeLiveEvents(id)
+    MqService.unsubscribeLivePraises(id)
 
-    if (this.receviedMessageSubscription) {
-      this.receviedMessageSubscription.unsubscribe()
+    if (this.receivedEventSub) {
+      this.receivedEventSub.unsubscribe()
     }
 
     if (this.receviedPraisedUserSubscription) {
@@ -154,8 +156,8 @@ export class LiveRoomTimelineService {
     }
   }
 
-  onReceivedMessage(f: any) {
-    this.receviedMessageSubscription = this.receivedMessage$.subscribe(f)
+  onReceivedEvents(f: any) {
+    this.receivedEventSub = this.event$.subscribe(f)
   }
 
   onReceivedPraises(f: any) {

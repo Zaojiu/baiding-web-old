@@ -23,11 +23,11 @@ export class LiveRoomCommentService {
   }
 
   startReceive(streamId: string) {
-    MqService.subscribeComments(streamId, this.receivedCommentSource)
+    MqService.subscribeLiveComments(streamId, this.receivedCommentSource)
   }
 
   stopReceive(streamId: string) {
-    MqService.unsubscribeComments(streamId)
+    MqService.unsubscribeLiveComments(streamId)
 
     if (this.receivedCommentSub) {
       this.receivedCommentSub.unsubscribe();
