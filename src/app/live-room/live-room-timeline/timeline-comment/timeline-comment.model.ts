@@ -16,8 +16,28 @@ export class TimelineCommentModel {
   audio: TimelineCommentAudioModel;
   hadPraised: boolean;
   praisedAmount: number;
-  praisedAnimations: UserInfoModel[];
-  praisedAvatars: UserInfoModel[];
-  reply: TimelineCommentModel[];
+  praisedAnimations: UserInfoModel[] = [];
+  praisedAvatars: UserInfoModel[] = [];
+  reply: TimelineCommentModel[] = [];
   createdAt: string;
+
+  getPraisedAvatars(currentUser: UserInfoModel) {
+    let avatars = this.praisedAvatars.filter((item, index) => item.uid != currentUser.uid)
+    if (this.hadPraised) {
+      avatars = avatars.slice(0, 4)
+      avatars.push(currentUser)
+    } else {
+      avatars = avatars.slice(0, 5)
+    }
+    return avatars
+  }
+
+  pushPraisedUser(user: UserInfoModel) {
+    this.praisedAnimations.push(user)
+    console.log(this.praisedAvatars)
+    this.praisedAvatars.unshift(user)
+    if (this.praisedAvatars.length > 5) {
+      this.praisedAvatars.pop()
+    }
+  }
 }

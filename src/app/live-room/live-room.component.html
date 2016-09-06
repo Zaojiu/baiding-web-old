@@ -2,8 +2,8 @@
 
 <div class="live-room-container" *ngIf="liveInfo">
   <div class="top-bar">
+    <span class="room-thumbs-up-btn">观看人数</span>
     <a class="danmu-btn" (click)="isDanmuOpened = !isDanmuOpened">{{isDanmuOpened ? '关' : '开'}}弹幕</a>
-    <a class="room-thumbs-up-btn" href="">点赞</a>
   </div>
 
   <live-room-danmu *ngIf="isDanmuOpened" [streamId]="id"></live-room-danmu>

@@ -34,12 +34,8 @@
   <div class="operation-bar">
     <a class="share-btn" href="">享</a>
     <a class="comment-btn" href="">评</a>
-    <div class="thumbs-up-users" *ngIf="comment.hadPraised">
-      <img class="avatar" *ngFor="let user of getPraisedAvatars" [src]="user.avatar">
-      <img class="avatar" [src]="userInfo.avatar">
-    </div>
-    <div class="thumbs-up-users" *ngIf="!comment.hadPraised">
-      <img class="avatar" *ngFor="let user of getPraisedAvatars" [src]="user.avatar">
+    <div class="thumbs-up-users">
+      <img class="avatar" *ngFor="let user of comment.getPraisedAvatars(userInfo)" [src]="user.avatar">
     </div>
   </div>
 </div>
