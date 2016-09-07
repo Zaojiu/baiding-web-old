@@ -23,6 +23,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   comments: TimelineCommentModel[] = [];
+  receviedReplySubscription: Subscription;
   scrollSubscription: Subscription;
   timelineSubscription: Subscription;
   isOnBottom: boolean;
@@ -58,6 +59,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
       setTimeout(() => this.timelineService.scrollToBottom(), 200);
       this.startObserveTimelineScroll();
       this.startObserveTimelineAction();
+      this.startReceiveReply();
 
       this.gotoLatestComments()
     });

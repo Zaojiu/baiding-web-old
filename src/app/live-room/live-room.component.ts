@@ -5,7 +5,7 @@ import { Subscription }   from 'rxjs/Subscription';
 import { LiveService } from '../shared/live/live.service';
 import { LiveInfoModel } from '../shared/live/live.model';
 import { LiveRoomTimelineService } from './live-room-timeline/live-room-timeline.service';
-import { LiveRoomDanmuService } from './live-room-danmu/live-room-danmu.service';
+import { LiveRoomCommentService } from './live-room-danmu/live-room-danmu.service';
 import { TitleService } from '../shared/title/title.service';
 
 @Component({

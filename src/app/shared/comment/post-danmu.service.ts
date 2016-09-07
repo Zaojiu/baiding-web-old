@@ -6,7 +6,7 @@ import { AppConfig } from '../../app.config';
 import { PostDanmuModel } from './post-danmu.model';
 import { UserInfoService } from '../user-info/user-info.service';
 import { UserInfoModel } from '../user-info/user-info.model';
-import { LiveRoomDanmuService } from '../../live-room/live-room-danmu/live-room-danmu.service';
+import { LiveRoomCommentService } from '../../live-room/live-room-danmu/live-room-danmu.service';
 import { LiveRoomDanmuModel } from '../../live-room/live-room-danmu/live-room-danmu.model';
 
 declare var $:any;
@@ -54,11 +54,11 @@ export class PostDanmuService {
     return this.http.post(url, JSON.stringify(comment), {headers: headers}).toPromise()
       .then(res => {
         let data = res.json()
-        let danmu = this.parseResponseDanmu(data)
+        let commentResponse = this.parseResponseDanmu(data)
 
-        this.commentService.pushComment(comment);
+        this.commentService.pushComment(commentResponse);
 
-        return comment;
+        return commentResponse;
       }).catch(res => {
           // TODO: error;
       });

@@ -44,7 +44,7 @@ export class MqService {
         console.log("mq:", data)
         this.onMessage(data)
     });
-    window.client = this.client
+    (<any>window).client = this.client // (<any>window) avoid ts type checking
   }
 
   static getInstance() {
