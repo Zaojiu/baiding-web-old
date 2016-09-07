@@ -4,4 +4,6 @@ export class LiveRoomDanmuModel {
   id: string;
   user: UserInfoModel;
   content: string;
+  msgId: string;
+  createdAt: string;
 }

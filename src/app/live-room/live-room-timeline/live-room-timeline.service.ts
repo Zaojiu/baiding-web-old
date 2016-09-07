@@ -2,7 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Subject }        from 'rxjs/Subject';
 import { Subscription }   from 'rxjs/Subscription';
-import { TimelineCommentModel } from './timeline-comment/timeline-comment.model';
+import { TimelineCommentModel, TimelineCommentReplyModel } from './timeline-comment/timeline-comment.model';
 import { TimelineCommentType } from './timeline-comment/timeline-comment.enum';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { MqService, MqEvent } from '../../shared/mq/mq.service';
@@ -13,6 +13,7 @@ import { MqService, MqEvent } from '../../shared/mq/mq.service';
 export class LiveRoomTimelineService {
   // Observable string sources
   private receivedMessageSource = new Subject<TimelineCommentModel>();
+  private receivedReplySource = new Subject<TimelineCommentReplyModel>();
   private scrollerSource = new Subject<boolean>();
   private scrollToSource = new Subject<boolean>();
   private timelineSource = new Subject<boolean>();
@@ -20,6 +21,7 @@ export class LiveRoomTimelineService {
   private eventSource = new Subject<MqEvent>();
   // Observable string streams
   private receivedMessage$ = this.receivedMessageSource.asObservable();
+  receivedReply$ = this.receivedReplySource.asObservable();
   scroller$ = this.scrollerSource.asObservable();
   scrollTo$ = this.scrollToSource.asObservable();
   timeline$ = this.timelineSource.asObservable();
@@ -58,6 +60,10 @@ export class LiveRoomTimelineService {
 
   pushComment(comment: TimelineCommentModel) {
     this.receivedMessageSource.next(comment);
+  }
+
+  pushReply(reply: TimelineCommentReplyModel) {
+    this.receivedReplySource.next(reply);
   }
 
   // pushPraisedUser(praisedUser: PraisedUserModel) {

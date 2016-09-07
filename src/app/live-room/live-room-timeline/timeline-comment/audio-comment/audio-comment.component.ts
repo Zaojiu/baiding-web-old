@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 import { WechatService } from '../../../../shared/wechat/wechat.service';
-import { TimelineCommentAudioModel } from '../timeline-comment.model';
+import { TimelineCommentModel } from '../timeline-comment.model';
+import { UserInfoModel } from '../../../../shared/user-info/user-info.model';
 
 @Component({
   selector: 'audio-comment',
@@ -10,28 +11,28 @@ import { TimelineCommentAudioModel } from '../timeline-comment.model';
 })
 
 export class AudioCommentComponent {
-  @Input() audio: TimelineCommentAudioModel;
+  @Input() comment: TimelineCommentModel;
+  @Input() userInfo: UserInfoModel;
 
   constructor(private wechatService: WechatService) {}
 
   playVoice() {
-    if (!this.audio.localId) {
-      this.wechatService.downloadVoice(this.audio.serverId).then(localId => {
-        this.audio.localId = localId
-        this.wechatService.playVoice(this.audio.localId)
+    if (!this.comment.audio.localId) {
+      this.wechatService.downloadVoice(this.comment.audio.serverId).then(localId => {
+        this.comment.audio.localId = localId
+        this.wechatService.playVoice(this.comment.audio.localId)
       })
     } else {
-      this.wechatService.playVoice(this.audio.localId)
+      this.wechatService.playVoice(this.comment.audio.localId)
     }
 
   }
 
   stopVoice() {
-    this.wechatService.stopVoice(this.audio.localId)
+    this.wechatService.stopVoice(this.comment.audio.localId)
   }
 
   playingId(): string {
-    console.log(this.wechatService.playingVoiceId, this.audio)
     return this.wechatService.playingVoiceId
   }
 }

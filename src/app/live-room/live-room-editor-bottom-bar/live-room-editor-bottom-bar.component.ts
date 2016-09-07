@@ -37,11 +37,15 @@ export class LiveRoomEditorBottomBarComponent implements OnDestroy {
   }
 
   gotoPushDanmu() {
-    this.router.navigate(['/lives/' + this.liveId + '/push-danmu']);
+    this.router.navigate([`/lives/${this.liveId}/push-danmu`]);
   }
 
   gotoPostComment() {
-    this.router.navigate(['/lives/' + this.liveId + '/post-comment']);
+    this.router.navigate([`/lives/${this.liveId}/post-comment`]);
+  }
+
+  gotoInvitation() {
+    this.router.navigate([`/lives/${this.liveId}/invitation`]);
   }
 
   popupBottomSelector() {
@@ -61,7 +65,7 @@ export class LiveRoomEditorBottomBarComponent implements OnDestroy {
         item => {
           if (item === '回到开始') return this.liveRoomTimelineService.gotoFirstComment();
           if (item === '查看最新') return this.liveRoomTimelineService.gotoLastComment();
-          if (item === '邀请嘉宾') return
+          if (item === '邀请嘉宾') return this.gotoInvitation()
           if (item === '结束直播') return this.liveService.closeLive(this.liveId);
         }
       );

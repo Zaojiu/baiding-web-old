@@ -4,8 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import { HistoryCommentModel } from './history.model'
 
 @Injectable()
-export class HistoryService {
-  private url: string = '../../../assets/mock-data/history.json';
+export class HistoryApiService {
   constructor (private http: Http) {}
 
   getHistory(id: string): Promise<HistoryCommentModel[]> {
