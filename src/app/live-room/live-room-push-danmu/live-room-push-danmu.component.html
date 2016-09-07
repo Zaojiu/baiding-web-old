@@ -23,11 +23,11 @@
   </div>
 
   <div class="bottom-bar">
-    <div class="live-info">
+    <div class="live-info" *ngIf="liveInfo" >
       <i>评</i>
       {{liveInfo.commented}}
     </div>
-    <div class="push-info">
+    <div class="push-info" *ngIf="liveInfo" >
       <i>推</i>
       {{liveInfo.niced}}
     </div>
