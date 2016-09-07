@@ -62,6 +62,20 @@ export class WechatService {
 
       wx.ready(() => {
         this.hasInit = true
+
+        wx.onVoiceRecordEnd({
+          // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+          complete: (res) => {
+            this.recordSource.next(res.localId)
+          }
+        })
+
+        wx.onVoicePlayEnd({
+          success: function (res) {
+            this.playingVoiceId = '' // 返回音频的本地ID
+          }
+        })
+
         resolve()
       })
 
@@ -71,13 +85,6 @@ export class WechatService {
 
   startRecord() {
     if (!this.hasInit) return
-
-    wx.onVoiceRecordEnd({
-      // 录音时间超过一分钟没有停止的时候会执行 complete 回调
-      complete: (res) => {
-        this.recordSource.next(res.localId)
-      }
-    })
 
     wx.startRecord()
   }

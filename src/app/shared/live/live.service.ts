@@ -17,7 +17,7 @@ export class LiveService {
     let userInfo = this.userInfoService.getUserInfoCache();
     let liveInfo = this.getLiveInfoCache(id);
 
-    if (!userInfo || !liveInfo) return false;
+    if (!userInfo || !liveInfo || !liveInfo.admin) return false;
 
     var isEditor = false;
 

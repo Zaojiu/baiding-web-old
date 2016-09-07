@@ -18,6 +18,7 @@ import { AppConfig } from './app.config';
 import { LiveListModule } from './live-list/live-list.module';
 import { LiveRoomModule } from './live-room/live-room.module';
 import { BottomPopupSelectorComponent } from './shared/bottom-popup-selector/bottom-popup-selector.component';
+import { TitleSetterDirective } from './shared/title/title.directive';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -42,7 +43,8 @@ class CORSBrowserXHR extends BrowserXhr{
   bootstrap: [ App ],
   declarations: [
     App,
-    BottomPopupSelectorComponent
+    BottomPopupSelectorComponent,
+    TitleSetterDirective
   ],
   imports: [ // import Angular's modules
     BrowserModule,

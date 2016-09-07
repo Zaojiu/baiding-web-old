@@ -28,13 +28,22 @@
   }
 
   .thumbs-up {
+    position: relative;
     flex-shrink: 0;
     flex-basis: 54px;
     width: 54px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    position: relative;
+    color: rgb(75, 75, 75);
+
+    &.had-thumbs-up {
+      color: rgb(33, 150, 243);
+
+      .thumbs-up-btn {
+        color: rgb(33, 150, 243);
+      }
+    }
 
     .thumbs-up-animations {
       position: absolute;
@@ -49,10 +58,17 @@
       position: relative;
       z-index: 1;
       flex-shrink: 0;
+      line-height: 1em;
     }
 
     .thumbs-up-btn {
-      padding-bottom: 10px;
+      padding-bottom: 5px;
+      font-size: 21px;
+      color: rgb(75, 75, 75);
+    }
+
+    .thumbs-up-count {
+      font-size: 14px;
     }
   }
 }
