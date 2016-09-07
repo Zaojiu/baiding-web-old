@@ -7,6 +7,14 @@ export class TimelineCommentAudioModel {
   translateResult: string;
 }
 
+export class TimelineCommentReplyModel {
+  id: string;
+  parentId: string;
+  user: UserInfoModel;
+  content: string;
+  createdAt: string;
+}
+
 export class TimelineCommentModel {
   id: string;
   isReceived: boolean; // 用于判断是否为服务器拉取下来的信息，或者是本地发送时的信息。
@@ -18,7 +26,7 @@ export class TimelineCommentModel {
   praisedAmount: number;
   praisedAnimations: UserInfoModel[] = [];
   praisedAvatars: UserInfoModel[] = [];
-  reply: TimelineCommentModel[] = [];
+  replies: TimelineCommentReplyModel[] = [];
   createdAt: string;
 
   getPraisedAvatars(currentUser: UserInfoModel) {

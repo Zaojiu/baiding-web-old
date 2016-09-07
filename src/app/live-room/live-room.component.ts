@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy }      from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { Subscription }   from 'rxjs/Subscription';
+
 import { LiveService } from '../shared/live/live.service';
 import { LiveInfoModel } from '../shared/live/live.model';
 import { LiveRoomTimelineService } from './live-room-timeline/live-room-timeline.service';
-import { LiveRoomCommentService } from './live-room-danmu/live-room-danmu.service';
+import { LiveRoomDanmuService } from './live-room-danmu/live-room-danmu.service';
+import { TitleService } from '../shared/title/title.service';
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -20,14 +22,17 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isDanmuOpened: boolean = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-danmu|post-comment|history|invitation)$');
 
-  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService, private titleService: TitleService) {}
 
   isEditor() { return this.liveService.isEditor(this.id); }
 
   isAudience() { return this.liveService.isAudience(this.id); }
 
   getLiveInfo() {
-    this.liveService.getLiveInfo(this.id).then(info => this.liveInfo = info);
+    this.liveService.getLiveInfo(this.id).then(info => {
+      this.liveInfo = info
+      this.titleService.set(this.liveInfo.subject)
+    });
   }
 
   ngOnInit() {

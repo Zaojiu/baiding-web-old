@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { TimelineCommentModel } from './timeline-comment.model';
 import { UserInfoModel } from '../../../shared/user-info/user-info.model';
@@ -19,7 +20,7 @@ export class TimelineCommentComponent {
   @Input() liveInfo: LiveInfoModel;
   isLoading: boolean;
 
-  constructor(private timelineCommentService: TimelineCommmentService) { }
+  constructor(private timelineCommentService: TimelineCommmentService, private router: Router) {}
 
   confirmPraise() {
     if (!this.comment.hadPraised) {
@@ -50,5 +51,9 @@ export class TimelineCommentComponent {
 
   setPraise() {
     this.confirmPraise();
+  }
+
+  gotoReply() {
+    this.router.navigate([`/lives/${this.liveInfo.id}/post-comment`, {'comment_id': this.comment.id}]);
   }
 }

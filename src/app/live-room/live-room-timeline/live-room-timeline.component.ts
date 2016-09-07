@@ -65,7 +65,6 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.timelineService.stopReceive(this.id)
-
     this.stopObserveTimelineScroll();
     this.timelineSubscription.unsubscribe();
   }
@@ -80,7 +79,6 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
         // TODO
         break
       case EventType.LiveClosed:
-        // TODO
         this.liveService.getLiveInfo(this.id, true).then((result) => {
           this.liveInfo = result
         })
@@ -200,6 +198,18 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
             this.timelineService.scrollToBottom();
             this.startObserveTimelineScroll();
           }, 200);
+        }
+      }
+    );
+  }
+
+  startReceiveReply() {
+    this.receviedReplySubscription = this.timelineService.receivedReply$.subscribe(
+      reply => {
+        for (let comment of this.comments) {
+          if (comment.id === reply.parentId) {
+            comment.replies.push(reply)
+          }
         }
       }
     );

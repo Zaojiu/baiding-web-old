@@ -1,72 +1,29 @@
 <div class="live-room-push-danmu-container">
-  <div class="comment-container">
-    <div class="comment-row">
-      <div class="avatar-container">
-        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
-      </div>
-      <div class="content-container">
-        <div class="content-info">
-          <p class="name">Ryan Banks</p>
-          <time>25分钟前</time>
-        </div>
-        <div class="content">的撒打算打算打算的撒打算打算的撒的打算的撒打算的撒的撒打算打算的打算打算的去问问企鹅请问我去恶趣味全文请问问企鹅去问问去问问去</div>
-      </div>
-      <div class="operation-container">
-        <a class="operation-btn" href="">推送</a>
-      </div>
-    </div>
+  <div class="no-result" *ngIf="!danmus.length">暂无评论</div>
 
-    <div class="comment-row">
+  <div class="danmu-container" pushDanmuScroller>
+    <div class="danmu-row" *ngFor="let danmu of danmus">
       <div class="avatar-container">
-        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
+        <img class="avatar" [src]="danmu.user.avatar">
       </div>
       <div class="content-container">
         <div class="content-info">
-          <p class="name">Ryan Banks</p>
-          <time>25分钟前</time>
+          <p class="name">{{danmu.user.nick}}</p>
+          <time>{{danmu.createdAt | time}}</time>
         </div>
-        <div class="content">的撒打算打算打算的撒打算打算的撒的打算的撒打算的撒的撒打算打算的打算打算的去问问企鹅请问我去恶趣味全文请问问企鹅去问问去问问去</div>
+        <div class="content">{{danmu.content}}</div>
       </div>
       <div class="operation-container">
-        <a class="operation-btn" href="">推送</a>
-      </div>
-    </div>
-
-    <div class="comment-row">
-      <div class="avatar-container">
-        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
-      </div>
-      <div class="content-container">
-        <div class="content-info">
-          <p class="name">Ryan Banks</p>
-          <time>25分钟前</time>
+        <div *ngIf="userInfo.uid == liveInfo.admin.uid">
+          <a class="operation-btn" (click)="pushDanmu(danmu)" *ngIf="!danmu.msgId">推送</a>
+          <span class="operation-btn pushed" *ngIf="danmu.msgId">已推送</span>
         </div>
-        <div class="content">的撒打算打算打算的撒打算打算的撒的打算的撒打算的撒的撒打算打算的打算打算的去问问企鹅请问我去恶趣味全文请问问企鹅去问问去问问去</div>
-      </div>
-      <div class="operation-container">
-        <a class="operation-btn" href="">推送</a>
-      </div>
-    </div>
-
-    <div class="comment-row">
-      <div class="avatar-container">
-        <img class="avatar" src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200">
-      </div>
-      <div class="content-container">
-        <div class="content-info">
-          <p class="name">Ryan Banks</p>
-          <time>25分钟前</time>
-        </div>
-        <div class="content">的撒打算打算打算的撒打算打算的撒的打算的撒打算的撒的撒打算打算的打算打算的去问问企鹅请问我去恶趣味全文请问问企鹅去问问去问问去</div>
-      </div>
-      <div class="operation-container">
-        <a class="operation-btn" href="">推送</a>
       </div>
     </div>
   </div>
 
   <div class="bottom-bar">
-    <div class="comment-info">
+    <div class="live-info">
       <i>评</i>
       999+
     </div>
@@ -74,6 +31,6 @@
       <i>推</i>
       12
     </div>
-    <a class="filter-btn" href="">筛选</a>
+    <!-- <a class="filter-btn" href="">筛选</a> -->
   </div>
 </div>

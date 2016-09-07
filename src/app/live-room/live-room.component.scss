@@ -6,6 +6,7 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 
   .top-bar, .live-room-editor-bottom-bar-component, .live-room-audience-bottom-bar-component {
     flex-shrink: 0;
