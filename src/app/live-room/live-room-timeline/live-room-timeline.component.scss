@@ -73,11 +73,22 @@
       border-right-color: transparent;
     }
     .talent {
+      display: inline-flex;
       margin: 13px;
       height: 24px;
       font-size: 14px;
       color: #9EA1A5;
       letter-spacing: 0px;
+        .talent-avatar{
+          height: 100%;
+          border-radius: 24px;
+        }
+        .talent-info{
+          margin-left: 10px;
+          padding-top:3px;
+          font-size: 14px;
+          color: #9EA1A5;
+          letter-spacing: 0px;}
     }
     .title {
       margin: 23px 12px 20px;
@@ -90,7 +101,7 @@
     .words {
       margin: 5px auto 5px;
       width: 234px;
-
+      word-break: break-all;
       font-size: 16px;
       color: #9EA1A5;
       letter-spacing: 0px;
