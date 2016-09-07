@@ -3,6 +3,14 @@
     <a class="close-btn" (click)="backToMainScreen()">关闭</a>
   </div>
 
+  <div class="additional-content" *ngIf="additionalContent">
+    <img class="avatar" [src]="additionalContent.user.avatar">
+    <div class="main">
+      <div class="name">{{additionalContent.user.nick}}</div>
+      <div class="content">{{additionalContent.content}}</div>
+    </div>
+  </div>
+
   <div class="comment-input-container">
     <textarea class="comment-input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content"></textarea>
   </div>

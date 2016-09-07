@@ -9,7 +9,7 @@ import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { LiveService } from '../../shared/live/live.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
 import { GetCommentService } from '../../shared/comment/get-comment.service'
-import { MqService } from '../../shared/mq/mq.service';
+import { MqService, MqPraisedUser, MqEvent, EventType } from '../../shared/mq/mq.service';
 
 @Component({
   selector: 'live-room-timeline',
@@ -23,6 +23,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   comments: TimelineCommentModel[] = [];
+  receviedReplySubscription: Subscription;
   scrollSubscription: Subscription;
   timelineSubscription: Subscription;
   isOnBottom: boolean;
@@ -47,8 +48,8 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
       this.liveInfo = liveInfo;
 
       this.timelineService.startReceive(this.id);
-      this.timelineService.onReceivedMessage(message => {
-        this.onReceivedMessage(message)
+      this.timelineService.onReceivedEvents(evt => {
+        this.onReceivedEvents(evt)
       })
       this.timelineService.onReceivedPraises(prised => {
         this.onReceivedPraises(prised)
@@ -58,6 +59,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
       setTimeout(() => this.timelineService.scrollToBottom(), 200);
       this.startObserveTimelineScroll();
       this.startObserveTimelineAction();
+      this.startReceiveReply();
 
       this.gotoLatestComments()
     });
@@ -65,17 +67,37 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.timelineService.stopReceive(this.id)
-
     this.stopObserveTimelineScroll();
     this.timelineSubscription.unsubscribe();
   }
 
-  onReceivedMessage(message: TimelineCommentModel) {
-    this.comments.push(message)
+  onReceivedEvents(evt: MqEvent) {
+    console.log(evt)
+    switch (evt.event) {
+      case EventType.LiveMsgUpdate:
+        this.gotoLatestComments()
+        break
+      case EventType.LivePraise:
+        // TODO
+        break
+      case EventType.LiveClosed:
+        this.liveService.getLiveInfo(this.id, true).then((result) => {
+          this.liveInfo = result
+        })
+        break
+    }
   }
 
-  onReceivedPraises(user: UserInfoModel) {
-    console.log("ppp", user)
+  onReceivedPraises(praisedUser: MqPraisedUser) {
+    if (praisedUser.user.uid == this.userInfo.uid) {
+      return
+    }
+    for (let idx in this.comments) {
+      let comment = this.comments[idx]
+      if (comment.id == praisedUser.msgId) {
+        comment.pushPraisedUser(praisedUser.user)
+      }
+    }
   }
 
   gotoLatestComments() {
@@ -178,6 +200,18 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
             this.timelineService.scrollToBottom();
             this.startObserveTimelineScroll();
           }, 200);
+        }
+      }
+    );
+  }
+
+  startReceiveReply() {
+    this.receviedReplySubscription = this.timelineService.receivedReply$.subscribe(
+      reply => {
+        for (let comment of this.comments) {
+          if (comment.id === reply.parentId) {
+            comment.replies.push(reply)
+          }
         }
       }
     );

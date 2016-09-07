@@ -2,10 +2,13 @@
  * Angular 2 decorators and services
  */
 import { Component, OnInit } from '@angular/core';
+
 import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service';
 import { UserInfoService } from './shared/user-info/user-info.service';
 import { StoreService } from './shared/store/store.service';
 import { WechatService } from './shared/wechat/wechat.service';
+import { TitleService } from './shared/title/title.service';
+
 
 /*
  * App Component
@@ -14,7 +17,7 @@ import { WechatService } from './shared/wechat/wechat.service';
 @Component({
   selector: 'bd-app',
   templateUrl: './app.component.html',
-  providers: [ BottomPopupSelectorService, UserInfoService, StoreService, WechatService ]
+  providers: [ BottomPopupSelectorService, UserInfoService, StoreService, WechatService, TitleService ]
 })
 
 export class App implements OnInit {

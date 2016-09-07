@@ -1,7 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
+import { UserInfoModel } from '../user-info/user-info.model';
+
 import * as AV from 'leancloud-push';
+
+export enum EventType {
+  LiveMsgUpdate = 1,
+  LiveClosed = 2,
+  LivePraise = 3,
+}
+
+export class MqEvent {
+  event: EventType
+}
+
+export class MqPraisedUser {
+  user: UserInfoModel;
+  msgId: string;
+}
+
+export class MqComment {
+  user: UserInfoModel;
+  content: string;
+}
 
 export class MqService {
   static instance: MqService
@@ -17,9 +39,12 @@ export class MqService {
       appKey: "dbbAJuix9SThsVPWMkNSAQ9d"
     });
 
-    this.client.open(this.onOpen);
-    this.client.on('message', this.onMessage);
-    window.client = this.client
+    this.client.open(() => { this.onOpen() });
+    this.client.on('message', (data) => {
+        console.log("mq:", data)
+        this.onMessage(data)
+    });
+    (<any>window).client = this.client // (<any>window) avoid ts type checking
   }
 
   static getInstance() {
@@ -29,33 +54,33 @@ export class MqService {
     return MqService.instance;
   }
 
-  static subscribeMessages(streamId: string, source: Subject<any>) {
-    let channel = `messages_${streamId}`
+  static subscribeLiveEvents(streamId: string, source: Subject<any>) {
+    let channel = `live_events_${streamId}`
     MqService.getInstance().pubsub(channel, source, true)
   }
 
-  static subscribeComments(streamId: string, source: Subject<any>) {
-    let channel = `comments_${streamId}`
+  static subscribeLiveComments(streamId: string, source: Subject<any>) {
+    let channel = `live_comments_${streamId}`
     MqService.getInstance().pubsub(channel, source, true)
   }
 
-  static subscribePraises(streamId: string, source: Subject<any>) {
-    let channel = `praises_${streamId}`
+  static subscribeLivePraises(streamId: string, source: Subject<any>) {
+    let channel = `live_praises_${streamId}`
     MqService.getInstance().pubsub(channel, source, true)
   }
 
-  static unsubscribeMessages(streamId: string) {
-    let channel = `messages_${streamId}`
+  static unsubscribeLiveEvents(streamId: string) {
+    let channel = `live_messages_${streamId}`
     MqService.getInstance().pubsub(channel, null, false)
   }
 
-  static unsubscribeComments(streamId: string) {
-    let channel = `comments_${streamId}`
+  static unsubscribeLiveComments(streamId: string) {
+    let channel = `live_comments_${streamId}`
     MqService.getInstance().pubsub(channel, null, false)
   }
 
-  static unsubscribePraises(streamId: string) {
-    let channel = `praises_${streamId}`
+  static unsubscribeLivePraises(streamId: string) {
+    let channel = `live_praises_${streamId}`
     MqService.getInstance().pubsub(channel, null, false)
   }
 
