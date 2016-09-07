@@ -57,6 +57,9 @@ export class LiveService {
     if (data.status === 'started') liveInfo.status = LiveStatus.Started;
     if (data.status === 'closed') liveInfo.status = LiveStatus.Ended;
     liveInfo.praised = data.praised;
+    liveInfo.commented = data.commented;
+    liveInfo.niced = data.niced;
+    liveInfo.shared = data.shared;
     liveInfo.lcConvId = data.lcConvId;
 
     return liveInfo
