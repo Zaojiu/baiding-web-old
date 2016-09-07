@@ -41,12 +41,12 @@
 </div>
 
 
-<div class="live-ended">
+<div class="live-ended" *ngIf="liveInfo && !isClosed()">
 
   <div class="ended-title-container">
 
     <div class="ended-title">直播结束</div>
-    <div class="ended-date">2016年8月8日 19:00</div>
+    <div class="ended-date">{{liveInfo.closedAt | timeformater:'YYYY.MM.DD hh:mm'}}</div>
 
   </div>
 
@@ -54,6 +54,6 @@
   <div class="ended-review">
     <i class="baiding-icon baiding-icon-paper"></i>
     <div class="published">直播记录已经发布</div>
-    <div class="read"><a href="">阅读</a></div>
+    <!--<div class="read"><a href="">阅读</a></div>-->
   </div>
 </div>

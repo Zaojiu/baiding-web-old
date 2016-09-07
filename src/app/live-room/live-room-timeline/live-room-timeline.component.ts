@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription }   from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 
 import { TimelineCommentModel } from './timeline-comment/timeline-comment.model';
 import { LiveRoomTimelineService } from './live-room-timeline.service';
@@ -10,6 +11,7 @@ import { LiveService } from '../../shared/live/live.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
 import { GetCommentService } from '../../shared/comment/get-comment.service'
 import { MqService, MqPraisedUser, MqEvent, EventType } from '../../shared/mq/mq.service';
+
 
 @Component({
   selector: 'live-room-timeline',
@@ -79,6 +81,10 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   isStarted(): boolean {
     return moment().isAfter(moment(this.liveInfo.expectStartAt))
   }
+
+  isClosed(): boolean{
+    return moment().isBefore(this.liveInfo.closedAt)
+}
 
   onReceivedEvents(evt: MqEvent) {
     console.log(evt)
