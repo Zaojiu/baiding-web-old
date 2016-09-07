@@ -21,6 +21,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 require("leancloud-realtime");
 require("leancloud-push");
+require("moment-countdown");
 
 (<any>window).wx = require('weixin-js-sdk')
 

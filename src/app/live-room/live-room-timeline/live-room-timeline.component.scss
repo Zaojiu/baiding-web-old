@@ -9,39 +9,41 @@
     margin: auto;
     .countdown-day {
       display: flex;
-      justify-content:space-between;
+      justify-content: space-between;
       width: 282px;
-      font-family: PingFangSC-Regular;
 
       color: #FFFFFF;
       letter-spacing: 0px;
-      .countdown-day-item{
+      .countdown-day-item {
         //flex-grow: 1;
-        .countdown-day-item-day{font-size: 40px;}
-        .countdown-day-item-day-cn{font-size: 20px}
+        .countdown-day-item-day {
+          font-size: 40px;
+        }
+        .countdown-day-item-day-cn {
+          font-size: 20px
+        }
       }
     }
     .countdown-date {
       display: flex;
 
       width: 282px;
-      font-family: PingFangSC-Regular;
       font-size: 12px;
       color: #FFFFFF;
       letter-spacing: 0px;
-        .countdown-date-time{
-          flex-grow: 0;
-        }
-        .countdown-date-splitleft{
-          flex-grow: 1;
-          margin-right: 5px;
-          margin-top: 9px;
-          border: 1px solid #979797;
-          border-left-color: transparent;
-          border-bottom-color: transparent;
-          border-right-color: transparent;
-        }
-      .countdown-date-splitright{
+      .countdown-date-time {
+        flex-grow: 0;
+      }
+      .countdown-date-splitleft {
+        flex-grow: 1;
+        margin-right: 5px;
+        margin-top: 9px;
+        border: 1px solid #979797;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+      }
+      .countdown-date-splitright {
         flex-grow: 1;
         margin-left: 5px;
         margin-top: 9px;
@@ -62,7 +64,6 @@
       position: absolute;
       margin-top: 40px;
       left: 50%;
-      //bottom: 100px;
       content: "";
       margin-left: -17px;
       width: 33.5px;
@@ -72,9 +73,8 @@
       border-right-color: transparent;
     }
     .talent {
-      margin: 13px ;
+      margin: 13px;
       height: 24px;
-      font-family: PingFangSC-Regular;
       font-size: 14px;
       color: #9EA1A5;
       letter-spacing: 0px;
@@ -82,9 +82,6 @@
     .title {
       margin: 23px 12px 20px;
       text-align: justify;
-      //text-justify: auto;
-      //width: 350px;
-      font-family: PingFangSC-Medium;
       font-size: 20px;
       color: #4B4B4B;
       letter-spacing: 0.58px;
@@ -93,7 +90,7 @@
     .words {
       margin: 5px auto 5px;
       width: 234px;
-      font-family: PingFangSC-Regular;
+
       font-size: 16px;
       color: #9EA1A5;
       letter-spacing: 0px;
@@ -104,46 +101,47 @@
 }
 
 .live-ended {
-  position: absolute;
+  margin-top: 40px;
+  //position: absolute;
   bottom: 50px;
   text-align: center;
   //margin-top: 20px;
   //display: flex;
+
   .split-line {
     opacity: 0.5;
     border: 0.5px solid #8F8F8F;
     width: 100vw;
   }
   .ended-title-container {
-    height: 100px;
-    display: flex;
-    .flex-item {
-      margin: auto;
-      .ended-title {
-        font-family: PingFangSC-Regular;
-        font-size: 24px;
-        color: #4B4B4B;
-        letter-spacing: 0px;
-        line-height: 20px;
-      }
-      .ended-date {
-        font-family: PingFangSC-Regular;
-        font-size: 12px;
-        color: #4B4B4B;
-        letter-spacing: 0px;
-        line-height: 20px;
-      }
+    height: 112px;
+    border-top: solid 1px rgba(143, 143, 143, 0.5);
+    border-bottom: solid 1px rgba(143, 143, 143, 0.5);
+
+    .ended-title {
+      padding-top: 30px;
+      font-size: 24px;
+      color: #4B4B4B;
+      letter-spacing: 0px;
+      line-height: 20px;
     }
+    .ended-date {
+      margin-top: 9px;
+      font-size: 12px;
+      color: #4B4B4B;
+      letter-spacing: 0px;
+      line-height: 20px;
+    }
+
   }
   .ended-review {
-    margin: 40px auto 40px;
+    margin: 40px auto 50px;
 
     .baiding-icon-paper {
       font-size: 59px;
     }
     .published {
       margin-top: 8px;
-      font-family: PingFangSC-Regular;
       font-size: 14px;
       color: #4B4B4B;
       letter-spacing: 0px;
@@ -151,7 +149,6 @@
     }
     .read {
       margin-top: 30px;
-      font-family: PingFangSC-Regular;
       font-size: 16px;
       color: #2196F3;
       letter-spacing: -0.39px;

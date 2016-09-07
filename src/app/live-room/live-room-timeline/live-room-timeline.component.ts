@@ -29,6 +29,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   isOnBottom: boolean;
   isOnTop: boolean;
   isLoading: boolean;
+  countdownTimer: number;
 
   constructor(private route: ActivatedRoute, private timelineService: LiveRoomTimelineService,
     private userInfoService: UserInfoService, private liveService: LiveService,
@@ -46,6 +47,9 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
       let liveInfo = result[1];
       this.userInfo = userInfo;
       this.liveInfo = liveInfo;
+      this.countdownTimer = setInterval(()=>{
+        this.liveInfo.expectStartAt = this.liveInfo.expectStartAt.indexOf('.00') === -1 ? this.liveInfo.expectStartAt + '.00' : this.liveInfo.expectStartAt.replace('.00', '')
+      }, 60000);
 
       this.timelineService.startReceive(this.id);
       this.timelineService.onReceivedEvents(evt => {
@@ -69,6 +73,11 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
     this.timelineService.stopReceive(this.id)
     this.stopObserveTimelineScroll();
     this.timelineSubscription.unsubscribe();
+    clearInterval(this.countdownTimer)
+  }
+
+  isStarted(): boolean {
+    return moment().isAfter(moment(this.liveInfo.expectStartAt))
   }
 
   onReceivedEvents(evt: MqEvent) {

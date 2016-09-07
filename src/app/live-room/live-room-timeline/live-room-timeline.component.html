@@ -1,35 +1,34 @@
-<div class="show-page">
+<div class="show-page" *ngIf="liveInfo && !isStarted()">
 
   <div class="banner-blur">
 
     <div class="countdown-container">
       <div class="countdown-day">
         <div class="countdown-day-item">
-          <span class="countdown-day-item-day">18</span>
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationformater:0}}</span>
           <span class="countdown-day-item-day-cn">天</span>
         </div>
         <div class="countdown-day-item">
-          <span class="countdown-day-item-day">22</span>
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationformater:1}}</span>
           <span class="countdown-day-item-day-cn">时</span>
         </div>
         <div class="countdown-day-item">
-          <span class="countdown-day-item-day">16</span>
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationformater:2}}</span>
           <span class="countdown-day-item-day-cn">分</span>
         </div>
-        <!--18天22时16分-->
       </div>
       <div class="countdown-date">
         <div class="countdown-date-splitleft"></div>
-       <div class="countdown-date-time">2016.08.06 10:00 开始</div>
-      <div class="countdown-date-splitright"></div>
+        <div class="countdown-date-time">{{liveInfo.expectStartAt | timeformater:'YYYY.MM.DD hh:mm'}} 开始</div>
+        <div class="countdown-date-splitright"></div>
+      </div>
     </div>
-</div>
   </div>
 
   <div class="article">
-  <div class="talent"><img src="../../../assets/icon/favicon.ico" alt="">刘丽君／主持人</div>
-  <div class="title">公众人物的罗生门，每个人都有自己的角度和观点。</div>
-  <div class="words">今天晚上一些电视台将播一个电视剧《男得有情郎》，你是男主角，这是一个什么样的故事？</div>
+    <div class="talent"><img src="../../../assets/icon/favicon.ico" alt="">刘丽君／主持人</div>
+    <div class="title">公众人物的罗生门，每个人都有自己的角度和观点。</div>
+    <div class="words">今天晚上一些电视台将播一个电视剧《男得有情郎》，你是男主角，这是一个什么样的故事？</div>
   </div>
 </div>
 
@@ -42,16 +41,15 @@
 </div>
 
 
-<div class="live-ended" style="display: none">
-  <div class="split-line"></div>
+<div class="live-ended">
+
   <div class="ended-title-container">
-    <div class="flex-item">
-      <div class="ended-title">直播结束</div>
-      <div class="ended-date">2016年8月8日 19:00</div>
-    </div>
+
+    <div class="ended-title">直播结束</div>
+    <div class="ended-date">2016年8月8日 19:00</div>
+
   </div>
 
-  <div class="split-line"></div>
 
   <div class="ended-review">
     <i class="baiding-icon baiding-icon-paper"></i>
