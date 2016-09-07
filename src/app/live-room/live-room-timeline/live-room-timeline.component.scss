@@ -1,0 +1,62 @@
+.show-page{
+    .banner-blur{
+      display: flex;
+      margin-left: auto;
+      margin-right: auto;
+      width: 350px;
+      height:180px;
+      background-image: url("../../../assets/img/liveroombanner-blur.jpg");
+    }
+    .countdown-container{
+      margin: auto;
+        .countdown-day{
+          font-family:PingFangSC-Regular;
+          font-size: 40px;
+          color: #FFFFFF;
+          letter-spacing: 0px;
+        }
+        .countdown-date{
+          font-family: PingFangSC-Regular;
+          font-size: 12px;
+          color: #FFFFFF;
+          letter-spacing: 0px;
+        }
+    }
+
+  .article{
+    margin-top: 35px;
+    .talent{
+      margin-left: 15px;
+      height: 24px;
+    }
+    .title{
+      margin: 23px auto 20px;
+      width: 350px;
+      font-family: PingFangSC-Medium;
+      font-size: 20px;
+      color: #4B4B4B;
+      letter-spacing: 0.58px;
+      line-height: 28px;
+    }
+    .words{
+      margin: 5px auto 5px;
+      width: 234px;
+      font-family: PingFangSC-Regular;
+      font-size: 16px;
+      color: #9EA1A5;
+      letter-spacing: 0px;
+      line-height: 24px;
+        &:after{
+          position: absolute;
+          left: 172px;
+          bottom: 100px;
+          content: "     ";
+          width: 33.5px;
+          border: 2px solid #9EA1A5;
+          border-left-color: transparent;
+          border-bottom-color: transparent;
+          border-right-color: transparent;
+        }
+    }
+  }
+}
