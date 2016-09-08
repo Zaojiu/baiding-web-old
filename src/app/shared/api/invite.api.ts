@@ -9,7 +9,7 @@ export class InviteApiService {
 
   getInviteToken(liveId: string): Promise<string> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/invite`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invite`;
     return this.http.post(url, null, headers).toPromise()
       .then(response => {
         let data = response.json()
@@ -18,7 +18,7 @@ export class InviteApiService {
   }
 
   checkInviteToken(token: string): Promise<boolean> {
-    const url = `${this.config.urlPrefix.io}/api/streams/invite_token?token=${token}`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/invite_token?token=${token}`;
     return this.http.get(url).toPromise()
       .then(response => {
         let data = response.json()
@@ -28,7 +28,7 @@ export class InviteApiService {
 
   acceptInvitation(liveId: string, token: string): Promise<void> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/accept_invite`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/accept_invite`;
     return this.http.post(url, {"token": token}, headers).toPromise()
       .then(response => { return })
   }

@@ -32,7 +32,7 @@ export class PostCommentService {
 
   postTextComment(liveId: string, content: string, replyParent?: string): Promise<any> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/messages`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
     let comment = new PostCommentModel();
     comment.type = 'text';
     comment.content = content;
@@ -73,7 +73,7 @@ export class PostCommentService {
 
   postAudioComment(liveId: string, localId: string, serverId: string, translateResult: string, link = ''): Promise<TimelineCommentModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/messages`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
     let comment = new PostCommentModel()
     comment.type = 'audio'
     comment.audio = new PostCommentAudioModel()
@@ -101,7 +101,7 @@ export class PostCommentService {
 
   postNiceComment(liveId: string, content: string, danmuId: string, uid: number, danmuContent: string): Promise<TimelineCommentModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/messages`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
     let comment = new PostCommentModel()
     comment.type = 'nice'
     comment.content = content

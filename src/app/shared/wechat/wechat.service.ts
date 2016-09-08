@@ -153,7 +153,7 @@ export class WechatService {
   }
 
   confirmShare(liveId: string): Promise<void> {
-    let url = `${this.config.urlPrefix.io}/api/streams/${liveId}/share`
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/share`
     return this.http.post(url, null).toPromise()
       .then(res => { return })
   }

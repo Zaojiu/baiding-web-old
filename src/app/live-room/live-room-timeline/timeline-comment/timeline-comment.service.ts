@@ -9,7 +9,7 @@ export class TimelineCommmentService {
   constructor (private http: Http, private config: AppConfig) {}
 
   confirmPraise(liveId: string, msgId: string): Promise<void> {
-    let url = `${this.config.urlPrefix.io}/api/streams/${liveId}/messages/${msgId}/praises`;
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/${msgId}/praises`;
 
     return this.http.post(url, null).toPromise()
       .then(res => {
@@ -18,7 +18,7 @@ export class TimelineCommmentService {
   }
 
   cancelPraise(liveId: string, msgId: string): Promise<void> {
-    let url = `${this.config.urlPrefix.io}/api/streams/${liveId}/messages/${msgId}/praises`;
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/${msgId}/praises`;
 
     return this.http.delete(url, null).toPromise()
       .then(res => {
