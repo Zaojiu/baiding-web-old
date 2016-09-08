@@ -22,8 +22,8 @@ export class LiveRoomPushDanmuComponent implements OnInit, OnDestroy {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   scrollSubscription: Subscription;
-  isOnBottom: boolean;
-  isOnTop: boolean;
+  isOnLatest: boolean;
+  isOnNewest: boolean;
   isLoading: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private postDanmuService: PostDanmuService,
@@ -58,8 +58,8 @@ export class LiveRoomPushDanmuComponent implements OnInit, OnDestroy {
 
     this.postDanmuService.listDanmus(this.liveId, '', 20, ['createdAt']).then(danmus => {
       this.danmus = danmus;
-      this.isOnTop = true;
-      this.isOnBottom = false;
+      this.isOnNewest = true;
+      this.isOnLatest = false;
       this.isLoading = false;
     });
   }
@@ -75,7 +75,7 @@ export class LiveRoomPushDanmuComponent implements OnInit, OnDestroy {
       }
 
       if (danmus.length === 0) {
-        this.isOnBottom = true;
+        this.isOnLatest = true;
       }
 
       this.isLoading = false;
@@ -93,7 +93,7 @@ export class LiveRoomPushDanmuComponent implements OnInit, OnDestroy {
       }
 
       if (danmus.length === 0) {
-        this.isOnTop = true;
+        this.isOnNewest = true;
       }
 
       this.isLoading = false;

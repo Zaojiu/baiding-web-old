@@ -21,8 +21,8 @@ import { SharePopupService } from '../../shared/share-popup/share-popup.service'
 
 export class LiveRoomEditorBottomBarComponent implements OnDestroy {
   @Input() liveId: string;
-  @Input() isOnTop: boolean;
-  @Input() isOnBottom: boolean;
+  @Input() isOnNewest: boolean;
+  @Input() isOnLatest: boolean;
   popupSelectorSubscription: Subscription;
   closeSelectorSubscription: Subscription;
   recordSubscription: Subscription;
@@ -60,8 +60,8 @@ export class LiveRoomEditorBottomBarComponent implements OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      if (!this.isOnTop) model.items.push('回到开始');
-      if (!this.isOnBottom) model.items.push('查看最新');
+      if (!this.isOnNewest) model.items.push('回到开始');
+      if (!this.isOnLatest) model.items.push('查看最新');
       model.items.push('邀请嘉宾');
       model.items.push('结束直播');
       model.hasBottomBar = false;
