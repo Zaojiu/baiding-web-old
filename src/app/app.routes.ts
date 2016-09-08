@@ -1,6 +1,5 @@
 import { WebpackAsyncRoute } from '@angularclass/webpack-toolkit';
 import { Routes, RouterModule } from '@angular/router';
-// import { DataResolver } from './app.resolver';
 
 // // AngularClass
 import { provideWebpack } from '@angularclass/webpack-toolkit';
@@ -9,7 +8,7 @@ import { NotFoundComponent } from "./notfound/notfound.component";
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/lives/all', pathMatch: 'full' },
-  { path: '**', redirectTo: '/404', pathMatch: 'full'  },
+  { path: '**', redirectTo: '/404', pathMatch: 'full' },
   { path: '404', component: NotFoundComponent },
 ];
 

@@ -6,6 +6,7 @@ import { UserInfoModel } from '../../../shared/user-info/user-info.model';
 import { LiveInfoModel } from '../../../shared/live/live.model';
 import { TimelineCommmentService } from './timeline-comment.service';
 import { MqService } from '../../../shared/mq/mq.service';
+import { LiveService } from '../../../shared/live/live.service';
 
 @Component({
   selector: 'timeline-comment',
@@ -15,12 +16,13 @@ import { MqService } from '../../../shared/mq/mq.service';
 })
 
 export class TimelineCommentComponent {
+  @Input() liveId: string;
   @Input() comment: TimelineCommentModel;
   @Input() userInfo: UserInfoModel;
   @Input() liveInfo: LiveInfoModel;
   isLoading: boolean;
 
-  constructor(private timelineCommentService: TimelineCommmentService, private router: Router) {}
+  constructor(private timelineCommentService: TimelineCommmentService, private router: Router, private liveService: LiveService) {}
 
   confirmPraise() {
     if (!this.comment.hadPraised) {
@@ -37,6 +39,10 @@ export class TimelineCommentComponent {
     // 为了保留自己的头像在点赞用户的最后一个，所以模板里面特殊处理，检测有无hasPraised。
     // 因此不需要将自己的info推入praisedAvatars数组。
   }
+
+  isEditor() { return this.liveService.isEditor(this.liveId); }
+
+  isAudience() { return this.liveService.isAudience(this.liveId); }
 
   // 暂时不加取消点赞
   // cancelPraise() {
@@ -55,5 +61,9 @@ export class TimelineCommentComponent {
 
   gotoReply() {
     this.router.navigate([`/lives/${this.liveInfo.id}/post-comment`, {'comment_id': this.comment.id}]);
+  }
+
+  canReply(): boolean {
+    return this.comment.user.uid != this.userInfo.uid && !this.isAudience()
   }
 }

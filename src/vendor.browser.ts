@@ -19,11 +19,15 @@ import '@angularclass/request-idle-callback';
 // RxJS
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
-require("leancloud-realtime");
-require("leancloud-push");
+require('leancloud-realtime');
+require('leancloud-push');
+require('inobounce');
 require("moment-countdown");
 
 (<any>window).wx = require('weixin-js-sdk')
+
+import * as FastClick from 'fastclick';
+FastClick['attach'](document.body);
 
 if ('production' === ENV) {
   // Production

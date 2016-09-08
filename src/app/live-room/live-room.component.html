@@ -2,13 +2,16 @@
 
 <div class="live-room-container" *ngIf="liveInfo">
   <div class="top-bar">
-    <span class="room-thumbs-up-btn">观看人数</span>
-    <a class="danmu-btn" (click)="isDanmuOpened = !isDanmuOpened">{{isDanmuOpened ? '关' : '开'}}弹幕</a>
+    <span class="online-count">观看人数</span>
+    <a class="danmu-btn" (click)="isDanmuOpened = !isDanmuOpened">
+      <i class="baiding-icon baiding-icon-chat2" *ngIf="!isDanmuOpened"></i>
+      <i class="baiding-icon baiding-icon-chat2-disabled" *ngIf="isDanmuOpened"></i>
+    </a>
   </div>
 
   <live-room-danmu *ngIf="isDanmuOpened" [streamId]="id"></live-room-danmu>
 
-  <live-room-timeline class="live-room-timeline-component" timelineScroller #timeline></live-room-timeline>
+  <live-room-timeline class="live-room-timeline-component scrollable" timelineScroller #timeline></live-room-timeline>
 
   <live-room-audience-bottom-bar
     *ngIf="!isChildrenActived && isAudience()"

@@ -1,4 +1,4 @@
-<div class="audio-comment-container">
+<div class="audio-comment-container" [ngClass]="{mine: comment.user.uid == userInfo.uid}">
   <div class="play-btn" (click)="comment.audio.localId && comment.audio.localId === playingId() ? stopVoice() : playVoice()">
     <i class="baiding-icon baiding-icon-wave"></i>
     <span *ngIf="comment.audio.localId && comment.audio.localId === playingId()">
@@ -8,5 +8,5 @@
       <i class="baiding-icon baiding-icon-play"></i>
     </span>
   </div>
-  <div class="translate" [ngClass]="{mine: comment.user.uid == userInfo.uid}">{{comment.audio.translateResult}}</div>
+  <div class="translate">{{comment.audio.translateResult}}</div>
 </div>

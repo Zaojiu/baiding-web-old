@@ -16,7 +16,7 @@ import { AdditionalContentModel } from './live-room-post-comment.model'
 
 export class LiveRoomPostCommentComponent implements OnInit {
   id: string;
-  content: string;
+  content = '';
   commentId: string;
   danmuId: string;
   additionalContent: AdditionalContentModel;

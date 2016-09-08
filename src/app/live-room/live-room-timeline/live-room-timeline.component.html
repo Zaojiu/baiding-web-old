@@ -37,9 +37,10 @@
 
 <div class="live-room-timeline-container" *ngIf="comments.length !== 0">
   <timeline-comment *ngFor="let comment of comments"
-                    [comment]="comment"
-                    [userInfo]="userInfo"
-                    [liveInfo]="liveInfo"
+    [liveId]="id"
+    [comment]="comment"
+    [userInfo]="userInfo"
+    [liveInfo]="liveInfo"
   ></timeline-comment>
 </div>
 

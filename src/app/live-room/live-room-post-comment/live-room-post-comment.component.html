@@ -1,6 +1,6 @@
 <form class="live-room-post-comment-container" (ngSubmit)="submit()">
   <div class="top-bar">
-    <a class="close-btn" (click)="backToMainScreen()">关闭</a>
+    <a class="close-btn" (click)="backToMainScreen()"><i class="baiding-icon baiding-icon-close"></i></a>
   </div>
 
   <div class="additional-content" *ngIf="additionalContent">
@@ -15,16 +15,24 @@
     <textarea class="comment-input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content"></textarea>
   </div>
 
-  <div class="bottom-bar">
-    <a class="add-image" href="">图</a>
-    <a class="face" href="">脸</a>
-    <a class="face" href="">脸</a>
-    <a class="face" href="">脸</a>
-    <a class="face" href="">脸</a>
-    <a class="face" href="">脸</a>
-    <a class="face" href="">脸</a>
-    <a class="face" href="">脸</a>
-    <a class="face" href="">脸</a>
-    <button class="post-btn" [disabled]="!content">发送</button>
+  <div class="bottom-bar scrollable">
+    <a class="face" (click)="content = content + '😄'">😄</a>
+    <a class="face" (click)="content = content + '😊'">😊</a>
+    <a class="face" (click)="content = content + '😍'">😍</a>
+    <a class="face" (click)="content = content + '😜'">😜</a>
+    <a class="face" (click)="content = content + '😂'">😂</a>
+    <a class="face" (click)="content = content + '😭'">😭</a>
+    <a class="face" (click)="content = content + '😅'">😅</a>
+    <a class="face" (click)="content = content + '😱'">😱</a>
+    <a class="face" (click)="content = content + '😆'">😆</a>
+    <a class="face" (click)="content = content + '😎'">😎</a>
+    <a class="face" (click)="content = content + '😴'">😴</a>
+    <a class="face" (click)="content = content + '😏'">😏</a>
+    <a class="face" (click)="content = content + '🙌'">🙌</a>
+    <a class="face" (click)="content = content + '👏'">👏</a>
+    <a class="face" (click)="content = content + '🎁'">🎁</a>
+    <a class="face" (click)="content = content + '🎉'">🎉</a>
   </div>
+
+  <button class="post-btn" [disabled]="!content">发送</button>
 </form>

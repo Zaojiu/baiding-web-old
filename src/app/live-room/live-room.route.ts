@@ -5,11 +5,13 @@ import { LiveRoomPostCommentComponent } from './live-room-post-comment/live-room
 import { HistoryComponent } from './history/history.component';
 import { InviteComponent } from './invite/invite.component';
 import { EmptyComponent } from '../shared/empty/empty.component';
+import { AuthGuard } from '../shared/guard/auth.guard';
 
 const liveRoomRoute: Routes = [
   {
     path: 'lives/:id',
     component: LiveRoomComponent,
+    canActivate: [ AuthGuard ],
     children: [
       { path: '', component: EmptyComponent },
       { path: 'push-danmu', component: LiveRoomPushDanmuComponent },

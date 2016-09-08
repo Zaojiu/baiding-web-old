@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { BottomPopupSelectorService } from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
 import { BottomPopupSelectorModel } from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
 import { LiveRoomTimelineService } from '../live-room-timeline/live-room-timeline.service';
+import { SharePopupService } from '../../shared/share-popup/share-popup.service';
 
 @Component({
   selector: 'live-room-audience-bottom-bar',
@@ -20,7 +21,8 @@ export class LiveRoomAudienceBottomBarComponent {
   @Input() isOnTop: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService) {}
+    private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
+    private sharePopupService: SharePopupService) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -37,6 +39,10 @@ export class LiveRoomAudienceBottomBarComponent {
 
   gotoPostComment() {
     this.router.navigate(['/lives/' + this.id + '/post-comment']);
+  }
+
+  popupShare() {
+    this.sharePopupService.popup()
   }
 
   popupBottomSelector() {

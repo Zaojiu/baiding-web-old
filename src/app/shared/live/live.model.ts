@@ -5,6 +5,7 @@ export class LiveInfoModel {
   id: string;
   subject: string;
   desc: string;
+  coverUrl: string;
   kind: string;
   owner: UserInfoModel;
   admin: UserInfoModel;
