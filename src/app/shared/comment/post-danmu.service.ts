@@ -47,7 +47,7 @@ export class PostDanmuService {
 
   postDanmu(liveId, content): Promise<LiveRoomDanmuModel> {
     let headers = new Headers({'Content-Type': 'application/json'})
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/comments`
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/comments`
     let comment = new PostDanmuModel()
     comment.content = content
 
@@ -65,7 +65,7 @@ export class PostDanmuService {
   }
 
   getDanmu(liveId: string, danmuId: string): Promise<LiveRoomDanmuModel> {
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/comments/${danmuId}`
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/comments/${danmuId}`
 
     return this.http.get(url).toPromise()
       .then(res => {
@@ -83,7 +83,7 @@ export class PostDanmuService {
       limit: limit,
       sorts: sorts.join(',')
     };
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/comments?${$.param(query)}`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/comments?${$.param(query)}`;
 
     return this.http.get(url).toPromise()
       .then(res => {

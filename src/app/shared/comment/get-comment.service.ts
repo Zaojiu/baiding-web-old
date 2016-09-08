@@ -82,7 +82,7 @@ export class GetCommentService {
       sorts: sorts.join(','),
       parentId: parentId
     };
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/messages?${$.param(query)}`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages?${$.param(query)}`;
 
     return this.http.get(url).toPromise()
       .then(res => {
@@ -103,7 +103,7 @@ export class GetCommentService {
   }
 
   getComment(liveId: string, commentId: string): Promise<TimelineCommentModel> {
-    const url = `${this.config.urlPrefix.io}/api/streams/${liveId}/messages/${commentId}`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/${commentId}`;
 
     return this.http.get(url).toPromise()
       .then(res => {

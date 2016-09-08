@@ -76,7 +76,7 @@ export class LiveService {
     let liveInfoCache = lives[id];
     if (liveInfoCache && !needRefresh) return Promise.resolve(liveInfoCache);
 
-    const url = `${this.config.urlPrefix.io}/api/streams/${id}`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let liveInfo = this.parseLiveInfo(data);
@@ -90,7 +90,7 @@ export class LiveService {
   }
 
   closeLive(id: string): Promise<any> {
-    const url = `${this.config.urlPrefix.io}/api/streams/${id}/close`;
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/close`;
     return this.http.patch(url, null).toPromise().then(res => {
       let data = res.json();
 
