@@ -11,8 +11,7 @@
       display: flex;
       justify-content: space-between;
       width: 282px;
-
-      color: #FFFFFF;
+      color: rgb(255,255,255);
       letter-spacing: 0px;
       .countdown-day-item {
         //flex-grow: 1;
@@ -29,25 +28,16 @@
 
       width: 282px;
       font-size: 12px;
-      color: #FFFFFF;
+      color: rgb(255,255,255);
       letter-spacing: 0px;
       .countdown-date-time {
         flex-grow: 0;
       }
-      .countdown-date-splitleft {
+      .countdown-date-splitleft,.countdown-date-splitright {
         flex-grow: 1;
         margin-right: 5px;
         margin-top: 9px;
-        border: 1px solid #979797;
-        border-left-color: transparent;
-        border-bottom-color: transparent;
-        border-right-color: transparent;
-      }
-      .countdown-date-splitright {
-        flex-grow: 1;
-        margin-left: 5px;
-        margin-top: 9px;
-        border: 1px solid #979797;
+        border: 1px solid rgb(151,151,151);
         border-left-color: transparent;
         border-bottom-color: transparent;
         border-right-color: transparent;
@@ -67,7 +57,7 @@
       content: "";
       margin-left: -17px;
       width: 33.5px;
-      border: 2px solid #9EA1A5;
+      border: 2px solid rgb(158,161,165);
       border-left-color: transparent;
       border-bottom-color: transparent;
       border-right-color: transparent;
@@ -77,7 +67,7 @@
       margin: 13px;
       height: 24px;
       font-size: 14px;
-      color: #9EA1A5;
+      color: rgb(158,161,165);
       letter-spacing: 0px;
         .talent-avatar{
           height: 100%;
@@ -87,14 +77,14 @@
           margin-left: 10px;
           padding-top:3px;
           font-size: 14px;
-          color: #9EA1A5;
+          color: rgb(158,161,165);
           letter-spacing: 0px;}
     }
     .title {
       margin: 23px 12px 20px;
       text-align: justify;
       font-size: 20px;
-      color: #4B4B4B;
+      color: rgb(75,75,75);
       letter-spacing: 0.58px;
       line-height: 28px;
     }
@@ -103,7 +93,7 @@
       width: 234px;
       word-break: break-all;
       font-size: 16px;
-      color: #9EA1A5;
+      color: rgb(158,161,165);
       letter-spacing: 0px;
       line-height: 24px;
 
@@ -113,15 +103,12 @@
 
 .live-ended {
   margin-top: 40px;
-  //position: absolute;
   bottom: 50px;
   text-align: center;
-  //margin-top: 20px;
-  //display: flex;
 
   .split-line {
     opacity: 0.5;
-    border: 0.5px solid #8F8F8F;
+    border: 0.5px solid rgb(143,143,143) ;
     width: 100vw;
   }
   .ended-title-container {
@@ -161,7 +148,7 @@
     .read {
       margin-top: 30px;
       font-size: 16px;
-      color: #2196F3;
+      color: rgb(33,150,243);
       letter-spacing: -0.39px;
     }
   }
