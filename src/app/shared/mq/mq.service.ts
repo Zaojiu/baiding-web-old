@@ -41,7 +41,6 @@ export class MqService {
 
     this.client.open(() => { this.onOpen() });
     this.client.on('message', (data) => {
-        console.log("mq:", data)
         this.onMessage(data)
     });
     (<any>window).client = this.client // (<any>window) avoid ts type checking

@@ -7,11 +7,12 @@ import { LiveInfoModel } from '../shared/live/live.model';
 import { LiveRoomTimelineService } from './live-room-timeline/live-room-timeline.service';
 import { LiveRoomCommentService } from './live-room-danmu/live-room-danmu.service';
 import { TitleService } from '../shared/title/title.service';
+import { WechatService } from '../shared/wechat/wechat.service';
 
 @Component({
   templateUrl: './live-room.component.html',
   styleUrls: ['./live-room.component.scss'],
-  providers: [LiveService, LiveRoomTimelineService, LiveRoomCommentService]
+  providers: [ LiveService, LiveRoomTimelineService, LiveRoomCommentService ]
 })
 
 export class LiveRoomComponent implements OnInit, OnDestroy {
@@ -22,7 +23,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isDanmuOpened: boolean = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-danmu|post-comment|history|invitation)$');
 
-  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService, private titleService: TitleService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
+    private titleService: TitleService, private wechatService: WechatService) {}
 
   isEditor() { return this.liveService.isEditor(this.id); }
 
@@ -32,7 +34,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveService.getLiveInfo(this.id).then(info => {
       this.liveInfo = info
       this.titleService.set(this.liveInfo.subject)
+      this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, location.href, this.id)
     });
+
+    // TODO: 直播间不存在，直接404
   }
 
   ngOnInit() {

@@ -42,7 +42,6 @@ export class TimelineCommentModel {
 
   pushPraisedUser(user: UserInfoModel) {
     this.praisedAnimations.push(user)
-    console.log(this.praisedAvatars)
     this.praisedAvatars.unshift(user)
     if (this.praisedAvatars.length > 5) {
       this.praisedAvatars.pop()

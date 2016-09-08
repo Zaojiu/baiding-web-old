@@ -87,7 +87,6 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
 }
 
   onReceivedEvents(evt: MqEvent) {
-    console.log(evt)
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
         this.gotoLatestComments()

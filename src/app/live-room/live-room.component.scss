@@ -14,16 +14,25 @@
 
   .live-room-timeline-component {
     flex-grow: 1;
-    overflow: scroll;
   }
 }
 
 .top-bar {
   text-align: right;
-  padding: 14px;
 
-  .danmu-btn, .room-thumbs-up-btn {
-    height: 30px;
-    line-height: 30px;
+  .danmu-btn, .online-count {
+    font-size: 20px;
+    color: rgb(75, 75, 75);
+    padding: 15px;
+  }
+
+  .danmu-btn {
+    display: inline-block;
+  }
+
+  .online-count {
+    font-size: 14px;
+    color: rgb(158, 161, 165);
+    padding-right: 5px;
   }
 }

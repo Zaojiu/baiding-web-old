@@ -75,7 +75,7 @@ export class GetCommentService {
     return comment;
   }
 
-  listComments(liveId: string, marker = '', limit = 20, sorts = ['-createdAt'], parentId = '$notexists'): Promise<TimelineCommentModel[]> {
+  listComments(liveId: string, marker = '', limit = 20, sorts = ['-createdAt'], parentId = 'null'): Promise<TimelineCommentModel[]> {
     var query = {
       createdAt: marker,
       limit: limit,

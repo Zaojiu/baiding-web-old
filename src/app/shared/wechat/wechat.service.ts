@@ -22,6 +22,10 @@ export class WechatService {
     this.wechatUrl = `${config.urlPrefix.io}/api/wechat/signature/config`;
   }
 
+  isInWechat(): boolean {
+    return /micromessenger/i.test(window.navigator.userAgent);
+  }
+
   getWechatConfig(): Promise<WechatConfigModel> {
     return this.http.post(this.wechatUrl, null).toPromise()
       .then(res => {
@@ -41,7 +45,12 @@ export class WechatService {
         'onVoicePlayEnd',
         'uploadVoice',
         'downloadVoice',
-        'translateVoice'
+        'translateVoice',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'onMenuShareQZone'
       ]
 
       wx.config(config)
@@ -53,6 +62,7 @@ export class WechatService {
 
     return new Promise<string>((resolve, reject) => {
       wx.error(reason => {
+        console.log('wx err:', reason)
         if (hasRetry) return reject(reason) // TODO：全局错误处理
 
         this.configWechat()
@@ -81,6 +91,71 @@ export class WechatService {
 
       this.configWechat()
     })
+  }
+
+  share(title: string, desc: string, cover: string, link: string, liveId?: string) {
+    if (desc.length > 19) desc = `${desc.slice(0, 18)}...`
+    desc = `${desc}#白丁直播#`
+
+    wx.onMenuShareTimeline({
+      title: title, // 分享标题
+      link: link, // 分享链接
+      imgUrl: cover, // 分享图标
+      success: function () {
+        if (liveId) this.confirmShare(liveId)
+      },
+      cancel: function () {}
+    })
+
+    wx.onMenuShareAppMessage({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: link, // 分享链接
+      imgUrl: cover, // 分享图标
+      success: function () {
+        if (liveId) this.confirmShare(liveId)
+      },
+      cancel: function () {}
+    })
+
+    wx.onMenuShareQQ({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: link, // 分享链接
+      imgUrl: cover, // 分享图标
+      success: function () {
+        if (liveId) this.confirmShare(liveId)
+      },
+      cancel: function () {}
+    })
+
+    wx.onMenuShareWeibo({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: link, // 分享链接
+      imgUrl: cover, // 分享图标
+      success: function () {
+        if (liveId) this.confirmShare(liveId)
+      },
+      cancel: function () {}
+    })
+
+    wx.onMenuShareQZone({
+      title: title, // 分享标题
+      desc: desc, // 分享描述
+      link: link, // 分享链接
+      imgUrl: cover, // 分享图标
+      success: function () {
+        if (liveId) this.confirmShare(liveId)
+      },
+      cancel: function () {}
+    })
+  }
+
+  confirmShare(liveId: string): Promise<void> {
+    let url = `${this.config.urlPrefix.io}/api/streams/${liveId}/share`
+    return this.http.post(url, null).toPromise()
+      .then(res => { return })
   }
 
   startRecord() {

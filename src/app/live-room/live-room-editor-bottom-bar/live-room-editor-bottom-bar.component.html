@@ -1,7 +1,7 @@
 <div class="live-room-editor-bottom-bar">
-  <a class="share-btn" href=""><i class="baiding-icon baiding-icon-share"></i></a>
+  <a class="share-btn" (click)="popupShare()"><i class="baiding-icon baiding-icon-share"></i></a>
   <a class="comment-btn" (click)="gotoPostComment()"><i class="baiding-icon baiding-icon-keyboard"></i></a>
-  <a class="record-btn" (touchstart)="startRecord()" (window:touchend)="stopRecord()"><i class="baiding-icon baiding-icon-mic"></i></a>
+  <a class="record-btn" (touchstart)="startRecord()" (touchend)="stopRecord()"><i class="baiding-icon baiding-icon-mic"></i></a>
   <a class="push-danmu-btn" (click)="gotoPushDanmu()"><i class="baiding-icon baiding-icon-chat1"></i></a>
   <a class="more-op-btn" (click)="popupBottomSelector()"><i class="baiding-icon baiding-icon-more"></i></a>
 </div>

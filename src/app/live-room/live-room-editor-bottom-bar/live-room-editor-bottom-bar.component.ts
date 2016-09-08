@@ -9,6 +9,8 @@ import { LiveRoomTimelineService } from '../live-room-timeline/live-room-timelin
 import { LiveService } from '../../shared/live/live.service';
 import { WechatService } from '../../shared/wechat/wechat.service';
 import { PostCommentService } from '../../shared/comment/post-comment.service';
+import { SharePopupService } from '../../shared/share-popup/share-popup.service';
+
 
 @Component({
   selector: 'live-room-editor-bottom-bar',
@@ -19,16 +21,17 @@ import { PostCommentService } from '../../shared/comment/post-comment.service';
 
 export class LiveRoomEditorBottomBarComponent implements OnDestroy {
   @Input() liveId: string;
+  @Input() isOnTop: boolean;
+  @Input() isOnBottom: boolean;
   popupSelectorSubscription: Subscription;
   closeSelectorSubscription: Subscription;
   recordSubscription: Subscription;
-  @Input() isOnTop: boolean;
-  @Input() isOnBottom: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
     private liveService: LiveService, private wechatService: WechatService,
-    private titleService: Title, private postCommentService: PostCommentService) {}
+    private titleService: Title, private postCommentService: PostCommentService,
+    private sharePopupService: SharePopupService) {}
 
   ngOnDestroy() {
     if (this.popupSelectorSubscription) this.popupSelectorSubscription.unsubscribe();
@@ -46,6 +49,10 @@ export class LiveRoomEditorBottomBarComponent implements OnDestroy {
 
   gotoInvitation() {
     this.router.navigate([`/lives/${this.liveId}/invitation`]);
+  }
+
+  popupShare() {
+    this.sharePopupService.popup()
   }
 
   popupBottomSelector() {

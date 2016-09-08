@@ -1,7 +1,7 @@
 <div class="live-room-push-danmu-container">
   <div class="no-result" *ngIf="!danmus.length">暂无评论</div>
 
-  <div class="danmu-container" pushDanmuScroller>
+  <div class="danmu-container scrollable" pushDanmuScroller>
     <div class="danmu-row" *ngFor="let danmu of danmus">
       <div class="avatar-container">
         <img class="avatar" [src]="danmu.user.avatar">

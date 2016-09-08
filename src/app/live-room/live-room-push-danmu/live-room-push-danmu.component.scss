@@ -11,7 +11,6 @@
 
   .danmu-container {
     flex-grow: 1;
-    overflow: scroll;
 
     .danmu-row {
       display: flex;
@@ -78,7 +77,6 @@
             padding-left: 5px;
             color: rgb(158, 161, 165);
             font-size: 12px;
-            font-weight: lighter;
           }
         }
 

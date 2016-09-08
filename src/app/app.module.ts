@@ -18,13 +18,30 @@ import { AppConfig } from './app.config';
 import { LiveListModule } from './live-list/live-list.module';
 import { LiveRoomModule } from './live-room/live-room.module';
 import { BottomPopupSelectorComponent } from './shared/bottom-popup-selector/bottom-popup-selector.component';
+import { SharePopupComponent } from './shared/share-popup/share-popup.component';
 import { TitleSetterDirective } from './shared/title/title.directive';
+import { NotFoundComponent } from './notfound/notfound.component';
+import { AuthGuard } from './shared/guard/auth.guard'
+import { UserInfoService } from './shared/user-info/user-info.service'
+import { WechatService } from './shared/wechat/wechat.service'
+import { StoreService } from './shared/store/store.service'
+import { TitleService } from './shared/title/title.service'
+import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service';
+import { SharePopupService } from './shared/share-popup/share-popup.service';
+
 
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
   AppState,
-  AppConfig
+  AppConfig,
+  AuthGuard,
+  UserInfoService,
+  WechatService,
+  StoreService,
+  TitleService,
+  BottomPopupSelectorService,
+  SharePopupService
 ];
 
 @Injectable()
@@ -44,7 +61,9 @@ class CORSBrowserXHR extends BrowserXhr{
   declarations: [
     App,
     BottomPopupSelectorComponent,
-    TitleSetterDirective
+    NotFoundComponent,
+    TitleSetterDirective,
+    SharePopupComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -63,5 +82,4 @@ class CORSBrowserXHR extends BrowserXhr{
   ]
 })
 
-export class AppModule {
-}
+export class AppModule {}

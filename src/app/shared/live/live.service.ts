@@ -38,6 +38,7 @@ export class LiveService {
     liveInfo.id = data.id;
     liveInfo.subject = data.subject;
     liveInfo.desc = data.desc;
+    liveInfo.coverUrl = data.coverUrl;
     liveInfo.kind = data.kind;
     liveInfo.owner = data.users[data.owner] as UserInfoModel;
     liveInfo.admin = data.users[data.admin] as UserInfoModel;

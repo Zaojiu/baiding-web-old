@@ -3,35 +3,19 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service';
-import { UserInfoService } from './shared/user-info/user-info.service';
-import { StoreService } from './shared/store/store.service';
-import { WechatService } from './shared/wechat/wechat.service';
-import { TitleService } from './shared/title/title.service';
-
-
 /*
  * App Component
  * Top Level Component
  */
 @Component({
   selector: 'bd-app',
-  templateUrl: './app.component.html',
-  providers: [ BottomPopupSelectorService, UserInfoService, StoreService, WechatService, TitleService ]
+  templateUrl: './app.component.html'
 })
 
 export class App implements OnInit {
-  constructor(private userInfoService: UserInfoService, private wechatService: WechatService) {}
+  constructor() {}
 
-  isInWechat(): boolean {
-    return /micromessenger/i.test(window.navigator.userAgent);
-  }
-
-  ngOnInit() {
-    const needWechatAuth = this.isInWechat();
-    this.userInfoService.getUserInfo(needWechatAuth);
-    this.wechatService.initWechat()
-  }
+  ngOnInit() {}
 }
 
 /*
