@@ -14,7 +14,6 @@ export class TimeFormaterPipe implements PipeTransform {
   }
 }
 
-
 @Pipe({name: 'durationformater'})
 export class DurationFormaterPipe implements PipeTransform {
   transform(time: string, index: number): string {

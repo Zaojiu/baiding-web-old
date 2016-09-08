@@ -31,7 +31,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   isOnBottom: boolean;
   isOnTop: boolean;
   isLoading: boolean;
-  countdownTimer: number;
+  countdownTimer: any;
 
   constructor(private route: ActivatedRoute, private timelineService: LiveRoomTimelineService,
     private userInfoService: UserInfoService, private liveService: LiveService,
