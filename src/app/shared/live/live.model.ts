@@ -17,5 +17,8 @@ export class LiveInfoModel {
   isDraft: boolean;
   status: LiveStatus;
   praised: number;
+  commented: number;
+  niced: number;
+  shared: number;
   lcConvId: string;
 }

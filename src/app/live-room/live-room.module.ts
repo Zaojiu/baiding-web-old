@@ -21,6 +21,7 @@ import { TimelineCommentRolePipe } from './live-room-timeline/timeline-comment/t
 import { TimelineCommentTimePipe } from './live-room-timeline/timeline-comment/timeline-comment-time.pipe';
 import { TimelineScrollerDirective } from './live-room-timeline/timeline.directive';
 import { PushDanmuScrollerDirective } from './live-room-push-danmu/push-danmu.directive';
+import { TimeFormaterPipe, DurationFormaterPipe } from "./live-room-timeline/live-room-timeline.pipe";
 
 @NgModule({
   imports: [
@@ -44,6 +45,8 @@ import { PushDanmuScrollerDirective } from './live-room-push-danmu/push-danmu.di
     InviteComponent,
     TimelineCommentRolePipe,
     TimelineCommentTimePipe,
+    TimeFormaterPipe,
+    DurationFormaterPipe,
     TimelineScrollerDirective,
     AudioCommentComponent,
     PushDanmuScrollerDirective

@@ -23,14 +23,13 @@
   </div>
 
   <div class="bottom-bar">
-    <div class="live-info">
-      <i>评</i>
-      999+
+    <div class="live-info" *ngIf="liveInfo" >
+      <i class="baiding-icon baiding-icon-chat4"></i>
+      {{liveInfo.commented}}
     </div>
-    <div class="push-info">
-      <i>推</i>
-      12
+    <div class="push-info" *ngIf="liveInfo" >
+      <i class="baiding-icon baiding-icon-chat5"></i>
+      {{liveInfo.niced}}
     </div>
-    <!-- <a class="filter-btn" href="">筛选</a> -->
   </div>
 </div>
