@@ -23,6 +23,12 @@ require('leancloud-realtime');
 require('leancloud-push');
 require('inobounce');
 require("moment-countdown");
+// fix moment-countdown declaration
+declare module 'moment' {
+  interface Moment {
+    countdown(end: any, units: any, max: number, digits: number): any;
+  }
+}
 
 (<any>window).wx = require('weixin-js-sdk')
 
