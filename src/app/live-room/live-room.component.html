@@ -9,6 +9,10 @@
     </a>
   </div>
 
+  <div class="live-room-praised-animations" praisedAnimation>
+    <praised-animation *ngFor="let user of liveInfo.praisedAnimations" [user]="user"></praised-animation>
+  </div>
+
   <live-room-danmu [ngClass]="{'hidden': !isDanmuOpened}" [streamId]="id"></live-room-danmu>
 
   <live-room-timeline class="live-room-timeline-component scrollable" timelineScroller #timeline></live-room-timeline>
@@ -29,10 +33,6 @@
     [isOnLatest]="timeline.isOnLatest"
     [isOnNewest]="timeline.isOnNewest"
   ></live-room-editor-bottom-bar>
-
-  <div class="live-room-praised-animations" praisedAnimation>
-    <praised-animation *ngFor="let user of liveInfo.praisedAnimations" [user]="user"></praised-animation>
-  </div>
 </div>
 
 <router-outlet></router-outlet>
