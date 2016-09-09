@@ -94,7 +94,5 @@ export class LiveRoomAudienceBottomBarComponent {
     }
 
     this.liveInfo.praisedAnimations.push(this.userInfo);
-    // 为了保留自己的头像在点赞用户的最后一个，所以模板里面特殊处理，检测有无hasPraised。
-    // 因此不需要将自己的info推入praisedAvatars数组。
   }
 }
