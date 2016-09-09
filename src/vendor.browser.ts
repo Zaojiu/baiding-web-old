@@ -22,7 +22,8 @@ import 'rxjs/add/operator/mergeMap';
 require('leancloud-realtime');
 require('leancloud-push');
 require('inobounce');
-require("moment-countdown");
+require('moment-countdown');
+require('hammerjs');
 // fix moment-countdown declaration
 declare module 'moment' {
   interface Moment {
@@ -41,5 +42,4 @@ if ('production' === ENV) {
 } else {
   // Development
   require('angular2-hmr');
-
 }

@@ -6,7 +6,7 @@ import { LiveInfoModel } from '../../shared/live/live.model';
 import { UserInfoService } from '../../shared/user-info/user-info.service';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { InviteApiService } from '../../shared/api/invite.api';
-
+import { WechatService } from '../../shared/wechat/wechat.service';
 
 @Component({
   templateUrl: './invite.component.html',
@@ -24,7 +24,8 @@ export class InviteComponent implements OnInit {
   isTokenUsed: boolean;
 
   constructor(private userInfoService: UserInfoService, private liveService: LiveService,
-    private route: ActivatedRoute, private router: Router, private inviteApiService: InviteApiService) {}
+    private route: ActivatedRoute, private router: Router, private inviteApiService: InviteApiService,
+    private wechatService: WechatService) {}
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
@@ -45,6 +46,8 @@ export class InviteComponent implements OnInit {
       if (!this.token && userInfo.uid == liveInfo.admin.uid) {
         this.inviteApiService.getInviteToken(this.liveId).then(token => this.goInvitation(token))
       }
+
+      this.wechatService.share(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverUrl, location.href)
 
       this.isLoading = false
     })

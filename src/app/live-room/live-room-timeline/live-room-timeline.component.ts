@@ -28,8 +28,8 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   receviedReplySubscription: Subscription;
   scrollSubscription: Subscription;
   timelineSubscription: Subscription;
-  isOnBottom: boolean;
-  isOnTop: boolean;
+  isOnLatest: boolean;
+  isOnNewest: boolean;
   isLoading: boolean;
   countdownTimer: any;
 
@@ -122,8 +122,8 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
     this.getCommentService.listComments(this.id).then(comments => {
       comments = comments.reverse();
       this.comments = comments;
-      this.isOnTop = false;
-      this.isOnBottom = true;
+      this.isOnNewest = false;
+      this.isOnLatest = true;
       this.isLoading = false;
     });
   }
@@ -135,8 +135,8 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
 
     this.getCommentService.listComments(this.id, '', 20, ['createdAt']).then(comments => {
       this.comments = comments;
-      this.isOnTop = true;
-      this.isOnBottom = false;
+      this.isOnNewest = true;
+      this.isOnLatest = false;
       this.isLoading = false;
     });
   }
@@ -152,7 +152,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
       }
 
       if (comments.length === 0) {
-        this.isOnBottom = true;
+        this.isOnLatest = true;
       }
 
       this.isLoading = false;
@@ -170,7 +170,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
       }
 
       if (comments.length === 0) {
-        this.isOnTop = true;
+        this.isOnNewest = true;
       }
 
       this.isLoading = false;

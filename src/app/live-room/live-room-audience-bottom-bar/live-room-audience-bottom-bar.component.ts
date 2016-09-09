@@ -17,8 +17,8 @@ export class LiveRoomAudienceBottomBarComponent {
   id: string;
   popupSelectorSubscription: Subscription;
   closeSelectorSubscription: Subscription;
-  @Input() isOnBottom: boolean;
-  @Input() isOnTop: boolean;
+  @Input() isOnLatest: boolean;
+  @Input() isOnNewest: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
@@ -50,8 +50,8 @@ export class LiveRoomAudienceBottomBarComponent {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      if (!this.isOnTop) model.items.push('回到开始');
-      if (!this.isOnBottom) model.items.push('查看最新');
+      if (!this.isOnNewest) model.items.push('回到开始');
+      if (!this.isOnLatest) model.items.push('查看最新');
       model.hasBottomBar = false;
 
       this.bottomPopupService.popup(model);

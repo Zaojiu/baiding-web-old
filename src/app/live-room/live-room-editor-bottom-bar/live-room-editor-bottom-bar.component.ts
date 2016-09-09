@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Title } from '@angular/platform-browser';
@@ -19,19 +19,31 @@ import { SharePopupService } from '../../shared/share-popup/share-popup.service'
   providers: [ PostCommentService ]
 })
 
-export class LiveRoomEditorBottomBarComponent implements OnDestroy {
+export class LiveRoomEditorBottomBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
-  @Input() isOnTop: boolean;
-  @Input() isOnBottom: boolean;
+  @Input() isOnNewest: boolean;
+  @Input() isOnLatest: boolean;
   popupSelectorSubscription: Subscription;
   closeSelectorSubscription: Subscription;
   recordSubscription: Subscription;
+  isRecording: boolean;
+  isCanceled: boolean;
+  isTooShort: boolean;
+  timer: any;
+  recordDuration: number;
+  minRecordDuration = 10;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
     private liveService: LiveService, private wechatService: WechatService,
     private titleService: Title, private postCommentService: PostCommentService,
     private sharePopupService: SharePopupService) {}
+
+  ngOnInit() {
+    this.recordSubscription = this.wechatService.record$.subscribe(audioModel => {
+      this.postCommentService.postAudioComment(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult)
+    });
+  }
 
   ngOnDestroy() {
     if (this.popupSelectorSubscription) this.popupSelectorSubscription.unsubscribe();
@@ -60,8 +72,8 @@ export class LiveRoomEditorBottomBarComponent implements OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      if (!this.isOnTop) model.items.push('回到开始');
-      if (!this.isOnBottom) model.items.push('查看最新');
+      if (!this.isOnNewest) model.items.push('回到开始');
+      if (!this.isOnLatest) model.items.push('查看最新');
       model.items.push('邀请嘉宾');
       model.items.push('结束直播');
       model.hasBottomBar = false;
@@ -90,14 +102,51 @@ export class LiveRoomEditorBottomBarComponent implements OnDestroy {
   }
 
   startRecord() {
-    this.recordSubscription = this.wechatService.record$.subscribe(audioModel => {
-      this.postCommentService.postAudioComment(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult)
-      this.recordSubscription.unsubscribe()
-    });
+    if (this.isRecording) return
+
+    this.isRecording = true
+    this.isCanceled = false
+    this.isTooShort = false
+
+    this.recordDuration = 0
+    this.timer = setInterval(() => {
+      this.recordDuration++
+    }, 100)
+
     this.wechatService.startRecord()
   }
 
   stopRecord() {
-    this.wechatService.stopRecord()
+    if (!this.isRecording || this.isCanceled || this.isTooShort) return
+
+    if (this.recordDuration < this.minRecordDuration) {
+      this.isTooShort = true
+      this.wechatService.cancelRecord()
+
+      clearInterval(this.timer)
+
+      this.timer = setTimeout(() => {
+        this.isRecording = false
+        clearTimeout(this.timer)
+      }, 1000)
+    } else {
+      this.isRecording = false
+      this.wechatService.stopRecord()
+    }
+  }
+
+  cancelRecord() {
+    if (!this.isRecording || this.isCanceled || this.isTooShort) return
+
+    this.isCanceled = true
+
+    clearInterval(this.timer)
+
+    this.timer = setTimeout(() => {
+      this.isRecording = false
+      clearTimeout(this.timer)
+    }, 1000)
+
+    this.wechatService.cancelRecord()
   }
 }
