@@ -6,6 +6,9 @@ import { BottomPopupSelectorService } from '../../shared/bottom-popup-selector/b
 import { BottomPopupSelectorModel } from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
 import { LiveRoomTimelineService } from '../live-room-timeline/live-room-timeline.service';
 import { SharePopupService } from '../../shared/share-popup/share-popup.service';
+import { LiveInfoModel } from '../../shared/live/live.model';
+import { LiveService } from '../../shared/live/live.service';
+import { UserInfoModel } from '../../shared/user-info/user-info.model';
 
 @Component({
   selector: 'live-room-audience-bottom-bar',
@@ -19,10 +22,13 @@ export class LiveRoomAudienceBottomBarComponent {
   closeSelectorSubscription: Subscription;
   @Input() isOnLatest: boolean;
   @Input() isOnNewest: boolean;
+  @Input() liveInfo: LiveInfoModel;
+  @Input() userInfo: UserInfoModel;
+  isLoading: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
-    private sharePopupService: SharePopupService) {}
+    private sharePopupService: SharePopupService, private liveService: LiveService) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -73,5 +79,20 @@ export class LiveRoomAudienceBottomBarComponent {
     } else {
       this.bottomPopupService.close();
     }
+  }
+
+  confirmPraise() {
+    console.log(this.liveInfo)
+    if (!this.liveInfo.hadPraised) {
+      if (this.isLoading) return;
+
+      this.isLoading = true;
+      this.liveService.praiseLive(this.liveInfo.id).then(() => this.isLoading = false);
+
+      this.liveInfo.hadPraised = true;
+      this.liveInfo.praised += 1;
+    }
+
+    this.liveInfo.praisedAnimations.push(this.userInfo);
   }
 }

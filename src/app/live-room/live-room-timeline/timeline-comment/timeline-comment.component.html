@@ -14,7 +14,7 @@
       <div class="content" *ngIf="comment.type === 2"><audio-comment [comment]="comment" [userInfo]="userInfo"></audio-comment></div>
     </div>
     <div class="thumbs-up" [ngClass]="{'had-thumbs-up': comment.hadPraised}">
-      <div class="thumbs-up-animations" [praisedAnimations]="comment.praisedAnimations">
+      <div class="thumbs-up-animations" praisedAnimation>
         <praised-animation *ngFor="let user of comment.praisedAnimations" [user]="user"></praised-animation>
       </div>
       <a class="thumbs-up-btn" (click)="setPraise()">

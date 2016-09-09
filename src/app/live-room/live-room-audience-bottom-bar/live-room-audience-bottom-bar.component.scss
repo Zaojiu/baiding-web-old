@@ -15,7 +15,27 @@
   .bottom-bar-btn {
     display: inline-block;
     text-align: center;
-    font-size: medium;
+    color: rgb(75, 75, 75);
+    vertical-align: top;
+    line-height: 50px;
     width: 18.18%;
+
+    &.face {
+      padding-top: 3px;
+      font-size: 30px;
+    }
+
+    .baiding-icon {
+      font-size: 28px;
+      line-height: 50px;
+    }
+
+    .baiding-icon-chat1 {
+      font-size: 25px;
+    }
+
+    .baiding-icon-share {
+      font-size: 22px;
+    }
   }
 }

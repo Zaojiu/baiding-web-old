@@ -8,15 +8,16 @@
 
   .share-btn, .comment-btn, .push-danmu-btn, .more-op-btn {
     display: inline-block;
-    height: 49px;
-    line-height: 49px;
+    height: 50px;
     width: calc((100% - 60px) / 4);
     text-align: center;
-    font-size: 28px;
     color: rgb(75, 75, 75);
 
     .baiding-icon {
       display: inline-block;
+      font-size: 28px;
+      vertical-align: middle;
+      line-height: 50px;
 
       &.baiding-icon-chat1 {
         font-size: 25px;
