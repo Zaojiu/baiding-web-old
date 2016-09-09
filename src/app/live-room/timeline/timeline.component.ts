@@ -47,7 +47,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       let liveInfo = result[1];
       this.userInfo = userInfo;
       this.liveInfo = liveInfo;
-      this.countdownTimer = setInterval(()=>{
+      this.countdownTimer = setInterval(() => {
         this.liveInfo.expectStartAt = this.liveInfo.expectStartAt.indexOf('.00') === -1 ? this.liveInfo.expectStartAt + '.00' : this.liveInfo.expectStartAt.replace('.00', '')
       }, 60000);
 
@@ -57,6 +57,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
       })
       this.timelineService.onReceivedPraises(prised => {
         this.onReceivedPraises(prised)
+      })
+      this.timelineService.onReceiveMessages(message => {
+        this.onReceiveMessages(message)
       })
 
       // this.gotoLastestMessages();
@@ -82,7 +85,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return moment().isSameOrAfter(expectStartAt) || isZero
   }
 
-  isClosed(): boolean{
+  isClosed(): boolean {
     let closedAt = moment(this.liveInfo.closedAt)
     let isZero = closedAt.isSame(moment('0001-01-01T00:00:00Z'))
     return moment().isSameOrAfter(closedAt) && !isZero
@@ -113,6 +116,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
         message.pushPraisedUser(praisedUser.user)
       }
     }
+  }
+
+  onReceiveMessages(message: MessageModel) {
+    for (let idx in this.messages) {
+      if (this.messages[idx].id == message.id) {
+        return
+      }
+    }
+    this.messages.push(message)
   }
 
   gotoLatestMessages() {
@@ -148,6 +160,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+      this.removeRepeat(comments)
       for (let message of messages) {
         this.messages.push(message);
       }
@@ -166,6 +179,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+          this.removeRepeat(comments)
       for (let message of messages) {
         this.messages.unshift(message);
       }
@@ -230,5 +244,24 @@ export class TimelineComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  removeRepeat(comments: TimelineCommentModel[]) {
+    let idsX = {}
+    for (let idx in this.comments) {
+      idsX[this.comments[idx].id] = idx
+    }
+    let idY = {}
+    let idxs = []
+    for (let comment of comments) {
+      idY[comment.id] = true
+      if (idsX[comment.id] !== undefined) {
+        idxs.push(idsX[comment.id])
+      }
+    }
+    idxs = idxs.sort().reverse()
+    for (let idx of idxs) {
+      this.comments.splice(idx, 1)
+    }
   }
 }
