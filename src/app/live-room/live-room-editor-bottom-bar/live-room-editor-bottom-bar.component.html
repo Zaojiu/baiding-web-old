@@ -1,7 +1,28 @@
 <div class="live-room-editor-bottom-bar">
   <a class="share-btn" (click)="popupShare()"><i class="baiding-icon baiding-icon-share"></i></a>
   <a class="comment-btn" (click)="gotoPostComment()"><i class="baiding-icon baiding-icon-keyboard"></i></a>
-  <a class="record-btn" (touchstart)="startRecord()" (touchend)="stopRecord()"><i class="baiding-icon baiding-icon-mic"></i></a>
+  <div class="record-btn-container" [ngClass]="{recording: isRecording}" (panup)="cancelRecord()">
+    <a class="record-btn" (touchstart)="startRecord()" (touchend)="stopRecord()">
+      <i class="baiding-icon baiding-icon-mic"></i>
+    </a>
+  </div>
   <a class="push-danmu-btn" (click)="gotoPushDanmu()"><i class="baiding-icon baiding-icon-chat1"></i></a>
   <a class="more-op-btn" (click)="popupBottomSelector()"><i class="baiding-icon baiding-icon-more"></i></a>
+</div>
+
+<div class="record-background" *ngIf="isRecording">
+  <div class="record-container" *ngIf="isRecording && !isCanceled && !isTooShort">
+    <div class="icon-wrapper">
+      <i class="baiding-icon baiding-icon-mic"></i>
+    </div>
+    <span class="tips">手指上划，取消发送</span>
+  </div>
+  <div class="record-container" *ngIf="isCanceled">
+    <i class="baiding-icon baiding-icon-cancel"></i>
+    <span class="tips">已取消发送</span>
+  </div>
+  <div class="record-container" *ngIf="isTooShort">
+    <i class="baiding-icon baiding-icon-warning"></i>
+    <span class="tips">说话时间太短</span>
+  </div>
 </div>

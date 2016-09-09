@@ -9,7 +9,7 @@
     </a>
   </div>
 
-  <live-room-danmu *ngIf="isDanmuOpened" [streamId]="id"></live-room-danmu>
+  <live-room-danmu [ngClass]="{'hidden': !isDanmuOpened}" [streamId]="id"></live-room-danmu>
 
   <live-room-timeline class="live-room-timeline-component scrollable" timelineScroller #timeline></live-room-timeline>
 

@@ -176,6 +176,12 @@ export class WechatService {
     })
   }
 
+  cancelRecord() {
+    if (!this.hasInit) return
+
+    wx.stopRecord({})
+  }
+
   playVoice(id: string) {
     if (this.playingVoiceId != '') this.stopVoice(this.playingVoiceId)
 
