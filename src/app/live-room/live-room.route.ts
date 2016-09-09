@@ -6,13 +6,14 @@ import { HistoryComponent } from './history/history.component';
 import { InviteComponent } from './invite/invite.component';
 import { EmptyComponent } from '../shared/empty/empty.component';
 import { AuthGuard } from '../shared/guard/auth.guard';
+import { LiveGuard } from '../shared/guard/live.guard';
 import { ShareComponent } from '../live-room/share/share.component';
 
 const liveRoomRoute: Routes = [
   {
     path: 'lives/:id',
     component: LiveRoomComponent,
-    canActivate: [ AuthGuard ],
+    canActivate: [ AuthGuard, LiveGuard ],
     children: [
       { path: '', component: EmptyComponent },
       { path: 'push-danmu', component: LiveRoomPushDanmuComponent },

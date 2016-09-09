@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 
 import { TimelineCommentModel } from './timeline-comment.model';
 import { UserInfoModel } from '../../../shared/user-info/user-info.model';
+import { LiveService } from '../../../shared/live/live.service';
 import { LiveInfoModel } from '../../../shared/live/live.model';
 import { TimelineCommmentService } from './timeline-comment.service';
 import { MqService } from '../../../shared/mq/mq.service';
-import { LiveService } from '../../../shared/live/live.service';
 
 @Component({
   selector: 'timeline-comment',

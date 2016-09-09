@@ -62,6 +62,8 @@ export class LiveService {
     liveInfo.niced = data.niced;
     liveInfo.shared = data.shared;
     liveInfo.lcConvId = data.lcConvId;
+    liveInfo.hadPraised = data.myPraisedId !== '';
+    liveInfo.praisedAnimations = [];
 
     return liveInfo
   }
@@ -92,6 +94,15 @@ export class LiveService {
   closeLive(id: string): Promise<any> {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/close`;
     return this.http.patch(url, null).toPromise().then(res => {
+      let data = res.json();
+
+      return data;
+    });
+  }
+
+  praiseLive(id: string): Promise<any> {
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/praises`;
+    return this.http.post(url, null).toPromise().then(res => {
       let data = res.json();
 
       return data;

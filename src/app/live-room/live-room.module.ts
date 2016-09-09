@@ -12,8 +12,8 @@ import { AudioCommentComponent } from './live-room-timeline/timeline-comment/aud
 import { TimelineCommentComponent } from './live-room-timeline/timeline-comment/timeline-comment.component';
 import { LiveRoomPushDanmuComponent } from './live-room-push-danmu/live-room-push-danmu.component';
 import { LiveRoomPostCommentComponent } from './live-room-post-comment/live-room-post-comment.component';
-import { PraisedAnimationsDirective } from './live-room-timeline/timeline-comment/praised-animations.directive';
-import { PraisedAnimationComponent } from './live-room-timeline/timeline-comment/praised-animation/praised-animation.component';
+import { PraisedAnimationDirective } from '../shared/praised-animation/praised-animation.directive';
+import { PraisedAnimationComponent } from '../shared/praised-animation/praised-animation.component';
 import { HistoryComponent } from './history/history.component';
 import { InviteComponent } from './invite/invite.component';
 import { EmptyComponent } from '../shared/empty/empty.component';
@@ -23,6 +23,10 @@ import { TimelineScrollerDirective } from './live-room-timeline/timeline.directi
 import { PushDanmuScrollerDirective } from './live-room-push-danmu/push-danmu.directive';
 import { TimeFormaterPipe, DurationFormaterPipe } from "./live-room-timeline/live-room-timeline.pipe";
 import { ShareComponent } from "./share/share.component";
+import { LiveGuard } from '../shared/guard/live.guard';
+import { LiveRoomTimelineService } from './live-room-timeline/live-room-timeline.service';
+import { LiveRoomCommentService } from './live-room-danmu/live-room-danmu.service';
+import { LiveService } from '../shared/live/live.service';
 
 @NgModule({
   imports: [
@@ -41,7 +45,7 @@ import { ShareComponent } from "./share/share.component";
     TimelineCommentComponent,
     EmptyComponent,
     ShareComponent,
-    PraisedAnimationsDirective,
+    PraisedAnimationDirective,
     PraisedAnimationComponent,
     HistoryComponent,
     InviteComponent,
@@ -52,6 +56,12 @@ import { ShareComponent } from "./share/share.component";
     TimelineScrollerDirective,
     AudioCommentComponent,
     PushDanmuScrollerDirective
+  ],
+  providers: [
+    LiveGuard,
+    LiveService,
+    LiveRoomTimelineService,
+    LiveRoomCommentService
   ]
 })
 

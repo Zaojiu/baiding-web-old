@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizationService } from '@angular/platform-browser';
-import { UserInfoService } from '../../../../shared/user-info/user-info.service';
-import { UserInfoModel } from '../../../../shared/user-info/user-info.model';
+import { UserInfoService } from '../user-info/user-info.service';
+import { UserInfoModel } from '../user-info/user-info.model';
 
 declare var _: any;
 

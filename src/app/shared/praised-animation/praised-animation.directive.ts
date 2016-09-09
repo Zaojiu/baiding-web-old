@@ -1,13 +1,12 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core'
-import { UserInfoModel } from '../../../shared/user-info/user-info.model'
+import { UserInfoModel } from '../user-info/user-info.model'
 declare var $:any
 
 @Directive({
-  selector: '[praisedAnimations]'
+  selector: '[praisedAnimation]'
 })
 
-export class PraisedAnimationsDirective implements OnInit {
-  @Input() praisedAnimations: UserInfoModel[];
+export class PraisedAnimationDirective implements OnInit {
   private el: HTMLElement;
 
   constructor(el: ElementRef) { this.el = el.nativeElement }

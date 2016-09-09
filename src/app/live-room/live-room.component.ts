@@ -4,40 +4,43 @@ import { Subscription }   from 'rxjs/Subscription';
 
 import { LiveService } from '../shared/live/live.service';
 import { LiveInfoModel } from '../shared/live/live.model';
-import { LiveRoomTimelineService } from './live-room-timeline/live-room-timeline.service';
-import { LiveRoomCommentService } from './live-room-danmu/live-room-danmu.service';
 import { TitleService } from '../shared/title/title.service';
 import { WechatService } from '../shared/wechat/wechat.service';
+import { UserInfoService } from '../shared/user-info/user-info.service';
+import { UserInfoModel } from '../shared/user-info/user-info.model';
 
 @Component({
   templateUrl: './live-room.component.html',
   styleUrls: ['./live-room.component.scss'],
-  providers: [ LiveService, LiveRoomTimelineService, LiveRoomCommentService ]
 })
 
 export class LiveRoomComponent implements OnInit, OnDestroy {
   id: string;
   liveInfo: LiveInfoModel;
+  userInfo: UserInfoModel;
   isChildrenActived: boolean;
   routerSubscription: Subscription;
   isDanmuOpened: boolean = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-danmu|post-comment|history|invitation)$');
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-    private titleService: TitleService, private wechatService: WechatService) {}
+    private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {}
 
   isEditor() { return this.liveService.isEditor(this.id); }
 
   isAudience() { return this.liveService.isAudience(this.id); }
 
   getLiveInfo() {
-    this.liveService.getLiveInfo(this.id).then(info => {
-      this.liveInfo = info
+    this.id = this.route.snapshot.params['id']
+
+    this.liveService.getLiveInfo(this.id).then(liveInfo => {
+      this.liveInfo = liveInfo
       this.titleService.set(this.liveInfo.subject)
       this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, location.href, this.id)
-    });
+    })
 
-    // TODO: 直播间不存在，直接404
+    this.userInfo = this.userInfoService.getUserInfoCache()
+    // TODO: 找不到直播间直接跳转404
   }
 
   ngOnInit() {

@@ -18,6 +18,8 @@
     class="live-room-audience-bottom-bar-component"
     [isOnLatest]="timeline.isOnLatest"
     [isOnNewest]="timeline.isOnNewest"
+    [liveInfo]="liveInfo"
+    [userInfo]="userInfo"
   ></live-room-audience-bottom-bar>
 
   <live-room-editor-bottom-bar
@@ -27,6 +29,10 @@
     [isOnLatest]="timeline.isOnLatest"
     [isOnNewest]="timeline.isOnNewest"
   ></live-room-editor-bottom-bar>
+
+  <div class="live-room-praised-animations" praisedAnimation>
+    <praised-animation *ngFor="let user of liveInfo.praisedAnimations" [user]="user"></praised-animation>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

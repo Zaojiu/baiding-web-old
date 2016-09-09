@@ -15,6 +15,15 @@
   .live-room-timeline-component {
     flex-grow: 1;
   }
+
+  .live-room-praised-animations {
+    position: absolute;
+    width: 70px;
+    height: 200px;
+    bottom: 51px;
+    right: 0;
+    overflow: hidden;
+  }
 }
 
 .top-bar {

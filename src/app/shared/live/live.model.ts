@@ -7,19 +7,21 @@ export class LiveInfoModel {
   desc: string;
   coverUrl: string;
   kind: string;
+  status: LiveStatus;
+  isDraft: boolean;
   owner: UserInfoModel;
   admin: UserInfoModel;
   editors: UserInfoModel[];
-  expectStartAt: string;
-  expectDuration: number;
-  startedAt: string;
-  closedAt: string;
-  createdAt: string;
-  isDraft: boolean;
-  status: LiveStatus;
   praised: number;
   commented: number;
   niced: number;
   shared: number;
   lcConvId: string;
+  hadPraised: boolean;
+  praisedAnimations: UserInfoModel[] = [];
+  expectStartAt: string;
+  expectDuration: number;
+  startedAt: string;
+  closedAt: string;
+  createdAt: string;
 }
