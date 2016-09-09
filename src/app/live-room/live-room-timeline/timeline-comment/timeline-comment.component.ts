@@ -66,4 +66,8 @@ export class TimelineCommentComponent {
   canReply(): boolean {
     return this.comment.user.uid != this.userInfo.uid && !this.isAudience()
   }
+
+  goToShare() {
+    this.router.navigate([`/lives/${this.liveInfo.id}/share/${this.comment.id}`]);
+  }
 }

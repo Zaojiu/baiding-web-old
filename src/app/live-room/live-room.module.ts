@@ -22,6 +22,7 @@ import { TimelineCommentTimePipe } from './live-room-timeline/timeline-comment/t
 import { TimelineScrollerDirective } from './live-room-timeline/timeline.directive';
 import { PushDanmuScrollerDirective } from './live-room-push-danmu/push-danmu.directive';
 import { TimeFormaterPipe, DurationFormaterPipe } from "./live-room-timeline/live-room-timeline.pipe";
+import { ShareComponent } from "./share/share.component";
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { TimeFormaterPipe, DurationFormaterPipe } from "./live-room-timeline/liv
     LiveRoomPostCommentComponent,
     TimelineCommentComponent,
     EmptyComponent,
+    ShareComponent,
     PraisedAnimationsDirective,
     PraisedAnimationComponent,
     HistoryComponent,
