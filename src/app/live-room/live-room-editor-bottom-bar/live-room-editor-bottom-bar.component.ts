@@ -31,7 +31,7 @@ export class LiveRoomEditorBottomBarComponent implements OnInit, OnDestroy {
   isTooShort: boolean;
   timer: any;
   recordDuration: number;
-  minRecordDuration = 10;
+  minRecordDuration = 20;
 
   constructor(private route: ActivatedRoute, private router: Router,
     private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
