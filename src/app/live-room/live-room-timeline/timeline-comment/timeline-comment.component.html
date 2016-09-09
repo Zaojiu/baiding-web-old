@@ -2,11 +2,10 @@
   <div class="comment" [ngClass]="{'has-reply': comment.replies.length, 'mime': comment.user.uid == userInfo.uid}">
     <div class="avatar-container">
       <img class="avatar" [src]="comment.user.avatar">
-      <span class="role">{{comment.user | role: liveInfo}}</span>
     </div>
     <div class="content-container">
       <div class="content-info">
-        <p class="name">{{comment.user.nick}}</p>
+        <p class="name">{{comment.user.nick}} / {{comment.user | role: liveInfo}}</p>
         <time>{{comment.createdAt | time}}</time>
       </div>
 
@@ -27,7 +26,6 @@
     <div class="comment-reply" *ngFor="let reply of comment.replies" [ngClass]="{'mime': reply.user.uid == userInfo.uid}">
       <div class="avatar-container">
         <img class="avatar" [src]="reply.user.avatar">
-        <span class="role">{{reply.user | role: liveInfo}}</span>
       </div>
       <div class="content-container">
         <div class="content">{{reply.user.nick}} @{{comment.user.nick}}<br/>{{reply.content}}</div>
