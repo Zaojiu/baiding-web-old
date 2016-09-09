@@ -79,11 +79,15 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   }
 
   isStarted(): boolean {
-    return moment().isAfter(moment(this.liveInfo.expectStartAt))
+    let expectStartAt = moment(this.liveInfo.expectStartAt)
+    let isZero = expectStartAt.isSame(moment('0001-01-01T00:00:00Z'))
+    return moment().isSameOrAfter(expectStartAt) || isZero
   }
 
   isClosed(): boolean{
-    return moment().isBefore(this.liveInfo.closedAt)
+    let closedAt = moment(this.liveInfo.closedAt)
+    let isZero = closedAt.isSame(moment('0001-01-01T00:00:00Z'))
+    return moment().isSameOrAfter(closedAt) && !isZero
 }
 
   onReceivedEvents(evt: MqEvent) {
