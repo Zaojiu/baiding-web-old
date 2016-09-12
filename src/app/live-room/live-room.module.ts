@@ -6,7 +6,7 @@ import { ROUTES as LiveRoomRoute } from './live-room.route';
 import { LiveRoomComponent } from './live-room.component';
 import { LiveRoomDanmuComponent } from './live-room-danmu/live-room-danmu.component';
 import { LiveRoomEditorBottomBarComponent } from './live-room-editor-bottom-bar/live-room-editor-bottom-bar.component';
-import { LiveRoomAudienceBottomBarComponent } from './live-room-audience-bottom-bar/live-room-audience-bottom-bar.component';
+import { AudienceBottomBarComponent } from './audience-bottom-bar/audience-bottom-bar.component';
 import { LiveRoomTimelineComponent } from './live-room-timeline/live-room-timeline.component';
 import { AudioCommentComponent } from './live-room-timeline/timeline-comment/audio-comment/audio-comment.component';
 import { TimelineCommentComponent } from './live-room-timeline/timeline-comment/timeline-comment.component';
@@ -39,7 +39,7 @@ import { LiveService } from '../shared/live/live.service';
     LiveRoomDanmuComponent,
     LiveRoomTimelineComponent,
     LiveRoomEditorBottomBarComponent,
-    LiveRoomAudienceBottomBarComponent,
+    AudienceBottomBarComponent,
     LiveRoomPushDanmuComponent,
     LiveRoomPostCommentComponent,
     TimelineCommentComponent,
