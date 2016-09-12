@@ -14,12 +14,12 @@ import { SharePopupService } from '../../shared/share-popup/share-popup.service'
 
 @Component({
   selector: 'live-room-editor-bottom-bar',
-  templateUrl: './live-room-editor-bottom-bar.component.html',
-  styleUrls: ['./live-room-editor-bottom-bar.component.scss'],
+  templateUrl: './editor-bottom-bar.component.html',
+  styleUrls: ['./editor-bottom-bar.component.scss'],
   providers: [ PostCommentService ]
 })
 
-export class LiveRoomEditorBottomBarComponent implements OnInit, OnDestroy {
+export class EditorBottomBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   @Input() isOnNewest: boolean;
   @Input() isOnLatest: boolean;
