@@ -4,7 +4,7 @@ moment.locale('zh-cn');
 
 let countdown = require("moment-countdown/vendor/countdown/countdown.js")
 
-@Pipe({name: 'timeformater'})
+@Pipe({name: 'timeFormater'})
 export class TimeFormaterPipe implements PipeTransform {
   transform(time: string, format: string): string {
     var timeParsed = moment(+time / 1e6)
@@ -14,7 +14,7 @@ export class TimeFormaterPipe implements PipeTransform {
   }
 }
 
-@Pipe({name: 'durationformater'})
+@Pipe({name: 'durationFormater'})
 export class DurationFormaterPipe implements PipeTransform {
   transform(time: string, index: number): string {
     var timeParsed = moment(+time / 1e6)
@@ -28,5 +28,12 @@ export class DurationFormaterPipe implements PipeTransform {
     if (index === 1) return matchArr[2]
     if (index === 2) return matchArr[3]
     return  '无效时间'
+  }
+}
+
+@Pipe({name: 'fromNow'})
+export class FromNowPipe implements PipeTransform {
+  transform(time: string): string {
+    return moment(+time / 1e6).fromNow();
   }
 }

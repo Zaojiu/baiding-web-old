@@ -1,0 +1,46 @@
+<div class="timeline-message-container">
+  <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
+    <div class="avatar-container">
+      <img class="avatar" [src]="message.user.avatar">
+    </div>
+
+    <div class="content-container">
+      <div class="content-info">
+        <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
+        <time>{{message.createdAt | fromNow}}</time>
+      </div>
+
+      <div class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</div>
+      <div class="content" *ngIf="message.type === 2"><audio-message [message]="message" [userInfo]="userInfo"></audio-message></div>
+    </div>
+
+    <div class="thumbs-up" [ngClass]="{'had-thumbs-up': message.hadPraised}">
+      <div class="thumbs-up-animations" praisedAnimation>
+        <praised-animation *ngFor="let user of message.praisedAnimations" [user]="user"></praised-animation>
+      </div>
+      <a class="thumbs-up-btn" (click)="setPraise()">
+        <i class="baiding-icon baiding-icon-thumbsup"></i>
+      </a>
+      <span class="thumbs-up-count" (click)="setPraise()">{{message.praisedAmount}}</span>
+    </div>
+  </div>
+
+  <div class="message-reply-container">
+    <div class="message-reply" *ngFor="let reply of message.replies" [ngClass]="{'mime': reply.user.uid == userInfo.uid}">
+      <div class="avatar-container">
+        <img class="avatar" [src]="reply.user.avatar">
+      </div>
+      <div class="content-container">
+        <div class="content">{{reply.user.nick}} @{{message.user.nick}}<br/>{{reply.content}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="operation-bar">
+    <a class="share-btn" (click)="goToShare()"><i class="baiding-icon baiding-icon-share"></i></a>
+    <a class="message-btn" (click)="gotoReply()" *ngIf="canReply()"><i class="baiding-icon baiding-icon-chat3"></i></a>
+    <div class="thumbs-up-users">
+      <img class="avatar" *ngFor="let user of message.getPraisedAvatars(userInfo)" [src]="user.avatar">
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
-.timeline-comment-container {
+.timeline-message-container {
   margin-bottom: 20px;
 
-  .comment, .comment-reply {
+  .message, .message-reply {
     display: flex;
 
     .avatar-container {
@@ -73,8 +73,8 @@
   }
 }
 
-.timeline-comment-container {
-  .comment, .comment-reply {
+.timeline-message-container {
+  .message, .message-reply {
     .avatar-container {
       .avatar {
         display: block;
@@ -117,7 +117,7 @@
     }
   }
 
-  .comment {
+  .message {
     &.has-reply {
       .content-container .content {
         position: relative;
@@ -181,7 +181,7 @@
     }
   }
 
-  .comment-reply {
+  .message-reply {
     .content-container .content {
       border-radius: 0px;
       border-top: solid 1px rgba(143, 143, 143, .5);
@@ -221,7 +221,7 @@
     padding-left: 68px;
     padding-top: 7px;
 
-    .share-btn, .comment-btn {
+    .share-btn, .message-btn {
       padding-top: 5px;
       margin-right: 15px;
       display: inline-block;

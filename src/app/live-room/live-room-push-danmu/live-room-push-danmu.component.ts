@@ -121,6 +121,6 @@ export class LiveRoomPushDanmuComponent implements OnInit, OnDestroy {
   }
 
   pushDanmu(danmu: LiveRoomDanmuModel) {
-    this.router.navigate([`/lives/${this.liveId}/post-comment`, {'danmu_id': danmu.id}]);
+    this.router.navigate([`/lives/${this.liveId}/post`, {'danmu_id': danmu.id}]);
   }
 }

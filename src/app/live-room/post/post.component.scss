@@ -1,4 +1,4 @@
-.live-room-post-comment-container {
+.live-room-post-container {
   display: flex;
   flex-direction: column;
 
@@ -6,12 +6,12 @@
     flex-shrink: 0;
   }
 
-  .comment-input-container {
+  .input-container {
     flex-grow: 1;
   }
 }
 
-.live-room-post-comment-container {
+.live-room-post-container {
   position: absolute;
   left: 0;
   right: 0;
@@ -61,10 +61,10 @@
     }
   }
 
-  .comment-input-container {
+  .input-container {
     position: relative;
 
-    .comment-input {
+    .input {
       position: absolute;
       left: 20px;
       top: 0;

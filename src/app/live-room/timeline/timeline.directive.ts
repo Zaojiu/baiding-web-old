@@ -1,7 +1,7 @@
 import { Directive, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { Subscription }   from 'rxjs/Subscription';
 
-import { LiveRoomTimelineService } from './live-room-timeline.service';
+import { TimelineService } from './timeline.service';
 
 declare var $:any;
 
@@ -11,10 +11,10 @@ declare var $:any;
 
 export class TimelineScrollerDirective implements OnInit, OnDestroy {
   private el: HTMLElement;
-  private timelineService: LiveRoomTimelineService;
+  private timelineService: TimelineService;
   private scrollToSubscription: Subscription;
 
-  constructor(el: ElementRef, timelineService: LiveRoomTimelineService) {
+  constructor(el: ElementRef, timelineService: TimelineService) {
     this.el = el.nativeElement
     this.timelineService = timelineService;
   }

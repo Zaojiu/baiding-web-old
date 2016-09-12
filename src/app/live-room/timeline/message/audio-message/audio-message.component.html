@@ -1,0 +1,12 @@
+<div class="audio-message-container" [ngClass]="{mine: message.user.uid == userInfo.uid}">
+  <div class="play-btn" (click)="message.audio.localId && message.audio.localId === playingId() ? stopVoice() : playVoice()">
+    <i class="baiding-icon baiding-icon-wave"></i>
+    <span *ngIf="message.audio.localId && message.audio.localId === playingId()">
+      <i class="baiding-icon baiding-icon-play"></i>
+    </span>
+    <span *ngIf="!message.audio.localId || message.audio.localId !== playingId()">
+      <i class="baiding-icon baiding-icon-play"></i>
+    </span>
+  </div>
+  <div class="translate">{{message.audio.translateResult}}</div>
+</div>

@@ -21,7 +21,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isChildrenActived: boolean;
   routerSubscription: Subscription;
   isDanmuOpened: boolean = true;
-  urlRegex = new RegExp('^\/lives\/.*?\/(push-danmu|post-comment|history|invitation)$');
+  urlRegex = new RegExp('^\/lives\/.*?\/(push-danmu|post|history|invitation)$');
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
     private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {}

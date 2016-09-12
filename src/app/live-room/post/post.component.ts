@@ -1,20 +1,18 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LiveService } from '../../shared/live/live.service';
-import { LiveInfoModel } from '../../shared/live/live.model';
 import { PostDanmuService } from '../../shared/comment/post-danmu.service';
-import { PostCommentService } from '../../shared/comment/post-comment.service';
-import { GetCommentService } from '../../shared/comment/get-comment.service';
-import { LiveRoomPostCommmentService } from './live-room-post-comment.service';
-import { AdditionalContentModel } from './live-room-post-comment.model'
+import { PostService } from './post.service';
+import { AdditionalContentModel } from './post.model'
+import { MessageApiService } from "../../shared/api/message.api";
 
 @Component({
-  templateUrl: './live-room-post-comment.component.html',
-  styleUrls: ['./live-room-post-comment.component.scss'],
-  providers: [ PostDanmuService, PostCommentService, GetCommentService, LiveRoomPostCommmentService ]
+  templateUrl: './post.component.html',
+  styleUrls: ['./post.component.scss'],
+  providers: [ PostDanmuService, PostService ]
 })
 
-export class PostMessageComponent implements OnInit {
+export class PostComponent implements OnInit {
   id: string;
   content = '';
   messageId: string;
@@ -22,8 +20,8 @@ export class PostMessageComponent implements OnInit {
   additionalContent: AdditionalContentModel;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-    private postDanmuService: PostDanmuService, private postCommentService: PostCommentService,
-    private liveRoomPostCommmentService: LiveRoomPostCommmentService) {}
+    private postDanmuService: PostDanmuService, private messageApiService: MessageApiService,
+    private liveRoomPostCommmentService: PostService) {}
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
@@ -31,7 +29,7 @@ export class PostMessageComponent implements OnInit {
     this.danmuId = this.route.snapshot.params['danmu_id'];
 
     if (this.messageId) {
-      this.liveRoomPostCommmentService.getComment(this.id, this.messageId).then(additionalContent => {
+      this.liveRoomPostCommmentService.getMessage(this.id, this.messageId).then(additionalContent => {
         this.additionalContent = additionalContent
       })
     }
@@ -56,11 +54,11 @@ export class PostMessageComponent implements OnInit {
   isAudience() { return this.liveService.isAudience(this.id); }
 
   submit() {
-    if (this.messageId) return this.postComment()
+    if (this.messageId) return this.postMessage()
 
     if (this.danmuId) return this.pushDanmu()
 
-    if (this.isEditor()) return this.postComment()
+    if (this.isEditor()) return this.postMessage()
 
     if (!this.isEditor()) return this.postDanmu()
   }
@@ -68,24 +66,18 @@ export class PostMessageComponent implements OnInit {
   pushDanmu() {
     if (this.content === '') return
 
-    this.postCommentService.postNiceComment(this.id, this.content, this.danmuId, this.additionalContent.user.uid, this.additionalContent.content).then(comment => {
-      this.backToPushDanmu()
-    });
+    this.messageApiService.postNiceMessage(this.id, this.content, this.danmuId, this.additionalContent.user.uid, this.additionalContent.content).then(() => this.backToPushDanmu());
   }
 
   postDanmu() {
     if (this.content === '') return
 
-    this.postDanmuService.postDanmu(this.id, this.content).then(comment => {
-      this.backToMainScreen()
-    });
+    this.postDanmuService.postDanmu(this.id, this.content).then(() => this.backToMainScreen());
   }
 
-  postComment() {
+  postMessage() {
     if (this.content === '') return
 
-    this.postCommentService.postTextComment(this.id, this.content, this.messageId).then(comment => {
-      this.backToMainScreen()
-    });
+    this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => this.backToMainScreen());
   }
 }

@@ -3,28 +3,26 @@ import { Subscription }   from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
-import { TimelineCommentModel } from './timeline-comment/timeline-comment.model';
-import { LiveRoomTimelineService } from './live-room-timeline.service';
+import { MessageModel } from './message/message.model';
+import { TimelineService } from './timeline.service';
 import { UserInfoService } from '../../shared/user-info/user-info.service';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { LiveService } from '../../shared/live/live.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
-import { GetCommentService } from '../../shared/comment/get-comment.service'
 import { MqService, MqPraisedUser, MqEvent, EventType } from '../../shared/mq/mq.service';
-
+import { MessageApiService } from "../../shared/api/message.api";
 
 @Component({
-  selector: 'live-room-timeline',
-  templateUrl: './live-room-timeline.component.html',
-  styleUrls: ['./live-room-timeline.component.scss'],
-  providers: [GetCommentService]
+  selector: 'timeline',
+  templateUrl: './timeline.component.html',
+  styleUrls: ['./timeline.component.scss'],
 })
 
-export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
+export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
-  comments: TimelineCommentModel[] = [];
+  messages: MessageModel[] = [];
   receviedReplySubscription: Subscription;
   scrollSubscription: Subscription;
   timelineSubscription: Subscription;
@@ -33,9 +31,9 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   countdownTimer: any;
 
-  constructor(private route: ActivatedRoute, private timelineService: LiveRoomTimelineService,
+  constructor(private route: ActivatedRoute, private timelineService: TimelineService,
     private userInfoService: UserInfoService, private liveService: LiveService,
-    private getCommentService: GetCommentService) { }
+    private messageApiService: MessageApiService) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -61,13 +59,13 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
         this.onReceivedPraises(prised)
       })
 
-      // this.gotoLastestComments();
+      // this.gotoLastestMessages();
       setTimeout(() => this.timelineService.scrollToBottom(), 200);
       this.startObserveTimelineScroll();
       this.startObserveTimelineAction();
       this.startReceiveReply();
 
-      this.gotoLatestComments()
+      this.gotoLatestMessages()
     });
   }
 
@@ -93,7 +91,7 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
-        this.gotoLatestComments()
+        this.gotoLatestMessages()
         break
       case EventType.LivePraise:
         // TODO
@@ -107,55 +105,54 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   }
 
   onReceivedPraises(praisedUser: MqPraisedUser) {
-    if (praisedUser.user.uid == this.userInfo.uid) {
-      return
-    }
-    for (let idx in this.comments) {
-      let comment = this.comments[idx]
-      if (comment.id == praisedUser.msgId) {
-        comment.pushPraisedUser(praisedUser.user)
+    if (praisedUser.user.uid == this.userInfo.uid) return
+
+    for (let idx in this.messages) {
+      let message = this.messages[idx]
+      if (message.id == praisedUser.msgId) {
+        message.pushPraisedUser(praisedUser.user)
       }
     }
   }
 
-  gotoLatestComments() {
+  gotoLatestMessages() {
     if (this.isLoading) return;
 
     this.isLoading = true;
 
-    this.getCommentService.listComments(this.id).then(comments => {
-      comments = comments.reverse();
-      this.comments = comments;
+    this.messageApiService.listMessages(this.id).then(messages => {
+      messages = messages.reverse();
+      this.messages = messages;
       this.isOnNewest = false;
       this.isOnLatest = true;
       this.isLoading = false;
     });
   }
 
-  gotoFirstComments() {
+  gotoFirstMessages() {
     if (this.isLoading) return;
 
     this.isLoading = true;
 
-    this.getCommentService.listComments(this.id, '', 20, ['createdAt']).then(comments => {
-      this.comments = comments;
+    this.messageApiService.listMessages(this.id, '', 20, ['createdAt']).then(messages => {
+      this.messages = messages;
       this.isOnNewest = true;
       this.isOnLatest = false;
       this.isLoading = false;
     });
   }
 
-  getNextComments(marker: string, limit: number, sorts: string[]) {
+  getNextMessages(marker: string, limit: number, sorts: string[]) {
     if (this.isLoading) return;
 
     this.isLoading = true;
 
-    this.getCommentService.listComments(this.id, marker, limit, sorts).then(comments => {
-      for (let comment of comments) {
-        this.comments.push(comment);
+    this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+      for (let message of messages) {
+        this.messages.push(message);
       }
 
-      if (comments.length === 0) {
+      if (messages.length === 0) {
         this.isOnLatest = true;
       }
 
@@ -163,17 +160,17 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
     });
   }
 
-  getPrevComments(marker: string, limit: number, sorts: string[]) {
+  getPrevMessages(marker: string, limit: number, sorts: string[]) {
     if (this.isLoading) return;
 
     this.isLoading = true;
 
-    this.getCommentService.listComments(this.id, marker, limit, sorts).then(comments => {
-      for (let comment of comments) {
-        this.comments.unshift(comment);
+    this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+      for (let message of messages) {
+        this.messages.unshift(message);
       }
 
-      if (comments.length === 0) {
+      if (messages.length === 0) {
         this.isOnNewest = true;
       }
 
@@ -185,13 +182,13 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
     this.scrollSubscription = this.timelineService.scroller$.subscribe(
       topOrBottom => {
         if (topOrBottom) {
-          if (this.comments.length === 0) return;
-          let firstComment = this.comments[0];
-          this.getPrevComments(`$lt${firstComment.createdAt}`, 20, ['-createdAt']);
+          if (this.messages.length === 0) return;
+          let firstMessage = this.messages[0];
+          this.getPrevMessages(`$lt${firstMessage.createdAt}`, 20, ['-createdAt']);
         } else {
-          if (this.comments.length === 0) return;
-          let lastComment = this.comments[this.comments.length - 1];
-          this.getNextComments(`$gt${lastComment.createdAt}`, 20, ['createdAt']);
+          if (this.messages.length === 0) return;
+          let lastMessage = this.messages[this.messages.length - 1];
+          this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
         }
       }
     );
@@ -207,13 +204,13 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
         this.stopObserveTimelineScroll();
 
         if (topOrBottom) {
-          this.gotoFirstComments();
+          this.gotoFirstMessages();
           setTimeout(() => {
             this.timelineService.scrollToTop();
             this.startObserveTimelineScroll();
           }, 200);
         } else {
-          this.gotoLatestComments();
+          this.gotoLatestMessages();
           setTimeout(() => {
             this.timelineService.scrollToBottom();
             this.startObserveTimelineScroll();
@@ -226,9 +223,9 @@ export class LiveRoomTimelineComponent implements OnInit, OnDestroy {
   startReceiveReply() {
     this.receviedReplySubscription = this.timelineService.receivedReply$.subscribe(
       reply => {
-        for (let comment of this.comments) {
-          if (comment.id === reply.parentId) {
-            comment.replies.push(reply)
+        for (let message of this.messages) {
+          if (message.id === reply.parentId) {
+            message.replies.push(reply)
           }
         }
       }

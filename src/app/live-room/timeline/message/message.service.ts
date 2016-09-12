@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { AppConfig } from '../../../app.config'
 
 @Injectable()
-export class TimelineCommmentService {
+export class MessageService {
   constructor (private http: Http, private config: AppConfig) {}
 
   confirmPraise(liveId: string, msgId: string): Promise<void> {

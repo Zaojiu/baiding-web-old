@@ -5,18 +5,17 @@ import { Title } from '@angular/platform-browser';
 
 import { BottomPopupSelectorService } from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
 import { BottomPopupSelectorModel } from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
-import { LiveRoomTimelineService } from '../live-room-timeline/live-room-timeline.service';
+import { TimelineService } from '../timeline/timeline.service';
 import { LiveService } from '../../shared/live/live.service';
 import { WechatService } from '../../shared/wechat/wechat.service';
-import { PostCommentService } from '../../shared/comment/post-comment.service';
+import { MessageApiService } from '../../shared/api/message.api';
 import { SharePopupService } from '../../shared/share-popup/share-popup.service';
 
 
 @Component({
-  selector: 'live-room-editor-bottom-bar',
+  selector: 'editor-bottom-bar',
   templateUrl: './editor-bottom-bar.component.html',
   styleUrls: ['./editor-bottom-bar.component.scss'],
-  providers: [ PostCommentService ]
 })
 
 export class EditorBottomBarComponent implements OnInit, OnDestroy {
@@ -34,14 +33,14 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   minRecordDuration = 20;
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
+    private bottomPopupService: BottomPopupSelectorService, private timelineService: TimelineService,
     private liveService: LiveService, private wechatService: WechatService,
-    private titleService: Title, private postCommentService: PostCommentService,
+    private titleService: Title, private messageApiService: MessageApiService,
     private sharePopupService: SharePopupService) {}
 
   ngOnInit() {
     this.recordSubscription = this.wechatService.record$.subscribe(audioModel => {
-      this.postCommentService.postAudioComment(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult)
+      this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult)
     });
   }
 
@@ -55,8 +54,8 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
     this.router.navigate([`/lives/${this.liveId}/push-danmu`]);
   }
 
-  gotoPostComment() {
-    this.router.navigate([`/lives/${this.liveId}/post-comment`]);
+  gotoPostMessage() {
+    this.router.navigate([`/lives/${this.liveId}/post`]);
   }
 
   gotoInvitation() {
@@ -82,8 +81,8 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
 
       this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
         item => {
-          if (item === '回到开始') return this.liveRoomTimelineService.gotoFirstComment();
-          if (item === '查看最新') return this.liveRoomTimelineService.gotoLastComment();
+          if (item === '回到开始') return this.timelineService.gotoFirstMessage();
+          if (item === '查看最新') return this.timelineService.gotoLastMessage();
           if (item === '邀请嘉宾') return this.gotoInvitation()
           if (item === '结束直播') return this.liveService.closeLive(this.liveId);
         }

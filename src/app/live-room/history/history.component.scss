@@ -6,7 +6,7 @@
     flex-shrink: 0;
   }
 
-  .comments-container {
+  .messages-container {
     flex-grow: 1;
   }
 }
@@ -67,10 +67,10 @@
     }
   }
 
-  .comments-container {
+  .messages-container {
     padding: 6px 20px 20px;
 
-    .comment {
+    .message {
       font-size: 17px;
       color: rgb(75, 75, 75);
       line-height: 27px;
@@ -94,7 +94,7 @@
     font-size: 0;
     background-color: rgb(250, 250, 250);
 
-    .comment-info, .push-info {
+    .live-info, .push-info {
       display: inline-block;
       font-size: 12px;
       margin-left: 20px;

@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { UserInfoModel } from '../../../shared/user-info/user-info.model';
-import { LiveInfoModel } from '../../../shared/live/live.model';
+import { UserInfoModel } from '../user-info/user-info.model';
+import { LiveInfoModel } from '../live/live.model';
 
 @Pipe({name: 'role'})
-export class TimelineCommentRolePipe implements PipeTransform {
+export class RolePipe implements PipeTransform {
   transform(userInfo: UserInfoModel, liveInfo: LiveInfoModel): string {
     if (userInfo.uid === liveInfo.admin.uid) return '主持人';
 

@@ -1,4 +1,4 @@
-<form class="live-room-post-comment-container" (ngSubmit)="submit()">
+<form class="live-room-post-container" (ngSubmit)="submit()">
   <div class="top-bar">
     <a class="close-btn" (click)="backToMainScreen()"><i class="baiding-icon baiding-icon-close"></i></a>
   </div>
@@ -11,8 +11,8 @@
     </div>
   </div>
 
-  <div class="comment-input-container">
-    <textarea class="comment-input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" autofocus></textarea>
+  <div class="input-container">
+    <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" autofocus></textarea>
   </div>
 
   <div class="bottom-bar scrollable">

@@ -6,7 +6,7 @@
   font-size: 0;
   background-color: rgb(250, 250, 250);
 
-  .share-btn, .comment-btn, .push-danmu-btn, .more-op-btn {
+  .share-btn, .post-btn, .push-danmu-btn, .more-op-btn {
     display: inline-block;
     height: 50px;
     width: calc((100% - 60px) / 4);
@@ -29,7 +29,7 @@
     }
   }
 
-  .comment-btn {
+  .post-btn {
     margin-right: 60px;
   }
 

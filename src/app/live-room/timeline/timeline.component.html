@@ -5,21 +5,21 @@
     <div class="countdown-container">
       <div class="countdown-day">
         <div class="countdown-day-item">
-          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationformater:0}}</span>
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationFormater:0}}</span>
           <span class="countdown-day-item-day-cn">天</span>
         </div>
         <div class="countdown-day-item">
-          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationformater:1}}</span>
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationFormater:1}}</span>
           <span class="countdown-day-item-day-cn">时</span>
         </div>
         <div class="countdown-day-item">
-          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationformater:2}}</span>
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationFormater:2}}</span>
           <span class="countdown-day-item-day-cn">分</span>
         </div>
       </div>
       <div class="countdown-date">
         <div class="countdown-date-splitleft"></div>
-        <div class="countdown-date-time">{{liveInfo.expectStartAt | timeformater:'YYYY.MM.DD hh:mm'}} 开始</div>
+        <div class="countdown-date-time">{{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD hh:mm'}} 开始</div>
         <div class="countdown-date-splitright"></div>
       </div>
     </div>
@@ -35,13 +35,13 @@
   </div>
 </div>
 
-<div class="live-room-timeline-container" *ngIf="comments.length !== 0">
-  <timeline-comment *ngFor="let comment of comments"
+<div class="live-room-timeline-container" *ngIf="messages.length !== 0">
+  <message *ngFor="let message of messages"
     [liveId]="id"
-    [comment]="comment"
+    [message]="message"
     [userInfo]="userInfo"
     [liveInfo]="liveInfo"
-  ></timeline-comment>
+  ></message>
 </div>
 
 
@@ -50,7 +50,7 @@
   <div class="ended-title-container">
 
     <div class="ended-title">直播结束</div>
-    <div class="ended-date">{{liveInfo.closedAt | timeformater:'YYYY.MM.DD hh:mm'}}</div>
+    <div class="ended-date">{{liveInfo.closedAt | timeFormater:'YYYY.MM.DD hh:mm'}}</div>
 
   </div>
 
