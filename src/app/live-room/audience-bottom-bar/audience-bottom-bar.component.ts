@@ -11,12 +11,12 @@ import { LiveService } from '../../shared/live/live.service';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 
 @Component({
-  selector: 'live-room-audience-bottom-bar',
-  templateUrl: './live-room-audience-bottom-bar.component.html',
-  styleUrls: ['./live-room-audience-bottom-bar.component.scss']
+  selector: 'audience-bottom-bar',
+  templateUrl: './audience-bottom-bar.component.html',
+  styleUrls: ['./audience-bottom-bar.component.scss']
 })
 
-export class LiveRoomAudienceBottomBarComponent {
+export class AudienceBottomBarComponent {
   id: string;
   popupSelectorSubscription: Subscription;
   closeSelectorSubscription: Subscription;
