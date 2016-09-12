@@ -84,7 +84,7 @@ export class LiveRoomTimelineService {
     // this.receviedPraisedUserSubscription = this.timelineService.receivedPraisedUser$.subscribe(
     //   praisedUser => {
     //     for (var comment of this.comments) {
-    //       if (praisedUser.commentId == comment.id) {
+    //       if (praisedUser.messageId == comment.id) {
     //         // 数组只保留5个，如果自己点过赞，则保留4个
     //         const limit = comment.hadPraised ? 4 : 5;
     //         if (comment.praisedAvatars.length >= limit) {
@@ -122,7 +122,7 @@ export class LiveRoomTimelineService {
     //   user.role = TimelineCommentUserType.Host;
 
     //   var praisedUser = new PraisedUserModel();
-    //   praisedUser.commentId = '1234';
+    //   praisedUser.messageId = '1234';
     //   praisedUser.avatar = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200';
 
     //   var comment = new TimelineCommentModel();

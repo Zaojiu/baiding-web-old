@@ -14,10 +14,10 @@ import { AdditionalContentModel } from './live-room-post-comment.model'
   providers: [ PostDanmuService, PostCommentService, GetCommentService, LiveRoomPostCommmentService ]
 })
 
-export class LiveRoomPostCommentComponent implements OnInit {
+export class PostMessageComponent implements OnInit {
   id: string;
   content = '';
-  commentId: string;
+  messageId: string;
   danmuId: string;
   additionalContent: AdditionalContentModel;
 
@@ -27,11 +27,11 @@ export class LiveRoomPostCommentComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
-    this.commentId = this.route.snapshot.params['comment_id'];
+    this.messageId = this.route.snapshot.params['message_id'];
     this.danmuId = this.route.snapshot.params['danmu_id'];
 
-    if (this.commentId) {
-      this.liveRoomPostCommmentService.getComment(this.id, this.commentId).then(additionalContent => {
+    if (this.messageId) {
+      this.liveRoomPostCommmentService.getComment(this.id, this.messageId).then(additionalContent => {
         this.additionalContent = additionalContent
       })
     }
@@ -56,7 +56,7 @@ export class LiveRoomPostCommentComponent implements OnInit {
   isAudience() { return this.liveService.isAudience(this.id); }
 
   submit() {
-    if (this.commentId) return this.postComment()
+    if (this.messageId) return this.postComment()
 
     if (this.danmuId) return this.pushDanmu()
 
@@ -84,7 +84,7 @@ export class LiveRoomPostCommentComponent implements OnInit {
   postComment() {
     if (this.content === '') return
 
-    this.postCommentService.postTextComment(this.id, this.content, this.commentId).then(comment => {
+    this.postCommentService.postTextComment(this.id, this.content, this.messageId).then(comment => {
       this.backToMainScreen()
     });
   }

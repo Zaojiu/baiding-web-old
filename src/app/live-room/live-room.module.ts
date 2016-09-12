@@ -11,7 +11,7 @@ import { LiveRoomTimelineComponent } from './live-room-timeline/live-room-timeli
 import { AudioCommentComponent } from './live-room-timeline/timeline-comment/audio-comment/audio-comment.component';
 import { TimelineCommentComponent } from './live-room-timeline/timeline-comment/timeline-comment.component';
 import { LiveRoomPushDanmuComponent } from './live-room-push-danmu/live-room-push-danmu.component';
-import { LiveRoomPostCommentComponent } from './live-room-post-comment/live-room-post-comment.component';
+import { PostMessageComponent } from './live-room-post-comment/live-room-post-comment.component';
 import { PraisedAnimationDirective } from '../shared/praised-animation/praised-animation.directive';
 import { PraisedAnimationComponent } from '../shared/praised-animation/praised-animation.component';
 import { HistoryComponent } from './history/history.component';
@@ -41,7 +41,7 @@ import { LiveService } from '../shared/live/live.service';
     EditorBottomBarComponent,
     AudienceBottomBarComponent,
     LiveRoomPushDanmuComponent,
-    LiveRoomPostCommentComponent,
+    PostMessageComponent,
     TimelineCommentComponent,
     EmptyComponent,
     ShareComponent,

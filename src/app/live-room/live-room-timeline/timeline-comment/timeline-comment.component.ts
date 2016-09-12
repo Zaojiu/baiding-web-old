@@ -60,7 +60,7 @@ export class TimelineCommentComponent {
   }
 
   gotoReply() {
-    this.router.navigate([`/lives/${this.liveInfo.id}/post-comment`, {'comment_id': this.comment.id}]);
+    this.router.navigate([`/lives/${this.liveInfo.id}/post-comment`, {'message_id': this.comment.id}]);
   }
 
   canReply(): boolean {
