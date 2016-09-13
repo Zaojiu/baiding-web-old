@@ -26,6 +26,7 @@ import { LiveGuard } from '../shared/guard/live.guard';
 import { TimelineService } from './timeline/timeline.service';
 import { CommentService } from './comment/comment.service';
 import { LiveService } from '../shared/live/live.service';
+import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
 import { FromNowPipe } from "../shared/pipe/time.pipe";
 import { MessageApiService } from "../shared/api/message.api";
 
@@ -60,6 +61,7 @@ import { MessageApiService } from "../shared/api/message.api";
   ],
   providers: [
     LiveGuard,
+    QuitEditGuard,
     LiveService,
     TimelineService,
     CommentService,

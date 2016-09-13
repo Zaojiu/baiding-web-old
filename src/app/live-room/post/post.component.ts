@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LiveService } from '../../shared/live/live.service';
 import { CommentApiService } from '../../shared/api/comment.service';
 import { PostService } from './post.service';
-import {ModalService} from '../../shared/modal/modal.service';
 import { AdditionalContentModel } from './post.model'
 import { MessageApiService } from "../../shared/api/message.api";
 
@@ -22,7 +21,7 @@ export class PostComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
-              private modalService: ModalService,private postService: PostService) {}
+              private postService: PostService) {}
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
@@ -43,9 +42,7 @@ export class PostComponent implements OnInit {
   }
 
   backToMainScreen() {
-    return this.modalService.popup('退出此次编辑','取消','退出').then(result => {
-      if (result) this.router.navigate(['/lives/' + this.id])
-    })
+    this.router.navigate(['/lives/' + this.id])
   }
 
   backToPushComment() {
