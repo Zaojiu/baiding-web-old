@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { BottomPopupSelectorService } from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
 import { BottomPopupSelectorModel } from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
-import { LiveRoomTimelineService } from '../live-room-timeline/live-room-timeline.service';
+import { TimelineService } from '../timeline/timeline.service';
 import { SharePopupService } from '../../shared/share-popup/share-popup.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
 import { LiveService } from '../../shared/live/live.service';
@@ -27,7 +27,7 @@ export class AudienceBottomBarComponent {
   isLoading: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private bottomPopupService: BottomPopupSelectorService, private liveRoomTimelineService: LiveRoomTimelineService,
+    private bottomPopupService: BottomPopupSelectorService, private timelineService: TimelineService,
     private sharePopupService: SharePopupService, private liveService: LiveService) {}
 
   ngOnInit() {
@@ -39,12 +39,12 @@ export class AudienceBottomBarComponent {
     if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
   }
 
-  gotoPushDanmu() {
-    this.router.navigate(['/lives/' + this.id + '/push-danmu']);
+  gotoPushComment() {
+    this.router.navigate(['/lives/' + this.id + '/push-comment']);
   }
 
-  gotoPostComment() {
-    this.router.navigate(['/lives/' + this.id + '/post-comment']);
+  gotoPostMessage() {
+    this.router.navigate(['/lives/' + this.id + '/post']);
   }
 
   popupShare() {
@@ -64,8 +64,8 @@ export class AudienceBottomBarComponent {
 
       this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
         item => {
-          if (item === '回到开始') return this.liveRoomTimelineService.gotoFirstComment();
-          if (item === '查看最新') return this.liveRoomTimelineService.gotoLastComment();
+          if (item === '回到开始') return this.timelineService.gotoFirstMessage();
+          if (item === '查看最新') return this.timelineService.gotoLastMessage();
         }
       );
 

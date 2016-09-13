@@ -1,0 +1,122 @@
+.live-room-post-container {
+  display: flex;
+  flex-direction: column;
+
+  .top-bar {
+    flex-shrink: 0;
+  }
+
+  .input-container {
+    flex-grow: 1;
+  }
+}
+
+.live-room-post-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgb(255, 255, 255);
+  z-index: 3;
+
+  .top-bar {
+    padding: 20px;
+
+    .reply-info {
+      font-size: 16px;
+      color: rgb(75, 75, 75);
+    }
+
+    .close-btn {
+      float: right;
+      font-size: 18px;
+      color: rgb(75, 75, 75);
+    }
+  }
+
+  .additional-content {
+    padding-bottom: 20px;
+    margin: 20px;
+    border-bottom: solid 1px rgba(171, 171, 171, .5);
+    display: flex;
+
+    .avatar {
+      height: 26px;
+      width: 26px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-right: 7px;
+    }
+
+    .main {
+      flex-grow: 1;
+      font-size: 14px;
+      color: rgb(75, 75, 75);
+
+      .name {
+        margin-bottom: 5px;
+        line-height: 1em;
+      }
+    }
+  }
+
+  .input-container {
+    position: relative;
+
+    .input {
+      position: absolute;
+      left: 20px;
+      top: 0;
+      height: 100%;
+      width: calc(100% - 40px);
+      border: none;
+      resize: none;
+      box-sizing: border-box;
+      outline: none;
+      color: rgb(75, 75, 75);
+      padding: 0;
+
+      &::-webkit-input-placeholder {
+        color: rgb(75, 75, 75);
+      }
+    }
+  }
+
+  .bottom-bar {
+    padding-right: 82px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    border-top: solid 1px rgba(143, 143, 143, .3);
+    background-color: rgb(250, 250, 250);
+    height: 50px;
+    line-height: 50px;
+    overflow-y: hidden;
+    white-space: nowrap;
+    font-size: 0;
+
+    &::-webkit-scrollbar, &::-webkit-scrollbar-track {
+      display: none;
+    }
+
+    .add-image, .face {
+      font-size: 24px;
+      padding: 0 10px;
+      display: inline-block;
+      vertical-align: top;
+      line-height: 50px;
+    }
+  }
+
+  .post-btn {
+    position: fixed;
+    height: 49px;
+    padding: 0 20px;
+    right: 0;
+    bottom: 0;
+    font-size: 17px;
+    color: rgb(33, 150, 243);
+    background-color: rgb(242, 246, 249);
+    box-shadow: -2px 0px 2px rgba(221, 221, 221, .5);
+  }
+}

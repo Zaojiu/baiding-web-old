@@ -1,0 +1,35 @@
+<div class="push-comment-container">
+  <div class="no-result" *ngIf="!comments.length">暂无评论</div>
+
+  <div class="comment-container scrollable" pushCommentScroller>
+    <div class="comment-row" *ngFor="let comment of comments">
+      <div class="avatar-container">
+        <img class="avatar" [src]="comment.user.avatar">
+      </div>
+      <div class="content-container">
+        <div class="content-info">
+          <p class="name">{{comment.user.nick}}</p>
+          <time>{{comment.createdAt | fromNow}}</time>
+        </div>
+        <div class="content">{{comment.content}}</div>
+      </div>
+      <div class="operation-container">
+        <div *ngIf="userInfo.uid == liveInfo.admin.uid">
+          <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId">推送</a>
+          <span class="operation-btn pushed" *ngIf="comment.msgId">已推送</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="live-info" *ngIf="liveInfo" >
+      <i class="baiding-icon baiding-icon-chat4"></i>
+      {{liveInfo.commented}}
+    </div>
+    <div class="push-info" *ngIf="liveInfo" >
+      <i class="baiding-icon baiding-icon-chat5"></i>
+      {{liveInfo.niced}}
+    </div>
+  </div>
+</div>

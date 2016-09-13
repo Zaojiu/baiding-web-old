@@ -1,0 +1,63 @@
+<div class="show-page" *ngIf="liveInfo && !isStarted()">
+
+  <div class="banner-blur">
+
+    <div class="countdown-container">
+      <div class="countdown-day">
+        <div class="countdown-day-item">
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationFormater:0}}</span>
+          <span class="countdown-day-item-day-cn">天</span>
+        </div>
+        <div class="countdown-day-item">
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationFormater:1}}</span>
+          <span class="countdown-day-item-day-cn">时</span>
+        </div>
+        <div class="countdown-day-item">
+          <span class="countdown-day-item-day">{{liveInfo.expectStartAt | durationFormater:2}}</span>
+          <span class="countdown-day-item-day-cn">分</span>
+        </div>
+      </div>
+      <div class="countdown-date">
+        <div class="countdown-date-splitleft"></div>
+        <div class="countdown-date-time">{{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD hh:mm'}} 开始</div>
+        <div class="countdown-date-splitright"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="talent">
+      <img class="talent-avatar" [src]="liveInfo.admin.avatar" alt="">
+      <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin.uid | role : liveInfo}}</div>
+    </div>
+    <div class="title">{{liveInfo.subject}}</div>
+    <div class="words">{{liveInfo.desc}}</div>
+  </div>
+</div>
+
+<div class="live-room-timeline-container" *ngIf="messages.length !== 0">
+  <message *ngFor="let message of messages"
+    [liveId]="id"
+    [message]="message"
+    [userInfo]="userInfo"
+    [liveInfo]="liveInfo"
+  ></message>
+</div>
+
+
+<div class="live-ended" *ngIf="liveInfo && isClosed()">
+
+  <div class="ended-title-container">
+
+    <div class="ended-title">直播结束</div>
+    <div class="ended-date">{{liveInfo.closedAt | timeFormater:'YYYY.MM.DD hh:mm'}}</div>
+
+  </div>
+
+
+  <!-- <div class="ended-review">
+    <i class="baiding-icon baiding-icon-paper"></i>
+    <div class="published">直播记录已经发布</div>
+    <div class="read"><a href="">阅读</a></div>
+  </div> -->
+</div>

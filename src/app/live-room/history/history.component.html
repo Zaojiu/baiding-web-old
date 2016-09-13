@@ -13,14 +13,14 @@
     </div>
   </div>
 
-  <div class="comments-container scrollable">
-    <div class="comment" *ngFor="let comment of historyComments">
-      <span class="name">{{comment.nick}}：</span>{{comment.content}}
+  <div class="messages-container scrollable">
+    <div class="message" *ngFor="let message of messages">
+      <span class="name">{{message.nick}}：</span>{{message.content}}
     </div>
   </div>
 
   <div class="bottom-bar">
-    <div class="comment-info">
+    <div class="live-info">
       <i>评</i>
       999+
     </div>

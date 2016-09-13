@@ -8,15 +8,15 @@
   flex-direction: column;
   overflow-x: hidden;
 
-  .top-bar, .live-room-editor-bottom-bar-component, .live-room-audience-bottom-bar-component {
+  .top-bar, .editor-bottom-bar, .audience-bottom-bar {
     flex-shrink: 0;
   }
 
-  .live-room-timeline-component {
+  .timeline {
     flex-grow: 1;
   }
 
-  .live-room-praised-animations {
+  .praised-animations {
     position: absolute;
     width: 70px;
     height: 200px;
@@ -29,13 +29,13 @@
 .top-bar {
   text-align: right;
 
-  .danmu-btn, .online-count {
+  .comment-btn, .online-count {
     font-size: 20px;
     color: rgb(75, 75, 75);
     padding: 15px;
   }
 
-  .danmu-btn {
+  .comment-btn {
     display: inline-block;
   }
 
