@@ -29,6 +29,8 @@ import { TitleService } from './shared/title/title.service'
 import { BottomPopupSelectorService } from './shared/bottom-popup-selector/bottom-popup-selector.service';
 import { SharePopupService } from './shared/share-popup/share-popup.service';
 import { AutofocusDirective } from './shared/autofocus/autofocus.directive';
+import { ModalComponent } from "./shared/modal/modal.component";
+import { ModalService } from "./shared/modal/modal.service";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -41,6 +43,7 @@ const APP_PROVIDERS = [
   StoreService,
   TitleService,
   BottomPopupSelectorService,
+  ModalService,
   SharePopupService
 ];
 
@@ -64,7 +67,8 @@ class CORSBrowserXHR extends BrowserXhr{
     NotFoundComponent,
     TitleSetterDirective,
     SharePopupComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    ModalComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
