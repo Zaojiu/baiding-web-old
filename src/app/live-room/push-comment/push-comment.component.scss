@@ -1,4 +1,4 @@
-.live-room-push-danmu-container {
+.push-comment-container {
   display: flex;
   flex-direction: column;
 
@@ -9,10 +9,10 @@
     justify-content: center;
   }
 
-  .danmu-container {
+  .comment-container {
     flex-grow: 1;
 
-    .danmu-row {
+    .comment-row {
       display: flex;
 
       .avatar-container {
@@ -36,7 +36,7 @@
   }
 }
 
-.live-room-push-danmu-container {
+.push-comment-container {
   position: absolute;
   left: 0;
   right: 0;
@@ -45,8 +45,8 @@
   background-color: rgb(255, 255, 255);
   z-index: 3;
 
-  .danmu-container {
-    .danmu-row {
+  .comment-container {
+    .comment-row {
       border-bottom: solid 1px rgb(198, 198, 198);
       padding: 15px 0;
 

@@ -1,24 +1,22 @@
-import { Injectable, Input }     from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Injectable }     from '@angular/core';
 import { Subject }        from 'rxjs/Subject';
 import { Subscription }   from 'rxjs/Subscription';
 
-import { LiveRoomDanmuModel }      from './live-room-danmu.model';
-import { UserInfoModel }  from '../../shared/user-info/user-info.model';
+import { CommentModel }      from './comment.model';
 import { MqService } from '../../shared/mq/mq.service';
 
 @Injectable()
-export class LiveRoomCommentService {
+export class CommentService {
   // Observable string sources
-  private receivedCommentSource = new Subject<LiveRoomDanmuModel>();
+  private receivedCommentSource = new Subject<CommentModel>();
   // Observable string streams
   private receivedComment$ = this.receivedCommentSource.asObservable();
 
   private receivedCommentSub: Subscription;
 
-  constructor(private http: Http) { }
+  constructor() {}
 
-  pushComment(comment: LiveRoomDanmuModel) {
+  pushComment(comment: CommentModel) {
     this.receivedCommentSource.next(comment)
   }
 

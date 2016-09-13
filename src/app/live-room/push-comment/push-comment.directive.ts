@@ -1,18 +1,18 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 import { Subscription }   from 'rxjs/Subscription';
 
-import { LiveRoomPushDanmuService } from './live-room-push-danmu.service';
+import { PushCommentService } from './push-comment.service';
 
 declare var $:any;
 
 @Directive({
-  selector: '[pushDanmuScroller]'
+  selector: '[pushCommentScroller]'
 })
 
-export class PushDanmuScrollerDirective implements OnInit {
+export class PushCommentScrollerDirective implements OnInit {
   private el: HTMLElement;
 
-  constructor(el: ElementRef, private pushDanmuService: LiveRoomPushDanmuService) {
+  constructor(el: ElementRef, private pushCommentService: PushCommentService) {
     this.el = el.nativeElement
   }
 
@@ -22,10 +22,10 @@ export class PushDanmuScrollerDirective implements OnInit {
 
     $self.on('scroll', function(e) {
       if ($self.scrollTop() < 10) {
-        self.pushDanmuService.notifyScrollerOnTop();
+        self.pushCommentService.notifyScrollerOnTop();
       }
       if (self.el.scrollHeight - self.el.scrollTop - self.el.clientHeight < 10) {
-        self.pushDanmuService.notifyScrollerOnBottom();
+        self.pushCommentService.notifyScrollerOnBottom();
       }
     });
   }

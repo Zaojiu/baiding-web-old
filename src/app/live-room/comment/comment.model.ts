@@ -1,6 +1,6 @@
 import { UserInfoModel } from '../../shared/user-info/user-info.model'
 
-export class LiveRoomDanmuModel {
+export class CommentModel {
   id: string;
   user: UserInfoModel;
   content: string;

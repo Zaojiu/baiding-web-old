@@ -1,10 +1,10 @@
-.live-room-danmu-container {
+.comment-container {
   position: fixed;
   top: 58px;
   right: 14px;
   z-index: 2;
 
-  .live-room-danmu {
+  .comment {
     background-color: rgba(45, 45, 45, .7);
     border-radius: 16px;
     height: 31px;
@@ -17,7 +17,7 @@
     color: rgb(242, 242, 242);
     font-size: 14px;
 
-    .live-room-danmu-content {
+    .comment-content {
       flex-grow: 1;
       white-space: nowrap;
       overflow: hidden;
@@ -25,7 +25,7 @@
       padding: 0px;
     }
 
-    .live-room-danmu-avatar {
+    .comment-avatar {
       flex-basis: 23px;
       width: 23px;
       height: 23px;

@@ -3,9 +3,9 @@
 <div class="live-room-container" *ngIf="liveInfo">
   <div class="top-bar">
     <span class="online-count">观看人数</span>
-    <a class="danmu-btn" (click)="isDanmuOpened = !isDanmuOpened">
-      <i class="baiding-icon baiding-icon-chat2" *ngIf="!isDanmuOpened"></i>
-      <i class="baiding-icon baiding-icon-chat2-disabled" *ngIf="isDanmuOpened"></i>
+    <a class="comment-btn" (click)="isCommentOpened = !isCommentOpened">
+      <i class="baiding-icon baiding-icon-chat2" *ngIf="!isCommentOpened"></i>
+      <i class="baiding-icon baiding-icon-chat2-disabled" *ngIf="isCommentOpened"></i>
     </a>
   </div>
 
@@ -13,7 +13,7 @@
     <praised-animation *ngFor="let user of liveInfo.praisedAnimations" [user]="user"></praised-animation>
   </div>
 
-  <live-room-danmu [ngClass]="{'hidden': !isDanmuOpened}" [streamId]="id"></live-room-danmu>
+  <comments [ngClass]="{'hidden': !isCommentOpened}" [streamId]="id"></comments>
 
   <timeline class="timeline scrollable" timelineScroller #timeline></timeline>
 

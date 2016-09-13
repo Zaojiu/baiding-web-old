@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LiveService } from '../../shared/live/live.service';
-import { PostDanmuService } from '../../shared/comment/post-danmu.service';
+import { CommentApiService } from '../../shared/api/comment.service';
 import { PostService } from './post.service';
 import { AdditionalContentModel } from './post.model'
 import { MessageApiService } from "../../shared/api/message.api";
@@ -9,33 +9,33 @@ import { MessageApiService } from "../../shared/api/message.api";
 @Component({
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  providers: [ PostDanmuService, PostService ]
+  providers: [ CommentApiService, PostService ]
 })
 
 export class PostComponent implements OnInit {
   id: string;
   content = '';
   messageId: string;
-  danmuId: string;
+  commentId: string;
   additionalContent: AdditionalContentModel;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-    private postDanmuService: PostDanmuService, private messageApiService: MessageApiService,
-    private liveRoomPostCommmentService: PostService) {}
+              private commentApiService: CommentApiService, private messageApiService: MessageApiService,
+              private postService: PostService) {}
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
     this.messageId = this.route.snapshot.params['message_id'];
-    this.danmuId = this.route.snapshot.params['danmu_id'];
+    this.commentId = this.route.snapshot.params['comment_id'];
 
     if (this.messageId) {
-      this.liveRoomPostCommmentService.getMessage(this.id, this.messageId).then(additionalContent => {
+      this.postService.getMessage(this.id, this.messageId).then(additionalContent => {
         this.additionalContent = additionalContent
       })
     }
 
-    if (this.danmuId) {
-      this.liveRoomPostCommmentService.getDanmu(this.id, this.danmuId).then(additionalContent => {
+    if (this.commentId) {
+      this.postService.getComment(this.id, this.commentId).then(additionalContent => {
         this.additionalContent = additionalContent
       })
     }
@@ -45,8 +45,8 @@ export class PostComponent implements OnInit {
     this.router.navigate(['/lives/' + this.id]);
   }
 
-  backToPushDanmu() {
-    this.router.navigate([`/lives/${this.id}/push-danmu`]);
+  backToPushComment() {
+    this.router.navigate([`/lives/${this.id}/push-comment`]);
   }
 
   isEditor() { return this.liveService.isEditor(this.id); }
@@ -56,23 +56,23 @@ export class PostComponent implements OnInit {
   submit() {
     if (this.messageId) return this.postMessage()
 
-    if (this.danmuId) return this.pushDanmu()
+    if (this.commentId) return this.pushComment()
 
     if (this.isEditor()) return this.postMessage()
 
-    if (!this.isEditor()) return this.postDanmu()
+    if (!this.isEditor()) return this.postComment()
   }
 
-  pushDanmu() {
+  pushComment() {
     if (this.content === '') return
 
-    this.messageApiService.postNiceMessage(this.id, this.content, this.danmuId, this.additionalContent.user.uid, this.additionalContent.content).then(() => this.backToPushDanmu());
+    this.messageApiService.postNiceMessage(this.id, this.content, this.commentId, this.additionalContent.user.uid, this.additionalContent.content).then(() => this.backToPushComment());
   }
 
-  postDanmu() {
+  postComment() {
     if (this.content === '') return
 
-    this.postDanmuService.postDanmu(this.id, this.content).then(() => this.backToMainScreen());
+    this.commentApiService.postComment(this.id, this.content).then(() => this.backToMainScreen());
   }
 
   postMessage() {

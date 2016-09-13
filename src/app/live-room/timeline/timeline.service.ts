@@ -1,12 +1,10 @@
 import { Injectable }     from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { Subject }        from 'rxjs/Subject';
 import { Subscription }   from 'rxjs/Subscription';
+
 import { MessageModel, ReplyMessageModel } from './message/message.model';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { MqService, MqEvent } from '../../shared/mq/mq.service';
-
-
 
 @Injectable()
 export class TimelineService {
@@ -19,7 +17,6 @@ export class TimelineService {
   private praisesSource = new Subject<UserInfoModel>();
   private eventSource = new Subject<MqEvent>();
   // Observable string streams
-  private receivedMessage$ = this.receivedMessageSource.asObservable();
   receivedReply$ = this.receivedReplySource.asObservable();
   scroller$ = this.scrollerSource.asObservable();
   scrollTo$ = this.scrollToSource.asObservable();
@@ -27,11 +24,10 @@ export class TimelineService {
   private receivedPraises$ = this.praisesSource.asObservable();
   private event$ = this.eventSource.asObservable()
 
-  private receviedMessageSubscription: Subscription;
   private receviedPraisedUserSubscription: Subscription;
   private receivedEventSub: Subscription
 
-  constructor(private http: Http) { }
+  constructor() { }
 
   notifyScrollerOnTop() {
     this.scrollerSource.next(true);

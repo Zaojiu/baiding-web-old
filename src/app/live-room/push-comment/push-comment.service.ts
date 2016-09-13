@@ -2,7 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Subject }        from 'rxjs/Subject';
 
 @Injectable()
-export class LiveRoomPushDanmuService {
+export class PushCommentService {
   // Observable string sources
   private scrollerSource = new Subject<boolean>();
   // Observable string streams

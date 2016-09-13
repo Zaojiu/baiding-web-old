@@ -50,8 +50,8 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
     if (this.recordSubscription) this.recordSubscription.unsubscribe();
   }
 
-  gotoPushDanmu() {
-    this.router.navigate([`/lives/${this.liveId}/push-danmu`]);
+  gotoPushComment() {
+    this.router.navigate([`/lives/${this.liveId}/push-comment`]);
   }
 
   gotoPostMessage() {

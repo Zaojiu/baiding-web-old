@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
-import { PostDanmuService } from '../../shared/comment/post-danmu.service'
+import { CommentApiService } from '../../shared/api/comment.service'
 import { AdditionalContentModel } from './post.model'
 import { MessageApiService } from "../../shared/api/message.api";
 
 @Injectable()
 export class PostService {
-  constructor (private messageApiService: MessageApiService, private postDanmuService: PostDanmuService) {}
+  constructor (private messageApiService: MessageApiService, private commentApiService: CommentApiService) {}
 
   getMessage(liveId: string, messageId: string): Promise<AdditionalContentModel> {
     return this.messageApiService.getMessage(liveId, messageId).then(messageModel => {
@@ -18,11 +18,11 @@ export class PostService {
     })
   }
 
-  getDanmu(liveId: string, danmuId: string): Promise<AdditionalContentModel> {
-    return this.postDanmuService.getDanmu(liveId, danmuId).then(danmuModel => {
+  getComment(liveId: string, commentId: string): Promise<AdditionalContentModel> {
+    return this.commentApiService.getComment(liveId, commentId).then(commentModel => {
       let additionalContentModel = new AdditionalContentModel()
-      additionalContentModel.user = danmuModel.user
-      additionalContentModel.content = danmuModel.content
+      additionalContentModel.user = commentModel.user
+      additionalContentModel.content = commentModel.content
       return additionalContentModel
     })
   }

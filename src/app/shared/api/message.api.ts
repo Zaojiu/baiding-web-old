@@ -209,16 +209,16 @@ export class MessageApiService {
       });
   }
 
-  postNiceMessage(liveId: string, content: string, danmuId: string, uid: number, danmuContent: string): Promise<MessageModel> {
+  postNiceMessage(liveId: string, content: string, commentId: string, uid: number, commentContent: string): Promise<MessageModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
     let message = new PostMessageModel()
     message.type = 'nice'
     message.content = content
     message.nice = new PostNiceMessageModel()
-    message.nice.commentId = danmuId
+    message.nice.commentId = commentId
     message.nice.uid = uid
-    message.nice.message = danmuContent
+    message.nice.message = commentContent
 
     return this.http.post(url, JSON.stringify(message), {headers: headers}).toPromise()
       .then(res => {

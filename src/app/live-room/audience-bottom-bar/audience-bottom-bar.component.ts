@@ -39,8 +39,8 @@ export class AudienceBottomBarComponent {
     if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
   }
 
-  gotoPushDanmu() {
-    this.router.navigate(['/lives/' + this.id + '/push-danmu']);
+  gotoPushComment() {
+    this.router.navigate(['/lives/' + this.id + '/push-comment']);
   }
 
   gotoPostMessage() {
