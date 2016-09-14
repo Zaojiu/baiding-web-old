@@ -18,6 +18,7 @@ export class PostComponent implements OnInit {
   messageId: string;
   commentId: string;
   additionalContent: AdditionalContentModel;
+  isSubmited: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
@@ -66,18 +67,32 @@ export class PostComponent implements OnInit {
   pushComment() {
     if (this.content === '') return
 
-    this.messageApiService.postNiceMessage(this.id, this.content, this.commentId, this.additionalContent.user.uid, this.additionalContent.content).then(() => this.backToPushComment());
+    this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
+      this.additionalContent.user.uid, this.additionalContent.content).then(() => {
+      this.isSubmited = true;
+      this.backToPushComment()
+    });
   }
 
   postComment() {
     if (this.content === '') return
 
-    this.commentApiService.postComment(this.id, this.content).then(() => this.backToMainScreen());
+    this.commentApiService.postComment(this.id, this.content).then(() => {
+      this.isSubmited = true;
+      this.backToMainScreen()
+    });
   }
 
   postMessage() {
     if (this.content === '') return
 
-    this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => this.backToMainScreen());
+    this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
+      this.isSubmited = true;
+      this.backToMainScreen()
+    })
+  }
+
+  canDeactivate() {
+    return this.isSubmited;
   }
 }
