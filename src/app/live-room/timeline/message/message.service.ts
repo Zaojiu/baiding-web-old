@@ -6,15 +6,15 @@ import { AppConfig } from '../../../app.config'
 
 @Injectable()
 export class MessageService {
-  constructor (private http: Http, private config: AppConfig) {}
+  constructor(private http: Http, private config: AppConfig) { }
 
-  confirmPraise(liveId: string, msgId: string): Promise<void> {
+  confirmPraise(liveId: string, msgId: string, priased: boolean, num: number): Promise<void> {
     let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/${msgId}/praises`;
 
-    return this.http.post(url, null).toPromise()
+    return this.http.post(url, ).toPromise()
       .then(res => {
         return
-      }).catch(res => {});
+      }).catch(res => { });
   }
 
   cancelPraise(liveId: string, msgId: string): Promise<void> {
@@ -23,6 +23,6 @@ export class MessageService {
     return this.http.delete(url, null).toPromise()
       .then(res => {
         return
-      }).catch(res => {});
+      }).catch(res => { });
   }
 }

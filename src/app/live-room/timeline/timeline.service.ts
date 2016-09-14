@@ -17,6 +17,7 @@ export class TimelineService {
   private praisesSource = new Subject<UserInfoModel>();
   private eventSource = new Subject<MqEvent>();
   // Observable string streams
+  private receivedMessage$ = this.receivedMessageSource.asObservable();
   receivedReply$ = this.receivedReplySource.asObservable();
   scroller$ = this.scrollerSource.asObservable();
   scrollTo$ = this.scrollToSource.asObservable();
@@ -24,6 +25,7 @@ export class TimelineService {
   private receivedPraises$ = this.praisesSource.asObservable();
   private event$ = this.eventSource.asObservable()
 
+  private receviedMessageSub: Subscription;
   private receviedPraisedUserSubscription: Subscription;
   private receivedEventSub: Subscription
 
@@ -77,6 +79,10 @@ export class TimelineService {
     if (this.receviedPraisedUserSubscription) {
       this.receviedPraisedUserSubscription.unsubscribe()
     }
+
+    if (this.receviedMessageSub) {
+      this.receviedMessageSub.unsubscribe()
+    }
   }
 
   onReceivedEvents(f: any) {
@@ -85,5 +91,10 @@ export class TimelineService {
 
   onReceivedPraises(f: any) {
     this.receviedPraisedUserSubscription = this.receivedPraises$.subscribe(f)
+  }
+
+  // 自己发送的
+  onReceiveMessages(f: any) {
+    this.receviedMessageSub = this.receivedMessage$.subscribe(f)
   }
 }

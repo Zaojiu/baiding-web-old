@@ -140,7 +140,7 @@ export class MessageApiService {
     return message;
   }
 
-  postTextMessage(liveId: string, content: string, replyParent?: string): Promise<any> {
+  postTextMessage(liveId: string, content: string, replyParent = ""): Promise<any> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
     let message = new PostMessageModel();

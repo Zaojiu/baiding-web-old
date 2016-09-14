@@ -20,7 +20,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.commentService.startReceive(this.streamId);
     this.commentService.onReceiveComments(comment => {
-        this.onReceiveComments(comment)
+      this.onReceiveComments(comment)
     });
   }
 
@@ -29,6 +29,12 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   onReceiveComments(comment: CommentModel) {
+    for (let idx in this.comments) {
+      if (this.comments[idx].id == comment.id) {
+        return
+      }
+    }
+
     if (this.comments.length >= this.maxCommentAmount) {
       this.comments.shift();
     }

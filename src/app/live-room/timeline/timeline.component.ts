@@ -89,7 +89,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     let closedAt = moment(this.liveInfo.closedAt)
     let isZero = closedAt.isSame(moment('0001-01-01T00:00:00Z'))
     return moment().isSameOrAfter(closedAt) && !isZero
-}
+  }
 
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
@@ -108,11 +108,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   onReceivedPraises(praisedUser: MqPraisedUser) {
-    if (praisedUser.user.uid == this.userInfo.uid) return
-
+    if (praisedUser.user.uid == this.userInfo.uid) {
+      return
+    }
     for (let idx in this.messages) {
       let message = this.messages[idx]
       if (message.id == praisedUser.msgId) {
+        message.praisedAmount += 1
         message.pushPraisedUser(praisedUser.user)
       }
     }
@@ -160,7 +162,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
-      this.removeRepeat(comments)
+      this.removeRepeat(messages)
       for (let message of messages) {
         this.messages.push(message);
       }
@@ -179,7 +181,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
-          this.removeRepeat(comments)
+      this.removeRepeat(messages)
       for (let message of messages) {
         this.messages.unshift(message);
       }
@@ -246,22 +248,22 @@ export class TimelineComponent implements OnInit, OnDestroy {
     );
   }
 
-  removeRepeat(comments: TimelineCommentModel[]) {
+  removeRepeat(messages: MessageModel[]) {
     let idsX = {}
-    for (let idx in this.comments) {
-      idsX[this.comments[idx].id] = idx
+    for (let idx in this.messages) {
+      idsX[this.messages[idx].id] = idx
     }
     let idY = {}
     let idxs = []
-    for (let comment of comments) {
-      idY[comment.id] = true
-      if (idsX[comment.id] !== undefined) {
-        idxs.push(idsX[comment.id])
+    for (let message of messages) {
+      idY[message.id] = true
+      if (idsX[message.id] !== undefined) {
+        idxs.push(idsX[message.id])
       }
     }
     idxs = idxs.sort().reverse()
     for (let idx of idxs) {
-      this.comments.splice(idx, 1)
+      this.messages.splice(idx, 1)
     }
   }
 }
