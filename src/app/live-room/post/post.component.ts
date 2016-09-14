@@ -9,7 +9,7 @@ import { MessageApiService } from "../../shared/api/message.api";
 @Component({
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  providers: [ CommentApiService, PostService ]
+  providers: [CommentApiService, PostService]
 })
 
 export class PostComponent implements OnInit {
@@ -18,10 +18,12 @@ export class PostComponent implements OnInit {
   messageId: string;
   commentId: string;
   additionalContent: AdditionalContentModel;
+  isSubmited: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
-              private postService: PostService) {}
+              private postService: PostService) {
+  }
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
@@ -49,9 +51,13 @@ export class PostComponent implements OnInit {
     this.router.navigate([`/lives/${this.id}/push-comment`]);
   }
 
-  isEditor() { return this.liveService.isEditor(this.id); }
+  isEditor() {
+    return this.liveService.isEditor(this.id);
+  }
 
-  isAudience() { return this.liveService.isAudience(this.id); }
+  isAudience() {
+    return this.liveService.isAudience(this.id);
+  }
 
   submit() {
     if (this.messageId) return this.postMessage()
@@ -66,18 +72,32 @@ export class PostComponent implements OnInit {
   pushComment() {
     if (this.content === '') return
 
-    this.messageApiService.postNiceMessage(this.id, this.content, this.commentId, this.additionalContent.user.uid, this.additionalContent.content).then(() => this.backToPushComment());
+    this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
+      this.additionalContent.user.uid, this.additionalContent.content).then(() => {
+      this.isSubmited = true;
+      this.backToPushComment()
+    });
   }
 
   postComment() {
     if (this.content === '') return
 
-    this.commentApiService.postComment(this.id, this.content).then(() => this.backToMainScreen());
+    this.commentApiService.postComment(this.id, this.content).then(() => {
+      this.isSubmited = true;
+      this.backToMainScreen()
+    });
   }
 
   postMessage() {
     if (this.content === '') return
 
-    this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => this.backToMainScreen());
+    this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
+      this.isSubmited = true;
+      this.backToMainScreen()
+    })
+  }
+
+  canDeactivate() {
+    return this.isSubmited;
   }
 }
