@@ -20,46 +20,50 @@ export class MessageComponent {
   @Input() userInfo: UserInfoModel;
   @Input() liveInfo: LiveInfoModel;
   isLoading: boolean;
+  praisesNum: number
+  timer: any = -1
 
-  constructor(private messageService: MessageService, private router: Router, private liveService: LiveService) {}
+  constructor(private messageService: MessageService, private router: Router, private liveService: LiveService) { }
 
   confirmPraise() {
+    this.praisesNum += 1
+    this.message.praisedAnimations.push(this.userInfo);
+
+    let priased = this.message.hadPraised
+
     if (!this.message.hadPraised) {
-      if (this.isLoading) return;
-
-      this.isLoading = true;
-      this.messageService.confirmPraise(this.liveInfo.id, this.message.id).then(() => this.isLoading = false);
-
-      this.message.hadPraised = true;
       this.message.praisedAmount += 1;
     }
+    this.message.hadPraised = true;
 
-    this.message.praisedAnimations.push(this.userInfo);
-    // 为了保留自己的头像在点赞用户的最后一个，所以模板里面特殊处理，检测有无hasPraised。
-    // 因此不需要将自己的info推入praisedAvatars数组。
+    if (this.isLoading) return
+
+    if (this.timer > -1) {
+      clearTimeout(this.timer)
+    }
+
+    this.timer = setTimeout(() => {
+      this.isLoading = true;
+      this.messageService.confirmPraise(this.liveInfo.id, this.message.id, priased, this.praisesNum).then(() => {
+        this.praisesNum = 0
+
+        clearTimeout(this.timer)
+        this.timer = -1
+        this.isLoading = false
+      });
+    }, 1000)
   }
 
   isEditor() { return this.liveService.isEditor(this.liveId); }
 
   isAudience() { return this.liveService.isAudience(this.liveId); }
 
-  // 暂时不加取消点赞
-  // cancelPraise() {
-  //   if (this.isLoading) return;
-
-  //   this.isLoading = true;
-  //   this.messageService.cancelPraise(this.liveInfo.id, this.message.id).then(() => this.isLoading = false);
-
-  //   this.message.hadPraised = false;
-  //   this.message.praisedAmount -= 1;
-  // }
-
   setPraise() {
     this.confirmPraise();
   }
 
   gotoReply() {
-    this.router.navigate([`/lives/${this.liveInfo.id}/post`, {'message_id': this.message.id}]);
+    this.router.navigate([`/lives/${this.liveInfo.id}/post`, { 'message_id': this.message.id }]);
   }
 
   canReply(): boolean {

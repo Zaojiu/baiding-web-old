@@ -3,6 +3,8 @@ import { Subject } from 'rxjs/Subject';
 
 import { UserInfoModel } from '../user-info/user-info.model';
 
+import { AppConfig } from '../../app.config'
+
 import * as AV from 'leancloud-push';
 
 export enum EventType {
@@ -34,14 +36,15 @@ export class MqService {
   private static subs: Subject<any>[] = []
 
   constructor() {
+    let conf: AppConfig = new AppConfig()
     this.client = AV.push({
-      appId: "UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz",
-      appKey: "dbbAJuix9SThsVPWMkNSAQ9d"
+      appId: conf.lcAppId,
+       appKey: conf.lcAppKey
     });
 
     this.client.open(() => { this.onOpen() });
     this.client.on('message', (data) => {
-        this.onMessage(data)
+      this.onMessage(data)
     });
     (<any>window).client = this.client // (<any>window) avoid ts type checking
   }
