@@ -18,8 +18,10 @@ export class MqEvent {
 }
 
 export class MqPraisedUser {
-  user: UserInfoModel;
-  msgId: string;
+  user: UserInfoModel
+  msgId: string
+  praised: boolean
+  num: number
 }
 
 export class MqComment {

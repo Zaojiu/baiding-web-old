@@ -40,11 +40,22 @@ export class MessageModel {
     return avatars
   }
 
-  pushPraisedUser(user: UserInfoModel) {
-    this.praisedAnimations.push(user)
-    this.praisedAvatars.unshift(user)
-    if (this.praisedAvatars.length > 5) {
-      this.praisedAvatars.pop()
+  pushPraisedUser(user: UserInfoModel, praised: boolean, num: number) {
+    if (!praised) {
+      this.praisedAmount += 1
+      this.praisedAvatars.unshift(user)
+      if (this.praisedAvatars.length > 5) {
+        this.praisedAvatars.pop()
+      }
+    }
+    if (num > 10) {
+      num = 10
+    }
+    while (num > 0) {
+      num -= 1
+      setTimeout(() => {
+        this.praisedAnimations.push(user)
+      }, _.random(1, 10) * 150)
     }
   }
 }

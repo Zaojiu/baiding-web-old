@@ -22,6 +22,7 @@ export class MessageComponent {
   isLoading: boolean;
   praisesNum: number = 0
   timer: any = -1
+  praised: boolean
 
   constructor(private messageService: MessageService, private router: Router, private liveService: LiveService) { }
 
@@ -31,8 +32,6 @@ export class MessageComponent {
 
     this.praisesNum += 1
     if (this.praisesNum > 3) return
-
-    let priased = this.message.hadPraised
 
     if (!this.message.hadPraised) {
       this.message.praisedAmount += 1;
@@ -52,9 +51,8 @@ export class MessageComponent {
         praisesNum = 10
       }
       this.praisesNum = 0
-      this.messageService.confirmPraise(this.liveInfo.id, this.message.id, priased, praisesNum).then(() => {
-
-        clearTimeout(this.timer)
+      this.messageService.confirmPraise(this.liveInfo.id, this.message.id, this.praised, praisesNum).then(() => {
+        this.praised = true
         this.timer = -1
         this.isLoading = false
       });
