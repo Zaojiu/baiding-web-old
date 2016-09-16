@@ -48,3 +48,8 @@ export class MessageModel {
     }
   }
 }
+
+export class PostPraiseModel {
+  praised: boolean
+  num: number
+}

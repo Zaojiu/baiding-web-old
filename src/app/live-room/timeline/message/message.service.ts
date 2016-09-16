@@ -3,15 +3,19 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { AppConfig } from '../../../app.config'
+import { PostPraiseModel } from './message.model'
 
 @Injectable()
 export class MessageService {
   constructor(private http: Http, private config: AppConfig) { }
 
-  confirmPraise(liveId: string, msgId: string, priased: boolean, num: number): Promise<void> {
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/${msgId}/praises`;
+  confirmPraise(liveId: string, msgId: string, praised: boolean, num: number): Promise<void> {
+    let data = new PostPraiseModel()
+    data.praised = praised
+    data.num = num
 
-    return this.http.post(url, ).toPromise()
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/${msgId}/praises`;
+    return this.http.post(url, JSON.stringify(data)).toPromise()
       .then(res => {
         return
       }).catch(res => { });
