@@ -114,8 +114,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     for (let idx in this.messages) {
       let message = this.messages[idx]
       if (message.id == praisedUser.msgId) {
-        message.praisedAmount += 1
-        message.pushPraisedUser(praisedUser.user)
+        message.pushPraisedUser(praisedUser.user, praisedUser.praised, praisedUser.num)
       }
     }
   }
