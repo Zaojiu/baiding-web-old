@@ -1,6 +1,6 @@
 <form class="live-room-post-container" (ngSubmit)="submit()">
   <div class="top-bar">
-    <a class="close-btn" (click)="backToMainScreen()"><i class="bi bi-close"></i></a>
+    <a class="close-btn" (click)="commentId ? backToPushComment() : backToMainScreen()"><i class="bi bi-close"></i></a>
   </div>
 
   <div class="additional-content" *ngIf="additionalContent">
