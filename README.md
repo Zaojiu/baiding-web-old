@@ -23,7 +23,7 @@ typings install
 npm run serve.dev
 ```
 
-运行prod环境 (不会watch,使用angular2 AOT模式)：
+运行prod环境 (不会watch,使用angular2 AOT模式,用于线上部署)：
 ```bash
 npm run serve.prod.exp
 ```
