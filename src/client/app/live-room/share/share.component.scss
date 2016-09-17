@@ -1,0 +1,17 @@
+.share-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: rgb(0, 0, 0);
+  z-index: 3;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .share-img{
+    margin: 88px 0;
+    width: 100%;
+  }
+}

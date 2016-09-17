@@ -1,0 +1,6 @@
+<div class="comment-container">
+  <div class="comment" *ngFor="let comment of comments">
+    <p class="comment-content">{{comment.content}}</p>
+    <img class="comment-avatar" [src]="comment.user.avatar">
+  </div>
+</div>
