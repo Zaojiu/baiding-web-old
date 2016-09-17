@@ -1,0 +1,10 @@
+import 'jquery';
+import 'lodash';
+import 'leancloud-push';
+import 'hammerjs';
+import 'fastclick';
+import 'moment-countdown';
+import 'moment/locale/zh-cn';
+import * as fastclick from 'fastclick';
+fastclick.attach(document.body);
+(<any>window).wx = require('weixin-js-sdk');

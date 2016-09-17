@@ -1,0 +1,31 @@
+<div class="loading" *ngIf="isLoading">
+
+</div>
+
+<div class="invite-container" *ngIf="!isLoading">
+  <div class="invitation">
+    <p class="title">邀请函</p>
+    <p>您好：</p>
+    <p>很荣幸邀请您成为</p>
+    <p class="live-title">{{liveInfo.subject}}</p>
+    <p>的嘉宾</p>
+    <div class="sign"><img class="avatar" [src]="liveInfo.admin.avatar"><span class="name">{{liveInfo.admin.nick}}</span></div>
+  </div>
+
+  <div class="operation-area" *ngIf="liveInfo.admin.uid === userInfo.uid">
+    <p>点击右上角 <i class="bi bi-more2"></i> 通过分享链接 <i class="bi bi-share2"></i> 来邀请嘉宾</p>
+    <p>一条链接只能邀请一个用户</p>
+  </div>
+
+  <div class="operation-area" *ngIf="liveInfo.admin.uid !== userInfo.uid && (!token || !isTokenVaild)">
+    <p>无效邀请函</p>
+  </div>
+
+  <div class="operation-area" *ngIf="liveInfo.admin.uid !== userInfo.uid && token && isTokenVaild && !isTokenUsed">
+    <a class="btn-accept-invitation" (click)="acceptInvitation()">接受邀请</a>
+  </div>
+
+  <div class="operation-area" *ngIf="liveInfo.admin.uid !== userInfo.uid && token && isTokenVaild && isTokenUsed">
+    <a class="btn-goto-live" (click)="backToLive()">进入直播</a>
+  </div>
+</div>

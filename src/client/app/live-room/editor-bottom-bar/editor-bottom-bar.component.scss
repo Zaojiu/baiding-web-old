@@ -1,0 +1,111 @@
+.live-room-editor-bottom-bar {
+  position: relative;
+  height: 50px;
+  box-sizing: border-box;
+  border-top: solid 1px rgba(143, 143, 143, .3);
+  font-size: 0;
+  background-color: rgb(250, 250, 250);
+
+  .share-btn, .post-btn, .push-comment-btn, .more-op-btn {
+    display: inline-block;
+    height: 49px;
+    width: calc((100% - 60px) / 4);
+    text-align: center;
+    color: rgb(75, 75, 75);
+    overflow: hidden;
+
+    .bi {
+      font-size: 28px;
+      line-height: 49px;
+
+      &.bi-chat1 {
+        font-size: 25px;
+      }
+
+      &.bi-share {
+        font-size: 22px;
+      }
+    }
+  }
+
+  .post-btn {
+    margin-right: 60px;
+  }
+
+  .record-btn-container {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    bottom: 2px;
+    left: 50%;
+    margin-left: -30px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    &.recording {
+      width: 100%;
+      height: 300px;
+      margin-left: -50%;
+    }
+
+    .record-btn {
+      flex-shrink: 0;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      background-color: rgb(255, 255, 255);
+      border: solid 1px rgba(143, 143, 143, .6);
+      border-radius: 50%;
+      text-align: center;
+      font-size: 28px;
+      color: rgb(75, 75, 75);
+      overflow: hidden;
+    }
+  }
+}
+
+.record-background {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 180px;
+  width: calc(100% - 80px);
+  margin-top: -90px;
+  margin-left: calc((100% - 80px) / -2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(118, 118, 118, .8);
+  border-radius: 12px;
+
+  .record-container {
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+
+    .tips {
+      padding-top: 15px;
+    }
+  }
+
+  .icon-wrapper, .bi-cancel, .bi-warning, .tips {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .bi-cancel, .bi-warning {
+    font-size: 60px;
+  }
+
+  .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(33, 150, 243);
+    line-height: 60px;
+    font-size: 27px;
+    border: solid 2px rgb(33, 150, 243);
+  }
+}
