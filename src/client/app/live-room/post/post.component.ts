@@ -19,7 +19,7 @@ export class PostComponent implements OnInit {
   messageId: string;
   commentId: string;
   additionalContent: AdditionalContentModel;
-  isSubmited: boolean;
+  isSubmited: boolean = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
