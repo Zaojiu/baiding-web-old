@@ -6,6 +6,7 @@
     (touchstart)="startRecord()"
     (touchend)="stopRecord()"
     (panup)="cancelRecord()"
+    (touchstart)="$event.preventDefault()"
   >
     <a class="record-btn">
       <i class="bi bi-mic"></i>
