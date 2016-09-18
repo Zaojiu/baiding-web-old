@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Title } from '@angular/platform-browser';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Router, ActivatedRoute, NavigationStart} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {Title} from '@angular/platform-browser';
 
-import { BottomPopupSelectorService } from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
-import { BottomPopupSelectorModel } from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
-import { TimelineService } from '../timeline/timeline.service';
-import { LiveService } from '../../shared/live/live.service';
-import { WechatService } from '../../shared/wechat/wechat.service';
-import { MessageApiService } from '../../shared/api/message.api';
-import { SharePopupService } from '../../shared/share-popup/share-popup.service';
+import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
+import {BottomPopupSelectorModel} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
+import {TimelineService} from '../timeline/timeline.service';
+import {LiveService} from '../../shared/live/live.service';
+import {ModalService} from '../../shared/modal/modal.service';
+import {WechatService} from '../../shared/wechat/wechat.service';
+import {MessageApiService} from '../../shared/api/message.api';
+import {SharePopupService} from '../../shared/share-popup/share-popup.service';
 
 
 @Component({
@@ -34,10 +35,11 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   minRecordDuration = 20;
 
   constructor(private route: ActivatedRoute, private router: Router,
-    private bottomPopupService: BottomPopupSelectorService, private timelineService: TimelineService,
-    private liveService: LiveService, private wechatService: WechatService,
-    private titleService: Title, private messageApiService: MessageApiService,
-    private sharePopupService: SharePopupService) {}
+              private bottomPopupService: BottomPopupSelectorService, private timelineService: TimelineService,
+              private titleService: Title, private messageApiService: MessageApiService,
+              private liveService: LiveService, private wechatService: WechatService, private modalService: ModalService,
+              private sharePopupService: SharePopupService) {
+  }
 
   ngOnInit() {
     this.recordSubscription = this.wechatService.record$.subscribe(audioModel => {
@@ -85,7 +87,9 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
           if (item === '回到开始') return this.timelineService.gotoFirstMessage();
           if (item === '查看最新') return this.timelineService.gotoLastMessage();
           if (item === '邀请嘉宾') return this.gotoInvitation()
-          if (item === '结束直播') return this.liveService.closeLive(this.liveId);
+          if (item === '结束直播') return this.modalService.popup('结束此次直播?').then(result => {
+            if (result) this.liveService.closeLive(this.liveId)
+          });
         }
       );
 
