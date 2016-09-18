@@ -27,6 +27,7 @@ export = () => {
     join(Config.APP_SRC, '**/*.ts'),
     '!' + join(Config.APP_SRC, '**/*.spec.ts'),
     '!' + join(Config.APP_SRC, '**/*.e2e-spec.ts'),
+    '!' + join(Config.APP_SRC, '/manual_typings/**/*.d.ts'),
     '!' + join(Config.APP_SRC, `**/${Config.BOOTSTRAP_FACTORY_PROD_MODULE}.ts`)
   ];
 
