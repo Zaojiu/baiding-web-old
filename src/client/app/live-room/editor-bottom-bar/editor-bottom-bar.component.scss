@@ -5,6 +5,9 @@
   border-top: solid 1px rgba(143, 143, 143, .3);
   font-size: 0;
   background-color: rgb(250, 250, 250);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 
   .share-btn, .post-btn, .push-comment-btn, .more-op-btn {
     display: inline-block;
