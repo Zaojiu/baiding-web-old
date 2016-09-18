@@ -1,4 +1,4 @@
-.live-room-post-container {
+.post-container {
   display: flex;
   flex-direction: column;
 
@@ -11,7 +11,7 @@
   }
 }
 
-.live-room-post-container {
+.post-container {
   position: absolute;
   left: 0;
   right: 0;
@@ -97,6 +97,18 @@
 
     &::-webkit-scrollbar, &::-webkit-scrollbar-track {
       display: none;
+    }
+
+    .add-image {
+      position: relative;
+      overflow: hidden;
+
+      #image-selector {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+      }
     }
 
     .add-image, .face {

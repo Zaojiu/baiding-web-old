@@ -20,6 +20,7 @@ export class PostComponent implements OnInit {
   commentId: string;
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
+  image: File;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
@@ -41,6 +42,10 @@ export class PostComponent implements OnInit {
         this.additionalContent = additionalContent
       })
     }
+  }
+
+  imgSelected(files: File[]) {
+    this.image = files[0];
   }
 
   backToMainScreen() {

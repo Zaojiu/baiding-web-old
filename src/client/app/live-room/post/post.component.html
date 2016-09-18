@@ -1,4 +1,4 @@
-<form class="live-room-post-container" (ngSubmit)="submit()">
+<form class="post-container" (ngSubmit)="submit()">
   <div class="top-bar">
     <a class="close-btn" (click)="commentId ? backToPushComment() : backToMainScreen()"><i class="bi bi-close"></i></a>
   </div>
@@ -15,7 +15,13 @@
     <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" autofocus></textarea>
   </div>
 
+  <image-viewer [imageFile]="image"></image-viewer>
+
   <div class="bottom-bar scrollable">
+    <label class="add-image" for="image-selector">
+      <input id="image-selector" type="file" fileSelector (onImgSelected)="imgSelected($event)">
+      <i class="bi bi-image"></i>
+    </label>
     <a class="face" (click)="content = content + '😄'">😄</a>
     <a class="face" (click)="content = content + '😊'">😊</a>
     <a class="face" (click)="content = content + '😍'">😍</a>

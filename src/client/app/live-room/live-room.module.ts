@@ -29,6 +29,8 @@ import { LiveService } from '../shared/live/live.service';
 import { FromNowPipe } from "../shared/pipe/time.pipe";
 import { MessageApiService } from "../shared/api/message.api";
 import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
+import { FileSelectorDirective } from "../shared/file-selector/file-selector.directive";
+import { ImageViewerComponent } from "../shared/image-viewer/image-viewer.component";
 
 @NgModule({
   imports: [
@@ -58,6 +60,8 @@ import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
     TimelineScrollerDirective,
     AudioMessageComponent,
     PushCommentScrollerDirective,
+    FileSelectorDirective,
+    ImageViewerComponent,
   ],
   providers: [
     LiveGuard,
@@ -65,7 +69,7 @@ import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
     TimelineService,
     CommentService,
     MessageApiService,
-    QuitEditGuard
+    QuitEditGuard,
   ]
 })
 
