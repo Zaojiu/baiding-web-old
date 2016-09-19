@@ -7,6 +7,9 @@
   line-height: 50px;
   overflow-y: hidden;
   white-space: nowrap;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 
   &::-webkit-scrollbar, &::-webkit-scrollbar-track {
     display: none;
