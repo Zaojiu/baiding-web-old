@@ -103,7 +103,7 @@ export class LiveService {
 
   closeLive(id: string): Promise<any> {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/close`;
-    return this.http.patch(url, null).toPromise().then(res => {
+    return this.http.put(url, null).toPromise().then(res => {
       let data = res.json();
 
       return data;
