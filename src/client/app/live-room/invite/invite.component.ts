@@ -12,7 +12,7 @@ import { WechatService } from '../../shared/wechat/wechat.service';
   moduleId: module.id,
   templateUrl: './invite.component.html',
   styleUrls: ['./invite.component.css'],
-  providers: [ InviteApiService ]
+  providers: [InviteApiService]
 })
 
 export class InviteComponent implements OnInit {
@@ -26,7 +26,7 @@ export class InviteComponent implements OnInit {
 
   constructor(private userInfoService: UserInfoService, private liveService: LiveService,
     private route: ActivatedRoute, private router: Router, private inviteApiService: InviteApiService,
-    private wechatService: WechatService) {}
+    private wechatService: WechatService) { }
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
@@ -45,10 +45,17 @@ export class InviteComponent implements OnInit {
       this.liveInfo = liveInfo
 
       if (!this.token && userInfo.uid == liveInfo.admin.uid) {
-        this.inviteApiService.getInviteToken(this.liveId).then(token => this.goInvitation(token))
+        this.inviteApiService.getInviteToken(this.liveId).then(token => {
+          let url = this.createTokenUrl(token)
+          this.router.navigateByUrl(url).then(() => {
+            this.wechatShare(location.href)
+          })
+        })
       }
 
-      this.wechatService.share(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverUrl, location.href)
+      if (this.token) {
+        this.wechatShare(location.href)
+      }
 
       this.isLoading = false
     })
@@ -73,7 +80,11 @@ export class InviteComponent implements OnInit {
     this.router.navigate([`/lives/${this.liveId}`]);
   }
 
-  goInvitation(token) {
-    this.router.navigate([`/lives/${this.liveId}/invitation`, {token: token}]);
+  createTokenUrl(token: string) {
+    return this.router.serializeUrl(this.router.createUrlTree([`/lives/${this.liveId}/invitation`, { token: token }]))
+  }
+
+  wechatShare(url: string) {
+    this.wechatService.share(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverUrl, url)
   }
 }
