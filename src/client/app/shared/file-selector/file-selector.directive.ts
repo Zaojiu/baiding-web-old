@@ -1,6 +1,5 @@
-import { Directive, ElementRef, OnInit, Output, EventEmitter } from '@angular/core'
-
-declare var $:any
+import {Directive, ElementRef, OnInit, Input, Output, EventEmitter, HostListener} from '@angular/core'
+declare var $: any
 
 @Directive({
   selector: '[fileSelector]'
@@ -17,8 +16,19 @@ export class FileSelectorDirective implements OnInit {
 
   ngOnInit() {
     let $this = $(this.el);
-
-    $this.on('change',() => {
+    let maxSize = 1024 * 1024 * 8;
+    $this.on('change', () => {
+      if($this[0].files.length){
+        let fileSize = $this[0].files[0].size;
+        let file = $this[0].value;
+       if(!/.(gif|jpg|jpeg|png|bmp)$/.test(file)){
+          alert("图片不符合类型")
+          return false
+        } else if(fileSize>maxSize){
+          alert("图片超过尺寸大小")
+          return false
+        }
+      }
       this.files = $this[0].files;
       this.onImgSelected.emit(this.files);
     })
