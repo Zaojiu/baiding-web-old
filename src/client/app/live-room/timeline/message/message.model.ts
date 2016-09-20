@@ -16,6 +16,10 @@ export class ReplyMessageModel {
   createdAt: string;
 }
 
+export class ImageMessageModel {
+  link: string;
+}
+
 export class MessageModel {
   id: string;
   isReceived: boolean; // 用于判断是否为服务器拉取下来的信息，或者是本地发送时的信息。
@@ -23,6 +27,7 @@ export class MessageModel {
   content: string;
   type: MessageType;
   audio: AudioMessageModel;
+  image: ImageMessageModel;
   hadPraised: boolean;
   praisedAmount: number;
   praisedAnimations: UserInfoModel[] = [];

@@ -40,5 +40,6 @@
     <a class="face" (click)="content = content + '🎉'">🎉</a>
   </div>
 
-  <button class="post-btn" [disabled]="!content">发送</button>
+  <button class="post-btn" [disabled]="!image && !content" >发送</button>
+
 </form>

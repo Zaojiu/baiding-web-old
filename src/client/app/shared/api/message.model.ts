@@ -1,5 +1,5 @@
 export class PostImageMessageModel {
-  link: string;
+  key: string;
 }
 
 export class PostAudioMessageModel {

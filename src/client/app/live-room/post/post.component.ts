@@ -61,13 +61,15 @@ export class PostComponent implements OnInit {
   isAudience() { return this.liveService.isAudience(this.id); }
 
   submit() {
-    if (this.messageId) return this.postMessage()
+    if (this.image) return this.postImgMessage();
 
-    if (this.commentId) return this.pushComment()
+    if (this.messageId) return this.postMessage();
 
-    if (this.isEditor()) return this.postMessage()
+    if (this.commentId) return this.pushComment();
 
-    if (!this.isEditor()) return this.postComment()
+    if (this.isEditor()) return this.postMessage();
+
+    if (!this.isEditor()) return this.postComment();
   }
 
   pushComment() {
@@ -93,6 +95,14 @@ export class PostComponent implements OnInit {
     if (this.content === '') return
 
     this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
+      this.isSubmited = true;
+      this.backToMainScreen()
+    })
+  }
+
+  postImgMessage() {
+    this.messageApiService.postImgMessage(this.id, this.image)
+      .then(() => {
       this.isSubmited = true;
       this.backToMainScreen()
     })
