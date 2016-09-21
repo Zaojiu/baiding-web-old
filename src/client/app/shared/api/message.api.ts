@@ -266,7 +266,7 @@ export class MessageApiService {
       });
   }
 
-  postImgMessage(liveId: string, file: File): Promise<MessageModel> {
+  postImgMessage(liveId: string, file: File): Promise<void> {
     return this.getUploadToken(liveId).then(
       data => {
         this.uploadService.uploadToQiniu(file, data).then(key => {
