@@ -1,9 +1,38 @@
-.img-wrapper{
+.img-wrapper {
   display: flex;
   height: 100px;
-  img{
+  .wrapper-img {
     height: 80px;
     margin: auto;
     margin-left: 15px;
+    max-width: 80%;
+  }
+  .image-viewer-popup {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+
+    .delete-btn {
+      position: fixed;
+      top: 15px;
+      right: 12px;
+    }
+
+    &.opened {
+      display: flex;
+    }
+
+    .popup-img {
+      margin: auto;
+      max-height: 100%;
+      max-width: 100%;
+    }
   }
 }

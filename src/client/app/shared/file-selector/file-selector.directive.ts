@@ -1,18 +1,29 @@
-import {Directive, ElementRef, OnInit, Input, Output, EventEmitter, HostListener} from '@angular/core'
-import {ModalService} from "../modal/modal.service";
+import { Directive, ElementRef, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core'
+import { ModalService } from "../modal/modal.service";
 declare var $: any
 
 @Directive({
   selector: '[fileSelector]'
 })
 
-export class FileSelectorDirective implements OnInit {
+export class FileSelectorDirective implements OnInit, OnChanges {
   private el: HTMLElement;
-  files: File[] = [];
-  @Output() onImgSelected = new EventEmitter<File[]>();
+  @Input() fileSelector: File[] = [];
+  @Output() fileSelectorChange = new EventEmitter<File[]>();
 
   constructor(el: ElementRef, private modalService: ModalService) {
     this.el = el.nativeElement
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    let files = changes['fileSelector'];
+
+    if (files) {
+      let $this = $(this.el);
+
+      $this.wrap('<form>').closest('form').get(0).reset();
+      $this.unwrap();
+    }
   }
 
   ngOnInit() {
@@ -30,8 +41,8 @@ export class FileSelectorDirective implements OnInit {
           return false
         }
       }
-      this.files = $this[0].files;
-      this.onImgSelected.emit(this.files);
+      this.fileSelector = $this[0].files;
+      this.fileSelectorChange.emit(this.fileSelector);
     })
   }
 }

@@ -15,11 +15,11 @@
     <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" autofocus></textarea>
   </div>
 
-  <image-viewer [imageFile]="image"></image-viewer>
+  <image-viewer [imageFiles]="images"></image-viewer>
 
   <div class="bottom-bar scrollable">
     <label class="add-image" for="image-selector">
-      <input id="image-selector" type="file" fileSelector (onImgSelected)="imgSelected($event)">
+      <input class="fileSelector" id="image-selector" type="file"  [(fileSelector)]="images">
       <i class="bi bi-image"></i>
     </label>
     <a class="face" (click)="content = content + '😄'">😄</a>

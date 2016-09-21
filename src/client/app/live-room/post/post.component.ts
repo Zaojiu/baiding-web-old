@@ -20,7 +20,7 @@ export class PostComponent implements OnInit {
   commentId: string;
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
-  image: File;
+  images: File[];
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
@@ -44,10 +44,6 @@ export class PostComponent implements OnInit {
     }
   }
 
-  imgSelected(files: File[]) {
-    this.image = files[0];
-  }
-
   backToMainScreen() {
     this.router.navigate(['/lives/' + this.id])
   }
@@ -61,7 +57,7 @@ export class PostComponent implements OnInit {
   isAudience() { return this.liveService.isAudience(this.id); }
 
   submit() {
-    if (this.image) return this.postImgMessage();
+    if (this.images.length) return this.postImgMessage();
 
     if (this.messageId) return this.postMessage();
 
@@ -101,7 +97,7 @@ export class PostComponent implements OnInit {
   }
 
   postImgMessage() {
-    this.messageApiService.postImgMessage(this.id, this.image)
+    this.messageApiService.postImgMessage(this.id, this.images[0])
       .then(() => {
       this.isSubmited = true;
       this.backToMainScreen()
