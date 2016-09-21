@@ -3,7 +3,7 @@
 
     <div class="modal-context">{{content}}</div>
     <div class="button-wrapper">
-      <li (click)="close()">{{cancelText}}</li>
+      <li (click)="close()" *ngIf="hasCancelBtn">{{cancelText}}</li>
       <li (click)="confirm()">{{confirmText}}</li>
     </div>
   </ul>
