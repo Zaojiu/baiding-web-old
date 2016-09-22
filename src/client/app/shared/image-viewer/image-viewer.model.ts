@@ -1,6 +1,8 @@
 export class ScaleEvent {
   originWidth: number;
   originHeight: number;
+  originX = 0;
+  originY = 0;
   isScaling: boolean;
 
   startScale(originWidth: number, originHeight: number): void {
@@ -13,5 +15,10 @@ export class ScaleEvent {
     this.originWidth = newWidth;
     this.originHeight = newHeight;
     this.isScaling = false;
+  }
+
+  setOffSet(newX: number, newY: number): void {
+    this.originX += newX;
+    this.originY += newY;
   }
 }

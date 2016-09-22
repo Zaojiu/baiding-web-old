@@ -2,7 +2,7 @@
   <img class="wrapper-img" [src]="imageSrc" alt="" (click)="imagePopup()">
 </div>
 
-<div class="image-viewer-popup" (click)="isPopup = false"  [ngClass]="{opened: isPopup}" (pinch)="pinch($event)" (pinchend)="pinchEnd($event)">
+<div class="image-viewer-popup" (click)="isPopup = false"  [ngClass]="{opened: isPopup}" (pinch)="pinch($event)" (pinchend)="pinchEnd($event)" (pan)="pan($event)" (panend)="panEnd($event)">
   <a class="delete-btn" (click)="deleteImageSource()"><i class="bi bi-delete"></i></a>
   <img class="popup-pinch-img" [src]="imageSrc" alt="">
 </div>

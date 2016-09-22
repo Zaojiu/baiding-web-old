@@ -1,6 +1,6 @@
-import {Component, ElementRef, Input, OnInit, OnChanges, SimpleChange} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
 
-import {ScaleEvent} from "./image-viewer.model";
+import { ScaleEvent } from "./image-viewer.model";
 
 import * as Hammer from 'hammerjs'
 declare var $: any
@@ -27,6 +27,7 @@ export class ImageViewerComponent implements OnInit,OnChanges {
   ngOnInit() {
     let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {domEvents: true});
     pinchWrapper.get('pinch').set({enable: true});
+    pinchWrapper.get('pan').set({enable: true});
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
@@ -94,7 +95,16 @@ export class ImageViewerComponent implements OnInit,OnChanges {
     if (this.scaleEvent.isScaling) this.scaleEvent.stopScale($image.width(), $image.height());
   }
 
-  pan(e) {
-    console.log(e)
+  pan(e: HammerInput) {
+    let $target = $(e.target);
+    let $image = $target.hasClass('popup-pinch-img') ? $target : $target.find('.popup-pinch-img');
+    $image.css({
+      'left': `calc(50% + ${this.scaleEvent.originX + e.deltaX}px)`,
+      'top': `calc(50% + ${this.scaleEvent.originY + e.deltaY}px)`
+    });
+  }
+
+  panEnd(e: HammerInput) {
+    this.scaleEvent.setOffSet(e.deltaX, e.deltaY);
   }
 }
