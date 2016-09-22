@@ -1,5 +1,5 @@
-import { Directive, ElementRef, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core'
-import { ModalService } from "../modal/modal.service";
+import {Directive, ElementRef, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges} from '@angular/core'
+import {ModalService} from "../modal/modal.service";
 declare var $: any
 
 @Directive({
@@ -28,7 +28,7 @@ export class FileSelectorDirective implements OnInit, OnChanges {
 
   ngOnInit() {
     let $this = $(this.el);
-    let maxSize = 1024 * 1024;
+    let maxSize = 1024 * 1024 * 8;
     $this.on('change', () => {
       if ($this[0].files.length) {
         let fileSize = $this[0].files[0].size;
@@ -37,7 +37,7 @@ export class FileSelectorDirective implements OnInit, OnChanges {
           this.modalService.popup("图片不符合类型", '取消', '确定', false);
           return false
         } else if (fileSize > maxSize) {
-          this.modalService.popup("图片超过尺寸大小", '取消', '确定', false);
+          this.modalService.popup("图片大小不能超过8M", '取消', '确定', false);
           return false
         }
       }
