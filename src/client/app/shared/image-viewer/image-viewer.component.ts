@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
-
+import { ModalService } from "../modal/modal.service";
 import { ScaleEvent } from "./image-viewer.model";
 
 import * as Hammer from 'hammerjs'
@@ -12,7 +12,7 @@ declare var $: any
   styleUrls: ['./image-viewer.component.css'],
 })
 
-export class ImageViewerComponent implements OnInit,OnChanges {
+export class ImageViewerComponent implements OnInit, OnChanges {
   private el: HTMLElement;
   @Input() imageFiles: File[];
   @Input() imageLinks: string;
@@ -20,7 +20,7 @@ export class ImageViewerComponent implements OnInit,OnChanges {
   isPopup: boolean;
   scaleEvent: ScaleEvent;
 
-  constructor(el: ElementRef) {
+  constructor(el: ElementRef, private modalService: ModalService) {
     this.el = el.nativeElement
   }
 
@@ -53,6 +53,10 @@ export class ImageViewerComponent implements OnInit,OnChanges {
 
   }
 
+  closePopup() {
+    this.isPopup = false;
+  }
+
   imagePopup() {
     this.isPopup = true;
     this.scaleEvent = new ScaleEvent();
@@ -75,9 +79,16 @@ export class ImageViewerComponent implements OnInit,OnChanges {
     }
   }
 
+
   deleteImageSource() {
-    this.imageSrc = '';
-    this.imageFiles = [];
+    this.modalService.popup('确认删除吗?', '取消', '删除').then((isDelete) => {
+      if (isDelete) {
+        console.log(isDelete)
+        this.imageSrc = '';
+        this.imageFiles = [];
+        this.isPopup = false;
+      }
+    })
   }
 
   pinch(e: HammerInput) {
@@ -106,5 +117,14 @@ export class ImageViewerComponent implements OnInit,OnChanges {
 
   panEnd(e: HammerInput) {
     this.scaleEvent.setOffSet(e.deltaX, e.deltaY);
+  }
+
+  dblclick() {
+    let $image = $(this.el).find('.popup-pinch-img');
+    let imgWidth = $image[0].naturalWidth;
+    let imgHeight = $image[0].naturalHeight;
+
+    $image.css({'width': `${imgWidth}px`, 'height': `${imgHeight}`});
+
   }
 }
