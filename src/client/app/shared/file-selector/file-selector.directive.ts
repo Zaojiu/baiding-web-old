@@ -1,5 +1,6 @@
 import {Directive, ElementRef, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges} from '@angular/core'
 import {ModalService} from "../modal/modal.service";
+import isUndefined = require("lodash/isUndefined");
 declare var $: any
 
 @Directive({
@@ -18,9 +19,8 @@ export class FileSelectorDirective implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     let files = changes['fileSelector'];
 
-    if (files) {
+    if (files && files.currentValue == isUndefined) {
       let $this = $(this.el);
-
       $this.wrap('<form>').closest('form').get(0).reset();
       $this.unwrap();
     }

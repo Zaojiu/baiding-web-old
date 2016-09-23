@@ -266,10 +266,10 @@ export class MessageApiService {
       });
   }
 
-  postImgMessage(liveId: string, file: File): Promise<void> {
+  postImgMessage(liveId: string, file: File): Promise<MessageModel> {
     return this.getUploadToken(liveId).then(
       data => {
-        this.uploadService.uploadToQiniu(file, data).then(key => {
+        return this.uploadService.uploadToQiniu(file, data).then(key => {
 
           let headers = new Headers({'Content-Type': 'application/json'});
           const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
@@ -283,10 +283,11 @@ export class MessageApiService {
             .then(res => {
               let data = res.json();
               let messageResp = this.parseResponesMessage(data, MessageType.Image);
-
               if (data.type = 'image') {
                 messageResp.image = new ImageMessageModel()
-                messageResp.image = data.image
+                messageResp.image.link = data.image.link
+                this.timelineService.pushMessage(messageResp);
+                console.log(messageResp.image.link)
                 return messageResp;
               }
             })
