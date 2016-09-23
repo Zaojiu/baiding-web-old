@@ -4,7 +4,7 @@
 
 <div class="image-viewer-popup" [ngClass]="{opened: isPopup}" (pinch)="pinch($event)" (pinchend)="pinchEnd($event)"
      (pan)="pan($event)"
-     (panend)="panEnd($event)" (dblclick)="dblclick()">
+     (panend)="panEnd($event)" (doubletap)="dblclick()">
   <div class="delete-btn-wrapper">
     <a class="delete-btn" (click)="deleteImageSource()"><i class="bi bi-delete"></i></a>
   </div>

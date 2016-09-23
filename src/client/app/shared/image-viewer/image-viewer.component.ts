@@ -1,6 +1,6 @@
-import { Component, ElementRef, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
-import { ModalService } from "../modal/modal.service";
-import { ScaleEvent } from "./image-viewer.model";
+import {Component, ElementRef, Input, OnInit, OnChanges, SimpleChange} from '@angular/core';
+import {ModalService} from "../modal/modal.service";
+import {ImgEvent} from "./image-viewer.model";
 
 import * as Hammer from 'hammerjs'
 declare var $: any
@@ -18,7 +18,7 @@ export class ImageViewerComponent implements OnInit, OnChanges {
   @Input() imageLinks: string;
   imageSrc = '';
   isPopup: boolean;
-  scaleEvent: ScaleEvent;
+  imgEvent: ImgEvent;
 
   constructor(el: ElementRef, private modalService: ModalService) {
     this.el = el.nativeElement
@@ -27,7 +27,6 @@ export class ImageViewerComponent implements OnInit, OnChanges {
   ngOnInit() {
     let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {domEvents: true});
     pinchWrapper.get('pinch').set({enable: true});
-    pinchWrapper.get('pan').set({enable: true});
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
@@ -54,31 +53,41 @@ export class ImageViewerComponent implements OnInit, OnChanges {
   }
 
   closePopup() {
+    console.log('clicked')
     this.isPopup = false;
   }
 
   imagePopup() {
     this.isPopup = true;
-    this.scaleEvent = new ScaleEvent();
+    this.imgEvent = new ImgEvent();
+    this.imageFitScreen();
+  }
 
+  imageFitScreen() {
     let $image = $(this.el).find('.popup-pinch-img');
     let screenWidth = $image.parent().width();
     let screenHeight = $image.parent().height();
-    let imgWidth = $image[0].naturalWidth;
-    let imgHeight = $image[0].naturalHeight;
+    let imgNaturalWidth = $image[0].naturalWidth;
+    let imgNaturalHeight = $image[0].naturalHeight;
+//initial it's position in center
+    $image.css({'top': '50%', 'left': '50%'});
 
-    if (imgWidth < screenWidth && imgHeight < screenHeight) return;
+    if (!(imgNaturalWidth < screenWidth && imgNaturalHeight < screenHeight)) {
+      let screenRatio = screenWidth / screenHeight;
+      let imgRatio = imgNaturalWidth / imgNaturalHeight;
 
-    let screenRatio = screenWidth / screenHeight;
-    let imgRatio = imgWidth / imgHeight;
-
-    if (imgRatio >= screenRatio) {
-      $image.css({'width': `${screenWidth}px`, 'height': 'auto'});
-    } else {
-      $image.css({'width': 'auto', 'height': `${screenHeight}px`});
+      if (imgRatio >= screenRatio) {
+        $image.css({'width': `${screenWidth}px`, 'height': 'auto'});
+      } else {
+        $image.css({'width': 'auto', 'height': `${screenHeight}px`});
+      }
     }
-  }
+    this.imgEvent.fixWidth = $image.width();
+    this.imgEvent.fixHeight = $image.height();
+    console.log($image)
+    console.log(this.imgEvent.fixWidth, this.imgEvent.fixHeight, $image.width(), $image.height())
 
+  }
 
   deleteImageSource() {
     this.modalService.popup('确认删除吗?', '取消', '删除').then((isDelete) => {
@@ -94,37 +103,41 @@ export class ImageViewerComponent implements OnInit, OnChanges {
   pinch(e: HammerInput) {
     let $target = $(e.target);
     let $image = $target.hasClass('popup-pinch-img') ? $target : $target.find('.popup-pinch-img');
-    if (!this.scaleEvent.isScaling) this.scaleEvent.startScale($image.width(), $image.height());
+    if (!this.imgEvent.isScaling) this.imgEvent.startScale($image.width(), $image.height());
 
-    $image.width(this.scaleEvent.originWidth * e.scale);
-    $image.height(this.scaleEvent.originHeight * e.scale);
+    $image.width(this.imgEvent.originWidth * e.scale);
+    $image.height(this.imgEvent.originHeight * e.scale);
   }
 
   pinchEnd(e: HammerInput) {
     let $target = $(e.target);
     let $image = $target.hasClass('popup-pinch-img') ? $target : $target.find('.popup-pinch-img');
-    if (this.scaleEvent.isScaling) this.scaleEvent.stopScale($image.width(), $image.height());
+    if (this.imgEvent.isScaling) this.imgEvent.stopScale($image.width(), $image.height());
   }
 
   pan(e: HammerInput) {
     let $target = $(e.target);
     let $image = $target.hasClass('popup-pinch-img') ? $target : $target.find('.popup-pinch-img');
     $image.css({
-      'left': `calc(50% + ${this.scaleEvent.originX + e.deltaX}px)`,
-      'top': `calc(50% + ${this.scaleEvent.originY + e.deltaY}px)`
+      'left': `calc(50% + ${this.imgEvent.originX + e.deltaX}px)`,
+      'top': `calc(50% + ${this.imgEvent.originY + e.deltaY}px)`
     });
   }
 
   panEnd(e: HammerInput) {
-    this.scaleEvent.setOffSet(e.deltaX, e.deltaY);
+    this.imgEvent.setOffSet(e.deltaX, e.deltaY);
   }
 
   dblclick() {
     let $image = $(this.el).find('.popup-pinch-img');
-    let imgWidth = $image[0].naturalWidth;
-    let imgHeight = $image[0].naturalHeight;
-
-    $image.css({'width': `${imgWidth}px`, 'height': `${imgHeight}`});
-
+    let imgNaturalWidth = $image[0].naturalWidth;
+    let imgNaturalHeight = $image[0].naturalHeight;
+    if (this.imgEvent.fixWidth || this.imgEvent.fixHeight) {
+      $image.css({'width': `${imgNaturalWidth}px`, 'height': `${imgNaturalHeight}px`});
+      this.imgEvent.fixWidth = 0;
+      this.imgEvent.fixHeight = 0;
+    } else {
+      this.imageFitScreen();
+    }
   }
 }
