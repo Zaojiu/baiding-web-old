@@ -1,16 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LiveService } from '../../shared/live/live.service';
-import { CommentApiService } from '../../shared/api/comment.service';
-import { PostService } from './post.service';
-import { AdditionalContentModel } from './post.model'
-import { MessageApiService } from "../../shared/api/message.api";
+import {Component, OnInit, Input} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {LiveService} from '../../shared/live/live.service';
+import {CommentApiService} from '../../shared/api/comment.service';
+import {PostService} from './post.service';
+import {AdditionalContentModel} from './post.model'
+import {MessageApiService} from "../../shared/api/message.api";
+import isUndefined = require("lodash/isUndefined");
+import isUndefined = require("lodash/isUndefined");
 
 @Component({
   moduleId: module.id,
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
-  providers: [ CommentApiService, PostService ]
+  providers: [CommentApiService, PostService]
 })
 
 export class PostComponent implements OnInit {
@@ -24,7 +26,8 @@ export class PostComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
-              private postService: PostService) {}
+              private postService: PostService) {
+  }
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
@@ -52,20 +55,24 @@ export class PostComponent implements OnInit {
     this.router.navigate([`/lives/${this.id}/push-comment`]);
   }
 
-  isEditor() { return this.liveService.isEditor(this.id); }
+  isEditor() {
+    return this.liveService.isEditor(this.id);
+  }
 
-  isAudience() { return this.liveService.isAudience(this.id); }
+  isAudience() {
+    return this.liveService.isAudience(this.id);
+  }
 
   submit() {
-    if (this.images.length) return this.postImgMessage();
-
     if (this.messageId) return this.postMessage();
 
     if (this.commentId) return this.pushComment();
 
+
     if (this.isEditor()) return this.postMessage();
 
     if (!this.isEditor()) return this.postComment();
+
   }
 
   pushComment() {
@@ -88,20 +95,24 @@ export class PostComponent implements OnInit {
   }
 
   postMessage() {
-    if (this.content === '') return
+    if (this.content === '' && !(this.images && this.images.length)) return
 
     this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
       this.isSubmited = true;
+      this.postImgMessage()
       this.backToMainScreen()
     })
   }
 
   postImgMessage() {
-    this.messageApiService.postImgMessage(this.id, this.images[0])
-      .then(() => {
-      this.isSubmited = true;
-      this.backToMainScreen()
-    })
+    if (this.images && this.images.length) {
+      this.messageApiService.postImgMessage(this.id, this.images[0])
+        .then(() => {
+          this.isSubmited = true;
+          this.backToMainScreen()
+        })
+    } else return
+
   }
 
   canDeactivate() {

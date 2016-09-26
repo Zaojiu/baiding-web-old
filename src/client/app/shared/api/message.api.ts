@@ -80,23 +80,24 @@ export class MessageApiService {
 
     if (data.type === 'text') message.type = MessageType.Text;
     if (data.type === 'audio') {
-      message.type = MessageType.Audio
-      message.audio = new AudioMessageModel()
-      message.audio.localId = ''
-      message.audio.serverId = data.audio.weixinId
-      message.audio.translateResult = data.audio.text
+      message.type = MessageType.Audio;
+      message.audio = new AudioMessageModel();
+      message.audio.localId = '';
+      message.audio.serverId = data.audio.weixinId;
+      message.audio.translateResult = data.audio.text;
     }
+
     if (data.type === 'image') {
       message.type = MessageType.Image;
-      message.content = data.image.link;
+      message.image = new ImageMessageModel();
+      message.image.link = data.image.link;
     }
-    ;
+
     if (data.type === 'nice') {
-      message.type = MessageType.Nice
-      message.user = users[data.nice.uid]
-      message.content = data.nice.message
+      message.type = MessageType.Nice;
+      message.user = users[data.nice.uid];
+      message.content = data.nice.message;
     }
-    ;
 
     message.hadPraised = data.myPraisedId !== '';
     message.praisedAmount = data.praised;
@@ -286,10 +287,9 @@ export class MessageApiService {
               if (data.type = 'image') {
                 messageResp.image = new ImageMessageModel()
                 messageResp.image.link = data.image.link
-                this.timelineService.pushMessage(messageResp);
-                console.log(messageResp.image.link)
-                return messageResp;
               }
+              this.timelineService.pushMessage(messageResp);
+              return messageResp;
             })
             .catch(res => {
               // TODO: error;

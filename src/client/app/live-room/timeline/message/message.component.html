@@ -11,6 +11,9 @@
       </div>
 
       <div class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</div>
+      <div class="content" *ngIf="message.type === 1">
+          <div class="message-img"><img [src]="message.image.link" alt=""></div>
+      </div>
       <div class="content" *ngIf="message.type === 2"><audio-message [message]="message" [userInfo]="userInfo"></audio-message></div>
     </div>
 
