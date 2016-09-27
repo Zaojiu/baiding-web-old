@@ -6,7 +6,6 @@ import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message.api";
 import isUndefined = require("lodash/isUndefined");
-import isUndefined = require("lodash/isUndefined");
 
 @Component({
   moduleId: module.id,
@@ -23,6 +22,7 @@ export class PostComponent implements OnInit {
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
   images: File[];
+  imageExist: number;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
@@ -64,12 +64,32 @@ export class PostComponent implements OnInit {
   }
 
   submit() {
-    if (this.messageId) return this.postMessage();
+    this.imageExist = this.images && this.images.length;
+
+    if (this.content === '' && !this.imageExist) return;
+
+    if (this.messageId && this.imageExist) {
+      this.postMessage()
+      this.postImgMessage()
+      return this.backToMainScreen();
+    }
+
+    if (this.messageId && !this.imageExist) {
+      this.postMessage()
+      return this.backToMainScreen();
+    }
+
+    if (!this.messageId && this.imageExist) {
+      this.postImgMessage()
+      return this.backToMainScreen();
+    }
 
     if (this.commentId) return this.pushComment();
 
-
-    if (this.isEditor()) return this.postMessage();
+    if (this.isEditor()) {
+      this.postMessage();
+      return this.backToMainScreen();
+    }
 
     if (!this.isEditor()) return this.postComment();
 
@@ -95,24 +115,20 @@ export class PostComponent implements OnInit {
   }
 
   postMessage() {
-    if (this.content === '' && !(this.images && this.images.length)) return
+    if (this.content === '') return
 
     this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
       this.isSubmited = true;
-      this.postImgMessage()
-      this.backToMainScreen()
     })
   }
 
   postImgMessage() {
-    if (this.images && this.images.length) {
-      this.messageApiService.postImgMessage(this.id, this.images[0])
-        .then(() => {
-          this.isSubmited = true;
-          this.backToMainScreen()
-        })
-    } else return
+    if (!(this.images && this.images.length)) return
 
+    this.messageApiService.postImgMessage(this.id, this.images[0])
+      .then(() => {
+        this.isSubmited = true;
+      })
   }
 
   canDeactivate() {

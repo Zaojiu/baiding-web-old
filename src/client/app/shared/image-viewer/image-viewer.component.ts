@@ -53,7 +53,6 @@ export class ImageViewerComponent implements OnInit, OnChanges {
   }
 
   closePopup() {
-    console.log('clicked')
     this.isPopup = false;
   }
 
@@ -84,9 +83,6 @@ export class ImageViewerComponent implements OnInit, OnChanges {
     }
     this.imgEvent.fixWidth = $image.width();
     this.imgEvent.fixHeight = $image.height();
-    console.log($image)
-    console.log(this.imgEvent.fixWidth, this.imgEvent.fixHeight, $image.width(), $image.height())
-
   }
 
   deleteImageSource() {
