@@ -34,35 +34,45 @@ export class LiveService {
   }
 
   parseLiveInfo(data: any): LiveInfoModel {
+
     let liveInfo = new LiveInfoModel;
-    liveInfo.id = data.id;
-    liveInfo.subject = data.subject;
-    liveInfo.desc = data.desc;
-    liveInfo.coverUrl = data.coverUrl;
-    liveInfo.kind = data.kind;
-    liveInfo.owner = data.users[data.owner] as UserInfoModel;
-    liveInfo.admin = data.users[data.admin] as UserInfoModel;
+
+    let stream = data.stream;
+    let users = data.users;
+    let currentStreamUser = data.currentStreamUser;
+
+    liveInfo.id = stream.id;
+    liveInfo.subject = stream.subject;
+    liveInfo.desc = stream.desc;
+    liveInfo.coverUrl = stream.coverUrl;
+    liveInfo.kind = stream.kind;
+
+    liveInfo.owner = users[stream.owner] as UserInfoModel;
+    liveInfo.admin = users[stream.admin] as UserInfoModel;
     liveInfo.editors = [];
-    for (let uid of data.editors) {
-      let user = data.users[uid];
+    for (let uid of stream.editors) {
+      let user = users[uid];
       liveInfo.editors.push(user);
     }
-    liveInfo.expectStartAt = data.expectStartAt;
-    liveInfo.expectDuration = data.expectDuration;
-    liveInfo.startedAt = data.startedAt;
-    liveInfo.closedAt = data.closedAt;
-    liveInfo.createdAt = data.createdAt;
-    liveInfo.isDraft = data.isDraft;
-    if (data.status === 'created') liveInfo.status = LiveStatus.Created;
-    if (data.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
-    if (data.status === 'started') liveInfo.status = LiveStatus.Started;
-    if (data.status === 'closed') liveInfo.status = LiveStatus.Ended;
-    liveInfo.praised = data.praised;
-    liveInfo.commented = data.commented;
-    liveInfo.niced = data.niced;
-    liveInfo.shared = data.shared;
-    liveInfo.lcConvId = data.lcConvId;
-    liveInfo.hadPraised = data.myPraisedId !== '';
+
+    liveInfo.expectStartAt = stream.expectStartAt;
+    liveInfo.expectDuration = stream.expectDuration;
+    liveInfo.startedAt = stream.startedAt;
+    liveInfo.closedAt = stream.closedAt;
+    liveInfo.createdAt = stream.createdAt;
+    liveInfo.isDraft = stream.isDraft;
+
+    if (stream.status === 'created') liveInfo.status = LiveStatus.Created;
+    if (stream.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
+    if (stream.status === 'started') liveInfo.status = LiveStatus.Started;
+    if (stream.status === 'closed') liveInfo.status = LiveStatus.Ended;
+
+    liveInfo.praised = stream.praised;
+    liveInfo.commented = stream.commented;
+    liveInfo.niced = stream.niced;
+    liveInfo.shared = stream.shared;
+    liveInfo.lcConvId = stream.lcConvId;
+    liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
     liveInfo.praisedAnimations = [];
 
     return liveInfo
