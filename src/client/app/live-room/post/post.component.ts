@@ -68,41 +68,38 @@ export class PostComponent implements OnInit {
 
     if (this.content === '' && !this.imageExist) return;
 
+/*判断是否为嘉宾*/
     if (this.isEditor()) {
 
-      if (this.content !== '' && this.imageExist) {
-        let p1 = this.postMessage();
-        let p2 = this.postImgMessage();
-        Promise.all([p1, p2]).then((res)=> {
-          this.backToMainScreen();
-        })
-      }
-
-      else if (this.content !== '' && !this.imageExist) {
-        let p1 = this.postMessage()
-        Promise.all([p1]).then(()=> {
-            this.backToMainScreen();
-          }
-        )
-      }
-
-      else if (this.content === '' && this.imageExist) {
-         let p2 = this.postImgMessage()
-        Promise.all([p2]).then(()=>{
-          this.backToMainScreen();
-          }
-        )
-      }
-
-      else if (this.commentId) {
+      /*判断是否存在回复和推送动作*/
+      if (this.commentId) {
         this.pushComment()
+      } else if (this.messageId) {
+        this.postMessage()
+      } else {
+
+        /*进入消息发送分支*/
+        if (this.content !== '' && this.imageExist) {
+          let p1 = this.postMessage();
+          let p2 = this.postImgMessage();
+          Promise.all([p1, p2]).then((res)=> {
+            this.backToMainScreen();
+          })
+        } else if (this.content === '' && this.imageExist) {
+          this.postImgMessage().then(()=> {
+              this.backToMainScreen();
+            }
+          )
+        } else if (this.content !== '' && !this.imageExist) {
+          this.postMessage().then(()=> {
+              this.backToMainScreen();
+            }
+          )
+        }
       }
-
-
     } else {
-
-      if (!this.isEditor()) return this.postComment();
-
+      /*观众评论*/
+      this.postComment();
     }
 
   }
@@ -126,20 +123,22 @@ export class PostComponent implements OnInit {
     });
   }
 
-  postMessage(){
+  postMessage(): Promise<any> {
     if (this.content === '') return
 
     return this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
       this.isSubmited = true;
+      return
     })
   }
 
-  postImgMessage(){
+  postImgMessage(): Promise<any> {
     if (!(this.images && this.images.length)) return
 
     return this.messageApiService.postImgMessage(this.id, this.images[0], this.messageId)
       .then(() => {
         this.isSubmited = true;
+        return
       })
   }
 

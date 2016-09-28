@@ -298,12 +298,9 @@ export class MessageApiService {
   }
 
   postImgMessage(liveId: string, file: File, replyParent = ''): Promise<MessageModel> {
-    return this.getUploadToken(liveId).then(
-      data => {
-        return this.uploadService.uploadToQiniu(file, data).then(
-          key => {
-            return this.getImgLink(liveId, key, replyParent)
-          })
-      })
+
+    return this.getUploadToken(liveId)
+      .then(data => this.uploadService.uploadToQiniu(file, data))
+      .then(key => this.getImgLink(liveId, key, replyParent));
   }
 }
