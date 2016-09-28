@@ -1,92 +1,31 @@
-# 白丁项目Web前端
+# Ngcli
 
-* 项目由 [angular2-seed](https://github.com/mgechev/angular2-seed) 搭建
+This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.14.
 
-## 克隆仓库：
-```bash
-git clone git@github.com:Zaojiu/baiding-web.git
-```
+## Development server
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## npm初始化
-```bash
-npm install
-```
+## Code scaffolding
 
-## typings初始化
-```bash
-typings install
-```
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class`.
 
-## 运行
-运行dev环境：
-```bash
-npm run serve.dev
-```
+## Build
 
-运行prod环境 (不会watch,使用angular2 AOT模式,用于线上部署)：
-```bash
-npm run serve.prod.exp
-```
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-查看页面：
+## Running unit tests
 
-[微信开发者工具](https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455784140&token=&lang=zh_CN) 打开 [http://0.0.0.0:9000](http://0.0.0.0:9000) or [http://localhost:9000](http://localhost:9000)
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## 文件结构
-angular2采用component形式组织项目文件，每个componet有自己的css(less)、js(ts)、html。每个module拥有自己的route、service、provider、model、enums、unit/e2e testing等。
-```
-baiding-web/
-├── README.md
-├── appveyor.yml
-├── dist                                     # 编译后的代码
-├── gulpfile.ts                              # gulp主文件
-├── karma.conf.js                            # karma配置
-├── package.json
-├── protractor.conf.js                       # angular e2e 测试配置
-├── src                                      # 源码
-│   └── client
-│       ├── app
-│       │   ├── app.component.html
-│       │   ├── app.component.ts
-│       │   ├── app.config.ts
-│       │   ├── app.model.ts
-│       │   ├── app.module.ts
-│       │   ├── app.routes.ts
-│       │   ├── live-list
-│       │   ├── live-room
-│       │   ├── main-prod.ts                 # prod模式主ts入口文件
-│       │   ├── main.ts                      # dev模式主ts入口文件
-│       │   ├── notfound
-│       │   ├── shared                       # 共享组件
-│       │   ├── system-config.ts
-│       │   └── vendor.ts                    # 第三方package入口文件
-│       ├── assets
-│       │   ├── data.json
-│       │   ├── icon                         # iconfont文件夹,放svg
-│       │   └── img                          # 图片文件夹
-│       ├── css                              # 全局css文件夹
-│       │   ├── _icons.template.css          # iconfont模板
-│       │   ├── _utils.scss
-│       │   └── main.scss                    
-│       ├── index.html
-│       ├── manual_typings                   # 自定义ts定义文件
-│       │   ├── fastclick
-│       │   └── moment-countdown
-│       ├── tsconfig.json
-│       └── typings.d.ts
-├── test-config.js
-├── test-main.js
-├── tools                                      # gulp配置
-├── tsconfig.json                              # ts编译配置
-├── tslint.json                                # tsline配置
-├── typings                                    # ts定义文件
-└── typings.json                               # typings配置文件
-```
+## Running end-to-end tests
 
-# angular2编码规范
-采用angluar2的各种编码规范，包括其对typescript的各种命名规范的扩展。请仔细阅读 [本官方规范](https://angular.cn/docs/ts/latest/guide/style-guide.html#!#03-03) 并遵守之。
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/). 
+Before running the tests make sure you are serving the app via `ng serve`.
 
-# css&html编码规范
-ruby系的人最喜欢的就是规范，例如 [这份sass规范](https://sass-guidelin.es/) 。
-另外，这是 [一份来自google的编码建议](https://google.github.io/styleguide/htmlcssguide.xml)，[或者这份](http://codeguide.bootcss.com/)。
-好的编码规范都是英雄所见略同，除了到底是敲tab还是space之外。
+## Deploying to Github Pages
+
+Run `ng github-pages:deploy` to deploy to Github Pages.
+
+## Further help
+
+To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
