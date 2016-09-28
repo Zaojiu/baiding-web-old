@@ -1,3 +1,15 @@
 <div class="img-wrapper">
-<img [src]="imageSrc" alt="">
+  <img class="wrapper-img" [src]="imageSrc" alt="" (click)="imagePopup()">
 </div>
+
+<div class="image-viewer-popup" [ngClass]="{opened: isPopup}" (pinch)="pinch($event)" (pinchend)="pinchEnd($event)"
+     (pan)="pan($event)"
+     (panend)="panEnd($event)" (doubletap)="dblclick()">
+  <div class="delete-btn-wrapper">
+    <a class="delete-btn" (click)="deleteImageSource()"><i class="bi bi-delete"></i></a>
+  </div>
+  <a class="quit-btn" (click)="closePopup()"><i class="bi bi-close"></i></a>
+  <img class="popup-pinch-img" [src]="imageSrc" alt="">
+</div>
+
+

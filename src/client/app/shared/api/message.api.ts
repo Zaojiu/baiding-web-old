@@ -1,25 +1,29 @@
-import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
 
-import { AppConfig } from '../../app.config'
-import { MessageType } from '../../live-room/timeline/message/message.enum';
-import { MessageModel, AudioMessageModel, ReplyMessageModel } from '../../live-room/timeline/message/message.model';
-import { PostMessageModel, PostAudioMessageModel, PostNiceMessageModel } from './message.model';
-import { UserInfoService } from '../user-info/user-info.service';
-import { TimelineService } from '../../live-room/timeline/timeline.service';
+import {AppConfig} from '../../app.config'
+import {MessageType} from '../../live-room/timeline/message/message.enum';
+import {
+  MessageModel, AudioMessageModel, ReplyMessageModel,
+  ImageMessageModel
+} from '../../live-room/timeline/message/message.model';
+import {PostMessageModel, PostAudioMessageModel, PostNiceMessageModel, PostImageMessageModel} from './message.model';
+import {UserInfoService} from '../user-info/user-info.service';
+import {TimelineService} from '../../live-room/timeline/timeline.service';
+import {UploadApiService} from './upload.api'
 
-declare var $:any;
+declare var $: any;
 
 @Injectable()
 export class MessageApiService {
-  constructor (
-    private http: Http,
-    private config: AppConfig,
-    private userInfoService: UserInfoService,
-    private timelineService: TimelineService
-  ) {}
+  constructor(private http: Http,
+              private config: AppConfig,
+              private userInfoService: UserInfoService,
+              private timelineService: TimelineService,
+              private uploadService: UploadApiService,) {
+  }
 
   listMessages(liveId: string, marker = '', limit = 20, sorts = ['-createdAt'], parentId = 'null'): Promise<MessageModel[]> {
     var query = {
@@ -75,19 +79,25 @@ export class MessageApiService {
     message.content = data.content;
 
     if (data.type === 'text') message.type = MessageType.Text;
-    if (data.type === 'image') message.type = MessageType.Image;
     if (data.type === 'audio') {
-      message.type = MessageType.Audio
-      message.audio = new AudioMessageModel()
-      message.audio.localId = ''
-      message.audio.serverId = data.audio.weixinId
-      message.audio.translateResult = data.audio.text
+      message.type = MessageType.Audio;
+      message.audio = new AudioMessageModel();
+      message.audio.localId = '';
+      message.audio.serverId = data.audio.weixinId;
+      message.audio.translateResult = data.audio.text;
     }
+
+    if (data.type === 'image') {
+      message.type = MessageType.Image;
+      message.image = new ImageMessageModel();
+      message.image.link = data.image.link;
+    }
+
     if (data.type === 'nice') {
-      message.type = MessageType.Nice
-      message.user = users[data.nice.uid]
-      message.content = data.nice.message
-    };
+      message.type = MessageType.Nice;
+      message.user = users[data.nice.uid];
+      message.content = data.nice.message;
+    }
 
     message.hadPraised = data.myPraisedId !== '';
     message.praisedAmount = data.praised;
@@ -244,5 +254,53 @@ export class MessageApiService {
       .catch(res => {
         // TODO: error;
       });
+  }
+
+  getUploadToken(liveId: string): Promise<string> {
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/image/uptoken`;
+    return this.http.get(url).toPromise()
+      .then(res => {
+        let data = res.json()
+        return data;
+      }).catch(res => {
+        // TODO: error;
+      });
+  }
+
+
+  getImgLink(liveId: string, key: string, replyParent = ''): Promise<MessageModel> {
+    let headers = new Headers({'Content-Type': 'application/json'});
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
+    let message = new PostMessageModel();
+    message.type = 'image';
+    message.image = new PostImageMessageModel();
+    message.image.key = key;
+
+    if (replyParent) {
+      message.parentId = replyParent;
+    }
+
+    return this.http.post(url, JSON.stringify(message), {headers: headers})
+      .toPromise()
+      .then(res => {
+        let data = res.json();
+        let messageResp = this.parseResponesMessage(data, MessageType.Image);
+        if (data.type = 'image') {
+          messageResp.image = new ImageMessageModel()
+          messageResp.image.link = data.image.link
+        }
+        this.timelineService.pushMessage(messageResp);
+        return messageResp;
+      })
+      .catch(res => {
+        // TODO: error;
+      });
+  }
+
+  postImgMessage(liveId: string, file: File, replyParent = ''): Promise<MessageModel> {
+
+    return this.getUploadToken(liveId)
+      .then(data => this.uploadService.uploadToQiniu(file, data))
+      .then(key => this.getImgLink(liveId, key, replyParent));
   }
 }

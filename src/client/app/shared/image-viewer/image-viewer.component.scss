@@ -1,9 +1,58 @@
-.img-wrapper{
-  display: flex;
+.img-wrapper {
   height: 100px;
-  img{
+
+  .wrapper-img {
     height: 80px;
     margin: auto;
     margin-left: 15px;
+    max-width: 80%;
+  }
+}
+
+.image-viewer-popup {
+  display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 1);
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  overflow: hidden;
+
+  &.opened {
+    display: block;
+  }
+
+  .delete-btn-wrapper {
+    display: flex;
+    position: fixed;
+    top: 6px;
+    right: 52px;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background-color: rgba(45, 45, 45, 0.5);
+
+    .delete-btn {
+      margin: auto;
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+
+  .quit-btn {
+    position: fixed;
+    top: 15px;
+    right: 12px;
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .popup-pinch-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
   }
 }

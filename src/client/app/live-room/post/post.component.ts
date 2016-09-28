@@ -1,16 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LiveService } from '../../shared/live/live.service';
-import { CommentApiService } from '../../shared/api/comment.service';
-import { PostService } from './post.service';
-import { AdditionalContentModel } from './post.model'
-import { MessageApiService } from "../../shared/api/message.api";
+import {Component, OnInit, Input} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {LiveService} from '../../shared/live/live.service';
+import {CommentApiService} from '../../shared/api/comment.service';
+import {PostService} from './post.service';
+import {AdditionalContentModel} from './post.model'
+import {MessageApiService} from "../../shared/api/message.api";
+import isUndefined = require("lodash/isUndefined");
 
 @Component({
   moduleId: module.id,
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
-  providers: [ CommentApiService, PostService ]
+  providers: [CommentApiService, PostService]
 })
 
 export class PostComponent implements OnInit {
@@ -20,11 +21,13 @@ export class PostComponent implements OnInit {
   commentId: string;
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
-  image: File;
+  images: File[];
+  imageExist: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
-              private postService: PostService) {}
+              private postService: PostService) {
+  }
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
@@ -44,10 +47,6 @@ export class PostComponent implements OnInit {
     }
   }
 
-  imgSelected(files: File[]) {
-    this.image = files[0];
-  }
-
   backToMainScreen() {
     this.router.navigate(['/lives/' + this.id])
   }
@@ -56,18 +55,53 @@ export class PostComponent implements OnInit {
     this.router.navigate([`/lives/${this.id}/push-comment`]);
   }
 
-  isEditor() { return this.liveService.isEditor(this.id); }
+  isEditor() {
+    return this.liveService.isEditor(this.id);
+  }
 
-  isAudience() { return this.liveService.isAudience(this.id); }
+  isAudience() {
+    return this.liveService.isAudience(this.id);
+  }
 
   submit() {
-    if (this.messageId) return this.postMessage()
+    this.imageExist = this.images && !!this.images.length;
 
-    if (this.commentId) return this.pushComment()
+    if (this.content === '' && !this.imageExist) return;
 
-    if (this.isEditor()) return this.postMessage()
+/*判断是否为嘉宾*/
+    if (this.isEditor()) {
 
-    if (!this.isEditor()) return this.postComment()
+      /*判断是否存在回复和推送动作*/
+      if (this.commentId) {
+        this.pushComment()
+      } else if (this.messageId) {
+        this.postMessage()
+      } else {
+
+        /*进入消息发送分支*/
+        if (this.content !== '' && this.imageExist) {
+          let p1 = this.postMessage();
+          let p2 = this.postImgMessage();
+          Promise.all([p1, p2]).then((res)=> {
+            this.backToMainScreen();
+          })
+        } else if (this.content === '' && this.imageExist) {
+          this.postImgMessage().then(()=> {
+              this.backToMainScreen();
+            }
+          )
+        } else if (this.content !== '' && !this.imageExist) {
+          this.postMessage().then(()=> {
+              this.backToMainScreen();
+            }
+          )
+        }
+      }
+    } else {
+      /*观众评论*/
+      this.postComment();
+    }
+
   }
 
   pushComment() {
@@ -89,13 +123,23 @@ export class PostComponent implements OnInit {
     });
   }
 
-  postMessage() {
+  postMessage(): Promise<any> {
     if (this.content === '') return
 
-    this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
+    return this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
       this.isSubmited = true;
-      this.backToMainScreen()
+      return
     })
+  }
+
+  postImgMessage(): Promise<any> {
+    if (!(this.images && this.images.length)) return
+
+    return this.messageApiService.postImgMessage(this.id, this.images[0], this.messageId)
+      .then(() => {
+        this.isSubmited = true;
+        return
+      })
   }
 
   canDeactivate() {

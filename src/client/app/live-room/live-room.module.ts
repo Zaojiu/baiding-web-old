@@ -31,6 +31,7 @@ import { MessageApiService } from "../shared/api/message.api";
 import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
 import { FileSelectorDirective } from "../shared/file-selector/file-selector.directive";
 import { ImageViewerComponent } from "../shared/image-viewer/image-viewer.component";
+import { UploadApiService } from "../shared/api/upload.api";
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { ImageViewerComponent } from "../shared/image-viewer/image-viewer.compon
     TimelineService,
     CommentService,
     MessageApiService,
+    UploadApiService,
     QuitEditGuard,
   ]
 })

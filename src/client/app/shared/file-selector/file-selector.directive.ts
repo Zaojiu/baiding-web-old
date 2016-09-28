@@ -1,26 +1,48 @@
-import { Directive, ElementRef, OnInit, Output, EventEmitter } from '@angular/core'
-
-declare var $:any
+import {Directive, ElementRef, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges} from '@angular/core'
+import {ModalService} from "../modal/modal.service";
+import isUndefined = require("lodash/isUndefined");
+declare var $: any
 
 @Directive({
   selector: '[fileSelector]'
 })
 
-export class FileSelectorDirective implements OnInit {
+export class FileSelectorDirective implements OnInit, OnChanges {
   private el: HTMLElement;
-  files: File[] = [];
-  @Output() onImgSelected = new EventEmitter<File[]>();
+  @Input() fileSelector: File[] = [];
+  @Output() fileSelectorChange = new EventEmitter<File[]>();
 
-  constructor(el: ElementRef) {
+  constructor(el: ElementRef, private modalService: ModalService) {
     this.el = el.nativeElement
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    let files = changes['fileSelector'];
+
+    if (files && files.currentValue == isUndefined) {
+      let $this = $(this.el);
+      $this.wrap('<form>').closest('form').get(0).reset();
+      $this.unwrap();
+    }
   }
 
   ngOnInit() {
     let $this = $(this.el);
-
-    $this.on('change',() => {
-      this.files = $this[0].files;
-      this.onImgSelected.emit(this.files);
+    let maxSize = 1024 * 1024 * 8;
+    $this.on('change', () => {
+      if ($this[0].files.length) {
+        let fileSize = $this[0].files[0].size;
+        let file = $this[0].value;
+        if (!/.(gif|jpg|jpeg|png|bmp)$/.test(file)) {
+          this.modalService.popup("图片不符合类型", '取消', '确定', false);
+          return false
+        } else if (fileSize > maxSize) {
+          this.modalService.popup("图片大小不能超过8M", '取消', '确定', false);
+          return false
+        }
+      }
+      this.fileSelector = $this[0].files;
+      this.fileSelectorChange.emit(this.fileSelector);
     })
   }
 }
