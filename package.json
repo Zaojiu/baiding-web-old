@@ -44,7 +44,7 @@
   "devDependencies": {
     "@types/hammerjs": "^2.0.33",
     "@types/jasmine": "^2.2.30",
-    "angular-cli": "git://github.com/duxiaofeng-github/angular-cli.git",
+    "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git",
     "codelyzer": "~0.0.26",
     "gulp": "^3.9.1",
     "gulp-filter": "^4.0.0",
