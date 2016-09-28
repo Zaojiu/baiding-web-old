@@ -267,34 +267,43 @@ export class MessageApiService {
       });
   }
 
-  postImgMessage(liveId: string, file: File): Promise<MessageModel> {
+
+  getImgLink(liveId: string, key: string, replyParent = ''): Promise<MessageModel> {
+    let headers = new Headers({'Content-Type': 'application/json'});
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
+    let message = new PostMessageModel();
+    message.type = 'image';
+    message.image = new PostImageMessageModel();
+    message.image.key = key;
+
+    if (replyParent) {
+      message.parentId = replyParent;
+    }
+
+    return this.http.post(url, JSON.stringify(message), {headers: headers})
+      .toPromise()
+      .then(res => {
+        let data = res.json();
+        let messageResp = this.parseResponesMessage(data, MessageType.Image);
+        if (data.type = 'image') {
+          messageResp.image = new ImageMessageModel()
+          messageResp.image.link = data.image.link
+        }
+        this.timelineService.pushMessage(messageResp);
+        return messageResp;
+      })
+      .catch(res => {
+        // TODO: error;
+      });
+  }
+
+  postImgMessage(liveId: string, file: File, replyParent = ''): Promise<MessageModel> {
     return this.getUploadToken(liveId).then(
       data => {
-        return this.uploadService.uploadToQiniu(file, data).then(key => {
-
-          let headers = new Headers({'Content-Type': 'application/json'});
-          const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
-          let message = new PostMessageModel()
-          message.type = 'image'
-          message.image = new PostImageMessageModel()
-          message.image.key = key
-
-          return this.http.post(url, JSON.stringify(message), {headers: headers})
-            .toPromise()
-            .then(res => {
-              let data = res.json();
-              let messageResp = this.parseResponesMessage(data, MessageType.Image);
-              if (data.type = 'image') {
-                messageResp.image = new ImageMessageModel()
-                messageResp.image.link = data.image.link
-              }
-              this.timelineService.pushMessage(messageResp);
-              return messageResp;
-            })
-            .catch(res => {
-              // TODO: error;
-            });
-        })
+        return this.uploadService.uploadToQiniu(file, data).then(
+          key => {
+            return this.getImgLink(liveId, key, replyParent)
+          })
       })
   }
 }

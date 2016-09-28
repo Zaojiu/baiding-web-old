@@ -22,7 +22,7 @@ export class PostComponent implements OnInit {
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
   images: File[];
-  imageExist: number;
+  imageExist: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private commentApiService: CommentApiService, private messageApiService: MessageApiService,
@@ -64,34 +64,46 @@ export class PostComponent implements OnInit {
   }
 
   submit() {
-    this.imageExist = this.images && this.images.length;
+    this.imageExist = this.images && !!this.images.length;
 
     if (this.content === '' && !this.imageExist) return;
 
-    if (this.messageId && this.imageExist) {
-      this.postMessage()
-      this.postImgMessage()
-      return this.backToMainScreen();
-    }
-
-    if (this.messageId && !this.imageExist) {
-      this.postMessage()
-      return this.backToMainScreen();
-    }
-
-    if (!this.messageId && this.imageExist) {
-      this.postImgMessage()
-      return this.backToMainScreen();
-    }
-
-    if (this.commentId) return this.pushComment();
-
     if (this.isEditor()) {
-      this.postMessage();
-      return this.backToMainScreen();
-    }
 
-    if (!this.isEditor()) return this.postComment();
+      if (this.content !== '' && this.imageExist) {
+        let p1 = this.postMessage();
+        let p2 = this.postImgMessage();
+        Promise.all([p1, p2]).then((res)=> {
+          this.backToMainScreen();
+        })
+      }
+
+      else if (this.content !== '' && !this.imageExist) {
+        let p1 = this.postMessage()
+        Promise.all([p1]).then(()=> {
+            this.backToMainScreen();
+          }
+        )
+      }
+
+      else if (this.content === '' && this.imageExist) {
+         let p2 = this.postImgMessage()
+        Promise.all([p2]).then(()=>{
+          this.backToMainScreen();
+          }
+        )
+      }
+
+      else if (this.commentId) {
+        this.pushComment()
+      }
+
+
+    } else {
+
+      if (!this.isEditor()) return this.postComment();
+
+    }
 
   }
 
@@ -114,18 +126,18 @@ export class PostComponent implements OnInit {
     });
   }
 
-  postMessage() {
+  postMessage(){
     if (this.content === '') return
 
-    this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
+    return this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
       this.isSubmited = true;
     })
   }
 
-  postImgMessage() {
+  postImgMessage(){
     if (!(this.images && this.images.length)) return
 
-    this.messageApiService.postImgMessage(this.id, this.images[0])
+    return this.messageApiService.postImgMessage(this.id, this.images[0], this.messageId)
       .then(() => {
         this.isSubmited = true;
       })
