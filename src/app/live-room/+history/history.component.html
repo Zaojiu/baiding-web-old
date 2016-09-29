@@ -1,21 +1,39 @@
 <div class="history-container">
-  <!-- <div class="top-bar">
+  <div class="top-bar">
     <div *ngIf="liveInfo">
       <div class="history-title">
-        <h1>{{liveInfo.title}}</h1>
+        <h1>{{liveInfo.subject}}</h1>
         <a (click)="backToMainScreen()">进入</a>
       </div>
       <div class="history-info">
-        <img class="avatar" [src]="liveInfo.host.avatar">
-        <span class="name">{{liveInfo.host.nick}}</span>
-        <span class="time">{{liveInfo.closedAt}}</span>
+        <img class="avatar" [src]="liveInfo.admin.avatar">
+        <span class="name">{{liveInfo.admin.nick}}</span>
+        <span class="time">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</span>
       </div>
     </div>
   </div>
 
   <div class="messages-container scrollable">
-    <div class="message" *ngFor="let message of messages">
-      <span class="name">{{message.nick}}：</span>{{message.content}}
+    <div class="message-wrapper" *ngFor="let message of messages">
+      <div class="message">
+        <span class="name">
+          <span *ngIf="message.type === 3 && message.replies.length">{{message.replies[0].user.nick}}推送</span>
+          {{message.user.nick}}：
+        </span>
+        <span class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</span>
+        <div class="content image-content" *ngIf="message.type === 1">
+          <image-viewer [imageLinks]="[message.image.link]"></image-viewer>
+        </div>
+        <div class="content audio-content" *ngIf="message.type === 2">
+          <audio-player class="audio-player" [message]="message"></audio-player>
+          <div class="translate-tips">以下由机器自动翻译</div>
+          <div class="translate">{{message.audio.translateResult}}</div>
+        </div>
+      </div>
+      <div class="message-reply" *ngFor="let reply of message.replies">
+        <span class="name">{{reply.user.nick}}回复{{message.user.nick}}：</span>
+        <span class="content">{{reply.content}}</span>
+      </div>
     </div>
   </div>
 
@@ -29,6 +47,6 @@
       12
     </div>
     <a class="filter-btn" href="">筛选</a>
-  </div> -->
+  </div>
 </div>
 

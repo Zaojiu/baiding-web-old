@@ -16,7 +16,10 @@
           <image-viewer [imageLinks]="[message.image.link]"></image-viewer>
         </div>
       </div>
-      <div class="content" *ngIf="message.type === 2"><audio-message [message]="message" [userInfo]="userInfo"></audio-message></div>
+      <div class="content audio-content" *ngIf="message.type === 2">
+        <audio-player [message]="message" [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
+        <div class="translate">{{message.audio.translateResult}}</div>
+      </div>
     </div>
 
     <div class="thumbs-up" [ngClass]="{'had-thumbs-up': message.hadPraised}">

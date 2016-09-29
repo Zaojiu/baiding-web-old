@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { AppConfig } from '../../../app.config'
-import { PostPraiseModel } from './message.model'
+import { PostPraiseModel } from '../../../shared/api/message.model'
 
 @Injectable()
 export class MessageService {

@@ -3,7 +3,7 @@ import { Subscription }   from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
-import { MessageModel } from './message/message.model';
+import { MessageModel } from '../../shared/api/message.model';
 import { TimelineService } from './timeline.service';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { LiveService } from '../../shared/live/live.service';

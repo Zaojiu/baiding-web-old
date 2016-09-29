@@ -4,11 +4,11 @@ import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
 
 import {AppConfig} from '../../app.config'
-import {MessageType} from '../../live-room/timeline/message/message.enum';
+import {MessageType} from './message.enum';
 import {
   MessageModel, AudioMessageModel, ReplyMessageModel,
   ImageMessageModel
-} from '../../live-room/timeline/message/message.model';
+} from './message.model';
 import {PostMessageModel, PostAudioMessageModel, PostNiceMessageModel, PostImageMessageModel} from './message.model';
 import {UserInfoService} from '../user-info/user-info.service';
 import {TimelineService} from '../../live-room/timeline/timeline.service';
@@ -74,6 +74,7 @@ export class MessageApiService {
     if (!data) return message
 
     message.id = data.id;
+    message.parentId = data.parentId;
     message.isReceived = true;
     message.user = users[data.uid];
     message.content = data.content;
@@ -139,6 +140,7 @@ export class MessageApiService {
 
     var message = new MessageModel();
     message.id = data.id;
+    message.parentId = data.parentId;
     message.isReceived = false;
     message.user = userInfo;
 
@@ -298,9 +300,47 @@ export class MessageApiService {
   }
 
   postImgMessage(liveId: string, file: File, replyParent = ''): Promise<MessageModel> {
-
     return this.getUploadToken(liveId)
       .then(data => this.uploadService.uploadToQiniu(file, data))
       .then(key => this.getImgLink(liveId, key, replyParent));
+  }
+
+  rerangeHistoryMessage(messages: MessageModel[]): MessageModel[] {
+    let rerangedMessages: MessageModel[] = [];
+
+    for (let message of messages) {
+      if (message.parentId !== '') {
+        for (let parentMessage of messages) {
+          if (parentMessage.id == message.parentId) {
+            parentMessage.replies.push(message);
+            break;
+          }
+        }
+      } else {
+        rerangedMessages.push(message);
+      }
+    }
+
+    return rerangedMessages;
+  }
+
+  history(liveId: string): Promise<MessageModel[]> {
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/all_messages`;
+
+    return this.http.get(url).toPromise().then(res => {
+      let data = res.json();
+      let messages: MessageModel[] = [];
+
+      if (data && data.result) {
+        for (let messageData of data.result) {
+          let message = this.parseMessage(messageData, data.include.users);
+          messages.push(message);
+        }
+      }
+
+      messages = this.rerangeHistoryMessage(messages);
+
+      return messages;
+    });
   }
 }

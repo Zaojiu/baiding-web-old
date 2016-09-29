@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MessageModel } from './message.model';
+import { MessageModel } from '../../../shared/api/message.model';
 import { UserInfoModel } from '../../../shared/user-info/user-info.model';
 import { LiveService } from '../../../shared/live/live.service';
 import { LiveInfoModel } from '../../../shared/live/live.model';
