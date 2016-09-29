@@ -14,7 +14,7 @@ declare var $: any
 export class ImageViewerComponent implements OnInit, OnChanges {
   private el: HTMLElement;
   @Input() imageFiles: File[];
-  @Input() imageLinks: String[];
+  @Input() imageLinks: String;
   imageSrc = '';
   isPopup: boolean;
   imgEvent: ImgEvent;
