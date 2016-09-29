@@ -1,6 +1,6 @@
 import { MessageType } from './message.enum';
 import { UserInfoModel } from '../user-info/user-info.model'
-import { UserAnimEmoji } from '../../../shared/praised-animation/praised-animation.model'
+import { UserAnimEmoji } from '../praised-animation/praised-animation.model'
 import * as _ from 'lodash';
 
 export class AudioMessageModel {
