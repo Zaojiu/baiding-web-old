@@ -11,16 +11,12 @@ export class TimelineService {
   // Observable string sources
   private receivedMessageSource = new Subject<MessageModel>();
   private receivedReplySource = new Subject<ReplyMessageModel>();
-  private scrollerSource = new Subject<boolean>();
-  private scrollToSource = new Subject<boolean>();
   private timelineSource = new Subject<boolean>();
   private praisesSource = new Subject<UserInfoModel>();
   private eventSource = new Subject<MqEvent>();
   // Observable string streams
   private receivedMessage$ = this.receivedMessageSource.asObservable();
   receivedReply$ = this.receivedReplySource.asObservable();
-  scroller$ = this.scrollerSource.asObservable();
-  scrollTo$ = this.scrollToSource.asObservable();
   timeline$ = this.timelineSource.asObservable();
   private receivedPraises$ = this.praisesSource.asObservable();
   private event$ = this.eventSource.asObservable()
@@ -30,22 +26,6 @@ export class TimelineService {
   private receivedEventSub: Subscription
 
   constructor() { }
-
-  notifyScrollerOnTop() {
-    this.scrollerSource.next(true);
-  }
-
-  notifyScrollerOnBottom() {
-    this.scrollerSource.next(false);
-  }
-
-  scrollToTop() {
-    this.scrollToSource.next(true);
-  }
-
-  scrollToBottom() {
-    this.scrollToSource.next(false);
-  }
 
   gotoFirstMessage() {
     this.timelineSource.next(true);

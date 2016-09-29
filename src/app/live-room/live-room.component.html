@@ -15,7 +15,7 @@
 
   <comments [ngClass]="{'hidden': !isCommentOpened}" [streamId]="id"></comments>
 
-  <timeline class="timeline scrollable" [liveInfo]="liveInfo" [userInfo]="userInfo" timelineScroller #timeline></timeline>
+  <timeline class="timeline" [liveInfo]="liveInfo" [userInfo]="userInfo" #timeline></timeline>
 
   <audience-bottom-bar
     *ngIf="!isChildrenActived && isAudience()"
