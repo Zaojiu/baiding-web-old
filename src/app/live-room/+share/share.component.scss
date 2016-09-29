@@ -13,5 +13,8 @@
   .share-img{
     margin: 88px 0;
     width: 100%;
+    &.is-loading{
+      display: none;
+    }
   }
 }

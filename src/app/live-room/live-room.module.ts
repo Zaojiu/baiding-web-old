@@ -23,6 +23,7 @@ import { FileSelectorDirective } from "../shared/file-selector/file-selector.dir
 import { ImageViewerComponent } from "../shared/image-viewer/image-viewer.component";
 import { PipeModule } from "../shared/pipe/pipe.module";
 import { UploadApiService } from "../shared/api/upload.api";
+import { LoadingModule } from "../shared/bd-loading/bd-loading.module";
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { UploadApiService } from "../shared/api/upload.api";
     BrowserModule,
     FormsModule,
     PipeModule,
+    LoadingModule,
   ],
   declarations: [
     LiveRoomComponent,

@@ -13,6 +13,7 @@ export class ShareComponent implements OnInit {
   liveId: string;
   messageId: string;
   imageUrl: SafeResourceUrl;
+  isLoading = true;
 
   constructor(private route: ActivatedRoute, private appConfig: AppConfig, private sanitizer: DomSanitizer) {}
 

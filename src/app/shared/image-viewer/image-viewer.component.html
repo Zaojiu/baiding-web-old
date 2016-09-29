@@ -1,5 +1,5 @@
 <div class="img-wrapper">
-  <img class="wrapper-img" [src]="imageSrc" alt="" (click)="imagePopup()">
+  <img class="wrapper-img" *ngIf="imageSrc" [src]="imageSrc" alt="" (click)="imagePopup()">
 </div>
 
 <div class="image-viewer-popup" [ngClass]="{opened: isPopup}" (pinch)="pinch($event)" (pinchend)="pinchEnd($event)"
