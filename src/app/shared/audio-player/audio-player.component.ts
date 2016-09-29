@@ -1,25 +1,24 @@
 import { Component, Input } from '@angular/core';
 
-import { WechatService } from '../../../../shared/wechat/wechat.service';
-import { MessageModel } from '../message.model';
-import { UserInfoModel } from '../../../../shared/user-info/user-info.model';
+import { WechatService } from '../wechat/wechat.service';
+import { MessageModel } from '../api/message.model';
 
 @Component({
-  selector: 'audio-message',
-  templateUrl: './audio-message.component.html',
-  styleUrls: ['./audio-message.component.scss'],
+  selector: 'audio-player',
+  templateUrl: './audio-player.component.html',
+  styleUrls: ['./audio-player.component.scss'],
 })
 
-export class AudioMessageComponent {
+export class AudioPlayerComponent {
   @Input() message: MessageModel;
-  @Input() userInfo: UserInfoModel;
+  @Input() isWhiteTheme: MessageModel;
 
   constructor(private wechatService: WechatService) {}
 
   playVoice() {
     if (!this.message.audio.localId) {
       this.wechatService.downloadVoice(this.message.audio.serverId).then(localId => {
-        this.message.audio.localId = localId
+        this.message.audio.localId = localId;
         this.wechatService.playVoice(this.message.audio.localId)
       })
     } else {

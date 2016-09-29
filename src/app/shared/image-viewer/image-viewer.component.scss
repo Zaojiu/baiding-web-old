@@ -1,12 +1,7 @@
-.img-wrapper {
-  height: 100px;
-
-  .wrapper-img {
-    height: 80px;
-    margin: auto;
-    margin-left: 15px;
-    max-width: 80%;
-  }
+.wrapper-img {
+  position: relative;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .image-viewer-popup {

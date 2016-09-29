@@ -1,34 +1,62 @@
-<div class="history-container">
-  <!-- <div class="top-bar">
-    <div *ngIf="liveInfo">
-      <div class="history-title">
-        <h1>{{liveInfo.title}}</h1>
-        <a (click)="backToMainScreen()">进入</a>
-      </div>
-      <div class="history-info">
-        <img class="avatar" [src]="liveInfo.host.avatar">
-        <span class="name">{{liveInfo.host.nick}}</span>
-        <span class="time">{{liveInfo.closedAt}}</span>
-      </div>
+<div class="history-container" *ngIf="liveInfo">
+  <div class="top-bar">
+    <div class="history-title">
+      <h1>{{liveInfo.subject}}</h1>
+    </div>
+    <div class="history-info">
+      <img class="avatar" [src]="liveInfo.admin.avatar">
+      <span class="name">{{liveInfo.admin.nick}}</span>
+      <span class="time">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</span>
     </div>
   </div>
 
   <div class="messages-container scrollable">
-    <div class="message" *ngFor="let message of messages">
-      <span class="name">{{message.nick}}：</span>{{message.content}}
+    <bd-loading class="loading" *ngIf="!messages.length"></bd-loading>
+
+    <div class="message-wrapper" *ngFor="let message of messages">
+      <div class="message">
+        <span class="name">
+          <span *ngIf="message.type === 3 && message.replies.length">{{message.replies[0].user.nick}}推送</span>
+          {{message.user.nick}}：
+        </span>
+        <span class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</span>
+        <div class="content image-content" *ngIf="message.type === 1">
+          <image-viewer [imageLinks]="[message.image.link]"></image-viewer>
+        </div>
+        <div class="content audio-content" *ngIf="message.type === 2">
+          <audio-player class="audio-player" [message]="message"></audio-player>
+          <div class="translate-tips">以下由机器自动翻译</div>
+          <div class="translate">{{message.audio.translateResult}}</div>
+        </div>
+      </div>
+      <div class="message-reply" *ngFor="let reply of message.replies">
+        <span class="name">{{reply.user.nick}}回复{{message.user.nick}}：</span>
+        <span class="content">{{reply.content}}</span>
+      </div>
+    </div>
+
+    <div class="history-source">
+      <h1 class="source-title">文章来源</h1>
+      <div class="source-block" (click)="backToMainScreen()">
+        <img class="live-cover" [src]="liveInfo.coverUrl" alt="直播封面">
+        <div class="live-info">
+          <h2 class="live-title">{{liveInfo.subject}}</h2>
+          <div class="live-closed-at">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="bottom-bar">
-    <div class="live-info">
-      <i>评</i>
-      999+
+    <div class="live-info" *ngIf="liveInfo">
+      <i class="bi bi-chat4"></i>
+      {{liveInfo.commented}}
     </div>
-    <div class="push-info">
-      <i>推</i>
-      12
+
+    <div class="operation-area">
+      <i class="bi bi-share" (click)="popupShare()"></i>
+      <i class="bi bi-thumbsup" [ngClass]="{'has-praised': liveInfo.hadPraised}" (click)="setPraised()"></i>
     </div>
-    <a class="filter-btn" href="">筛选</a>
-  </div> -->
+  </div>
 </div>
 

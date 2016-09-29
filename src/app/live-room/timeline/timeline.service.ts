@@ -2,7 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Subject }        from 'rxjs/Subject';
 import { Subscription }   from 'rxjs/Subscription';
 
-import { MessageModel, ReplyMessageModel } from './message/message.model';
+import { MessageModel, ReplyMessageModel } from '../../shared/api/message.model';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { MqService, MqEvent } from '../../shared/mq/mq.service';
 

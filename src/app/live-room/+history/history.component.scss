@@ -17,8 +17,6 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgb(255, 255, 255);
-  z-index: 3;
 
   .top-bar {
     padding: 20px;
@@ -32,6 +30,7 @@
       h1 {
         flex-grow: 1;
         color: rgb(75, 75, 75);
+        font-weight: normal;
         font-size: 24px;
         margin: 0;
       }
@@ -70,18 +69,130 @@
   .messages-container {
     padding: 6px 20px 20px;
 
-    .message {
-      font-size: 17px;
-      color: rgb(75, 75, 75);
-      line-height: 27px;
-      margin-bottom: 18px;
+    .loading {
+      display: block;
+      text-align: center;
+      margin: 100px auto;
+    }
+
+    .message-wrapper {
+      margin-bottom: 30px;
 
       &:last-child {
         margin-bottom: 0;
       }
 
-      .name {
-        font-weight: bold;
+      .message, .message-reply {
+        font-size: 16px;
+        color: rgb(75, 75, 75);
+        line-height: 24px;
+        word-break: break-all;
+
+        .name {
+          display: inline-flex;
+          font-weight: bold;
+        }
+
+        .image-content {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .audio-content {
+          margin-top: 7px;
+
+          .audio-player {
+            display: block;
+            padding: 14px;
+            border-top: solid 1px rgba(75, 75, 75, .5);
+            border-bottom: solid 1px rgba(75, 75, 75, .5);
+          }
+
+          .translate-tips {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 1em;
+            color: rgb(158, 161, 165);
+          }
+        }
+      }
+
+      .message-reply {
+        position: relative;
+        padding-left: 20px;
+        margin-top: 15px;
+
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 11px;
+          height: 1px;
+          width: 10px;
+          background-color: rgb(75, 75, 75);
+        }
+      }
+    }
+
+    .history-source {
+      padding-top: 40px;
+      margin-top: 40px;
+      position: relative;
+
+      &:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 33px;
+        height: 1px;
+        background-color: rgb(158, 161, 165);
+        margin-left: -16px;
+      }
+
+      .source-title {
+        font-weight: normal;
+        color: rgb(75, 75, 75);
+        font-size: 20px;
+        margin-bottom: 20px;
+        margin-top: 0;
+      }
+
+      .source-block {
+        display: flex;
+        align-items: center;
+        background-color: rgb(244, 244, 244);
+        padding: 15px;
+        margin-left: -20px;
+        margin-right: -20px;
+
+        .live-cover {
+          width: 136px;
+          height: 90px;
+          flex-shrink: 0;
+        }
+
+        .live-info {
+          margin-left: 15px;
+          flex-grow: 1;
+
+          .live-title {
+            color: rgb(75, 75, 75);
+            font-size: 17px;
+            margin-bottom: 10px;
+            margin-top: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .live-closed-at {
+            font-size: 16px;
+            color: rgb(158, 161, 165);
+          }
+        }
       }
     }
   }
@@ -94,17 +205,32 @@
     font-size: 0;
     background-color: rgb(250, 250, 250);
 
-    .live-info, .push-info {
+    .live-info {
       display: inline-block;
       font-size: 12px;
       margin-left: 20px;
       color: rgb(158, 161, 165);
+
+      .bi {
+        font-size: 18px;
+        color: rgb(224, 229, 234);
+        margin-top: -4px;
+        margin-right: 5px;
+      }
     }
 
-    .filter-btn {
+    .operation-area {
       float: right;
-      padding: 0 20px;
-      font-size: 14px;
+      margin: 0 13px;
+
+      .bi {
+        padding: 13px;
+        font-size: 24px;
+      }
+
+      .bi-thumbsup.has-praised {
+        color: rgb(33, 150, 243);
+      }
     }
   }
 }
