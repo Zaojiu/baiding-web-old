@@ -7,6 +7,7 @@ import { MessageModel } from '../../shared/api/message.model';
 import { MessageApiService } from "../../shared/api/message.api";
 import { UserInfoModel } from "../../shared/user-info/user-info.model";
 import { UserInfoService } from "../../shared/user-info/user-info.service";
+import { SharePopupService } from "../../shared/share-popup/share-popup.service";
 
 @Component({
   templateUrl: './history.component.html',
@@ -21,7 +22,7 @@ export class HistoryComponent {
   messages: MessageModel[] = [];
   constructor(private liveService: LiveService, private userInfoService: UserInfoService,
               private route: ActivatedRoute, private router: Router,
-              private messageApiService: MessageApiService) {}
+              private messageApiService: MessageApiService, private shareService: SharePopupService) {}
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
@@ -38,5 +39,17 @@ export class HistoryComponent {
 
   backToMainScreen() {
     this.router.navigate(['/lives/' + this.id]);
+  }
+
+  setPraised() {
+    if (this.liveInfo.hadPraised) return;
+
+    this.liveService.praiseLive(this.id).then(() => {
+      this.liveService.getLiveInfo(this.id, true).then(liveInfo => this.liveInfo = liveInfo);
+    });
+  }
+
+  popupShare() {
+    this.shareService.popup();
   }
 }
