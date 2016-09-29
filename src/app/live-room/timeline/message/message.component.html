@@ -24,7 +24,7 @@
 
     <div class="thumbs-up" [ngClass]="{'had-thumbs-up': message.hadPraised}">
       <div class="thumbs-up-animations" praisedAnimation>
-        <praised-animation *ngFor="let user of message.praisedAnimations" [user]="user"></praised-animation>
+        <praised-animation *ngFor="let userAnim of message.praisedAnimations" [userAnim]="userAnim"></praised-animation>
       </div>
       <a class="thumbs-up-btn" (click)="setPraise()">
         <i class="bi bi-thumbsup"></i>

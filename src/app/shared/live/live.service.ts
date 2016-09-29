@@ -1,4 +1,4 @@
-import { Injectable }     from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
@@ -11,7 +11,7 @@ import { UserInfoService } from '../user-info/user-info.service';
 
 @Injectable()
 export class LiveService {
-  constructor (private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {}
+  constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) { }
 
   isEditor(id: string) {
     let userInfo = this.userInfoService.getUserInfoCache();
@@ -73,7 +73,6 @@ export class LiveService {
     liveInfo.shared = stream.shared;
     liveInfo.lcConvId = stream.lcConvId;
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
-    liveInfo.praisedAnimations = [];
 
     return liveInfo
   }
@@ -98,7 +97,7 @@ export class LiveService {
 
       return liveInfo;
     });
-      // .catch(this.handleError);
+    // .catch(this.handleError);
   }
 
   closeLive(id: string): Promise<any> {
@@ -110,9 +109,14 @@ export class LiveService {
     });
   }
 
-  praiseLive(id: string): Promise<any> {
+  praiseLive(id: string, praised: boolean, emoji: string = '👍'): Promise<any> {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/praises`;
-    return this.http.post(url, null).toPromise().then(res => {
+    let data = {
+      praised: praised,
+      num: 0,
+      emoji: emoji,
+    };
+    return this.http.post(url, JSON.stringify(data)).toPromise().then(res => {
       let data = res.json();
 
       return data;

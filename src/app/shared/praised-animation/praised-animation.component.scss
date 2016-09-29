@@ -21,6 +21,21 @@
       height: 100%;
       border-radius: 50%;
     }
+
+    .emoji {
+      display: none;
+      font-size: 26px;
+    }
+
+    &.show-emoji {
+      img {
+        display: none;
+      }
+
+      .emoji {
+        display: block;
+      }
+    }
   }
 
   &.animation1, &.animation2 {

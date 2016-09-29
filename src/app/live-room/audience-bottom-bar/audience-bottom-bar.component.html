@@ -4,9 +4,8 @@
     <button class="sender">发送</button>
     <a class="back" (click)="switchToNormal()"><i class="bi bi-right-arrow-round"></i></a>
   </form>
-  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😄</a>
-  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😊</a>
-  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😍</a>
-  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😜</a>
-  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😂</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise('👍')" (contextmenu)="$event.preventDefault()">👍</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise('💛')" (contextmenu)="$event.preventDefault()">💛</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise('😄')" (contextmenu)="$event.preventDefault()">😄</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise('👏')" (contextmenu)="$event.preventDefault()">👏</a>
 </div>

@@ -1,5 +1,6 @@
 import { MessageType } from './message.enum';
 import { UserInfoModel } from '../user-info/user-info.model'
+import { UserAnimEmoji } from '../../../shared/praised-animation/praised-animation.model'
 import * as _ from 'lodash';
 
 export class AudioMessageModel {
@@ -31,7 +32,7 @@ export class MessageModel {
   image: ImageMessageModel;
   hadPraised: boolean;
   praisedAmount: number;
-  praisedAnimations: UserInfoModel[] = [];
+  praisedAnimations: UserAnimEmoji[] = [];
   praisedAvatars: UserInfoModel[] = [];
   replies: ReplyMessageModel[] = [];
   createdAt: string;
@@ -47,10 +48,10 @@ export class MessageModel {
     return avatars
   }
 
-  pushPraisedUser(user: UserInfoModel, praised: boolean, num: number) {
+  pushPraisedUser(userAnim: UserAnimEmoji, praised: boolean, num: number) {
     if (!praised) {
       this.praisedAmount += 1
-      this.praisedAvatars.unshift(user)
+      this.praisedAvatars.unshift(userAnim.user)
       if (this.praisedAvatars.length > 5) {
         this.praisedAvatars.pop()
       }
@@ -61,7 +62,7 @@ export class MessageModel {
     while (num > 0) {
       num -= 1
       setTimeout(() => {
-        this.praisedAnimations.push(user)
+        this.praisedAnimations.push(userAnim)
       }, _.random(1, 10) * 150)
     }
   }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserInfoService } from '../user-info/user-info.service';
-import { UserInfoModel } from '../user-info/user-info.model';
+import { UserAnimEmoji } from './praised-animation.model'
 
 declare var _: any;
 
@@ -12,7 +12,7 @@ declare var _: any;
 })
 
 export class PraisedAnimationComponent implements OnInit {
-  @Input() user: UserInfoModel;
+  @Input() userAnim: UserAnimEmoji;
   randomAnimation: number;
   randomXAxisOffset: number;
   isMine: boolean;
@@ -23,7 +23,7 @@ export class PraisedAnimationComponent implements OnInit {
     this.randomAnimation = _.random(0, 1, false);
     this.randomXAxisOffset = _.random(10, 44, false);
     let userInfo = this.userInfoService.getUserInfoCache();
-    this.isMine = this.user.uid === userInfo.uid;
+    this.isMine = this.userAnim.user.uid === userInfo.uid;
   }
 
   getXAxisOffset() {

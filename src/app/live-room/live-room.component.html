@@ -10,7 +10,7 @@
   </div>
 
   <div class="praised-animations" praisedAnimation>
-    <praised-animation *ngFor="let user of liveInfo.praisedAnimations" [user]="user"></praised-animation>
+    <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
   </div>
 
   <comments [ngClass]="{'hidden': !isCommentOpened}" [streamId]="id"></comments>

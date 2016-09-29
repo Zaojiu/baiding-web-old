@@ -13,6 +13,7 @@ import { MessageApiService } from "../../shared/api/message.api";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
+import { UserAnimEmoji } from '../../shared/praised-animation/praised-animation.model';
 
 @Component({
   selector: 'timeline',
@@ -99,7 +100,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
     for (let idx in this.messages) {
       let message = this.messages[idx];
       if (message.id == praisedUser.msgId) {
-        message.pushPraisedUser(praisedUser.user, praisedUser.praised, praisedUser.num)
+        let userAnim = new UserAnimEmoji;
+        userAnim.user = praisedUser.user
+        message.pushPraisedUser(userAnim, praisedUser.praised, praisedUser.num)
       }
     }
   }
