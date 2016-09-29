@@ -29,7 +29,6 @@ export class HistoryComponent {
     this.token = this.route.parent.snapshot.params['token'];
 
     this.messageApiService.history(this.id).then(messages => {
-      console.log(messages);
       this.messages = messages;
     });
 

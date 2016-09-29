@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Subscription }   from 'rxjs/Subscription';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as moment from 'moment';
 
 import { MessageModel } from '../../shared/api/message.model';
@@ -33,7 +33,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   countdownTimer: any;
 
-  constructor(private route: ActivatedRoute, private timelineService: TimelineService,
+  constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
               private liveService: LiveService, private messageApiService: MessageApiService) {}
 
   ngOnInit() {
@@ -245,5 +245,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
     for (let idx of idxs) {
       this.messages.splice(idx, 1)
     }
+  }
+
+  gotoHistory() {
+    this.router.navigate([`/lives/${this.id}/history`]);
   }
 }

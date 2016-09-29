@@ -11,6 +11,8 @@
   </div>
 
   <div class="messages-container scrollable">
+    <bd-loading class="loading" *ngIf="!messages.length"></bd-loading>
+
     <div class="message-wrapper" *ngFor="let message of messages">
       <div class="message">
         <span class="name">

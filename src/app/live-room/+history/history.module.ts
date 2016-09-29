@@ -6,6 +6,7 @@ import { HistoryComponent } from "./history.component";
 import { PipeModule } from "../../shared/pipe/pipe.module";
 import { AudioPlayerModule } from "../../shared/audio-player/audio-player.module";
 import { ImageViewerModule } from "../../shared/image-viewer/image-viewer.module";
+import { LoadingModule } from "../../shared/bd-loading/bd-loading.module";
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { ImageViewerModule } from "../../shared/image-viewer/image-viewer.module
     PipeModule,
     AudioPlayerModule,
     ImageViewerModule,
+    LoadingModule,
     ROUTES,
   ],
   declarations: [

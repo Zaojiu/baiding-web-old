@@ -3,7 +3,7 @@
 <div class="image-viewer-popup" [ngClass]="{opened: isPopup}" (pinch)="pinch($event)" (pinchend)="pinchEnd($event)"
      (pan)="pan($event)"
      (panend)="panEnd($event)" (doubletap)="dblclick()">
-  <div class="delete-btn-wrapper"  *ngIf="imageFiles" >
+  <div class="delete-btn-wrapper" *ngIf="imageFiles" >
     <a class="delete-btn" (click)="deleteImageSource()"><i class="bi bi-delete"></i></a>
   </div>
   <a class="quit-btn" (click)="closePopup()"><i class="bi bi-close"></i></a>
