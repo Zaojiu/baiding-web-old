@@ -18,7 +18,7 @@
   <image-viewer [imageFiles]="images"></image-viewer>
 
   <div class="bottom-bar scrollable">
-    <label class="add-image" for="image-selector">
+    <label class="add-image" for="image-selector"  *ngIf="!messageId && !commentId">
       <input class="fileSelector" id="image-selector" type="file"  [(fileSelector)]="images">
       <i class="bi bi-image"></i>
     </label>
