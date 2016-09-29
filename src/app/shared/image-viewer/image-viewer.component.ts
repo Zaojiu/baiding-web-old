@@ -14,7 +14,7 @@ declare var $: any
 export class ImageViewerComponent implements OnInit, OnChanges {
   private el: HTMLElement;
   @Input() imageFiles: File[];
-  @Input() imageLinks: String;
+  @Input() imageLinks: String[];
   imageSrc = '';
   isPopup: boolean;
   imgEvent: ImgEvent;
@@ -44,7 +44,7 @@ export class ImageViewerComponent implements OnInit, OnChanges {
     }
 
     if (linkChange && linkChange.currentValue && linkChange.currentValue.length) {
-      let link = linkChange.currentValue;
+      let link = linkChange.currentValue[0];
       this.imageSrc = link;
     }
 
