@@ -13,7 +13,6 @@ import { MessageComponent } from './timeline/message/message.component';
 import { PostComponent } from './post/post.component';
 import { PraisedAnimationDirective } from '../shared/praised-animation/praised-animation.directive';
 import { PraisedAnimationComponent } from '../shared/praised-animation/praised-animation.component';
-import { TimelineScrollerDirective } from './timeline/timeline.directive';
 import { LiveGuard } from '../shared/guard/live.guard';
 import { TimelineService } from './timeline/timeline.service';
 import { CommentService } from './comment/comment.service';
@@ -24,6 +23,7 @@ import { ImageViewerComponent } from "../shared/image-viewer/image-viewer.compon
 import { PipeModule } from "../shared/pipe/pipe.module";
 import { UploadApiService } from "../shared/api/upload.api";
 import { LoadingModule } from "../shared/bd-loading/bd-loading.module";
+import { ScrollerDirective } from "../shared/scroller/scroller.directive";
 
 @NgModule({
   imports: [
@@ -44,9 +44,9 @@ import { LoadingModule } from "../shared/bd-loading/bd-loading.module";
     PostComponent,
     PraisedAnimationDirective,
     PraisedAnimationComponent,
-    TimelineScrollerDirective,
     FileSelectorDirective,
     ImageViewerComponent,
+    ScrollerDirective,
   ],
   providers: [
     TimelineService,

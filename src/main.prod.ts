@@ -6,7 +6,5 @@ import { AppModuleNgFactory } from './app/app.module.ngfactory';
 
 enableProdMode();
 
-console.timeEnd('script before angular start');
-
 platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);
 

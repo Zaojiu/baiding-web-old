@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Subscription }   from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -10,6 +10,9 @@ import { LiveService } from '../../shared/live/live.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
 import { MqPraisedUser, MqEvent, EventType } from '../../shared/mq/mq.service';
 import { MessageApiService } from "../../shared/api/message.api";
+import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
+import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
+import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 
 @Component({
   selector: 'timeline',
@@ -21,9 +24,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
+  @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   messages: MessageModel[] = [];
   receviedReplySubscription: Subscription;
-  scrollSubscription: Subscription;
   timelineSubscription: Subscription;
   isOnLatest: boolean;
   isOnNewest: boolean;
@@ -34,7 +37,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
               private liveService: LiveService, private messageApiService: MessageApiService) {}
 
   ngOnInit() {
-    console.timeEnd('script init load');
     this.id = this.route.snapshot.params['id'];
 
     if (!this.isStarted()) {
@@ -49,17 +51,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.timelineService.onReceivedPraises(prised => this.onReceivedPraises(prised));
     this.timelineService.onReceiveMessages(message => this.onReceiveMessages(message));
 
-    this.startObserveTimelineScroll();
     this.startObserveTimelineAction();
     this.startReceiveReply();
-    this.gotoLatestMessages();
-
-    setTimeout(() => this.timelineService.scrollToBottom(), 200);
+    this.gotoLatestMessages().then(result => setTimeout(() => {this.scroller.scrollToBottom()}, 500));
   }
 
   ngOnDestroy() {
     this.timelineService.stopReceive(this.id);
-    this.stopObserveTimelineScroll();
     this.timelineSubscription.unsubscribe();
     if (this.countdownTimer) {
       clearInterval(this.countdownTimer)
@@ -81,16 +79,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
-        this.gotoLatestMessages()
-        break
+        this.gotoLatestMessages();
+        break;
       case EventType.LivePraise:
         // TODO
-        break
+        break;
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
           this.liveInfo = result
-        })
-        break
+        });
+        break;
     }
   }
 
@@ -99,7 +97,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       return
     }
     for (let idx in this.messages) {
-      let message = this.messages[idx]
+      let message = this.messages[idx];
       if (message.id == praisedUser.msgId) {
         message.pushPraisedUser(praisedUser.user, praisedUser.praised, praisedUser.num)
       }
@@ -115,31 +113,32 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.messages.push(message)
   }
 
-  gotoLatestMessages() {
-    if (this.isLoading) return;
+  gotoLatestMessages(): Promise<boolean> {
+    if (this.isLoading) return Promise.resolve(false);
 
     this.isLoading = true;
 
-    this.messageApiService.listMessages(this.id).then(messages => {
+    return this.messageApiService.listMessages(this.id).then(messages => {
       messages = messages.reverse();
       this.messages = messages;
       this.isOnNewest = false;
       this.isOnLatest = true;
       this.isLoading = false;
-      console.timeEnd('tineline shown');
+      return true;
     });
   }
 
-  gotoFirstMessages() {
-    if (this.isLoading) return;
+  gotoOldestMessages(): Promise<boolean> {
+    if (this.isLoading) return Promise.resolve(false);
 
     this.isLoading = true;
 
-    this.messageApiService.listMessages(this.id, '', 20, ['createdAt']).then(messages => {
+    return this.messageApiService.listMessages(this.id, '', 20, ['createdAt']).then(messages => {
       this.messages = messages;
       this.isOnNewest = true;
       this.isOnLatest = false;
       this.isLoading = false;
+      return true;
     });
   }
 
@@ -149,7 +148,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
-      this.removeRepeat(messages)
+      this.removeRepeat(messages);
       for (let message of messages) {
         this.messages.push(message);
       }
@@ -168,7 +167,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
-      this.removeRepeat(messages)
+      this.removeRepeat(messages);
       for (let message of messages) {
         this.messages.unshift(message);
       }
@@ -181,43 +180,37 @@ export class TimelineComponent implements OnInit, OnDestroy {
     });
   }
 
-  startObserveTimelineScroll() {
-    this.scrollSubscription = this.timelineService.scroller$.subscribe(
-      topOrBottom => {
-        if (topOrBottom) {
-          if (this.messages.length === 0) return;
-          let firstMessage = this.messages[0];
-          this.getPrevMessages(`$lt${firstMessage.createdAt}`, 20, ['-createdAt']);
-        } else {
-          if (this.messages.length === 0) return;
-          let lastMessage = this.messages[this.messages.length - 1];
-          this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
-        }
-      }
-    );
-  }
-
-  stopObserveTimelineScroll() {
-    this.scrollSubscription.unsubscribe();
+  onScroll(e: ScrollerEventModel) {
+    if (e.position == ScrollerPosition.OnTop) {
+      if (this.messages.length === 0) return;
+      let firstMessage = this.messages[0];
+      this.getPrevMessages(`$lt${firstMessage.createdAt}`, 20, ['-createdAt']);
+    } else if (e.position == ScrollerPosition.OnBottom) {
+      if (this.messages.length === 0) return;
+      let lastMessage = this.messages[this.messages.length - 1];
+      this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
+    }
   }
 
   startObserveTimelineAction() {
     this.timelineSubscription = this.timelineService.timeline$.subscribe(
-      topOrBottom => {
-        this.stopObserveTimelineScroll();
+      oldestOrLatest => {
+        this.scroller.stopEmitScrollEvent();
 
-        if (topOrBottom) {
-          this.gotoFirstMessages();
-          setTimeout(() => {
-            this.timelineService.scrollToTop();
-            this.startObserveTimelineScroll();
-          }, 200);
+        if (oldestOrLatest) {
+          this.gotoOldestMessages().then(result => {
+            if (result) {
+              setTimeout(() => {this.scroller.scrollToTop()}, 500)
+              this.scroller.startEmitScrollEvent();
+            }
+          });
         } else {
-          this.gotoLatestMessages();
-          setTimeout(() => {
-            this.timelineService.scrollToBottom();
-            this.startObserveTimelineScroll();
-          }, 200);
+          this.gotoLatestMessages().then(result => {
+            if (result) {
+              setTimeout(() => {this.scroller.scrollToBottom()}, 500)
+              this.scroller.startEmitScrollEvent();
+            }
+          });
         }
       }
     );
