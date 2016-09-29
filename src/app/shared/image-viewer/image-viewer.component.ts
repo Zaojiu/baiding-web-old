@@ -32,7 +32,7 @@ export class ImageViewerComponent implements OnInit, OnChanges {
     let fileChange = changes['imageFiles'];
     let linkChange = changes['imageLinks'];
 
-    if (fileChange && fileChange.currentValue & fileChange.currentValue.length) {
+    if (fileChange && fileChange.currentValue && fileChange.currentValue.length) {
       let file = fileChange.currentValue[0];
       let reader = new FileReader();
 
