@@ -1,4 +1,4 @@
 <div class="share-container">
-  <img class="share-img" [src]="imageUrl" alt="" >
+  <img class="share-img" [ngClass]="{'is-loading': isLoading}" [src]="imageUrl" (load)="isloading = false"  alt="" >
+  <bd-loading *ngIf="isLoading"></bd-loading>
 </div>
-
