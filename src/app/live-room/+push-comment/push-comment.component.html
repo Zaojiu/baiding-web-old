@@ -1,5 +1,6 @@
 <div class="push-comment-container">
   <div class="no-result" *ngIf="!comments.length">暂无评论</div>
+  <bd-loading class="loading" *ngIf="!liveInfo"></bd-loading>
 
   <div class="comment-container scrollable" pushCommentScroller>
     <div class="comment-row" *ngFor="let comment of comments">
