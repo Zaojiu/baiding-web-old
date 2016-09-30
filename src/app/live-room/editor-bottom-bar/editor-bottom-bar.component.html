@@ -1,6 +1,6 @@
 <div class="editor-bottom-bar">
-  <a class="share-btn" (click)="popupShare()"><i class="bi bi-share"></i></a>
-  <a class="post-btn" (click)="gotoPostMessage()"><i class="bi bi-keyboard"></i></a>
+  <a class="share-btn" (tap)="popupShare()" (touchstart)="$event.preventDefault()"><i class="bi bi-share"></i></a>
+  <a class="post-btn" (tap)="gotoPostMessage()" (touchstart)="$event.preventDefault()"><i class="bi bi-keyboard"></i></a>
   <div class="record-btn-container"
     [ngClass]="{recording: isRecording}"
     (touchstart)="startRecord()"
@@ -12,8 +12,8 @@
       <i class="bi bi-mic"></i>
     </a>
   </div>
-  <a class="push-comment-btn" (click)="gotoPushComment()"><i class="bi bi-chat1"></i></a>
-  <a class="more-op-btn" (click)="popupBottomSelector()"><i class="bi bi-more"></i></a>
+  <a class="push-comment-btn" (tap)="gotoPushComment()" (touchstart)="$event.preventDefault()"><i class="bi bi-chat1"></i></a>
+  <a class="more-op-btn" (tap)="popupBottomSelector()" (touchstart)="$event.preventDefault()"><i class="bi bi-more"></i></a>
 </div>
 
 <div class="record-background" *ngIf="isRecording">
