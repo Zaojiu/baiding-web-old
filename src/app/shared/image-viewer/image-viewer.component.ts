@@ -1,7 +1,6 @@
 import {Component, ElementRef, EventEmitter, Output, Input, OnInit, OnChanges, SimpleChange} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
 import {ImgEvent} from "./image-viewer.model";
-import {ImageViewerService} from "./image-viewer.service";
 
 import * as Hammer from 'hammerjs'
 declare var $: any
@@ -12,54 +11,56 @@ declare var $: any
   styleUrls: ['./image-viewer.component.scss'],
 })
 
-export class ImageViewerComponent implements OnInit {
+export class ImageViewerComponent implements OnInit, OnChanges {
   private el: HTMLElement;
+  @Input() imageFiles: File[];
+  @Output() imageFilesChange = new EventEmitter<File[]>();
+  @Input() imageLinks: String[];
   imageSrc = '';
   isPopup: boolean;
   imgEvent: ImgEvent;
 
-  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService) {
+  constructor(el: ElementRef, private modalService: ModalService) {
     this.el = el.nativeElement
   }
 
   ngOnInit() {
-    this.imageViewerService.imagePopup$.subscribe((model)=> {
-      console.log('into the imagePopup$')
-      if (!model.images && !model.links) return
-      this.isPopup = true;
-      console.log(model.links, model.images, 'model.links', 'model.images')
-
-      if (model.images && model.images.length) {
-        let imagesFile = model.images[0];
-        let reader = new FileReader();
-
-        reader.onload = (e) => {
-          this.imageSrc = e.target['result'];
-        };
-
-        reader.readAsDataURL(imagesFile);
-      }
-
-      if (model.links && model.links.length) {
-        let link = model.links[0].toString();
-        this.imageSrc = link;
-      }
-
-      this.imgEvent = new ImgEvent();
-    });
-
     let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {});
     pinchWrapper.get('pinch').set({enable: true});
   }
 
-  ifFile(){
-    return /^data:image\/.*?;base64/.test(this.imageSrc);
+  ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
+    let fileChange = changes['imageFiles'];
+    let linkChange = changes['imageLinks'];
+
+    if (fileChange && fileChange.currentValue && fileChange.currentValue.length) {
+      let file = fileChange.currentValue[0];
+      let reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.imageSrc = e.target['result'];
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    if (linkChange && linkChange.currentValue && linkChange.currentValue.length) {
+      let link = linkChange.currentValue[0];
+      this.imageSrc = link;
+    }
+
+
   }
 
   closePopup() {
     this.isPopup = false;
   }
 
+  imagePopup() {
+    this.isPopup = true;
+    this.imgEvent = new ImgEvent();
+    this.imageFitScreen();
+  }
 
   imageFitScreen() {
     let $image = $(this.el).find('.popup-pinch-img');
@@ -67,7 +68,6 @@ export class ImageViewerComponent implements OnInit {
     let screenHeight = $image.parent().height();
     let imgNaturalWidth = $image[0].naturalWidth;
     let imgNaturalHeight = $image[0].naturalHeight;
-
 //initial it's position in center
     $image.css({'top': '50%', 'left': '50%'});
 
@@ -90,9 +90,8 @@ export class ImageViewerComponent implements OnInit {
       if (isDelete) {
         console.log(isDelete)
         this.imageSrc = '';
-        //todo
-        // this.imageFiles = [];
-        // this.imageFilesChange.emit(this.imageFiles);
+        this.imageFiles = [];
+        this.imageFilesChange.emit(this.imageFiles);
         this.isPopup = false;
       }
     })
