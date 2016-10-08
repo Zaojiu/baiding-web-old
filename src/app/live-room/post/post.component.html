@@ -20,7 +20,7 @@
   </div>
 
   <div class="bottom-bar scrollable">
-    <label class="add-image" for="image-selector"  *ngIf="!messageId && !commentId">
+    <label class="add-image" for="image-selector"  *ngIf="!messageId && !commentId && isEditor()">
       <input class="fileSelector" id="image-selector" type="file"  [(fileSelector)]="images">
       <i class="bi bi-image"></i>
     </label>
