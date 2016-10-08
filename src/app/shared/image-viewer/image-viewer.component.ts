@@ -24,7 +24,7 @@ export class ImageViewerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {domEvents: true});
+    let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {});
     pinchWrapper.get('pinch').set({enable: true});
   }
 
