@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, OnChanges, SimpleChange} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Output, Input, OnInit, OnChanges, SimpleChange} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
 import {ImgEvent} from "./image-viewer.model";
 
@@ -14,6 +14,7 @@ declare var $: any
 export class ImageViewerComponent implements OnInit, OnChanges {
   private el: HTMLElement;
   @Input() imageFiles: File[];
+  @Output() imageFilesChange = new EventEmitter<File[]>();
   @Input() imageLinks: String[];
   imageSrc = '';
   isPopup: boolean;
@@ -90,6 +91,7 @@ export class ImageViewerComponent implements OnInit, OnChanges {
         console.log(isDelete)
         this.imageSrc = '';
         this.imageFiles = [];
+        this.imageFilesChange.emit(this.imageFiles);
         this.isPopup = false;
       }
     })
