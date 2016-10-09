@@ -1,7 +1,7 @@
 {
   "project": {
     "version": "1.0.0-beta.14",
-    "name": "ngcli"
+    "name": "baiding-web"
   },
   "apps": [
     {
@@ -11,6 +11,7 @@
       "assets": "assets",
       "index": "index.html",
       "main": "main.ts",
+      "async": true,
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
       "prefix": "app",
