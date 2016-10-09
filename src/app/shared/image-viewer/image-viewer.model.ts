@@ -24,3 +24,13 @@ export class ImgEvent {
     this.originY += newY;
   }
 }
+
+export class ImgPopupModel{
+  links: String[];
+  images: File[];
+  constructor(links,images){
+    this.links = links;
+    this.images = images;
+  }
+
+}

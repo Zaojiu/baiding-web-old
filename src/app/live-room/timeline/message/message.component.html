@@ -13,7 +13,7 @@
       <div class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</div>
       <div class="content" *ngIf="message.type === 1">
         <div class="message-img">
-          <image-viewer [imageLinks]="[message.image.link]"></image-viewer>
+          <image-viewer-preview [imageLinks]="[message.image.link]"></image-viewer-preview>
         </div>
       </div>
       <div class="content audio-content" *ngIf="message.type === 2">
