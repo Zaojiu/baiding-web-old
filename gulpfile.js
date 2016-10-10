@@ -1,16 +1,20 @@
 'use strict'
 
 let gulp = require('gulp');
+let autoprefixer = require('autoprefixer');
 
 let $ = require('gulp-load-plugins')({pattern: ['gulp-*', 'lazypipe']});
 
 gulp.task('src', function () {
+  let processors = [
+    autoprefixer(),
+  ];
   let tsProcessor = $.lazypipe().pipe($.replace, '.scss', '.css');
-  let cssProcessor = $.lazypipe().pipe($.sass);
+  let cssProcessor = $.lazypipe().pipe($.sass).pipe($.postcss, processors);
 
   gulp.src('./src/**/*')
-    .pipe($.if('*.ts', tsProcessor()))
     .pipe($.if('*.scss', cssProcessor()))
+    .pipe($.if('*.ts', tsProcessor()))
     .pipe(gulp.dest('./tmp'));
 });
 
