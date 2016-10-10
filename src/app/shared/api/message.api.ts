@@ -86,6 +86,7 @@ export class MessageApiService {
       message.audio.localId = '';
       message.audio.serverId = data.audio.weixinId;
       message.audio.translateResult = data.audio.text;
+      message.audio.link = data.audio.link;
     }
 
     if (data.type === 'image') {

@@ -1,37 +1,35 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
-import { WechatService } from '../wechat/wechat.service';
-import { MessageModel } from '../api/message.model';
+import {AudioPlayerService} from './audio-player.service';
+
+import {MessageModel} from '../api/message.model';
 
 @Component({
   selector: 'audio-player',
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
+  providers: [AudioPlayerService]
 })
 
 export class AudioPlayerComponent {
+
   @Input() message: MessageModel;
   @Input() isWhiteTheme: MessageModel;
 
-  constructor(private wechatService: WechatService) {}
-
-  playVoice() {
-    if (!this.message.audio.localId) {
-      this.wechatService.downloadVoice(this.message.audio.serverId).then(localId => {
-        this.message.audio.localId = localId;
-        this.wechatService.playVoice(this.message.audio.localId)
-      })
-    } else {
-      this.wechatService.playVoice(this.message.audio.localId)
-    }
-
+  constructor(private audioPlayerService: AudioPlayerService) {
   }
 
-  stopVoice() {
-    this.wechatService.stopVoice(this.message.audio.localId)
+  playOrStopVoice() {
+    this.isPlaying() ? this.audioPlayerService.stop(this.message) : this.play();
   }
 
-  playingId(): string {
-    return this.wechatService.playingVoiceId
+  play() {
+    this.audioPlayerService.play(this.message).then(msg=> {
+      // console.log(msg)
+    })
+  }
+
+  isPlaying() {
+    return this.audioPlayerService.isPlaying(this.message);
   }
 }

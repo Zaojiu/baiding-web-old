@@ -6,6 +6,7 @@ export class AudioMessageModel {
   localId: string;
   serverId: string;
   translateResult: string;
+  link: string;
 }
 
 export class ReplyMessageModel {

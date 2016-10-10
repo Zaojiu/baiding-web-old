@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { Subject } from 'rxjs/Subject';
+import {Subject} from 'rxjs/Subject';
 
-import { AppConfig } from '../../app.config';
-import { WechatConfigModel, WechatAudioModel } from './wechat.model';
-import { StoreService } from '../store/store.service';
+import {AppConfig} from '../../app.config';
+import {WechatConfigModel, WechatAudioModel} from './wechat.model';
+import {StoreService} from '../store/store.service';
 
-declare var wx:any;
+declare var wx: any;
 
 @Injectable()
 export class WechatService {
@@ -15,10 +15,11 @@ export class WechatService {
   private recordSource = new Subject<WechatAudioModel>();
   private hasInit: boolean;
   playingVoiceId = '';
+  onVoicePlayEnd: any;
 
   record$ = this.recordSource.asObservable();
 
-  constructor (private http: Http, private config: AppConfig, private store: StoreService) {
+  constructor(private http: Http, private config: AppConfig, private store: StoreService) {
     this.wechatUrl = `${config.urlPrefix.io}/api/wechat/signature/config`;
   }
 
@@ -57,8 +58,10 @@ export class WechatService {
     })
   }
 
+
   initWechat(): Promise<string> {
     var hasRetry: boolean
+    let thiz = this;
 
     return new Promise<string>((resolve, reject) => {
       wx.error(reason => {
@@ -82,6 +85,7 @@ export class WechatService {
 
         wx.onVoicePlayEnd({
           success: function (res) {
+            thiz.onVoicePlayEnd(this.playingVoiceId);
             this.playingVoiceId = '' // 返回音频的本地ID
           }
         })
@@ -104,7 +108,8 @@ export class WechatService {
       success: function () {
         if (liveId) this.confirmShare(liveId)
       },
-      cancel: function () {}
+      cancel: function () {
+      }
     })
 
     wx.onMenuShareAppMessage({
@@ -115,7 +120,8 @@ export class WechatService {
       success: function () {
         if (liveId) this.confirmShare(liveId)
       },
-      cancel: function () {}
+      cancel: function () {
+      }
     })
 
     wx.onMenuShareQQ({
@@ -126,7 +132,8 @@ export class WechatService {
       success: function () {
         if (liveId) this.confirmShare(liveId)
       },
-      cancel: function () {}
+      cancel: function () {
+      }
     })
 
     wx.onMenuShareWeibo({
@@ -137,7 +144,8 @@ export class WechatService {
       success: function () {
         if (liveId) this.confirmShare(liveId)
       },
-      cancel: function () {}
+      cancel: function () {
+      }
     })
 
     wx.onMenuShareQZone({
@@ -148,14 +156,17 @@ export class WechatService {
       success: function () {
         if (liveId) this.confirmShare(liveId)
       },
-      cancel: function () {}
+      cancel: function () {
+      }
     })
   }
 
   confirmShare(liveId: string): Promise<void> {
     let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/share`
     return this.http.post(url, null).toPromise()
-      .then(res => { return })
+      .then(res => {
+        return
+      })
   }
 
   startRecord() {

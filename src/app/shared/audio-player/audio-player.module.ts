@@ -12,7 +12,7 @@ import { CommonModule } from "@angular/common";
     exports: [
       AudioPlayerComponent,
     ],
-  },
+  }
 )
 
 export class AudioPlayerModule {}
