@@ -5,11 +5,15 @@ import {Subscription} from 'rxjs/Subscription';
 import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
 import {BottomPopupSelectorModel} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
 import {TimelineService} from '../timeline/timeline.service';
-import {LiveService} from '../../shared/live/live.service';
+import { LiveService } from '../../shared/live/live.service';
+import { LiveInfoModel } from '../../shared/live/live.model';
+import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import {ModalService} from '../../shared/modal/modal.service';
 import {WechatService} from '../../shared/wechat/wechat.service';
 import {MessageApiService} from '../../shared/api/message.api';
-import {SharePopupService} from '../../shared/share-popup/share-popup.service';
+import { SharePopupService } from '../../shared/share-popup/share-popup.service';
+import { UserAnimEmoji } from '../../shared/praised-animation/praised-animation.model';
+import { MqEvent, EventType } from '../../shared/mq/mq.service';
 
 
 @Component({
@@ -22,6 +26,8 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   @Input() isOnNewest: boolean;
   @Input() isOnLatest: boolean;
+  @Input() liveInfo: LiveInfoModel;
+  @Input() userInfo: UserInfoModel;
   popupSelectorSubscription: Subscription;
   closeSelectorSubscription: Subscription;
   recordSubscription: Subscription;
@@ -31,24 +37,40 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   timer: any;
   recordDuration: number;
   minRecordDuration = 20;
+  praisedSub: Subscription;
 
   constructor(private router: Router,
               private bottomPopupService: BottomPopupSelectorService, private timelineService: TimelineService,
               private messageApiService: MessageApiService,
               private liveService: LiveService, private wechatService: WechatService,
-              private modalService: ModalService, private sharePopupService: SharePopupService) {
+              private modalService: ModalService, private sharePopupService: SharePopupService,) {
   }
 
   ngOnInit() {
     this.recordSubscription = this.wechatService.record$.subscribe(audioModel => {
       this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult)
     });
+
+    this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
+      if (evt.event != EventType.LivePraise) {
+        return
+      }
+      if (evt.info.user.uid == this.userInfo.uid) {
+        return
+      }
+      let userAnim = new UserAnimEmoji;
+      userAnim.emoji = evt.info.emoji;
+      userAnim.user = new UserInfoModel;
+      this.liveInfo.praisedAnimations.push(userAnim);
+    })
   }
 
   ngOnDestroy() {
     if (this.popupSelectorSubscription) this.popupSelectorSubscription.unsubscribe();
     if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
     if (this.recordSubscription) this.recordSubscription.unsubscribe();
+
+    this.praisedSub.unsubscribe();
   }
 
   gotoPushComment() {

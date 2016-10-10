@@ -81,9 +81,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
       case EventType.LiveMsgUpdate:
         this.gotoLatestMessages();
         break;
-      case EventType.LivePraise:
-        // TODO
-        break;
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
           this.liveInfo = result

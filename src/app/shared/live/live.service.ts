@@ -52,6 +52,9 @@ export class LiveService {
     liveInfo.editors = [];
     for (let uid of stream.editors) {
       let user = users[uid];
+      if (!user) {
+        continue
+      }
       liveInfo.editors.push(user);
     }
 

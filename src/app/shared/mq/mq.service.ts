@@ -13,7 +13,7 @@ export enum EventType {
 
 export class MqEvent {
   event: EventType
-  data: any
+  info: any
 }
 
 export class MqPraisedUser {

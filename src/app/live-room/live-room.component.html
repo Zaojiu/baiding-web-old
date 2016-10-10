@@ -30,6 +30,8 @@
     *ngIf="!isChildrenActived && isEditor()"
     class="editor-bottom-bar"
     [liveId]="id"
+    [liveInfo]="liveInfo"
+    [userInfo]="userInfo"
     [isOnLatest]="timeline.isOnLatest"
     [isOnNewest]="timeline.isOnNewest"
   ></editor-bottom-bar>
