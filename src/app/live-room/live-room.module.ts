@@ -19,6 +19,7 @@ import { MessageApiService } from "../shared/api/message.api";
 import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
 import { FileSelectorDirective } from "../shared/file-selector/file-selector.directive";
 import { ImageViewerPreviewComponent } from "../shared/image-viewer-preview/image-viewer-preview.component";
+import { LiveRoomInfoComponent } from "./live-room-info/live-room-info.component";
 import { AudioPlayerComponent } from "../shared/audio-player/audio-player.component";
 import { PipeModule } from "../shared/pipe/pipe.module";
 import { UploadApiService } from "../shared/api/upload.api";
@@ -45,6 +46,7 @@ import { ScrollerDirective } from "../shared/scroller/scroller.directive";
     PraisedAnimationComponent,
     FileSelectorDirective,
     ImageViewerPreviewComponent,
+    LiveRoomInfoComponent,
     AudioPlayerComponent,
     ScrollerDirective,
   ],
