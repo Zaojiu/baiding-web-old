@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { HttpModule, BrowserXhr } from '@angular/http';
 
+import { LocalStorageService } from "angular2-localstorage/LocalStorageEmitter";
+
 import { AppComponent } from './app.component';
 import { ROUTES } from './app.routes';
 
@@ -61,6 +63,7 @@ import { CORSBrowserXHR } from './shared/api/CORSBrowserXHR.service'
     BottomPopupSelectorService,
     SharePopupService,
     ModalService,
+    LocalStorageService,
     LiveService,
     { provide: BrowserXhr, useClass: CORSBrowserXHR }
   ],
