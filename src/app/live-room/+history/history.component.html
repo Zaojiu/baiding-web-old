@@ -21,7 +21,7 @@
         </span>
         <span class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</span>
         <div class="content image-content" *ngIf="message.type === 1">
-          <image-viewer [imageLinks]="[message.image.link]"></image-viewer>
+          <image-viewer-preview [imageLinks]="[message.image.link]"></image-viewer-preview>
         </div>
         <div class="content audio-content" *ngIf="message.type === 2">
           <audio-player class="audio-player" [message]="message"></audio-player>
