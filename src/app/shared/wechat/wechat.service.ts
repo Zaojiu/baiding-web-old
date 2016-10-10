@@ -15,7 +15,7 @@ export class WechatService {
   private recordSource = new Subject<WechatAudioModel>();
   private hasInit: boolean;
   playingVoiceId = '';
-  onVoicePlayEnd: any;
+  private _onVoicePlayEnd: (id: string) => void;
 
   record$ = this.recordSource.asObservable();
 
@@ -61,20 +61,21 @@ export class WechatService {
 
   initWechat(): Promise<string> {
     var hasRetry: boolean
-    let thiz = this;
 
     return new Promise<string>((resolve, reject) => {
       wx.error(reason => {
         console.log('wx err:', reason)
-        if (hasRetry) return reject(reason) // TODO：全局错误处理
+        if (hasRetry) {
+          return reject(reason);
+        }// TODO：全局错误处理
 
         this.configWechat()
 
-        hasRetry = true
+        hasRetry = true;
       })
 
       wx.ready(() => {
-        this.hasInit = true
+        this.hasInit = true;
 
         wx.onVoiceRecordEnd({
           // 录音时间超过一分钟没有停止的时候会执行 complete 回调
@@ -84,9 +85,11 @@ export class WechatService {
         })
 
         wx.onVoicePlayEnd({
-          success: function (res) {
-            thiz.onVoicePlayEnd(this.playingVoiceId);
-            this.playingVoiceId = '' // 返回音频的本地ID
+          success: res => {
+            if (this._onVoicePlayEnd) {
+              this._onVoicePlayEnd(this.playingVoiceId);
+            }
+            this.playingVoiceId = ''; // 返回音频的本地ID
           }
         })
 
@@ -193,14 +196,24 @@ export class WechatService {
     wx.stopRecord({})
   }
 
-  playVoice(id: string) {
-    if (this.playingVoiceId != '') this.stopVoice(this.playingVoiceId)
+  playVoice(id: string): Promise<string> {
 
-    wx.playVoice({
-      localId: id // 需要播放的音频的本地ID，由stopRecord接口获得
-    })
+    if (this.playingVoiceId !== '') {
+      this.stopVoice(this.playingVoiceId);
+    }
 
-    this.playingVoiceId = id
+    return new Promise<string>((resolve, reject) => {
+
+      this._onVoicePlayEnd = localId => {
+        resolve(localId);
+        this.playingVoiceId = '';
+      };
+      wx.playVoice({
+        localId: id // 需要播放的音频的本地ID，由stopRecord接口获得
+      });
+
+      this.playingVoiceId = id;
+    });
   }
 
   stopVoice(id: string) {

@@ -20,14 +20,12 @@ export class AudioPlayerService {
 
   play(msg: MessageModel): Promise<MessageModel> {
 
-
     return new Promise((resolve, reject) => {
 
       if (msg.audio.localId) {
-        this.wechatService.onVoicePlayEnd = () => {
+        return this.wechatService.playVoice(msg.audio.localId).then( localId => {
           resolve(msg);
-        };
-        return this.wechatService.playVoice(msg.audio.localId);
+        });
       }
 
       AudioPlayerService.playingSource && AudioPlayerService.playingSource.stop();

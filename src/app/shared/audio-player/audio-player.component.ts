@@ -24,9 +24,9 @@ export class AudioPlayerComponent {
   }
 
   play() {
-    this.audioPlayerService.play(this.message).then(msg=> {
-      // console.log(msg)
-    })
+    this.audioPlayerService.play(this.message).then(msg => {
+      // console.log(msg.id);
+    });
   }
 
   isPlaying() {
