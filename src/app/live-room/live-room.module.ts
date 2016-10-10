@@ -18,12 +18,12 @@ import { CommentService } from './comment/comment.service';
 import { MessageApiService } from "../shared/api/message.api";
 import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
 import { FileSelectorDirective } from "../shared/file-selector/file-selector.directive";
+import { ImageViewerPreviewComponent } from "../shared/image-viewer-preview/image-viewer-preview.component";
+import { AudioPlayerComponent } from "../shared/audio-player/audio-player.component";
 import { PipeModule } from "../shared/pipe/pipe.module";
 import { UploadApiService } from "../shared/api/upload.api";
 import { LoadingModule } from "../shared/bd-loading/bd-loading.module";
 import { ScrollerDirective } from "../shared/scroller/scroller.directive";
-import { AudioPlayerModule } from "../shared/audio-player/audio-player.module";
-import { ImageViewerModule } from "../shared/image-viewer/image-viewer.module";
 
 @NgModule({
   imports: [
@@ -32,8 +32,6 @@ import { ImageViewerModule } from "../shared/image-viewer/image-viewer.module";
     FormsModule,
     PipeModule,
     LoadingModule,
-    AudioPlayerModule,
-    ImageViewerModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -46,6 +44,8 @@ import { ImageViewerModule } from "../shared/image-viewer/image-viewer.module";
     PraisedAnimationDirective,
     PraisedAnimationComponent,
     FileSelectorDirective,
+    ImageViewerPreviewComponent,
+    AudioPlayerComponent,
     ScrollerDirective,
   ],
   providers: [

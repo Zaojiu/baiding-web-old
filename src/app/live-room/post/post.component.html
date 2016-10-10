@@ -15,9 +15,7 @@
     <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" autofocus></textarea>
   </div>
 
-  <div class="image-wrapper">
-    <image-viewer class="image-viewer" [imageFiles]="images"></image-viewer>
-  </div>
+  <image-viewer-preview *ngIf="images && images.length != 0" [(imageFiles)]="images"></image-viewer-preview>
 
   <div class="bottom-bar scrollable">
     <label class="add-image" for="image-selector"  *ngIf="!messageId && !commentId">

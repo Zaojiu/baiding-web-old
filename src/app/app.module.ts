@@ -24,6 +24,8 @@ import { AutofocusDirective } from './shared/autofocus/autofocus.directive';
 import { AuthGuard } from './shared/guard/auth.guard'
 import { UserInfoService } from './shared/user-info/user-info.service'
 import { WechatService } from './shared/wechat/wechat.service'
+import { ImageViewerComponent } from "./shared/image-viewer/image-viewer.component";
+import { ImageViewerService } from "./shared/image-viewer/image-viewer.service";
 import { StoreService } from './shared/store/store.service'
 import { TitleService } from './shared/title/title.service'
 import { LiveService } from "./shared/live/live.service";
@@ -43,6 +45,7 @@ import { CORSBrowserXHR } from './shared/api/CORSBrowserXHR.service'
     BottomPopupSelectorComponent,
     TitleSetterDirective,
     SharePopupComponent,
+    ImageViewerComponent,
     AutofocusDirective,
     ModalComponent
   ],
@@ -53,6 +56,7 @@ import { CORSBrowserXHR } from './shared/api/CORSBrowserXHR.service'
     UserInfoService,
     WechatService,
     StoreService,
+    ImageViewerService,
     TitleService,
     BottomPopupSelectorService,
     SharePopupService,
