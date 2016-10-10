@@ -1,14 +1,14 @@
-import { Component, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
 
-import { TimelineService } from '../timeline/timeline.service';
-import { LiveInfoModel } from '../../shared/live/live.model';
-import { LiveService } from '../../shared/live/live.service';
-import { UserInfoModel } from '../../shared/user-info/user-info.model';
-import { CommentApiService } from "../../shared/api/comment.service";
-import { UserAnimEmoji } from '../../shared/praised-animation/praised-animation.model';
-import { MqEvent, EventType } from '../../shared/mq/mq.service';
+import {TimelineService} from '../timeline/timeline.service';
+import {LiveInfoModel} from '../../shared/live/live.model';
+import {LiveService} from '../../shared/live/live.service';
+import {UserInfoModel} from '../../shared/user-info/user-info.model';
+import {CommentApiService} from "../../shared/api/comment.service";
+import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
+import {MqEvent, EventType} from '../../shared/mq/mq.service';
 
 @Component({
   selector: 'audience-bottom-bar',
@@ -17,7 +17,7 @@ import { MqEvent, EventType } from '../../shared/mq/mq.service';
   providers: [CommentApiService]
 })
 
-export class AudienceBottomBarComponent {
+export class AudienceBottomBarComponent implements OnInit {
   id: string;
   @Input() isOnLatest: boolean;
   @Input() isOnNewest: boolean;
@@ -31,7 +31,7 @@ export class AudienceBottomBarComponent {
   isLoading: boolean;
 
   constructor(private route: ActivatedRoute, private liveService: LiveService, private commentApiService: CommentApiService,
-    private timelineService: TimelineService) {
+              private timelineService: TimelineService) {
   }
 
   ngOnInit() {

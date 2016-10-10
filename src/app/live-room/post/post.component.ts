@@ -4,11 +4,12 @@ import {LiveService} from '../../shared/live/live.service';
 import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message.api";
+import {CommentApiService} from "../../shared/api/comment.service";
 
 @Component({
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  providers: [PostService]
+  providers: [PostService, CommentApiService]
 })
 
 export class PostComponent implements OnInit {
