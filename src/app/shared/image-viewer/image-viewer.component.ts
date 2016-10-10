@@ -46,7 +46,7 @@ export class ImageViewerComponent implements OnInit {
       this.imgEvent = new ImgEvent();
     });
 
-    let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {domEvent: true});
+    let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {});
     pinchWrapper.get('pinch').set({enable: true});
     pinchWrapper.get('doubletap').set({enable: true});
   }
