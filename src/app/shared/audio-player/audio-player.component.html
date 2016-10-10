@@ -1,5 +1,6 @@
 <div class="audio-player-container" [ngClass]="{'theme-white': isWhiteTheme}" (click)="message.audio.localId && message.audio.localId === playingId() ? stopVoice() : playVoice()">
   <i class="bi bi-wave"></i>
+  <span class="dot" *ngIf="!isPlayed"></span>
   <span *ngIf="message.audio.localId && message.audio.localId === playingId()">
     <i class="bi bi-play"></i>
   </span>
