@@ -24,10 +24,8 @@ export class ImageViewerComponent implements OnInit {
 
   ngOnInit() {
     this.imageViewerService.imagePopup$.subscribe((model)=> {
-      console.log('into the imagePopup$')
       if (!model.images && !model.links) return
       this.isPopup = true;
-      console.log(model.links, model.images, 'model.links', 'model.images')
 
       if (model.images && model.images.length) {
         let imagesFile = model.images[0];
@@ -48,8 +46,9 @@ export class ImageViewerComponent implements OnInit {
       this.imgEvent = new ImgEvent();
     });
 
-    let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {});
+    let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {domEvent: true});
     pinchWrapper.get('pinch').set({enable: true});
+    pinchWrapper.get('doubletap').set({enable: true});
   }
 
   ifFile(){
@@ -58,6 +57,7 @@ export class ImageViewerComponent implements OnInit {
 
   closePopup() {
     this.isPopup = false;
+    this.imageViewerService.close();
   }
 
 
@@ -68,7 +68,7 @@ export class ImageViewerComponent implements OnInit {
     let imgNaturalWidth = $image[0].naturalWidth;
     let imgNaturalHeight = $image[0].naturalHeight;
 
-//initial it's position in center
+/*initial it's position in center*/
     $image.css({'top': '50%', 'left': '50%'});
 
     if (!(imgNaturalWidth < screenWidth && imgNaturalHeight < screenHeight)) {
@@ -88,11 +88,8 @@ export class ImageViewerComponent implements OnInit {
   deleteImageSource() {
     this.modalService.popup('确认删除吗?', '取消', '删除').then((isDelete) => {
       if (isDelete) {
-        console.log(isDelete)
         this.imageSrc = '';
-        //todo
-        // this.imageFiles = [];
-        // this.imageFilesChange.emit(this.imageFiles);
+        this.imageViewerService.delete();
         this.isPopup = false;
       }
     })
@@ -126,7 +123,7 @@ export class ImageViewerComponent implements OnInit {
     this.imgEvent.setOffSet(e.deltaX, e.deltaY);
   }
 
-  dblclick() {
+  dbltap() {
     let $image = $(this.el).find('.popup-pinch-img');
     let imgNaturalWidth = $image[0].naturalWidth;
     let imgNaturalHeight = $image[0].naturalHeight;

@@ -1,12 +1,10 @@
-import {Component, ElementRef, EventEmitter, Output, Input, OnInit, OnChanges, SimpleChange} from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  Component, ElementRef, EventEmitter, Output, Input, OnInit, OnDestroy, OnChanges, SimpleChange
+} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
-// import {ImgEvent} from "./image-viewer.model";
 import {ImageViewerService} from "../image-viewer/image-viewer.service";
-import {ImageViewerComponent} from "../image-viewer/image-viewer.component";
-
-import * as Hammer from 'hammerjs'
-declare var $: any
+import {Subscription} from 'rxjs/Subscription';
+declare var $: any;
 
 @Component({
   selector: 'image-viewer-preview',
@@ -15,22 +13,33 @@ declare var $: any
 
 })
 
-export class ImageViewerPreviewComponent implements OnInit, OnChanges {
+export class ImageViewerPreviewComponent implements OnInit,OnDestroy {
   private el: HTMLElement;
+  closeImgSubscription: Subscription;
+  deleteImgSubscription: Subscription;
   @Input() imageFiles: File[];
   @Output() imageFilesChange = new EventEmitter<File[]>();
   @Input() imageLinks: String[];
   imageSrc = '';
   isPopup: boolean;
-  // imgEvent: ImgEvent;
 
-  constructor(el: ElementRef, private modalService: ModalService,private router: Router,private imageViewerService: ImageViewerService) {
+  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService) {
     this.el = el.nativeElement
   }
 
- ngOnInit() {
-    // let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {});
-    // pinchWrapper.get('pinch').set({enable: true});
+  ngOnInit() {
+
+  }
+
+  unsubcribe() {
+    console.log('unsubcribe')
+    console.trace();
+    if (this.closeImgSubscription) this.closeImgSubscription.unsubscribe();
+    if (this.deleteImgSubscription) this.deleteImgSubscription.unsubscribe();
+  }
+
+  ngOnDestroy() {
+    this.unsubcribe();
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
@@ -52,17 +61,22 @@ export class ImageViewerPreviewComponent implements OnInit, OnChanges {
       let link = linkChange.currentValue[0];
       this.imageSrc = link;
     }
-
-
-  }
-
-  closePopup() {
-    this.isPopup = false;
   }
 
   imagePopup() {
     console.log('imagePoppup()')
-    this.imageViewerService.popup(this.imageLinks,this.imageFiles);
+    this.imageViewerService.popup(this.imageLinks, this.imageFiles);
+
+    this.closeImgSubscription = this.imageViewerService.imageClose$.subscribe(() => {
+      this.unsubcribe();
+    });
+
+    this.deleteImgSubscription = this.imageViewerService.imageDelete$.subscribe(() => {
+      console.log('deleteimage');
+      this.imageFilesChange.emit([]);
+      this.unsubcribe();
+    });
+
     this.isPopup = true;
   }
 
