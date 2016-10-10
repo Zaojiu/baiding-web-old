@@ -51,7 +51,7 @@ export class ImageViewerComponent implements OnInit {
     pinchWrapper.get('doubletap').set({enable: true});
   }
 
-  ifFile(){
+  hasFile(){
     return /^data:image\/.*?;base64/.test(this.imageSrc);
   }
 

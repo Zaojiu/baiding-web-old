@@ -32,8 +32,6 @@ export class ImageViewerPreviewComponent implements OnInit,OnDestroy {
   }
 
   unsubcribe() {
-    console.log('unsubcribe')
-    console.trace();
     if (this.closeImgSubscription) this.closeImgSubscription.unsubscribe();
     if (this.deleteImgSubscription) this.deleteImgSubscription.unsubscribe();
   }
@@ -64,7 +62,6 @@ export class ImageViewerPreviewComponent implements OnInit,OnDestroy {
   }
 
   imagePopup() {
-    console.log('imagePoppup()')
     this.imageViewerService.popup(this.imageLinks, this.imageFiles);
 
     this.closeImgSubscription = this.imageViewerService.imageClose$.subscribe(() => {
