@@ -31,12 +31,11 @@
     .comment-input {
       border: solid 1px rgb(236, 236, 236);
       color: rgb(75, 75, 75);
-      border-radius: 15px;
-      line-height: 29px;
-      height: 29px;
+      border-radius: 19px;
+      height: 37px;
       flex-grow: 1;
-      padding: 0 10px;
-      margin: 10px;
+      padding: 0 12px;
+      margin: 6px;
       transition: width 0.2s;
     }
 
@@ -45,7 +44,7 @@
       border: solid 1px rgb(236, 236, 236);
       color: rgb(33, 150, 243);
       border-radius: 15px;
-      line-height: 28px;
+      line-height: 27px;
       height: 29px;
       width: 65px;
       margin: 10px;
