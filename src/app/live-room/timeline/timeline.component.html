@@ -29,7 +29,7 @@
     <div class="article">
       <div class="talent">
         <img class="talent-avatar" [src]="liveInfo.admin.avatar" alt="">
-        <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin.uid | role : liveInfo}}</div>
+        <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin | role : liveInfo}}</div>
       </div>
       <div class="title">{{liveInfo.subject}}</div>
       <div class="words">{{liveInfo.desc}}</div>

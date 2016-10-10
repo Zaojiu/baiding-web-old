@@ -39,6 +39,7 @@
     "rxjs": "5.0.0-beta.12",
     "touch-emulator": "^1.0.0",
     "ts-helpers": "^1.1.1",
+    "urijs": "^1.18.2",
     "weixin-js-sdk": "^1.0.7",
     "zone.js": "^0.6.23"
   },
@@ -50,6 +51,7 @@
     "@types/lodash": "^4.14.34",
     "@types/moment": "file:manual_typings/moment",
     "@types/node": "^6.0.42",
+    "@types/urijs": "^1.15.31",
     "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git",
     "autoprefixer": "^6.5.0",
     "codelyzer": "~0.0.26",

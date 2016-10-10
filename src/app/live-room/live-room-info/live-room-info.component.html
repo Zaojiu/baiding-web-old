@@ -20,13 +20,13 @@
 
     <div class="talent">
       <img class="talent-avatar" [src]="liveInfo.admin.avatar" alt="">
-      <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin.uid | role : liveInfo}}</div>
+      <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin | role : liveInfo}}</div>
     </div>
 
     <div class="words">{{liveInfo.desc}}</div>
   </div>
 
-  <div class="button-wrapper">
+  <div class="button-wrapper" (click)="close()">
     <button class="enter-room">进入房间</button>
   </div>
 
