@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {LiveInfoModel} from '../../shared/live/live.model';
 
 @Component({
@@ -17,9 +17,4 @@ export class LiveRoomInfoComponent {
   close() {
     this.isShowChange.emit(false);
   }
-
-  ngOnInit() {
-
-  }
-
 }
