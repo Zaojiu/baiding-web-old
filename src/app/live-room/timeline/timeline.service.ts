@@ -19,7 +19,7 @@ export class TimelineService {
   receivedReply$ = this.receivedReplySource.asObservable();
   timeline$ = this.timelineSource.asObservable();
   private receivedPraises$ = this.praisesSource.asObservable();
-  private event$ = this.eventSource.asObservable()
+  event$ = this.eventSource.asObservable()
 
   private receviedMessageSub: Subscription;
   private receviedPraisedUserSubscription: Subscription;
@@ -66,7 +66,7 @@ export class TimelineService {
   }
 
   onReceivedEvents(f: any) {
-    this.receivedEventSub = this.event$.subscribe(f)
+    // this.receivedEventSub = this.event$.subscribe(f)
   }
 
   onReceivedPraises(f: any) {

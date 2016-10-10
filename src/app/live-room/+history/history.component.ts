@@ -43,7 +43,7 @@ export class HistoryComponent {
   setPraised() {
     if (this.liveInfo.hadPraised) return;
 
-    this.liveService.praiseLive(this.id).then(() => {
+    this.liveService.praiseLive(this.id, this.liveInfo.hadPraised).then(() => {
       this.liveService.getLiveInfo(this.id, true).then(liveInfo => this.liveInfo = liveInfo);
     });
   }

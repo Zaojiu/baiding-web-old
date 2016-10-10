@@ -1,19 +1,19 @@
 import {
   Component, ElementRef, EventEmitter, Output, Input, OnInit, OnDestroy, OnChanges, SimpleChange
 } from '@angular/core';
-import {ModalService} from "../modal/modal.service";
-import {ImageViewerService} from "../image-viewer/image-viewer.service";
+import {ModalService} from "../../modal/modal.service";
+import {ImageViewerService} from "../image-viewer.service";
 import {Subscription} from 'rxjs/Subscription';
 declare var $: any;
 
 @Component({
   selector: 'image-viewer-preview',
-  templateUrl: './image-viewer-preview.component.html',
-  styleUrls: ['./image-viewer-preview.component.scss'],
+  templateUrl: './preview.component.html',
+  styleUrls: ['./preview.component.scss'],
 
 })
 
-export class ImageViewerPreviewComponent implements OnInit,OnDestroy {
+export class PreviewComponent implements OnInit,OnDestroy {
   private el: HTMLElement;
   closeImgSubscription: Subscription;
   deleteImgSubscription: Subscription;
@@ -69,7 +69,6 @@ export class ImageViewerPreviewComponent implements OnInit,OnDestroy {
     });
 
     this.deleteImgSubscription = this.imageViewerService.imageDelete$.subscribe(() => {
-      console.log('deleteimage');
       this.imageFilesChange.emit([]);
       this.unsubcribe();
     });

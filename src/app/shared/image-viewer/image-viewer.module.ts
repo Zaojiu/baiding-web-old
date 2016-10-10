@@ -1,20 +1,25 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
+import {NgModule} from '@angular/core';
+import {CommonModule} from "@angular/common";
 
-import { ROUTES } from './image-viewer.route';
-import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
-import { LoadingModule } from "../bd-loading/bd-loading.module";
+import {ImageViewerComponent} from '../image-viewer/image-viewer.component';
+import {LoadingModule} from "../bd-loading/bd-loading.module";
+import {PreviewComponent} from "./preview/preview.component";
 
 
 @NgModule({
   imports: [
     CommonModule,
     LoadingModule,
-    ROUTES,
   ],
   declarations: [
     ImageViewerComponent,
+    PreviewComponent,
+  ],
+  exports: [
+    ImageViewerComponent,
+    PreviewComponent,
   ],
 })
 
-export class ImageViewerModule {}
+export class ImageViewerModule {
+}

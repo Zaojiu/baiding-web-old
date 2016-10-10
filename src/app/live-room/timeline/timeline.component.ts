@@ -8,11 +8,13 @@ import { TimelineService } from './timeline.service';
 import { UserInfoModel } from '../../shared/user-info/user-info.model';
 import { LiveService } from '../../shared/live/live.service';
 import { LiveInfoModel } from '../../shared/live/live.model';
+import { LiveStatus } from '../../shared/live/live.enums';
 import { MqPraisedUser, MqEvent, EventType } from '../../shared/mq/mq.service';
 import { MessageApiService } from "../../shared/api/message.api";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
+import { UserAnimEmoji } from '../../shared/praised-animation/praised-animation.model';
 
 @Component({
   selector: 'timeline',
@@ -71,18 +73,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   isClosed(): boolean {
-    let closedAt = moment(this.liveInfo.closedAt)
-    let isZero = closedAt.isSame(moment('0001-01-01T00:00:00Z'))
-    return moment().isSameOrAfter(closedAt) && !isZero
+    return this.liveInfo.status == LiveStatus.Ended;
   }
 
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
         this.gotoLatestMessages();
-        break;
-      case EventType.LivePraise:
-        // TODO
         break;
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
@@ -99,7 +96,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
     for (let idx in this.messages) {
       let message = this.messages[idx];
       if (message.id == praisedUser.msgId) {
-        message.pushPraisedUser(praisedUser.user, praisedUser.praised, praisedUser.num)
+        let userAnim = new UserAnimEmoji;
+        userAnim.user = praisedUser.user
+        message.pushPraisedUser(userAnim, praisedUser.praised, praisedUser.num)
       }
     }
   }

@@ -1,6 +1,8 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
-<div class="live-room-container" *ngIf="liveInfo">
+<live-room-info [liveInfo]="liveInfo"  *ngIf="liveInfo && showInfo" [(isShow)]="showInfo"> </live-room-info>
+
+<div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <div class="top-bar">
     <span class="online-count">观看人数</span>
     <a class="comment-btn" (click)="isCommentOpened = !isCommentOpened">
@@ -10,7 +12,7 @@
   </div>
 
   <div class="praised-animations" praisedAnimation>
-    <praised-animation *ngFor="let user of liveInfo.praisedAnimations" [user]="user"></praised-animation>
+    <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
   </div>
 
   <comments [ngClass]="{'hidden': !isCommentOpened}" [streamId]="id"></comments>
@@ -30,8 +32,11 @@
     *ngIf="!isChildrenActived && isEditor()"
     class="editor-bottom-bar"
     [liveId]="id"
+    [liveInfo]="liveInfo"
+    [userInfo]="userInfo"
     [isOnLatest]="timeline.isOnLatest"
     [isOnNewest]="timeline.isOnNewest"
   ></editor-bottom-bar>
+
 </div>
 

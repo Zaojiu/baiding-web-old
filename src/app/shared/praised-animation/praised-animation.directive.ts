@@ -1,6 +1,6 @@
 import { Directive, ElementRef, OnInit } from '@angular/core'
 
-declare var $:any;
+declare var $: any;
 
 @Directive({
   selector: '[praisedAnimation]'
@@ -14,6 +14,11 @@ export class PraisedAnimationDirective implements OnInit {
   ngOnInit() {
     const self = this;
     $(this.el).on('webkitAnimationEnd animationend', '.animation', function(e) {
+      if (e.originalEvent.animationName == 'mine-popup-animations') {
+        if ($(this).find('.emoji').length > 0) {
+          $(this).find('.animation-image').addClass('show-emoji');
+        }
+      }
       if (e.originalEvent.animationName === 'praised-animations-y' || e.originalEvent.animationName === 'mine-praised-animations-y') {
         $(this).remove();
       }

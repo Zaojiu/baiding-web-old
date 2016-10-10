@@ -6,6 +6,7 @@ import { UserInfoModel } from '../../../shared/user-info/user-info.model';
 import { LiveService } from '../../../shared/live/live.service';
 import { LiveInfoModel } from '../../../shared/live/live.model';
 import { MessageService } from './message.service';
+import { UserAnimEmoji } from '../../../shared/praised-animation/praised-animation.model';
 
 @Component({
   selector: 'message',
@@ -28,7 +29,9 @@ export class MessageComponent {
 
   confirmPraise() {
 
-    this.message.praisedAnimations.push(this.userInfo);
+    let userAnim = new UserAnimEmoji;
+    userAnim.user = this.userInfo;
+    this.message.praisedAnimations.push(userAnim);
 
     this.praisesNum += 1
     if (this.praisesNum > 3) return
