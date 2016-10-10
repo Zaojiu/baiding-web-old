@@ -8,7 +8,7 @@ import {MessageApiService} from "../../shared/api/message.api";
 @Component({
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  providers: [ PostService ]
+  providers: [PostService]
 })
 
 export class PostComponent implements OnInit {
@@ -62,7 +62,6 @@ export class PostComponent implements OnInit {
     } else if (this.messageId) {
       this.postMessage()
     } else {
-
       /*进入消息发送分支*/
       if (this.content !== '' && this.imageExist) {
         let p1 = this.postMessage();
@@ -72,14 +71,12 @@ export class PostComponent implements OnInit {
         })
       } else if (this.content === '' && this.imageExist) {
         this.postImgMessage().then(()=> {
-            this.backToMainScreen();
-          }
-        )
+          this.backToMainScreen();
+        })
       } else if (this.content !== '' && !this.imageExist) {
         this.postMessage().then(()=> {
-            this.backToMainScreen();
-          }
-        )
+          this.backToMainScreen();
+        })
       }
     }
   }

@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { CommentModel } from './comment.model';
-import { CommentService } from './comment.service';
+import {CommentModel} from './comment.model';
+import {CommentService} from './comment.service';
 
 @Component({
   selector: 'comments',
@@ -15,7 +16,8 @@ export class CommentComponent implements OnInit, OnDestroy {
   maxCommentAmount: number = 3;
   comments: CommentModel[] = [];
 
-  constructor(private commentService: CommentService) { }
+  constructor(private commentService: CommentService, private router: Router) {
+  }
 
   ngOnInit() {
     this.commentService.startReceive(this.streamId);
@@ -40,5 +42,9 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
 
     this.comments.push(comment);
+  }
+
+  gotoCommentList() {
+    this.router.navigate([`/lives/${this.streamId}/push-comment`]);
   }
 }

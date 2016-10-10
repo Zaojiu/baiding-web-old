@@ -28,11 +28,14 @@ input, textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  border: none;
 }
 
 button {
   border:none;
   outline: none;
+  padding: 0;
+  background-color: transparent;
 }
 
 a {
