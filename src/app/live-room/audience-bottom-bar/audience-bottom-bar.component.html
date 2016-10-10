@@ -1,22 +1,12 @@
 <div class="audience-bottom-bar scrollable">
-  <a class="bottom-bar-btn" (click)="popupShare()" (contextmenu)="$event.preventDefault()"><i class="bi bi-share"></i></a>
-  <a class="bottom-bar-btn" (click)="gotoPostMessage()" (contextmenu)="$event.preventDefault()"><i class="bi bi-keyboard"></i></a>
-  <a class="bottom-bar-btn" (click)="gotoPushComment()" (contextmenu)="$event.preventDefault()"><i class="bi bi-chat1"></i></a>
-  <a class="bottom-bar-btn" (click)="popupBottomSelector()" (contextmenu)="$event.preventDefault()"><i class="bi bi-more"></i></a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😄</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😊</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😍</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😜</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😂</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😭</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😅</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😱</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😆</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😎</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😴</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😏</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">🙌</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">👏</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">🎁</a>
-  <a class="bottom-bar-btn face" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">🎉</a>
+  <form class="comment-input-container" [ngClass]="{'activate': isOnComment}" (ngSubmit)="postComment()">
+    <input class="comment-input" name="commentContent" type="text" placeholder="发表评论" (focus)="switchToComment()" [(ngModel)]="commentContent">
+    <button class="sender">发送</button>
+    <a class="back" (click)="switchToNormal()"><i class="bi bi-right-arrow-round"></i></a>
+  </form>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😄</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😊</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😍</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😜</a>
+  <a class="bottom-bar-btn face" [ngClass]="{'hidden': isOnComment}" (click)="confirmPraise()" (contextmenu)="$event.preventDefault()">😂</a>
 </div>

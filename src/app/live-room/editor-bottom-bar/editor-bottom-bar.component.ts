@@ -1,7 +1,6 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import {Router, ActivatedRoute, NavigationStart} from '@angular/router';
+import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {Title} from '@angular/platform-browser';
 
 import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
 import {BottomPopupSelectorModel} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
@@ -33,11 +32,11 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   recordDuration: number;
   minRecordDuration = 20;
 
-  constructor(private route: ActivatedRoute, private router: Router,
+  constructor(private router: Router,
               private bottomPopupService: BottomPopupSelectorService, private timelineService: TimelineService,
-              private titleService: Title, private messageApiService: MessageApiService,
-              private liveService: LiveService, private wechatService: WechatService, private modalService: ModalService,
-              private sharePopupService: SharePopupService) {
+              private messageApiService: MessageApiService,
+              private liveService: LiveService, private wechatService: WechatService,
+              private modalService: ModalService, private sharePopupService: SharePopupService) {
   }
 
   ngOnInit() {
@@ -85,9 +84,9 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
         item => {
           if (item === '回到开始') return this.timelineService.gotoFirstMessage();
           if (item === '查看最新') return this.timelineService.gotoLastMessage();
-          if (item === '邀请嘉宾') return this.gotoInvitation()
+          if (item === '邀请嘉宾') return this.gotoInvitation();
           if (item === '结束直播') return this.modalService.popup('结束此次直播?').then(result => {
-            if (result) this.liveService.closeLive(this.liveId)
+            if (result) this.liveService.closeLive(this.liveId);
           });
         }
       );
@@ -105,51 +104,51 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   }
 
   startRecord() {
-    if (this.isRecording) return
+    if (this.isRecording) return;
 
-    this.isRecording = true
-    this.isCanceled = false
-    this.isTooShort = false
+    this.isRecording = true;
+    this.isCanceled = false;
+    this.isTooShort = false;
 
-    this.recordDuration = 0
+    this.recordDuration = 0;
     this.timer = setInterval(() => {
       this.recordDuration++
-    }, 100)
+    }, 100);
 
-    this.wechatService.startRecord()
+    this.wechatService.startRecord();
   }
 
   stopRecord() {
-    if (!this.isRecording || this.isCanceled || this.isTooShort) return
+    if (!this.isRecording || this.isCanceled || this.isTooShort) return;
 
     if (this.recordDuration < this.minRecordDuration) {
-      this.isTooShort = true
-      this.wechatService.cancelRecord()
+      this.isTooShort = true;
+      this.wechatService.cancelRecord();
 
-      clearInterval(this.timer)
+      clearInterval(this.timer);
 
       this.timer = setTimeout(() => {
-        this.isRecording = false
+        this.isRecording = false;
         clearTimeout(this.timer)
       }, 1000)
     } else {
-      this.isRecording = false
-      this.wechatService.stopRecord()
+      this.isRecording = false;
+      this.wechatService.stopRecord();
     }
   }
 
   cancelRecord() {
-    if (!this.isRecording || this.isCanceled || this.isTooShort) return
+    if (!this.isRecording || this.isCanceled || this.isTooShort) return;
 
-    this.isCanceled = true
+    this.isCanceled = true;
 
-    clearInterval(this.timer)
+    clearInterval(this.timer);
 
     this.timer = setTimeout(() => {
-      this.isRecording = false
+      this.isRecording = false;
       clearTimeout(this.timer)
-    }, 1000)
+    }, 1000);
 
-    this.wechatService.cancelRecord()
+    this.wechatService.cancelRecord();
   }
 }

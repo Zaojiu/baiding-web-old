@@ -1,7 +1,6 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {LiveService} from '../../shared/live/live.service';
-import {CommentApiService} from '../../shared/api/comment.service';
 import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message.api";
@@ -9,7 +8,7 @@ import {MessageApiService} from "../../shared/api/message.api";
 @Component({
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  providers: [ CommentApiService, PostService ]
+  providers: [PostService]
 })
 
 export class PostComponent implements OnInit {
@@ -23,8 +22,7 @@ export class PostComponent implements OnInit {
   imageExist: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-              private commentApiService: CommentApiService, private messageApiService: MessageApiService,
-              private postService: PostService) {
+              private messageApiService: MessageApiService, private postService: PostService) {
   }
 
   ngOnInit() {
@@ -53,57 +51,38 @@ export class PostComponent implements OnInit {
     this.router.navigate([`/lives/${this.id}/push-comment`]);
   }
 
-  isEditor() {
-    return this.liveService.isEditor(this.id);
-  }
-
-  isAudience() {
-    return this.liveService.isAudience(this.id);
-  }
-
   submit() {
     this.imageExist = this.images && !!this.images.length;
 
     if (this.content === '' && !this.imageExist) return;
 
-    /*判断是否为嘉宾*/
-    if (this.isEditor()) {
-
-      /*判断是否存在回复和推送动作*/
-      if (this.commentId) {
-        this.pushComment()
-      } else if (this.messageId) {
-        this.postMessage()
-      } else {
-
-        /*进入消息发送分支*/
-        if (this.content !== '' && this.imageExist) {
-          let p1 = this.postMessage();
-          let p2 = this.postImgMessage();
-          Promise.all([p1, p2]).then((res)=> {
-            this.backToMainScreen();
-          })
-        } else if (this.content === '' && this.imageExist) {
-          this.postImgMessage().then(()=> {
-              this.backToMainScreen();
-            }
-          )
-        } else if (this.content !== '' && !this.imageExist) {
-          this.postMessage().then(()=> {
-              this.backToMainScreen();
-            }
-          )
-        }
-      }
+    /*判断是否存在回复和推送动作*/
+    if (this.commentId) {
+      this.pushComment()
+    } else if (this.messageId) {
+      this.postMessage()
     } else {
-      /*观众评论*/
-      this.postComment();
+      /*进入消息发送分支*/
+      if (this.content !== '' && this.imageExist) {
+        let p1 = this.postMessage();
+        let p2 = this.postImgMessage();
+        Promise.all([p1, p2]).then((res)=> {
+          this.backToMainScreen();
+        })
+      } else if (this.content === '' && this.imageExist) {
+        this.postImgMessage().then(()=> {
+          this.backToMainScreen();
+        })
+      } else if (this.content !== '' && !this.imageExist) {
+        this.postMessage().then(()=> {
+          this.backToMainScreen();
+        })
+      }
     }
-
   }
 
   pushComment() {
-    if (this.content === '') return
+    if (this.content === '') return;
 
     this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
       this.additionalContent.user.uid, this.additionalContent.content).then(() => {
@@ -112,17 +91,8 @@ export class PostComponent implements OnInit {
     });
   }
 
-  postComment() {
-    if (this.content === '') return
-
-    this.commentApiService.postComment(this.id, this.content).then(() => {
-      this.isSubmited = true;
-      this.backToMainScreen()
-    });
-  }
-
   postMessage(): Promise<any> {
-    if (this.content === '') return
+    if (this.content === '') return;
 
     return this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
       this.isSubmited = true;
