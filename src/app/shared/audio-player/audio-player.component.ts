@@ -1,9 +1,7 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {LocalStorage} from "angular2-localstorage/WebStorage";
 
-
 import {AudioPlayerService} from './audio-player.service';
-
 import {MessageModel} from '../api/message.model';
 
 @Component({

@@ -1,6 +1,8 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
-<div class="live-room-container" *ngIf="liveInfo">
+<live-room-info *ngIf="liveInfo && showInfo" [liveInfo]="liveInfo" [(isShow)]="showInfo"></live-room-info>
+
+<div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <top-bar class="top-bar" [onlineCount]="liveInfo.onlines" [(isCommentOpened)]="isCommentOpened"></top-bar>
 
   <div class="praised-animations" praisedAnimation>

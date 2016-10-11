@@ -1,7 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList} from '@angular/core';
 import {Subscription}   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as moment from 'moment';
 
 import {MessageModel} from '../../shared/api/message.model';
 import {MessageType} from '../../shared/api/message.enum';

@@ -67,6 +67,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     let fromShare = !!this.route.snapshot.queryParams['source'];
     this.showInfo = fromShare;
+
     // 监控router变化，如果route换了，那么设置 isChildrenActived
     // 此属性会控制父底栏是否显示，以免子弹出层的底栏和父窗口底栏同时显示，导致跑版
     this.isChildrenActived = this.urlRegex.test(this.router.url);
