@@ -94,8 +94,6 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      if (!this.isOnNewest) model.items.push('回到开始');
-      if (!this.isOnLatest) model.items.push('查看最新');
       model.items.push('邀请嘉宾');
       model.items.push('结束直播');
       model.hasBottomBar = false;
@@ -104,8 +102,6 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
 
       this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
         item => {
-          if (item === '回到开始') return this.timelineService.gotoFirstMessage();
-          if (item === '查看最新') return this.timelineService.gotoLastMessage();
           if (item === '邀请嘉宾') return this.gotoInvitation();
           if (item === '结束直播') return this.modalService.popup('结束此次直播?').then(result => {
             if (result) this.liveService.closeLive(this.liveId);
