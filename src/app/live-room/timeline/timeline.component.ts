@@ -67,9 +67,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   isStarted(): boolean {
-    let expectStartAt = moment(this.liveInfo.expectStartAt)
-    let isZero = expectStartAt.isSame(moment('0001-01-01T00:00:00Z'))
-    return moment().isSameOrAfter(expectStartAt) || isZero
+    return this.liveInfo.status == LiveStatus.Started;
   }
 
   isClosed(): boolean {
