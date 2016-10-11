@@ -12,13 +12,7 @@ export class PraisedAnimationDirective implements OnInit {
   constructor(el: ElementRef) { this.el = el.nativeElement }
 
   ngOnInit() {
-    const self = this;
     $(this.el).on('webkitAnimationEnd animationend', '.animation', function(e) {
-      if (e.originalEvent.animationName == 'mine-popup-animations') {
-        if ($(this).find('.emoji').length > 0) {
-          $(this).find('.animation-image').addClass('show-emoji');
-        }
-      }
       if (e.originalEvent.animationName === 'praised-animations-y' || e.originalEvent.animationName === 'mine-praised-animations-y') {
         $(this).remove();
       }

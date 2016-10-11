@@ -26,6 +26,7 @@
     width: calc(60% - 2px);
     background-color: rgb(255, 255, 255);
     border-radius: 50%;
+    transition: transform .2s;
 
     &:before {
       display: block;

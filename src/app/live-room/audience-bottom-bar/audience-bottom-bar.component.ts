@@ -64,7 +64,6 @@ export class AudienceBottomBarComponent implements OnInit {
     this.isOnCommentRequest = true;
 
     this.commentApiService.postComment(this.id, this.commentContent).then(() => {
-      this.switchToNormal();
       $('.comment-input').trigger('blur');
       this.isOnCommentRequest = false;
     });
@@ -83,13 +82,15 @@ export class AudienceBottomBarComponent implements OnInit {
   switchToNormal() {
     if (!this.isOnComment) return;
 
-    this.cleanCommentContent();
-    this.isOnComment = false;
+    setTimeout(() => {
+      this.cleanCommentContent();
+      this.isOnComment = false;
+    }, 0);
   }
 
   confirmPraise(emoji: string) {
     let userAnim = new UserAnimEmoji;
-    userAnim.user = this.userInfo
+    userAnim.user = this.userInfo;
     userAnim.emoji = emoji;
     this.liveInfo.praisedAnimations.push(userAnim);
 

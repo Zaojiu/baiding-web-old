@@ -1,6 +1,10 @@
 <span class="animation" [ngClass]="{'animation1': randomAnimation && !isMine, 'animation2': !randomAnimation && !isMine, 'mine-animation1': randomAnimation && isMine, 'mine-animation2': !randomAnimation && isMine }" [style.right]="getXAxisOffset()">
-  <div class="animation-image" [ngClass]="{'show-emoji': !isMine && userAnim.emoji}">
+  <div class="animation-image">
+    <span class="emoji">
+      <i class="bi bi-thumbsup-fill" *ngIf="userAnim.emoji != '💛' && userAnim.emoji != '😄'"></i>
+      <i class="bi bi-heart-fill" *ngIf="userAnim.emoji == '💛'"></i>
+      <i class="bi bi-face-fill" *ngIf="userAnim.emoji == '😄'"></i>
+    </span>
     <img [src]="userAnim.user.avatar">
-    <span class="emoji" *ngIf="userAnim.emoji">{{userAnim.emoji}}</span>
   </div>
 </span>
