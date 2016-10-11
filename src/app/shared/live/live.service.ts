@@ -77,6 +77,8 @@ export class LiveService {
     liveInfo.lcConvId = stream.lcConvId;
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
 
+    if (data.onlines) liveInfo.onlines = data.onlines;
+
     return liveInfo
   }
 

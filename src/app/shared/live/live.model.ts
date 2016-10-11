@@ -25,4 +25,5 @@ export class LiveInfoModel {
   startedAt: string;
   closedAt: string;
   createdAt: string;
+  onlines: number;
 }

@@ -4,7 +4,7 @@
 
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <div class="top-bar">
-    <span class="online-count">观看人数</span>
+    <span class="online-count">{{liveInfo.onlines}}</span>
     <a class="comment-btn" (click)="isCommentOpened = !isCommentOpened">
       <i class="bi bi-chat2" *ngIf="!isCommentOpened"></i>
       <i class="bi bi-chat2-disabled" *ngIf="isCommentOpened"></i>
