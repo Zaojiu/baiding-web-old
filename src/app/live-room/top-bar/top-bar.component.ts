@@ -60,7 +60,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
       this.isGotoOldestShown = false;
       $('.oldest-btn').fadeOut();
       this.originTop = 0;
-    }, 5000);
+    }, 3000);
   }
 
   showGotoLatest() {
@@ -71,7 +71,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
       this.isGotoLatestShown = false;
       $('.latest-btn').fadeOut();
       this.originTop = 0;
-    }, 5000);
+    }, 3000);
   }
 
   gotoOldest() {
