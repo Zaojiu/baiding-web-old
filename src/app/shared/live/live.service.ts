@@ -116,11 +116,13 @@ export class LiveService {
 
   praiseLive(id: string, praised: boolean, emoji: string = '👍'): Promise<any> {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/praises`;
+
     let data = {
       praised: praised,
       num: 0,
       emoji: emoji,
     };
+
     return this.http.post(url, JSON.stringify(data)).toPromise().then(res => {
       let data = res.json();
 
