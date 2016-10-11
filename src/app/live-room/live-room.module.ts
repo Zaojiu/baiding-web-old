@@ -25,6 +25,8 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {AudioPlayerModule} from "../shared/audio-player/audio-player.module";
 import {ImageViewerModule} from "../shared/image-viewer/image-viewer.module";
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
+import {TopBarComponent} from './top-bar/top-bar.component';
+import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
 
 @NgModule({
   imports: [
@@ -35,6 +37,7 @@ import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
     LoadingModule,
     AudioPlayerModule,
     ImageViewerModule,
+    SwitchBtnModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -49,6 +52,7 @@ import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
     FileSelectorDirective,
     LiveRoomInfoComponent,
     ScrollerDirective,
+    TopBarComponent,
   ],
   providers: [
     TimelineService,
