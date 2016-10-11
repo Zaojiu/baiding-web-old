@@ -10,6 +10,8 @@ import {CommentApiService} from "../../shared/api/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
 
+declare var $:any;
+
 @Component({
   selector: 'audience-bottom-bar',
   templateUrl: './audience-bottom-bar.component.html',
@@ -63,6 +65,7 @@ export class AudienceBottomBarComponent implements OnInit {
 
     this.commentApiService.postComment(this.id, this.commentContent).then(() => {
       this.switchToNormal();
+      $('.comment-input').trigger('blur');
       this.isOnCommentRequest = false;
     });
   }

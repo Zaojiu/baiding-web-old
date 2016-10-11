@@ -1,5 +1,7 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
+<live-room-info [liveInfo]="liveInfo"  *ngIf="liveInfo && showInfo" [(isShow)]="showInfo"> </live-room-info>
+
 <div class="live-room-container" *ngIf="liveInfo">
   <top-bar class="top-bar" [onlineCount]="liveInfo.onlines" [(isCommentOpened)]="isCommentOpened"></top-bar>
 

@@ -83,8 +83,6 @@ export class PostComponent implements OnInit {
   }
 
   pushComment() {
-    if (this.content === '') return;
-
     this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
       this.additionalContent.user.uid, this.additionalContent.content).then(() => {
       this.isSubmited = true;

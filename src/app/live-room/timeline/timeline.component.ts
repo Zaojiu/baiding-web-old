@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Subscription }   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as moment from 'moment';
 
 import { MessageModel } from '../../shared/api/message.model';
 import { TimelineService } from './timeline.service';

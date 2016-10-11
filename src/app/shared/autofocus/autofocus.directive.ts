@@ -1,6 +1,6 @@
 import { Directive, ElementRef, OnInit } from '@angular/core'
 
-declare var $:any
+declare var $:any;
 
 @Directive({
   selector: '[autofocus]'
