@@ -1,0 +1,49 @@
+.switch-btn {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 37px;
+  height: 22px;
+  border-radius: 19px;
+  background-color: rgb(75, 75, 75);
+
+  &.opened {
+    background-color: rgb(33, 150, 243);
+
+    .toggler {
+      transform: translateX(calc(37px - 100% - 2px));
+
+      .toggler-inner {
+        color: rgb(33, 150, 243);
+      }
+    }
+  }
+
+  .toggler {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: calc(60% - 2px);
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+
+    &:before {
+      display: block;
+      content: "";
+      padding-top: 100%;
+    }
+
+    .toggler-inner {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgb(75, 75, 75);
+      font-size: 12px;
+    }
+  }
+}

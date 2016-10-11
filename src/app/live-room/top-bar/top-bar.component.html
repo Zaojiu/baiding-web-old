@@ -1,0 +1,5 @@
+<div class="top-bar">
+  <span class="online-count">观看人数</span>
+  <switch-btn class="switch-btn" [isOpened]="isCommentOpened" [btnText]="'弹'" (toggling)="toggleComment($event)"></switch-btn>
+  <a class="share-btn" (click)="popupShare()"><i class="bi bi-share"></i></a>
+</div>
