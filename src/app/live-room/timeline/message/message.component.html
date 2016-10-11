@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="content audio-content" *ngIf="message.type === 2">
-        <audio-player [message]="message" [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
+        <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message" [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
         <div class="translate">{{message.audio.translateResult}}</div>
       </div>
     </div>

@@ -37,11 +37,12 @@
   </div>
 
   <div *ngIf="messages.length !== 0">
-    <message *ngFor="let message of messages"
+    <message #messagesComponents *ngFor="let message of messages"
              [liveId]="id"
              [message]="message"
              [userInfo]="userInfo"
              [liveInfo]="liveInfo"
+             (audioPlayEnded)="audioPlayEnded(message)"
     ></message>
   </div>
 

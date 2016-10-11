@@ -1,25 +1,29 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
-import { Subscription }   from 'rxjs/Subscription';
+import {Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList} from '@angular/core';
+import {Subscription}   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as moment from 'moment';
 
-import { MessageModel } from '../../shared/api/message.model';
-import { TimelineService } from './timeline.service';
-import { UserInfoModel } from '../../shared/user-info/user-info.model';
-import { LiveService } from '../../shared/live/live.service';
-import { LiveInfoModel } from '../../shared/live/live.model';
-import { LiveStatus } from '../../shared/live/live.enums';
-import { MqPraisedUser, MqEvent, EventType } from '../../shared/mq/mq.service';
-import { MessageApiService } from "../../shared/api/message.api";
+import {MessageModel} from '../../shared/api/message.model';
+import {MessageType} from '../../shared/api/message.enum';
+import {TimelineService} from './timeline.service';
+import {UserInfoModel} from '../../shared/user-info/user-info.model';
+import {LiveService} from '../../shared/live/live.service';
+import {LiveInfoModel} from '../../shared/live/live.model';
+import {LiveStatus} from '../../shared/live/live.enums';
+import {MqPraisedUser, MqEvent, EventType} from '../../shared/mq/mq.service';
+import {MessageApiService} from "../../shared/api/message.api";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
-import { UserAnimEmoji } from '../../shared/praised-animation/praised-animation.model';
+import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
+import {AudioPlayerService} from '../../shared/audio-player/audio-player.service';
 
+import {MessageComponent} from './message/message.component';
 @Component({
   selector: 'timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
+  providers: [AudioPlayerService]
 })
 
 export class TimelineComponent implements OnInit, OnDestroy {
@@ -35,8 +39,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   countdownTimer: any;
 
+  @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
+
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
-              private liveService: LiveService, private messageApiService: MessageApiService) {}
+              private liveService: LiveService, private messageApiService: MessageApiService, private audioPlayerService: AudioPlayerService) {
+  }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -55,15 +62,59 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.startObserveTimelineAction();
     this.startReceiveReply();
-    this.gotoLatestMessages().then(result => setTimeout(() => {this.scroller.scrollToBottom()}, 500));
+    this.gotoLatestMessages().then(result => setTimeout(() => {
+      this.scroller.scrollToBottom()
+    }, 500));
   }
 
   ngOnDestroy() {
     this.timelineService.stopReceive(this.id);
     this.timelineSubscription.unsubscribe();
     if (this.countdownTimer) {
-      clearInterval(this.countdownTimer)
-    };
+      clearInterval(this.countdownTimer);
+    }
+
+  }
+
+  private findNextAudioTypeMessage(msgId: string): MessageModel {
+    let i = 0;
+    for (; i < this.messages.length; i++) {
+      if (this.messages[i].id === msgId) {
+        break;
+      }
+    }
+
+    for (i++; i < this.messages.length; i++) {
+      if (this.messages[i].type === MessageType.Audio) {
+        return this.messages[i];
+      }
+    }
+    return null;
+  }
+
+  private findMessageComponent(msgId: string): MessageComponent {
+
+    let components = this.messagesComponents.toArray();
+
+    for (let i = 0; i < components.length; i++) {
+      if (components[i].message.id === msgId) {
+        return components[i];
+      }
+    }
+    return null;
+  }
+
+  audioPlayEnded(msg: MessageModel) {
+    // TODO: check setting
+
+    let nextAudioMessage = this.findNextAudioTypeMessage(msg.id);
+    if (!nextAudioMessage) {
+      return;
+    }
+    let comp = this.findMessageComponent(nextAudioMessage.id);
+    if (comp) {
+      comp.playAudio();
+    }
   }
 
   isStarted(): boolean {
@@ -122,6 +173,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.isOnLatest = true;
       this.isLoading = false;
       return true;
+
     });
   }
 
@@ -199,14 +251,18 @@ export class TimelineComponent implements OnInit, OnDestroy {
         if (oldestOrLatest) {
           this.gotoOldestMessages().then(result => {
             if (result) {
-              setTimeout(() => {this.scroller.scrollToTop()}, 500)
+              setTimeout(() => {
+                this.scroller.scrollToTop()
+              }, 500)
               this.scroller.startEmitScrollEvent();
             }
           });
         } else {
           this.gotoLatestMessages().then(result => {
             if (result) {
-              setTimeout(() => {this.scroller.scrollToBottom()}, 500)
+              setTimeout(() => {
+                this.scroller.scrollToBottom()
+              }, 500)
               this.scroller.startEmitScrollEvent();
             }
           });
