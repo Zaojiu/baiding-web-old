@@ -3,7 +3,7 @@
   <a class="post-btn" (click)="gotoPostMessage()" (contextmenu)="$event.preventDefault()"><i class="bi bi-keyboard"></i></a>
   <div class="record-btn-container"
     [ngClass]="{recording: isRecording}"
-    (contextmenu)="startRecord()"
+    (touchstart)="startRecord()"
     (touchend)="stopRecord()"
     (panup)="cancelRecord()"
     (contextmenu)="$event.preventDefault()"
