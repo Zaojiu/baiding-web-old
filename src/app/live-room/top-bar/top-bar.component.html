@@ -1,5 +1,18 @@
 <div class="top-bar">
-  <span class="online-count">观看人数</span>
+  <div class="online-count">
+    <i class="bi bi-people"></i>
+    <span class="btn-text">{{onlineCount < 999 ? onlineCount : '999+'}}人观看</span>
+  </div>
+
+  <a class="oldest-btn" (click)="gotoOldest()">
+    <i class="bi bi-up-arrow-round"></i>
+    <span class="btn-text">回到开始</span>
+  </a>
+  <a class="latest-btn" (click)="gotoLatest()">
+    <i class="bi bi-down-arrow-round"></i>
+    <span class="btn-text">查看最新</span>
+  </a>
+
   <switch-btn class="switch-btn" [isOpened]="isCommentOpened" [btnText]="'弹'" (toggling)="toggleComment($event)"></switch-btn>
   <a class="share-btn" (click)="popupShare()"><i class="bi bi-share"></i></a>
 </div>

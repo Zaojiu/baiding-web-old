@@ -187,6 +187,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
       let lastMessage = this.messages[this.messages.length - 1];
       this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
     }
+
+    this.timelineService.onScroll(e);
   }
 
   startObserveTimelineAction() {

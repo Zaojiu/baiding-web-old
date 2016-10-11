@@ -1,7 +1,7 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
 <div class="live-room-container" *ngIf="liveInfo">
-  <top-bar class="top-bar" [(isCommentOpened)]="isCommentOpened"></top-bar>
+  <top-bar class="top-bar" [onlineCount]="liveInfo.onlines" [(isCommentOpened)]="isCommentOpened"></top-bar>
 
   <div class="praised-animations" praisedAnimation>
     <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>

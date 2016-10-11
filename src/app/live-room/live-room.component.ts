@@ -23,6 +23,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
   isCommentOpened = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
+  refreshInterval: any;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
     private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
@@ -44,7 +45,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     let uri = location.href.replace(location.hash, `#${hash}`);
     return uri;
   }
-  
+
   getLiveInfo(needRefresh?: boolean) {
     this.liveService.getLiveInfo(this.id, needRefresh).then(liveInfo => {
 
@@ -78,6 +79,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     );
 
     this.getLiveInfo();
+
+    this.refreshInterval = setInterval(() => {
+      this.getLiveInfo(true);
+    }, 10 * 1000)
   }
 
   ngOnDestroy() {
