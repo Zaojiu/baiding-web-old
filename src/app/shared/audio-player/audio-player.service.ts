@@ -23,15 +23,21 @@ export class AudioPlayerService {
     return new Promise((resolve, reject) => {
 
       if (msg.audio.localId) {
-        return this.wechatService.playVoice(msg.audio.localId).then( localId => {
+        return this.wechatService.playVoice(msg.audio.localId).then(localId => {
           resolve(msg);
         });
       }
 
-      AudioPlayerService.playingSource && AudioPlayerService.playingSource.stop();
+      try {
+        if (AudioPlayerService.playingSource) {
+          AudioPlayerService.playingSource.onended = null;
+          AudioPlayerService.playingSource.stop();
+        }
+      } catch (Error) {
+      }
+
       AudioPlayerService.playingSource = AudioPlayerService.h5AudioContext.createBufferSource();
       AudioPlayerService.playingMessageId = msg.id;
-
 
       let buffer = AudioPlayerService.audioBufferCache.get(msg.id);
       if (buffer) {
@@ -61,7 +67,7 @@ export class AudioPlayerService {
     source.onended = () => {
       AudioPlayerService.playingMessageId = '';
       resolve(msg);
-    }
+    };
   }
 
   isPlaying(msg: MessageModel): boolean {
@@ -78,12 +84,15 @@ export class AudioPlayerService {
       return this.wechatService.stopVoice(msg.audio.localId);
     }
 
-    if (msg.id === AudioPlayerService.playingMessageId) {
-      AudioPlayerService.playingMessageId = '';
-      if (AudioPlayerService.playingSource) {
+    AudioPlayerService.playingMessageId = '';
+    if (AudioPlayerService.playingSource) {
+      try {
+        AudioPlayerService.playingSource.onended = null;
         AudioPlayerService.playingSource.stop();
+      } catch (Error) {
       }
-      AudioPlayerService.playingSource = null;
     }
+    AudioPlayerService.playingSource = null;
   }
+
 }

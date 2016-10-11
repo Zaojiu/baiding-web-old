@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 
@@ -19,8 +19,9 @@ export class AudioPlayerComponent {
   @Input() isWhiteTheme: MessageModel;
   @LocalStorage() public audioPlayed: Object = {};
 
-  played: boolean;
+  @Output() playEnded = new EventEmitter();
 
+  played: boolean;
 
   constructor(private audioPlayerService: AudioPlayerService) {
   }
@@ -30,15 +31,21 @@ export class AudioPlayerComponent {
   }
 
   playOrStopVoice() {
-    this.audioPlayed[this.message.id] = true;
-    this.played = true;
     this.isPlaying() ? this.audioPlayerService.stop(this.message) : this.play();
   }
 
   play() {
+    this.audioPlayed[this.message.id] = true;
+    this.played = true;
     this.audioPlayerService.play(this.message).then(msg => {
-      // console.log(msg.id);
+      this.playEnded.emit(msg);
     });
+  }
+
+  playIfNotPlayed() {
+    if (!this.played) {
+      this.play();
+    }
   }
 
   isPlaying() {
