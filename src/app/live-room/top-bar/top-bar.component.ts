@@ -57,9 +57,10 @@ export class TopBarComponent implements OnInit, OnDestroy {
     $('.oldest-btn').fadeIn();
 
     setTimeout(() => {
-      this.isGotoOldestShown = false;
-      $('.oldest-btn').fadeOut();
-      this.originTop = 0;
+      $('.oldest-btn').fadeOut(() => {
+        this.originTop = 0;
+        this.isGotoOldestShown = false;
+      });
     }, 3000);
   }
 
@@ -68,9 +69,10 @@ export class TopBarComponent implements OnInit, OnDestroy {
     $('.latest-btn').fadeIn();
 
     setTimeout(() => {
-      this.isGotoLatestShown = false;
-      $('.latest-btn').fadeOut();
-      this.originTop = 0;
+      $('.latest-btn').fadeOut(() => {
+        this.isGotoLatestShown = false;
+        this.originTop = 0;
+      });
     }, 3000);
   }
 
