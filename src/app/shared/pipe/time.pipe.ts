@@ -3,8 +3,6 @@ import * as moment from 'moment';
 
 moment.locale('zh-cn');
 
-let countdown = require("moment-countdown/vendor/countdown/countdown.js");
-
 @Pipe({name: 'timeFormater'})
 export class TimeFormaterPipe implements PipeTransform {
   transform(time: string, format: string): string {
@@ -21,13 +19,19 @@ export class DurationFormaterPipe implements PipeTransform {
     var timeParsed = moment(+time / 1e6);
     if (!timeParsed.isValid()) timeParsed = moment(time);
     if (!timeParsed.isValid()) return '无效时间';
-    let durationString = timeParsed.countdown(moment(), countdown.DAYS|countdown.HOURS|countdown.MINUTES, NaN, 0).toString();
-    let durationRegexp = /^(\d+)\D*?(\d+)\D*?(\d+)\D*?$/;
-    let matchArr = durationRegexp.exec(durationString);
-    if (matchArr.length != 4) return '无效时间';
-    if (index === 0) return matchArr[1];
-    if (index === 1) return matchArr[2];
-    if (index === 2) return matchArr[3];
+
+    let sec = Math.round(timeParsed.diff(moment()) / 1000);
+
+    if (sec <= 0) return '0';
+
+    let h = Math.floor(sec/(24*60*60));
+    let m = Math.floor(sec%(24*60*60)/(60 * 60));
+    let s = Math.floor(sec%(24*60*60)%(60 * 60)/60);
+
+    if (index === 0) return h.toString();
+    if (index === 1) return m.toString();
+    if (index === 2) return s.toString();
+
     return  '无效时间'
   }
 }

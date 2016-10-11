@@ -21,7 +21,6 @@ import 'zone.js/dist/zone';
 import 'lodash';
 import 'leancloud-push';
 import 'hammerjs';
-import 'moment-countdown';
 import 'moment/locale/zh-cn';
 import * as $ from 'jquery';
 import './icons.font';

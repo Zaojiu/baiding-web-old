@@ -1,10 +1,11 @@
-import { Injectable }     from '@angular/core';
-import { Subject }        from 'rxjs/Subject';
-import { Subscription }   from 'rxjs/Subscription';
+import {Injectable}     from '@angular/core';
+import {Subject}        from 'rxjs/Subject';
+import {Subscription}   from 'rxjs/Subscription';
 
-import { MessageModel, ReplyMessageModel } from '../../shared/api/message.model';
-import { UserInfoModel } from '../../shared/user-info/user-info.model';
-import { MqService, MqEvent } from '../../shared/mq/mq.service';
+import {MessageModel, ReplyMessageModel} from '../../shared/api/message.model';
+import {UserInfoModel} from '../../shared/user-info/user-info.model';
+import {MqService, MqEvent} from '../../shared/mq/mq.service';
+import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 
 @Injectable()
 export class TimelineService {
@@ -14,18 +15,22 @@ export class TimelineService {
   private timelineSource = new Subject<boolean>();
   private praisesSource = new Subject<UserInfoModel>();
   private eventSource = new Subject<MqEvent>();
+  private scrollSource = new Subject<ScrollerEventModel>();
+
   // Observable string streams
   private receivedMessage$ = this.receivedMessageSource.asObservable();
   receivedReply$ = this.receivedReplySource.asObservable();
   timeline$ = this.timelineSource.asObservable();
   private receivedPraises$ = this.praisesSource.asObservable();
-  event$ = this.eventSource.asObservable()
+  event$ = this.eventSource.asObservable();
+  scroll$ = this.scrollSource.asObservable();
 
   private receviedMessageSub: Subscription;
   private receviedPraisedUserSubscription: Subscription;
-  private receivedEventSub: Subscription
+  private receivedEventSub: Subscription;
 
-  constructor() { }
+  constructor() {
+  }
 
   gotoFirstMessage() {
     this.timelineSource.next(true);
@@ -76,5 +81,9 @@ export class TimelineService {
   // 自己发送的
   onReceiveMessages(f: any) {
     this.receviedMessageSub = this.receivedMessage$.subscribe(f)
+  }
+
+  onScroll(e: ScrollerEventModel) {
+    this.scrollSource.next(e);
   }
 }

@@ -118,9 +118,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   isStarted(): boolean {
-    let expectStartAt = moment(this.liveInfo.expectStartAt)
-    let isZero = expectStartAt.isSame(moment('0001-01-01T00:00:00Z'))
-    return moment().isSameOrAfter(expectStartAt) || isZero
+    return this.liveInfo.status == LiveStatus.Started;
   }
 
   isClosed(): boolean {
@@ -241,6 +239,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
       let lastMessage = this.messages[this.messages.length - 1];
       this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
     }
+
+    this.timelineService.onScroll(e);
   }
 
   startObserveTimelineAction() {

@@ -1,13 +1,13 @@
-import {Component, OnInit, OnDestroy}      from '@angular/core';
-import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
-import {Subscription}   from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
-import {LiveService} from '../shared/live/live.service';
-import {LiveInfoModel} from '../shared/live/live.model';
-import {TitleService} from '../shared/title/title.service';
-import {WechatService} from '../shared/wechat/wechat.service';
-import {UserInfoService} from '../shared/user-info/user-info.service';
-import {UserInfoModel} from '../shared/user-info/user-info.model';
+import { LiveService } from '../shared/live/live.service';
+import { LiveInfoModel } from '../shared/live/live.model';
+import { TitleService } from '../shared/title/title.service';
+import { WechatService } from '../shared/wechat/wechat.service';
+import { UserInfoService } from '../shared/user-info/user-info.service';
+import { UserInfoModel } from '../shared/user-info/user-info.model';
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -21,12 +21,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   showInfo: boolean;
   isChildrenActived: boolean;
   routerSubscription: Subscription;
-  isCommentOpened: boolean = true;
+  isCommentOpened = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
-  refreshIntval: any;
+  refreshInterval: any;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-              private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
+    private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
   }
 
   isEditor() {
@@ -48,7 +48,13 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   getLiveInfo(needRefresh?: boolean) {
     this.liveService.getLiveInfo(this.id, needRefresh).then(liveInfo => {
+
+      let oldInfo = this.liveInfo;
       this.liveInfo = liveInfo;
+      if (oldInfo) {
+        this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
+      }
+
       this.titleService.set(this.liveInfo.subject);
       this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, this.getShareUri(), this.id);
     });
@@ -74,7 +80,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.getLiveInfo();
 
-    this.refreshIntval = setInterval(() => {
+    this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);
     }, 10 * 1000)
   }
@@ -82,6 +88,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
 
-    clearInterval(this.refreshIntval)
+    clearInterval(this.refreshInterval);
   }
 }
