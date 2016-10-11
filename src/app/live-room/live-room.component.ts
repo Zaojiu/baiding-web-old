@@ -8,6 +8,7 @@ import { TitleService } from '../shared/title/title.service';
 import { WechatService } from '../shared/wechat/wechat.service';
 import { UserInfoService } from '../shared/user-info/user-info.service';
 import { UserInfoModel } from '../shared/user-info/user-info.model';
+import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -21,12 +22,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   showInfo: boolean;
   isChildrenActived: boolean;
   routerSubscription: Subscription;
-  isCommentOpened = true;
+  isCommentOpened: boolean = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
-  refreshInterval: any;
+  refreshIntval: any;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-    private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
+    private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService,private localStorageService: LocalStorageService) {
   }
 
   isEditor() {
@@ -81,7 +82,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.getLiveInfo();
 
-    this.refreshInterval = setInterval(() => {
+    this.refreshIntval = setInterval(() => {
       this.getLiveInfo(true);
     }, 10 * 1000)
   }
@@ -89,6 +90,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
 
-    clearInterval(this.refreshInterval);
+    clearInterval(this.refreshIntval)
   }
 }
