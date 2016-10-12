@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {LiveInfoModel} from '../../shared/live/live.model';
 import {LocalStorage} from "angular2-localstorage/WebStorage";
+import {LiveService} from '../../shared/live/live.service';
 
 @Component({
   selector: 'live-room-info',
@@ -16,7 +17,7 @@ export class LiveRoomInfoComponent {
   @LocalStorage() public beginnerGuideShowed: Object = {};
   guideShowed: boolean;
 
-  constructor() {
+  constructor(private liveService: LiveService) {
   }
 
   close() {
@@ -35,5 +36,7 @@ export class LiveRoomInfoComponent {
       this.showBeginnerGuide.emit(true);
     }
     this.close();
+
+    this.liveService.setEnteredLiveRoom();
   }
 }
