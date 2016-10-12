@@ -26,7 +26,7 @@ gulp.task('json', function () {
     .pipe($.replace('.scss', '.css'))
     .pipe($.replace('"root": "src"', '"root": "tmp"'))
     .pipe($.replace('"main": "main.ts"', '"main": "main.prod.ts"'))
-    .pipe($.replace('"publicPath": "/"', '"publicPath": "https://www.baidingchat.com/"'))
+    .pipe($.replace('"publicPath": "/"', '"publicPath": "https://oex75wi4c.qnssl.com/"'))
     .pipe(gulp.dest('./'));
 });
 
