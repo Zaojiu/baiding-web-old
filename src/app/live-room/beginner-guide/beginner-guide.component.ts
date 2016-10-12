@@ -1,5 +1,4 @@
 import {Component, OnInit, Input, Output, EventEmitter,} from '@angular/core';
-import {LiveService} from '../../shared/live/live.service';
 
 @Component({
   selector: 'beginner-guide',
@@ -9,47 +8,24 @@ import {LiveService} from '../../shared/live/live.service';
 
 export class BeginnerGuideComponent {
   @Input() liveId: string;
-  @Input() playGuide: boolean;
-  isAdminStep1: boolean;
+  @Input() showAdminGuide: boolean;
+  @Input() showUserGuide: boolean;
   isAdminStep2: boolean;
-  isUserStep1: boolean;
 
-  constructor(private liveService: LiveService) {
-  }
+  constructor(){}
 
-  isEditor() {
-    return this.liveService.isEditor(this.liveId);
-  }
-
-  isAudience() {
-    return this.liveService.isAudience(this.liveId);
-  }
-
-  ngOnInit() {
-    if (this.isAudience()) {
-      this.isAdminStep1 = false;
-      this.toUserStep1()
-    }
-  }
+  ngOnInit() {}
 
   toAdminStep2() {
-    this.isAdminStep1 = false;
-    console.log(this.isAdminStep1, "d>>>>>>d")
+    this.showAdminGuide = false;
     this.isAdminStep2 = true;
-    console.log(this.isAdminStep2, "dsdsdsadsad")
-  }
-
-  toUserStep1() {
-    this.isAdminStep1 = false;
-    this.isAdminStep2 = false;
-    this.isUserStep1 = true;
+    this.showUserGuide = false;
   }
 
   enterLiveRoom() {
-    console.log('enterliveroom')
-    this.isAdminStep1 = false;
+    this.showAdminGuide = false;
     this.isAdminStep2 = false;
-    this.isUserStep1 = false;
+    this.showUserGuide = false;
   }
 
 }

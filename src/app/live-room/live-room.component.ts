@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import {Component, OnInit, OnDestroy, OnChanges, EventEmitter} from '@angular/core';
+import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
 
-import { LiveService } from '../shared/live/live.service';
-import { LiveInfoModel } from '../shared/live/live.model';
-import { TitleService } from '../shared/title/title.service';
-import { WechatService } from '../shared/wechat/wechat.service';
-import { UserInfoService } from '../shared/user-info/user-info.service';
-import { UserInfoModel } from '../shared/user-info/user-info.model';
+import {LiveService} from '../shared/live/live.service';
+import {LiveInfoModel} from '../shared/live/live.model';
+import {TitleService} from '../shared/title/title.service';
+import {WechatService} from '../shared/wechat/wechat.service';
+import {UserInfoService} from '../shared/user-info/user-info.service';
+import {UserInfoModel} from '../shared/user-info/user-info.model';
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
 @Component({
@@ -25,9 +25,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isCommentOpened: boolean = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
   refreshIntval: any;
+  isBeginnerGuideShow: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-    private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService,private localStorageService: LocalStorageService) {
+              private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService, private localStorageService: LocalStorageService) {
+  }
+
+
+  toShowBeginnerGuide(result: boolean) {
+    this.isBeginnerGuideShow = result;
   }
 
   isEditor() {
