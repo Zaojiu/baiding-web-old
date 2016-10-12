@@ -113,12 +113,15 @@ export class MessageApiService {
 
     // 将推送消息的推送人和被推送人的内容交换
     if (data.type === 'nice') {
-      let reply = new ReplyMessageModel();
-      reply.id = data.id
-      reply.user = users[data.uid]
-      reply.content = data.content
-      reply.createdAt = data.createdAt
-      message.replies.push(reply)
+      // 有内容的推送才会把推送语作为第一条回复
+      if (data.content) {
+        let reply = new ReplyMessageModel();
+        reply.id = data.id;
+        reply.user = users[data.uid];
+        reply.content = data.content;
+        reply.createdAt = data.createdAt;
+        message.replies.push(reply);
+      }
     }
 
     // 包装回复消息
@@ -225,13 +228,13 @@ export class MessageApiService {
   postNiceMessage(liveId: string, content: string, commentId: string, uid: number, commentContent: string): Promise<MessageModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
-    let message = new PostMessageModel()
-    message.type = 'nice'
-    message.content = content
-    message.nice = new PostNiceMessageModel()
-    message.nice.commentId = commentId
-    message.nice.uid = uid
-    message.nice.message = commentContent
+    let message = new PostMessageModel();
+    message.type = 'nice';
+    message.content = content || '';
+    message.nice = new PostNiceMessageModel();
+    message.nice.commentId = commentId;
+    message.nice.uid = uid;
+    message.nice.message = commentContent;
 
     return this.http.post(url, JSON.stringify(message), {headers: headers}).toPromise()
       .then(res => {
@@ -239,15 +242,17 @@ export class MessageApiService {
         let messageResp = this.parseResponesMessage(data, MessageType.Nice);
 
         if (data.type === 'nice') {
-          messageResp.user = data.users[data.nice.uid]
-          messageResp.content = data.nice.message
+          messageResp.user = data.users[data.nice.uid];
+          messageResp.content = data.nice.message;
 
-          let reply = new ReplyMessageModel();
-          reply.id = data.id
-          reply.user = data.users[data.uid]
-          reply.content = data.content
-          reply.createdAt = data.createdAt
-          messageResp.replies.push(reply)
+          if (data.content != '') {
+            let reply = new ReplyMessageModel();
+            reply.id = data.id;
+            reply.user = data.users[data.uid];
+            reply.content = data.content;
+            reply.createdAt = data.createdAt;
+            messageResp.replies.push(reply);
+          }
         }
 
         this.timelineService.pushMessage(messageResp);
