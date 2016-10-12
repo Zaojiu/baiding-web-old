@@ -14,7 +14,7 @@ export class LiveService {
   constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {
   }
 
-  isEditor(id: string) {
+  isEditor(id: string): boolean {
     let userInfo = this.userInfoService.getUserInfoCache();
     let liveInfo = this.getLiveInfoCache(id);
 
@@ -39,8 +39,17 @@ export class LiveService {
     return enterLiveRoom;
   }
 
-  isAudience(id: string) {
+  isAudience(id: string): boolean {
     return !this.isEditor(id);
+  }
+
+  isAdmin(id: string): boolean {
+    let userInfo = this.userInfoService.getUserInfoCache();
+    let liveInfo = this.getLiveInfoCache(id);
+
+    if (!userInfo || !liveInfo || !liveInfo.admin) return false;
+
+    return userInfo.uid === liveInfo.admin.uid;
   }
 
   parseLiveInfo(data: any): LiveInfoModel {
