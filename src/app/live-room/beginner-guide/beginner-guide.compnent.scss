@@ -10,8 +10,8 @@
   transition: opacity .2s;
   display: none;
 
-    &.activate {
-      display: block;
+  &.activate {
+    display: block;
     opacity: 1;
   }
 
@@ -22,19 +22,18 @@
     right: 0;
     max-width: 100%;
     z-index: 5;
+
     .header-img {
       max-width: 100%
     }
   }
 
   .content {
-    overflow: hidden;
-    position: absolute;
-
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+
     .content-img {
       max-width: 100%
     }
@@ -47,6 +46,7 @@
     bottom: 0;
     max-width: 100%;
     z-index: 5;
+
     .bottom-img {
       display: block;
       max-width: 100%

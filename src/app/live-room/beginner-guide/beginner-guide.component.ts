@@ -12,10 +12,6 @@ export class BeginnerGuideComponent {
   @Input() showUserGuide: boolean;
   isAdminStep2: boolean;
 
-  constructor(){}
-
-  ngOnInit() {}
-
   toAdminStep2() {
     this.showAdminGuide = false;
     this.isAdminStep2 = true;
