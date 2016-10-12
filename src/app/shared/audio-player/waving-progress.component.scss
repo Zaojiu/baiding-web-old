@@ -3,10 +3,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  .line {
+  >div {
     border-left: 1px solid #333;
     display: inline-block;
-    border-radius: 10px;
     margin-left: 2px;
   }
 }
