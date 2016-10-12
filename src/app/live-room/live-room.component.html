@@ -1,9 +1,11 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
-<live-room-info *ngIf="liveInfo && showInfo" [liveInfo]="liveInfo" [(isShow)]="showInfo"></live-room-info>
+<live-room-info [liveInfo]="liveInfo"  *ngIf="liveInfo && showInfo" [(isShow)]="showInfo" (showBeginnerGuide)="toShowBeginnerGuide($event)"> </live-room-info>
+<beginner-guide [showAdminGuide]="true" *ngIf="isBeginnerGuideShow && isEditor()"></beginner-guide>
+<beginner-guide [showUserGuide]="true" *ngIf="isBeginnerGuideShow && isAudience()"></beginner-guide>
 
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
-  <top-bar class="top-bar" [onlineCount]="liveInfo.onlines" [(isCommentOpened)]="isCommentOpened"></top-bar>
+    <top-bar class="top-bar" [onlineCount]="liveInfo.onlines" [(isCommentOpened)]="isCommentOpened"></top-bar>
 
   <div class="praised-animations" praisedAnimation>
     <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
@@ -29,5 +31,6 @@
     [isOnLatest]="timeline.isOnLatest"
     [isOnNewest]="timeline.isOnNewest"
   ></editor-bottom-bar>
+
 </div>
 
