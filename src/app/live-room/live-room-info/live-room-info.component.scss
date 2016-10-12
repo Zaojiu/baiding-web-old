@@ -30,9 +30,14 @@
       flex-grow: 1;
       flex-shrink: 1;
     }
+
     .online-people {
       flex-grow: 1;
       flex-shrink: 1;
+
+      .bi {
+        font-size: 22px
+      }
     }
     .close-button {
       text-align: end;

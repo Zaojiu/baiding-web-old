@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import { LiveInfoModel } from './live.model';
-import { UserInfoModel } from '../user-info/user-info.model';
-import { AppConfig } from '../../app.config';
-import { StoreService } from '../store/store.service';
-import { LiveStatus } from './live.enums';
-import { UserInfoService } from '../user-info/user-info.service';
+import {LiveInfoModel} from './live.model';
+import {UserInfoModel} from '../user-info/user-info.model';
+import {AppConfig} from '../../app.config';
+import {StoreService} from '../store/store.service';
+import {LiveStatus} from './live.enums';
+import {UserInfoService} from '../user-info/user-info.service';
 
 @Injectable()
 export class LiveService {
-  constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) { }
+  constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {
+  }
 
-  isEditor(id: string) {
+  isEditor(id: string): boolean {
     let userInfo = this.userInfoService.getUserInfoCache();
     let liveInfo = this.getLiveInfoCache(id);
 
@@ -29,8 +30,26 @@ export class LiveService {
     return isEditor;
   }
 
-  isAudience(id: string) {
+  LiveRoomAlreadyVisited() {
+    this.store.set('hasEntered', true);
+  };
+
+  getEnteredLiveRoom(): boolean {
+    let enterLiveRoom = this.store.get('hasEntered') || false;
+    return enterLiveRoom;
+  }
+
+  isAudience(id: string): boolean {
     return !this.isEditor(id);
+  }
+
+  isAdmin(id: string): boolean {
+    let userInfo = this.userInfoService.getUserInfoCache();
+    let liveInfo = this.getLiveInfoCache(id);
+
+    if (!userInfo || !liveInfo || !liveInfo.admin) return false;
+
+    return userInfo.uid === liveInfo.admin.uid;
   }
 
   parseLiveInfo(data: any): LiveInfoModel {

@@ -1,7 +1,7 @@
 <div class="top-bar">
   <div class="online-count">
     <i class="bi bi-people"></i>
-    <span class="btn-text">{{onlineCount < 999 ? onlineCount : '999+'}}人观看</span>
+    <span class="btn-text">{{onlineCount > 999 ? '999+' : onlineCount}}人观看</span>
   </div>
 
   <a class="oldest-btn" (click)="gotoOldest()">

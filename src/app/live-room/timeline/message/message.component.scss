@@ -104,10 +104,12 @@
     }
 
     .content-container .content {
+      user-select: none;
+      touch-callout: none;
       padding: 12px;
       background-color: rgb(237, 242, 247);
       color: rgb(75, 75, 75);
-      font-size: 14px;
+      font-size: 16px;
       border-radius: 10px;
     }
 
@@ -132,6 +134,8 @@
   }
 
   .message {
+    position: relative;
+
     &.has-reply {
       .content-container .content {
         position: relative;
@@ -162,6 +166,13 @@
           }
         }
       }
+    }
+
+    .tooltips-container {
+      position: absolute;
+      bottom: calc(100% - 8px);
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .content-container {
@@ -253,17 +264,10 @@
     padding-left: 68px;
     padding-top: 7px;
 
-    .share-btn, .message-btn {
-      padding-top: 5px;
-      margin-right: 15px;
-      display: inline-block;
-      font-size: 16px;
-      color: rgb(75, 75, 75);
-    }
-
     .thumbs-up-users {
       float: right;
       font-size: 0;
+      height: 23px;
 
       .avatar {
         &:last-child {

@@ -1,4 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter,} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
+import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 @Component({
   selector: 'beginner-guide',
@@ -6,11 +7,19 @@ import {Component, OnInit, Input, Output, EventEmitter,} from '@angular/core';
   styleUrls: ['./beginner-guide.compnent.scss'],
 })
 
-export class BeginnerGuideComponent {
+export class BeginnerGuideComponent implements OnInit {
   @Input() liveId: string;
   @Input() showAdminGuide: boolean;
   @Input() showUserGuide: boolean;
   isAdminStep2: boolean;
+  @LocalStorage() public beginnerGuideShowed: Object = {};
+
+
+  ngOnInit() {
+    if (this.getGuideAlreadyShown()) {
+      this.hide();
+    }
+  }
 
   toAdminStep2() {
     this.showAdminGuide = false;
@@ -18,10 +27,24 @@ export class BeginnerGuideComponent {
     this.showUserGuide = false;
   }
 
-  enterLiveRoom() {
+  hide() {
     this.showAdminGuide = false;
     this.isAdminStep2 = false;
     this.showUserGuide = false;
   }
 
+
+  setGuideAlreadyShown() {
+    this.beginnerGuideShowed['guideAlreadyShown'] = true
+  }
+
+  getGuideAlreadyShown() {
+    let guideShowed = this.beginnerGuideShowed['guideAlreadyShown'];
+
+    if (!guideShowed) {
+      this.setGuideAlreadyShown();
+    }
+
+    return guideShowed;
+  }
 }
