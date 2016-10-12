@@ -29,9 +29,27 @@ export class MessageComponent {
   praisesNum: number = 0;
   timer: any = -1;
   praised: boolean;
+  isToolTipOpened: boolean;
+  messagePressTimer: any;
+  messagePressDuration = 0;
 
   constructor(private messageService: MessageService, private router: Router, private liveService: LiveService) {
+  }
 
+  touchStart() {
+    this.messagePressTimer = setInterval(() => {
+      this.messagePressDuration++;
+
+      if (this.messagePressDuration > 5) {
+        this.openToolTips();
+        this.touchEnd();
+      }
+    }, 100);
+  }
+
+  touchEnd() {
+    if (this.messagePressTimer) clearInterval(this.messagePressTimer);
+    this.messagePressDuration = 0;
   }
 
   audioPlayEndedHandler(msg: MessageModel) {
@@ -103,5 +121,23 @@ export class MessageComponent {
 
   playAudio() {
     this.audioPlayer.playIfNotPlayed();
+  }
+
+  getToolTipsItems(): string[] {
+    let items = [];
+    if (this.canReply()) items.push('回复');
+    return items;
+  }
+
+  openToolTips() {
+    let items = this.getToolTipsItems();
+    if (items.length === 0) return;
+
+    this.isToolTipOpened = true;
+  }
+
+  tooptipsSelected(item: string) {
+    console.log(item);
+    if (item == '回复') return this.gotoReply();
   }
 }
