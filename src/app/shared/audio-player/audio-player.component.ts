@@ -29,7 +29,7 @@ export class AudioPlayerComponent {
   }
 
   playOrStopVoice() {
-    this.isPlaying() ? this.audioPlayerService.stop(this.message) : this.play();
+    this._isPlaying() ? this.audioPlayerService.stop(this.message) : this.play();
   }
 
   play() {
@@ -46,8 +46,12 @@ export class AudioPlayerComponent {
     }
   }
 
-  isPlaying() {
+  private _isPlaying() {
     return this.audioPlayerService.isPlaying(this.message);
+  }
+
+  get isPlaying(): boolean {
+    return this._isPlaying();
   }
 
   get isPlayed(): boolean {

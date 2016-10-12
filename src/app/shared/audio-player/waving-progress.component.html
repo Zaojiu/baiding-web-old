@@ -1,0 +1,4 @@
+<div class="wave" [class.waving]="playing">
+  <div *ngFor="let h of linesHeight;let i=index" [style.height]="h+'px'" [class]="'line wave-animation'+i%4">
+  </div>
+</div>
