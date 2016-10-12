@@ -9,6 +9,12 @@
   -webkit-user-select: none;
   user-select: none;
 
+  &.is-vip {
+    .share-btn, .post-btn, .push-comment-btn, .more-op-btn {
+      width: calc((100% - 60px) / 2);
+    }
+  }
+
   .share-btn, .post-btn, .push-comment-btn, .more-op-btn {
     display: inline-block;
     height: 49px;

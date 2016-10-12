@@ -7,6 +7,6 @@ const route: Routes = [
   {
     path: '', component: PushCommentComponent
   }
-]
+];
 
 export const ROUTES: ModuleWithProviders = RouterModule.forChild(route);

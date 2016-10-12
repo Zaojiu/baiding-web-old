@@ -89,6 +89,10 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
     this.sharePopupService.popup()
   }
 
+  isAdmin(): boolean {
+    return this.liveService.isAdmin(this.liveId);
+  }
+
   popupBottomSelector() {
     if (this.bottomPopupService.isClosed) {
       const model = new BottomPopupSelectorModel();
@@ -96,6 +100,7 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
 
       model.items.push('邀请嘉宾');
       model.items.push('结束直播');
+
       model.hasBottomBar = false;
 
       this.bottomPopupService.popup(model);
