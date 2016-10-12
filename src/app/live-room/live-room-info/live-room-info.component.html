@@ -7,7 +7,7 @@
     </div>
     <div class="online-people">
       <i class="bi bi-people"></i>
-      {{liveInfo.onlines}}+
+      {{liveInfo.onlines < 999 ? liveInfo.onlines : '999+'}}人观看
     </div>
     <a class="close-button" (click)="close()">
       <i class="bi bi-close"></i>

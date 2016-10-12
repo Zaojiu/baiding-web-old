@@ -24,7 +24,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
   isCommentOpened: boolean = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
-  refreshIntval: any;
+  refreshInterval: any;
   isBeginnerGuideShow: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
@@ -88,7 +88,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.getLiveInfo();
 
-    this.refreshIntval = setInterval(() => {
+    this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);
     }, 10 * 1000)
   }
@@ -96,6 +96,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
 
-    clearInterval(this.refreshIntval)
+    clearInterval(this.refreshInterval)
   }
 }
