@@ -55,13 +55,15 @@ export class PostComponent implements OnInit {
   submit() {
     this.imageExist = this.images && !!this.images.length;
 
-    if (this.content === '' && !this.imageExist) return;
-
     /*判断是否存在回复和推送动作*/
     if (this.commentId) {
-      this.pushComment()
+      this.pushComment().then(()=> {
+        this.backToMainScreen();
+      });
     } else if (this.messageId) {
-      this.postMessage()
+      this.postMessage().then(()=> {
+        this.backToMainScreen();
+      });
     } else {
       /*进入消息发送分支*/
       if (this.content !== '' && this.imageExist) {
@@ -69,38 +71,38 @@ export class PostComponent implements OnInit {
         let p2 = this.postImgMessage();
         Promise.all([p1, p2]).then((res)=> {
           this.backToMainScreen();
-        })
+        });
       } else if (this.content === '' && this.imageExist) {
         this.postImgMessage().then(()=> {
           this.backToMainScreen();
-        })
+        });
       } else if (this.content !== '' && !this.imageExist) {
         this.postMessage().then(()=> {
           this.backToMainScreen();
-        })
+        });
       }
     }
   }
 
-  pushComment() {
-    this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
+  pushComment(): Promise<any> {
+    return this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
       this.additionalContent.user.uid, this.additionalContent.content).then(() => {
       this.isSubmited = true;
-      this.backToPushComment()
+      return;
     });
   }
 
   postMessage(): Promise<any> {
-    if (this.content === '') return;
+    if (this.content === '') return Promise.reject('');
 
     return this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
       this.isSubmited = true;
-      return
+      return;
     })
   }
 
   postImgMessage(): Promise<any> {
-    if (!(this.images && this.images.length)) return
+    if (!(this.images && this.images.length)) return Promise.reject('');
 
     return this.messageApiService.postImgMessage(this.id, this.images[0], this.messageId)
       .then(() => {
