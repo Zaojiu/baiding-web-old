@@ -96,6 +96,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
 
-    clearInterval(this.refreshInterval)
+    clearInterval(this.refreshInterval);
   }
 }

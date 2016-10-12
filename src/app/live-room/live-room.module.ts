@@ -52,9 +52,9 @@ import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
     PraisedAnimationComponent,
     FileSelectorDirective,
     LiveRoomInfoComponent,
-    BeginnerGuideComponent,
-    TopBarComponent,
     ScrollerDirective,
+    TopBarComponent,
+    BeginnerGuideComponent,
   ],
   providers: [
     TimelineService,
