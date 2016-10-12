@@ -30,7 +30,7 @@ export class LiveService {
     return isEditor;
   }
 
-  setEnteredLiveRoom() {
+  LiveRoomAlreadyVisited() {
     this.store.set('hasEntered', true);
   };
 

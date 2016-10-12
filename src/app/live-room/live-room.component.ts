@@ -79,7 +79,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       this.showInfo = fromShare;
       if (!fromShare) {
         this.isBeginnerGuideShow = true;
-        this.liveService.setEnteredLiveRoom();
+        this.liveService.LiveRoomAlreadyVisited();
       }
     }
 

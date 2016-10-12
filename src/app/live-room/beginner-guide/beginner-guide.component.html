@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="admin-step2-container" (click)="enterLiveRoom()" [ngClass]="{'activate': isAdminStep2}">
+<div class="admin-step2-container" (click)="hide()" [ngClass]="{'activate': isAdminStep2}">
   <div class="header">
     <img class="header-img" src="../../../assets/img/admin-guide-step2-header.png" alt="">
   </div>
@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<div class="user-step1-container" (click)="enterLiveRoom()" [ngClass]="{'activate': showUserGuide}">
+<div class="user-step1-container" (click)="hide()" [ngClass]="{'activate': showUserGuide}">
   <div class="header">
     <img class="header-img" src="../../../assets/img/user-guide-step1-header.png" alt="">
   </div>
