@@ -15,7 +15,7 @@ import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
   styleUrls: ['./live-room.component.scss'],
 })
 
-export class LiveRoomComponent implements OnInit, OnDestroy{
+export class LiveRoomComponent implements OnInit, OnDestroy {
   id: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
@@ -72,10 +72,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    let fromShare = !!this.route.snapshot.queryParams['source'];
-    this.showInfo = fromShare;
-    if (!fromShare) {
-      this.isBeginnerGuideShow = true;
+    let enteredLiveRoom = this.liveService.getEnteredLiveRoom();
+
+    if (!enteredLiveRoom) {
+      let fromShare = !!this.route.snapshot.queryParams['source'];
+      this.showInfo = fromShare;
+      if (!fromShare) {
+        this.isBeginnerGuideShow = true;
+        this.liveService.setEnteredLiveRoom();
+      }
     }
 
     // 监控router变化，如果route换了，那么设置 isChildrenActived
