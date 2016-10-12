@@ -104,6 +104,8 @@
     }
 
     .content-container .content {
+      user-select: none;
+      touch-callout: none;
       padding: 12px;
       background-color: rgb(237, 242, 247);
       color: rgb(75, 75, 75);
@@ -132,6 +134,8 @@
   }
 
   .message {
+    position: relative;
+
     &.has-reply {
       .content-container .content {
         position: relative;
@@ -162,6 +166,13 @@
           }
         }
       }
+    }
+
+    .tooltips-container {
+      position: absolute;
+      bottom: calc(100% - 8px);
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .content-container {

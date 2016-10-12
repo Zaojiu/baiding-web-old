@@ -4,7 +4,7 @@
       <img class="avatar" [src]="message.user.avatar">
     </div>
 
-    <div class="content-container">
+    <div class="content-container" (touchstart)="touchStart()" (touchend)="touchEnd()" (contextmenu)="$event.preventDefault()" >
       <div class="content-info">
         <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
         <span class="time">{{message.createdAt | fromNow}}</span>
@@ -16,9 +16,14 @@
           <image-viewer-preview [imageLinks]="[message.image.link]"></image-viewer-preview>
         </div>
       </div>
+
       <div class="content audio-content" *ngIf="message.type === 2">
         <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message" [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
         <div class="translate">{{message.audio.translateResult}}</div>
+      </div>
+
+      <div class="tooltips-container">
+        <tooltips [(isOpened)]="isToolTipOpened" [items]="getToolTipsItems()" (itemSelected)="tooptipsSelected($event)" (touchstart)="$event.stopPropagation()"></tooltips>
       </div>
     </div>
 
@@ -44,9 +49,7 @@
     </div>
   </div>
 
-  <div class="operation-bar">
-    <a class="share-btn" (click)="goToShare()"><i class="bi bi-share"></i></a>
-    <a class="message-btn" (click)="gotoReply()" *ngIf="canReply()"><i class="bi bi-chat3"></i></a>
+  <div class="operation-bar clearfix">
     <div class="thumbs-up-users">
       <img class="avatar" *ngFor="let user of message.getPraisedAvatars(userInfo)" [src]="user.avatar">
     </div>

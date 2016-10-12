@@ -1,0 +1,3 @@
+<div class="tooptips" *ngIf="isOpened">
+  <div class="tooltips-items" *ngFor="let item of items" (click)="selectItem(item)">{{item}}</div>
+</div>
