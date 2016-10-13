@@ -30,9 +30,11 @@ export class FileSelectorDirective implements OnInit, OnChanges {
     let maxSize = 1024 * 1024 * 8;
     $this.on('change', () => {
       if ($this[0].files.length) {
-        let fileSize = $this[0].files[0].size;
         let file = $this[0].value;
-        if (!/.(gif|jpg|jpeg|png|bmp)$/.test(file)) {
+        let fileSize = $this[0].files[0].size;
+        let fileType = $this[0].files[0].type;
+
+        if (!/.(image\/gif|jpg|jpeg|png|bmp|raw)$/.test(fileType)) {
           this.modalService.popup("图片不符合类型", '取消', '确定', false);
           return false
         } else if (fileSize > maxSize) {
