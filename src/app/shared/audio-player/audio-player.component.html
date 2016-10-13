@@ -1,10 +1,5 @@
 <div class="audio-player-container" [ngClass]="{'theme-white': isWhiteTheme}" (click)="playOrStopVoice()">
   <app-waving-progress [playing]="isPlaying" class="wave-component"></app-waving-progress>
   <span class="dot" *ngIf="!isPlayed"></span>
-  <span *ngIf="isPlaying">
-    <i class="bi bi-pause-round"></i>
-  </span>
-  <span *ngIf="!isPlaying">
-    <i class="bi bi-play"></i>
-  </span>
+  <i class="bi" [class.bi-pause-round]="isPlaying" [class.bi-play]="!isPlaying"></i>
 </div>
