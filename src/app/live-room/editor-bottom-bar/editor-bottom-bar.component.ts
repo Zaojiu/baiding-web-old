@@ -142,21 +142,25 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   }
 
   stopRecord() {
+    console.log('record stop called');
     if (!this.isRecording || this.isCanceled || this.isTooShort) return;
 
     if (this.recordDuration < this.minRecordDuration) {
       this.isTooShort = true;
       this.wechatService.cancelRecord();
 
+      console.log('record cancel because too short');
+
       clearInterval(this.timer);
 
       this.timer = setTimeout(() => {
         this.isRecording = false;
-        clearTimeout(this.timer)
+        clearTimeout(this.timer);
       }, 1000)
     } else {
       this.isRecording = false;
       this.wechatService.stopRecord();
+      console.log('record stoped');
     }
   }
 

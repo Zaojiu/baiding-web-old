@@ -52,37 +52,42 @@ export class WechatService {
         'onMenuShareQQ',
         'onMenuShareWeibo',
         'onMenuShareQZone'
-      ]
+      ];
 
-      wx.config(config)
+      console.log('wechat config: ', config);
+
+      wx.config(config);
     })
   }
 
 
   initWechat(): Promise<string> {
-    var hasRetry: boolean
+    var hasRetry: boolean;
 
     return new Promise<string>((resolve, reject) => {
       wx.error(reason => {
         console.log('wx err:', reason)
+
         if (hasRetry) {
           return reject(reason);
         }// TODO：全局错误处理
 
-        this.configWechat()
+        this.configWechat();
 
         hasRetry = true;
-      })
+      });
 
       wx.ready(() => {
         this.hasInit = true;
+
+        console.log('wechat init');
 
         wx.onVoiceRecordEnd({
           // 录音时间超过一分钟没有停止的时候会执行 complete 回调
           complete: (res) => {
             this.recordSource.next(res.localId)
           }
-        })
+        });
 
         wx.onVoicePlayEnd({
           success: res => {
@@ -91,109 +96,113 @@ export class WechatService {
             }
             this.playingVoiceId = ''; // 返回音频的本地ID
           }
-        })
+        });
 
-        resolve()
-      })
+        resolve();
+      });
 
-      this.configWechat()
+      this.configWechat();
     })
   }
 
   share(title: string, desc: string, cover: string, link: string, liveId?: string) {
-    if (desc.length > 19) desc = `${desc.slice(0, 18)}...`
-    desc = `${desc}#白丁直播#`
+    if (desc.length > 19) desc = `${desc.slice(0, 18)}...`;
+    desc = `${desc}#白丁直播#`;
 
     wx.onMenuShareTimeline({
       title: title, // 分享标题
       link: link, // 分享链接
       imgUrl: cover, // 分享图标
-      success: function () {
-        if (liveId) this.confirmShare(liveId)
+      success: () => {
+        if (liveId) this.confirmShare(liveId);
       },
-      cancel: function () {
+      cancel: () => {
       }
-    })
+    });
 
     wx.onMenuShareAppMessage({
       title: title, // 分享标题
       desc: desc, // 分享描述
       link: link, // 分享链接
       imgUrl: cover, // 分享图标
-      success: function () {
-        if (liveId) this.confirmShare(liveId)
+      success: () => {
+        if (liveId) this.confirmShare(liveId);
       },
-      cancel: function () {
+      cancel: () => {
       }
-    })
+    });
 
     wx.onMenuShareQQ({
       title: title, // 分享标题
       desc: desc, // 分享描述
       link: link, // 分享链接
       imgUrl: cover, // 分享图标
-      success: function () {
-        if (liveId) this.confirmShare(liveId)
+      success: () => {
+        if (liveId) this.confirmShare(liveId);
       },
-      cancel: function () {
+      cancel: () => {
       }
-    })
+    });
 
     wx.onMenuShareWeibo({
       title: title, // 分享标题
       desc: desc, // 分享描述
       link: link, // 分享链接
       imgUrl: cover, // 分享图标
-      success: function () {
-        if (liveId) this.confirmShare(liveId)
+      success: () => {
+        if (liveId) this.confirmShare(liveId);
       },
-      cancel: function () {
+      cancel: () => {
       }
-    })
+    });
 
     wx.onMenuShareQZone({
       title: title, // 分享标题
       desc: desc, // 分享描述
       link: link, // 分享链接
       imgUrl: cover, // 分享图标
-      success: function () {
+      success: () => {
         if (liveId) this.confirmShare(liveId)
       },
-      cancel: function () {
+      cancel: () => {
       }
     })
   }
 
   confirmShare(liveId: string): Promise<void> {
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/share`
-    return this.http.post(url, null).toPromise()
-      .then(res => {
-        return
-      })
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/share`;
+
+    return this.http.post(url, null).toPromise().then(res => {});
   }
 
   startRecord() {
-    if (!this.hasInit) return
+    if (!this.hasInit) return;
 
-    wx.startRecord()
+    wx.startRecord();
   }
 
   stopRecord() {
-    if (!this.hasInit) return
+    console.log('wechat init: ', this.hasInit);
+
+    if (!this.hasInit) return;
+
+    console.log('wechat record stop');
 
     wx.stopRecord({
       success: (res) => {
+        console.log('wechat record stop successful');
         this.processVoice(res.localId).then((audioModel) => {
-          this.recordSource.next(audioModel)
+          console.log('wechat record translate & upload done successful', res.localId);
+          this.recordSource.next(audioModel);
         })
       }
     })
   }
 
   cancelRecord() {
-    if (!this.hasInit) return
+    if (!this.hasInit) return;
 
-    wx.stopRecord({})
+    wx.stopRecord({});
   }
 
   playVoice(id: string): Promise<string> {
@@ -208,6 +217,7 @@ export class WechatService {
         resolve(localId);
         this.playingVoiceId = '';
       };
+
       wx.playVoice({
         localId: id // 需要播放的音频的本地ID，由stopRecord接口获得
       });
@@ -219,9 +229,9 @@ export class WechatService {
   stopVoice(id: string) {
     wx.stopVoice({
       localId: id // 需要播放的音频的本地ID，由stopRecord接口获得
-    })
+    });
 
-    this.playingVoiceId = ''
+    this.playingVoiceId = '';
   }
 
   uploadVoice(id: string): Promise<string> {
@@ -230,7 +240,7 @@ export class WechatService {
         localId: id, // 需要上传的音频的本地ID，由stopRecord接口获得
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: (res) => {
-          resolve(res.serverId) // 返回音频的服务器端ID
+          resolve(res.serverId); // 返回音频的服务器端ID
         }
       })
     })
@@ -242,7 +252,7 @@ export class WechatService {
         serverId: id, // 需要下载的音频的服务器端ID，由uploadVoice接口获得
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: function (res) {
-          resolve(res.localId) // 返回音频的本地ID
+          resolve(res.localId); // 返回音频的本地ID
         }
       })
     })
@@ -263,12 +273,12 @@ export class WechatService {
   processVoice(id: string): Promise<WechatAudioModel> {
     return new Promise<WechatAudioModel>((resolve, reject) => {
       Promise.all([this.translateVoice(id), this.uploadVoice(id)]).then(result => {
-        let translateResult = result[0]
-        let serverId = result[1]
-        var audioModel = new WechatAudioModel()
-        audioModel.localId = id
-        audioModel.serverId = serverId
-        audioModel.translateResult = translateResult
+        let translateResult = result[0];
+        let serverId = result[1];
+        var audioModel = new WechatAudioModel();
+        audioModel.localId = id;
+        audioModel.serverId = serverId;
+        audioModel.translateResult = translateResult;
 
         resolve(audioModel)
       })
