@@ -8,11 +8,14 @@
     color: rgb(255, 255, 255);
   }
 
-  .wave-component{
+  .wave-component {
     float: left;
   }
 
   .bi-play {
+    font-size: 28px;
+  }
+  .bi-pause-round {
     font-size: 28px;
   }
 
@@ -34,63 +37,3 @@
     right: -36px;
   }
 }
-
-  // .play, .playing {
-  //   position: relative;
-  //   width: 24px;
-  //   height: 24px;
-  //   border-radius: 50%;
-  //   display: inline-block;
-  //   border: solid 2px rgba(255, 255, 255, 1);
-  //   clip-path: polygon(100% 0, 100% 100%, 50% 50%);
-
-  //   &:before {
-  //     position: absolute;
-  //     content: "";
-  //     width: 16px;
-  //     height: 16px;
-  //     left: 50%;
-  //     top: 50%;
-  //     margin-top: -8px;
-  //     margin-left: -8px;
-  //     border-radius: 50%;
-  //     border: solid 2px rgba(255, 255, 255, 1);
-  //     box-sizing: border-box;
-  //   }
-
-  //   &:after {
-  //     position: absolute;
-  //     content: "";
-  //     width: 8px;
-  //     height: 8px;
-  //     margin-top: -4px;
-  //     margin-left: -4px;
-  //     left: 50%;
-  //     top: 50%;
-  //     border: solid 4px rgb(255, 255, 255);
-  //     border-radius: 50%;
-  //     box-sizing: border-box;
-  //   }
-  // }
-
-  // .playing {
-  //   border: none;
-  //   animation: playing-animation 2s infinite steps(2, end) forwards;
-
-  //   &:before {
-  //     border: none;
-  //     animation: playing-animation 2s infinite steps(2, end) forwards;
-  //   }
-  // }
-
-// @keyframes playing-animation {
-//   0% {
-//     border: solid 2px rgba(255, 255, 255, 0);
-//   }
-//   10% {
-//     border: solid 2px rgba(255, 255, 255, 1);
-//   }
-//   100% {
-//     border: solid 2px rgba(255, 255, 255, 1);
-//   }
-// }
