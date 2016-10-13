@@ -7,6 +7,11 @@ import {AppConfig} from '../../app.config';
 import {WechatConfigModel, WechatAudioModel} from './wechat.model';
 import {StoreService} from '../store/store.service';
 
+interface Window {
+  navigator: any;
+}
+
+declare var window: Window;
 declare var wx: any;
 
 @Injectable()

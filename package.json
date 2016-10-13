@@ -39,7 +39,7 @@
     "rxjs": "5.0.0-beta.12",
     "touch-emulator": "^1.0.0",
     "ts-helpers": "^1.1.1",
-    "weixin-js-sdk": "^1.0.7",
+    "weixin-js-sdk": "git@github.com:duxiaofeng-github/wechat-js-sdk.git#87dfac4d0f0d4a821fff97ade2647c602314d24e",
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
