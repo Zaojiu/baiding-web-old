@@ -200,21 +200,21 @@ export class MessageApiService {
   postAudioMessage(liveId: string, localId: string, serverId: string, translateResult: string, link = ''): Promise<MessageModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
-    let message = new PostMessageModel()
-    message.type = 'audio'
-    message.audio = new PostAudioMessageModel()
-    message.audio.text = translateResult
-    message.audio.weixinId = serverId
-    message.audio.link = link
+    let message = new PostMessageModel();
+    message.type = 'audio';
+    message.audio = new PostAudioMessageModel();
+    message.audio.text = translateResult;
+    message.audio.weixinId = serverId;
+    message.audio.link = link;
 
     return this.http.post(url, JSON.stringify(message), {headers: headers}).toPromise()
       .then(res => {
         let data = res.json();
         let messageResp = this.parseResponesMessage(data, MessageType.Audio);
 
-        messageResp.audio = new AudioMessageModel()
-        messageResp.audio.localId = localId
-        messageResp.audio.translateResult = translateResult
+        messageResp.audio = new AudioMessageModel();
+        messageResp.audio.localId = localId;
+        messageResp.audio.translateResult = translateResult;
 
         this.timelineService.pushMessage(messageResp);
 
