@@ -35,6 +35,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   timelineSubscription: Subscription;
   isOnLatest: boolean;
   isOnNewest: boolean;
+  isOnBottom: boolean;
   isLoading: boolean;
   countdownTimer: any;
 
@@ -61,9 +62,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.startObserveTimelineAction();
     this.startReceiveReply();
-    this.gotoLatestMessages().then(result => setTimeout(() => {
-      this.scroller.scrollToBottom()
-    }, 500));
+    this.gotoLatestMessages().then(result => {
+      setTimeout(() => {
+        this.scroller.scrollToBottom();
+      }, 0);
+    });
   }
 
   ngOnDestroy() {
@@ -127,7 +130,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
-        this.gotoLatestMessages();
+        this.gotoLatestMessages().then(() => {
+          if (this.isOnBottom) {
+            setTimeout(() => {
+              this.scroller.scrollToBottom();
+            }, 0);
+          }
+        });
         break;
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
@@ -145,7 +154,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       let message = this.messages[idx];
       if (message.id == praisedUser.msgId) {
         let userAnim = new UserAnimEmoji;
-        userAnim.user = praisedUser.user
+        userAnim.user = praisedUser.user;
         message.pushPraisedUser(userAnim, praisedUser.praised, praisedUser.num)
       }
     }
@@ -157,7 +166,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
         return
       }
     }
-    this.messages.push(message)
+
+    let isOnBottom = this.isOnBottom;
+
+    this.messages.push(message);
+
+    if (isOnBottom) {
+      setTimeout(() => {
+        this.scroller.scrollToBottom();
+      }, 0);
+    }
   }
 
   gotoLatestMessages(): Promise<boolean> {
@@ -172,7 +190,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.isOnLatest = true;
       this.isLoading = false;
       return true;
-
     });
   }
 
@@ -239,6 +256,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
     }
 
+    if (e.position === ScrollerPosition.OnBottom) {
+      this.isOnBottom = true;
+    } else {
+      this.isOnBottom = false;
+    }
+
     this.timelineService.onScroll(e);
   }
 
@@ -251,8 +274,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
           this.gotoOldestMessages().then(result => {
             if (result) {
               setTimeout(() => {
-                this.scroller.scrollToTop()
-              }, 500)
+                this.scroller.scrollToTop();
+              }, 0);
               this.scroller.startEmitScrollEvent();
             }
           });
@@ -260,8 +283,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
           this.gotoLatestMessages().then(result => {
             if (result) {
               setTimeout(() => {
-                this.scroller.scrollToBottom()
-              }, 500)
+                this.scroller.scrollToBottom();
+              }, 0);
               this.scroller.startEmitScrollEvent();
             }
           });
@@ -283,19 +306,19 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   removeRepeat(messages: MessageModel[]) {
-    let idsX = {}
+    let idsX = {};
     for (let idx in this.messages) {
       idsX[this.messages[idx].id] = idx
     }
-    let idY = {}
-    let idxs = []
+    let idY = {};
+    let idxs = [];
     for (let message of messages) {
-      idY[message.id] = true
+      idY[message.id] = true;
       if (idsX[message.id] !== undefined) {
         idxs.push(idsX[message.id])
       }
     }
-    idxs = idxs.sort().reverse()
+    idxs = idxs.sort().reverse();
     for (let idx of idxs) {
       this.messages.splice(idx, 1)
     }

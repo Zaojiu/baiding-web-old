@@ -50,9 +50,9 @@ export class ScrollerDirective implements OnInit {
       // 记录滚动条的位置状态
       let scrollBottom = self.el.scrollHeight - self.el.scrollTop - self.el.clientHeight;
       let position: ScrollerPosition;
-      if ($self.scrollTop() > 0 && $self.scrollTop() < 10) {
+      if ($self.scrollTop() >= 0 && $self.scrollTop() <= 10) {
         position = ScrollerPosition.OnTop;
-      } else if (scrollBottom > 0 && scrollBottom < 10) {
+      } else if (scrollBottom >= 0 && scrollBottom <= 10) {
         position = ScrollerPosition.OnBottom;
       } else {
         position = ScrollerPosition.OnMiddle;

@@ -71,7 +71,7 @@ export class TimelineService {
   }
 
   onReceivedEvents(f: any) {
-    // this.receivedEventSub = this.event$.subscribe(f)
+    this.receivedEventSub = this.event$.subscribe(f)
   }
 
   onReceivedPraises(f: any) {
