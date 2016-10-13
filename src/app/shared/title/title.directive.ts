@@ -19,8 +19,8 @@ export class TitleSetterDirective implements OnInit {
   ngOnInit() {
     this.titleSubscription = this.titleService.title$.subscribe(
       title => {
-        document.title = title
-        const iframe = $('<iframe style="position:absolute;left:-1000000px;top:-10000000px;" src=""></iframe>')[0]
+        document.title = title;
+        const iframe = $('<iframe style="position:absolute;left:-1000000px;top:-10000000px;" src=""></iframe>')[0];
         const listener = () => {
           setTimeout(() => {
             iframe.removeEventListener('load', listener);
@@ -28,9 +28,9 @@ export class TitleSetterDirective implements OnInit {
               document.body.removeChild(iframe);
             }, 0)
           }, 0)
-        }
+        };
         iframe.addEventListener('load', listener);
-        document.body.appendChild(iframe)
+        document.body.appendChild(iframe);
       }
     )
   }

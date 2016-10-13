@@ -29,4 +29,3 @@ import './icons.font';
 (<any>window).jQuery = $;
 import * as fastclick from 'fastclick';
 fastclick.attach(document.body);
-(<any>window).wx = require('weixin-js-sdk');

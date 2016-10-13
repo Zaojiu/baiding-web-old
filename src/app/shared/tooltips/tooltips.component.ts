@@ -20,8 +20,6 @@ export class ToolTipsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     let isOpenedChange = changes['isOpened'];
 
-    if (isOpenedChange) console.log(isOpenedChange);
-
     if (isOpenedChange && isOpenedChange.currentValue === true) {
       $('body').one('touchstart', () => {
         this.close();
