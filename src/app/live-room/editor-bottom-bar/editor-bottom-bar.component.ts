@@ -48,7 +48,7 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.recordSubscription = this.wechatService.record$.subscribe(audioModel => {
-      this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult)
+      this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult);
     });
 
     this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {

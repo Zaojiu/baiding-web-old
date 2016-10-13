@@ -192,7 +192,7 @@ export class WechatService {
       success: (res) => {
         console.log('wechat record stop successful');
         this.processVoice(res.localId).then((audioModel) => {
-          console.log('wechat record translate & upload done successful', res.localId);
+          console.log('wechat record translate & upload done successful: ', res.localId, audioModel);
           this.recordSource.next(audioModel);
         })
       }
@@ -271,8 +271,11 @@ export class WechatService {
   }
 
   processVoice(id: string): Promise<WechatAudioModel> {
+    console.log('start process voice');
+
     return new Promise<WechatAudioModel>((resolve, reject) => {
       Promise.all([this.translateVoice(id), this.uploadVoice(id)]).then(result => {
+        console.log('process voice result: ', result);
         let translateResult = result[0];
         let serverId = result[1];
         var audioModel = new WechatAudioModel();
