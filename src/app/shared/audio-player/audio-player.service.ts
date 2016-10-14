@@ -4,6 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import {WechatService} from '../wechat/wechat.service';
 import {MessageModel} from '../api/message.model';
 import {Http, ResponseContentType} from '@angular/http';
+import {RingAudioBufferCache} from './ring-audio-buffer-cache';
 
 @Injectable()
 export class AudioPlayerService {
@@ -11,7 +12,7 @@ export class AudioPlayerService {
   private static h5AudioContext: AudioContext;
   private static playingSource: AudioBufferSourceNode;
   private static playingMessageId: string;
-  private static audioBufferCache = new Map<string, AudioBuffer>(); // TODO: use ring cache
+  private static audioBufferCache = new RingAudioBufferCache(10);
 
   constructor(private wechatService: WechatService, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
@@ -71,10 +72,10 @@ export class AudioPlayerService {
   }
 
   isPlaying(msg: MessageModel): boolean {
+
     if (msg.audio.localId) {
       return msg.audio.localId === this.wechatService.playingVoiceId;
     }
-
     return msg.id === AudioPlayerService.playingMessageId;
   }
 
