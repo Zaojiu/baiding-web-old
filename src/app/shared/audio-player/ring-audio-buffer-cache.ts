@@ -19,7 +19,9 @@ export class RingAudioBufferCache {
   }
 
   set(msgId: string, buffer: AudioBuffer) {
-    this._cache[this._cur++ % this._size] = {msgId: msgId, buffer: buffer};
+    if (!this.get(msgId)) {
+      this._cache[this._cur++ % this._size] = {msgId: msgId, buffer: buffer};
+    }
   }
 
   get(msgId: string): AudioBuffer {
