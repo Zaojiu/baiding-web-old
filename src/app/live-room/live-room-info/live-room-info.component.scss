@@ -19,11 +19,15 @@
       background: rgba(233, 66, 63, 1);
       border: 0px solid rgba(33, 150, 243, 1);
       border-radius: 4px;
-      width: 38px;
+      width: 52px;
       height: 18px;
       text-align: center;
       line-height: 18px;
       color: rgba(255, 255, 255, 1);
+
+      &.not-started {
+        background: rgba(75, 75, 75, 1);
+      }
     }
     .live-room-info-status-timer {
       margin-left: 5px;
