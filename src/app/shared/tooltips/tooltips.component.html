@@ -1,3 +1,8 @@
 <div class="tooptips" *ngIf="isOpened">
-  <div class="tooltips-items" *ngFor="let item of items" (click)="selectItem(item)">{{item}}</div>
+  <div
+    class="tooltips-items"
+    *ngFor="let item of items"
+    (click)="selectItem(item)"
+    [innerHTML]="getTrustedContent(item.content)"
+  ></div>
 </div>
