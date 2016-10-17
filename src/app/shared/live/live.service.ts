@@ -47,7 +47,7 @@ export class LiveService {
     this.store.set('hasEntered', true);
   };
 
-  getLiveRoomAlreadyVisitedd(): boolean {
+  getLiveRoomAlreadyVisited(): boolean {
     let enterLiveRoom = this.store.get('hasEntered') || false;
     return enterLiveRoom;
   }

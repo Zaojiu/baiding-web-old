@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {LiveInfoModel} from '../../shared/live/live.model';
 import {LiveService} from '../../shared/live/live.service';
+import {LiveStatus} from "../../shared/live/live.enums";
 
 @Component({
   selector: 'live-room-info',
@@ -12,19 +13,19 @@ export class LiveRoomInfoComponent {
   @Input() liveInfo: LiveInfoModel;
   @Input() isShow: boolean;
   @Output() isShowChange = new EventEmitter<boolean>();
-  @Input() liveRoomStatusWord: string;
-  liveRoomStartStatus: boolean;
+  @Input() liveRoomStatusHumanize: string;
+  isLiveRoomStarted: boolean;
 
   constructor(private liveService: LiveService) {
   }
 
   ngOnInit() {
-    if (this.liveInfo.status == 3) {
-      this.liveRoomStartStatus = false;
-      this.liveRoomStatusWord = '直播中'
+    if (this.liveInfo.status === LiveStatus.Started) {
+      this.isLiveRoomStarted = false;
+      this.liveRoomStatusHumanize = '直播中'
     } else {
-      this.liveRoomStartStatus = true;
-      this.liveRoomStatusWord = '未开始'
+      this.isLiveRoomStarted = true;
+      this.liveRoomStatusHumanize = '未开始'
     }
   }
 

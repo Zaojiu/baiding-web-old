@@ -5,7 +5,7 @@ import {ActivatedRouteSnapshot} from '@angular/router';
 import {LiveService} from '../live/live.service';
 
 @Injectable()
-export class LiveResolver implements Resolve<any>{
+export class LiveInfoResolver implements Resolve<any>{
   id: string;
 
 

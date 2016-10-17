@@ -61,6 +61,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       if (oldInfo) {
         this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
       }
+
       this.resetLiveRoom();
     });
   }
@@ -72,9 +73,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    let enteredLiveRoom = this.liveService.getLiveRoomAlreadyVisitedd();
 
-    if (!enteredLiveRoom) {
+    if (!this.liveService.getLiveRoomAlreadyVisited()) {
       let fromShare = !!this.route.snapshot.queryParams['source'];
       this.showInfo = fromShare;
       if (!fromShare) {
