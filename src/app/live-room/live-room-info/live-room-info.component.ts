@@ -34,6 +34,6 @@ export class LiveRoomInfoComponent {
 
   toBeginnerGuide() {
     this.close();
-    this.liveService.LiveRoomAlreadyVisited();
+    this.liveService.setLiveRoomAlreadyVisited();
   }
 }

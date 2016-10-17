@@ -72,14 +72,14 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-    let enteredLiveRoom = this.liveService.getEnteredLiveRoom();
+    let enteredLiveRoom = this.liveService.getLiveRoomAlreadyVisitedd();
 
     if (!enteredLiveRoom) {
       let fromShare = !!this.route.snapshot.queryParams['source'];
       this.showInfo = fromShare;
       if (!fromShare) {
         this.isBeginnerGuideShow = true;
-        this.liveService.LiveRoomAlreadyVisited();
+        this.liveService.setLiveRoomAlreadyVisited();
       }
     }
 
