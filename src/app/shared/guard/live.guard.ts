@@ -5,7 +5,7 @@ import {ActivatedRouteSnapshot} from '@angular/router';
 import {LiveService} from '../live/live.service';
 
 @Injectable()
-export class LiveGuard implements Resolve<any>{
+export class LiveResolver implements Resolve<any>{
   id: string;
 
 
@@ -16,7 +16,6 @@ export class LiveGuard implements Resolve<any>{
   resolve(route: ActivatedRouteSnapshot) {
     this.id = route.params['id'];
     return this.liveService.getLiveInfo(this.id).then((res)=> {
-      console.log('res',res)
       return res
     }, ()=> {
       this.router.navigate(['/404']);

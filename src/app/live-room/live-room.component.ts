@@ -61,13 +61,13 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       if (oldInfo) {
         this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
       }
-
-      this.titleService.set(this.liveInfo.subject);
-      this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, this.getShareUri(), this.id);
+      this.resetLiveRoom();
     });
+  }
 
-    this.userInfo = this.userInfoService.getUserInfoCache();
-    // TODO: 找不到直播间直接跳转404
+  resetLiveRoom() {
+    this.titleService.set(this.liveInfo.subject);
+    this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, this.getShareUri(), this.id);
   }
 
   ngOnInit() {
@@ -94,7 +94,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.getLiveInfo();
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.resetLiveRoom();
+    this.userInfo = this.userInfoService.getUserInfoCache();
 
     this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);

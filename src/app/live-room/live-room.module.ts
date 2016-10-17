@@ -12,7 +12,7 @@ import {MessageComponent} from './timeline/message/message.component';
 import {PostComponent} from './post/post.component';
 import {PraisedAnimationDirective} from '../shared/praised-animation/praised-animation.directive';
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
-import {LiveGuard} from '../shared/guard/live.guard';
+import {LiveResolver} from '../shared/guard/live.guard';
 import {TimelineService} from './timeline/timeline.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message.api";
@@ -64,7 +64,7 @@ import {AnimationModule} from "../shared/animation/animation.module";
     TimelineService,
     CommentService,
     MessageApiService,
-    LiveGuard,
+    LiveResolver,
     QuitEditGuard,
     UploadApiService,
   ]
