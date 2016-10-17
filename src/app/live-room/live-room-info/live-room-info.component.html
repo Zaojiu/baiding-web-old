@@ -1,7 +1,7 @@
 <div class="live-room-info">
 
   <div class="live-room-info-header">
-    <div class="live-room-info-status">Live</div>
+    <div class="live-room-info-status" [ngClass]="{'not-started': isLiveRoomStarted}">{{liveRoomStatusHumanize}}</div>
     <div class="live-room-info-status-timer">
       <span class="countdown-day-item-day">{{liveInfo.startedAt | durationFormater:1}}:{{liveInfo.startedAt | durationFormater:2}}</span>
     </div>

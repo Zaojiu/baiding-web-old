@@ -2,18 +2,20 @@ import { Routes, RouterModule } from '@angular/router';
 import { LiveRoomComponent } from './live-room.component';
 import { PostComponent } from './post/post.component';
 import { AuthGuard } from '../shared/guard/auth.guard';
-import { LiveGuard } from '../shared/guard/live.guard';
+import { LiveInfoResolver } from '../shared/guard/live.guard';
 import { QuitEditGuard } from '../shared/guard/quit-edit.guard';
 import {EmptyComponent} from "../shared/empty/empty.component";
 
 const route: Routes = [
   {
     path: 'lives/:id',
-    canActivate: [ AuthGuard, LiveGuard ],
+    canActivate: [ AuthGuard],
     children: [
       {
-        path: '',
-        component: LiveRoomComponent,
+        path: '', component: LiveRoomComponent,
+        resolve: {
+          liveInfo: LiveInfoResolver,
+        },
         children: [
           { path: '', component: EmptyComponent},
           { path: 'post', component: PostComponent, canDeactivate: [ QuitEditGuard ]},

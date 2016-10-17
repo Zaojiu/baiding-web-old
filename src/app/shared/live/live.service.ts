@@ -30,15 +30,6 @@ export class LiveService {
     return isEditor;
   }
 
-  LiveRoomAlreadyVisited() {
-    this.store.set('hasEntered', true);
-  };
-
-  getEnteredLiveRoom(): boolean {
-    let enterLiveRoom = this.store.get('hasEntered') || false;
-    return enterLiveRoom;
-  }
-
   isAudience(id: string): boolean {
     return !this.isEditor(id);
   }
@@ -50,6 +41,15 @@ export class LiveService {
     if (!userInfo || !liveInfo || !liveInfo.admin) return false;
 
     return userInfo.uid === liveInfo.admin.uid;
+  }
+
+  setLiveRoomAlreadyVisited() {
+    this.store.set('hasEntered', true);
+  };
+
+  getLiveRoomAlreadyVisited(): boolean {
+    let enterLiveRoom = this.store.get('hasEntered') || false;
+    return enterLiveRoom;
   }
 
   parseLiveInfo(data: any): LiveInfoModel {
@@ -115,13 +115,14 @@ export class LiveService {
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let liveInfo = this.parseLiveInfo(data);
-
       lives[liveInfo.id] = liveInfo;
       this.store.set('lives', lives);
 
       return liveInfo;
-    });
-    // .catch(this.handleError);
+    }, () => {
+      return Promise.reject(liveInfoCache)
+    })
+    // .catch();
   }
 
   closeLive(id: string): Promise<any> {

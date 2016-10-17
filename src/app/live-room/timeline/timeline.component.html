@@ -20,7 +20,7 @@
         </div>
         <div class="countdown-date">
           <div class="countdown-date-splitleft"></div>
-          <div class="countdown-date-time">{{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD hh:mm'}} 开始</div>
+          <div class="countdown-date-time">{{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD HH:mm'}} 开始</div>
           <div class="countdown-date-splitright"></div>
         </div>
       </div>
@@ -49,7 +49,7 @@
   <div class="live-ended" *ngIf="liveInfo && isClosed()">
     <div class="ended-title-container">
       <div class="ended-title">直播结束</div>
-      <div class="ended-date">{{liveInfo.closedAt | timeFormater:'YYYY.MM.DD hh:mm'}}</div>
+      <div class="ended-date">{{liveInfo.closedAt | timeFormater:'YYYY.MM.DD HH:mm'}}</div>
     </div>
 
     <div class="ended-review">
