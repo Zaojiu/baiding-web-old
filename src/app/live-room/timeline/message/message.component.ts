@@ -8,6 +8,7 @@ import {LiveInfoModel} from '../../../shared/live/live.model';
 import {MessageService} from './message.service';
 import {UserAnimEmoji} from '../../../shared/praised-animation/praised-animation.model';
 import {AudioPlayerComponent} from '../../../shared/audio-player/audio-player.component'
+import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
 
 @Component({
   selector: 'message',
@@ -125,7 +126,8 @@ export class MessageComponent {
 
   getToolTipsItems(): string[] {
     let items = [];
-    if (this.canReply()) items.push('回复');
+    let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>');
+    if (this.canReply()) items.push(reply);
     return items;
   }
 
@@ -136,8 +138,14 @@ export class MessageComponent {
     this.isToolTipOpened = true;
   }
 
-  tooptipsSelected(item: string) {
-    console.log(item);
-    if (item == '回复') return this.gotoReply();
+  closeToolTips() {
+    this.isToolTipOpened = false;
+  }
+
+  tooptipsSelected(item: ToolTipsModel) {
+    if (item.id === 'reply') {
+      this.closeToolTips();
+      return this.gotoReply();
+    }
   }
 }
