@@ -81,7 +81,7 @@ export class LiveService {
     liveInfo.expectDuration = stream.expectDuration;
     liveInfo.startedAt = stream.startedAt;
     liveInfo.closedAt = stream.closedAt;
-    liveInfo.createdAt = stream.createdAt;
+    liveInfo.createdAt = (+stream.createdAt / 1e6).toString();
     liveInfo.isDraft = stream.isDraft;
 
     if (stream.status === 'created') liveInfo.status = LiveStatus.Created;

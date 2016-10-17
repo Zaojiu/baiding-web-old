@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {LiveInfoModel} from '../../shared/live/live.model';
 import {LiveService} from '../../shared/live/live.service';
 import {LiveStatus} from "../../shared/live/live.enums";
+import {UtilsService} from '../../shared/utils/utils'
 
 @Component({
   selector: 'live-room-info',
@@ -15,6 +16,7 @@ export class LiveRoomInfoComponent {
   @Output() isShowChange = new EventEmitter<boolean>();
   @Input() liveRoomStatusHumanize: string;
   isLiveRoomStarted: boolean;
+  timeNow = UtilsService.now();
 
   constructor(private liveService: LiveService) {
   }

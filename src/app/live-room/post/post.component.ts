@@ -112,6 +112,6 @@ export class PostComponent implements OnInit {
   }
 
   canDeactivate() {
-    return this.isSubmited;
+    return this.isSubmited || (this.content === '' && !this.imageExist);
   }
 }
