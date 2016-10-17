@@ -9,11 +9,11 @@ import {EmptyComponent} from "../shared/empty/empty.component";
 const route: Routes = [
   {
     path: 'lives/:id',
-    canActivate: [ AuthGuard, LiveGuard ],
+    canActivate: [ AuthGuard],
+    resolve:[LiveGuard],
     children: [
       {
-        path: '',
-        component: LiveRoomComponent,
+        path: '', component: LiveRoomComponent,
         children: [
           { path: '', component: EmptyComponent},
           { path: 'post', component: PostComponent, canDeactivate: [ QuitEditGuard ]},

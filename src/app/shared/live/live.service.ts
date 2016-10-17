@@ -115,13 +115,14 @@ export class LiveService {
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let liveInfo = this.parseLiveInfo(data);
-
       lives[liveInfo.id] = liveInfo;
       this.store.set('lives', lives);
 
       return liveInfo;
-    });
-    // .catch(this.handleError);
+    }, () => {
+      return Promise.reject(liveInfoCache)
+    })
+    // .catch();
   }
 
   closeLive(id: string): Promise<any> {
