@@ -24,8 +24,6 @@ import { MqEvent, EventType } from '../../shared/mq/mq.service';
 
 export class EditorBottomBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
-  @Input() isOnNewest: boolean;
-  @Input() isOnLatest: boolean;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   popupSelectorSubscription: Subscription;

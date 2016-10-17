@@ -15,7 +15,7 @@ export class AutofocusDirective implements OnInit {
 
   ngOnInit() {
     setTimeout(()=>{
-      $(this.el).focus();
+      $(this.el).trigger('focus');
     }, 500);
   }
 }

@@ -1,7 +1,8 @@
-import { MessageType } from './message.enum';
-import { UserInfoModel } from '../user-info/user-info.model'
-import { UserAnimEmoji } from '../praised-animation/praised-animation.model'
-import * as _ from 'lodash';
+import * as _random from 'lodash/random';
+
+import {MessageType} from './message.enum';
+import {UserInfoModel} from '../user-info/user-info.model'
+import {UserAnimEmoji} from '../praised-animation/praised-animation.model'
 
 export class AudioMessageModel {
   localId: string;
@@ -39,38 +40,44 @@ export class MessageModel {
   createdAt: string;
 
   getPraisedAvatars(currentUser: UserInfoModel) {
-    let avatars = this.praisedAvatars.filter((item, index) => item.uid != currentUser.uid)
+    let avatars = this.praisedAvatars.filter((item, index) => item.uid != currentUser.uid);
+
     if (this.hadPraised) {
-      avatars = avatars.slice(0, 4)
-      avatars.push(currentUser)
+      avatars = avatars.slice(0, 4);
+      avatars.push(currentUser);
     } else {
-      avatars = avatars.slice(0, 5)
+      avatars = avatars.slice(0, 5);
     }
+
     return avatars
   }
 
   pushPraisedUser(userAnim: UserAnimEmoji, praised: boolean, num: number) {
     if (!praised) {
-      this.praisedAmount += 1
-      this.praisedAvatars.unshift(userAnim.user)
+      this.praisedAmount += 1;
+      this.praisedAvatars.unshift(userAnim.user);
+
       if (this.praisedAvatars.length > 5) {
-        this.praisedAvatars.pop()
+        this.praisedAvatars.pop();
       }
     }
+
     if (num > 10) {
-      num = 10
+      num = 10;
     }
+
     while (num > 0) {
-      num -= 1
+      num -= 1;
+
       setTimeout(() => {
-        this.praisedAnimations.push(userAnim)
-      }, _.random(1, 10) * 150)
+        this.praisedAnimations.push(userAnim);
+      }, _random(1, 10) * 150);
     }
   }
 }
 
 export class PostPraiseModel {
-  praised: boolean
+  praised: boolean;
   num: number
 }
 

@@ -33,8 +33,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   messages: MessageModel[] = [];
   receviedReplySubscription: Subscription;
   timelineSubscription: Subscription;
+  isOnOldest: boolean;
   isOnLatest: boolean;
-  isOnNewest: boolean;
   isOnBottom: boolean;
   isLoading: boolean;
   countdownTimer: any;
@@ -80,6 +80,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   private findNextAudioTypeMessage(msgId: string): MessageModel {
     let i = 0;
+
     for (; i < this.messages.length; i++) {
       if (this.messages[i].id === msgId) {
         break;
@@ -91,18 +92,19 @@ export class TimelineComponent implements OnInit, OnDestroy {
         return this.messages[i];
       }
     }
+
     return null;
   }
 
   private findMessageComponent(msgId: string): MessageComponent {
-
     let components = this.messagesComponents.toArray();
 
-    for (let i = 0; i < components.length; i++) {
-      if (components[i].message.id === msgId) {
-        return components[i];
+    for (let component of components) {
+      if (component.message.id === msgId) {
+        return component;
       }
     }
+
     return null;
   }
 
@@ -186,7 +188,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return this.messageApiService.listMessages(this.id).then(messages => {
       messages = messages.reverse();
       this.messages = messages;
-      this.isOnNewest = false;
+      this.isOnOldest = false;
       this.isOnLatest = true;
       this.isLoading = false;
       return true;
@@ -200,7 +202,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     return this.messageApiService.listMessages(this.id, '', 20, ['createdAt']).then(messages => {
       this.messages = messages;
-      this.isOnNewest = true;
+      this.isOnOldest = true;
       this.isOnLatest = false;
       this.isLoading = false;
       return true;
@@ -238,7 +240,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
 
       if (messages.length === 0) {
-        this.isOnNewest = true;
+        this.isOnOldest = true;
       }
 
       this.isLoading = false;
@@ -276,6 +278,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
               setTimeout(() => {
                 this.scroller.scrollToTop();
               }, 0);
+
               this.scroller.startEmitScrollEvent();
             }
           });
@@ -285,6 +288,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
               setTimeout(() => {
                 this.scroller.scrollToBottom();
               }, 0);
+
               this.scroller.startEmitScrollEvent();
             }
           });

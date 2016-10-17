@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UserInfoService } from '../user-info/user-info.service';
-import { UserAnimEmoji } from './praised-animation.model'
 
-declare var _: any;
+import * as _random from 'lodash/random';
+
+import { UserInfoService } from '../user-info/user-info.service';
+import { UserAnimEmoji } from './praised-animation.model';
+
 
 @Component({
   selector: 'praised-animation',
@@ -20,8 +22,8 @@ export class PraisedAnimationComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, private userInfoService: UserInfoService) {}
 
   ngOnInit() {
-    this.randomAnimation = _.random(0, 1, false);
-    this.randomXAxisOffset = _.random(10, 44, false);
+    this.randomAnimation = _random(0, 1, false);
+    this.randomXAxisOffset = _random(10, 44, false);
     let userInfo = this.userInfoService.getUserInfoCache();
     this.isMine = this.userAnim.user.uid === userInfo.uid;
   }
