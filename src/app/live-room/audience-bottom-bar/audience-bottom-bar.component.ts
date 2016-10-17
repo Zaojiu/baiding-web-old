@@ -21,14 +21,11 @@ declare var $:any;
 
 export class AudienceBottomBarComponent implements OnInit {
   id: string;
-  @Input() isOnLatest: boolean;
-  @Input() isOnNewest: boolean;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   commentContent: string;
   isOnComment: boolean;
   isOnCommentRequest: boolean;
-  isOnPraiseRequest: boolean;
   praisedSub: Subscription;
   isLoading: boolean;
 

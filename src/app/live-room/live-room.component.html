@@ -5,7 +5,13 @@
 <beginner-guide [showUserGuide]="true" *ngIf="isAudience() && !showInfo"></beginner-guide>
 
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
-    <top-bar class="top-bar" [onlineCount]="liveInfo.onlines" [(isCommentOpened)]="isCommentOpened"></top-bar>
+    <top-bar
+      class="top-bar"
+      [onlineCount]="liveInfo.onlines"
+      [(isCommentOpened)]="isCommentOpened"
+      [isTimelineOnOldest]="timeline.isOnOldest"
+      [isTimelineOnLatest]="timeline.isOnLatest"
+    ></top-bar>
 
   <div class="praised-animations" praisedAnimation>
     <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
@@ -18,8 +24,6 @@
   <audience-bottom-bar
     *ngIf="!isChildrenActived && isAudience()"
     class="audience-bottom-bar"
-    [isOnLatest]="timeline.isOnLatest"
-    [isOnNewest]="timeline.isOnNewest"
     [liveInfo]="liveInfo"
     [userInfo]="userInfo"
   ></audience-bottom-bar>
@@ -28,8 +32,6 @@
     *ngIf="!isChildrenActived && isEditor()"
     class="editor-bottom-bar"
     [liveId]="id"
-    [isOnLatest]="timeline.isOnLatest"
-    [isOnNewest]="timeline.isOnNewest"
   ></editor-bottom-bar>
 
 </div>

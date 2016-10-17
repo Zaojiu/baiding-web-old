@@ -29,6 +29,7 @@ import {BeginnerGuideComponent} from "./beginner-guide/beginner-guide.component"
 import {TopBarComponent} from "./top-bar/top-bar.component";
 import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
 import {ToolTipsModule} from "../shared/tooltips/tooltips.module";
+import {AnimationModule} from "../shared/animation/animation.module";
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import {ToolTipsModule} from "../shared/tooltips/tooltips.module";
     ImageViewerModule,
     SwitchBtnModule,
     ToolTipsModule,
+    AnimationModule,
   ],
   declarations: [
     LiveRoomComponent,

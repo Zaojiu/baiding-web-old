@@ -1,8 +1,11 @@
-import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChildren, QueryList} from '@angular/core';
 import {SharePopupService} from "../../shared/share-popup/share-popup.service";
 import {TimelineService} from "../timeline/timeline.service";
 import {Subscription} from "rxjs";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
+import {FadeDirective} from "../../shared/animation/fade/fade.directive";
+
+declare var $: any;
 
 @Component({
   selector: 'top-bar',
@@ -12,13 +15,16 @@ import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 
 export class TopBarComponent implements OnInit, OnDestroy {
   @Input() isCommentOpened: boolean;
-  @Input() onlineCount: number;
   @Output() isCommentOpenedChange = new EventEmitter<boolean>();
+  @Input() onlineCount: number;
+  @Input() isTimelineOnOldest: boolean;
+  @Input() isTimelineOnLatest: boolean;
+  @ViewChildren(FadeDirective) oldestLatestBtns: QueryList<FadeDirective>;;
   isGotoOldestShown = false;
   isGotoLatestShown = false;
   timelineScrollSub: Subscription;
   originTop: number;
-  distance = 300;
+  distance = 200;
 
   constructor(private sharePopupService: SharePopupService, private timelineService: TimelineService) {
   }
@@ -54,34 +60,52 @@ export class TopBarComponent implements OnInit, OnDestroy {
 
   showGotoOldest() {
     this.isGotoOldestShown = true;
-    $('.oldest-btn').fadeIn();
+    this.oldestLatestBtns.first.fadeIn();
 
     setTimeout(() => {
-      $('.oldest-btn').fadeOut(() => {
-        this.originTop = 0;
-        this.isGotoOldestShown = false;
-      });
+      if (this.isGotoOldestShown) this.hideGotoOldest();
     }, 3000);
   }
 
+  hideGotoOldest() {
+    this.oldestLatestBtns.first.fadeOut().then(() => {
+      this.originTop = 0;
+      this.isGotoOldestShown = false;
+    });
+  }
+
+  // 点击隐藏或自动隐藏
   showGotoLatest() {
     this.isGotoLatestShown = true;
-    $('.latest-btn').fadeIn();
+    this.oldestLatestBtns.last.fadeIn();
 
     setTimeout(() => {
-      $('.latest-btn').fadeOut(() => {
-        this.isGotoLatestShown = false;
-        this.originTop = 0;
-      });
+      if (this.isGotoLatestShown) this.hideGotoLatest();
     }, 3000);
+  }
+
+  // 点击隐藏或自动隐藏
+  hideGotoLatest() {
+    this.oldestLatestBtns.last.fadeOut().then(() => {
+      this.isGotoLatestShown = false;
+      this.originTop = 0;
+    });
   }
 
   gotoOldest() {
-    this.timelineService.gotoFirstMessage();
+    this.hideGotoOldest();
+
+    if (!this.isTimelineOnOldest) {
+      this.timelineService.gotoFirstMessage();
+    }
   }
 
   gotoLatest() {
-    this.timelineService.gotoLastMessage();
+    this.hideGotoLatest();
+
+    if (!this.isTimelineOnLatest) {
+      this.timelineService.gotoLastMessage();
+    }
   }
 
   toggleComment(isOpened: boolean) {
