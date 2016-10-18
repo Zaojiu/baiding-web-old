@@ -19,7 +19,10 @@
 
       <div class="content audio-content" *ngIf="message.type === 2">
         <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message" [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
-        <div class="translate">{{message.audio.translateResult}}</div>
+        <div class="translate">
+          <div class="translate-tips">以下由机器自动翻译</div>
+          {{message.audio.translateResult}}
+        </div>
       </div>
 
       <div class="tooltips-container">

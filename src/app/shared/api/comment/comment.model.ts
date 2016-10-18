@@ -1,4 +1,8 @@
-import { UserInfoModel } from '../../shared/user-info/user-info.model'
+import { UserInfoModel } from '../user-info/user-info.model'
+
+export class PostCommentModel {
+  content: string;
+}
 
 export class CommentModel {
   id: string;

@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 
-import { UserInfoModel } from '../user-info/user-info.model';
+import { UserInfoModel } from '../api/user-info/user-info.model';
 import { AppConfig } from '../../app.config'
 
 declare var AV: any;

@@ -3,10 +3,10 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {TimelineService} from '../timeline/timeline.service';
-import {LiveInfoModel} from '../../shared/live/live.model';
-import {LiveService} from '../../shared/live/live.service';
-import {UserInfoModel} from '../../shared/user-info/user-info.model';
-import {CommentApiService} from "../../shared/api/comment.service";
+import {LiveInfoModel} from '../../shared/api/live/live.model';
+import {LiveService} from '../../shared/api/live/live.service';
+import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
+import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
 

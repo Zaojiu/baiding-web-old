@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription }   from 'rxjs/Subscription';
 
-import { CommentApiService } from '../../shared/api/comment.service'
+import { CommentApiService } from '../../shared/api/comment/comment.service'
 import { PushCommentService } from './push-comment.service'
-import { LiveService } from '../../shared/live/live.service';
-import { UserInfoService } from '../../shared/user-info/user-info.service';
-import { CommentModel } from '../comment/comment.model'
-import { UserInfoModel } from '../../shared/user-info/user-info.model';
-import { LiveInfoModel } from '../../shared/live/live.model';
+import { LiveService } from '../../shared/api/live/live.service';
+import { UserInfoService } from '../../shared/api/user-info/user-info.service';
+import { CommentModel } from '../../shared/api/comment/comment.model'
+import { UserInfoModel } from '../../shared/api/user-info/user-info.model';
+import { LiveInfoModel } from '../../shared/api/live/live.model';
 
 @Component({
   templateUrl: './push-comment.component.html',

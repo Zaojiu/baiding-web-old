@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { UserInfoModel } from '../user-info/user-info.model';
-import { LiveInfoModel } from '../live/live.model';
+import { UserInfoModel } from '../api/user-info/user-info.model';
+import { LiveInfoModel } from '../api/live/live.model';
 
 @Pipe({name: 'role'})
 export class RolePipe implements PipeTransform {

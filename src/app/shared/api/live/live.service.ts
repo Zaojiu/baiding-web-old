@@ -6,8 +6,8 @@ import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 import {LiveInfoModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
-import {AppConfig} from '../../app.config';
-import {StoreService} from '../store/store.service';
+import {AppConfig} from '../../../app.config';
+import {StoreService} from '../../store/store.service';
 import {LiveStatus} from './live.enums';
 import {UserInfoService} from '../user-info/user-info.service';
 

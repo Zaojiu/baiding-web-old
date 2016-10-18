@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
-import { CommentApiService } from '../../shared/api/comment.service'
+import { CommentApiService } from '../../shared/api/comment/comment.service'
 import { AdditionalContentModel } from './post.model'
-import { MessageApiService } from "../../shared/api/message.api";
+import { MessageApiService } from "../../shared/api/message/message.api";
 
 @Injectable()
 export class PostService {

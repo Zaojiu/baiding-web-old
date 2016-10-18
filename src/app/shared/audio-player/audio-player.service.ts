@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
 import {WechatService} from '../wechat/wechat.service';
-import {MessageModel} from '../api/message.model';
+import {MessageModel} from '../api/message/message.model';
 import {Http, ResponseContentType} from '@angular/http';
 import {RingAudioBufferCache} from './ring-audio-buffer-cache';
 

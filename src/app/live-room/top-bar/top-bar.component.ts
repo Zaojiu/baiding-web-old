@@ -19,7 +19,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   @Input() onlineCount: number;
   @Input() isTimelineOnOldest: boolean;
   @Input() isTimelineOnLatest: boolean;
-  @ViewChildren(FadeDirective) oldestLatestBtns: QueryList<FadeDirective>;;
+  @ViewChildren(FadeDirective) oldestLatestBtns: QueryList<FadeDirective>;
   isGotoOldestShown = false;
   isGotoLatestShown = false;
   timelineScrollSub: Subscription;

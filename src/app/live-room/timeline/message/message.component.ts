@@ -1,10 +1,10 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {MessageModel} from '../../../shared/api/message.model';
-import {UserInfoModel} from '../../../shared/user-info/user-info.model';
-import {LiveService} from '../../../shared/live/live.service';
-import {LiveInfoModel} from '../../../shared/live/live.model';
+import {MessageModel} from '../../../shared/api/message/message.model';
+import {UserInfoModel} from '../../../shared/api/user-info/user-info.model';
+import {LiveService} from '../../../shared/api/live/live.service';
+import {LiveInfoModel} from '../../../shared/api/live/live.model';
 import {MessageService} from './message.service';
 import {UserAnimEmoji} from '../../../shared/praised-animation/praised-animation.model';
 import {AudioPlayerComponent} from '../../../shared/audio-player/audio-player.component'
