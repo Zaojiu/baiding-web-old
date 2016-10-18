@@ -126,9 +126,9 @@ export class MessageComponent {
 
   getToolTipsItems(): string[] {
 
-    let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'checked' : '';
+    let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'bi-check-round' : 'bi-circle';
     let autoPlay = new ToolTipsModel('audio-auto-play',
-      `<i class="bi bi-check-round ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`);
+      `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`);
 
     let items = [];
     items.push(autoPlay);
