@@ -22,8 +22,7 @@ import {MessageComponent} from './message/message.component';
 @Component({
   selector: 'timeline',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss'],
-  providers: [AudioPlayerService]
+  styleUrls: ['./timeline.component.scss']
 })
 
 export class TimelineComponent implements OnInit, OnDestroy {
@@ -44,7 +43,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
-              private liveService: LiveService, private messageApiService: MessageApiService, private audioPlayerService: AudioPlayerService) {
+              private liveService: LiveService, private messageApiService: MessageApiService) {
   }
 
   ngOnInit() {
