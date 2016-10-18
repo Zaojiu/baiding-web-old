@@ -8,7 +8,6 @@ import {TitleService} from '../shared/title/title.service';
 import {WechatService} from '../shared/wechat/wechat.service';
 import {UserInfoService} from '../shared/api/user-info/user-info.service';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
-import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -28,7 +27,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isBeginnerGuideShow: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-              private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService, private localStorageService: LocalStorageService) {
+              private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
   }
 
 

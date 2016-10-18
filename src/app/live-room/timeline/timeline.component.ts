@@ -22,13 +22,12 @@ import {MessageComponent} from './message/message.component';
 @Component({
   selector: 'timeline',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss'],
-  providers: [AudioPlayerService]
+  styleUrls: ['./timeline.component.scss']
 })
 
 export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
-  timeNow =  UtilsService.now();
+  timeNow = UtilsService.now();
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
@@ -44,7 +43,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
-              private liveService: LiveService, private messageApiService: MessageApiService, private audioPlayerService: AudioPlayerService) {
+              private liveService: LiveService, private messageApiService: MessageApiService) {
   }
 
   ngOnInit() {
@@ -111,7 +110,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   audioPlayEnded(msg: MessageModel) {
-    // TODO: check setting
+
+    if (!this.liveService.isAudioAutoPlay(this.liveInfo.id)) {
+      return;
+    }
 
     let nextAudioMessage = this.findNextAudioTypeMessage(msg.id);
     if (!nextAudioMessage) {

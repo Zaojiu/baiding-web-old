@@ -33,17 +33,15 @@ export class AudioPlayerComponent {
   }
 
   play() {
-    this.audioPlayed[this.message.id] = true;
-    this.played = true;
+
+    if (!this.played) {
+      this.played = true;
+      this.audioPlayed[this.message.id] = true;
+    }
+
     this.audioPlayerService.play(this.message).then(msg => {
       this.playEnded.emit(msg);
     });
-  }
-
-  playIfNotPlayed() {
-    if (!this.played) {
-      this.play();
-    }
   }
 
   private _isPlaying() {
