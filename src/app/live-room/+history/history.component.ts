@@ -1,12 +1,12 @@
 import { Component, OnInit }      from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { LiveService } from '../../shared/live/live.service';
-import { LiveInfoModel } from '../../shared/live/live.model';
-import { MessageModel } from '../../shared/api/message.model';
-import { MessageApiService } from "../../shared/api/message.api";
-import { UserInfoModel } from "../../shared/user-info/user-info.model";
-import { UserInfoService } from "../../shared/user-info/user-info.service";
+import { LiveService } from '../../shared/api/live/live.service';
+import { LiveInfoModel } from '../../shared/api/live/live.model';
+import { MessageModel } from '../../shared/api/message/message.model';
+import { MessageApiService } from "../../shared/api/message/message.api";
+import { UserInfoModel } from "../../shared/api/user-info/user-info.model";
+import { UserInfoService } from "../../shared/api/user-info/user-info.service";
 import { SharePopupService } from "../../shared/share-popup/share-popup.service";
 
 @Component({

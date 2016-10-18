@@ -2,7 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Subject }        from 'rxjs/Subject';
 import { Subscription }   from 'rxjs/Subscription';
 
-import { CommentModel }      from './comment.model';
+import { CommentModel }      from '../../shared/api/comment/comment.model';
 import { MqService } from '../../shared/mq/mq.service';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class CommentService {
   }
 
   stopReceive(streamId: string) {
-    MqService.unsubscribeLiveComments(streamId)
+    MqService.unsubscribeLiveComments(streamId);
 
     if (this.receivedCommentSub) {
       this.receivedCommentSub.unsubscribe();

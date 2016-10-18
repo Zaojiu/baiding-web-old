@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import { AppConfig } from '../../app.config'
+import { AppConfig } from '../../../app.config'
 import { UserInfoModel } from './user-info.model';
-import { StoreService } from '../store/store.service';
+import { StoreService } from '../../store/store.service';
 
 
 @Injectable()

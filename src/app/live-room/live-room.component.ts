@@ -2,12 +2,12 @@ import {Component, OnInit, OnDestroy, OnChanges, EventEmitter} from '@angular/co
 import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
-import {LiveService} from '../shared/live/live.service';
-import {LiveInfoModel} from '../shared/live/live.model';
+import {LiveService} from '../shared/api/live/live.service';
+import {LiveInfoModel} from '../shared/api/live/live.model';
 import {TitleService} from '../shared/title/title.service';
 import {WechatService} from '../shared/wechat/wechat.service';
-import {UserInfoService} from '../shared/user-info/user-info.service';
-import {UserInfoModel} from '../shared/user-info/user-info.model';
+import {UserInfoService} from '../shared/api/user-info/user-info.service';
+import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
 @Component({

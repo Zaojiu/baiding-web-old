@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 import {AudioPlayerService} from './audio-player.service';
-import {MessageModel} from '../api/message.model';
+import {MessageModel} from '../api/message/message.model';
 
 @Component({
   selector: 'audio-player',
