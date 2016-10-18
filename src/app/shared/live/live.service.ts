@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
+import {LocalStorage} from "angular2-localstorage/WebStorage";
+
 import {LiveInfoModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {AppConfig} from '../../app.config';
@@ -11,6 +13,9 @@ import {UserInfoService} from '../user-info/user-info.service';
 
 @Injectable()
 export class LiveService {
+
+  @LocalStorage() public audioAutoPlayDisabled: Object = {};
+
   constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {
   }
 
@@ -148,5 +153,13 @@ export class LiveService {
 
       return data;
     });
+  }
+
+  toggleAudioAutoPlay(liveId: string) {
+    this.audioAutoPlayDisabled[liveId] = !this.audioAutoPlayDisabled[liveId];
+  }
+
+  isAudioAutoPlay(liveId: string): boolean {
+    return !this.audioAutoPlayDisabled[liveId];
   }
 }

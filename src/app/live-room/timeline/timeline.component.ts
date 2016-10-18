@@ -28,7 +28,7 @@ import {MessageComponent} from './message/message.component';
 
 export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
-  timeNow =  UtilsService.now();
+  timeNow = UtilsService.now();
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
@@ -111,7 +111,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   audioPlayEnded(msg: MessageModel) {
-    // TODO: check setting
+
+    if (!this.liveService.isAudioAutoPlay(this.liveInfo.id)) {
+      return;
+    }
 
     let nextAudioMessage = this.findNextAudioTypeMessage(msg.id);
     if (!nextAudioMessage) {

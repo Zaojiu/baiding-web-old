@@ -121,13 +121,24 @@ export class MessageComponent {
   }
 
   playAudio() {
-    this.audioPlayer.playIfNotPlayed();
+    this.audioPlayer.play();
   }
 
   getToolTipsItems(): string[] {
+
+    let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'checked' : '';
+    let autoPlay = new ToolTipsModel('audio-auto-play',
+      `<i class="bi bi-check-round ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`);
+
     let items = [];
+    items.push(autoPlay);
+
     let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>');
-    if (this.canReply()) items.push(reply);
+    if (this.canReply()) {
+      items.push(reply);
+    }
+
+
     return items;
   }
 
@@ -146,6 +157,12 @@ export class MessageComponent {
     if (item.id === 'reply') {
       this.closeToolTips();
       return this.gotoReply();
+    } else if (item.id === 'audio-auto-play') {
+      this._toggleAudioAutoPlay();
     }
+  }
+
+  private _toggleAudioAutoPlay() {
+    this.liveService.toggleAudioAutoPlay(this.liveId);
   }
 }

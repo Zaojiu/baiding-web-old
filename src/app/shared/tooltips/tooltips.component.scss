@@ -36,6 +36,9 @@
       color: rgb(255, 255, 255);
       font-size: 18px;
       margin-right: 7px;
+      &.checked {
+        color: #2196f3;
+      }
     }
   }
 }
