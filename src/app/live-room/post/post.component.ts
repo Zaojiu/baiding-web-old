@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {LiveService} from '../../shared/live/live.service';
+import {LiveService} from '../../shared/api/live/live.service';
 import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
-import {MessageApiService} from "../../shared/api/message.api";
-import {CommentApiService} from "../../shared/api/comment.service";
+import {MessageApiService} from "../../shared/api/message/message.api";
+import {CommentApiService} from "../../shared/api/comment/comment.service";
 
 @Component({
   templateUrl: './post.component.html',

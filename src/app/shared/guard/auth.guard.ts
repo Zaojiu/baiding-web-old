@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 
-import { UserInfoService } from '../user-info/user-info.service';
+import { UserInfoService } from '../api/user-info/user-info.service';
 import { WechatService } from '../wechat/wechat.service';
 
 @Injectable()

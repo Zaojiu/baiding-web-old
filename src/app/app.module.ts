@@ -25,12 +25,12 @@ import {ModalService} from "./shared/modal/modal.service";
 import {TitleSetterDirective} from './shared/title/title.directive';
 import {AutofocusDirective} from './shared/autofocus/autofocus.directive';
 import {AuthGuard} from './shared/guard/auth.guard'
-import {UserInfoService} from './shared/user-info/user-info.service'
+import {UserInfoService} from './shared/api/user-info/user-info.service'
 import {WechatService} from './shared/wechat/wechat.service'
 import {ImageViewerService} from "./shared/image-viewer/image-viewer.service";
 import {StoreService} from './shared/store/store.service'
 import {TitleService} from './shared/title/title.service'
-import {LiveService} from "./shared/live/live.service";
+import {LiveService} from "./shared/api/live/live.service";
 import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 
 @NgModule({

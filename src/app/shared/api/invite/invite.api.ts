@@ -1,7 +1,7 @@
 import { Injectable }     from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { AppConfig } from '../../app.config'
+import { AppConfig } from '../../../app.config'
 
 @Injectable()
 export class InviteApiService {

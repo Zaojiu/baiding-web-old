@@ -1,11 +1,11 @@
 import { Component, OnInit }      from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { LiveService } from '../../shared/live/live.service';
-import { LiveInfoModel } from '../../shared/live/live.model';
-import { UserInfoService } from '../../shared/user-info/user-info.service';
-import { UserInfoModel } from '../../shared/user-info/user-info.model';
-import { InviteApiService } from '../../shared/api/invite.api';
+import { LiveService } from '../../shared/api/live/live.service';
+import { LiveInfoModel } from '../../shared/api/live/live.model';
+import { UserInfoService } from '../../shared/api/user-info/user-info.service';
+import { UserInfoModel } from '../../shared/api/user-info/user-info.model';
+import { InviteApiService } from '../../shared/api/invite/invite.api';
 import { WechatService } from '../../shared/wechat/wechat.service';
 
 @Component({

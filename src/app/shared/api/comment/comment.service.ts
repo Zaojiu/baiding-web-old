@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import { AppConfig } from '../../app.config';
+import { AppConfig } from '../../../app.config';
 import { PostCommentModel } from './comment.model';
 import { UserInfoService } from '../user-info/user-info.service';
 import { UserInfoModel } from '../user-info/user-info.model';
-import { CommentService } from '../../live-room/comment/comment.service';
-import { CommentModel } from '../../live-room/comment/comment.model';
+import { CommentService } from '../../../live-room/comment/comment.service';
+import { CommentModel } from './comment.model';
 
 declare var $:any;
 

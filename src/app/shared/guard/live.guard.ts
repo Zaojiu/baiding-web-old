@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Resolve, Router} from '@angular/router';
 import {ActivatedRouteSnapshot} from '@angular/router';
 
-import {LiveService} from '../live/live.service';
+import {LiveService} from '../api/live/live.service';
 
 @Injectable()
 export class LiveInfoResolver implements Resolve<any>{

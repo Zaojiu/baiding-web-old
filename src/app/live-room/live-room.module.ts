@@ -15,11 +15,11 @@ import {PraisedAnimationComponent} from '../shared/praised-animation/praised-ani
 import {LiveInfoResolver} from '../shared/guard/live.guard';
 import {TimelineService} from './timeline/timeline.service';
 import {CommentService} from './comment/comment.service';
-import {MessageApiService} from "../shared/api/message.api";
+import {MessageApiService} from "../shared/api/message/message.api";
 import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
 import {FileSelectorDirective} from "../shared/file-selector/file-selector.directive";
 import {PipeModule} from "../shared/pipe/pipe.module";
-import {UploadApiService} from "../shared/api/upload.api";
+import {UploadApiService} from "../shared/api/upload/upload.api";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {AudioPlayerModule} from "../shared/audio-player/audio-player.module";

@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import * as _random from 'lodash/random';
 
-import { UserInfoService } from '../user-info/user-info.service';
+import { UserInfoService } from '../api/user-info/user-info.service';
 import { UserAnimEmoji } from './praised-animation.model';
 
 

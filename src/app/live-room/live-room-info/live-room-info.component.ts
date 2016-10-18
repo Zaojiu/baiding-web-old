@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {LiveInfoModel} from '../../shared/live/live.model';
-import {LiveService} from '../../shared/live/live.service';
-import {LiveStatus} from "../../shared/live/live.enums";
-import {UtilsService} from '../../shared/utils/utils'
+import {LiveInfoModel} from '../../shared/api/live/live.model';
+import {LiveService} from '../../shared/api/live/live.service';
+import {LiveStatus} from "../../shared/api/live/live.enums";
+import {UtilsService} from '../../shared/utils/utils';
 
 @Component({
   selector: 'live-room-info',

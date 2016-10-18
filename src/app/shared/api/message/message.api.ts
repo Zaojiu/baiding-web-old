@@ -3,7 +3,7 @@ import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
 
-import {AppConfig} from '../../app.config'
+import {AppConfig} from '../../../app.config'
 import {MessageType} from './message.enum';
 import {
   MessageModel, AudioMessageModel, ReplyMessageModel,
@@ -11,8 +11,8 @@ import {
 } from './message.model';
 import {PostMessageModel, PostAudioMessageModel, PostNiceMessageModel, PostImageMessageModel} from './message.model';
 import {UserInfoService} from '../user-info/user-info.service';
-import {TimelineService} from '../../live-room/timeline/timeline.service';
-import {UploadApiService} from './upload.api'
+import {TimelineService} from '../../../live-room/timeline/timeline.service';
+import {UploadApiService} from '../upload/upload.api'
 
 declare var $: any;
 

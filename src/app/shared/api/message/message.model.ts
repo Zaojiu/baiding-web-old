@@ -2,7 +2,7 @@ import * as _random from 'lodash/random';
 
 import {MessageType} from './message.enum';
 import {UserInfoModel} from '../user-info/user-info.model'
-import {UserAnimEmoji} from '../praised-animation/praised-animation.model'
+import {UserAnimEmoji} from '../../praised-animation/praised-animation.model'
 
 export class AudioMessageModel {
   localId: string;

@@ -2,15 +2,15 @@ import {Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList}
 import {Subscription}   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {MessageModel} from '../../shared/api/message.model';
-import {MessageType} from '../../shared/api/message.enum';
+import {MessageModel} from '../../shared/api/message/message.model';
+import {MessageType} from '../../shared/api/message/message.enum';
 import {TimelineService} from './timeline.service';
-import {UserInfoModel} from '../../shared/user-info/user-info.model';
-import {LiveService} from '../../shared/live/live.service';
-import {LiveInfoModel} from '../../shared/live/live.model';
-import {LiveStatus} from '../../shared/live/live.enums';
+import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
+import {LiveService} from '../../shared/api/live/live.service';
+import {LiveInfoModel} from '../../shared/api/live/live.model';
+import {LiveStatus} from '../../shared/api/live/live.enums';
 import {MqPraisedUser, MqEvent, EventType} from '../../shared/mq/mq.service';
-import {MessageApiService} from "../../shared/api/message.api";
+import {MessageApiService} from "../../shared/api/message/message.api";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";

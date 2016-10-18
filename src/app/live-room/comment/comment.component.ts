@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {CommentModel} from './comment.model';
+import {CommentModel} from '../../shared/api/comment/comment.model';
 import {CommentService} from './comment.service';
 
 @Component({
