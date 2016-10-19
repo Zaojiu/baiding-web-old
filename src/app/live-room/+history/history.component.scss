@@ -97,6 +97,15 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          min-height: 180px;
+          font-size: 0;
+          margin-top: 10px;
+
+          /deep/ {
+            .priview-image {
+              max-height: calc(100vw - 68px - 54px);
+            }
+          }
         }
 
         .audio-content {

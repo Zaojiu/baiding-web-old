@@ -21,6 +21,8 @@ export class ReplyMessageModel {
 
 export class ImageMessageModel {
   link: string;
+  thumbLink: string;
+  smallLink: string;
 }
 
 export class MessageModel {

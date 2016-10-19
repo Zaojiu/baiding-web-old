@@ -93,6 +93,8 @@ export class MessageApiService {
       message.type = MessageType.Image;
       message.image = new ImageMessageModel();
       message.image.link = data.image.link;
+      message.image.smallLink = data.image.smallLink;
+      message.image.thumbLink = data.image.thumbLink;
     }
 
     if (data.type === 'nice') {
@@ -294,8 +296,10 @@ export class MessageApiService {
         let data = res.json();
         let messageResp = this.parseResponesMessage(data, MessageType.Image);
         if (data.type = 'image') {
-          messageResp.image = new ImageMessageModel()
-          messageResp.image.link = data.image.link
+          messageResp.image = new ImageMessageModel();
+          messageResp.image.link = data.image.link;
+          messageResp.image.smallLink = data.image.smallLink;
+          messageResp.image.thumbLink = data.image.thumbLink;
         }
         this.timelineService.pushMessage(messageResp);
         return messageResp;

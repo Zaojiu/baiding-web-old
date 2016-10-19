@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { LiveService } from '../../shared/api/live/live.service';
 import { LiveInfoModel } from '../../shared/api/live/live.model';
-import { MessageModel } from '../../shared/api/message/message.model';
+import {MessageModel, ImageMessageModel} from '../../shared/api/message/message.model';
 import { MessageApiService } from "../../shared/api/message/message.api";
 import { UserInfoModel } from "../../shared/api/user-info/user-info.model";
 import { UserInfoService } from "../../shared/api/user-info/user-info.service";
@@ -20,6 +20,7 @@ export class HistoryComponent {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   messages: MessageModel[] = [];
+
   constructor(private liveService: LiveService, private userInfoService: UserInfoService,
               private route: ActivatedRoute, private router: Router,
               private messageApiService: MessageApiService, private shareService: SharePopupService) {}

@@ -229,6 +229,20 @@
           }
         }
       }
+
+      .image-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 180px;
+        font-size: 0;
+
+        /deep/ {
+          .priview-image {
+            max-height: calc(100vw - 68px - 54px);
+          }
+        }
+      }
     }
 
     .thumbs-up {

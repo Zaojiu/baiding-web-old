@@ -1,11 +1,15 @@
-.img-wrapper {
-  height: 100px;
+:host {
+  font-size: 0;
+  line-height: 0;
+}
 
-  .wrapper-img {
-    height: 80px;
-    margin: auto;
-    margin-left: 15px;
-    max-width: 80%;
+.priview-image {
+  max-height: 100%;
+  max-width: 100%;
+  margin-left: 15px;
+
+  &:last-child {
+    margin-left: 0;
   }
 }
 

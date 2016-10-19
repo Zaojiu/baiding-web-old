@@ -24,7 +24,8 @@ export class ImageViewerComponent implements OnInit {
 
   ngOnInit() {
     this.imageViewerService.imagePopup$.subscribe((model)=> {
-      if (!model.images && !model.links) return
+      if (!model.images && !model.links) return;
+
       this.isPopup = true;
 
       if (model.images && model.images.length) {
@@ -39,7 +40,7 @@ export class ImageViewerComponent implements OnInit {
       }
 
       if (model.links && model.links.length) {
-        let link = model.links[0].toString();
+        let link = model.links[0].smallLink.toString();
         this.imageSrc = link;
       }
 
@@ -60,7 +61,6 @@ export class ImageViewerComponent implements OnInit {
     this.imageViewerService.close();
   }
 
-
   imageFitScreen() {
     let $image = $(this.el).find('.popup-pinch-img');
     let screenWidth = $image.parent().width();
@@ -68,7 +68,7 @@ export class ImageViewerComponent implements OnInit {
     let imgNaturalWidth = $image[0].naturalWidth;
     let imgNaturalHeight = $image[0].naturalHeight;
 
-/*initial it's position in center*/
+    /*initial it's position in center*/
     $image.css({'top': '50%', 'left': '50%'});
 
     if (!(imgNaturalWidth < screenWidth && imgNaturalHeight < screenHeight)) {
