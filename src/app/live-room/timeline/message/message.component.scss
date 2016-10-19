@@ -56,11 +56,10 @@
       bottom: 45px;
       right: 0;
       overflow: hidden;
+      pointer-events: none;
     }
 
     .thumbs-up-btn, .thumbs-up-count {
-      position: relative;
-      z-index: 1;
       flex-shrink: 0;
       line-height: 1em;
     }
@@ -236,6 +235,7 @@
         justify-content: center;
         min-height: 180px;
         font-size: 0;
+        margin-top: 10px;
 
         /deep/ {
           .priview-image {
