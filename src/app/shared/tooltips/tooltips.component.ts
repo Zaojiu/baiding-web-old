@@ -1,6 +1,5 @@
 import {
   Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef,
-  ViewEncapsulation
 }      from '@angular/core';
 import {ToolTipsModel} from "./tooltips.model";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
@@ -11,7 +10,10 @@ declare var $: any;
   selector: 'tooltips',
   templateUrl: './tooltips.component.html',
   styleUrls: ['./tooltips.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  // 此处应开启 ViewEncapsulation.None, 防止外部注入的html没有namespace, 无法应用css样式。
+  // 但由于angular2 compiler的bug, 开启之后aot编译会出错。相关pr: https://github.com/angular/angular/issues/11408
+  // 临时解决方案, 把样式写进全局的css样式里, 避开angular2的css namespace编译。
+  // encapsulation: ViewEncapsulation.None
 })
 
 export class ToolTipsComponent implements OnChanges {

@@ -5,8 +5,8 @@ import { UrlPrefix } from './app.model';
 @Injectable()
 export class AppConfig {
   urlPrefix: UrlPrefix;
-  lcAppId: string
-  lcAppKey: string
+  lcAppId: string;
+  lcAppKey: string;
 
   constructor() {
     this.urlPrefix = new UrlPrefix();

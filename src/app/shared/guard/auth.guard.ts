@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private wechatService: WechatService) {}
 
   canActivate() {
-    const needWechatAuth = this.wechatService.isInWechat()
+    const needWechatAuth = WechatService.isInWechat();
     return Promise.all([this.userInfoService.getUserInfo(needWechatAuth), this.wechatService.initWechat()])
       .then(() => { return true })
   }
