@@ -1,16 +1,16 @@
 <div class="history-container" *ngIf="liveInfo">
-  <div class="top-bar">
-    <div class="history-title">
-      <h1>{{liveInfo.subject}}</h1>
-    </div>
-    <div class="history-info">
-      <img class="avatar" [src]="liveInfo.admin.avatar">
-      <span class="name">{{liveInfo.admin.nick}}</span>
-      <span class="time">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</span>
-    </div>
-  </div>
-
   <div class="messages-container scrollable">
+    <div class="top-bar">
+      <div class="history-title">
+        <h1>{{liveInfo.subject}}</h1>
+      </div>
+      <div class="history-info">
+        <img class="avatar" [src]="liveInfo.admin.avatar">
+        <span class="name">{{liveInfo.admin.nick}}</span>
+        <span class="time">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</span>
+      </div>
+    </div>
+
     <bd-loading class="loading" *ngIf="!messages.length"></bd-loading>
 
     <div class="message-wrapper" *ngFor="let message of messages">
@@ -38,7 +38,9 @@
     <div class="history-source">
       <h1 class="source-title">文章来源</h1>
       <div class="source-block" (click)="backToMainScreen()">
-        <img class="live-cover" [src]="liveInfo.coverUrl" alt="直播封面">
+        <div class="live-cover">
+          <img [src]="liveInfo.coverUrl" alt="直播封面">
+        </div>
         <div class="live-info">
           <h2 class="live-title">{{liveInfo.subject}}</h2>
           <div class="live-closed-at">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</div>
