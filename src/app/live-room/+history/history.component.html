@@ -26,7 +26,7 @@
         <div class="content audio-content" *ngIf="message.type === 2">
           <audio-player class="audio-player" [message]="message"></audio-player>
           <div class="translate-tips">以下由机器自动翻译</div>
-          <div class="translate">{{message.audio.translateResult}}</div>
+          <div class="translate">{{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}</div>
         </div>
       </div>
       <div class="message-reply" *ngFor="let reply of message.replies">
