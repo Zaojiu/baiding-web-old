@@ -115,4 +115,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
   popupShare() {
     this.sharePopupService.popup();
   }
+
+  get btnText(): string {
+    return '<i class="bi bi-comment-btn-text"></i>';
+  }
 }
