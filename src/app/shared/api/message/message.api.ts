@@ -103,6 +103,11 @@ export class MessageApiService {
       message.content = data.nice.message;
     }
 
+    if (data.type === 'editorJoin') {
+      message.type = MessageType.EditorJoin;
+      return message;
+    }
+
     message.hadPraised = data.myPraisedId !== '';
     message.praisedAmount = data.praised;
     message.praisedAnimations = [];

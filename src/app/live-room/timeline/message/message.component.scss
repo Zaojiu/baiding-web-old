@@ -99,7 +99,7 @@
         line-height: 1em;
         text-align: center;
         color: rgb(75, 75, 75);
-        transform: scale(0.833333333);/*10/12=0.833, font-size:10px*/
+        transform: scale(0.833333333); /*10/12=0.833, font-size:10px*/
       }
     }
 
@@ -141,7 +141,6 @@
   // 主消息
   .message {
     position: relative;
-
     &.has-reply {
       .content-container .content {
         position: relative;
@@ -307,6 +306,29 @@
         border-radius: 12px;
         margin-right: -7px;
       }
+    }
+  }
+}
+
+.message-type-join {
+  text-align: center;
+  margin-bottom: 20px;
+  > div {
+    background-color: #F6F6F7;
+    display: inline-block;
+    color: #9EA1A5;
+    font-size: 14px;
+    padding: 4px 8px;
+    line-height: 24px;
+    border-radius: 4px;
+    height: 32px;
+    .avatar-sm {
+      width: 24px;
+      height: 24px;
+      float: left;
+      margin-right: 6px;
+      border-radius: 24px;
+      border: 1px solid #EFEFEF;
     }
   }
 }
