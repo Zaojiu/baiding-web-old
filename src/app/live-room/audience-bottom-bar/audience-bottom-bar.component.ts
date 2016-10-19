@@ -10,7 +10,7 @@ import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'audience-bottom-bar',
@@ -28,9 +28,10 @@ export class AudienceBottomBarComponent implements OnInit {
   isOnCommentRequest: boolean;
   praisedSub: Subscription;
   isLoading: boolean;
+  private $window: any;
 
   constructor(private route: ActivatedRoute, private liveService: LiveService, private commentApiService: CommentApiService,
-              private timelineService: TimelineService) {
+              private timelineService: TimelineService ) {
   }
 
   ngOnInit() {
@@ -47,7 +48,9 @@ export class AudienceBottomBarComponent implements OnInit {
       userAnim.emoji = evt.info.emoji;
       userAnim.user = new UserInfoModel;
       this.liveInfo.praisedAnimations.push(userAnim);
-    })
+    });
+
+    this.$window = $(window);
   }
 
   ngOnDestroy() {
@@ -71,6 +74,11 @@ export class AudienceBottomBarComponent implements OnInit {
   }
 
   switchToComment() {
+    setTimeout(()=> {
+      const top = this.$window.height() - this.$window[0].innerHeight ;
+      this.$window.scrollTop(top);
+    }, 400);
+
     if (this.isOnComment) return;
 
     this.isOnComment = true;
