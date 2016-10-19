@@ -4,6 +4,7 @@ import {
 import {ModalService} from "../../modal/modal.service";
 import {ImageViewerService} from "../image-viewer.service";
 import {Subscription} from 'rxjs/Subscription';
+import {ImageMessageModel} from "../../api/message/message.model";
 declare var $: any;
 
 @Component({
@@ -19,7 +20,7 @@ export class PreviewComponent implements OnInit,OnDestroy {
   deleteImgSubscription: Subscription;
   @Input() imageFiles: File[];
   @Output() imageFilesChange = new EventEmitter<File[]>();
-  @Input() imageLinks: String[];
+  @Input() imageLinks: ImageMessageModel[];
   imageSrc = '';
   isPopup: boolean;
 
@@ -57,7 +58,7 @@ export class PreviewComponent implements OnInit,OnDestroy {
 
     if (linkChange && linkChange.currentValue && linkChange.currentValue.length) {
       let link = linkChange.currentValue[0];
-      this.imageSrc = link;
+      this.imageSrc = link.thumbLink;
     }
   }
 
@@ -75,5 +76,4 @@ export class PreviewComponent implements OnInit,OnDestroy {
 
     this.isPopup = true;
   }
-
 }

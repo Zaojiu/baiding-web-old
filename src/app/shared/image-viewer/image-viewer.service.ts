@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs/Subject';
 import {ImgPopupModel} from './image-viewer.model';
+import {ImageMessageModel} from "../api/message/message.model";
 
 @Injectable()
 export class ImageViewerService {
@@ -11,8 +12,8 @@ export class ImageViewerService {
   imageDelete$ = this.imageDeleteSource.asObservable();
   imageClose$ = this.imageCloseSource.asObservable();
 
-  popup(links: String[], images: File[]) {
-    let imagePopupModel = new ImgPopupModel(links,images);
+  popup(links: ImageMessageModel[], images: File[]) {
+    let imagePopupModel = new ImgPopupModel(links, images);
     this.imagePopupSource.next(imagePopupModel);
   }
 

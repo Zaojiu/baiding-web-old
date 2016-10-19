@@ -1,3 +1,5 @@
+import {ImageMessageModel} from "../api/message/message.model";
+
 export class ImgEvent {
   originWidth: number;
   originHeight: number;
@@ -25,11 +27,11 @@ export class ImgEvent {
   }
 }
 
-export class ImgPopupModel{
-  links: String[];
+export class ImgPopupModel {
+  links: ImageMessageModel[];
   images: File[];
 
-  constructor(links,images){
+  constructor(links: ImageMessageModel[], images: File[]) {
     this.links = links;
     this.images = images;
   }
