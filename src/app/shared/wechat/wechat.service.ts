@@ -28,7 +28,7 @@ export class WechatService {
     this.wechatUrl = `${config.urlPrefix.io}/api/wechat/signature/config`;
   }
 
-  isInWechat(): boolean {
+  static isInWechat(): boolean {
     return /micromessenger/i.test(window.navigator.userAgent);
   }
 

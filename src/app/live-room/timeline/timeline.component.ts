@@ -15,7 +15,6 @@ import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
-import {AudioPlayerService} from '../../shared/audio-player/audio-player.service';
 import {UtilsService} from '../../shared/utils/utils';
 
 import {MessageComponent} from './message/message.component';
@@ -27,7 +26,7 @@ import {MessageComponent} from './message/message.component';
 
 export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
-  timeNow = UtilsService.now();
+  timeNow = UtilsService.now().toString();
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;

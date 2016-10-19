@@ -16,7 +16,7 @@ export class LiveRoomInfoComponent {
   @Output() isShowChange = new EventEmitter<boolean>();
   @Input() liveRoomStatusHumanize: string;
   isLiveRoomStarted: boolean;
-  timeNow = UtilsService.now();
+  timeNow = UtilsService.now().toString();
 
   constructor(private liveService: LiveService) {
   }
