@@ -9,6 +9,7 @@ export class AudioMessageModel {
   serverId: string;
   translateResult: string;
   link: string;
+  duration: number;
 }
 
 export class ReplyMessageModel {
@@ -91,6 +92,7 @@ export class PostAudioMessageModel {
   link: string;
   text: string;
   weixinId: string;
+  duration: number;
 }
 
 export class PostNiceMessageModel {

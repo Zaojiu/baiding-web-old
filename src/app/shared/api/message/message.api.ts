@@ -87,6 +87,7 @@ export class MessageApiService {
       message.audio.serverId = data.audio.weixinId;
       message.audio.translateResult = data.audio.text;
       message.audio.link = data.audio.link;
+      message.audio.duration = data.audio.duration;
     }
 
     if (data.type === 'image') {
@@ -204,7 +205,7 @@ export class MessageApiService {
       });
   }
 
-  postAudioMessage(liveId: string, localId: string, serverId: string, translateResult: string, link = ''): Promise<MessageModel> {
+  postAudioMessage(liveId: string, localId: string, serverId: string, translateResult: string, link = '', duration: number = 0): Promise<MessageModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
     let message = new PostMessageModel();
@@ -213,6 +214,7 @@ export class MessageApiService {
     message.audio.text = translateResult;
     message.audio.weixinId = serverId;
     message.audio.link = link;
+    message.audio.duration = duration;
 
     return this.http.post(url, JSON.stringify(message), {headers: headers}).toPromise()
       .then(res => {
@@ -222,6 +224,7 @@ export class MessageApiService {
         messageResp.audio = new AudioMessageModel();
         messageResp.audio.localId = localId;
         messageResp.audio.translateResult = translateResult;
+        messageResp.audio.duration = data.audio.duration;
 
         this.timelineService.pushMessage(messageResp);
 

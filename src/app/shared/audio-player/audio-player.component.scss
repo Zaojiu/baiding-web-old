@@ -1,22 +1,67 @@
 .audio-player-container {
-  text-align: right;
+  position: relative;
   font-size: 16px;
   color: rgb(75, 75, 75);
-  position: relative;
+  display: flex;
+  align-items: center;
 
   &.theme-white {
     color: rgb(255, 255, 255);
+
+    .play-btn {
+      border: solid 1px rgb(255, 255, 255);
+    }
+
+    /deep/ {
+      .playing-btn {
+        border: solid 1px rgb(255, 255, 255);
+        background-color: rgb(255, 255, 255);
+
+        .playing-btn-left, .playing-btn-right {
+          .playing-btn-inner {
+            background-color: rgb(33, 150, 243)!important;
+          }
+        }
+
+        .btn-center {
+          background-color: rgb(33, 150, 243);
+
+          .bi-pause {
+            color: rgb(255, 255, 255)!important;
+          }
+        }
+      }
+    }
   }
 
   .wave-component {
     float: left;
   }
 
-  .bi-play {
-    font-size: 28px;
+  .audio-duration {
+    font-size: 14px;
+    flex-grow: 1;
+    padding-left: 10px;
   }
-  .bi-pause-round {
-    font-size: 28px;
+
+  .play-btn, .animation-playing-btn {
+    flex-shrink: 0;
+  }
+
+  .play-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    width: 26px;
+    border: solid 1px rgb(75, 75, 75);
+    border-radius: 50%;
+    box-sizing: content-box;
+
+    .bi-play {
+      font-size: 12px;
+      margin-left: 2px;
+    }
   }
 
   .bi-wave {
