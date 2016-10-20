@@ -44,10 +44,6 @@ export class PostComponent implements OnInit {
         this.additionalContent = additionalContent
       })
     }
-
-
-    this.isClosed();
-    console.log(this.isClosed(),'isclosed')
   }
 
   isClosed(): boolean {
