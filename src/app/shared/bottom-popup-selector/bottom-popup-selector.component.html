@@ -4,6 +4,6 @@
   </ul>
 
   <ul class="popup-selecter-items">
-    <li *ngFor="let item of items" (click)="selectItem(item)">{{item}}</li>
+    <li *ngFor="let item of items" (click)="selectItem(item)" [ngClass]="{'is-closed': !item.enable}">{{item.content}}</li>
   </ul>
 </div>

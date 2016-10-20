@@ -104,6 +104,11 @@
       position: relative;
       overflow: hidden;
 
+      &.is-closed{
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
       #image-selector {
         position: absolute;
         height: 100%;

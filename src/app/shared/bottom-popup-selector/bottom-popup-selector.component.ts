@@ -3,6 +3,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { BottomPopupSelectorService } from './bottom-popup-selector.service';
+import {BottomPopupSelectorModel, BottomPopupSelectorItemModel} from "./bottom-popup-selector.model";
 
 @Component({
   selector: 'bottom-popup-selector',
@@ -11,7 +12,7 @@ import { BottomPopupSelectorService } from './bottom-popup-selector.service';
 })
 
 export class BottomPopupSelectorComponent implements OnInit {
-  items: string[];
+  items: BottomPopupSelectorItemModel[];
   hasBottomBar: boolean;
   isPopup: boolean;
   routerSubscription: Subscription;
@@ -50,7 +51,7 @@ export class BottomPopupSelectorComponent implements OnInit {
     );
   }
 
-  selectItem(item: string) {
+  selectItem(item: BottomPopupSelectorItemModel) {
     this.bottomPopupService.selectItem(item);
   }
 

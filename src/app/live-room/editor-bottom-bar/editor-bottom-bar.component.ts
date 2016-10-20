@@ -3,17 +3,21 @@ import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
-import {BottomPopupSelectorModel} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
+import {
+  BottomPopupSelectorModel,
+  BottomPopupSelectorItemModel
+} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
 import {TimelineService} from '../timeline/timeline.service';
-import { LiveService } from '../../shared/api/live/live.service';
-import { LiveInfoModel } from '../../shared/api/live/live.model';
-import { UserInfoModel } from '../../shared/api/user-info/user-info.model';
+import {LiveService} from '../../shared/api/live/live.service';
+import {LiveInfoModel} from '../../shared/api/live/live.model';
+import {LiveStatus} from '../../shared/api/live/live.enums';
+import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {ModalService} from '../../shared/modal/modal.service';
 import {WechatService} from '../../shared/wechat/wechat.service';
 import {MessageApiService} from '../../shared/api/message/message.api';
-import { SharePopupService } from '../../shared/share-popup/share-popup.service';
-import { UserAnimEmoji } from '../../shared/praised-animation/praised-animation.model';
-import { MqEvent, EventType } from '../../shared/mq/mq.service';
+import {SharePopupService} from '../../shared/share-popup/share-popup.service';
+import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
+import {MqEvent, EventType} from '../../shared/mq/mq.service';
 
 
 @Component({
@@ -71,6 +75,10 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
     this.praisedSub.unsubscribe();
   }
 
+  isClosed(): boolean {
+    return this.liveInfo.status == LiveStatus.Ended;
+  }
+
   gotoPushComment() {
     this.router.navigate([`/lives/${this.liveId}/push-comment`]);
   }
@@ -96,17 +104,17 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      model.items.push('邀请嘉宾');
-      model.items.push('结束直播');
-
+      let enable = !this.isClosed();
+      model.items.push(new BottomPopupSelectorItemModel('invite', '邀请嘉宾', enable));
+      model.items.push(new BottomPopupSelectorItemModel('close', '结束直播', enable));
       model.hasBottomBar = false;
 
       this.bottomPopupService.popup(model);
 
       this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
         item => {
-          if (item === '邀请嘉宾') return this.gotoInvitation();
-          if (item === '结束直播') return this.modalService.popup('结束此次直播?').then(result => {
+          if (item.id === 'invite') return this.gotoInvitation();
+          if (item.id === 'close') return this.modalService.popup('结束此次直播?').then(result => {
             if (result) this.liveService.closeLive(this.liveId);
           });
         }

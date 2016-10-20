@@ -26,6 +26,11 @@
     align-content: center;
     padding: 10px;
 
+    &.is-closed{
+      opacity:0.3;
+      pointer-events: none;
+    }
+
     span {
       color: rgb(255, 255, 255);
       font-size: 16px;
