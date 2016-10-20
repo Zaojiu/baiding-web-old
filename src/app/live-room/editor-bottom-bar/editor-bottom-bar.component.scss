@@ -15,6 +15,22 @@
     }
   }
 
+  &.is-closed {
+    .push-comment-btn, .more-op-btn {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .record-btn-container {
+      pointer-events: none;
+    }
+    .record-btn {
+      .bi-mic {
+        opacity: 0.3
+      }
+    }
+  }
+
   .share-btn, .post-btn, .push-comment-btn, .more-op-btn {
     display: inline-block;
     height: 49px;

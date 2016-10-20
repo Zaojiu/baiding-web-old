@@ -1,19 +1,21 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
 import {BottomPopupSelectorModel} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
 import {TimelineService} from '../timeline/timeline.service';
-import { LiveService } from '../../shared/api/live/live.service';
-import { LiveInfoModel } from '../../shared/api/live/live.model';
-import { UserInfoModel } from '../../shared/api/user-info/user-info.model';
+import {LiveService} from '../../shared/api/live/live.service';
+import {LiveInfoModel} from '../../shared/api/live/live.model';
+import {LiveStatus} from '../../shared/api/live/live.enums';
+import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {ModalService} from '../../shared/modal/modal.service';
 import {WechatService} from '../../shared/wechat/wechat.service';
 import {MessageApiService} from '../../shared/api/message/message.api';
-import { SharePopupService } from '../../shared/share-popup/share-popup.service';
-import { UserAnimEmoji } from '../../shared/praised-animation/praised-animation.model';
-import { MqEvent, EventType } from '../../shared/mq/mq.service';
+import {SharePopupService} from '../../shared/share-popup/share-popup.service';
+import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
+import {MqEvent, EventType} from '../../shared/mq/mq.service';
 
 
 @Component({
@@ -71,8 +73,12 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
     this.praisedSub.unsubscribe();
   }
 
-  gotoPushComment() {
-    this.router.navigate([`/lives/${this.liveId}/push-comment`]);
+  isClosed(): boolean {
+    return this.liveInfo.status == LiveStatus.Ended;
+  }
+
+  gotoPushComment(){
+      this.router.navigate([`/lives/${this.liveId}/push-comment`]);
   }
 
   gotoPostMessage() {
