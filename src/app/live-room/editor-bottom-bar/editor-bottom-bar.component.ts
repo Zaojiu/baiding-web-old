@@ -1,5 +1,4 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
