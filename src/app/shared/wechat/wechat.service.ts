@@ -186,7 +186,7 @@ export class WechatService {
     wx.startRecord();
   }
 
-  stopRecord() {
+  stopRecord(duration: number) {
     console.log('wechat init: ', this.hasInit);
 
     if (!this.hasInit) return;
@@ -198,6 +198,7 @@ export class WechatService {
         console.log('wechat record stop successful');
         this.processVoice(res.localId).then((audioModel) => {
           console.log('wechat record translate & upload done successful: ', res.localId, audioModel);
+          audioModel.duration = duration;
           this.recordSource.next(audioModel);
         })
       }

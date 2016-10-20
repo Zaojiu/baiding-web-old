@@ -50,7 +50,7 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.recordSubscription = this.wechatService.record$.subscribe(audioModel => {
-      this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult);
+      this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult, '', audioModel.duration);
     });
 
     this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
@@ -148,6 +148,7 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   }
 
   stopRecord() {
+    if (this.timer) clearInterval(this.timer);
     console.log('record stop called');
     if (!this.isRecording || this.isCanceled || this.isTooShort) return;
 
@@ -157,20 +158,20 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
 
       console.log('record cancel because too short');
 
-      clearInterval(this.timer);
-
       this.timer = setTimeout(() => {
         this.isRecording = false;
         clearTimeout(this.timer);
       }, 1000)
     } else {
       this.isRecording = false;
-      this.wechatService.stopRecord();
+      let durationSec = this.recordDuration * 100;
+      this.wechatService.stopRecord(durationSec);
       console.log('record stoped');
     }
   }
 
   cancelRecord() {
+    if (this.timer) clearInterval(this.timer);
     if (!this.isRecording || this.isCanceled || this.isTooShort) return;
 
     this.isCanceled = true;

@@ -15,33 +15,40 @@ export class TimeFormaterPipe implements PipeTransform {
 
 @Pipe({name: 'durationFormater'})
 export class DurationFormaterPipe implements PipeTransform {
-  transform(fromTime: string, endTime: string, index: number): string {
+  transform(durationSecond: number, index: number): string {
     let fixDigest = (num: string) => {
       if (num.length == 1) return `0${num}`;
       return num;
     };
 
-    var fromTimeParsed = moment.unix(+fromTime);
-    if (!fromTimeParsed.isValid()) fromTimeParsed = moment(fromTime);
-    if (!fromTimeParsed.isValid()) return '无效时间';
+    if (durationSecond <= 0) return '00';
 
-    var endTimeParsed = moment.unix(+endTime);
-    if (!endTimeParsed.isValid()) endTimeParsed = moment(endTime);
-    if (!endTimeParsed.isValid()) return '无效时间';
-
-    let sec = Math.round(endTimeParsed.diff(fromTimeParsed) / 1000);
-
-    if (sec <= 0) return '00';
-
-    let h = Math.floor(sec / (24 * 60 * 60));
-    let m = Math.floor(sec % (24 * 60 * 60) / (60 * 60));
-    let s = Math.floor(sec % (24 * 60 * 60) % (60 * 60) / 60);
+    let h = Math.floor(durationSecond / (24 * 60 * 60));
+    let m = Math.floor(durationSecond % (24 * 60 * 60) / (60 * 60));
+    let s = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) / 60);
 
     if (index === 0) return fixDigest(h.toString());
     if (index === 1) return fixDigest(m.toString());
     if (index === 2) return fixDigest(s.toString());
 
     return '无效时间'
+  }
+}
+
+@Pipe({name: 'timeTo'})
+export class TimeToPipe implements PipeTransform {
+  transform(fromTime: string, endTime: string): number {
+    var fromTimeParsed = moment.unix(+fromTime);
+    if (!fromTimeParsed.isValid()) fromTimeParsed = moment(fromTime);
+    if (!fromTimeParsed.isValid()) return 0;
+
+    var endTimeParsed = moment.unix(+endTime);
+    if (!endTimeParsed.isValid()) endTimeParsed = moment(endTime);
+    if (!endTimeParsed.isValid()) return 0;
+
+    let sec = Math.round(endTimeParsed.diff(fromTimeParsed) / 1000);
+
+    return sec;
   }
 }
 

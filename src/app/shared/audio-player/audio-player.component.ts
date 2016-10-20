@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 import {AudioPlayerService} from './audio-player.service';
@@ -11,8 +11,7 @@ import {MessageModel} from '../api/message/message.model';
   providers: [AudioPlayerService]
 })
 
-export class AudioPlayerComponent {
-
+export class AudioPlayerComponent implements OnInit {
   @Input() message: MessageModel;
   @Input() isWhiteTheme: MessageModel;
   @LocalStorage() public audioPlayed: Object = {};
@@ -54,5 +53,9 @@ export class AudioPlayerComponent {
 
   get isPlayed(): boolean {
     return this.played;
+  }
+
+  get audioDuration(): number {
+    return Math.round(this.message.audio.duration / 1000);
   }
 }

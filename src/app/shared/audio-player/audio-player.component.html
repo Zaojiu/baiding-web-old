@@ -1,5 +1,9 @@
 <div class="audio-player-container" [ngClass]="{'theme-white': isWhiteTheme}" (click)="playOrStopVoice()">
   <app-waving-progress [playing]="isPlaying" [isWhite]="isWhiteTheme" class="wave-component"></app-waving-progress>
+  <span class="audio-duration">{{audioDuration}}秒</span>
+  <div class="play-btn" *ngIf="!isPlaying">
+    <i class="bi bi-play"></i>
+  </div>
+  <playing-btn *ngIf="isPlaying" class="animation-playing-btn" [audioDuration]="message.audio.duration / 1000"></playing-btn>
   <span class="dot" *ngIf="!isPlayed"></span>
-  <i class="bi" [class.bi-pause-round]="isPlaying" [class.bi-play]="!isPlaying"></i>
 </div>
