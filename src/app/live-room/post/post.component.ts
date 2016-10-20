@@ -5,6 +5,7 @@ import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {CommentApiService} from "../../shared/api/comment/comment.service";
+import {LiveStatus} from '../../shared/api/live/live.enums';
 
 @Component({
   templateUrl: './post.component.html',
@@ -21,9 +22,10 @@ export class PostComponent implements OnInit {
   isSubmited: boolean = false;
   images: File[];
   imageExist: boolean;
+  isOnCommentRequest: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-              private messageApiService: MessageApiService, private postService: PostService) {
+              private messageApiService: MessageApiService, private postService: PostService,private commentApiService:CommentApiService) {
   }
 
   ngOnInit() {
@@ -42,6 +44,15 @@ export class PostComponent implements OnInit {
         this.additionalContent = additionalContent
       })
     }
+
+
+    this.isClosed();
+    console.log(this.isClosed(),'isclosed')
+  }
+
+  isClosed(): boolean {
+    let liveInfo = this.liveService.getLiveInfoCache(this.id);
+    return liveInfo.status == LiveStatus.Ended;
   }
 
   backToMainScreen() {
@@ -52,8 +63,26 @@ export class PostComponent implements OnInit {
     this.router.navigate([`/lives/${this.id}/push-comment`]);
   }
 
+  editorPostComment():Promise<any> {
+    if (this.content === '') return;
+    if (this.isOnCommentRequest) return;
+
+    this.isOnCommentRequest = true;
+
+    return this.commentApiService.postComment(this.id, this.content).then(() => {
+      this.isOnCommentRequest = false;
+      return;
+    });
+  }
+
   submit() {
     this.imageExist = this.images && !!this.images.length;
+
+    if(this.isClosed() && this.content !== ''){
+      this.editorPostComment().then(()=>{
+        this.backToMainScreen();
+      })
+    }
 
     /*判断是否存在回复和推送动作*/
     if (this.commentId) {

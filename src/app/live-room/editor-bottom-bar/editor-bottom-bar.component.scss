@@ -16,10 +16,6 @@
   }
 
   &.is-closed {
-    .push-comment-btn, .more-op-btn {
-      opacity: 0.3;
-      pointer-events: none;
-    }
 
     .record-btn-container {
       pointer-events: none;

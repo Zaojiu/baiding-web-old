@@ -18,7 +18,7 @@
   <image-viewer-preview class="image-previewer" *ngIf="images && images.length != 0" [(imageFiles)]="images"></image-viewer-preview>
 
   <div class="bottom-bar scrollable">
-    <label class="add-image" for="image-selector"  *ngIf="!messageId && !commentId">
+    <label class="add-image" [ngClass]="{'is-closed':isClosed()}" for="image-selector"  *ngIf="!messageId && !commentId">
       <input class="fileSelector" id="image-selector" type="file"  [(fileSelector)]="images">
       <i class="bi bi-image"></i>
     </label>

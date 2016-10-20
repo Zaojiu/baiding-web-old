@@ -9,6 +9,7 @@ import { UserInfoService } from '../../shared/api/user-info/user-info.service';
 import { CommentModel } from '../../shared/api/comment/comment.model'
 import { UserInfoModel } from '../../shared/api/user-info/user-info.model';
 import { LiveInfoModel } from '../../shared/api/live/live.model';
+import {LiveStatus} from '../../shared/api/live/live.enums';
 
 @Component({
   templateUrl: './push-comment.component.html',
@@ -47,6 +48,10 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopObserveTimelineScroll();
+  }
+
+  isClosed(): boolean {
+    return this.liveInfo.status == LiveStatus.Ended;
   }
 
   gotoFirstComments() {

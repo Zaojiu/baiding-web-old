@@ -3,7 +3,10 @@ import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
-import {BottomPopupSelectorModel} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
+import {
+  BottomPopupSelectorModel,
+  BottomPopupSelectorItemModel
+} from '../../shared/bottom-popup-selector/bottom-popup-selector.model';
 import {TimelineService} from '../timeline/timeline.service';
 import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
@@ -76,8 +79,8 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
     return this.liveInfo.status == LiveStatus.Ended;
   }
 
-  gotoPushComment(){
-      this.router.navigate([`/lives/${this.liveId}/push-comment`]);
+  gotoPushComment() {
+    this.router.navigate([`/lives/${this.liveId}/push-comment`]);
   }
 
   gotoPostMessage() {
@@ -101,17 +104,17 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      model.items.push('邀请嘉宾');
-      model.items.push('结束直播');
-
+      let enable = !this.isClosed();
+      model.items.push(new BottomPopupSelectorItemModel('invite', '邀请嘉宾', enable));
+      model.items.push(new BottomPopupSelectorItemModel('close', '结束直播', enable));
       model.hasBottomBar = false;
 
       this.bottomPopupService.popup(model);
 
       this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
         item => {
-          if (item === '邀请嘉宾') return this.gotoInvitation();
-          if (item === '结束直播') return this.modalService.popup('结束此次直播?').then(result => {
+          if (item.id === 'invite') return this.gotoInvitation();
+          if (item.id === 'close') return this.modalService.popup('结束此次直播?').then(result => {
             if (result) this.liveService.closeLive(this.liveId);
           });
         }
