@@ -7,7 +7,7 @@
   box-sizing: content-box;
   background-color: rgb(75, 75, 75);
   display: flex;
-  
+
   &.playing {
     .playing-btn-left {
       .playing-btn-inner {
@@ -26,7 +26,6 @@
     position: relative;
     height: 26px;
     width: 13px;
-    //transform: rotate(360deg);
     overflow: hidden;
 
     .playing-btn-inner {
