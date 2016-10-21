@@ -11,7 +11,7 @@ import {PlayingBtnComponent} from "./playing-btn.component";
     declarations: [
       AudioPlayerComponent,
       WavingProgressComponent,
-      PlayingBtnComponent
+      PlayingBtnComponent,
     ],
     exports: [
       AudioPlayerComponent,
