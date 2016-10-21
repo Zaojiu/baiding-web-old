@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {MessageModel} from '../../../shared/api/message/message.model';
+import {MessageType} from '../../../shared/api/message/message.enum';
 import {UserInfoModel} from '../../../shared/api/user-info/user-info.model';
 import {LiveService} from '../../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../../shared/api/live/live.model';
@@ -130,21 +131,21 @@ export class MessageComponent {
   }
 
   getToolTipsItems(): string[] {
-    let liveInfo = this.liveService.getLiveInfoCache(this.liveId);
-    let enable = !this.isClosed();
-
-    let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'bi-check-round' : 'bi-circle';
-    let autoPlay = new ToolTipsModel('audio-auto-play',
-      `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`,true);
 
     let items = [];
-    items.push(autoPlay);
 
-    let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>',enable);
-    if (this.canReply()) {
-      items.push(reply);
+    if (this.message.type === MessageType.Audio) {
+      let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'bi-check-round' : 'bi-circle';
+      let autoPlay = new ToolTipsModel('audio-auto-play',
+        `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`, true);
+      items.push(autoPlay);
     }
 
+    if (this.canReply()) {
+      let enable = !this.isClosed();
+      let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>', enable);
+      items.push(reply);
+    }
 
     return items;
   }
