@@ -52,7 +52,7 @@ export class ImageViewerComponent implements OnInit {
     pinchWrapper.get('doubletap').set({enable: true});
   }
 
-  hasFile(){
+  hasFile() {
     return /^data:image\/.*?;base64/.test(this.imageSrc);
   }
 
@@ -80,6 +80,9 @@ export class ImageViewerComponent implements OnInit {
       } else {
         $image.css({'width': 'auto', 'height': `${screenHeight}px`});
       }
+    }else{
+      $image.css({'width': `${imgNaturalWidth}px`, 'height': 'auto'});
+      $image.css({'width': 'auto', 'height': `${imgNaturalHeight}px`});
     }
     this.imgEvent.fixWidth = $image.width();
     this.imgEvent.fixHeight = $image.height();
