@@ -17,6 +17,7 @@ export class ImageViewerComponent implements OnInit {
   imageSrc = '';
   isPopup: boolean;
   imgEvent: ImgEvent;
+  isLoading: boolean;
 
   constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService) {
     this.el = el.nativeElement
@@ -27,6 +28,7 @@ export class ImageViewerComponent implements OnInit {
       if (!model.images && !model.links) return;
 
       this.isPopup = true;
+      this.isLoading = true;
 
       if (model.images && model.images.length) {
         let imagesFile = model.images[0];
@@ -52,13 +54,18 @@ export class ImageViewerComponent implements OnInit {
     pinchWrapper.get('doubletap').set({enable: true});
   }
 
-  hasFile(){
+  hasFile() {
     return /^data:image\/.*?;base64/.test(this.imageSrc);
   }
 
   closePopup() {
     this.isPopup = false;
     this.imageViewerService.close();
+  }
+
+  imageLoaded() {
+    this.isLoading = false;
+    this.imageFitScreen();
   }
 
   imageFitScreen() {
@@ -80,6 +87,9 @@ export class ImageViewerComponent implements OnInit {
       } else {
         $image.css({'width': 'auto', 'height': `${screenHeight}px`});
       }
+    }else{
+      $image.css({'width': `${imgNaturalWidth}px`, 'height': 'auto'});
+      $image.css({'width': 'auto', 'height': `${imgNaturalHeight}px`});
     }
     this.imgEvent.fixWidth = $image.width();
     this.imgEvent.fixHeight = $image.height();

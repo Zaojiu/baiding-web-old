@@ -2,7 +2,8 @@
      (pan)="pan($event)"
      (panend)="panEnd($event)" (doubletap)="dbltap()">
 
-  <img class="popup-pinch-img" [src]="imageSrc" (load)="imageFitScreen()" alt="">
+  <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
+  <img class="popup-pinch-img" [src]="imageSrc" [style.opacity]="isLoading ? 0 : 1" (load)="imageLoaded()" alt="">
 
   <div class="delete-btn-wrapper" *ngIf="hasFile()">
     <a class="delete-btn" (click)="deleteImageSource()"><i class="bi bi-delete"></i></a>

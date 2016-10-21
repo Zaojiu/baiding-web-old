@@ -15,6 +15,13 @@
     display: block;
   }
 
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
   .delete-btn-wrapper {
     display: flex;
     position: fixed;
