@@ -41,6 +41,10 @@
       border-bottom: solid 1px rgb(218, 218, 218);
       cursor: pointer;
 
+      &.is-closed {
+        color: rgba(33, 150, 243, .5);
+        pointer-events: none;
+      }
       &:last-child {
         border-bottom: none;
       }

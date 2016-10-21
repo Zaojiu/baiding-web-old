@@ -11,5 +11,6 @@ export class WechatAudioModel {
   localId: string;
   serverId: string;
   translateResult: string;
+  duration: number;
 }
 

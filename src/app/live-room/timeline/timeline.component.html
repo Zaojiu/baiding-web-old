@@ -6,15 +6,15 @@
       <div class="countdown-container">
         <div class="countdown-day">
           <div class="countdown-day-item">
-            <span class="countdown-day-item-day">{{timeNow | durationFormater:liveInfo.expectStartAt:0}}</span>
+            <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:0}}</span>
             <span class="countdown-day-item-day-cn">天</span>
           </div>
           <div class="countdown-day-item">
-            <span class="countdown-day-item-day">{{timeNow | durationFormater:liveInfo.expectStartAt:1}}</span>
+            <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:1}}</span>
             <span class="countdown-day-item-day-cn">时</span>
           </div>
           <div class="countdown-day-item">
-            <span class="countdown-day-item-day">{{timeNow | durationFormater:liveInfo.expectStartAt:2}}</span>
+            <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:2}}</span>
             <span class="countdown-day-item-day-cn">分</span>
           </div>
         </div>

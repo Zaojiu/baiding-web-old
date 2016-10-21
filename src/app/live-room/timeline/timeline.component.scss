@@ -60,12 +60,13 @@
     padding-bottom: 40px;
 
     .talent {
-      display: inline-flex;
+      display: flex;
       margin: 13px;
       height: 24px;
       font-size: 14px;
       color: rgb(158, 161, 165);
       letter-spacing: 0px;
+      overflow: hidden;
 
       .talent-avatar {
         height: 100%;
@@ -78,6 +79,8 @@
         font-size: 14px;
         color: rgb(158, 161, 165);
         letter-spacing: 0px;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
 
@@ -88,6 +91,7 @@
       color: rgb(75, 75, 75);
       letter-spacing: 0.58px;
       line-height: 28px;
+      word-wrap:break-word;
     }
 
     .words {

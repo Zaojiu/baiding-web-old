@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
 
-  .loading{
+  .loading {
     position: absolute;
-    top:50%;
-    left:50%;
+    top: 50%;
+    left: 50%;
     transform: translateX(-50%) translateY(-50%);
   }
   .no-result {
@@ -96,6 +96,10 @@
         .operation-btn {
           font-size: 14px;
 
+          &.is-closed {
+            color: rgba(33, 150, 243, .5);
+            pointer-events: none;
+          }
           &.pushed {
             color: rgba(33, 150, 243, .5);
           }

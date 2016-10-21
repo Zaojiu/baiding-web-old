@@ -1,4 +1,4 @@
-<div class="editor-bottom-bar" [ngClass]="{'is-vip': !isAdmin()}">
+<div class="editor-bottom-bar" [ngClass]="{'is-vip': !isAdmin(),'is-closed':isClosed()}">
   <a class="share-btn" *ngIf="isAdmin()" (click)="popupShare()" (contextmenu)="$event.preventDefault()"><i class="bi bi-share"></i></a>
   <a class="post-btn" (click)="gotoPostMessage()" (contextmenu)="$event.preventDefault()"><i class="bi bi-keyboard"></i></a>
   <div class="record-btn-container"

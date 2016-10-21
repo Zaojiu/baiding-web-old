@@ -9,6 +9,7 @@ import {MessageService} from './message.service';
 import {UserAnimEmoji} from '../../../shared/praised-animation/praised-animation.model';
 import {AudioPlayerComponent} from '../../../shared/audio-player/audio-player.component'
 import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
+import {LiveStatus} from "../../../shared/api/live/live.enums";
 
 @Component({
   selector: 'message',
@@ -124,16 +125,22 @@ export class MessageComponent {
     this.audioPlayer.play();
   }
 
+  isClosed(): boolean {
+    return this.liveInfo.status == LiveStatus.Ended;
+  }
+
   getToolTipsItems(): string[] {
+    let liveInfo = this.liveService.getLiveInfoCache(this.liveId);
+    let enable = !this.isClosed();
 
     let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'bi-check-round' : 'bi-circle';
     let autoPlay = new ToolTipsModel('audio-auto-play',
-      `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`);
+      `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`,true);
 
     let items = [];
     items.push(autoPlay);
 
-    let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>');
+    let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>',enable);
     if (this.canReply()) {
       items.push(reply);
     }
