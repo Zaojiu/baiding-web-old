@@ -11,13 +11,15 @@
   &.playing {
     .playing-btn-left {
       .playing-btn-inner {
-        animation: play-duration-left linear;
+        animation-name: play-duration-left;
+        animation-timing-function: linear;
       }
     }
 
     .playing-btn-right {
       .playing-btn-inner {
-        animation: play-duration-right linear;
+        animation-name: play-duration-right;
+        animation-timing-function: linear;
       }
     }
   }
