@@ -21,6 +21,7 @@ import {BottomPopupSelectorService} from './shared/bottom-popup-selector/bottom-
 import {SharePopupComponent} from './shared/share-popup/share-popup.component';
 import {SharePopupService} from './shared/share-popup/share-popup.service';
 import {ModalComponent} from "./shared/modal/modal.component";
+import {ErrorTipsComponent} from "./shared/error-tips/error-tips.component";
 import {ModalService} from "./shared/modal/modal.service";
 import {TitleSetterDirective} from './shared/title/title.directive';
 import {AutofocusDirective} from './shared/autofocus/autofocus.directive';
@@ -49,7 +50,8 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
     TitleSetterDirective,
     SharePopupComponent,
     AutofocusDirective,
-    ModalComponent
+    ModalComponent,
+    ErrorTipsComponent,
   ],
   providers: [
     Title,
