@@ -9,7 +9,7 @@ import {EmptyComponent} from "../shared/empty/empty.component";
 const route: Routes = [
   {
     path: 'lives/:id',
-    canActivate: [ AuthGuard],
+    canActivate: [ AuthGuard ],
     children: [
       {
         path: '', component: LiveRoomComponent,
