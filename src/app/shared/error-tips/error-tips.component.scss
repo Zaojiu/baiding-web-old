@@ -1,0 +1,17 @@
+.offline-container {
+  position: absolute;
+  left: 0;
+  bottom: 80px;
+  width: 100%;
+  display: none;
+  justify-content:center;
+
+  .offline-context {
+    border-radius: 7px;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    background: rgba(76, 76, 76, 0.90);
+    max-width: 80%;
+    font-size: 14px;
+  }
+}
