@@ -30,7 +30,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
               private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
   }
 
-
   toShowBeginnerGuide(result: boolean) {
     this.isBeginnerGuideShow = result;
   }
@@ -44,9 +43,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   getShareUri(): string {
-    let uriTree = this.router.parseUrl(location.hash.replace('#', ''))
-    let search = uriTree.queryParams;
-    if (!search['source']) search['source'] = 'share';
+    let uriTree = this.router.createUrlTree([`/lives/${this.id}`, {source: 'share'}]);
     let hash = this.router.serializeUrl(uriTree);
     let uri = location.href.replace(location.hash, `#${hash}`);
     return uri;
@@ -74,7 +71,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
 
     if (!this.liveService.getLiveRoomAlreadyVisited()) {
-      let fromShare = !!this.route.snapshot.queryParams['source'];
+      let fromShare = this.route.snapshot.params['source'] === 'share';
       this.showInfo = fromShare;
       if (!fromShare) {
         this.isBeginnerGuideShow = true;
