@@ -1,12 +1,12 @@
 export class BottomPopupSelectorItemModel {
   id: string;
   content: string;
-  enabled: boolean;
+  enable: boolean;
 
-  constructor(id: string, content: string, enabled: boolean) {
+  constructor(id: string, content: string, enable: boolean) {
     this.id = id;
     this.content = content;
-    this.enabled = enabled;
+    this.enable = enable;
   }
 }
 

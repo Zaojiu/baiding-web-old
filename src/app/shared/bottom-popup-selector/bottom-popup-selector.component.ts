@@ -21,12 +21,14 @@ export class BottomPopupSelectorComponent implements OnInit {
 
   ngOnInit() {
     // 此组件由于是全局组件，生命周期与app一样长，所以不需退订。
+
     this.bottomPopupService.needPopup$.subscribe(
       model => {
         if (this.isPopup) { return }
 
         this.isPopup = true;
         this.items = model.items;
+        console.log(this.items);
         this.hasBottomBar = model.hasBottomBar;
       }
     );
