@@ -104,7 +104,6 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      console.log(this.isClosed())
       let enable = !this.isClosed();
       model.items.push(new BottomPopupSelectorItemModel('invite', '邀请嘉宾', enable));
       model.items.push(new BottomPopupSelectorItemModel('close', '结束直播', enable));
