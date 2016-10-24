@@ -17,14 +17,14 @@
     flex-direction: row;
 
     .back-to-home {
-      margin:auto;
+      margin: auto;
       margin-left: 12px;
       font-size: 17px;
       color: rgb(33, 150, 243);
       line-height: 20px;
     }
 
-    .chat-info{
+    .chat-info {
       display: inline-block;
       font-size: 12px;
       margin-right: 20px;
@@ -35,12 +35,6 @@
         color: rgb(224, 229, 234);
         margin-right: 5px;
       }
-    }
-
-    .filter-btn {
-      float: right;
-      padding: 0 20px;
-      font-size: 14px;
     }
   }
 
