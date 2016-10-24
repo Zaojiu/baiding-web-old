@@ -2,6 +2,48 @@
   display: flex;
   flex-direction: column;
 
+  .top-bar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+    border-top: solid 1px rgba(143, 143, 143, .3);
+    font-size: 0;
+    background-color: rgba(250, 250, 250, 0.9);
+    display: flex;
+    flex-direction: row;
+
+    .back-to-home {
+      margin:auto;
+      margin-left: 12px;
+      font-size: 17px;
+      color: rgb(33, 150, 243);
+      line-height: 20px;
+    }
+
+    .chat-info{
+      display: inline-block;
+      font-size: 12px;
+      margin-right: 20px;
+      color: rgb(158, 161, 165);
+
+      .bi {
+        font-size: 18px;
+        color: rgb(224, 229, 234);
+        margin-right: 5px;
+      }
+    }
+
+    .filter-btn {
+      float: right;
+      padding: 0 20px;
+      font-size: 14px;
+    }
+  }
+
   .loading {
     position: absolute;
     top: 50%;

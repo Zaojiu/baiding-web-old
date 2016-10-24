@@ -1,4 +1,14 @@
 <div class="push-comment-container">
+  <div class="top-bar">
+    <div class="back-to-home">返回直播间</div>
+
+    <div class="chat-info" *ngIf="liveInfo" >
+      <i class="bi bi-chat6"></i>
+      {{liveInfo.commented}}条新的消息
+    </div>
+
+  </div>
+
   <div class="no-result" *ngIf="!comments.length">暂无评论</div>
   <bd-loading class="loading" *ngIf="!liveInfo"></bd-loading>
 
