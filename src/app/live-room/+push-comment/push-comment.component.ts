@@ -58,10 +58,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   }
 
   onReceivedEventsReturn(evt: MqEvent){
-    console.log(evt,'event');
     if(evt.event == EventType.LiveMsgUpdate){
       this.unreadCount++;
-      console.log(this.unreadCount,'unreadCount');
     }
   }
 
