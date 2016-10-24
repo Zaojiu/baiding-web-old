@@ -76,7 +76,7 @@ export class EditorBottomBarComponent implements OnInit, OnDestroy {
   }
 
   isClosed(): boolean {
-    return this.liveInfo.status == LiveStatus.Ended;
+    return this.liveInfo.status === LiveStatus.Ended;
   }
 
   gotoPushComment() {
