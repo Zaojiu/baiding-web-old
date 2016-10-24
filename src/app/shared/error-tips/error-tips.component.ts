@@ -14,7 +14,7 @@ export class ErrorTipsComponent implements OnInit {
   isOpened: boolean;
   routerSubscription: Subscription;
 
-  constructor(private router: Router, ) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {}
