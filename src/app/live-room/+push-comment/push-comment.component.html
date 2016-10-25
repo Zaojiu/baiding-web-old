@@ -28,6 +28,9 @@
           <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId" [ngClass]="{'is-closed': isClosed()}">推送</a>
           <span class="operation-btn pushed" *ngIf="comment.msgId">已推送</span>
         </div>
+        <div *ngIf="userInfo.uid && userInfo.uid !== liveInfo.admin.uid">
+          <span class="operation-btn pushed-audience" *ngIf="comment.msgId"><i class="bi bi-chat5"></i>推送</span>
+        </div>
       </div>
     </div>
   </div>
@@ -41,5 +44,6 @@
       <i class="bi bi-chat5"></i>
       {{liveInfo.niced}}
     </div>
+    <div class="people-filter" (click)="filterPeople()">筛选</div>
   </div>
 </div>

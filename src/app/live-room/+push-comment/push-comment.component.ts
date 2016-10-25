@@ -144,4 +144,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   backToMainScreen() {
     this.router.navigate(['/lives/' + this.liveId]);
   }
+
+  filterPeople(){
+    //todo
+  }
 }

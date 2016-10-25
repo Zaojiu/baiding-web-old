@@ -138,6 +138,9 @@
           &.pushed {
             color: rgba(33, 150, 243, .5);
           }
+          &.pushed-audience {
+            color: rgb(158, 161, 165);
+          }
         }
       }
     }
@@ -162,6 +165,15 @@
         color: rgb(224, 229, 234);
         margin-right: 5px;
       }
+    }
+    .people-filter {
+      /* 筛选: */
+      float: right;
+      display: inline-block;
+      font-size: 14px;
+      color: rgb(33, 150, 243);
+      line-height:49px;
+      margin-right: 17px;
     }
 
     .filter-btn {
