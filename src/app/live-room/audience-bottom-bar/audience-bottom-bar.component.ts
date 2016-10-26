@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {TimelineService} from '../timeline/timeline.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {LiveService} from '../../shared/api/live/live.service';
+import {MessageService} from '../timeline/message/message.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
@@ -29,9 +30,13 @@ export class AudienceBottomBarComponent implements OnInit {
   praisedSub: Subscription;
   isLoading: boolean;
   private $window: any;
+  private receviedAvatarTouchedSub: Subscription;
+  private el: HTMLElement;
+  @ViewChild('commentInput') commentInput: ElementRef;
 
   constructor(private route: ActivatedRoute, private liveService: LiveService, private commentApiService: CommentApiService,
-              private timelineService: TimelineService ) {
+              private timelineService: TimelineService, private  messageService: MessageService,el: ElementRef) {
+    this.el = el.nativeElement;
   }
 
   ngOnInit() {
@@ -50,11 +55,20 @@ export class AudienceBottomBarComponent implements OnInit {
       this.liveInfo.praisedAnimations.push(userAnim);
     });
 
+    //处理手机键盘问题
     this.$window = $(window);
+
+    //监听点击用户头像事件
+    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
+      this.commentContent = `@${userTouched.nick}(${userTouched.uid}) `;
+      this.commentInput.nativeElement.focus();
+
+    });
   }
 
   ngOnDestroy() {
     this.praisedSub.unsubscribe();
+    if(this.receviedAvatarTouchedSub){this.receviedAvatarTouchedSub.unsubscribe()};
   }
 
   postComment() {
@@ -75,7 +89,7 @@ export class AudienceBottomBarComponent implements OnInit {
 
   switchToComment() {
     setTimeout(()=> {
-      const top = this.$window.height() - this.$window[0].innerHeight ;
+      const top = this.$window.height() - this.$window[0].innerHeight;
       this.$window.scrollTop(top);
     }, 400);
 

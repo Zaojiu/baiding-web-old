@@ -19,33 +19,35 @@ export class LiveService {
   constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {
   }
 
-  isEditor(id: string): boolean {
+  isEditor(liveId: string, uid?: number): boolean {
     let userInfo = this.userInfoService.getUserInfoCache();
-    let liveInfo = this.getLiveInfoCache(id);
+    let liveInfo = this.getLiveInfoCache(liveId);
 
     if (!userInfo || !liveInfo || !liveInfo.admin) return false;
 
     var isEditor = false;
+    let _uid = uid ? uid : userInfo.uid;
 
-    if (userInfo.uid === liveInfo.admin.uid) isEditor = true;
+    if (_uid === liveInfo.admin.uid) isEditor = true;
     for (let editor of liveInfo.editors) {
-      if (userInfo.uid === editor.uid) isEditor = true;
+      if (_uid === editor.uid) isEditor = true;
     }
 
     return isEditor;
   }
 
-  isAudience(id: string): boolean {
-    return !this.isEditor(id);
+  isAudience(liveId: string, uid?: number): boolean {
+    return !this.isEditor(liveId,uid);
   }
 
-  isAdmin(id: string): boolean {
+  isAdmin(liveId: string, uid?: number): boolean {
     let userInfo = this.userInfoService.getUserInfoCache();
-    let liveInfo = this.getLiveInfoCache(id);
+    let liveInfo = this.getLiveInfoCache(liveId);
+    let _uid = uid ? uid : userInfo.uid;
 
     if (!userInfo || !liveInfo || !liveInfo.admin) return false;
 
-    return userInfo.uid === liveInfo.admin.uid;
+    return _uid === liveInfo.admin.uid;
   }
 
   setLiveRoomAlreadyVisited() {
