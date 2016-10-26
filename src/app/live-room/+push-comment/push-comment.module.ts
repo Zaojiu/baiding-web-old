@@ -7,11 +7,13 @@ import {PipeModule} from "../../shared/pipe/pipe.module";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
 import {PushCommentScrollerDirective} from "./push-comment.directive";
 import {TimelineService} from "../timeline/timeline.service";
+import {CommentApiService} from "../../shared/api/comment/comment.service";
+import {PushCommentService} from "./push-comment.service";
 
 @NgModule({
   imports: [
-    CommonModule,
     ROUTES,
+    CommonModule,
     PipeModule,
     LoadingModule,
   ],
@@ -21,6 +23,8 @@ import {TimelineService} from "../timeline/timeline.service";
   ],
   providers: [
     TimelineService,
+    CommentApiService,
+    PushCommentService,
   ],
 })
 

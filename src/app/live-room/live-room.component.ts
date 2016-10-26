@@ -96,7 +96,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);
-    }, 10 * 1000)
+    }, 10 * 1000);
   }
 
   ngOnDestroy() {
