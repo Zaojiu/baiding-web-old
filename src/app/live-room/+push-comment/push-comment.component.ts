@@ -160,9 +160,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      let enable = !this.isClosed();
-      model.items.push(new BottomPopupSelectorItemModel('admin', '@主持人', enable));
-      model.items.push(new BottomPopupSelectorItemModel('invite', '@嘉宾A', enable));
+      model.items.push(new BottomPopupSelectorItemModel('admin', '@主持人', true));
+      model.items.push(new BottomPopupSelectorItemModel('invite', '@嘉宾A', true));
       model.hasBottomBar = false;
 
       this.bottomPopupService.popup(model);
@@ -171,9 +170,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
         item => {
           if (item.id === 'admin') return this.filterPeople();
           //todo
-          if (item.id === 'close') return this.modalService.popup('结束此次直播?').then(result => {
-            if (result) this.liveService.closeLive(this.liveId);
-          });
         }
       );
 

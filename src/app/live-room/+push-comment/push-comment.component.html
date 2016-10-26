@@ -28,8 +28,8 @@
           <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId" [ngClass]="{'is-closed': isClosed()}">推送</a>
           <span class="operation-btn pushed" *ngIf="comment.msgId">已推送</span>
         </div>
-        <div *ngIf="userInfo.uid && userInfo.uid !== liveInfo.admin.uid">
-          <span class="operation-btn pushed-audience" *ngIf="comment.msgId"><i class="bi bi-chat5"></i>推送</span>
+        <div *ngIf="userInfo.uid && liveInfo && userInfo.uid !== liveInfo.admin.uid">
+          <span class="operation-btn pushed-audience" *ngIf="comment.msgId"><i class="bi bi-chat5"></i>已推送</span>
         </div>
       </div>
     </div>
