@@ -3,30 +3,28 @@
   flex-direction: column;
 
   .top-bar {
+    display: flex;
     position: absolute;
     top: 0px;
     left: 0px;
     right: 0px;
     height: 50px;
-    line-height: 50px;
     box-sizing: border-box;
     border-top: solid 1px rgba(143, 143, 143, .3);
-    font-size: 0;
-    background-color: rgba(250, 250, 250, 0.9);
-    display: flex;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    justify-content: center;
+    align-items: center;
+    line-height: 1em;
 
     .back-to-home {
-      margin: auto;
-      margin-left: 12px;
       font-size: 17px;
       color: rgb(33, 150, 243);
-      line-height: 20px;
+      flex-grow: 1;
     }
 
     .chat-info {
-      display: inline-block;
       font-size: 12px;
-      margin-right: 20px;
       color: rgb(158, 161, 165);
 
       .bi {

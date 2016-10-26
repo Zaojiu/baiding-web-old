@@ -12,7 +12,6 @@ export class LiveInfoResolver implements Resolve<any>{
   constructor(private liveService: LiveService, private router: Router) {
   }
 
-
   resolve(route: ActivatedRouteSnapshot) {
     this.id = route.params['id'];
     return this.liveService.getLiveInfo(this.id).then((res)=> {

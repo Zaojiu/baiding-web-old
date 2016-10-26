@@ -17,12 +17,10 @@ import {
   BottomPopupSelectorModel,
   BottomPopupSelectorItemModel
 } from "../../shared/bottom-popup-selector/bottom-popup-selector.model";
-import {ModalService} from "../../shared/modal/modal.service";
 
 @Component({
   templateUrl: './push-comment.component.html',
   styleUrls: ['./push-comment.component.scss'],
-  providers: [CommentApiService, PushCommentService, UserInfoService, LiveService]
 })
 
 export class PushCommentComponent implements OnInit, OnDestroy {
@@ -40,7 +38,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private pushCommentService: PushCommentService, private userInfoService: UserInfoService,
-              private liveService: LiveService, private timelineService: TimelineService,private bottomPopupService: BottomPopupSelectorService,private modalService: ModalService) {
+              private liveService: LiveService, private timelineService: TimelineService,
+              private bottomPopupService: BottomPopupSelectorService) {
   }
 
   ngOnInit() {
@@ -67,8 +66,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
   }
 
-  onReceivedEventsReturn(evt: MqEvent){
-    if(evt.event == EventType.LiveMsgUpdate){
+  onReceivedEventsReturn(evt: MqEvent) {
+    if (evt.event == EventType.LiveMsgUpdate) {
       this.unreadCount++;
     }
   }
@@ -155,7 +154,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.router.navigate(['/lives/' + this.liveId]);
   }
 
-  popupBottomSelector(){
+  popupBottomSelector() {
     if (this.bottomPopupService.isClosed) {
       const model = new BottomPopupSelectorModel();
       model.items = [];
@@ -185,7 +184,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterPeople(){
-   //todo
+  filterPeople() {
+    //todo
   }
 }

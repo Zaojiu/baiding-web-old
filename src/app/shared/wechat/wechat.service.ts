@@ -341,4 +341,8 @@ export class WechatService {
       });
     })
   }
+
+  closeWindow() {
+    wx.closeWindow();
+  }
 }

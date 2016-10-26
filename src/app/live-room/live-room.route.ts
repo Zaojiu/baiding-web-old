@@ -24,7 +24,8 @@ const route: Routes = [
       { path: 'push-comment', loadChildren: 'app/live-room/+push-comment/push-comment.module#PushCommentModule' },
       { path: 'history', loadChildren: 'app/live-room/+history/history.module#HistoryModule' },
       { path: 'invitation', loadChildren: 'app/live-room/+invite/invite.module#InviteModule' },
-      { path: 'share/:message_id', loadChildren: 'app/live-room/+share/share.module#ShareModule' }
+      { path: 'share/:message_id', loadChildren: 'app/live-room/+share/share.module#ShareModule' },
+      { path: 'settings', loadChildren: 'app/live-room/+settings/settings.module#SettingsModule' }
     ]
   }
 ]
