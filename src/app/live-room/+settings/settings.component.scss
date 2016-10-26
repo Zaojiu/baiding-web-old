@@ -94,10 +94,12 @@
 
   .vips-container {
     .content {
+      font-size: 0;
+
       .avatar-container {
         display: inline-block;
-        width: 23%;
-        margin: 1%;
+        width: 25%;
+        padding: 1%;
         text-align: center;
         vertical-align: top;
 
@@ -119,9 +121,9 @@
       }
 
       .invite {
-        display: inline-flex;
-        width: 23%;
-        margin: 1%;
+        display: inline-block;
+        width: 25%;
+        padding: 1%;
         text-align: center;
         vertical-align: top;
 
