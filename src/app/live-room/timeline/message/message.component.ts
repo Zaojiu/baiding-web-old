@@ -16,7 +16,6 @@ import {LiveStatus} from "../../../shared/api/live/live.enums";
   selector: 'message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
-  providers: [MessageService]
 })
 
 export class MessageComponent {
@@ -98,12 +97,12 @@ export class MessageComponent {
     }, 1000);
   }
 
-  isEditor() {
-    return this.liveService.isEditor(this.liveId);
+  isEditor(uid?: number) {
+    return this.liveService.isEditor(this.liveId, uid);
   }
 
-  isAudience() {
-    return this.liveService.isAudience(this.liveId);
+  isAudience(uid?: number) {
+    return this.liveService.isAudience(this.liveId, uid);
   }
 
   setPraise() {
@@ -172,5 +171,11 @@ export class MessageComponent {
 
   private _toggleAudioAutoPlay() {
     this.liveService.toggleAudioAutoPlay(this.liveId);
+  }
+
+  emitAvatarClick(userInfo: UserInfoModel) {
+    if (this.isEditor(userInfo.uid)) {
+      this.messageService.emitAvatarUser(userInfo);
+    }
   }
 }

@@ -30,6 +30,7 @@ import {TopBarComponent} from "./top-bar/top-bar.component";
 import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
 import {ToolTipsModule} from "../shared/tooltips/tooltips.module";
 import {AnimationModule} from "../shared/animation/animation.module";
+import {MessageService} from "./timeline/message/message.service";
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import {AnimationModule} from "../shared/animation/animation.module";
     LiveInfoResolver,
     QuitEditGuard,
     UploadApiService,
+    MessageService,
   ]
 })
 
