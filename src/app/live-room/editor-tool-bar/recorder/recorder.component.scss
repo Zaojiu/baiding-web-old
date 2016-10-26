@@ -1,0 +1,124 @@
+.record-background {
+  height: 213px;
+  background-color: rgb(75, 75, 75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .record-container {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 95px;
+      width: 95px;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: solid 2px rgb(255, 255, 255);
+      transform: translateX(-50%) translateY(-50%);
+      transition: all .5s;
+      box-sizing: content-box;
+    }
+
+    &.recording {
+      &:before {
+        border: solid 20px rgb(165, 165, 165);
+        transform: translateX(-50%) translateY(-50%) scale(.83333);
+      }
+
+      .recording-tips {
+        opacity: 1;
+      }
+
+      .inner {
+        .text {
+          opacity: 0;
+        }
+      }
+    }
+
+    &.canceled {
+      pointer-events: none;
+
+      .canceled-tips {
+        opacity: 1;
+      }
+
+      .inner {
+        background-color: rgba(255, 255, 255, 0);
+
+        .bi-cancel {
+          opacity: 1;
+        }
+        .text {
+          opacity: 0;
+        }
+      }
+    }
+
+    &.warning {
+      pointer-events: none;
+
+      .warning-tips {
+        opacity: 1;
+      }
+
+      .inner {
+        background-color: rgba(255, 255, 255, 0);
+
+        .bi-warning {
+          opacity: 1;
+        }
+        .text {
+          opacity: 0;
+        }
+      }
+    }
+
+    .tips {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: rgb(255, 255, 255);
+      opacity: 0;
+      transition: opacity .5s;
+      white-space: nowrap;
+    }
+
+    .inner {
+      width: 80px;
+      height: 80px;
+      background-color: rgb(33, 150, 243);
+      border-radius: 50%;
+
+      .text, .bi-cancel, .bi-warning {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        transition: opacity .5s;
+      }
+
+      .text {
+        opacity: 1;
+        white-space: nowrap;
+      }
+
+      .bi-cancel, .bi-warning {
+        font-size: 45px;
+        opacity: 0;
+      }
+
+      .bi-cancel {
+        margin-left: -2px;
+        margin-top: -2px;
+      }
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Subject} from 'rxjs/Subject';
 
 import {AppConfig} from '../../app.config';
 import {WechatConfigModel, WechatAudioModel} from './wechat.model';
@@ -17,12 +16,11 @@ declare var wx: any;
 @Injectable()
 export class WechatService {
   private wechatUrl: string;
-  private recordSource = new Subject<WechatAudioModel>();
   private hasInit: boolean;
   playingVoiceId = '';
   private _onVoicePlayEnd: (id: string) => void;
-
-  record$ = this.recordSource.asObservable();
+  private autoCompleteResolver: (audioModel: WechatAudioModel) => void;
+  private autoCompleteRejecter: (reason: string) => void;
 
   constructor(private http: Http, private config: AppConfig, private store: StoreService) {
     this.wechatUrl = `${config.urlPrefix.io}/api/wechat/signature/config`;
@@ -71,7 +69,7 @@ export class WechatService {
 
     return new Promise<string>((resolve, reject) => {
       wx.error(reason => {
-        console.log('wx err:', reason)
+        console.log('wx err:', reason);
 
         if (hasRetry) {
           return reject(reason);
@@ -90,7 +88,15 @@ export class WechatService {
         wx.onVoiceRecordEnd({
           // 录音时间超过一分钟没有停止的时候会执行 complete 回调
           complete: (res) => {
-            this.recordSource.next(res.localId)
+            if (this.autoCompleteResolver) {
+              this.processVoice(res.localId).then(audioModel => {
+                audioModel.duration = 60;
+                this.autoCompleteResolver(audioModel);
+                console.log('wechat record translate & upload done successful: ', res.localId, audioModel);
+              }, (err) => {
+                this.autoCompleteRejecter(err);
+              });
+            }
           }
         });
 
@@ -180,35 +186,66 @@ export class WechatService {
     return this.http.post(url, null).toPromise().then(res => {});
   }
 
-  startRecord() {
-    if (!this.hasInit) return;
+  startRecord(): Promise<void> {
+    if (!this.hasInit) return Promise.reject('微信未初始化');
 
-    wx.startRecord();
+    return new Promise((resolve, reject) => {
+      wx.startRecord({
+        success: () => {
+          resolve();
+        },
+        fail: (err) => {
+          reject(err);
+        }
+      })
+    });
   }
 
-  stopRecord(duration: number) {
-    console.log('wechat init: ', this.hasInit);
+  autoCompelete(): Promise<WechatAudioModel> {
+    if (!this.hasInit)  return Promise.reject('微信未初始化');
 
-    if (!this.hasInit) return;
-
-    console.log('wechat record stop');
-
-    wx.stopRecord({
-      success: (res) => {
-        console.log('wechat record stop successful');
-        this.processVoice(res.localId).then((audioModel) => {
-          console.log('wechat record translate & upload done successful: ', res.localId, audioModel);
-          audioModel.duration = duration;
-          this.recordSource.next(audioModel);
-        })
-      }
-    })
+    return new Promise((resolve, reject) => {
+      this.autoCompleteResolver = resolve;
+      this.autoCompleteResolver = reject;
+    });
   }
 
-  cancelRecord() {
-    if (!this.hasInit) return;
+  stopRecord(duration: number): Promise<WechatAudioModel> {
+    if (!this.hasInit) return Promise.reject('微信未初始化');
 
-    wx.stopRecord({});
+    return new Promise((resolve, reject) => {
+      wx.stopRecord({
+        success: (res) => {
+          console.log('wechat record stop successful');
+
+          this.processVoice(res.localId).then((audioModel) => {
+            audioModel.duration = duration;
+            resolve(WechatAudioModel);
+            console.log('wechat record translate & upload done successful: ', res.localId, audioModel);
+          }, (err) => {
+            reject(err);
+          });
+        },
+        fail: (err) => {
+          reject(err);
+        }
+      })
+    });
+  }
+
+  cancelRecord(): Promise<void> {
+    if (!this.hasInit) return Promise.reject('微信未初始化');
+
+    return new Promise((resolve, reject) => {
+      wx.stopRecord({
+        success: () => {
+          resolve();
+        },
+        fail: (err) => {
+          reject(err);
+        }
+      });
+    });
   }
 
   playVoice(id: string): Promise<string> {
@@ -247,6 +284,9 @@ export class WechatService {
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: (res) => {
           resolve(res.serverId); // 返回音频的服务器端ID
+        },
+        fail: (err) => {
+          reject(err);
         }
       })
     })
@@ -259,6 +299,9 @@ export class WechatService {
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: function (res) {
           resolve(res.localId); // 返回音频的本地ID
+        },
+        fail: (err) => {
+          reject(err);
         }
       })
     })
@@ -271,6 +314,9 @@ export class WechatService {
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: (res) => {
           resolve(res.translateResult); // 语音识别的结果
+        },
+        fail: (err) => {
+          reject(err);
         }
       })
     })
@@ -290,7 +336,9 @@ export class WechatService {
         audioModel.translateResult = translateResult;
 
         resolve(audioModel)
-      })
+      }, (err) => {
+        reject(err);
+      });
     })
   }
 }
