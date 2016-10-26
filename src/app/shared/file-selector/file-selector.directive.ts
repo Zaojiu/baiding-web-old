@@ -1,6 +1,6 @@
 import {Directive, ElementRef, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges} from '@angular/core'
 import {ModalService} from "../modal/modal.service";
-declare var $: any
+declare var $: any;
 
 @Directive({
   selector: '[fileSelector]'
@@ -28,6 +28,7 @@ export class FileSelectorDirective implements OnInit, OnChanges {
   ngOnInit() {
     let $this = $(this.el);
     let maxSize = 1024 * 1024 * 8;
+
     $this.on('change', () => {
       if ($this[0].files.length) {
         let file = $this[0].value;

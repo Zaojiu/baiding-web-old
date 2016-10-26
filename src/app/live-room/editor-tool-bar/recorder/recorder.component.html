@@ -1,0 +1,19 @@
+<div class="record-background">
+  <div
+    class="record-container"
+    [ngClass]="{'recording': isRecording, 'canceled': isCanceled, 'warning': isTooShort}"
+    (touchstart)="startRecord()"
+    (touchend)="stopRecord()"
+    (panup)="cancelRecord()"
+    (contextmenu)="$event.preventDefault()"
+  >
+    <span class="tips recording-tips">手指上划，取消发送</span>
+    <span class="tips canceled-tips">已取消发送</span>
+    <span class="tips warning-tips">说话时间太短</span>
+    <div class="inner">
+      <span class="text">长按录音</span>
+      <i class="bi bi-cancel"></i>
+      <i class="bi bi-warning"></i>
+    </div>
+  </div>
+</div>

@@ -39,10 +39,9 @@ export class ToolTipsComponent implements OnChanges {
           if ($(e.target).is(this.$el)) {
             hasParent = true;
           } else {
-            $(e.target).parents().each(function () {
-              if ($(this).is(this.$el)) {
-                hasParent = true;
-              }
+            let $self = this.$el;
+            $(e.target).parents().each(function() {
+              if ($(this).is($self)) hasParent = true;
             });
           }
 
