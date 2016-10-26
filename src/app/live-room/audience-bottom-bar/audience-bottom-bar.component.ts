@@ -10,6 +10,7 @@ import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
+import {EditMode} from "./audience-bottom-bar.enums";
 
 declare var $: any;
 
@@ -25,21 +26,22 @@ export class AudienceBottomBarComponent implements OnInit {
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   commentContent: string;
-  isOnComment: boolean;
   isOnCommentRequest: boolean;
   praisedSub: Subscription;
   isLoading: boolean;
-  private $window: any;
   private receviedAvatarTouchedSub: Subscription;
   private el: HTMLElement;
   @ViewChild('commentInput') commentInput: ElementRef;
+  modeEnums = EditMode;
+  mode = EditMode.None;
 
   constructor(private route: ActivatedRoute, private liveService: LiveService, private commentApiService: CommentApiService,
-              private timelineService: TimelineService, private  messageService: MessageService,el: ElementRef) {
+              private timelineService: TimelineService, private  messageService: MessageService, el: ElementRef) {
     this.el = el.nativeElement;
   }
 
   ngOnInit() {
+    console.log(this.liveInfo.editors,'editors');
     this.id = this.route.snapshot.params['id'];
 
     this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
@@ -55,20 +57,19 @@ export class AudienceBottomBarComponent implements OnInit {
       this.liveInfo.praisedAnimations.push(userAnim);
     });
 
-    //处理手机键盘问题
-    this.$window = $(window);
-
     //监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
       this.commentContent = `@${userTouched.nick}(${userTouched.uid}) `;
-      this.commentInput.nativeElement.focus();
-
+      this.mode = EditMode.Text;
+      this.switchMode(this.mode);
     });
   }
 
   ngOnDestroy() {
     this.praisedSub.unsubscribe();
-    if(this.receviedAvatarTouchedSub){this.receviedAvatarTouchedSub.unsubscribe()};
+    if (this.receviedAvatarTouchedSub) {
+      this.receviedAvatarTouchedSub.unsubscribe()
+    }
   }
 
   postComment() {
@@ -78,33 +79,26 @@ export class AudienceBottomBarComponent implements OnInit {
     this.isOnCommentRequest = true;
 
     this.commentApiService.postComment(this.id, this.commentContent).then(() => {
-      $('.comment-input').trigger('blur');
       this.isOnCommentRequest = false;
     });
   }
 
-  cleanCommentContent() {
-    this.commentContent = '';
+  switchMode(mode: EditMode) {
+    if (mode !== EditMode.Text) this.blurMessageInput();
+
+    this.mode = mode;
+
+    if (mode === EditMode.None)this.commentContent = '';
+
+    if (this.mode === EditMode.Text) this.focusMessageInput();
   }
 
-  switchToComment() {
-    setTimeout(()=> {
-      const top = this.$window.height() - this.$window[0].innerHeight;
-      this.$window.scrollTop(top);
-    }, 400);
-
-    if (this.isOnComment) return;
-
-    this.isOnComment = true;
+  focusMessageInput() {
+    this.commentInput.nativeElement.focus();
   }
 
-  switchToNormal() {
-    if (!this.isOnComment) return;
-
-    setTimeout(() => {
-      this.cleanCommentContent();
-      this.isOnComment = false;
-    }, 0);
+  blurMessageInput() {
+    this.commentInput.nativeElement.blur();
   }
 
   confirmPraise(emoji: string) {

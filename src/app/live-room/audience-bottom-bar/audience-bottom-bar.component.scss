@@ -26,6 +26,9 @@
       .back {
         display: inline-block;
       }
+      .at-people {
+        display: inline-block;
+      }
     }
 
     .comment-input {
@@ -68,9 +71,20 @@
         font-size: 25px;
       }
     }
+    .at-people {
+      display: none;
+      line-height: 49px;
+      height: 49px;
+      width: 35px;
+      font-size: 0;
+      padding-right: 10px;
+      color: rgb(75, 75, 75);
+
+      .bi {
+        font-size: 25px;
+      }
+    }
   }
-
-
 
   &::-webkit-scrollbar, &::-webkit-scrollbar-track {
     display: none;
@@ -102,4 +116,37 @@
       font-size: 22px;
     }
   }
+
+}
+
+.at-people-keyboard {
+  height: 0;
+  overflow: hidden;
+  transition: height .5s;
+  background: rgba(228, 228, 228, 1.0);
+
+  &.activate {
+    height: 250px;
+  }
+
+  .user-row {
+    display: flex;
+    height: 84px;
+    border-bottom: solid 1px rgb(198, 198, 198);
+    align-items: center;
+    padding-left: 14px;
+    .avatar-container {
+      text-align: center;
+
+      .avatar {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+      }
+    }
+    .content-container{
+      margin-left: 10px;
+    }
+  }
+
 }

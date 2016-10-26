@@ -29,6 +29,7 @@
   ></audience-bottom-bar>
 
   <editor-tool-bar
+    *ngIf="!isChildrenActived && isEditor()"
     class="editor-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"
