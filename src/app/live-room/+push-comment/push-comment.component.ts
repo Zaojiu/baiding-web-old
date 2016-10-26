@@ -12,6 +12,12 @@ import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {LiveStatus} from '../../shared/api/live/live.enums';
 import {MqEvent, EventType} from "../../shared/mq/mq.service";
 import {TimelineService} from '../../live-room/timeline/timeline.service';
+import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
+import {
+  BottomPopupSelectorModel,
+  BottomPopupSelectorItemModel
+} from "../../shared/bottom-popup-selector/bottom-popup-selector.model";
+import {ModalService} from "../../shared/modal/modal.service";
 
 @Component({
   templateUrl: './push-comment.component.html',
@@ -29,10 +35,12 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   isOnNewest: boolean;
   isLoading: boolean;
   unreadCount = 0;
+  popupSelectorSubscription: Subscription;
+  closeSelectorSubscription: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private pushCommentService: PushCommentService, private userInfoService: UserInfoService,
-              private liveService: LiveService, private timelineService: TimelineService) {
+              private liveService: LiveService, private timelineService: TimelineService,private bottomPopupService: BottomPopupSelectorService,private modalService: ModalService) {
   }
 
   ngOnInit() {
@@ -55,6 +63,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopObserveTimelineScroll();
+    if (this.popupSelectorSubscription) this.popupSelectorSubscription.unsubscribe();
+    if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
   }
 
   onReceivedEventsReturn(evt: MqEvent){
@@ -143,5 +153,39 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   backToMainScreen() {
     this.router.navigate(['/lives/' + this.liveId]);
+  }
+
+  popupBottomSelector(){
+    if (this.bottomPopupService.isClosed) {
+      const model = new BottomPopupSelectorModel();
+      model.items = [];
+
+      model.items.push(new BottomPopupSelectorItemModel('admin', '@主持人', true));
+      model.items.push(new BottomPopupSelectorItemModel('invite', '@嘉宾A', true));
+      model.hasBottomBar = false;
+
+      this.bottomPopupService.popup(model);
+
+      this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
+        item => {
+          if (item.id === 'admin') return this.filterPeople();
+          //todo
+        }
+      );
+
+      // 关闭的时候取消掉上面的监听
+      this.closeSelectorSubscription = this.bottomPopupService.needClose$.subscribe(
+        () => {
+          this.popupSelectorSubscription.unsubscribe();
+          this.closeSelectorSubscription.unsubscribe();
+        }
+      );
+    } else {
+      this.bottomPopupService.close();
+    }
+  }
+
+  filterPeople(){
+   //todo
   }
 }
