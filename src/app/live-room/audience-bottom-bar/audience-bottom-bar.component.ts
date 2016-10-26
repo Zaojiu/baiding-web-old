@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ElementRef} from '@angular/core';
+import {Component, Input, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -32,6 +32,7 @@ export class AudienceBottomBarComponent implements OnInit {
   private $window: any;
   private receviedAvatarTouchedSub: Subscription;
   private el: HTMLElement;
+  @ViewChild('commentInput') commentInput: ElementRef;
 
   constructor(private route: ActivatedRoute, private liveService: LiveService, private commentApiService: CommentApiService,
               private timelineService: TimelineService, private  messageService: MessageService,el: ElementRef) {
@@ -59,7 +60,9 @@ export class AudienceBottomBarComponent implements OnInit {
 
     //监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
-      //todo
+      this.commentContent = `@${userTouched.nick}(${userTouched.uid}) `;
+      this.commentInput.nativeElement.focus();
+
     });
   }
 
