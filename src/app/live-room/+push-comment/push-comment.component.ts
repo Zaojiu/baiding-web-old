@@ -81,7 +81,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, '', 20, ['createdAt']).then(comments => {
+    this.commentApiService.listComments(this.liveId, [], '', 20, ['createdAt']).then(comments => {
       this.comments = comments;
       this.isOnNewest = true;
       this.isOnLatest = false;
@@ -94,7 +94,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, marker, limit, sorts).then(comments => {
+    this.commentApiService.listComments(this.liveId, [], marker, limit, sorts).then(comments => {
       for (let comment of comments) {
         this.comments.push(comment);
       }
@@ -112,7 +112,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, marker, limit, sorts).then(comments => {
+    this.commentApiService.listComments(this.liveId, [], marker, limit, sorts).then(comments => {
       for (let comment of comments) {
         this.comments.unshift(comment);
       }
@@ -154,21 +154,23 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.router.navigate(['/lives/' + this.liveId]);
   }
 
-  popupBottomSelector() {
+  popupBottomSelector(comment: CommentModel) {
     if (this.bottomPopupService.isClosed) {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      model.items.push(new BottomPopupSelectorItemModel('admin', '@主持人', true));
-      model.items.push(new BottomPopupSelectorItemModel('invite', '@嘉宾A', true));
+      model.items.push(new BottomPopupSelectorItemModel(this.liveInfo.admin.uid, `@主持人${this.liveInfo.admin.nick}`, true));
+
+      for (let vip of this.liveInfo.editors) {
+        model.items.push(new BottomPopupSelectorItemModel(vip.uid, `@嘉宾${vip.nick}`, true));
+      }
       model.hasBottomBar = false;
 
       this.bottomPopupService.popup(model);
 
       this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
         item => {
-          if (item.id === 'admin') return this.filterPeople();
-          //todo
+          return this.filterEditorComment(item);
         }
       );
 
@@ -184,7 +186,15 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterPeople() {
-    //todo
+  filterEditorComment(user: BottomPopupSelectorItemModel) {
+    if (this.isLoading) return;
+    this.isLoading = true;
+    let uids = [user.id];
+    this.commentApiService.listComments(this.liveId, uids, '', 2000).then(comments => {
+      this.comments = comments;
+      this.isOnNewest = true;
+      this.isOnLatest = true;
+      this.isLoading = false;
+    })
   }
 }

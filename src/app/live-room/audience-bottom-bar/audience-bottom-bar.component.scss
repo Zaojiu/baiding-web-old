@@ -5,10 +5,22 @@
   background-color: rgb(250, 250, 250);
   height: 50px;
   line-height: 49px;
-  overflow-y: hidden;
   white-space: nowrap;
   touch-callout: none;
   user-select: none;
+  display: flex;
+
+  .go-settings {
+    height: 47px;
+    margin-left: 12px;
+    margin-right: 10px;
+    color: rgb(75, 75, 75);
+    font-size: 24px;
+
+    &.activate {
+      color: rgb(33, 150, 243);
+    }
+  }
 
   .comment-input-container {
     width: 50%;
@@ -24,6 +36,9 @@
       }
 
       .back {
+        display: inline-block;
+      }
+      .at-people {
         display: inline-block;
       }
     }
@@ -68,9 +83,20 @@
         font-size: 25px;
       }
     }
+    .at-people {
+      display: none;
+      line-height: 49px;
+      height: 49px;
+      width: 35px;
+      font-size: 0;
+      padding-right: 10px;
+      color: rgb(75, 75, 75);
+
+      .bi {
+        font-size: 25px;
+      }
+    }
   }
-
-
 
   &::-webkit-scrollbar, &::-webkit-scrollbar-track {
     display: none;
@@ -102,4 +128,61 @@
       font-size: 22px;
     }
   }
+
+}
+
+.at-people-keyboard {
+  height: 0;
+  overflow: hidden;
+  transition: height .5s;
+  background: rgba(228, 228, 228, 1.0);
+
+  &.activate {
+    height: 250px;
+  }
+
+  .user-row {
+    display: flex;
+    height: 84px;
+    border-bottom: solid 1px rgb(198, 198, 198);
+    align-items: center;
+    padding-left: 14px;
+
+    .avatar-container {
+      text-align: center;
+      .avatar {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+      }
+    }
+
+    .content-container {
+      margin-left: 10px;
+      flex-grow: 1;
+    }
+
+    .tick {
+      height: 22px;
+      width: 22px;
+      border-radius: 12px;
+      margin-right: 10px;
+      border: solid 2px rgb(33, 150, 243);
+      .bi {
+        display: none;
+      }
+      &.ticked {
+        display: flex;
+        background-color: rgb(33, 150, 243);
+        .bi {
+          display: flex;
+          margin: auto;
+          font-size: 8px;
+          color: rgb(255, 255, 255);
+        }
+      }
+    }
+
+  }
+
 }

@@ -1,6 +1,7 @@
 .push-comment-container {
   display: flex;
   flex-direction: column;
+  padding-top: 50px;
 
   .top-bar {
     display: flex;
@@ -169,7 +170,7 @@
       float: right;
       font-size: 14px;
       color: rgb(33, 150, 243);
-      line-height:49px;
+      line-height: 49px;
       margin-right: 17px;
     }
 
