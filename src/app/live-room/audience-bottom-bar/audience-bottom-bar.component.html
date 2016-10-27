@@ -1,5 +1,8 @@
 <div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
-  <div class="audience-bottom-bar scrollable">
+  <div class="audience-bottom-bar">
+    <i class="bi bi-gear go-settings" (click)="switchMode(modeEnums.None); goSettings();"
+       (contextmenu)="$event.preventDefault()"></i>
+
     <form class="comment-input-container" [ngClass]="{'activate': mode !== modeEnums.None}"
           (ngSubmit)="postComment(); focusMessageInput();">
       <input class="comment-input" #commentInput name="commentContent" type="text" placeholder="发表评论"
@@ -19,8 +22,20 @@
   </div>
 
   <div class="at-people-keyboard" [ngClass]="{activate: mode === modeEnums.At}">
+    <div class="user-row" (click)="changeCommentContent(liveInfo.admin)">
+      <div class="avatar-container">
+        <img class="avatar" [src]="liveInfo.admin.avatar">
+      </div>
+      <div class="content-container">
+        <div class="content-info">
+          <div class="name">{{liveInfo.admin.nick}}</div>
+        </div>
+      </div>
+      <div class="tick" [ngClass]="{'ticked': ticked(liveInfo.admin.uid)}"><i class="bi bi-tick"
+      ></i></div>
+    </div>
 
-    <div class="user-row" *ngFor="let vip of liveInfo.editors">
+    <div class="user-row" *ngFor="let vip of liveInfo.editors" (click)="changeCommentContent(vip)">
       <div class="avatar-container">
         <img class="avatar" [src]="vip.avatar">
       </div>
@@ -29,6 +44,7 @@
           <div class="name">{{vip.nick}}</div>
         </div>
       </div>
+      <div class="tick" [ngClass]="{'ticked': ticked(vip.uid)}"><i class="bi bi-tick"></i></div>
     </div>
 
   </div>
