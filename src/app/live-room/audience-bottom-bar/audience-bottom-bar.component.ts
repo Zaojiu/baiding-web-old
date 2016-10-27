@@ -28,7 +28,6 @@ export class AudienceBottomBarComponent implements OnInit {
   @Input() userInfo: UserInfoModel;
   commentContent = '';
   isOnCommentRequest: boolean;
-  praisedSub: Subscription;
   isLoading: boolean;
   private receviedAvatarTouchedSub: Subscription;
   private el: HTMLElement;
@@ -42,19 +41,6 @@ export class AudienceBottomBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
-      if (evt.event != EventType.LivePraise) {
-        return
-      }
-      if (evt.info.user.uid == this.userInfo.uid) {
-        return
-      }
-      let userAnim = new UserAnimEmoji;
-      userAnim.emoji = evt.info.emoji;
-      userAnim.user = new UserInfoModel;
-      this.liveInfo.praisedAnimations.push(userAnim);
-    });
-
     //监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
       this.commentContent = `@${userTouched.nick}(${userTouched.uid}) `;
@@ -64,7 +50,6 @@ export class AudienceBottomBarComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.praisedSub.unsubscribe();
     if (this.receviedAvatarTouchedSub) {
       this.receviedAvatarTouchedSub.unsubscribe()
     }

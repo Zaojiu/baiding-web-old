@@ -2,12 +2,15 @@ import {Component, OnInit, OnDestroy, OnChanges, EventEmitter} from '@angular/co
 import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
+import { TimelineService } from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {LiveInfoModel} from '../shared/api/live/live.model';
 import {TitleService} from '../shared/title/title.service';
 import {WechatService} from '../shared/wechat/wechat.service';
 import {UserInfoService} from '../shared/api/user-info/user-info.service';
-import {UserInfoModel} from '../shared/api/user-info/user-info.model';
+import { UserInfoModel } from '../shared/api/user-info/user-info.model';
+import { UserAnimEmoji } from '../shared/praised-animation/praised-animation.model';
+import { MqEvent, EventType } from '../shared/mq/mq.service';
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -25,8 +28,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
   refreshInterval: any;
   isBeginnerGuideShow: boolean;
+  praisedSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
+  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService, private timelineService: TimelineService,
               private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
   }
 
@@ -97,10 +101,24 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);
     }, 10 * 1000);
+
+    this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
+      if (evt.event != EventType.LivePraise) {
+        return
+      }
+      if (evt.info.user.uid == this.userInfo.uid) {
+        return
+      }
+      let userAnim = new UserAnimEmoji;
+      userAnim.emoji = evt.info.emoji;
+      userAnim.user = new UserInfoModel;
+      this.liveInfo.praisedAnimations.push(userAnim);
+    });
   }
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+    this.praisedSub.unsubscribe();
 
     clearInterval(this.refreshInterval);
   }
