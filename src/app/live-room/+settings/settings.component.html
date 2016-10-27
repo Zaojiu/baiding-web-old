@@ -25,14 +25,14 @@
   <div class="vips-container block">
     <div class="title">
       <i class="bi bi-envelop"></i>
-      邀请嘉宾
+      嘉宾列表
     </div>
     <div class="content">
       <div class="avatar-container" *ngFor="let vip of liveInfo.editors">
         <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
         <p class="nick">{{vip.nick}}</p>
       </div>
-      <div class="invite" (click)="goInvitation()"></div>
+      <div class="invite" (click)="goInvitation()" *ngIf="isAdmin"></div>
     </div>
   </div>
 
