@@ -154,7 +154,7 @@ export class AudienceBottomBarComponent implements OnInit {
     }
   }
 
-  ticked(uid: number): boolean {
+  selected(uid: number): boolean {
 
     return this.commentContent.indexOf(uid.toString()) !== -1;
   }

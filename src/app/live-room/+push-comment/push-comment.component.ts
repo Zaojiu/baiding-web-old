@@ -159,10 +159,10 @@ export class PushCommentComponent implements OnInit, OnDestroy {
       const model = new BottomPopupSelectorModel();
       model.items = [];
 
-      model.items.push(new BottomPopupSelectorItemModel(this.liveInfo.admin.uid, `@主持人${this.liveInfo.admin.nick}`, true));
+      model.items.push(new BottomPopupSelectorItemModel(this.liveInfo.admin.uid.toString(), `@主持人${this.liveInfo.admin.nick}`, true));
 
       for (let vip of this.liveInfo.editors) {
-        model.items.push(new BottomPopupSelectorItemModel(vip.uid, `@嘉宾${vip.nick}`, true));
+        model.items.push(new BottomPopupSelectorItemModel(vip.uid.toString(), `@嘉宾${vip.nick}`, true));
       }
       model.hasBottomBar = false;
 
@@ -189,6 +189,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   filterEditorComment(user: BottomPopupSelectorItemModel) {
     if (this.isLoading) return;
     this.isLoading = true;
+
     let uids = [user.id];
     this.commentApiService.listComments(this.liveId, uids, '', 2000).then(comments => {
       this.comments = comments;

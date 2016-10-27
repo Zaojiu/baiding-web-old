@@ -31,7 +31,7 @@
           <div class="name">{{liveInfo.admin.nick}}</div>
         </div>
       </div>
-      <div class="tick" [ngClass]="{'ticked': ticked(liveInfo.admin.uid)}"><i class="bi bi-tick"
+      <div class="tick" [ngClass]="{'selected': selected(liveInfo.admin.uid)}"><i class="bi bi-tick"
       ></i></div>
     </div>
 
@@ -44,7 +44,7 @@
           <div class="name">{{vip.nick}}</div>
         </div>
       </div>
-      <div class="tick" [ngClass]="{'ticked': ticked(vip.uid)}"><i class="bi bi-tick"></i></div>
+      <div class="tick" [ngClass]="{'selected': selected(vip.uid)}"><i class="bi bi-tick"></i></div>
     </div>
 
   </div>
