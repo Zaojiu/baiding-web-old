@@ -190,12 +190,12 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     if (this.isLoading) return;
     this.isLoading = true;
 
-    let uids = [user.id];
+    let uids = [+user.id];
     this.commentApiService.listComments(this.liveId, uids, '', 2000).then(comments => {
       this.comments = comments;
       this.isOnNewest = true;
       this.isOnLatest = true;
       this.isLoading = false;
-    })
+    });
   }
 }
