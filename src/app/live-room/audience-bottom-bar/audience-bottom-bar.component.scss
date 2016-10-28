@@ -125,14 +125,10 @@
     align-items: center;
     padding-left: 14px;
 
-    .avatar-container {
-      text-align: center;
-
-      .avatar {
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-      }
+   .avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
     }
 
     .content-container {

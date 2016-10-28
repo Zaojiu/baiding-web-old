@@ -1,7 +1,8 @@
 <div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
   <div class="audience-bottom-bar">
-    <a class="bottom-bar-btn" (click)="switchMode(modeEnums.None); goSettings();"
-       (contextmenu)="$event.preventDefault()"><i class="bi bi-gear"></i></a>
+    <i class="bi bi-gear go-settings" [ngClass]="{'activate': mode !== modeEnums.None}"
+       (click)="switchMode(modeEnums.None); goSettings();"
+       (contextmenu)="$event.preventDefault()"></i>
 
     <form class="comment-input-container" [ngClass]="{'activate': mode !== modeEnums.None}"
           (ngSubmit)="postComment(); focusMessageInput();">
@@ -23,9 +24,7 @@
 
   <div class="at-people-keyboard" [ngClass]="{activate: mode === modeEnums.At}">
     <div class="user-row" (click)="changeCommentContent(liveInfo.admin)">
-      <div class="avatar-container">
-        <img class="avatar" [src]="liveInfo.admin.avatar">
-      </div>
+      <img class="avatar" [src]="liveInfo.admin.avatar">
       <div class="content-container">
         <div class="content-info">
           <div class="name">{{liveInfo.admin.nick}}</div>
@@ -36,9 +35,7 @@
     </div>
 
     <div class="user-row" *ngFor="let vip of liveInfo.editors" (click)="changeCommentContent(vip)">
-      <div class="avatar-container">
-        <img class="avatar" [src]="vip.avatar">
-      </div>
+      <img class="avatar" [src]="vip.avatar">
       <div class="content-container">
         <div class="content-info">
           <div class="name">{{vip.nick}}</div>
