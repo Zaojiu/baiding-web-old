@@ -312,7 +312,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     let query: any = {};
 
     if (comment) {
-      query.marker = comment.createdAt;
+      query.marker = `$gte${comment.createdAt}`;
 
       if (comment.toUsers && comment.toUsers.length !== 0) {
         query.uids = [];
