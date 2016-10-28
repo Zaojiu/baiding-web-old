@@ -1,16 +1,16 @@
 <div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
   <div class="audience-bottom-bar">
-    <i class="bi bi-gear go-settings" (click)="switchMode(modeEnums.None); goSettings();"
-       (contextmenu)="$event.preventDefault()"></i>
+    <a class="bottom-bar-btn" (click)="switchMode(modeEnums.None); goSettings();"
+       (contextmenu)="$event.preventDefault()"><i class="bi bi-gear"></i></a>
 
     <form class="comment-input-container" [ngClass]="{'activate': mode !== modeEnums.None}"
           (ngSubmit)="postComment(); focusMessageInput();">
       <input class="comment-input" #commentInput name="commentContent" type="text" placeholder="发表评论"
              (focus)="switchMode(modeEnums.Text)" [(ngModel)]="commentContent">
       <button class="sender">发送</button>
-      <a class="back" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At"><i
+      <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At"><i
         class="bi bi-at-people-keyboard"></i></a>
-      <a class="back" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text"><i
+      <a class="switcher" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text"><i
         class="bi bi-at-people"></i></a>
     </form>
     <a class="bottom-bar-btn face" [ngClass]="{'hidden':  mode !== modeEnums.None}" (click)="confirmPraise('👍')"

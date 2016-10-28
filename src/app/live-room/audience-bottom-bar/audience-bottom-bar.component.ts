@@ -93,6 +93,7 @@ export class AudienceBottomBarComponent implements OnInit {
 
     this.commentApiService.postComment(this.liveId, this.commentContent, this.parseAtUser()).then(() => {
       this.isOnCommentRequest = false;
+      this.commentContent = '';
     });
   }
 

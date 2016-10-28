@@ -10,23 +10,11 @@
   user-select: none;
   display: flex;
 
-  .go-settings {
-    height: 47px;
-    margin-left: 12px;
-    margin-right: 10px;
-    color: rgb(75, 75, 75);
-    font-size: 24px;
-
-    &.activate {
-      color: rgb(33, 150, 243);
-    }
-  }
-
   .comment-input-container {
-    width: 50%;
     overflow: hidden;
     transition: width 0.2s;
     display: inline-flex;
+    flex-grow: 1;
 
     &.activate {
       width: 100%;
@@ -35,7 +23,7 @@
         display: inline-block;
       }
 
-      .back {
+      .switcher {
         display: inline-block;
       }
       .at-people {
@@ -50,9 +38,11 @@
       height: 37px;
       flex-grow: 1;
       padding: 0 12px;
-      margin: 6px;
+      margin-top: 6px;
+      margin-bottom: 6px;
       transition: width 0.2s;
       font-size: 12px;
+      min-width: 0;
     }
 
     .sender {
@@ -70,7 +60,7 @@
       background-color: rgb(255, 255, 255);
     }
 
-    .back {
+    .switcher {
       display: none;
       line-height: 49px;
       height: 49px;
@@ -83,52 +73,21 @@
         font-size: 25px;
       }
     }
-    .at-people {
-      display: none;
-      line-height: 49px;
-      height: 49px;
-      width: 35px;
-      font-size: 0;
-      padding-right: 10px;
-      color: rgb(75, 75, 75);
-
-      .bi {
-        font-size: 25px;
-      }
-    }
-  }
-
-  &::-webkit-scrollbar, &::-webkit-scrollbar-track {
-    display: none;
   }
 
   .bottom-bar-btn {
-    display: inline-block;
-    text-align: center;
+    display: inline-flex;
     color: rgb(75, 75, 75);
-    vertical-align: top;
-    line-height: 49px;
     height: 49px;
-    width: 20%;
-
-    &.face {
-      font-size: 26px;
-    }
+    width: 55px;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 
     .bi {
-      font-size: 28px;
-      line-height: 49px;
-    }
-
-    .bi-chat1 {
-      font-size: 25px;
-    }
-
-    .bi-share {
-      font-size: 22px;
+      font-size: 24px;
     }
   }
-
 }
 
 .at-people-keyboard {
@@ -150,6 +109,7 @@
 
     .avatar-container {
       text-align: center;
+
       .avatar {
         width: 26px;
         height: 26px;
@@ -168,12 +128,15 @@
       border-radius: 12px;
       margin-right: 10px;
       border: solid 2px rgb(33, 150, 243);
+
       .bi {
         display: none;
       }
+
       &.ticked {
         display: flex;
         background-color: rgb(33, 150, 243);
+
         .bi {
           display: flex;
           margin: auto;
@@ -182,7 +145,5 @@
         }
       }
     }
-
   }
-
 }
