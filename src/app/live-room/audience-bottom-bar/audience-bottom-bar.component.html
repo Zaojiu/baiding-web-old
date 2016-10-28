@@ -1,8 +1,7 @@
 <div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
   <div class="audience-bottom-bar">
-    <i class="bi bi-gear go-settings" [ngClass]="{'activate': mode !== modeEnums.None}"
-       (click)="switchMode(modeEnums.None); goSettings();"
-       (contextmenu)="$event.preventDefault()"></i>
+    <a class="bottom-bar-btn"[ngClass]="{'activate': mode !== modeEnums.None}" (click)="switchMode(modeEnums.None); goSettings();"
+       (contextmenu)="$event.preventDefault()"><i class="bi bi-gear"></i></a>
 
     <form class="comment-input-container" [ngClass]="{'activate': mode !== modeEnums.None}"
           (ngSubmit)="postComment(); focusMessageInput();">

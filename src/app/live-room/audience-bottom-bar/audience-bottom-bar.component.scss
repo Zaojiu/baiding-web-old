@@ -10,18 +10,6 @@
   user-select: none;
   display: flex;
 
-  .go-settings {
-    height: 47px;
-    margin-left: 12px;
-    margin-right: 10px;
-    color: rgb(75, 75, 75);
-    font-size: 24px;
-
-    &.activate {
-      display: none;
-    }
-  }
-
   .comment-input-container {
     overflow: hidden;
     transition: width 0.2s;
@@ -101,6 +89,9 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+
+    &.activate{
+      display: none;}
 
     .bi {
       font-size: 24px;
