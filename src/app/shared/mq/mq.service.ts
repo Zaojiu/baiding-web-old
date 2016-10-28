@@ -7,20 +7,22 @@ declare var AV: any;
 
 export enum EventType {
   LiveMsgUpdate = 1,
-  LiveClosed = 2,
-  LivePraise = 3,
+  LiveClosed,
+  LivePraise,
+  LiveAudienceJoined,
+  LiveCommentPushed,
 }
 
 export class MqEvent {
-  event: EventType
-  info: any
+  event: EventType;
+  info: any;
 }
 
 export class MqPraisedUser {
   user: UserInfoModel;
   msgId: string;
   praised: boolean;
-  num: number
+  num: number;
 }
 
 export class MqComment {

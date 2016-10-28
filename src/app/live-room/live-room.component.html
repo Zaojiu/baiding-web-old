@@ -13,7 +13,11 @@
     [isTimelineOnLatest]="timeline.isOnLatest"
   ></top-bar>
 
-  <comments [ngClass]="{'hidden': !isCommentOpened}" [streamId]="id"></comments>
+  <comments
+    [ngClass]="{'hidden': !isCommentOpened}"
+    [streamId]="id"
+    [userInfo]="userInfo"
+  ></comments>
 
   <timeline class="timeline" [liveInfo]="liveInfo" [userInfo]="userInfo" #timeline></timeline>
 
