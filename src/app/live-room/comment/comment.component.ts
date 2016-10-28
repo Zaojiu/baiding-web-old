@@ -3,8 +3,8 @@ import {Router} from '@angular/router';
 
 import {CommentModel, CommentType} from '../../shared/api/comment/comment.model';
 import {CommentService} from './comment.service';
-import {CommentApiService} from "../../shared/api/comment/comment.service";
-import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
+import {CommentApiService} from '../../shared/api/comment/comment.service';
+import {ScrollerDirective} from '../../shared/scroller/scroller.directive';
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 import {Subscription} from "rxjs";
@@ -121,14 +121,15 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   onReceiveComments(comment: CommentModel) {
     for (let _comment of this.comments) {
-      if (_comment.id == comment.id) return;
+      if (_comment.id === comment.id) return;
     }
 
     for (let _comment of this.commentPushQueue) {
-      if (_comment.id == comment.id) return;
+      if (_comment.id === comment.id) return;
     }
 
     comment.type = CommentType.Text;
+    comment.createdAt = ''; //TODO: 后端要给createdAt
 
     if (this.comments.length < 5) {
       this.comments.push(comment);
@@ -140,7 +141,7 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.unreadCount++;
     }
 
-    if (comment.toUids && comment.toUids.length != 0) {
+    if (comment.toUids && comment.toUids.length !== 0) {
       for (let uid of comment.toUids) {
         if (uid === this.userInfo.uid) this.commentAtMe = comment;
       }
@@ -160,6 +161,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         comment.id = evt.info.comment.id;
         comment.type = CommentType.CommentPushed;
         comment.eventData = evt.info;
+        comment.createdAt = ''; //TODO: 后端要给createdAt
         this.commentPushQueue.push(comment);
         if (comment.eventData.comment_user.uid === this.userInfo.uid) this.commentPushed = comment;
         break;
@@ -310,7 +312,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     let query: any = {};
 
     if (comment) {
-      query.marker = comment.id;
+      query.marker = comment.createdAt;
 
       if (comment.toUsers && comment.toUsers.length !== 0) {
         query.uids = [];

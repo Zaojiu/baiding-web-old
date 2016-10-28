@@ -10,9 +10,9 @@
 
   <div class="no-result" *ngIf="comments && !comments.length">暂无评论</div>
 
-  <bd-loading class="loading" *ngIf="!liveInfo"></bd-loading>
+  <bd-loading class="loading" *ngIf="!liveInfo || !userInfo"></bd-loading>
 
-  <div class="comment-container scrollable" pushCommentScroller>
+  <div class="comment-container scrollable" pushCommentScroller *ngIf="liveInfo && userInfo">
     <div class="comment-row" *ngFor="let comment of comments">
       <div class="avatar-container">
         <img class="avatar" [src]="comment.user.avatar">
