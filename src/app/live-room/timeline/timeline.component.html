@@ -1,4 +1,4 @@
-<div class="timeline scroller scrollable" (scroller)="onScroll($event)">
+<div class="timeline scroller scrollable" (scroller)="onScroll($event)" [data]="messages">
   <div class="show-page" *ngIf="liveInfo && !isStarted() && !isClosed()">
 
     <div class="banner-blur">

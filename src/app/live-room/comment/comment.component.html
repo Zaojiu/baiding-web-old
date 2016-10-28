@@ -1,8 +1,12 @@
-<div class="comment-container">
-  <div class="comment-wrapper" *ngFor="let comment of comments">
-    <div class="comment" (click)="gotoCommentList()">
-      <p class="comment-content">{{comment.content}}</p>
-      <img class="comment-avatar" [src]="comment.user.avatar">
+<div class="comments">
+  <div class="comment-container scroller scrollable" (scroller)="onScroll($event)" [data]="comments">
+    <div class="comment-wrapper" *ngFor="let comment of comments">
+      <div class="comment" (click)="gotoCommentList()">
+        <p class="comment-content">{{comment.content}}</p>
+        <img class="comment-avatar" [src]="comment.user.avatar">
+      </div>
     </div>
   </div>
+
+  <div class="unread-count" (click)="triggerGotoLatest()" *ngIf="unreadCount !== 0">有{{unreadCount}}条新弹幕~</div>
 </div>

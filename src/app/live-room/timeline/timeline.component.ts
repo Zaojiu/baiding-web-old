@@ -1,4 +1,6 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList} from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList
+} from '@angular/core';
 import {Subscription}   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -261,11 +263,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
     }
 
-    if (e.position === ScrollerPosition.OnBottom) {
-      this.isOnBottom = true;
-    } else {
-      this.isOnBottom = false;
-    }
+    this.isOnBottom = e.position === ScrollerPosition.OnBottom;
 
     this.timelineService.onScroll(e);
   }
@@ -280,9 +278,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
             if (result) {
               setTimeout(() => {
                 this.scroller.scrollToTop();
-              }, 0);
 
-              this.scroller.startEmitScrollEvent();
+                // 等待滚动完毕
+                setTimeout(() => {
+                  this.scroller.startEmitScrollEvent();
+                }, 0);
+              }, 0);
             }
           });
         } else {
@@ -290,9 +291,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
             if (result) {
               setTimeout(() => {
                 this.scroller.scrollToBottom();
-              }, 0);
 
-              this.scroller.startEmitScrollEvent();
+                // 等待滚动完毕
+                setTimeout(() => {
+                  this.scroller.startEmitScrollEvent();
+                }, 0);
+              }, 0);
             }
           });
         }
@@ -313,6 +317,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   removeRepeat(messages: MessageModel[]) {
+    if (!messages || !messages.length) return;
+
     let idsX = {};
     for (let idx in this.messages) {
       idsX[this.messages[idx].id] = idx

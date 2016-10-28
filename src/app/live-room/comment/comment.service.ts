@@ -7,14 +7,21 @@ import { MqService } from '../../shared/mq/mq.service';
 
 @Injectable()
 export class CommentService {
-  // Observable string sources
   private receivedCommentSource = new Subject<CommentModel>();
-  // Observable string streams
   private receivedComment$ = this.receivedCommentSource.asObservable();
-
   private receivedCommentSub: Subscription;
+  private actionSource = new Subject<boolean>();
+  action$ = this.actionSource.asObservable();
 
   constructor() {}
+
+  gotoFirstComments() {
+    this.actionSource.next(true);
+  }
+
+  gotoLastComments() {
+    this.actionSource.next(false);
+  }
 
   pushComment(comment: CommentModel) {
     this.receivedCommentSource.next(comment)
