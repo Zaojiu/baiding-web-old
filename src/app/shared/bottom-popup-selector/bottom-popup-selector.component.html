@@ -1,9 +1,12 @@
-<div class="bottom-popup-selector-container" [ngClass]="{'has-bottom-bar': hasBottomBar, 'is-popup': isPopup}" (click)="close()">
+<div class="bottom-popup-selector-container" *ngIf="model" (click)="close()" [ngClass]="{ 'is-popup': isPopup}">
   <ul class="popup-selecter-items">
-    <li (click)="close()">取消</li>
+    <li (click)="close()">{{model.completeText}}</li>
   </ul>
 
   <ul class="popup-selecter-items">
-    <li *ngFor="let item of items" (click)="selectItem(item)" [ngClass]="{'is-closed': !item.enable}">{{item.content}}</li>
+    <li *ngFor="let item of model.items" (click)="selectItem(item,$event)"  [ngClass]="{'is-enabled': item.enable}">
+      <div class="content">{{item.content}}</div>
+      <i *ngIf="item.mode === modeEnums.Multi && item.checked" class="bi bi-tick"></i>
+    </li>
   </ul>
 </div>

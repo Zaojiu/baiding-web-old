@@ -3,15 +3,15 @@ import {Router} from '@angular/router';
 
 import {CommentModel, CommentType} from '../../shared/api/comment/comment.model';
 import {CommentService} from './comment.service';
-import {CommentApiService} from "../../shared/api/comment/comment.service";
-import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
-import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
-import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
-import {Subscription} from "rxjs";
-import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
-import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
-import {MqEvent, EventType} from "../../shared/mq/mq.service";
-import {TimelineService} from "../timeline/timeline.service";
+import {CommentApiService} from '../../shared/api/comment/comment.service';
+import {ScrollerDirective} from '../../shared/scroller/scroller.directive';
+import {ScrollerEventModel} from '../../shared/scroller/scroller.model';
+import {ScrollerPosition} from '../../shared/scroller/scroller.enums';
+import {Subscription} from 'rxjs';
+import {SafeHtml, DomSanitizer} from '@angular/platform-browser';
+import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
+import {MqEvent, EventType} from '../../shared/mq/mq.service';
+import {TimelineService} from '../timeline/timeline.service';
 
 @Component({
   selector: 'comments',
@@ -69,14 +69,14 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     switch (comment.type) {
       case CommentType.Text:
-        var atRegexp = /(@.+?)\((.+?)\)/g;
-        var _content = '';
+        let atRegexp = /(@.+?)\((.+?)\)/g;
+        let _content = '';
 
         content = comment.content;
 
         while (true) {
           var atTextArr = atRegexp.exec(content);
-          if (!atTextArr || atTextArr.length != 3 || !atRegexp.lastIndex) break;
+          if (!atTextArr || atTextArr.length !== 3 || !atRegexp.lastIndex) break;
 
           _content = content.replace(atTextArr[0], `<span class="highlight">${atTextArr[1]}</span>`);
         }
@@ -121,14 +121,15 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   onReceiveComments(comment: CommentModel) {
     for (let _comment of this.comments) {
-      if (_comment.id == comment.id) return;
+      if (_comment.id === comment.id) return;
     }
 
     for (let _comment of this.commentPushQueue) {
-      if (_comment.id == comment.id) return;
+      if (_comment.id === comment.id) return;
     }
 
     comment.type = CommentType.Text;
+    comment.createdAt = ''; //TODO: 后端要给createdAt
 
     if (this.comments.length < 5) {
       this.comments.push(comment);
@@ -140,7 +141,7 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.unreadCount++;
     }
 
-    if (comment.toUids && comment.toUids.length != 0) {
+    if (comment.toUids && comment.toUids.length !== 0) {
       for (let uid of comment.toUids) {
         if (uid === this.userInfo.uid) this.commentAtMe = comment;
       }
@@ -160,6 +161,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         comment.id = evt.info.comment.id;
         comment.type = CommentType.CommentPushed;
         comment.eventData = evt.info;
+        comment.createdAt = ''; // TODO: 后端要给createdAt
         this.commentPushQueue.push(comment);
         if (comment.eventData.comment_user.uid === this.userInfo.uid) this.commentPushed = comment;
         break;
@@ -242,14 +244,14 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     let idsX = {};
     for (let idx in this.comments) {
-      idsX[this.comments[idx].id] = idx
+      idsX[this.comments[idx].id] = idx;
     }
     let idY = {};
     let idxs = [];
     for (let comment of comments) {
       idY[comment.id] = true;
       if (!idsX[comment.id]) {
-        idxs.push(idsX[comment.id])
+        idxs.push(idsX[comment.id]);
       }
     }
     idxs = idxs.sort().reverse();
@@ -259,7 +261,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   onScroll(e: ScrollerEventModel) {
-    if (e.position == ScrollerPosition.OnTop) {
+    if (e.position === ScrollerPosition.OnTop) {
       if (this.comments.length === 0) return;
       let firstComment = this.comments[0];
       this.getPrevComments(`$lt${firstComment.createdAt}`, 20, ['-createdAt']);
@@ -310,13 +312,13 @@ export class CommentComponent implements OnInit, OnDestroy {
     let query: any = {};
 
     if (comment) {
-      query.marker = comment.id;
+      query.marker = `$gte${comment.createdAt}`;
 
       if (comment.toUsers && comment.toUsers.length !== 0) {
         query.uids = [];
 
         for (let user of comment.toUsers) {
-          query.uids.push(user.uid)
+          query.uids.push(user.uid);
         }
       }
 

@@ -98,7 +98,7 @@ export class CommentApiService {
     let query: any = {
       createdAt: marker,
       limit: limit,
-      sorts: sorts.join(',')
+      sorts: sorts.join(','),
     };
     if (toUids.length) query.toUids = toUids.join(',');
 

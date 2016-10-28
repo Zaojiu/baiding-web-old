@@ -116,7 +116,10 @@ export class AudienceBottomBarComponent implements OnInit {
       if ($.isNumeric(this.commentContent[this.commentContent.length - 1])) {
         this.commentContent = this.commentContent.replace(/(.*)@[\W\w]+?\(\d+?$/g, '$1');
       }
-    })
+      if (this.commentContent[this.commentContent.length - 1] === '@') {
+        this.switchMode(EditMode.At);
+      }
+    });
   }
 
   focusMessageInput() {
@@ -150,7 +153,13 @@ export class AudienceBottomBarComponent implements OnInit {
     if (this.commentContent.indexOf(editor.uid.toString()) !== -1) {
       this.commentContent = this.commentContent.replace(`@${editor.nick}(${editor.uid}) `, '');
     } else {
-      this.commentContent += `@${editor.nick}(${editor.uid}) `;
+      if (this.commentContent === '') {
+        this.commentContent += `@${editor.nick}(${editor.uid}) `;
+      } else if (this.commentContent[this.commentContent.length - 1] === '@') {
+        this.commentContent += `${editor.nick}(${editor.uid}) `;
+      } else {
+        this.commentContent += `@${editor.nick}(${editor.uid}) `;
+      }
     }
   }
 
