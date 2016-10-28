@@ -3,7 +3,7 @@ import {Http, Response, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {AppConfig} from '../../../app.config';
-import {PostCommentModel} from './comment.model';
+import {PostCommentModel, CommentType} from './comment.model';
 import {UserInfoService} from '../user-info/user-info.service';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {CommentService} from '../../../live-room/comment/comment.service';
@@ -25,6 +25,7 @@ export class CommentApiService {
     comment.id = data.id;
     comment.user = users[data.uid] as UserInfoModel;
     comment.msgId = data.msgId;
+    comment.type = CommentType.Text;
     comment.content = data.content;
     comment.toUsers = [];
     comment.createdAt = data.createdAt;
@@ -46,6 +47,7 @@ export class CommentApiService {
 
     comment.id = data.id;
     comment.user = userInfo;
+    comment.type = CommentType.Text;
     comment.msgId = data.msgId;
     comment.content = data.content;
     comment.createdAt = data.createdAt;
