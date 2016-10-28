@@ -18,7 +18,7 @@ export class CommentApiService {
   }
 
   parseComment(data: any, users: any): CommentModel {
-    var comment = new CommentModel()
+    let comment = new CommentModel()
 
     if (!data) return comment;
 
@@ -84,16 +84,16 @@ export class CommentApiService {
 
     return this.http.get(url).toPromise()
       .then(res => {
-        let data = res.json()
-        let comment = this.parseComment(data, data.users)
-        return comment
+        let data = res.json();
+        let comment = this.parseComment(data, data.users);
+        return comment;
       }).catch(res => {
         // TODO: error;
       });
   }
 
   listComments(liveId: string, toUids: number[] = [], marker = '', limit = 20, sorts = ['-createdAt']): Promise<CommentModel[]> {
-    var query: any = {
+    let query: any = {
       createdAt: marker,
       limit: limit,
       sorts: sorts.join(',')

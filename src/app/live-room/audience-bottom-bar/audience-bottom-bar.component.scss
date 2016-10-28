@@ -19,8 +19,14 @@
     &.activate {
       width: 100%;
 
+      .comment-input {
+        border: none;
+        background: transparent;
+      }
       .sender {
         display: inline-block;
+        border: none;
+        background: transparent;
       }
 
       .switcher {
@@ -84,6 +90,9 @@
     justify-content: center;
     flex-shrink: 0;
 
+    &.activate{
+      display: none;}
+
     .bi {
       font-size: 24px;
     }
@@ -107,14 +116,10 @@
     align-items: center;
     padding-left: 14px;
 
-    .avatar-container {
-      text-align: center;
-
-      .avatar {
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-      }
+   .avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
     }
 
     .content-container {
@@ -133,7 +138,7 @@
         display: none;
       }
 
-      &.ticked {
+      &.selected {
         display: flex;
         background-color: rgb(33, 150, 243);
 
