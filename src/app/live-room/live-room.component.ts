@@ -71,6 +71,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, this.getShareUri(), this.id);
   }
 
+  timelineGotoLatest() {
+    this.timelineService.gotoLastMessage();
+  }
+
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
 

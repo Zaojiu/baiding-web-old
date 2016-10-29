@@ -25,7 +25,6 @@ export class PushCommentScrollerDirective implements OnInit {
       }
       if (self.el.scrollHeight - self.el.scrollTop - self.el.clientHeight <= 10) {
         self.pushCommentService.notifyScrollerOnBottom();
-        console.log('on bottom');
       }
     });
   }
