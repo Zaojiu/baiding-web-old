@@ -40,6 +40,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   isOnBottom: boolean;
   isLoading: boolean;
   countdownTimer: any;
+  unreadCount = 0;
 
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
 
@@ -111,7 +112,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   audioPlayEnded(msg: MessageModel) {
-
     if (!this.liveService.isAudioAutoPlay(this.liveInfo.id)) {
       return;
     }
@@ -137,13 +137,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
-        this.gotoLatestMessages().then(() => {
-          if (this.isOnBottom) {
+        if (this.isOnBottom) {
+          this.gotoLatestMessages().then(() => {
             setTimeout(() => {
               this.scroller.scrollToBottom();
             }, 0);
-          }
-        });
+          });
+        } else {
+          this.unreadCount++;
+          this.isOnLatest = false;
+        }
         break;
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
@@ -195,6 +198,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.messages = messages;
       this.isOnOldest = false;
       this.isOnLatest = true;
+      this.unreadCount = 0;
       this.isLoading = false;
       return true;
     });
@@ -227,6 +231,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
       if (messages.length === 0) {
         this.isOnLatest = true;
+        this.unreadCount = 0;
       }
 
       this.isLoading = false;
@@ -289,8 +294,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
         } else {
           this.gotoLatestMessages().then(result => {
             if (result) {
+              this.unreadCount = 0;
+
               setTimeout(() => {
                 this.scroller.scrollToBottom();
+                this.isOnBottom = true;
 
                 // 等待滚动完毕
                 setTimeout(() => {
@@ -339,5 +347,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   gotoHistory() {
     this.router.navigate([`/lives/${this.id}/history`]);
+  }
+
+  triggerGotoLatest() {
+    this.timelineService.gotoLastMessage();
   }
 }
