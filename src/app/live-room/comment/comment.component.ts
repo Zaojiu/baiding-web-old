@@ -32,8 +32,6 @@ export class CommentComponent implements OnInit, OnDestroy {
   commentPushQueueTimer: any;
   isOnBottom: boolean;
   unreadCount = 0;
-  commentAtMe: CommentModel = null;
-  commentPushed: CommentModel = null;
   commentType = CommentType;
 
   constructor(private commentService: CommentService, private router: Router,
@@ -129,7 +127,6 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
 
     comment.type = CommentType.Text;
-    comment.createdAt = ''; //TODO: 后端要给createdAt
 
     if (this.comments.length < 5) {
       this.comments.push(comment);
@@ -139,12 +136,6 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     if (!this.isOnBottom) {
       this.unreadCount++;
-    }
-
-    if (comment.toUids && comment.toUids.length !== 0) {
-      for (let uid of comment.toUids) {
-        if (uid === this.userInfo.uid) this.commentAtMe = comment;
-      }
     }
   }
 
@@ -159,33 +150,12 @@ export class CommentComponent implements OnInit, OnDestroy {
         break;
       case EventType.LiveCommentPushed:
         comment.id = evt.info.comment.id;
+        comment.createdAt = evt.info.comment.createdAt; // TODO: 后端要给createdAt
         comment.type = CommentType.CommentPushed;
         comment.eventData = evt.info;
-        comment.createdAt = ''; // TODO: 后端要给createdAt
         this.commentPushQueue.push(comment);
-        if (comment.eventData.comment_user.uid === this.userInfo.uid) this.commentPushed = comment;
         break;
     }
-  }
-
-  getNextComments(marker: string, limit: number, sorts: string[]) {
-    if (this.isLoading) return;
-
-    this.isLoading = true;
-
-    this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
-      // this.removeRepeat(comments);
-
-      for (let comment of comments) {
-        this.comments.push(comment);
-      }
-
-      if (comments.length === 0) {
-        this.isOnLatest = true;
-      }
-
-      this.isLoading = false;
-    });
   }
 
   getPrevComments(marker: string, limit: number, sorts: string[]) {
@@ -194,8 +164,6 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
-      // this.removeRepeat(comments);
-
       for (let comment of comments) {
         this.comments.unshift(comment);
       }
@@ -220,6 +188,7 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.isOnLatest = true;
       this.isOnBottom = true;
       this.isLoading = false;
+      this.unreadCount = 0;
       return true;
     });
   }
@@ -237,27 +206,6 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       return true;
     });
-  }
-
-  removeRepeat(comments: CommentModel[]) {
-    if (!comments || !comments.length) return;
-
-    let idsX = {};
-    for (let idx in this.comments) {
-      idsX[this.comments[idx].id] = idx;
-    }
-    let idY = {};
-    let idxs = [];
-    for (let comment of comments) {
-      idY[comment.id] = true;
-      if (!idsX[comment.id]) {
-        idxs.push(idsX[comment.id]);
-      }
-    }
-    idxs = idxs.sort().reverse();
-    for (let idx of idxs) {
-      this.comments.splice(idx, 1);
-    }
   }
 
   onScroll(e: ScrollerEventModel) {

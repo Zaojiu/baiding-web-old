@@ -98,9 +98,12 @@ export class PushCommentComponent implements OnInit, OnDestroy {
       }
     }
 
+
     this.uids = uidNums;
 
     this.gotoFirstComments();
+
+    this.marker = ''; // 首次拉取后清除marker;
   }
 
   isClosed(): boolean {
