@@ -28,6 +28,7 @@ export class CommentApiService {
     comment.type = CommentType.Text;
     comment.content = data.content;
     comment.toUsers = [];
+    comment.toUids = data.toUids || [];
     comment.createdAt = data.createdAt;
 
     if (data.toUids && data.toUids.length) {
@@ -72,6 +73,7 @@ export class CommentApiService {
         let commentResponse = this.parseResponseComment(data);
 
         commentResponse.toUsers = toUsers;
+        commentResponse.toUids = comment.toUids;
 
         this.commentService.pushComment(commentResponse);
 

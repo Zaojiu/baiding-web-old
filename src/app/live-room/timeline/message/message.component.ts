@@ -11,6 +11,8 @@ import {UserAnimEmoji} from '../../../shared/praised-animation/praised-animation
 import {AudioPlayerComponent} from '../../../shared/audio-player/audio-player.component'
 import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
 import {LiveStatus} from "../../../shared/api/live/live.enums";
+import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
+import {UtilsService} from "../../../shared/utils/utils";
 
 @Component({
   selector: 'message',
@@ -35,7 +37,9 @@ export class MessageComponent {
   messagePressTimer: any;
   messagePressDuration = 0;
 
-  constructor(private messageService: MessageService, private router: Router, private liveService: LiveService) {
+  constructor(private messageService: MessageService,
+              private router: Router, private liveService: LiveService,
+              private sanitizer: DomSanitizer) {
   }
 
   touchStart() {
@@ -177,5 +181,9 @@ export class MessageComponent {
     if (this.isEditor(userInfo.uid)) {
       this.messageService.emitAvatarUser(userInfo);
     }
+  }
+
+  parseContent(content: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
   }
 }
