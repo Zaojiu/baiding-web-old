@@ -1,4 +1,4 @@
-<div class="unread-count" *ngIf="!isOnBottom && unreadCount" (click)="triggerGotoLatest()">有{{unreadCount}}条话题间新消息<i class="bi bi-up-arrow"></i></div>
+<div class="unread-count" *ngIf="!isOnBottom && unreadCount !== 0" (click)="triggerGotoLatest()">有{{unreadCount}}条话题间新消息<i class="bi bi-up-arrow"></i></div>
 
 <div class="timeline scroller scrollable" (scroller)="onScroll($event)" [data]="messages">
   <div class="show-page" *ngIf="liveInfo && !isStarted() && !isClosed()">
