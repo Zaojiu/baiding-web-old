@@ -193,7 +193,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.router.navigate(['/lives/' + this.liveId]);
   }
 
-  popupBottomSelector(comment: CommentModel) {
+  popupBottomSelector() {
     if (this.bottomPopupService.isClosed) {
       const model = new BottomPopupSelectorModel();
       model.items = [];
