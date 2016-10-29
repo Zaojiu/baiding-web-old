@@ -28,7 +28,7 @@ import {MessageComponent} from './message/message.component';
 
 export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
-  timeNow = UtilsService.now().toString();
+  timeNow = UtilsService.now.toString();
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
