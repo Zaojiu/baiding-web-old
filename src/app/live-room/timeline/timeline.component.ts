@@ -198,6 +198,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.messages = messages;
       this.isOnOldest = false;
       this.isOnLatest = true;
+      this.isOnBottom = true;
       this.unreadCount = 0;
       this.isLoading = false;
       return true;
@@ -213,6 +214,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.messages = messages;
       this.isOnOldest = true;
       this.isOnLatest = false;
+      this.isOnBottom = false;
       this.isLoading = false;
       return true;
     });
@@ -294,11 +296,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         } else {
           this.gotoLatestMessages().then(result => {
             if (result) {
-              this.unreadCount = 0;
-
               setTimeout(() => {
                 this.scroller.scrollToBottom();
-                this.isOnBottom = true;
 
                 // 等待滚动完毕
                 setTimeout(() => {
