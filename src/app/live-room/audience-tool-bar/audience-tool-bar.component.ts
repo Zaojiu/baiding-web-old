@@ -7,19 +7,18 @@ import {MessageService} from '../timeline/message/message.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
-import {EditMode} from "./audience-bottom-bar.enums";
+import {EditMode} from "./audience-tool-bar.enums";
 import {Router} from "@angular/router";
 
 declare var $: any;
 
 @Component({
-  selector: 'audience-bottom-bar',
-  templateUrl: './audience-bottom-bar.component.html',
-  styleUrls: ['./audience-bottom-bar.component.scss'],
-  providers: [CommentApiService]
+  selector: 'audience-tool-bar',
+  templateUrl: './audience-tool-bar.component.html',
+  styleUrls: ['./audience-tool-bar.component.scss'],
 })
 
-export class AudienceBottomBarComponent implements OnInit, OnDestroy {
+export class AudienceToolBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
@@ -27,14 +26,12 @@ export class AudienceBottomBarComponent implements OnInit, OnDestroy {
   isOnCommentRequest: boolean;
   isLoading: boolean;
   private receviedAvatarTouchedSub: Subscription;
-  private el: HTMLElement;
   @ViewChild('commentInput') commentInput: ElementRef;
   modeEnums = EditMode;
   mode = EditMode.None;
 
   constructor(private liveService: LiveService, private commentApiService: CommentApiService,
-              private  messageService: MessageService, el: ElementRef, private router: Router) {
-    this.el = el.nativeElement;
+              private  messageService: MessageService, private router: Router) {
   }
 
   ngOnInit() {

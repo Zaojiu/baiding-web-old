@@ -25,13 +25,13 @@
     <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
   </div>
 
-  <audience-bottom-bar
+  <audience-tool-bar
     *ngIf="!isChildrenActived && isAudience()"
-    class="audience-bottom-bar"
+    class="audience-tool-bar"
+    [liveId]="id"
     [liveInfo]="liveInfo"
     [userInfo]="userInfo"
-    [liveId]="id"
-  ></audience-bottom-bar>
+  ></audience-tool-bar>
 
   <editor-tool-bar
     *ngIf="!isChildrenActived && isEditor()"

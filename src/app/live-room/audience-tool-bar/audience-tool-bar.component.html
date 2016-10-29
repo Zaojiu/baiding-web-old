@@ -1,5 +1,5 @@
 <div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
-  <div class="audience-bottom-bar">
+  <div class="audience-tool-bar">
     <a class="bottom-bar-btn"[ngClass]="{'activate': mode !== modeEnums.None}" (click)="switchMode(modeEnums.None); goSettings();"
        (contextmenu)="$event.preventDefault()"><i class="bi bi-gear"></i></a>
 

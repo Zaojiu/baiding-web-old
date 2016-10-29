@@ -5,7 +5,7 @@ import {FormsModule}   from '@angular/forms';
 import {ROUTES} from './live-room.route';
 import {LiveRoomComponent} from './live-room.component';
 import {CommentComponent} from './comment/comment.component';
-import {AudienceBottomBarComponent} from './audience-bottom-bar/audience-bottom-bar.component';
+import {AudienceToolBarComponent} from './audience-tool-bar/audience-tool-bar.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {MessageComponent} from './timeline/message/message.component';
 import {PostComponent} from './post/post.component';
@@ -56,7 +56,7 @@ import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
     TimelineComponent,
     MessageComponent,
     EditorToolBarComponent,
-    AudienceBottomBarComponent,
+    AudienceToolBarComponent,
     PostComponent,
     PraisedAnimationDirective,
     PraisedAnimationComponent,
