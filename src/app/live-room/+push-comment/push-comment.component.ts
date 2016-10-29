@@ -18,6 +18,8 @@ import {
   BottomPopupSelectorItemModel, BottomPopupSelectorMode
 } from "../../shared/bottom-popup-selector/bottom-popup-selector.model";
 import * as _ from 'lodash';
+import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './push-comment.component.html',
@@ -43,7 +45,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private pushCommentService: PushCommentService, private userInfoService: UserInfoService,
               private liveService: LiveService, private timelineService: TimelineService,
-              private bottomPopupService: BottomPopupSelectorService) {
+              private bottomPopupService: BottomPopupSelectorService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -183,6 +185,9 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.router.navigate([`/lives/${this.liveId}/post`, {'comment_id': comment.id}]);
   }
 
+  parseContent(content: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
+  }
 
   backToMainScreen() {
     this.router.navigate(['/lives/' + this.liveId]);

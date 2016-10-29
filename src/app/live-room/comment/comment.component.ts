@@ -12,6 +12,9 @@ import {SafeHtml, DomSanitizer} from '@angular/platform-browser';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../timeline/timeline.service';
+import * as _ from 'lodash';
+import {userInfo} from "os";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   selector: 'comments',
@@ -67,21 +70,13 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     switch (comment.type) {
       case CommentType.Text:
-        let atRegexp = /(@.+?)\((.+?)\)/g;
-        let _content = '';
-
-        content = comment.content;
-
-        while (true) {
-          var atTextArr = atRegexp.exec(content);
-          if (!atTextArr || atTextArr.length !== 3 || !atRegexp.lastIndex) break;
-
-          _content = content.replace(atTextArr[0], `<span class="highlight">${atTextArr[1]}</span>`);
+        if (_.includes(comment.toUids, this.userInfo.uid)) {
+          content = `<span class="highlight">${UtilsService.parseAt(comment.content)}</span>`;
+        } else {
+          content = UtilsService.parseAt(comment.content, true);
         }
 
-        if (_content === '') _content = content;
-
-        return this.sanitizer.bypassSecurityTrustHtml(_content);
+        return this.sanitizer.bypassSecurityTrustHtml(content);
 
       case CommentType.AudienceJoined:
         content = `${comment.eventData.user.nick}加入话题讨论`;
