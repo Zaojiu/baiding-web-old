@@ -1,15 +1,12 @@
-import {Component, Input, OnInit, ElementRef, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, Input, OnInit, ElementRef, ViewChild, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
-import {TimelineService} from '../timeline/timeline.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {LiveService} from '../../shared/api/live/live.service';
 import {MessageService} from '../timeline/message/message.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
-import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {EditMode} from "./audience-bottom-bar.enums";
 import {Router} from "@angular/router";
 
@@ -22,7 +19,7 @@ declare var $: any;
   providers: [CommentApiService]
 })
 
-export class AudienceBottomBarComponent implements OnInit {
+export class AudienceBottomBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
@@ -35,8 +32,8 @@ export class AudienceBottomBarComponent implements OnInit {
   modeEnums = EditMode;
   mode = EditMode.None;
 
-  constructor(private route: ActivatedRoute, private liveService: LiveService, private commentApiService: CommentApiService,
-              private timelineService: TimelineService, private  messageService: MessageService, el: ElementRef, private router: Router) {
+  constructor(private liveService: LiveService, private commentApiService: CommentApiService,
+              private  messageService: MessageService, el: ElementRef, private router: Router) {
     this.el = el.nativeElement;
   }
 
@@ -83,7 +80,6 @@ export class AudienceBottomBarComponent implements OnInit {
     }
     return toUsers;
   }
-
 
   postComment() {
     if (this.commentContent === '') return;
@@ -164,7 +160,6 @@ export class AudienceBottomBarComponent implements OnInit {
   }
 
   selected(uid: number): boolean {
-
     return this.commentContent.indexOf(uid.toString()) !== -1;
   }
 }
