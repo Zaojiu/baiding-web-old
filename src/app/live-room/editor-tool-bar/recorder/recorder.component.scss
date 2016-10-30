@@ -51,11 +51,11 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    height: 112px;
-    width: 112px;
+    height: 113px;
+    width: 113px;
     border-radius: 50%;
     background-color: rgb(17, 75, 122);
-    transform: translateX(-50%) translateY(-50%) scale(.803);
+    transform: translateX(-50%) translateY(-50%) scale(.8);
     transform-origin: center;
     transition: transform .5s;
   }
@@ -64,8 +64,8 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    height: 86px;
-    width: 86px;
+    height: 87px;
+    width: 87px;
     border-radius: 50%;
     background-color: rgb(0, 0, 0);
     transform: translateX(-50%) translateY(-50%) scale(1);
@@ -91,7 +91,7 @@
     }
 
     .border-inner {
-      transform: translateX(-50%) translateY(-50%) scale(0.93);
+      transform: translateX(-50%) translateY(-50%) scale(0.9);
     }
 
     .preparing-tips {

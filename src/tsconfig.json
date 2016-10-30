@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "outDir": "../dist/out-tsc",
     "sourceMap": true,
-    "target": "es6",
+    "target": "es5",
     "typeRoots": [
       "../manual_typings",
       "../node_modules/@types"
