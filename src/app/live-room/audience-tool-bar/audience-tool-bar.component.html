@@ -1,45 +1,69 @@
 <div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
   <div class="audience-tool-bar">
-    <a class="bottom-bar-btn"[ngClass]="{'activate': mode !== modeEnums.None}" (click)="switchMode(modeEnums.None); goSettings();"
-       (contextmenu)="$event.preventDefault()"><i class="bi bi-gear"></i></a>
+    <a class="bottom-bar-btn"
+       [ngClass]="{'activate': mode === modeEnums.None}"
+       (click)="switchMode(modeEnums.None); goSettings();"
+       (contextmenu)="$event.preventDefault()"
+    >
+      <i class="bi bi-gear"></i>
+    </a>
 
-    <form class="comment-input-container" [ngClass]="{'activate': mode !== modeEnums.None}"
-          (ngSubmit)="postComment(); focusMessageInput();">
-      <input class="comment-input" #commentInput name="commentContent" type="text" placeholder="发表评论"
-             (focus)="switchMode(modeEnums.Text)" [(ngModel)]="commentContent">
+    <form
+      class="comment-input-container"
+      [ngClass]="{'activate': mode !== modeEnums.None}"
+      (ngSubmit)="postComment(); focusMessageInput();"
+    >
+      <input
+        class="comment-input"
+        #commentInput
+        name="commentContent"
+        type="text"
+        placeholder="发表评论"
+        (focus)="switchMode(modeEnums.Text)"
+        [(ngModel)]="commentContent"
+      >
       <button class="sender">发送</button>
-      <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At"><i
-        class="bi bi-at-people-keyboard"></i></a>
-      <a class="switcher" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text"><i
-        class="bi bi-at-people"></i></a>
+      <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
+        <i class="bi bi-at-people-keyboard"></i>
+      </a>
+      <a class="switcher" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text">
+        <i class="bi bi-at-people"></i>
+      </a>
     </form>
-    <a class="bottom-bar-btn face" [ngClass]="{'hidden':  mode !== modeEnums.None}" (click)="confirmPraise('👍')"
-       (contextmenu)="$event.preventDefault()"><i class="bi bi-thumbsup"></i></a>
-    <a class="bottom-bar-btn face" [ngClass]="{'hidden': mode !== modeEnums.None}" (click)="confirmPraise('💛')"
-       (contextmenu)="$event.preventDefault()"><i class="bi bi-heart"></i></a>
-    <a class="bottom-bar-btn face" [ngClass]="{'hidden': mode !== modeEnums.None}" (click)="confirmPraise('😄')"
-       (contextmenu)="$event.preventDefault()"><i class="bi bi-face"></i></a>
+
+    <a
+      class="bottom-bar-btn"
+      [ngClass]="{'activate':  mode === modeEnums.None}"
+      (click)="confirmPraise('👍')"
+      (contextmenu)="$event.preventDefault()"
+    ><i class="bi bi-thumbsup"></i></a>
+
+    <a
+      class="bottom-bar-btn"
+      [ngClass]="{'activate': mode === modeEnums.None}"
+      (click)="confirmPraise('💛')"
+      (contextmenu)="$event.preventDefault()"
+    ><i class="bi bi-heart"></i></a>
+
+    <a
+      class="bottom-bar-btn"
+      [ngClass]="{'activate': mode === modeEnums.None}"
+      (click)="confirmPraise('😄')"
+      (contextmenu)="$event.preventDefault()"
+    ><i class="bi bi-face"></i></a>
   </div>
 
   <div class="at-people-keyboard" [ngClass]="{activate: mode === modeEnums.At}">
     <div class="user-row" (click)="changeCommentContent(liveInfo.admin)">
       <img class="avatar" [src]="liveInfo.admin.avatar">
-      <div class="content-container">
-        <div class="content-info">
-          <div class="name">{{liveInfo.admin.nick}}</div>
-        </div>
-      </div>
+      <div class="name">{{liveInfo.admin.nick}}</div>
       <div class="tick" [ngClass]="{'selected': selected(liveInfo.admin.uid)}"><i class="bi bi-tick"
       ></i></div>
     </div>
 
     <div class="user-row" *ngFor="let vip of liveInfo.editors" (click)="changeCommentContent(vip)">
       <img class="avatar" [src]="vip.avatar">
-      <div class="content-container">
-        <div class="content-info">
-          <div class="name">{{vip.nick}}</div>
-        </div>
-      </div>
+      <div class="name">{{vip.nick}}</div>
       <div class="tick" [ngClass]="{'selected': selected(vip.uid)}"><i class="bi bi-tick"></i></div>
     </div>
 
