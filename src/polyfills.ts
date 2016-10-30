@@ -24,6 +24,7 @@ import 'hammerjs';
 import 'moment/locale/zh-cn';
 import * as $ from 'jquery';
 import './icons.font';
+import './app/shared/utils/promise';
 
 (<any>window).$ = $;
 import * as fastclick from 'fastclick';

@@ -13,7 +13,6 @@ import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../timeline/timeline.service';
 import * as _ from 'lodash';
-import {userInfo} from "os";
 import {UtilsService} from "../../shared/utils/utils";
 
 @Component({

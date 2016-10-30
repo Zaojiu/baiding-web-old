@@ -2,7 +2,7 @@
   <div class="editor-tool-bar" [ngClass]="{'is-closed': isClose}">
     <i
       class="bi bi-comment post-message"
-      (click)="switchMode(modeEnums.Text)"
+      (touchstart)="switchMode(modeEnums.Text)"
       (contextmenu)="$event.preventDefault()"
       [ngClass]="{activate: mode === modeEnums.Text}"
     ></i>
@@ -15,8 +15,8 @@
     </div>
 
     <div class="record-btn-container"
-         [ngClass]="{recording: recorder && recorder.isRecording, activate: mode === modeEnums.Audio}"
-         (click)="switchMode(modeEnums.Audio)" (contextmenu)="$event.preventDefault()"
+         [ngClass]="{recording: recorder && recorder.status === recordEnums.Recording, activate: mode === modeEnums.Audio}"
+         (touchstart)="switchMode(modeEnums.Audio)" (contextmenu)="$event.preventDefault()"
     >
       <i class="bi bi-mic"></i>
       <span class="record-duration">{{recordDuration}}</span>
