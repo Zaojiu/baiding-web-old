@@ -273,5 +273,6 @@ export class CommentComponent implements OnInit, OnDestroy {
   triggerGotoLatest() {
     this.scroller.scrollToBottom();
     this.unreadCount = 0;
+    this.isOnBottom = true;
   }
 }
