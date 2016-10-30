@@ -2,7 +2,7 @@
   <div class="editor-tool-bar" [ngClass]="{'is-closed': isClose}">
     <i
       class="bi bi-comment post-message"
-      (touchstart)="switchMode(modeEnums.Text)"
+      (click)="switchMode(modeEnums.Text)"
       (contextmenu)="$event.preventDefault()"
       [ngClass]="{activate: mode === modeEnums.Text}"
     ></i>

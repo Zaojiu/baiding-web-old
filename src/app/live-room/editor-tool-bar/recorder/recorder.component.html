@@ -8,6 +8,7 @@
     'uploading': status === recordStatusEnum.Uploading
   }"
   (panup)="cancelRecord()"
+  (contextmenu)="$event.preventDefault()"
 >
   <span class="tips preparing-tips">录音准备中</span>
   <span class="tips recording-tips">手指上划，取消发送</span>
