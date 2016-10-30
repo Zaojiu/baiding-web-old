@@ -177,15 +177,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
     }
 
-    let isOnBottom = this.isOnBottom;
-
     this.messages.push(message);
 
-    if (isOnBottom) {
-      setTimeout(() => {
-        this.scroller.scrollToBottom();
-      }, 0);
-    }
+    setTimeout(() => {
+      this.scroller.scrollToBottom();
+    }, 0);
   }
 
   gotoLatestMessages(): Promise<boolean> {

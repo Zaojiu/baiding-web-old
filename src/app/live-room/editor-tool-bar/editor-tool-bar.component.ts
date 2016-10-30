@@ -12,6 +12,7 @@ import {LiveStatus} from "../../shared/api/live/live.enums";
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {ModalService} from "../../shared/modal/modal.service";
 import {Router} from "@angular/router";
+import {RecordStatus} from "./recorder/recorder.enums";
 
 declare var $: any;
 
@@ -28,6 +29,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck {
   @ViewChild('messageInput') messageInput: ElementRef;
   @ViewChild('messageContainer') messageContainer: ElementRef;
   modeEnums = EditMode;
+  recordEnums = RecordStatus;
   mode = EditMode.None;
   messageContent = '';
   isMessageSubmitting = false;

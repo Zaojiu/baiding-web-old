@@ -19,7 +19,7 @@ export class WechatService {
   private hasInit: boolean;
   playingVoiceId = '';
   private _onVoicePlayEnd: (id: string) => void;
-  private autoCompleteResolver: (audioModel: WechatAudioModel) => void;
+  private autoCompleteResolver: (localId: string) => void;
   private autoCompleteRejecter: (reason: string) => void;
 
   constructor(private http: Http, private config: AppConfig, private store: StoreService) {
@@ -88,15 +88,10 @@ export class WechatService {
         wx.onVoiceRecordEnd({
           // 录音时间超过一分钟没有停止的时候会执行 complete 回调
           complete: (res) => {
-            if (this.autoCompleteResolver) {
-              this.processVoice(res.localId).then(audioModel => {
-                audioModel.duration = 60;
-                this.autoCompleteResolver(audioModel);
-                console.log('wechat record translate & upload done successful: ', res.localId, audioModel);
-              }, (err) => {
-                this.autoCompleteRejecter(err);
-              });
-            }
+            if (this.autoCompleteResolver) this.autoCompleteResolver(res.localId);
+          },
+          fail: (reason) => {
+            if (this.autoCompleteRejecter) this.autoCompleteRejecter(reason);
           }
         });
 
@@ -192,21 +187,23 @@ export class WechatService {
     return new Promise((resolve, reject) => {
       wx.startRecord({
         success: () => {
+          console.log('wechat record start successful');
           resolve();
         },
         fail: (err) => {
+          console.log('wechat record start failed');
           reject(err);
         }
       })
     });
   }
 
-  autoCompelete(): Promise<WechatAudioModel> {
-    if (!this.hasInit)  return Promise.reject('微信未初始化');
+  autoCompelete(): Promise<string> {
+    if (!this.hasInit) return Promise.reject('微信未初始化');
 
     return new Promise((resolve, reject) => {
       this.autoCompleteResolver = resolve;
-      this.autoCompleteResolver = reject;
+      this.autoCompleteRejecter = reject;
     });
   }
 
@@ -220,13 +217,15 @@ export class WechatService {
 
           this.processVoice(res.localId).then((audioModel) => {
             audioModel.duration = duration;
-            resolve(WechatAudioModel);
             console.log('wechat record translate & upload done successful: ', res.localId, audioModel);
+            resolve(audioModel);
           }, (err) => {
+            console.log('wechat record translate & upload done failed');
             reject(err);
           });
         },
         fail: (err) => {
+          console.log('wechat record stop failed');
           reject(err);
         }
       })
@@ -239,9 +238,11 @@ export class WechatService {
     return new Promise((resolve, reject) => {
       wx.stopRecord({
         success: () => {
+          console.log('wechat record cancel successful');
           resolve();
         },
         fail: (err) => {
+          console.log('wechat record cancel failed');
           reject(err);
         }
       });
@@ -328,14 +329,14 @@ export class WechatService {
     return new Promise<WechatAudioModel>((resolve, reject) => {
       Promise.all([this.translateVoice(id), this.uploadVoice(id)]).then(result => {
         console.log('process voice result: ', result);
-        let translateResult = result[0];
+        let translateResult = result[0] || '';
         let serverId = result[1];
         var audioModel = new WechatAudioModel();
         audioModel.localId = id;
         audioModel.serverId = serverId;
         audioModel.translateResult = translateResult;
 
-        resolve(audioModel)
+        resolve(audioModel);
       }, (err) => {
         reject(err);
       });

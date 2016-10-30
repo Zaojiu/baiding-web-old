@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "@types/autosize": "^3.0.3",
-    "@types/fastclick": "file:manual_typings/fastclick",
     "@types/hammerjs": "^2.0.33",
     "@types/jasmine": "^2.2.30",
     "@types/jquery": "^2.0.33",

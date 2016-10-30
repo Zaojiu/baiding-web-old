@@ -41,6 +41,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   marker = '';
   uids: number[] = [];
   routerSubscription: Subscription;
+  hasInit: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private pushCommentService: PushCommentService, private userInfoService: UserInfoService,
@@ -56,6 +57,12 @@ export class PushCommentComponent implements OnInit, OnDestroy {
       event => {
         if (event instanceof NavigationEnd) {
           this.resetRouteParams();
+
+          if (!this.hasInit) {
+            // 首次拉取后清除marker;
+            this.marker = '';
+            this.hasInit = true;
+          }
         }
       }
     );
@@ -104,8 +111,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.uids = uidNums;
 
     this.gotoFirstComments();
-
-    this.marker = ''; // 首次拉取后清除marker;
   }
 
   isClosed(): boolean {
@@ -125,12 +130,12 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     });
   }
 
-  getNextComments(marker: string, limit: number, sorts: string[]) {
+  getNextComments(toUids: number[], marker: string, limit: number, sorts: string[]) {
     if (this.isLoading) return;
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, [], marker, limit, sorts).then(comments => {
+    this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
       for (let comment of comments) {
         this.comments.push(comment);
       }
@@ -143,12 +148,12 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     });
   }
 
-  getPrevComments(marker: string, limit: number, sorts: string[]) {
+  getPrevComments(toUids: number[], marker: string, limit: number, sorts: string[]) {
     if (this.isLoading) return;
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, [], marker, limit, sorts).then(comments => {
+    this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
       for (let comment of comments) {
         this.comments.unshift(comment);
       }
@@ -167,11 +172,11 @@ export class PushCommentComponent implements OnInit, OnDestroy {
         if (topOrBottom) {
           if (this.comments.length === 0) return;
           let firstComment = this.comments[0];
-          this.getPrevComments(`$lt${firstComment.createdAt}`, 20, ['-createdAt']);
+          this.getPrevComments(this.uids, `$lt${firstComment.createdAt}`, 20, ['-createdAt']);
         } else {
           if (this.comments.length === 0) return;
           let lastComment = this.comments[this.comments.length - 1];
-          this.getNextComments(`$gt${lastComment.createdAt}`, 20, ['createdAt']);
+          this.getNextComments(this.uids, `$gt${lastComment.createdAt}`, 20, ['createdAt']);
         }
       }
     );
