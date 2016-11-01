@@ -1,0 +1,162 @@
+.audience-tool-bar {
+  display: flex;
+  height: 50px;
+  box-sizing: border-box;
+  border-top: solid 1px rgba(143, 143, 143, .3);
+  font-size: 0;
+  background-color: rgb(250, 250, 250);
+  line-height: 49px;
+  white-space: nowrap;
+  touch-callout: none;
+  user-select: none;
+
+  .comment-input-container {
+    display: flex;
+    overflow: hidden;
+    transition: width 0.2s;
+    flex-grow: 1;
+
+    &.activate {
+      width: 100%;
+
+      .comment-input {
+        border: none;
+        background: transparent;
+      }
+      .sender {
+        display: inline-block;
+        border: none;
+        background: transparent;
+      }
+
+      .switcher {
+        display: inline-block;
+      }
+    }
+
+    .comment-input {
+      border: solid 1px rgb(236, 236, 236);
+      color: rgb(75, 75, 75);
+      border-radius: 19px;
+      flex-grow: 1;
+      padding: 0 12px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      transition: width 0.2s;
+      font-size: 12px;
+      min-width: 0;
+    }
+
+    .sender {
+      display: none;
+      border: solid 1px rgb(236, 236, 236);
+      color: rgb(33, 150, 243);
+      border-radius: 15px;
+      padding-left: 15px;
+      padding-right: 15px;
+      text-align: center;
+      font-size: 17px;
+      background-color: rgb(255, 255, 255);
+      flex-shrink: 0;
+    }
+
+    .switcher {
+      display: none;
+      font-size: 0;
+      padding-right: 15px;
+      line-height: 49px;
+      color: rgb(75, 75, 75);
+
+      .bi {
+        font-size: 22px;
+      }
+    }
+  }
+
+  .bottom-bar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(75, 75, 75);
+    height: 49px;
+    width: 0;
+    flex-shrink: 0;
+    transition: all .5s;
+    opacity: 0;
+    overflow: hidden;
+
+    &.activate {
+      width: 55px;
+      opacity: 1;
+    }
+
+    .bi {
+      font-size: 24px;
+    }
+  }
+}
+
+.at-people-keyboard {
+  height: 0;
+  overflow: hidden;
+  transition: height .5s;
+  background: rgba(228, 228, 228, 1.0);
+
+  &::-webkit-scrollbar, &::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  &.activate {
+    height: 252px;
+    overflow: auto;
+  }
+
+  .user-row {
+    display: flex;
+    height: 84px;
+    border-bottom: solid 1px rgb(198, 198, 198);
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+
+   .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .name {
+      color: rgb(75, 75, 75);
+      font-size: 16px;
+      margin-left: 10px;
+      flex-grow: 1;
+    }
+
+    .tick {
+      display: flex;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      border: solid 2px rgb(33, 150, 243);
+      background-color: transparent;
+      transition: background-color .5s;
+
+      .bi {
+        opacity: 0;
+        font-size: 8px;
+        color: rgb(255, 255, 255);
+        transition: all .5s;
+        transform: scale(.666) translateX(-1px) translateY(1px);
+        transform-origin: center center;
+      }
+
+      &.selected {
+        background-color: rgb(33, 150, 243);
+
+        .bi {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

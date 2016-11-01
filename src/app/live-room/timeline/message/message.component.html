@@ -7,22 +7,26 @@
 <div *ngIf="message.type!==4" class="timeline-message-container">
   <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
     <div class="avatar-container">
-      <img class="avatar" [src]="message.user.avatar">
+      <div class="avatar-wrapper" (click)="emitAvatarClick(message.user)" (contextmenu)="$event.preventDefault()">
+        <img class="avatar" [src]="message.user.avatar">
+      </div>
     </div>
 
-    <div class="content-container" (touchstart)="touchStart()" (touchend)="touchEnd()" (contextmenu)="$event.preventDefault()" >
+    <div class="content-container" (touchstart)="touchStart()" (touchend)="touchEnd()"
+         (contextmenu)="$event.preventDefault()">
       <div class="content-info">
         <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
         <span class="time">{{message.createdAt | fromNow}}</span>
       </div>
 
-      <div class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</div>
+      <div class="content" *ngIf="message.type === 0 || message.type === 3" [innerHtml]="parseContent(message.content)"></div>
       <div class="content image-content" *ngIf="message.type === 1">
         <image-viewer-preview [imageLinks]="[message.image]"></image-viewer-preview>
       </div>
 
       <div class="content audio-content" *ngIf="message.type === 2">
-        <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message" [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
+        <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
+                      [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
         <div class="translate">
           <div class="translate-tips">以下由机器自动翻译</div>
           {{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}
@@ -30,7 +34,8 @@
       </div>
 
       <div class="tooltips-container">
-        <tooltips [(isOpened)]="isToolTipOpened" [items]="getToolTipsItems()" (itemSelected)="tooptipsSelected($event)" (touchstart)="$event.stopPropagation()"></tooltips>
+        <tooltips [(isOpened)]="isToolTipOpened" [items]="getToolTipsItems()" (itemSelected)="tooptipsSelected($event)"
+                  (touchstart)="$event.stopPropagation()"></tooltips>
       </div>
     </div>
 
@@ -46,12 +51,18 @@
   </div>
 
   <div class="message-reply-container">
-    <div class="message-reply" *ngFor="let reply of message.replies" [ngClass]="{'mime': reply.user.uid == userInfo.uid}">
+    <div class="message-reply" *ngFor="let reply of message.replies"
+         [ngClass]="{'mime': reply.user.uid == userInfo.uid}">
       <div class="avatar-container">
-        <img class="avatar" [src]="reply.user.avatar">
+        <div class="avatar-wrapper " (click)="emitAvatarClick(reply.user)" (contextmenu)="$event.preventDefault()">
+          <img class="avatar" [src]="reply.user.avatar">
+        </div>
       </div>
       <div class="content-container">
-        <div class="content">{{reply.user.nick}} @{{message.user.nick}}<br/>{{reply.content}}</div>
+        <div class="content">
+          {{reply.user.nick}}回复{{message.user.nick}}
+          <div [innerHtml]="parseContent(reply.content)"></div>
+        </div>
       </div>
     </div>
   </div>

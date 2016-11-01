@@ -26,6 +26,7 @@
     "@angular/router": "~3.0.0",
     "angular2-localstorage": "git://github.com/marcj/angular2-localstorage.git#1a5b9fb31821706ffbde7da97056194f6100c515",
     "angular2-websocket": "^0.8.1",
+    "autosize": "^3.0.17",
     "core-js": "^2.4.1",
     "fastclick": "^1.0.6",
     "hammerjs": "^2.0.8",
@@ -41,7 +42,7 @@
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
-    "@types/fastclick": "file:manual_typings/fastclick",
+    "@types/autosize": "^3.0.3",
     "@types/hammerjs": "^2.0.33",
     "@types/jasmine": "^2.2.30",
     "@types/jquery": "^2.0.33",
@@ -65,11 +66,16 @@
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
+    "karma-phantomjs-launcher": "~1.0.0",
+    "phantomjs-prebuilt": "~2.1.7",
     "lazypipe": "^1.0.1",
     "protractor": "4.0.9",
     "static-server": "2.0.3",
     "ts-node": "1.2.1",
     "tslint": "3.13.0",
     "typescript": "2.0.2"
+  },
+  "optionalDependencies": {
+    "phantomjs": "~2.1.7"
   }
 }

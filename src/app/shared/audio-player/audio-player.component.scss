@@ -9,9 +9,7 @@
     color: rgb(255, 255, 255);
 
     .play-btn {
-      &.circle-border{
         border: solid 1px rgb(255, 255, 255);
-      }
     }
 
     /deep/ {
@@ -59,6 +57,9 @@
     border: solid 1px rgb(75, 75, 75);
     border-radius: 50%;
     box-sizing: content-box;
+    &.no-border{
+      border-color:transparent;
+    }
 
     .bi-play {
       font-size: 12px;

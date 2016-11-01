@@ -2,12 +2,15 @@ import {Component, OnInit, OnDestroy, OnChanges, EventEmitter} from '@angular/co
 import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
+import { TimelineService } from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {LiveInfoModel} from '../shared/api/live/live.model';
 import {TitleService} from '../shared/title/title.service';
 import {WechatService} from '../shared/wechat/wechat.service';
 import {UserInfoService} from '../shared/api/user-info/user-info.service';
-import {UserInfoModel} from '../shared/api/user-info/user-info.model';
+import { UserInfoModel } from '../shared/api/user-info/user-info.model';
+import { UserAnimEmoji } from '../shared/praised-animation/praised-animation.model';
+import { MqEvent, EventType } from '../shared/mq/mq.service';
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -25,11 +28,11 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
   refreshInterval: any;
   isBeginnerGuideShow: boolean;
+  praisedSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
+  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService, private timelineService: TimelineService,
               private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
   }
-
 
   toShowBeginnerGuide(result: boolean) {
     this.isBeginnerGuideShow = result;
@@ -44,9 +47,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   getShareUri(): string {
-    let uriTree = this.router.parseUrl(location.hash.replace('#', ''))
-    let search = uriTree.queryParams;
-    if (!search['source']) search['source'] = 'share';
+    let uriTree = this.router.createUrlTree([`/lives/${this.id}`, {source: 'share'}]);
     let hash = this.router.serializeUrl(uriTree);
     let uri = location.href.replace(location.hash, `#${hash}`);
     return uri;
@@ -70,11 +71,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, this.getShareUri(), this.id);
   }
 
+  timelineGotoLatest() {
+    this.timelineService.gotoLastMessage();
+  }
+
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
 
     if (!this.liveService.getLiveRoomAlreadyVisited()) {
-      let fromShare = !!this.route.snapshot.queryParams['source'];
+      let fromShare = this.route.snapshot.params['source'] === 'share';
       this.showInfo = fromShare;
       if (!fromShare) {
         this.isBeginnerGuideShow = true;
@@ -99,11 +104,25 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);
-    }, 10 * 1000)
+    }, 10 * 1000);
+
+    this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
+      if (evt.event != EventType.LivePraise) {
+        return
+      }
+      if (evt.info.user.uid == this.userInfo.uid) {
+        return
+      }
+      let userAnim = new UserAnimEmoji;
+      userAnim.emoji = evt.info.emoji;
+      userAnim.user = new UserInfoModel;
+      this.liveInfo.praisedAnimations.push(userAnim);
+    });
   }
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+    this.praisedSub.unsubscribe();
 
     clearInterval(this.refreshInterval);
   }

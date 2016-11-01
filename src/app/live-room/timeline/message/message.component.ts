@@ -11,12 +11,13 @@ import {UserAnimEmoji} from '../../../shared/praised-animation/praised-animation
 import {AudioPlayerComponent} from '../../../shared/audio-player/audio-player.component'
 import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
 import {LiveStatus} from "../../../shared/api/live/live.enums";
+import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
+import {UtilsService} from "../../../shared/utils/utils";
 
 @Component({
   selector: 'message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
-  providers: [MessageService]
 })
 
 export class MessageComponent {
@@ -36,7 +37,9 @@ export class MessageComponent {
   messagePressTimer: any;
   messagePressDuration = 0;
 
-  constructor(private messageService: MessageService, private router: Router, private liveService: LiveService) {
+  constructor(private messageService: MessageService,
+              private router: Router, private liveService: LiveService,
+              private sanitizer: DomSanitizer) {
   }
 
   touchStart() {
@@ -98,12 +101,12 @@ export class MessageComponent {
     }, 1000);
   }
 
-  isEditor() {
-    return this.liveService.isEditor(this.liveId);
+  isEditor(uid?: number) {
+    return this.liveService.isEditor(this.liveId, uid);
   }
 
-  isAudience() {
-    return this.liveService.isAudience(this.liveId);
+  isAudience(uid?: number) {
+    return this.liveService.isAudience(this.liveId, uid);
   }
 
   setPraise() {
@@ -172,5 +175,15 @@ export class MessageComponent {
 
   private _toggleAudioAutoPlay() {
     this.liveService.toggleAudioAutoPlay(this.liveId);
+  }
+
+  emitAvatarClick(userInfo: UserInfoModel) {
+    if (this.isEditor(userInfo.uid)) {
+      this.messageService.emitAvatarUser(userInfo);
+    }
+  }
+
+  parseContent(content: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
   }
 }

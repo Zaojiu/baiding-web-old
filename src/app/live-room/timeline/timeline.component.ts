@@ -1,4 +1,6 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList} from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList
+} from '@angular/core';
 import {Subscription}   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -26,7 +28,7 @@ import {MessageComponent} from './message/message.component';
 
 export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
-  timeNow = UtilsService.now().toString();
+  timeNow = UtilsService.now.toString();
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
@@ -38,6 +40,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   isOnBottom: boolean;
   isLoading: boolean;
   countdownTimer: any;
+  unreadCount = 0;
 
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
 
@@ -109,7 +112,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   audioPlayEnded(msg: MessageModel) {
-
     if (!this.liveService.isAudioAutoPlay(this.liveInfo.id)) {
       return;
     }
@@ -135,13 +137,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
-        this.gotoLatestMessages().then(() => {
-          if (this.isOnBottom) {
+        if (this.isOnBottom) {
+          this.gotoLatestMessages().then(() => {
             setTimeout(() => {
               this.scroller.scrollToBottom();
             }, 0);
-          }
-        });
+          });
+        } else {
+          this.unreadCount++;
+          this.isOnLatest = false;
+        }
         break;
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
@@ -172,15 +177,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
     }
 
-    let isOnBottom = this.isOnBottom;
-
     this.messages.push(message);
 
-    if (isOnBottom) {
-      setTimeout(() => {
-        this.scroller.scrollToBottom();
-      }, 0);
-    }
+    setTimeout(() => {
+      this.scroller.scrollToBottom();
+    }, 0);
   }
 
   gotoLatestMessages(): Promise<boolean> {
@@ -193,6 +194,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.messages = messages;
       this.isOnOldest = false;
       this.isOnLatest = true;
+      this.isOnBottom = true;
+      this.unreadCount = 0;
       this.isLoading = false;
       return true;
     });
@@ -207,6 +210,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.messages = messages;
       this.isOnOldest = true;
       this.isOnLatest = false;
+      this.isOnBottom = false;
       this.isLoading = false;
       return true;
     });
@@ -225,6 +229,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
       if (messages.length === 0) {
         this.isOnLatest = true;
+        this.unreadCount = 0;
       }
 
       this.isLoading = false;
@@ -261,11 +266,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
     }
 
-    if (e.position === ScrollerPosition.OnBottom) {
-      this.isOnBottom = true;
-    } else {
-      this.isOnBottom = false;
-    }
+    this.isOnBottom = e.position === ScrollerPosition.OnBottom;
 
     this.timelineService.onScroll(e);
   }
@@ -280,9 +281,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
             if (result) {
               setTimeout(() => {
                 this.scroller.scrollToTop();
-              }, 0);
 
-              this.scroller.startEmitScrollEvent();
+                // 等待滚动完毕
+                setTimeout(() => {
+                  this.scroller.startEmitScrollEvent();
+                }, 0);
+              }, 0);
             }
           });
         } else {
@@ -290,9 +294,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
             if (result) {
               setTimeout(() => {
                 this.scroller.scrollToBottom();
-              }, 0);
 
-              this.scroller.startEmitScrollEvent();
+                // 等待滚动完毕
+                setTimeout(() => {
+                  this.scroller.startEmitScrollEvent();
+                }, 0);
+              }, 0);
             }
           });
         }
@@ -313,6 +320,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   removeRepeat(messages: MessageModel[]) {
+    if (!messages || !messages.length) return;
+
     let idsX = {};
     for (let idx in this.messages) {
       idsX[this.messages[idx].id] = idx
@@ -333,5 +342,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   gotoHistory() {
     this.router.navigate([`/lives/${this.id}/history`]);
+  }
+
+  triggerGotoLatest() {
+    this.timelineService.gotoLastMessage();
   }
 }

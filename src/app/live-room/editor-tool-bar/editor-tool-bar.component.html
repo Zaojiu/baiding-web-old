@@ -1,0 +1,43 @@
+<div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
+  <div class="editor-tool-bar" [ngClass]="{'is-closed': isClose}">
+    <i
+      class="bi bi-comment post-message"
+      (click)="switchMode(modeEnums.Text)"
+      (contextmenu)="$event.preventDefault()"
+      [ngClass]="{activate: mode === modeEnums.Text}"
+    ></i>
+
+    <div class="post-image" (click)="switchMode(modeEnums.None)" (contextmenu)="$event.preventDefault()">
+      <label class="add-image" for="image-selector">
+        <input class="fileSelector" id="image-selector" type="file" [(fileSelector)]="images">
+      </label>
+      <i class="bi bi-image"></i>
+    </div>
+
+    <div class="record-btn-container"
+         [ngClass]="{recording: recorder && recorder.status === recordEnums.Recording, activate: mode === modeEnums.Audio}"
+         (touchstart)="switchMode(modeEnums.Audio)" (contextmenu)="$event.preventDefault()"
+    >
+      <i class="bi bi-mic"></i>
+      <span class="record-duration">{{recordDuration}}</span>
+    </div>
+
+    <i class="bi bi-tips post-tips" (click)="switchMode(modeEnums.None); postTips();"
+       (contextmenu)="$event.preventDefault()"></i>
+
+    <i class="bi bi-gear go-settings" (click)="switchMode(modeEnums.None); goSettings();"
+       (contextmenu)="$event.preventDefault()"></i>
+  </div>
+
+  <recorder class="recorder" #recorder [ngClass]="{activate: mode === modeEnums.Audio}"
+            (recordEnd)="recordEnd($event)"></recorder>
+
+  <form class="post-message-container" #messageContainer [ngClass]="{activate: mode === modeEnums.Text}"
+        (ngSubmit)="postMessage(); focusMessageInput();">
+    <div class="input-wrapper">
+      <textarea #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
+                [(ngModel)]="messageContent"></textarea>
+    </div>
+    <button class="sender">发送</button>
+  </form>
+</div>

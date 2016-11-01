@@ -5,8 +5,7 @@ import {FormsModule}   from '@angular/forms';
 import {ROUTES} from './live-room.route';
 import {LiveRoomComponent} from './live-room.component';
 import {CommentComponent} from './comment/comment.component';
-import {EditorBottomBarComponent} from './editor-bottom-bar/editor-bottom-bar.component';
-import {AudienceBottomBarComponent} from './audience-bottom-bar/audience-bottom-bar.component';
+import {AudienceToolBarComponent} from './audience-tool-bar/audience-tool-bar.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {MessageComponent} from './timeline/message/message.component';
 import {PostComponent} from './post/post.component';
@@ -17,7 +16,6 @@ import {TimelineService} from './timeline/timeline.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message/message.api";
 import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
-import {FileSelectorDirective} from "../shared/file-selector/file-selector.directive";
 import {PipeModule} from "../shared/pipe/pipe.module";
 import {UploadApiService} from "../shared/api/upload/upload.api";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
@@ -30,6 +28,12 @@ import {TopBarComponent} from "./top-bar/top-bar.component";
 import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
 import {ToolTipsModule} from "../shared/tooltips/tooltips.module";
 import {AnimationModule} from "../shared/animation/animation.module";
+import {MessageService} from "./timeline/message/message.service";
+import {AutoBlurModule} from "../shared/auto-blur/auto-blur.module";
+import {EditorToolBarComponent} from "./editor-tool-bar/editor-tool-bar.component";
+import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
+import {CommentApiService} from "../shared/api/comment/comment.service";
+import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 
 @NgModule({
   imports: [
@@ -43,30 +47,34 @@ import {AnimationModule} from "../shared/animation/animation.module";
     SwitchBtnModule,
     ToolTipsModule,
     AnimationModule,
+    AutoBlurModule,
+    FileSelectorModule,
   ],
   declarations: [
     LiveRoomComponent,
     CommentComponent,
     TimelineComponent,
     MessageComponent,
-    EditorBottomBarComponent,
-    AudienceBottomBarComponent,
+    EditorToolBarComponent,
+    AudienceToolBarComponent,
     PostComponent,
     PraisedAnimationDirective,
     PraisedAnimationComponent,
-    FileSelectorDirective,
     LiveRoomInfoComponent,
     ScrollerDirective,
     TopBarComponent,
     BeginnerGuideComponent,
+    RecorderComponent,
   ],
   providers: [
     TimelineService,
     CommentService,
     MessageApiService,
+    CommentApiService,
     LiveInfoResolver,
     QuitEditGuard,
     UploadApiService,
+    MessageService,
   ]
 })
 

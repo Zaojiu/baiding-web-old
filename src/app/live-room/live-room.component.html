@@ -13,7 +13,11 @@
     [isTimelineOnLatest]="timeline.isOnLatest"
   ></top-bar>
 
-  <comments [ngClass]="{'hidden': !isCommentOpened}" [streamId]="id"></comments>
+  <comments
+    [ngClass]="{'hidden': !isCommentOpened}"
+    [streamId]="id"
+    [userInfo]="userInfo"
+  ></comments>
 
   <timeline class="timeline" [liveInfo]="liveInfo" [userInfo]="userInfo" #timeline></timeline>
 
@@ -21,19 +25,20 @@
     <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
   </div>
 
-  <audience-bottom-bar
+  <audience-tool-bar
     *ngIf="!isChildrenActived && isAudience()"
-    class="audience-bottom-bar"
-    [liveInfo]="liveInfo"
-    [userInfo]="userInfo"
-  ></audience-bottom-bar>
-
-  <editor-bottom-bar
-    *ngIf="!isChildrenActived && isEditor()"
-    class="editor-bottom-bar"
+    class="audience-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"
-  ></editor-bottom-bar>
+    [userInfo]="userInfo"
+  ></audience-tool-bar>
+
+  <editor-tool-bar
+    *ngIf="!isChildrenActived && isEditor()"
+    class="editor-tool-bar"
+    [liveId]="id"
+    [liveInfo]="liveInfo"
+  ></editor-tool-bar>
 
 </div>
 

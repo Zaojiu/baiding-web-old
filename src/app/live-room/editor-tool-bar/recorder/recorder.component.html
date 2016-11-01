@@ -1,0 +1,33 @@
+<div
+  class="record-background"
+  [ngClass]="{
+    'preparing': status === recordStatusEnum.Preparing,
+    'recording': status === recordStatusEnum.Recording,
+    'canceled': status === recordStatusEnum.Canceled,
+    'too-short': status === recordStatusEnum.TooShort,
+    'uploading': status === recordStatusEnum.Uploading
+  }"
+  (panup)="cancelRecord()"
+  (contextmenu)="$event.preventDefault()"
+>
+  <span class="tips preparing-tips">录音准备中</span>
+  <span class="tips recording-tips">手指上划，取消发送</span>
+  <span class="tips canceled-tips">已取消发送</span>
+  <span class="tips too-short-tips">说话时间太短</span>
+  <span class="tips uploading-tips">音频上传中</span>
+
+  <div class="border"></div>
+  <div class="border-inner"></div>
+
+  <div
+    class="record-container"
+    (touchstart)="startRecord()"
+    (touchend)="stopRecord()"
+    (contextmenu)="$event.preventDefault()"
+  ></div>
+
+  <span class="text">长按录音</span>
+  <i class="bi bi-cancel"></i>
+  <i class="bi bi-warning"></i>
+  <i class="bi bi-up-arrow"></i>
+</div>

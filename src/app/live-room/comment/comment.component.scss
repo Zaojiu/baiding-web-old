@@ -1,44 +1,77 @@
-.comment-container {
+.comments {
   position: fixed;
-  top: 58px;
-  right: 14px;
+  top: 62px;
+  right: 12px;
+  width: 80%;
   z-index: 2;
-  max-width: 80%;
 
-  .comment-wrapper {
-    text-align: right;
+  .tips-bar {
+    margin: 6px 0 0 auto;
+    width: 172px;
+    height: 28px;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    background-color: rgba(80, 80, 80, .7);
+    border-radius: 4px;
+    line-height: 28px;
+    text-align: center;
+  }
 
-    .comment {
-      background-color: rgba(45, 45, 45, .7);
-      border-radius: 16px;
-      height: 31px;
-      padding: 4px;
-      padding-left: 12px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-      display: inline-flex;
-      align-items: center;
-      color: rgb(242, 242, 242);
-      font-size: 14px;
-      max-width: 100%;
+  .comment-container {
+    width: 100%;
+    max-height: 152px;
 
-      .comment-content {
-        flex-grow: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding: 0px;
+    &::-webkit-scrollbar, &::-webkit-scrollbar-track {
+      display: none;
+    }
+
+    .comment-wrapper {
+      text-align: right;
+
+      &:last-child {
+        .comment {
+          margin-bottom: 0;
+        }
       }
 
-      .comment-avatar {
-        flex-basis: 23px;
-        width: 23px;
-        height: 23px;
-        border-radius: 50%;
+      .comment {
+        background-color: rgba(45, 45, 45, .7);
+        border-radius: 16px;
+        height: 28px;
+        padding: 2px;
+        padding-left: 12px;
+        margin-bottom: 3px;
         box-sizing: border-box;
-        border: solid 1px rgb(255, 255, 255);
-        margin-left: 5px;
-        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        color: rgb(242, 242, 242);
+        font-size: 12px;
+        max-width: 100%;
+
+        .comment-content {
+          flex-grow: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding: 0px;
+
+          /deep/ {
+            .highlight {
+              color: rgb(24, 255, 255);
+            }
+          }
+        }
+
+        .comment-avatar {
+          flex-basis: 24px;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          box-sizing: border-box;
+          border: solid 1px rgb(255, 255, 255);
+          margin-left: 5px;
+          flex-shrink: 0;
+        }
       }
     }
   }

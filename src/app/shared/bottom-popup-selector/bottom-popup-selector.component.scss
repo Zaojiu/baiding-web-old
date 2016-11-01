@@ -10,10 +10,6 @@
   flex-direction: column-reverse;
   padding: 10px;
 
-  &.has-bottom-bar {
-    bottom: 50px;
-  }
-
   &.is-popup {
     display: flex;
   }
@@ -33,6 +29,8 @@
     }
 
     li {
+      display: flex;
+      justify-content: center;
       list-style: none;
       padding: 18px;
       line-height: 1em;
@@ -40,6 +38,7 @@
       font-size: 20px;
       border-bottom: solid 1px rgb(218, 218, 218);
       cursor: pointer;
+      position: relative;
 
       &.is-closed {
         color: rgba(33, 150, 243, .5);
@@ -47,6 +46,20 @@
       }
       &:last-child {
         border-bottom: none;
+      }
+
+      .content {
+        flex-grow: 1;
+      }
+
+      .bi {
+        display: flex;
+        margin: auto;
+        font-size: 14px ;
+        color: rgb(33, 150, 243);
+        position: absolute;
+        top: 22px;
+        right: 20px;
       }
     }
   }

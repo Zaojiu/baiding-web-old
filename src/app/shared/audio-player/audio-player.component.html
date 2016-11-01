@@ -1,6 +1,6 @@
 <div class="audio-player-container" [ngClass]="{'theme-white': isWhiteTheme}" (click)="playOrStopVoice()">
 
-  <app-waving-progress [playing]="isPlaying&isLoaded" [isWhite]="isWhiteTheme" class="wave-component"></app-waving-progress>
+  <app-waving-progress [playing]="isPlaying&&isLoaded" [isWhite]="isWhiteTheme" class="wave-component"></app-waving-progress>
 
   <span class="audio-duration">{{audioDuration}}秒</span>
 
@@ -10,7 +10,7 @@
   </div>
 
   <!--音频加载中-->
-  <div class="play-btn" *ngIf="isPlaying&&!isLoaded">
+  <div class="play-btn no-border" *ngIf="isPlaying&&!isLoaded">
     <i class="bi bi-sun-flow loading-animation"></i>
   </div>
 
