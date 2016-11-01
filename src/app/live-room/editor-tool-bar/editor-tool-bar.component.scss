@@ -116,7 +116,7 @@
 }
 
 .post-message-container {
-  display: flex;
+  display: none;
   align-items: center;
   max-height: 0;
   overflow: hidden;
@@ -126,6 +126,7 @@
   transition: all .5s;
 
   &.activate {
+    display:flex;
     max-height: 63px + 13px * 2;
   }
 
