@@ -19,7 +19,7 @@
 
   .comment-container {
     width: 100%;
-    height: 152px;
+    max-height: 152px;
 
     &::-webkit-scrollbar, &::-webkit-scrollbar-track {
       display: none;

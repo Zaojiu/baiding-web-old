@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
+import {Observable} from 'rxjs/Observable';
 
 import {WechatService} from '../wechat/wechat.service';
 import {MessageModel} from '../api/message/message.model';
@@ -19,14 +20,17 @@ export class AudioPlayerService {
     AudioPlayerService.h5AudioContext = AudioPlayerService.h5AudioContext || new AudioContext();
   }
 
-  play(msg: MessageModel): Promise<MessageModel> {
+  play(msg: MessageModel): Observable<string> {
 
-    return new Promise((resolve, reject) => {
+
+    return new Observable<string>(observer => {
 
       if (msg.audio.localId) {
-        return this.wechatService.playVoice(msg.audio.localId).then(localId => {
-          resolve(msg);
+        observer.next('loaded');
+        this.wechatService.playVoice(msg.audio.localId).then(localId => {
+          observer.complete();
         });
+        return;
       }
 
       try {
@@ -42,32 +46,35 @@ export class AudioPlayerService {
 
       let buffer = AudioPlayerService.audioBufferCache.get(msg.id);
       if (buffer) {
-        return this.playBuffer(AudioPlayerService.h5AudioContext, AudioPlayerService.playingSource, buffer, msg, resolve);
+        observer.next('loaded');
+        this.playBuffer(AudioPlayerService.h5AudioContext, AudioPlayerService.playingSource, buffer, msg, observer);
+        return;
       }
-      this.playRemoteURLAudio(AudioPlayerService.h5AudioContext, AudioPlayerService.playingSource, msg, resolve);
+      this.playRemoteURLAudio(AudioPlayerService.h5AudioContext, AudioPlayerService.playingSource, msg, observer);
     });
   }
 
-  playRemoteURLAudio(context: AudioContext, source: AudioBufferSourceNode, msg: MessageModel, resolve: any) {
+  playRemoteURLAudio(context: AudioContext, source: AudioBufferSourceNode, msg: MessageModel, observer: any) {
 
     this.$http.get(msg.audio.link, {
       withCredentials: false,
       responseType: ResponseContentType.ArrayBuffer
     }).toPromise().then(res => {
+      observer.next('loaded');
       context.decodeAudioData(res.arrayBuffer(), buffer => {
         AudioPlayerService.audioBufferCache.set(msg.id, buffer);
-        this.playBuffer(context, source, buffer, msg, resolve);
+        this.playBuffer(context, source, buffer, msg, observer);
       }, null);
     });
   }
 
-  playBuffer(context: AudioContext, source: AudioBufferSourceNode, buffer: AudioBuffer, msg: MessageModel, resolve: any) {
+  playBuffer(context: AudioContext, source: AudioBufferSourceNode, buffer: AudioBuffer, msg: MessageModel, observer: any) {
     source.buffer = buffer;
     source.connect(context.destination);
     source.start(0);
     source.onended = () => {
       AudioPlayerService.playingMessageId = '';
-      resolve(msg);
+      observer.complete();
     };
   }
 

@@ -20,6 +20,8 @@ export class AudioPlayerComponent implements OnInit {
 
   played: boolean;
 
+  isLoaded = false;
+
   constructor(private audioPlayerService: AudioPlayerService) {
   }
 
@@ -38,8 +40,12 @@ export class AudioPlayerComponent implements OnInit {
       this.audioPlayed[this.message.id] = true;
     }
 
-    this.audioPlayerService.play(this.message).then(msg => {
-      this.playEnded.emit(msg);
+    this.audioPlayerService.play(this.message).subscribe(value => {
+      if (value === 'loaded') {
+        this.isLoaded = true;
+      }
+    }, () => {
+      this.playEnded.emit(this.message);
     });
   }
 
