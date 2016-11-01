@@ -195,7 +195,7 @@
     }
 
     .content-container {
-      overflow: hidden;
+      width: calc(100% - 54px - 68px);
       .content-info {
         line-height: 1em;
         margin-bottom: 4px;

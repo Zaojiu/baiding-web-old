@@ -86,14 +86,10 @@
   }
 }
 
-
 .loading-animation{
   animation: rotateFrames linear 1s;
   animation-iteration-count: infinite;
   transform-origin: 50% 50%;
-  -webkit-animation: rotateFrames linear 1s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-transform-origin: 50% 50%;
 }
 
 @keyframes rotateFrames{
