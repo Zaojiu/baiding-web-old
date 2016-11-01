@@ -7,7 +7,7 @@
     'too-short': status === recordStatusEnum.TooShort,
     'uploading': status === recordStatusEnum.Uploading
   }"
-  (panup)="cancelRecord()"
+  (panup)="panup($event)"
   (contextmenu)="$event.preventDefault()"
 >
   <span class="tips preparing-tips">录音准备中</span>

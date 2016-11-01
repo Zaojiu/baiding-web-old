@@ -1,7 +1,7 @@
 import {Component, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
-import {WechatService} from "../../../shared/wechat/wechat.service";
-import {WechatAudioModel} from "../../../shared/wechat/wechat.model";
-import {RecordStatus} from "./recorder.enums";
+import {WechatService} from '../../../shared/wechat/wechat.service';
+import {WechatAudioModel} from '../../../shared/wechat/wechat.model';
+import {RecordStatus} from './recorder.enums';
 
 @Component({
   selector: 'recorder',
@@ -25,7 +25,7 @@ export class RecorderComponent {
 
     this.status = RecordStatus.Preparing;
 
-    this.wechatService.startRecord().then(()=> {
+    this.wechatService.startRecord().then(() => {
       if (this.status !== RecordStatus.Preparing) {
         setTimeout(() => {
           this.wechatService.cancelRecord();
@@ -37,7 +37,7 @@ export class RecorderComponent {
       this.status = RecordStatus.Recording;
       this.recordDuration = 0;
       this.timer = setInterval(() => {
-        this.recordDuration++
+        this.recordDuration++;
       }, 100);
       this.autoComplete();
     }).catch((reason) => {
@@ -88,6 +88,12 @@ export class RecorderComponent {
           this.status = RecordStatus.Waitting;
         });
       }
+    }
+  }
+
+  panup(e) {
+    if (e.distance > 50) {
+      this.cancelRecord();
     }
   }
 
