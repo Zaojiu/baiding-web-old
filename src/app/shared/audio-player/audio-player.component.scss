@@ -9,7 +9,9 @@
     color: rgb(255, 255, 255);
 
     .play-btn {
-      border: solid 1px rgb(255, 255, 255);
+      &.circle-border{
+        border: solid 1px rgb(255, 255, 255);
+      }
     }
 
     /deep/ {
@@ -80,5 +82,24 @@
     right: 0;
     top: -12px;
     right: -36px;
+  }
+}
+
+
+.loading-animation{
+  animation: rotateFrames linear 1s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  -webkit-animation: rotateFrames linear 1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transform-origin: 50% 50%;
+}
+
+@keyframes rotateFrames{
+  0% {
+    transform:  rotate(0deg) ;
+  }
+  100% {
+    transform:  rotate(180deg) ;
   }
 }
