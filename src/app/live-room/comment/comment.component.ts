@@ -158,7 +158,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
-      comments = comments.reverse();
+      comments.reverse();
       this.scroller.prependData(comments);
 
       if (comments.length === 0) {
@@ -175,8 +175,8 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     return this.commentApiService.listComments(this.streamId, [], '', 10).then(comments => {
-      comments = comments.reverse();
-      this.scroller.replaceData(0, this.comments.length, comments);
+      comments.reverse();
+      this.scroller.resetData(comments);
       this.isOnOldest = false;
       this.isOnLatest = true;
       this.isOnBottom = true;
@@ -192,7 +192,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     return this.commentApiService.listComments(this.streamId, [], '', 10, ['createdAt']).then(comments => {
-      this.scroller.replaceData(0, this.comments.length, comments);
+      this.scroller.resetData(comments);
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;

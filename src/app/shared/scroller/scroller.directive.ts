@@ -28,7 +28,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   private containerOffset = 0;
   private enterHead = false;
   private enterFoot = false;
-
+  private touchObserving = false;
 
   constructor(el: ElementRef) {
     this.el = el.nativeElement;
@@ -123,6 +123,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
         this.checkDataOverflow();
         // this.resetScrollTop(true);
         this.calculateHash();
+        this.checkTouch();
       }
     }
 
@@ -137,6 +138,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
     this.data.splice(0, unloadCount);
     this.calculateHash();
+    this.checkTouch();
   }
 
   loadFoot(): number {
@@ -166,6 +168,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
         this.checkDataOverflow();
         // this.resetScrollTop(false);
         this.calculateHash();
+        this.checkTouch();
       }
     }
 
@@ -180,6 +183,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
     this.data.splice(this.data.length - unloadCount, unloadCount);
     this.calculateHash();
+    this.checkTouch();
   }
 
   prependData(data: any[]) {
@@ -190,18 +194,18 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.checkDataOverflow();
     // this.resetScrollTop(true);
     this.calculateHash();
+    this.checkTouch();
   }
 
   appendData(data: any[]) {
     if (data.length === 0) return;
-
-    console.log(this.data.length, data, this.dataCache);
 
     this.data.splice(this.data.length, 0, ...data);
     this.dataCache.splice(this.dataCache.length, 0, ...data);
     this.checkDataOverflow();
     // this.resetScrollTop(false);
     this.calculateHash();
+    this.checkTouch();
   }
 
   insertData(start: number, data: any[]) {
@@ -212,8 +216,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
     this.data.splice(start, 0, ...data);
     this.dataCache.splice(startIndexInCache, 0, ...data);
-    this.calculateHash();
     this.checkDataOverflow();
+    this.calculateHash();
+    this.checkTouch();
   }
 
   deleteData(start: number, length: number) {
@@ -222,8 +227,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
     this.data.splice(start, length);
     this.dataCache.splice(startIndexInCache, length);
-    this.calculateHash();
     this.checkDataOverflow();
+    this.calculateHash();
+    this.checkTouch();
   }
 
   replaceData(start: number, length: number, data: any[]) {
@@ -236,6 +242,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.dataCache.splice(startIndexInCache, length, ...data);
 
     this.calculateHash();
+    this.checkTouch();
     this.checkDataOverflow();
   }
 
@@ -246,6 +253,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.setDataToCache();
 
     this.calculateHash();
+    this.checkTouch();
     this.checkDataOverflow();
   }
 
@@ -256,6 +264,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   setCacheToData() {
     this.data = clone(this.dataCache);
     this.calculateHash();
+    this.checkTouch();
     this.checkDataOverflow();
   }
 
@@ -283,6 +292,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     // 记录滚动条的位置状态
     let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
     let position: ScrollerPosition;
+
     if (this.el.scrollTop >= 0 && this.el.scrollTop <= 0) {
       position = ScrollerPosition.OnTop;
     } else if (scrollBottom >= 0 && scrollBottom <= 0) {
@@ -298,10 +308,10 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
         this.enterHead = true;
 
         // setTimeout(() => {
-          let loadCount = this.loadHead();
+        let loadCount = this.loadHead();
 
-          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-          if (loadCount === 0) this.scroller.emit(scrollEvent);
+        // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+        if (loadCount === 0) this.scroller.emit(scrollEvent);
         // }, 500);
 
         this.startObserveTouch();
@@ -311,10 +321,10 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
         this.enterFoot = true;
 
         // setTimeout(() => {
-          let loadCount = this.loadFoot();
+        let loadCount = this.loadFoot();
 
-          // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
-          if (loadCount === 0) this.scroller.emit(scrollEvent);
+        // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
+        if (loadCount === 0) this.scroller.emit(scrollEvent);
         // }, 500);
 
         this.startObserveTouch();
@@ -349,7 +359,24 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   //   }
   // }
 
+  checkTouch() {
+    let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
+
+    setTimeout(() => {
+      if (this.el.scrollTop >= 0 && this.el.scrollTop <= 0) {
+        this.startObserveTouch();
+      } else if (scrollBottom >= 0 && scrollBottom <= 0) {
+        this.startObserveTouch();
+      } else {
+        this.stopObserveTouch();
+      }
+    }, 0);
+  }
+
   startObserveTouch() {
+    if (this.touchObserving) return;
+
+    this.touchObserving = true;
     let touchStart = 0;
 
     this.$el.on('touchstart', (e) => {
@@ -367,7 +394,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
           let loadCount = this.loadHead();
 
           // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-          if (loadCount === 0){
+          if (loadCount === 0) {
             scrollEvent.position = ScrollerPosition.OnTop;
             scrollEvent.scrollTop = 0;
             this.scroller.emit(scrollEvent);
@@ -378,7 +405,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
           let loadCount = this.loadFoot();
 
           // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-          if (loadCount === 0){
+          if (loadCount === 0) {
             scrollEvent.position = ScrollerPosition.OnBottom;
             scrollEvent.scrollTop = this.el.scrollTop;
             this.scroller.emit(scrollEvent);
@@ -389,6 +416,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   }
 
   stopObserveTouch() {
+    this.touchObserving = false;
     this.$el.off('touchstart touchend');
   }
 

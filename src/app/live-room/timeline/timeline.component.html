@@ -1,6 +1,6 @@
 <div class="unread-count" *ngIf="!isOnBottom && unreadCount !== 0" (click)="triggerGotoLatest()">有{{unreadCount}}条话题间新消息<i class="bi bi-up-arrow2"></i></div>
 
-<div class="timeline scroller scrollable" (scroller)="onScroll($event)" [data]="messages" [dataContainerSelector]="'.data-container'">
+<div class="timeline scrollable" (scroller)="onScroll($event)" [data]="messages" [dataContainerSelector]="'.data-container'">
   <div class="data-container">
     <message #messagesComponents *ngFor="let message of messages"
              [liveId]="id"

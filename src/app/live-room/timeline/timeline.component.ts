@@ -171,7 +171,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     return this.messageApiService.listMessages(this.id, '', 10).then(messages => {
-      messages = messages.reverse();
+      messages.reverse();
 
       if (!this.messages.length || this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
         HackMessages.hackLiveEndMessage(this.liveInfo, messages);
@@ -217,7 +217,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
       if (messages.length === 0 && this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
         HackMessages.hackLiveEndMessage(this.liveInfo, messages);
-        console.log(this.messages, 'load next');
       }
 
       this.scroller.appendData(messages);
@@ -239,7 +238,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
       this.removeRepeat(messages);
 
-      messages = messages.reverse();
+      messages.reverse();
 
       if (messages.length === 0 && this.messages[0].type !== MessageType.LiveRoomInfo) {
         HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
@@ -335,7 +334,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         idxs.push(idsX[message.id])
       }
     }
-    idxs = idxs.sort().reverse();
+    idxs.sort().reverse();
     for (let idx of idxs) {
       this.scroller.deleteData(idx, 1);
     }

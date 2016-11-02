@@ -12,25 +12,30 @@
 
   <bd-loading class="loading" *ngIf="!liveInfo || !userInfo"></bd-loading>
 
-  <div class="comment-container scrollable" pushCommentScroller *ngIf="liveInfo && userInfo">
-    <div class="comment-row" *ngFor="let comment of comments">
-      <div class="avatar-container">
-        <img class="avatar" [src]="comment.user.avatar">
-      </div>
-      <div class="content-container">
-        <div class="content-info">
-          <p class="name">{{comment.user.nick}}</p>
-          <span class="time">{{comment.createdAt | fromNow}}</span>
+  <div class="comment-container scrollable"
+       (scroller)="onScroll($event)"
+       [data]="comments" [dataContainerSelector]="'.comment-container-inner'"
+       *ngIf="liveInfo && userInfo">
+    <div class="comment-container-inner">
+      <div class="comment-row" *ngFor="let comment of comments">
+        <div class="avatar-container">
+          <img class="avatar" [src]="comment.user.avatar">
         </div>
-        <div class="content" [innerHtml]="parseContent(comment.content)"></div>
-      </div>
-      <div class="operation-container">
-        <div *ngIf="userInfo.uid == liveInfo.admin.uid">
-          <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId" [ngClass]="{'is-closed': isClosed()}">推送</a>
-          <span class="operation-btn pushed" *ngIf="comment.msgId">已推送</span>
+        <div class="content-container">
+          <div class="content-info">
+            <p class="name">{{comment.user.nick}}</p>
+            <span class="time">{{comment.createdAt | fromNow}}</span>
+          </div>
+          <div class="content" [innerHtml]="parseContent(comment.content)"></div>
         </div>
-        <div *ngIf="userInfo.uid && liveInfo && userInfo.uid !== liveInfo.admin.uid">
-          <span class="operation-btn pushed-audience" *ngIf="comment.msgId"><i class="bi bi-chat5"></i>已推送</span>
+        <div class="operation-container">
+          <div *ngIf="userInfo.uid == liveInfo.admin.uid">
+            <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId" [ngClass]="{'is-closed': isClosed()}">推送</a>
+            <span class="operation-btn pushed" *ngIf="comment.msgId">已推送</span>
+          </div>
+          <div *ngIf="userInfo.uid && liveInfo && userInfo.uid !== liveInfo.admin.uid">
+            <span class="operation-btn pushed-audience" *ngIf="comment.msgId"><i class="bi bi-chat5"></i>已推送</span>
+          </div>
         </div>
       </div>
     </div>
