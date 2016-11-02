@@ -1,0 +1,36 @@
+<div class="loading" *ngIf="isLoading">
+
+</div>
+
+<form class="vip-info-container" *ngIf="!isLoading" (ngSubmit)="submit()">
+  <div class="top-bar">
+    <div class="back-to-home" (click)="navigateBack()">返回</div>
+    <div class="chat-info" *ngIf="unreadCount">
+      <i class="bi bi-chat6"></i>
+      {{unreadCount}}条新的消息
+    </div>
+  </div>
+
+  <div class="vip-name-wrapper ">
+    <div class="name">嘉宾名字</div>
+    <div class="input-container">
+      <textarea class="input" placeholder="张三疯" name="nameContent" [(ngModel)]="nameContent" autofocus></textarea>
+    </div>
+  </div>
+
+
+  <div class="vip-intro-wrapper ">
+    <div class="intro">嘉宾介绍</div>
+    <span class="intro-word">简介字数100字以内，可不填写</span>
+    <div class="input-container">
+    <textarea class="input" placeholder="《关于我爱你》是张悬第三张全创作专辑《城市》中的一首歌曲，以“城市”为创作概念。
+    “我时常感觉‘城’中实体的建设，其中人群聚集流动形成的‘市’集，交织无限的，我们抽象的感官经验与思考 。”─张悬" name="introContent" [(ngModel)]="introContent"
+              autofocus></textarea>
+    </div>
+
+  </div>
+
+  <div class="button-wrapper" (click)="goToInvitation()">
+    <button class="generate-invitation" (click)="goToInvitation()">生成邀请函</button>
+  </div>
+</form>

@@ -20,7 +20,7 @@ export class InviteComponent implements OnInit {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   isLoading: boolean;
-  isTokenVaild: boolean;
+  isTokenExist = false;
   isTokenUsed: boolean;
 
   constructor(private userInfoService: UserInfoService, private liveService: LiveService,
@@ -40,29 +40,18 @@ export class InviteComponent implements OnInit {
       this.userInfo = result[0];
       this.liveInfo = result[1];
 
-      if (!this.token && this.userInfo.uid == this.liveInfo.admin.uid) {
-        this.inviteApiService.getInviteToken(this.liveId).then(token => {
-          let url = this.createTokenUrl(token);
-
-          this.router.navigateByUrl(url).then(() => {
-            this.wechatShare(location.href);
-          })
-        })
-      }
 
       if (this.token) {
-        this.wechatShare(location.href)
+        this.wechatShare(location.href);
+
+        this.inviteApiService.checkInviteToken(this.token).then(isTokenUsed => {
+          this.isTokenExist = true;
+          this.isTokenUsed = isTokenUsed;
+        });
       }
 
-      this.isLoading = false
+      this.isLoading = false;
     });
-
-    if (this.token) {
-      this.inviteApiService.checkInviteToken(this.token).then(isTokenUsed => {
-        this.isTokenVaild = true;
-        this.isTokenUsed = isTokenUsed;
-      })
-    }
   }
 
   acceptInvitation() {
@@ -70,7 +59,7 @@ export class InviteComponent implements OnInit {
       () => {
         this.liveService.getLiveInfo(this.liveId, true).then(() => this.backToLive());
       }
-    )
+    );
   }
 
   backToLive() {

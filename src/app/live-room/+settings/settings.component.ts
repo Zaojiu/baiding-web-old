@@ -56,7 +56,7 @@ export class SettingsComponent implements OnInit {
   }
 
   goInvitation() {
-    this.router.navigate([`/lives/${this.liveId}/invitation`]);
+    this.router.navigate([`/lives/${this.liveId}/vip-info`]);
   }
 
   closeWindow() {
