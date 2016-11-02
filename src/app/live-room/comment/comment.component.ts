@@ -98,7 +98,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.commentPushQueueTimer = setInterval(() => {
       if (this.commentPushQueue.length === 0) return;
 
-      this.comments.push(this.commentPushQueue[0]);
+      this.scroller.appendData([this.commentPushQueue[0]]);
 
       if (this.isOnBottom) {
         // 等待渲染完毕
@@ -123,7 +123,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     comment.type = CommentType.Text;
 
     if (this.comments.length < 5) {
-      this.comments.push(comment);
+      this.scroller.appendData([comment]);
     } else {
       this.commentPushQueue.push(comment);
     }
@@ -144,7 +144,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         break;
       case EventType.LiveCommentPushed:
         comment.id = evt.info.comment.id;
-        comment.createdAt = evt.info.comment.createdAt; // TODO: 后端要给createdAt
+        comment.createdAt = evt.info.comment.createdAt;
         comment.type = CommentType.CommentPushed;
         comment.eventData = evt.info;
         this.commentPushQueue.push(comment);
@@ -158,9 +158,8 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
-      for (let comment of comments) {
-        this.comments.unshift(comment);
-      }
+      comments = comments.reverse();
+      this.scroller.prependData(comments);
 
       if (comments.length === 0) {
         this.isOnOldest = true;
@@ -175,9 +174,9 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.commentApiService.listComments(this.streamId).then(comments => {
+    return this.commentApiService.listComments(this.streamId, [], '', 10).then(comments => {
       comments = comments.reverse();
-      this.comments = comments;
+      this.scroller.replaceData(0, this.comments.length, comments);
       this.isOnOldest = false;
       this.isOnLatest = true;
       this.isOnBottom = true;
@@ -192,8 +191,8 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.commentApiService.listComments(this.streamId, [], '', 20, ['createdAt']).then(comments => {
-      this.comments = comments;
+    return this.commentApiService.listComments(this.streamId, [], '', 10, ['createdAt']).then(comments => {
+      this.scroller.replaceData(0, this.comments.length, comments);
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;
@@ -203,10 +202,11 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   onScroll(e: ScrollerEventModel) {
-    if (e.position === ScrollerPosition.OnTop) {
-      if (this.comments.length === 0) return;
-      let firstComment = this.comments[0];
-      this.getPrevComments(`$lt${firstComment.createdAt}`, 20, ['-createdAt']);
+    if (this.comments.length !== 0) {
+      if (e.position === ScrollerPosition.OnTop) {
+        let firstComment = this.comments[0];
+        this.getPrevComments(`$lt${firstComment.createdAt}`, 10, ['-createdAt']);
+      }
     }
 
     // 不要做滚动拉取最新, 弹幕有自动推送, 重复拉会有问题

@@ -1,6 +1,6 @@
 import { LiveStatus } from './live.enums';
 import { UserInfoModel } from '../user-info/user-info.model';
-import { UserAnimEmoji } from '../../praised-animation/praised-animation.model'
+import { UserAnimEmoji } from '../../praised-animation/praised-animation.model';
 
 export class LiveInfoModel {
   id: string;
@@ -26,4 +26,13 @@ export class LiveInfoModel {
   closedAt: string;
   createdAt: string;
   onlines: number;
+
+
+  isStarted(): boolean {
+    return this.status == LiveStatus.Started;
+  }
+
+  isClosed(): boolean {
+    return this.status == LiveStatus.Ended;
+  }
 }

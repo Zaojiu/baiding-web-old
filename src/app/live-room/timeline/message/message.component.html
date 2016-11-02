@@ -1,10 +1,64 @@
-<div *ngIf="message.type===4" class="message-type-join">
+<div class="live-info" *ngIf="message.type === messageType.LiveRoomInfo">
+  <div class="banner-blur" *ngIf="!liveInfo.isStarted()">
+    <div class="countdown-container">
+      <div class="countdown-day">
+        <div class="countdown-day-item">
+          <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:0}}</span>
+          <span class="countdown-day-item-day-cn">天</span>
+        </div>
+        <div class="countdown-day-item">
+          <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:1}}</span>
+          <span class="countdown-day-item-day-cn">时</span>
+        </div>
+        <div class="countdown-day-item">
+          <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:2}}</span>
+          <span class="countdown-day-item-day-cn">分</span>
+        </div>
+      </div>
+      <div class="countdown-date">
+        <div class="countdown-date-splitleft"></div>
+        <div class="countdown-date-time">{{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD HH:mm'}} 开始</div>
+        <div class="countdown-date-splitright"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="talent">
+      <img class="talent-avatar" [src]="liveInfo.admin.avatar" alt="">
+      <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin | role : liveInfo}}</div>
+    </div>
+    <div class="title">{{liveInfo.subject}}</div>
+    <div class="words">{{liveInfo.desc}}</div>
+  </div>
+</div>
+
+<div class="live-started" *ngIf="message.type === messageType.LiveStart">
+  <div class="live-started-tip">直播正式开始啦!</div>
+</div>
+
+<div class="message-type-join" *ngIf="message.type === messageType.EditorJoin">
   <div>
     <img class="avatar-sm" [src]="message.user.avatar">
     <span> 嘉宾<span>{{message.user.nick}}</span>加入了话题 </span>
   </div>
 </div>
-<div *ngIf="message.type!==4" class="timeline-message-container">
+
+<div class="live-ended" *ngIf="message.type === messageType.LiveEnd">
+  <div class="live-ended-tip">直播结束</div>
+
+  <div class="ended-review">
+    <i class="bi bi-paper"></i>
+    <div class="published">直播记录已经发布</div>
+    <div class="read"><a (click)="gotoHistory()">阅读</a></div>
+  </div>
+</div>
+
+<div
+  class="timeline-message-container"
+  *ngIf="message.type !== messageType.EditorJoin && message.type !== messageType.LiveStart &&
+  message.type !== messageType.LiveEnd && message.type !== messageType.LiveRoomInfo"
+>
   <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
     <div class="avatar-container">
       <div class="avatar-wrapper" (click)="emitAvatarClick(message.user)" (contextmenu)="$event.preventDefault()">
@@ -19,7 +73,8 @@
         <span class="time">{{message.createdAt | fromNow}}</span>
       </div>
 
-      <div class="content" *ngIf="message.type === 0 || message.type === 3" [innerHtml]="parseContent(message.content)"></div>
+      <div class="content" *ngIf="message.type === 0 || message.type === 3"
+           [innerHtml]="parseContent(message.content)"></div>
       <div class="content image-content" *ngIf="message.type === 1">
         <image-viewer-preview [imageLinks]="[message.image]"></image-viewer-preview>
       </div>

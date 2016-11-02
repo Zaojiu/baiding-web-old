@@ -95,17 +95,13 @@ export class TopBarComponent implements OnInit, OnDestroy {
   gotoOldest() {
     this.hideGotoOldest();
 
-    if (!this.isTimelineOnOldest) {
-      this.timelineService.gotoFirstMessage();
-    }
+    this.timelineService.gotoFirstMessage();
   }
 
   gotoLatest() {
     this.hideGotoLatest();
 
-    if (!this.isTimelineOnLatest) {
-      this.timelineService.gotoLastMessage();
-    }
+    this.timelineService.gotoLastMessage();
   }
 
   toggleComment(isOpened: boolean) {

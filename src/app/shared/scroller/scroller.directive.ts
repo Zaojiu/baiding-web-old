@@ -1,7 +1,11 @@
-import {Directive, ElementRef, Input, Output, EventEmitter, OnInit, DoCheck} from '@angular/core';
+import {
+  Directive, ElementRef, Input, Output, EventEmitter, OnInit, DoCheck,
+  AfterViewInit
+} from '@angular/core';
 import {ScrollerEventModel} from "./scroller.model";
 import {ScrollerPosition} from "./scroller.enums";
 import * as clone from "lodash/clone";
+import * as _ from "lodash";
 
 declare var $: any;
 
@@ -9,67 +13,77 @@ declare var $: any;
   selector: '[scroller]'
 })
 
-export class ScrollerDirective implements OnInit, DoCheck {
+export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   private el: HTMLElement;
   private $el: any;
   emiting: boolean;
   @Output() scroller = new EventEmitter<ScrollerEventModel>();
   @Input() data: any[];
-  @Input() loadCount = 20;
-  @Input() maxDataCount = 40;
+  @Input() dataContainerSelector: string;
+  @Input() loadCount = 10;
+  @Input() maxDataCount = 20;
   private dataCache: any[];
+  private dataCur: any[];
+  private $dataContainer: any;
+  private containerOffset = 0;
+  private enterHead = false;
+  private enterFoot = false;
+
 
   constructor(el: ElementRef) {
     this.el = el.nativeElement;
     this.$el = $(this.el);
   }
 
-  ngDoCheck() {
-    if ((!this.dataCache || !this.dataCache.length) && this.data && this.data.length) {
-      this.setDataToCache();
-    }
+  ngAfterViewInit() {
+    let position = this.$el.css('position');
+    if (position !== 'relative' && position !== 'absolute' && position !== 'fixed') this.$el.css('position', 'relative');
 
-    if (this.dataCache && this.dataCache.length) {
-      this.syncDataCache();
-    }
+    let $container = this.$el.find(this.dataContainerSelector);
+    this.$dataContainer = $container.length ? $container : null;
+    this.containerOffset = $container.length ? $container.position().top : 0;
 
-    // 如果已经超过数据最大值, 那么卸载底部数据。
-    if (this.data && this.data.length > this.maxDataCount) {
-      this.autoUnload();
+    if ($container.length) {
+      let position = $container.css('position');
+      if (position !== 'relative' && position !== 'absolute' && position !== 'fixed') $container.css('position', 'relative');
     }
   }
 
-  syncDataCache() {
-    // 此函数只解决了前后新增缓存没有的数据的情况, 但未解决数据不一致的情况(例如从中间插入, 或者从中间删除)
-    // 如果缓存和数据重叠部分不一致, 数据有增删, 那么会有问题, 到时需要重构。
+  ngDoCheck() {
+    if (this.checkDataModifiedOutside()) {
+      throw new Error('Do not modify data outside scroller directive');
+    }
+  }
 
-    let firstCacheItem = this.dataCache[0];
-    let lastCacheItem = this.dataCache[this.dataCache.length - 1];
+  checkDataModifiedOutside(): boolean {
+    if (this.dataCur.length !== this.data.length) return true;
 
-    let firstIndexInData = -1;
-    let lastIndexInData = -1;
-    let itemNeedPrepend = [];
-    let itemNeedAppend = [];
+    let hasModify = false;
 
-    for (let index in this.data) {
-      let item = this.data[index];
-      if (item === firstCacheItem) firstIndexInData = +index;
-      if (item === lastCacheItem) {
-        lastIndexInData = +index;
+    for (let item of this.data) {
+      let hasItemNotInCache = true;
+
+      for (let cur of this.dataCur) {
+        if (item === cur) {
+          hasItemNotInCache = false;
+          break;
+        }
+      }
+
+      if (hasItemNotInCache) {
+        hasModify = true;
         break;
       }
     }
 
-    if (firstIndexInData !== -1) {
-      itemNeedPrepend = this.data.slice(0, firstIndexInData);
-    }
+    return hasModify;
+  }
 
-    if (lastIndexInData !== -1) {
-      itemNeedAppend = this.data.slice(lastIndexInData+1, this.data.length);
+  checkDataOverflow() {
+    // 如果已经超过数据最大值, 那么卸载底部数据。
+    if (this.data && this.data.length > this.maxDataCount) {
+      this.autoUnload();
     }
-
-    this.dataCache = itemNeedPrepend.concat(this.dataCache);
-    this.dataCache = this.dataCache.concat(itemNeedAppend);
   }
 
   autoUnload() {
@@ -92,23 +106,23 @@ export class ScrollerDirective implements OnInit, DoCheck {
     }
 
     let firstData = this.data[0];
-    let firstDataInCacheIndex = -1;
-
-    for (let index in this.dataCache) {
-      let item = this.dataCache[index];
-      if (firstData === item) {
-        firstDataInCacheIndex = +index;
-        break;
-      }
-    }
+    let firstDataInCacheIndex = _.indexOf(this.dataCache, firstData);
 
     if (firstDataInCacheIndex !== -1) {
+      let _data = [];
       for (let i = firstDataInCacheIndex - 1; i >= firstDataInCacheIndex - this.loadCount; i--) {
         if (i < 0) break;
 
-        this.data.unshift(this.dataCache[i]);
-
+        _data.unshift(this.dataCache[i]);
         loadCount++;
+      }
+
+
+      if (loadCount !== 0) {
+        this.data.splice(0, 0, ..._data);
+        this.checkDataOverflow();
+        // this.resetScrollTop(true);
+        this.calculateHash();
       }
     }
 
@@ -116,11 +130,13 @@ export class ScrollerDirective implements OnInit, DoCheck {
   }
 
   unloadHead() {
-    var unloadCount = this.data.length - this.maxDataCount;
+    console.log('unload head');
+    let unloadCount = this.data.length - this.maxDataCount;
 
-    for (let i = 0; i <= unloadCount - 1; i++) {
-      this.data.shift();
-    }
+    if (unloadCount <= 0) return;
+
+    this.data.splice(0, unloadCount);
+    this.calculateHash();
   }
 
   loadFoot(): number {
@@ -133,24 +149,23 @@ export class ScrollerDirective implements OnInit, DoCheck {
       return loadCount;
     }
 
-    let lastData = this.data[this.data.length-1];
-    let lastDataInCacheIndex = -1;
-
-    for (let index in this.dataCache) {
-      let item = this.dataCache[index];
-      if (lastData === item) {
-        lastDataInCacheIndex = +index;
-        break;
-      }
-    }
+    let lastData = this.data[this.data.length - 1];
+    let lastDataInCacheIndex = _.indexOf(this.dataCache, lastData);
 
     if (lastDataInCacheIndex !== -1) {
+      let _data = [];
       for (let i = lastDataInCacheIndex + 1; i <= lastDataInCacheIndex + this.loadCount; i++) {
         if (i > this.dataCache.length - 1) break;
 
-        this.data.push(this.dataCache[i]);
-
+        _data.push(this.dataCache[i]);
         loadCount++;
+      }
+
+      if (loadCount !== 0) {
+        this.data.splice(this.data.length, 0, ..._data);
+        this.checkDataOverflow();
+        // this.resetScrollTop(false);
+        this.calculateHash();
       }
     }
 
@@ -158,12 +173,80 @@ export class ScrollerDirective implements OnInit, DoCheck {
   }
 
   unloadFoot() {
+    console.log('unload foot');
     let unloadCount = this.data.length - this.maxDataCount;
-    let dataLength = this.data.length;
 
-    for (let i = dataLength - 1; i >= dataLength - unloadCount; i--) {
-      this.data.pop();
-    }
+    if (unloadCount <= 0) return;
+
+    this.data.splice(this.data.length - unloadCount, unloadCount);
+    this.calculateHash();
+  }
+
+  prependData(data: any[]) {
+    if (data.length === 0) return;
+
+    this.data.splice(0, 0, ...data);
+    this.dataCache.splice(0, 0, ...data);
+    this.checkDataOverflow();
+    // this.resetScrollTop(true);
+    this.calculateHash();
+  }
+
+  appendData(data: any[]) {
+    if (data.length === 0) return;
+
+    console.log(this.data.length, data, this.dataCache);
+
+    this.data.splice(this.data.length, 0, ...data);
+    this.dataCache.splice(this.dataCache.length, 0, ...data);
+    this.checkDataOverflow();
+    // this.resetScrollTop(false);
+    this.calculateHash();
+  }
+
+  insertData(start: number, data: any[]) {
+    if (data.length === 0) return;
+
+    let startIndexInCache = _.indexOf(this.dataCache, (<any>_).nth(this.data, start));
+    if (!startIndexInCache) return;
+
+    this.data.splice(start, 0, ...data);
+    this.dataCache.splice(startIndexInCache, 0, ...data);
+    this.calculateHash();
+    this.checkDataOverflow();
+  }
+
+  deleteData(start: number, length: number) {
+    let startIndexInCache = _.indexOf(this.dataCache, (<any>_).nth(this.data, start));
+    if (!startIndexInCache) return;
+
+    this.data.splice(start, length);
+    this.dataCache.splice(startIndexInCache, length);
+    this.calculateHash();
+    this.checkDataOverflow();
+  }
+
+  replaceData(start: number, length: number, data: any[]) {
+    if (data.length === 0) return;
+
+    let startIndexInCache = _.indexOf(this.dataCache, (<any>_).nth(this.data, start));
+    if (!startIndexInCache) return;
+
+    this.data.splice(start, length, ...data);
+    this.dataCache.splice(startIndexInCache, length, ...data);
+
+    this.calculateHash();
+    this.checkDataOverflow();
+  }
+
+  resetData(data: any[]) {
+    if (data.length === 0) return;
+
+    this.data.splice(0, this.data.length, ...data);
+    this.setDataToCache();
+
+    this.calculateHash();
+    this.checkDataOverflow();
   }
 
   setDataToCache() {
@@ -172,6 +255,8 @@ export class ScrollerDirective implements OnInit, DoCheck {
 
   setCacheToData() {
     this.data = clone(this.dataCache);
+    this.calculateHash();
+    this.checkDataOverflow();
   }
 
   scrollToTop() {
@@ -198,9 +283,9 @@ export class ScrollerDirective implements OnInit, DoCheck {
     // 记录滚动条的位置状态
     let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
     let position: ScrollerPosition;
-    if (this.el.scrollTop >= 0 && this.el.scrollTop <= 10) {
+    if (this.el.scrollTop >= 0 && this.el.scrollTop <= 0) {
       position = ScrollerPosition.OnTop;
-    } else if (scrollBottom >= 0 && scrollBottom <= 10) {
+    } else if (scrollBottom >= 0 && scrollBottom <= 0) {
       position = ScrollerPosition.OnBottom;
     } else {
       position = ScrollerPosition.OnMiddle;
@@ -209,29 +294,110 @@ export class ScrollerDirective implements OnInit, DoCheck {
     scrollEvent.position = position;
 
     if (scrollEvent.position === ScrollerPosition.OnTop) {
-      let loadCount = this.loadHead();
+      if (!this.enterHead) {
+        this.enterHead = true;
 
-      // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-      if (loadCount === 0) {
-        this.scroller.emit(scrollEvent);
+        // setTimeout(() => {
+          let loadCount = this.loadHead();
+
+          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+          if (loadCount === 0) this.scroller.emit(scrollEvent);
+        // }, 500);
+
+        this.startObserveTouch();
       }
     } else if (scrollEvent.position === ScrollerPosition.OnBottom) {
-      let loadCount = this.loadFoot();
+      if (!this.enterFoot) {
+        this.enterFoot = true;
 
-      // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
-      if (loadCount === 0) {
-        this.scroller.emit(scrollEvent);
+        // setTimeout(() => {
+          let loadCount = this.loadFoot();
+
+          // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
+          if (loadCount === 0) this.scroller.emit(scrollEvent);
+        // }, 500);
+
+        this.startObserveTouch();
       }
     } else {
+      this.enterHead = false;
+      this.enterFoot = false;
       this.scroller.emit(scrollEvent);
+      this.stopObserveTouch();
     }
   }
 
-  ngOnInit() {
-    this.$el.on('scroll', (e) => {
-      if (!this.emiting) return;
+  calculateHash() {
+    this.dataCur = clone(this.data);
+  }
 
-      this.emitScrollEvent();
+  // resetScrollTop(isPrepend: boolean) {
+  //   let $container = this.$dataContainer && this.$dataContainer.length ? this.$dataContainer : this.$el;
+  //
+  //   let $child = isPrepend ? $container.children().first() : $container.children().last();
+  //
+  //   if ($child.length) {
+  //     if (isPrepend) {
+  //       setTimeout(() => {
+  //         this.$el.scrollTop($child.position().top);
+  //       }, 0);
+  //     } else {
+  //       setTimeout(() => {
+  //         this.$el.scrollTop($child.position().top + this.containerOffset - this.$el.outerHeight() + $child.outerHeight(true));
+  //       }, 0);
+  //     }
+  //   }
+  // }
+
+  startObserveTouch() {
+    let touchStart = 0;
+
+    this.$el.on('touchstart', (e) => {
+      touchStart = e.originalEvent.touches[0].clientY;
+    });
+
+    this.$el.on('touchend', (e) => {
+      let isUp = e.originalEvent.changedTouches[0].clientY > touchStart;
+
+      if (this.emiting) {
+        let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
+        let scrollEvent = new ScrollerEventModel();
+
+        if (isUp && this.el.scrollTop === 0) {
+          let loadCount = this.loadHead();
+
+          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+          if (loadCount === 0){
+            scrollEvent.position = ScrollerPosition.OnTop;
+            scrollEvent.scrollTop = 0;
+            this.scroller.emit(scrollEvent);
+          }
+        }
+
+        if (!isUp && scrollBottom === 0) {
+          let loadCount = this.loadFoot();
+
+          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+          if (loadCount === 0){
+            scrollEvent.position = ScrollerPosition.OnBottom;
+            scrollEvent.scrollTop = this.el.scrollTop;
+            this.scroller.emit(scrollEvent);
+          }
+        }
+      }
+    });
+  }
+
+  stopObserveTouch() {
+    this.$el.off('touchstart touchend');
+  }
+
+  ngOnInit() {
+    this.setDataToCache();
+    this.calculateHash();
+
+    this.$el.on('scroll', (e) => {
+      if (this.emiting) this.emitScrollEvent();
     });
 
     this.startEmitScrollEvent();

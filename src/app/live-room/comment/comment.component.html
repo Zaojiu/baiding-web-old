@@ -1,17 +1,22 @@
 <div class="comments">
-  <div class="comment-container scroller scrollable" (scroller)="onScroll($event)" [data]="comments">
-    <div class="comment-wrapper" *ngFor="let comment of comments">
-      <div class="comment" *ngIf="comment.type === commentType.Text" (click)="gotoCommentList(comment)">
-        <p class="comment-content" [innerHtml]="parseContent(comment)"></p>
-        <img class="comment-avatar" [src]="comment.user.avatar">
-      </div>
-      <div class="comment" *ngIf="comment.type === commentType.AudienceJoined">
-        <p class="comment-content" [innerHtml]="parseContent(comment)"></p>
-        <img class="comment-avatar" [src]="comment.eventData.user.avatar">
-      </div>
-      <div class="comment" *ngIf="comment.type === commentType.CommentPushed" (click)="gotoCommentList(comment)">
-        <p class="comment-content" [innerHtml]="parseContent(comment)"></p>
-        <img class="comment-avatar" [src]="comment.eventData.comment_user.avatar">
+  <div class="comment-container scroller scrollable"
+       (scroller)="onScroll($event)"
+       [data]="comments" [dataContainerSelector]="'.comment-container-inner'"
+  >
+    <div class="comment-container-inner">
+      <div class="comment-wrapper" *ngFor="let comment of comments">
+        <div class="comment" *ngIf="comment.type === commentType.Text" (click)="gotoCommentList(comment)">
+          <p class="comment-content" [innerHtml]="parseContent(comment)"></p>
+          <img class="comment-avatar" [src]="comment.user.avatar">
+        </div>
+        <div class="comment" *ngIf="comment.type === commentType.AudienceJoined">
+          <p class="comment-content" [innerHtml]="parseContent(comment)"></p>
+          <img class="comment-avatar" [src]="comment.eventData.user.avatar">
+        </div>
+        <div class="comment" *ngIf="comment.type === commentType.CommentPushed" (click)="gotoCommentList(comment)">
+          <p class="comment-content" [innerHtml]="parseContent(comment)"></p>
+          <img class="comment-avatar" [src]="comment.eventData.comment_user.avatar">
+        </div>
       </div>
     </div>
   </div>
