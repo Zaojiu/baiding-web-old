@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {MessageModel} from '../../../shared/api/message/message.model';
@@ -20,7 +20,7 @@ import {UtilsService} from "../../../shared/utils/utils";
   styleUrls: ['./message.component.scss'],
 })
 
-export class MessageComponent {
+export class MessageComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   @Input() message: MessageModel;
   @Input() userInfo: UserInfoModel;
@@ -36,10 +36,28 @@ export class MessageComponent {
   isToolTipOpened: boolean;
   messagePressTimer: any;
   messagePressDuration = 0;
+  messageType = MessageType;
+  countdownTimer: any;
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
               private sanitizer: DomSanitizer) {
+  }
+
+  ngOnInit() {
+    if (this.message.type === MessageType.LiveRoomInfo) {
+      if (!this.liveInfo.isStarted()) {
+        this.countdownTimer = setInterval(() => {
+          this.liveInfo.expectStartAt = this.liveInfo.expectStartAt.indexOf('.00') === -1 ? `${this.liveInfo.expectStartAt}.00` : this.liveInfo.expectStartAt.replace('.00', '');
+        }, 60000);
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+    }
   }
 
   touchStart() {
@@ -185,5 +203,9 @@ export class MessageComponent {
 
   parseContent(content: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
+  }
+
+  gotoHistory() {
+    this.router.navigate([`/lives/${this.liveId}/history`]);
   }
 }

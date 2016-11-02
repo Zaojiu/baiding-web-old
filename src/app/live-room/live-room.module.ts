@@ -19,7 +19,6 @@ import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
 import {PipeModule} from "../shared/pipe/pipe.module";
 import {UploadApiService} from "../shared/api/upload/upload.api";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
-import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {AudioPlayerModule} from "../shared/audio-player/audio-player.module";
 import {ImageViewerModule} from "../shared/image-viewer/image-viewer.module";
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
@@ -34,6 +33,7 @@ import {EditorToolBarComponent} from "./editor-tool-bar/editor-tool-bar.componen
 import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
 import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
+import {ScrollerModule} from "../shared/scroller/scroller.module";
 
 @NgModule({
   imports: [
@@ -49,6 +49,7 @@ import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
     AnimationModule,
     AutoBlurModule,
     FileSelectorModule,
+    ScrollerModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -61,7 +62,6 @@ import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
     PraisedAnimationDirective,
     PraisedAnimationComponent,
     LiveRoomInfoComponent,
-    ScrollerDirective,
     TopBarComponent,
     BeginnerGuideComponent,
     RecorderComponent,

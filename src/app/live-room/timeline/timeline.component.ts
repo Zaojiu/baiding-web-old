@@ -10,7 +10,6 @@ import {TimelineService} from './timeline.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {LiveStatus} from '../../shared/api/live/live.enums';
 import {MqPraisedUser, MqEvent, EventType} from '../../shared/mq/mq.service';
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
@@ -20,6 +19,9 @@ import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.mo
 import {UtilsService} from '../../shared/utils/utils';
 
 import {MessageComponent} from './message/message.component';
+import {HackMessages} from "./hack-messages";
+import * as _ from 'lodash';
+
 @Component({
   selector: 'timeline',
   templateUrl: './timeline.component.html',
@@ -39,7 +41,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
   isOnLatest: boolean;
   isOnBottom: boolean;
   isLoading: boolean;
-  countdownTimer: any;
   unreadCount = 0;
 
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
@@ -50,13 +51,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-
-    if (!this.isStarted()) {
-      this.countdownTimer = setInterval(() => {
-        let startedAt = this.liveInfo.expectStartAt.indexOf('.00') === -1 ? `${this.liveInfo.expectStartAt}.00` : this.liveInfo.expectStartAt.replace('.00', '');
-        this.liveInfo.expectStartAt = startedAt;
-      }, 60000);
-    }
 
     this.timelineService.startReceive(this.id);
     this.timelineService.onReceivedEvents(evt => this.onReceivedEvents(evt));
@@ -75,10 +69,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.timelineService.stopReceive(this.id);
     this.timelineSubscription.unsubscribe();
-    if (this.countdownTimer) {
-      clearInterval(this.countdownTimer);
-    }
-
   }
 
   private findNextAudioTypeMessage(msgId: string): MessageModel {
@@ -126,14 +116,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }
   }
 
-  isStarted(): boolean {
-    return this.liveInfo.status == LiveStatus.Started;
-  }
-
-  isClosed(): boolean {
-    return this.liveInfo.status == LiveStatus.Ended;
-  }
-
   onReceivedEvents(evt: MqEvent) {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
@@ -176,8 +158,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         return
       }
     }
-
-    this.messages.push(message);
+    this.scroller.appendData([message]);
 
     setTimeout(() => {
       this.scroller.scrollToBottom();
@@ -189,9 +170,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.messageApiService.listMessages(this.id).then(messages => {
-      messages = messages.reverse();
-      this.messages = messages;
+    return this.messageApiService.listMessages(this.id, '', 10).then(messages => {
+      messages.reverse();
+
+      if (!this.messages.length || this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
+        HackMessages.hackLiveEndMessage(this.liveInfo, messages);
+      }
+
+      this.scroller.resetData(messages);
       this.isOnOldest = false;
       this.isOnLatest = true;
       this.isOnBottom = true;
@@ -206,8 +192,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.messageApiService.listMessages(this.id, '', 20, ['createdAt']).then(messages => {
-      this.messages = messages;
+    return this.messageApiService.listMessages(this.id, '', 10, ['createdAt']).then(messages => {
+      if (!this.messages.length || this.messages[0].type !== MessageType.LiveRoomInfo) {
+        HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
+      }
+
+      this.scroller.resetData(messages);
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;
@@ -223,9 +213,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
       this.removeRepeat(messages);
-      for (let message of messages) {
-        this.messages.push(message);
+
+      if (messages.length === 0 && this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
+        HackMessages.hackLiveEndMessage(this.liveInfo, messages);
       }
+
+      this.scroller.appendData(messages);
 
       if (messages.length === 0) {
         this.isOnLatest = true;
@@ -243,9 +236,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
       this.removeRepeat(messages);
-      for (let message of messages) {
-        this.messages.unshift(message);
+
+      messages.reverse();
+
+      if (messages.length === 0 && this.messages[0].type !== MessageType.LiveRoomInfo) {
+        HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
       }
+
+      this.scroller.prependData(messages);
 
       if (messages.length === 0) {
         this.isOnOldest = true;
@@ -256,14 +254,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   onScroll(e: ScrollerEventModel) {
-    if (e.position == ScrollerPosition.OnTop) {
-      if (this.messages.length === 0) return;
-      let firstMessage = this.messages[0];
-      this.getPrevMessages(`$lt${firstMessage.createdAt}`, 20, ['-createdAt']);
-    } else if (e.position == ScrollerPosition.OnBottom) {
-      if (this.messages.length === 0) return;
-      let lastMessage = this.messages[this.messages.length - 1];
-      this.getNextMessages(`$gt${lastMessage.createdAt}`, 20, ['createdAt']);
+    if (this.messages.length !== 0) {
+      if (e.position == ScrollerPosition.OnTop) {
+        let firstMessage = this.findFirstAvailableMessage(this.messages);
+        this.getPrevMessages(`$lt${firstMessage.createdAt}`, 10, ['-createdAt']);
+      } else if (e.position == ScrollerPosition.OnBottom) {
+        let lastMessage = this.findLastAvailableMessage(this.messages);
+        this.getNextMessages(`$gt${lastMessage.createdAt}`, 10, ['createdAt']);
+      }
     }
 
     this.isOnBottom = e.position === ScrollerPosition.OnBottom;
@@ -334,17 +332,28 @@ export class TimelineComponent implements OnInit, OnDestroy {
         idxs.push(idsX[message.id])
       }
     }
-    idxs = idxs.sort().reverse();
+    idxs.sort().reverse();
     for (let idx of idxs) {
-      this.messages.splice(idx, 1)
+      this.scroller.deleteData(idx, 1);
     }
-  }
-
-  gotoHistory() {
-    this.router.navigate([`/lives/${this.id}/history`]);
   }
 
   triggerGotoLatest() {
     this.timelineService.gotoLastMessage();
+  }
+
+  findFirstAvailableMessage(messages: MessageModel[]): MessageModel {
+    for (let message of messages) {
+      if (message.type !== MessageType.LiveStart && message.type !== MessageType.LiveEnd &&
+        message.type !== MessageType.LiveRoomInfo) {
+        return message;
+      }
+    }
+  }
+
+  findLastAvailableMessage(messages: MessageModel[]): MessageModel {
+    let _messages = _.clone(messages);
+    _messages.reverse();
+    return this.findFirstAvailableMessage(_messages);
   }
 }

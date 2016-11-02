@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {Subscription}   from 'rxjs/Subscription';
 
@@ -20,6 +20,9 @@ import {
 import * as _ from 'lodash';
 import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
 import {UtilsService} from "../../shared/utils/utils";
+import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
+import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
+import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 
 @Component({
   templateUrl: './push-comment.component.html',
@@ -31,7 +34,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   comments: CommentModel[] = [];
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
-  scrollSubscription: Subscription;
   isOnLatest: boolean;
   isOnNewest: boolean;
   isLoading: boolean;
@@ -42,6 +44,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   uids: number[] = [];
   routerSubscription: Subscription;
   hasInit: boolean;
+  @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
+
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private pushCommentService: PushCommentService, private userInfoService: UserInfoService,
@@ -73,8 +77,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     Promise.all([userInfoPromise, liveInfoPromise]).then((result: any[]) => {
       this.userInfo = result[0];
       this.liveInfo = result[1];
-
-      this.startObserveTimelineScroll();
     });
 
     this.timelineService.startReceive(this.liveId);
@@ -82,7 +84,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.stopObserveTimelineScroll();
     this.bottomPopupService.close();
     if (this.popupSelectorSubscription) this.popupSelectorSubscription.unsubscribe();
     if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
@@ -123,7 +124,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.commentApiService.listComments(this.liveId, this.uids, this.marker, 20, ['createdAt']).then(comments => {
-      this.comments = comments;
+      this.scroller.resetData(comments);
       this.isOnNewest = true;
       this.isOnLatest = false;
       this.isLoading = false;
@@ -136,9 +137,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
-      for (let comment of comments) {
-        this.comments.push(comment);
-      }
+      this.scroller.appendData(comments);
 
       if (comments.length === 0) {
         this.isOnLatest = true;
@@ -154,9 +153,9 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
-      for (let comment of comments) {
-        this.comments.unshift(comment);
-      }
+      comments.reverse();
+
+      this.scroller.prependData(comments);
 
       if (comments.length === 0) {
         this.isOnNewest = true;
@@ -166,24 +165,16 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     });
   }
 
-  startObserveTimelineScroll() {
-    this.scrollSubscription = this.pushCommentService.scroller$.subscribe(
-      topOrBottom => {
-        if (topOrBottom) {
-          if (this.comments.length === 0) return;
-          let firstComment = this.comments[0];
-          this.getPrevComments(this.uids, `$lt${firstComment.createdAt}`, 20, ['-createdAt']);
-        } else {
-          if (this.comments.length === 0) return;
-          let lastComment = this.comments[this.comments.length - 1];
-          this.getNextComments(this.uids, `$gt${lastComment.createdAt}`, 20, ['createdAt']);
-        }
+  onScroll(e: ScrollerEventModel) {
+    if (this.comments.length !== 0) {
+      if (e.position === ScrollerPosition.OnTop) {
+        let firstComment = this.comments[0];
+        this.getPrevComments(this.uids, `$lt${firstComment.createdAt}`, 10, ['-createdAt']);
+      } else if (e.position === ScrollerPosition.OnBottom) {
+        let lastComment = this.comments[this.comments.length - 1];
+        this.getNextComments(this.uids, `$gt${lastComment.createdAt}`, 10, ['createdAt']);
       }
-    );
-  }
-
-  stopObserveTimelineScroll() {
-    this.scrollSubscription.unsubscribe();
+    }
   }
 
   pushComment(comment: CommentModel) {

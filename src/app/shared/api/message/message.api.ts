@@ -25,10 +25,10 @@ export class MessageApiService {
               private uploadService: UploadApiService,) {
   }
 
-  listMessages(liveId: string, marker = '', limit = 20, sorts = ['-createdAt'], parentId = 'null'): Promise<MessageModel[]> {
+  listMessages(liveId: string, marker = '', size = 20, sorts = ['-createdAt'], parentId = 'null'): Promise<MessageModel[]> {
     var query = {
       createdAt: marker,
-      limit: limit,
+      size: size,
       sorts: sorts.join(','),
       parentId: parentId
     };

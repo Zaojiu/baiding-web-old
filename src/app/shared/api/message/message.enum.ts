@@ -4,4 +4,7 @@ export enum MessageType {
   Audio,
   Nice,
   EditorJoin,
+  LiveStart,
+  LiveEnd,
+  LiveRoomInfo,
 }
