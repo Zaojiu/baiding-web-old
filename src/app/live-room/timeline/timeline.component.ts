@@ -195,7 +195,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return this.messageApiService.listMessages(this.id, '', 10, ['createdAt']).then(messages => {
       if (!this.messages.length || this.messages[0].type !== MessageType.LiveRoomInfo) {
         HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
-        console.log(messages, 'goto oldest');
       }
 
       this.scroller.resetData(messages);
@@ -261,7 +260,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
         this.getPrevMessages(`$lt${firstMessage.createdAt}`, 10, ['-createdAt']);
       } else if (e.position == ScrollerPosition.OnBottom) {
         let lastMessage = this.findLastAvailableMessage(this.messages);
-        console.log(lastMessage);
         this.getNextMessages(`$gt${lastMessage.createdAt}`, 10, ['createdAt']);
       }
     }

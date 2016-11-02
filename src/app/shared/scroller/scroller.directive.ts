@@ -131,7 +131,6 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   }
 
   unloadHead() {
-    console.log('unload head');
     let unloadCount = this.data.length - this.maxDataCount;
 
     if (unloadCount <= 0) return;
@@ -176,7 +175,6 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   }
 
   unloadFoot() {
-    console.log('unload foot');
     let unloadCount = this.data.length - this.maxDataCount;
 
     if (unloadCount <= 0) return;
