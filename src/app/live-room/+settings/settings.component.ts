@@ -7,6 +7,7 @@ import {MqEvent, EventType} from "../../shared/mq/mq.service";
 import {TimelineService} from '../../live-room/timeline/timeline.service';
 import {LiveStatus} from "../../shared/api/live/live.enums";
 import {WechatService} from "../../shared/wechat/wechat.service";
+import {ModalService} from "../../shared/modal/modal.service";
 
 @Component({
   templateUrl: './settings.component.html',
@@ -21,7 +22,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService,
-              private timelineService: TimelineService, private wechatService: WechatService) {
+              private timelineService: TimelineService, private wechatService: WechatService,
+              private modalService: ModalService) {
   }
 
   ngOnInit() {
@@ -62,7 +64,10 @@ export class SettingsComponent implements OnInit {
   }
 
   closeLive() {
-    this.liveService.closeLive(this.liveId);
-    this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => this.liveInfo = liveInfo);
+    this.modalService.popup('确定结束直播吗?', '取消', '确定').then((result)=> {
+      if (!result) return;
+      this.liveService.closeLive(this.liveId);
+      this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => this.liveInfo = liveInfo);
+    });
   }
 }
