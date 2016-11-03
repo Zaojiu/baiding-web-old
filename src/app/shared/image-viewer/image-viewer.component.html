@@ -1,6 +1,6 @@
 <div class="image-viewer-popup" [ngClass]="{opened: isPopup}" (pinch)="pinch($event)" (pinchend)="pinchEnd($event)"
      (pan)="pan($event)"
-     (panend)="panEnd($event)" (doubletap)="dbltap()">
+     (panend)="panEnd($event)" (doubletap)="dbltap()" (click)="closePopup()">
 
   <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
   <img class="popup-pinch-img" [src]="imageSrc" [style.opacity]="isLoading ? 0 : 1" (load)="imageLoaded()" alt="">
@@ -8,5 +8,4 @@
   <div class="delete-btn-wrapper" *ngIf="hasFile()">
     <a class="delete-btn" (click)="deleteImageSource()"><i class="bi bi-delete"></i></a>
   </div>
-  <a class="quit-btn" (click)="closePopup()"><i class="bi bi-close"></i></a>
 </div>
