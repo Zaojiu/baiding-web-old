@@ -29,21 +29,16 @@ export class LiveRoomInfoComponent {
     this.liveService.setLiveRoomAlreadyVisited();
   }
 
-  get isLiveRoomStarted(): boolean {
-    if (this.liveInfo.status === LiveStatus.Started) {
-      return true;
-    } else {
-      return false;
-    }
-
-  }
-
   get liveRoomStatusHumanize(): string {
-    if (this.liveInfo.status === LiveStatus.Started) {
-      return '直播中';
-    } else {
-      return '未开始';
+    switch (this.liveInfo.status) {
+      case LiveStatus.Created:
+        return '未开始';
+      case LiveStatus.Started:
+        return '直播中';
+      case LiveStatus.Ended:
+        return '已结束';
+      default:
+        return '未知状态';
     }
-
   }
 }
