@@ -22,6 +22,6 @@ export class UtilsService {
   static resetWindowScroll() {
     setTimeout(() => {
       document.body.scrollTop = document.body.scrollHeight;
-    }, 200);
+    }, 400);
   }
 }
