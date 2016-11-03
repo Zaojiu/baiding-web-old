@@ -1,9 +1,10 @@
 <div class="live-room-info">
 
   <div class="live-room-info-header">
-    <div class="live-room-info-status" [ngClass]="{'not-started': isLiveRoomStarted}">{{liveRoomStatusHumanize}}</div>
+    <div class="live-room-info-status" [ngClass]="{'not-started': !isLiveRoomStarted}">{{liveRoomStatusHumanize}}</div>
     <div class="live-room-info-status-timer">
-      <span class="countdown-day-item-day">{{liveInfo.startedAt | timeTo:timeNow | durationFormater:1}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:2}}</span>
+      <span class="countdown-day-item-day" *ngIf="isLiveRoomStarted">{{liveInfo.startedAt | timeTo:timeNow | durationFormater:1}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:2}}</span>
+      <span class="countdown-day-item-day" *ngIf="!isLiveRoomStarted">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:1}}:{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:2}}</span>
     </div>
     <div class="online-people">
       <i class="bi bi-people"></i>

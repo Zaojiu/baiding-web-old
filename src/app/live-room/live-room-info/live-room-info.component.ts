@@ -23,11 +23,11 @@ export class LiveRoomInfoComponent {
 
   ngOnInit() {
     if (this.liveInfo.status === LiveStatus.Started) {
-      this.isLiveRoomStarted = false;
-      this.liveRoomStatusHumanize = '直播中'
-    } else {
       this.isLiveRoomStarted = true;
-      this.liveRoomStatusHumanize = '未开始'
+      this.liveRoomStatusHumanize = '直播中';
+    } else {
+      this.isLiveRoomStarted = false;
+      this.liveRoomStatusHumanize = '未开始';
     }
   }
 
