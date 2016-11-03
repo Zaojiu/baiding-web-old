@@ -45,6 +45,7 @@ export class AudioPlayerComponent implements OnInit {
         this.isLoaded = true;
       }
     }, () => {
+    }, () => {
       this.playEnded.emit(this.message);
     });
   }
