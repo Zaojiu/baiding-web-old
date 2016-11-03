@@ -52,6 +52,12 @@
   .comment-container {
     flex-grow: 1;
 
+    .comment-container-inner {
+      position: absolute;
+      min-height: 100%;
+      width: 100%;
+    }
+
     .comment-row {
       display: flex;
 
