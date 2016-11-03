@@ -103,20 +103,74 @@
         text-align: center;
         vertical-align: top;
 
-        .avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: solid 1px rgb(250, 250, 250);
+        .accepted-wrapper {
+          .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: solid 1px rgb(250, 250, 250);
+            position: relative;
+          }
+
+          .tick {
+            display: flex;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            border: solid 2px rgb(33, 150, 243);
+            transition: background-color .5s;
+            background-color: rgb(33, 150, 243);
+            position: absolute;
+            margin-left: 46px;
+            margin-top: -19px;
+
+            .bi {
+              opacity: 1;
+              font-size: 8px;
+              color: rgb(255, 255, 255);
+              transition: all .5s;
+              transform: scale(.666) translateX(-1px) translateY(1px);
+              transform-origin: center center;
+            }
+          }
+
+          .nick {
+            color: rgb(75, 75, 75);
+            font-size: 14px;
+            word-break: break-all;
+            margin: 0;
+            margin-top: 6px;
+            line-height: 1.2em;
+          }
         }
 
-        .nick {
-          color: rgb(75, 75, 75);
-          font-size: 14px;
-          word-break: break-all;
-          margin: 0;
-          margin-top: 6px;
-          line-height: 1.2em;
+        .invited-wrapper {
+          display: flex;
+          flex-direction: column;
+
+          .invite-people-bg {
+            margin: auto;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgb(233, 233, 233);
+            border: solid 1px rgb(250, 250, 250);
+            display: flex;
+
+            .bi {
+              margin: auto;
+              font-size: 18px;
+            }
+          }
+
+          .nick {
+            color: rgb(158, 161, 165);
+            font-size: 14px;
+            word-break: break-all;
+            margin: 0;
+            margin-top: 6px;
+            line-height: 1.2em;
+          }
         }
       }
 

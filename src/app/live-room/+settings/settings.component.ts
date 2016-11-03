@@ -3,15 +3,18 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {MqEvent, EventType} from "../../shared/mq/mq.service";
+import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../../live-room/timeline/timeline.service';
-import {LiveStatus} from "../../shared/api/live/live.enums";
-import {WechatService} from "../../shared/wechat/wechat.service";
-import {ModalService} from "../../shared/modal/modal.service";
+import {LiveStatus} from '../../shared/api/live/live.enums';
+import {WechatService} from '../../shared/wechat/wechat.service';
+import {ModalService} from '../../shared/modal/modal.service';
+import {InviteApiService} from '../../shared/api/invite/invite.api';
+import {InvitationModel} from '../../shared/api/invite/invite.model';
 
 @Component({
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
+  providers: [InviteApiService],
 })
 
 export class SettingsComponent implements OnInit {
@@ -19,11 +22,12 @@ export class SettingsComponent implements OnInit {
   liveInfo: LiveInfoModel;
   unreadCount = 0;
   liveStatusEnums = LiveStatus;
+  invitations: InvitationModel[];
 
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService,
               private timelineService: TimelineService, private wechatService: WechatService,
-              private modalService: ModalService) {
+              private modalService: ModalService, private inviteApiService: InviteApiService) {
   }
 
   ngOnInit() {
@@ -31,6 +35,9 @@ export class SettingsComponent implements OnInit {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.timelineService.startReceive(this.liveId);
     this.timelineService.onReceivedEvents(evt => this.onReceivedEventsReturn(evt));
+    this.inviteApiService.listInvitations(this.liveId).then((res)=> {
+      this.invitations = res;
+    });
   }
 
   get audioAutoPlay() {
@@ -56,7 +63,7 @@ export class SettingsComponent implements OnInit {
   }
 
   goInvitation() {
-    this.router.navigate([`/lives/${this.liveId}/invitation`]);
+    this.router.navigate([`/lives/${this.liveId}/vip-info`]);
   }
 
   closeWindow() {

@@ -1,0 +1,105 @@
+.vip-info-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  color: rgb(75, 75, 75);
+  display: flex;
+  flex-direction: column;
+
+  .top-bar {
+    display: flex;
+    height: 50px;
+    box-sizing: border-box;
+    border-top: solid 1px rgba(143, 143, 143, .3);
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    justify-content: center;
+    align-items: center;
+    line-height: 1em;
+    border-bottom: solid 1px rgba(205, 205, 205, 0.5);
+
+    .back-to-home {
+      font-size: 17px;
+      color: rgb(33, 150, 243);
+      flex-grow: 1;
+    }
+
+    .chat-info {
+      font-size: 12px;
+      color: rgb(158, 161, 165);
+
+      .bi {
+        font-size: 18px;
+        color: rgb(224, 229, 234);
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .vip-name-wrapper {
+    margin: 12px 12px auto 12px;
+
+    .name {
+      font-size: 18px;
+    }
+
+    .input-container {
+      border: solid 1px rgb(205, 205, 205);
+      background: rgb(245, 245, 245);
+
+      .input {
+        font-size: 20px;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        background: rgb(245, 245, 245);
+        border-radius: 4px;
+      }
+    }
+  }
+  .vip-intro-wrapper {
+    flex-grow: 1;
+    margin: 20px 12px auto 12px;
+
+    .intro {
+      font-size: 18px;
+    }
+
+    .intro-word {
+      font-size: 12px;
+      color: rgb(158, 161, 165);
+      margin-top: 6px;
+      margin-bottom: 10px;;
+    }
+
+    .input-container {
+      border: solid 1px rgb(205, 205, 205);
+      background: rgb(245, 245, 245);
+
+      .input {
+        font-size: 16px;
+        width: 100%;
+        height: 230px;
+        background: rgb(245, 245, 245);
+        border-radius: 4px;
+        text-indent: 20px;
+      }
+    }
+  }
+
+  .button-wrapper {
+    display: flex;
+
+    .generate-invitation {
+      background: rgba(33, 150, 243, 1);
+      font-size: 17px;
+      color: rgba(255, 255, 255, 1);
+      letter-spacing: 0px;
+      line-height: 17px;
+      height: 50px;
+      width: 100%;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 <div class="settings-container" *ngIf="liveInfo">
   <div class="top-bar">
     <div class="back-to-home" (click)="backToMainScreen()">返回直播间</div>
-    <div class="chat-info" *ngIf="unreadCount" >
+    <div class="chat-info" *ngIf="unreadCount">
       <i class="bi bi-chat6"></i>
       {{unreadCount}}条新的消息
     </div>
@@ -28,19 +28,32 @@
       嘉宾列表
     </div>
     <div class="content">
-      <div class="avatar-container" *ngFor="let vip of liveInfo.editors">
-        <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
-        <p class="nick">{{vip.nick}}</p>
+      <div class="avatar-container" *ngFor="let vip of invitations">
+        <div class="accepted-wrapper" *ngIf="vip.userInfo">
+          <img class="avatar" [src]="vip.userInfo.avatar" alt="嘉宾头像">
+          <div class="tick" ><i class="bi bi-tick"></i></div>
+          <p class="nick">{{vip.userInfo.nick}}</p>
+        </div>
+
+        <div class="invited-wrapper" *ngIf="!vip.userInfo">
+          <div class="invite-people-bg">
+            <i class="bi bi-invite-people"></i>
+          </div>
+          <p class="nick">{{vip.name}}</p>
+        </div>
       </div>
+
       <div class="invite" (click)="goInvitation()" *ngIf="isAdmin"></div>
     </div>
   </div>
 
   <div class="auto-play-switch bar">
     <span class="title">语音自动播放</span>
-    <switch-btn class="switch-btn" [isOpened]="audioAutoPlay" [btnText]="''" (toggling)="audioAutoPlay = $event"></switch-btn>
+    <switch-btn class="switch-btn" [isOpened]="audioAutoPlay" [btnText]="''"
+                (toggling)="audioAutoPlay = $event"></switch-btn>
   </div>
 
   <a class="end-btn" *ngIf="liveInfo.status === liveStatusEnums.Started && isAdmin" (click)="closeLive()">结束直播</a>
-  <a class="end-btn" *ngIf="(liveInfo.status !== liveStatusEnums.Started && isAdmin) || !isAdmin" (click)="closeWindow()">退出房间</a>
+  <a class="end-btn" *ngIf="(liveInfo.status !== liveStatusEnums.Started && isAdmin) || !isAdmin"
+     (click)="closeWindow()">退出房间</a>
 </div>
