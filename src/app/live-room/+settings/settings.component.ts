@@ -35,7 +35,7 @@ export class SettingsComponent implements OnInit {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.timelineService.startReceive(this.liveId);
     this.timelineService.onReceivedEvents(evt => this.onReceivedEventsReturn(evt));
-    this.inviteApiService.getInvitations(this.liveId).then((res)=> {
+    this.inviteApiService.listInvitations(this.liveId).then((res)=> {
       this.invitations = res;
     });
   }

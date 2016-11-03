@@ -40,16 +40,18 @@
 
   .vip-name-wrapper {
     margin: 12px 12px auto 12px;
+
     .name {
       font-size: 18px;
     }
+
     .input-container {
       border: solid 1px rgb(205, 205, 205);
       background: rgb(245, 245, 245);
+
       .input {
         font-size: 20px;
         width: 100%;
-        margin: auto 12px;
         height: 40px;
         line-height: 40px;
         background: rgb(245, 245, 245);
@@ -60,22 +62,25 @@
   .vip-intro-wrapper {
     flex-grow: 1;
     margin: 20px 12px auto 12px;
+
     .intro {
       font-size: 18px;
     }
+
     .intro-word {
       font-size: 12px;
       color: rgb(158, 161, 165);
       margin-top: 6px;
       margin-bottom: 10px;;
     }
+
     .input-container {
       border: solid 1px rgb(205, 205, 205);
       background: rgb(245, 245, 245);
+
       .input {
         font-size: 16px;
         width: 100%;
-        margin: auto 12px;
         height: 230px;
         background: rgb(245, 245, 245);
         border-radius: 4px;

@@ -10,13 +10,22 @@ export class InviteApiService {
   constructor(private http: Http, private config: AppConfig) {
   }
 
-  getInviteToken(liveId: string): Promise<string> {
-    let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invite`;
-    return this.http.post(url, null, headers).toPromise()
-      .then(response => {
-        let data = response.json()
-        return data.token;
+  getInvited(liveId: string, name: string, desc: string): Promise<InvitationModel> {
+    let data = new PostInvitationModel();
+    data.name = name;
+    data.desc = desc;
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invite`;
+
+    return this.http.post(url, JSON.stringify(data)).toPromise()
+      .then(res => {
+        let data = res.json();
+        let model = new InvitationModel();
+        model.id = data.id;
+        model.name = data.name;
+        model.desc = data.desc;
+        model.token = data.token;
+        model.userInfo = null;
+        return model;
       });
   }
 
@@ -38,23 +47,10 @@ export class InviteApiService {
       });
   }
 
-  getInvited(liveId: string, name: string, desc: string): Promise<InvitationModel> {
 
-    let data = new PostInvitationModel()
-    data.name = name;
-    data.desc = desc;
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invite`;
+  listInvitations(liveId: string): Promise<InvitationModel[]> {
 
-    return this.http.post(url, JSON.stringify(data)).toPromise()
-      .then(res => {
-        return;
-      }).catch(res => {
-      });
-  }
-
-  getInvitations(liveId: string): Promise<InvitationModel[]> {
-
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites`;
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites?size=1000`;
 
     return this.http.get(url).toPromise()
       .then(res=> {

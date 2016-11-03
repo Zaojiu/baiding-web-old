@@ -20,26 +20,18 @@ export class VipInfoComponent implements OnInit {
   introContent = '';
   unreadCount = 0;
 
-
   constructor(private route: ActivatedRoute, private router: Router, private inviteApiService: InviteApiService,
               private timelineService: TimelineService, private _location: Location) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
-    setTimeout(() => {
-      return this.inviteApiService.getInviteToken(this.liveId).then((token)=> {
-        this.token = token;
-      });
-    }, 0);
-
 
     this.timelineService.startReceive(this.liveId);
     this.timelineService.onReceivedEvents(evt => this.onReceivedEventsReturn(evt));
 
     this.isLoading = false;
   }
-
 
   onReceivedEventsReturn(evt: MqEvent) {
     if (evt.event === EventType.LiveMsgUpdate) {
@@ -51,15 +43,10 @@ export class VipInfoComponent implements OnInit {
     this._location.back();
   }
 
-  goToInvitation() {
-    let query: any = {};
-    query.token = this.token;
-    this.router.navigate(([`/lives/${this.liveId}/invitation`, query]));
-  }
 
   submit() {
-    this.inviteApiService.getInvited(this.liveId, this.nameContent, this.introContent);
-
+    this.inviteApiService.getInvited(this.liveId, this.nameContent, this.introContent).then((model)=> {
+      this.router.navigate(([`/lives/${this.liveId}/invitation`, {token: model.token}]));
+    });
   }
-
 }
