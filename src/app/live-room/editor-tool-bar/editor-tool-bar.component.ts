@@ -1,6 +1,6 @@
 import {
   Component, Input, ViewChild, ElementRef, AfterViewInit,
-  DoCheck
+  DoCheck, OnDestroy
 } from "@angular/core";
 import * as autosize from "autosize";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
@@ -13,6 +13,7 @@ import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {ModalService} from "../../shared/modal/modal.service";
 import {Router} from "@angular/router";
 import {RecordStatus} from "./recorder/recorder.enums";
+import {UtilsService} from "../../shared/utils/utils";
 
 declare var $: any;
 
@@ -22,7 +23,7 @@ declare var $: any;
   styleUrls: ['./editor-tool-bar.component.scss'],
 })
 
-export class EditorToolBarComponent implements AfterViewInit, DoCheck {
+export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @ViewChild('recorder') recorder: RecorderComponent;
@@ -41,10 +42,17 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck {
 
   ngAfterViewInit() {
     autosize(this.messageInput.nativeElement);
+    $(this.messageInput.nativeElement).on('focus', () => {
+      UtilsService.resetWindowScroll();
+    });
   }
 
   ngDoCheck() {
     if (this.images && this.images.length) this.postImage();
+  }
+
+  ngOnDestroy(){
+    $(this.messageInput.nativeElement).off('focus');
   }
 
   get isClose() {
@@ -109,7 +117,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck {
   }
 
   blurMessageInput() {
-    $(this.messageInput.nativeElement).trigger('blur');
+    this.messageInput.nativeElement.blur();
   }
 
   postImage() {
