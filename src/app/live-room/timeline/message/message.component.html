@@ -1,5 +1,5 @@
 <div class="live-info" *ngIf="message.type === messageType.LiveRoomInfo">
-  <div class="banner-blur" *ngIf="!liveInfo.isStarted()">
+  <div [style.background-image]="coverUrl" class="banner-blur" *ngIf="!liveInfo.isStarted()">
     <div class="countdown-container">
       <div class="countdown-day">
         <div class="countdown-day-item">

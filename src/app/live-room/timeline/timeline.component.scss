@@ -1,5 +1,12 @@
 .timeline {
   padding-top: 50px;
+  flex-grow: 1;
+
+  .data-container {
+    position: absolute;
+    min-height: calc(100% - 50px);
+    width: 100%;
+  }
 }
 
 .unread-count {
