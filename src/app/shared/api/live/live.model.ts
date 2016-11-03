@@ -1,6 +1,6 @@
-import { LiveStatus } from './live.enums';
-import { UserInfoModel } from '../user-info/user-info.model';
-import { UserAnimEmoji } from '../../praised-animation/praised-animation.model';
+import {LiveStatus} from './live.enums';
+import {UserInfoModel} from '../user-info/user-info.model';
+import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
 
 export class LiveInfoModel {
   id: string;
