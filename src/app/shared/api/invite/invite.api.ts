@@ -52,5 +52,36 @@ export class InviteApiService {
       });
   }
 
+  getInvitations(liveId: string): Promise<InvitationModel[]> {
 
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites`;
+
+    return this.http.get(url).toPromise()
+      .then(res=> {
+        let data = res.json();
+        let users = data.include.users;
+
+        let invitations: InvitationModel[] = [];
+
+        if (data && data.result) {
+          for (let invitationData of data.result) {
+            let invitation = this.parseInvitation(invitationData, users);
+            invitations.push(invitation);
+          }
+        }
+
+        return invitations;
+      });
+  }
+
+  parseInvitation(data: any, users: any[]): InvitationModel {
+    let invitation = new InvitationModel();
+    invitation.id = data.id;
+    invitation.name = data.name;
+    invitation.desc = data.desc;
+    invitation.token = data.token;
+    invitation.userInfo = users[data.acceptedBy] || null;
+
+    return invitation;
+  }
 }
