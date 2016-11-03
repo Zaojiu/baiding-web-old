@@ -11,7 +11,7 @@ import {UserAnimEmoji} from '../../../shared/praised-animation/praised-animation
 import {AudioPlayerComponent} from '../../../shared/audio-player/audio-player.component'
 import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
 import {LiveStatus} from "../../../shared/api/live/live.enums";
-import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
+import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 
 @Component({
@@ -207,5 +207,10 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   gotoHistory() {
     this.router.navigate([`/lives/${this.liveId}/history`]);
+  }
+
+  get coverUrl(): SafeStyle {
+    let coverUrl = this.liveInfo.coverUrl ? `url(${this.liveInfo.coverUrl})` : 'url(/assets/img/liveroombanner-blur.jpg)';
+    return this.sanitizer.bypassSecurityTrustStyle(coverUrl);
   }
 }
