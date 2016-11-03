@@ -3,13 +3,13 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {MqEvent, EventType} from "../../shared/mq/mq.service";
+import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../../live-room/timeline/timeline.service';
-import {LiveStatus} from "../../shared/api/live/live.enums";
-import {WechatService} from "../../shared/wechat/wechat.service";
-import {ModalService} from "../../shared/modal/modal.service";
-import {InviteApiService} from "../../shared/api/invite/invite.api";
-import {InvitationModel} from "../../shared/api/invite/invite.model";
+import {LiveStatus} from '../../shared/api/live/live.enums';
+import {WechatService} from '../../shared/wechat/wechat.service';
+import {ModalService} from '../../shared/modal/modal.service';
+import {InviteApiService} from '../../shared/api/invite/invite.api';
+import {InvitationModel} from '../../shared/api/invite/invite.model';
 
 @Component({
   templateUrl: './settings.component.html',
@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService,
               private timelineService: TimelineService, private wechatService: WechatService,
-              private modalService: ModalService,private inviteApiService: InviteApiService) {
+              private modalService: ModalService, private inviteApiService: InviteApiService) {
   }
 
   ngOnInit() {
