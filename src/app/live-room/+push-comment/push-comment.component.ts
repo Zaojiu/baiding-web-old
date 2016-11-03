@@ -23,6 +23,7 @@ import {UtilsService} from "../../shared/utils/utils";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
 @Component({
   templateUrl: './push-comment.component.html',
@@ -46,9 +47,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   hasInit: boolean;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
 
-
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
-              private pushCommentService: PushCommentService, private userInfoService: UserInfoService,
+              private operationTips: OperationTipsService, private userInfoService: UserInfoService,
               private liveService: LiveService, private timelineService: TimelineService,
               private bottomPopupService: BottomPopupSelectorService, private sanitizer: DomSanitizer) {
   }
@@ -213,6 +213,40 @@ export class PushCommentComponent implements OnInit, OnDestroy {
       this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
         item => {
           return this.filterEditorComment(item);
+        }
+      );
+
+      // 关闭的时候取消掉上面的监听
+      this.closeSelectorSubscription = this.bottomPopupService.needClose$.subscribe(
+        () => {
+          this.popupSelectorSubscription.unsubscribe();
+          this.closeSelectorSubscription.unsubscribe();
+        }
+      );
+    } else {
+      this.bottomPopupService.close();
+    }
+  }
+
+  banComment(uid: number) {
+    if (!this.liveService.isAdmin(this.liveId, this.userInfo.uid) || this.liveService.isEditor(this.liveId, uid)) return;
+
+    if (this.bottomPopupService.isClosed) {
+      const model = new BottomPopupSelectorModel();
+      model.items = [];
+
+      model.items.push(new BottomPopupSelectorItemModel(uid.toString(), '禁止此人发言'));
+
+      model.needSubscribe = false;
+
+      this.bottomPopupService.popup(model);
+
+      this.popupSelectorSubscription = this.bottomPopupService.itemSelected$.subscribe(
+        item => {
+          let uid = +item.id;
+          this.liveService.banComment(this.liveId, uid).then(() => {
+            this.operationTips.popup('禁言成功');
+          });
         }
       );
 

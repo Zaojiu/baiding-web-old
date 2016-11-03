@@ -37,7 +37,7 @@ export class LiveService {
   }
 
   isAudience(liveId: string, uid?: number): boolean {
-    return !this.isEditor(liveId,uid);
+    return !this.isEditor(liveId, uid);
   }
 
   isAdmin(liveId: string, uid?: number): boolean {
@@ -154,6 +154,14 @@ export class LiveService {
       let data = res.json();
 
       return data;
+    });
+  }
+
+  banComment(id: string, uid: number): Promise<void> {
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/users/${uid}/silence`;
+
+    return this.http.post(url, null).toPromise().then(() => {
+      return;
     });
   }
 

@@ -21,7 +21,7 @@ import {BottomPopupSelectorService} from './shared/bottom-popup-selector/bottom-
 import {SharePopupComponent} from './shared/share-popup/share-popup.component';
 import {SharePopupService} from './shared/share-popup/share-popup.service';
 import {ModalComponent} from "./shared/modal/modal.component";
-import {ErrorTipsComponent} from "./shared/error-tips/error-tips.component";
+import {OperationTipsComponent} from "./shared/operation-tips/operation-tips.component";
 import {ModalService} from "./shared/modal/modal.service";
 import {TitleSetterDirective} from './shared/title/title.directive';
 import {AutofocusDirective} from './shared/autofocus/autofocus.directive';
@@ -33,6 +33,7 @@ import {StoreService} from './shared/store/store.service'
 import {TitleService} from './shared/title/title.service'
 import {LiveService} from "./shared/api/live/live.service";
 import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
+import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 
 @NgModule({
   imports: [
@@ -51,7 +52,7 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
     SharePopupComponent,
     AutofocusDirective,
     ModalComponent,
-    ErrorTipsComponent,
+    OperationTipsComponent,
   ],
   providers: [
     Title,
@@ -67,6 +68,7 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
     ModalService,
     LocalStorageService,
     LiveService,
+    OperationTipsService,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],
   bootstrap: [AppComponent]

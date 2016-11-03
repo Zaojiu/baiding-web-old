@@ -7,7 +7,7 @@ export class BottomPopupSelectorItemModel {
   mode: BottomPopupSelectorMode;
   checked: boolean;
 
-  constructor(id: string, content: string, enable: boolean, mode = BottomPopupSelectorMode.Single, checked = false) {
+  constructor(id: string, content: string, enable = true, mode = BottomPopupSelectorMode.Single, checked = false) {
     this.id = id;
     this.content = content;
     this.enable = enable;
