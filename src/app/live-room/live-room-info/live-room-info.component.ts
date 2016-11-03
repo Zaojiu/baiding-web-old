@@ -14,22 +14,11 @@ export class LiveRoomInfoComponent {
   @Input() liveInfo: LiveInfoModel;
   @Input() isShow: boolean;
   @Output() isShowChange = new EventEmitter<boolean>();
-  @Input() liveRoomStatusHumanize: string;
-  isLiveRoomStarted: boolean;
   timeNow = UtilsService.now.toString();
 
   constructor(private liveService: LiveService) {
   }
 
-  ngOnInit() {
-    if (this.liveInfo.status === LiveStatus.Started) {
-      this.isLiveRoomStarted = true;
-      this.liveRoomStatusHumanize = '直播中';
-    } else {
-      this.isLiveRoomStarted = false;
-      this.liveRoomStatusHumanize = '未开始';
-    }
-  }
 
   close() {
     this.isShowChange.emit(false);
@@ -38,5 +27,23 @@ export class LiveRoomInfoComponent {
   toBeginnerGuide() {
     this.close();
     this.liveService.setLiveRoomAlreadyVisited();
+  }
+
+  get isLiveRoomStarted(): boolean {
+    if (this.liveInfo.status === LiveStatus.Started) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  get liveRoomStatusHumanize(): string {
+    if (this.liveInfo.status === LiveStatus.Started) {
+      return '直播中';
+    } else {
+      return '未开始';
+    }
+
   }
 }
