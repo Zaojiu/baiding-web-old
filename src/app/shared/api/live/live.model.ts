@@ -27,6 +27,9 @@ export class LiveInfoModel {
   createdAt: string;
   onlines: number;
 
+  isCreated(): boolean {
+    return this.status == LiveStatus.Created;
+  }
 
   isStarted(): boolean {
     return this.status == LiveStatus.Started;
