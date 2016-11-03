@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ElementRef, ViewChild, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
 import {LiveInfoModel} from '../../shared/api/live/live.model';
@@ -9,6 +9,7 @@ import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {EditMode} from "./audience-tool-bar.enums";
 import {Router} from "@angular/router";
+import {UtilsService} from "../../shared/utils/utils";
 
 declare var $: any;
 
@@ -18,7 +19,7 @@ declare var $: any;
   styleUrls: ['./audience-tool-bar.component.scss'],
 })
 
-export class AudienceToolBarComponent implements OnInit, OnDestroy {
+export class AudienceToolBarComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
@@ -45,8 +46,16 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.receviedAvatarTouchedSub) {
-      this.receviedAvatarTouchedSub.unsubscribe()
+      this.receviedAvatarTouchedSub.unsubscribe();
     }
+
+    $(this.commentInput.nativeElement).off('focus');
+  }
+
+  ngAfterViewInit() {
+    $(this.commentInput.nativeElement).on('focus', () => {
+      UtilsService.resetWindowScroll();
+    });
   }
 
   parseAtUser(): UserInfoModel[] {

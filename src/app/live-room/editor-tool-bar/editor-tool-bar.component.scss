@@ -118,16 +118,14 @@
 .post-message-container {
   display: none;
   align-items: center;
-  max-height: 0;
+  max-height: 63px + 13px * 2;
   overflow: hidden;
   background-color: rgb(250, 250, 250);
   border-top: solid 1px rgba(178, 178, 178, .5);
   transform-origin: top center;
-  transition: all .5s;
 
   &.activate {
-    display:flex;
-    max-height: 63px + 13px * 2;
+    display: flex;
   }
 
   .input-wrapper {

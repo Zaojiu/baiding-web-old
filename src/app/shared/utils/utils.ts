@@ -18,4 +18,10 @@ export class UtilsService {
 
     return _content;
   }
+
+  static resetWindowScroll() {
+    setTimeout(() => {
+      document.body.scrollTop = document.body.scrollHeight;
+    }, 200);
+  }
 }
