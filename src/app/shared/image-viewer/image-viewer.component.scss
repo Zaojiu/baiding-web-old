@@ -24,7 +24,7 @@
 
   .delete-btn-wrapper {
     display: flex;
-    position: fixed;
+    position: absolute;
     top: 16px;
     right: 63px;
     width: 40px;
@@ -35,17 +35,6 @@
     .delete-btn {
       margin: auto;
       color: rgba(255, 255, 255, 1);
-    }
-  }
-
-  .quit-btn {
-    position: fixed;
-    top: 20px;
-    right: 12px;
-    color: rgba(255, 255, 255, 1);
-
-    .bi {
-      padding: 8px;
     }
   }
 
