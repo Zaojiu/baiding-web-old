@@ -17,7 +17,7 @@
        [data]="comments" [dataContainerSelector]="'.comment-container-inner'"
        *ngIf="liveInfo && userInfo">
     <div class="comment-container-inner">
-      <div class="comment-row" *ngFor="let comment of comments">
+      <div class="comment-row" *ngFor="let comment of comments" (click)="banComment(comment.user.uid)">
         <div class="avatar-container">
           <img class="avatar" [src]="comment.user.avatar">
         </div>
