@@ -12,30 +12,8 @@
     margin-top: 20px;
     font-size: 16px;
 
-    .live-room-info-status {
-      margin-left: 20px;
-      margin-top: auto;
-      margin-bottom: auto;
-      background: rgba(233, 66, 63, 1);
-      border: 0px solid rgba(33, 150, 243, 1);
-      border-radius: 4px;
-      width: 52px;
-      height: 18px;
-      text-align: center;
-      line-height: 18px;
-      color: rgba(255, 255, 255, 1);
-
-      &.not-started {
-        background: rgba(75, 75, 75, 1);
-      }
-    }
-    .live-room-info-status-timer {
-      margin-left: 5px;
-      flex-grow: 1;
-      flex-shrink: 1;
-    }
-
     .online-people {
+      margin-left: 23px;
       flex-grow: 1;
       flex-shrink: 1;
 
@@ -43,12 +21,69 @@
         font-size: 22px
       }
     }
+
     .close-button {
       text-align: end;
       margin-right: 23px;
       flex-grow: 1;
       flex-shrink: 1;
       color: rgba(75, 75, 75, 1);
+    }
+  }
+
+  .info-status-wrapper {
+    display: flex;
+    position: absolute;
+    z-index: 4;
+    margin-top: 12px;
+    margin-left: -8px;
+    margin-left: 12px;
+
+    &.is-countdown {
+      background: rgba(42, 42, 42, 1);
+    }
+    &.is-started {
+      background: rgba(235, 66, 63, 1);
+    }
+    &.is-closed {
+      background: rgba(75, 75, 75, 1);
+    }
+
+    .live-room-info-status {
+      margin-left: 6px;
+      margin-right: 4px;
+      margin-top: auto;
+      margin-bottom: auto;
+      height: 18px;
+      text-align: center;
+      line-height: 20px;
+      color: rgba(255, 255, 255, 1);
+      font-size: 14px;
+
+    }
+    .live-room-info-status-timer {
+      margin-right: 6px;
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      .countdown-day-item-day {
+        font-size: 14px;
+        line-height: 12px;
+        color: rgb(255, 255, 255);
+        line-height: 12px;
+      }
+    }
+  }
+
+  .live-cover {
+    position: relative;
+    display: flex;
+    margin: 12px;
+    margin-bottom: 7px;
+
+    img {
+      height: 180px;
+      width: 100%;
     }
   }
 
