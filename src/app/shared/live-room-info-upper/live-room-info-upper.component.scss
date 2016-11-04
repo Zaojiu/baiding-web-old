@@ -1,0 +1,147 @@
+.live-room-info-upper {
+
+  .live-room-info-header {
+    display: flex;
+    margin-top: 20px;
+    font-size: 16px;
+
+    .online-people {
+      margin-left: 23px;
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      .bi {
+        font-size: 22px
+      }
+    }
+
+    .close-button {
+      text-align: end;
+      margin-right: 23px;
+      flex-grow: 1;
+      flex-shrink: 1;
+      color: rgba(75, 75, 75, 1);
+    }
+  }
+
+  .info-status-wrapper {
+    display: flex;
+    position: absolute;
+    z-index: 4;
+    margin-top: 12px;
+    margin-left: -8px;
+    margin-left: 12px;
+
+    &.is-countdown {
+      background: rgba(42, 42, 42, 1);
+    }
+    &.is-started {
+      background: rgba(235, 66, 63, 1);
+    }
+    &.is-closed {
+      background: rgba(75, 75, 75, 1);
+    }
+
+    .live-room-info-status {
+      margin-left: 6px;
+      margin-right: 4px;
+      margin-top: auto;
+      margin-bottom: auto;
+      height: 18px;
+      text-align: center;
+      line-height: 20px;
+      color: rgba(255, 255, 255, 1);
+      font-size: 14px;
+
+    }
+    .live-room-info-status-timer {
+      margin-right: 6px;
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      .countdown-day-item-day {
+        font-size: 14px;
+        line-height: 12px;
+        color: rgb(255, 255, 255);
+        line-height: 12px;
+      }
+    }
+  }
+
+  .live-cover {
+    position: relative;
+    display: flex;
+    margin: 12px;
+    margin-bottom: 7px;
+
+    img {
+      height: 180px;
+      width: 100%;
+    }
+  }
+
+  .article {
+    margin-top: 33px;
+    position: relative;
+    padding-bottom: 60px;
+    overflow: hidden;
+
+    &:after {
+      position: absolute;
+      margin-top: 40px;
+      left: 50%;
+      content: "";
+      margin-left: -17px;
+      width: 33.5px;
+      border: 1px solid rgb(158, 161, 165);
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      border-right-color: transparent;
+    }
+
+    .talent {
+      display: flex;
+      margin-left: 23px;
+      height: 24px;
+      font-size: 14px;
+      color: rgb(158, 161, 165);
+      letter-spacing: 0px;
+      overflow: hidden;
+
+      .talent-avatar {
+        height: 100%;
+        border-radius: 24px;
+      }
+
+      .talent-info {
+        margin-left: 10px;
+        padding-top: 3px;
+        font-size: 14px;
+        color: rgb(158, 161, 165);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .title {
+      margin: 23px 20px 20px;
+      text-align: justify;
+      font-size: 20px;
+      color: rgba(75, 75, 75, 1);
+      letter-spacing: 0.58px;
+      line-height: 28px;
+      word-break: break-all;
+    }
+
+    .words {
+      margin: 10px 23px 5px;
+      word-break: break-all;
+      font-size: 16px;
+      color: rgba(75, 75, 75, 1);
+      letter-spacing: 0px;
+      line-height: 24px;
+      word-break: break-all;
+    }
+  }
+}
