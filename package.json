@@ -10,7 +10,7 @@
     "serve.prod": "npm run build.prod && static-server -p 9000 ./dist",
     "clean": "rm -rf dist tmp",
     "lint": "tslint \"src/**/*.ts\"",
-    "test": "./node_modules/.bin/ng test",
+    "test": "./node_modules/.bin/ng test --log-level=debug",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor"
   },
@@ -26,6 +26,7 @@
     "@angular/router": "~3.0.0",
     "angular2-localstorage": "git://github.com/marcj/angular2-localstorage.git#1a5b9fb31821706ffbde7da97056194f6100c515",
     "angular2-websocket": "^0.8.1",
+    "angulartics2": "^1.2.2",
     "autosize": "^3.0.17",
     "core-js": "^2.4.1",
     "fastclick": "^1.0.6",
