@@ -22,12 +22,19 @@
     </div>
   </div>
 
-  <div class="vips-container block">
+  <div class="vips-container block" *ngIf="isAdmin">
     <div class="title">
       <i class="bi bi-envelop"></i>
       嘉宾列表
     </div>
     <div class="content">
+      <div class="avatar-container">
+        <div class="accepted-wrapper">
+          <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+          <div class="tick" ><i class="bi bi-tick"></i></div>
+          <p class="nick">{{liveInfo.admin.nick}}</p>
+        </div>
+      </div>
       <div class="avatar-container" *ngFor="let vip of invitations">
         <div class="accepted-wrapper" *ngIf="vip.userInfo">
           <img class="avatar" [src]="vip.userInfo.avatar" alt="嘉宾头像">
@@ -44,6 +51,30 @@
       </div>
 
       <div class="invite" (click)="goInvitation()" *ngIf="isAdmin"></div>
+    </div>
+  </div>
+
+  <div class="vips-container block" *ngIf="!isAdmin">
+    <div class="title">
+      <i class="bi bi-envelop"></i>
+      嘉宾列表
+    </div>
+    <div class="content">
+      <div class="avatar-container">
+        <div class="accepted-wrapper">
+          <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+          <div class="tick" ><i class="bi bi-tick"></i></div>
+          <p class="nick">{{liveInfo.admin.nick}}</p>
+        </div>
+      </div>
+      <div class="avatar-container" *ngFor="let editor of liveInfo.editors">
+        <div class="accepted-wrapper" *ngIf="editor.uid">
+          <img class="avatar" [src]="editor.avatar" alt="嘉宾头像">
+          <div class="tick" ><i class="bi bi-tick"></i></div>
+          <p class="nick">{{editor.nick}}</p>
+        </div>
+      </div>
+
     </div>
   </div>
 

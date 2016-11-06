@@ -35,9 +35,11 @@ export class SettingsComponent implements OnInit {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.timelineService.startReceive(this.liveId);
     this.timelineService.onReceivedEvents(evt => this.onReceivedEventsReturn(evt));
-    this.inviteApiService.listInvitations(this.liveId).then((res)=> {
-      this.invitations = res;
-    });
+    if (this.isAdmin) {
+      this.inviteApiService.listInvitations(this.liveId).then((res)=> {
+        this.invitations = res;
+      });
+    }
   }
 
   get audioAutoPlay() {
