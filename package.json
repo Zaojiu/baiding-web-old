@@ -26,7 +26,7 @@
     "@angular/router": "~3.0.0",
     "angular2-localstorage": "git://github.com/marcj/angular2-localstorage.git#1a5b9fb31821706ffbde7da97056194f6100c515",
     "angular2-websocket": "^0.8.1",
-    "angulartics2": "^1.2.2",
+    "angulartics2": "git://github.com/slene/angulartics2.git#9ae8535fda2369fe70ac5c376c721cc14919af28",
     "autosize": "^3.0.17",
     "core-js": "^2.4.1",
     "fastclick": "^1.0.6",
