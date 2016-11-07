@@ -4,6 +4,9 @@ import {HttpModule, BrowserXhr} from '@angular/http';
 
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
+
 import {AppComponent} from './app.component';
 import {ROUTES} from './app.routes';
 
@@ -40,6 +43,7 @@ import {OperationTipsService} from "./shared/operation-tips/operation-tips.servi
     BrowserModule,
     HttpModule,
     ROUTES,
+    Angulartics2Module.forRoot(),
 
     LiveListModule,
     LiveRoomModule,
@@ -69,6 +73,7 @@ import {OperationTipsService} from "./shared/operation-tips/operation-tips.servi
     LocalStorageService,
     LiveService,
     OperationTipsService,
+    Angulartics2GoogleAnalytics,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],
   bootstrap: [AppComponent]
