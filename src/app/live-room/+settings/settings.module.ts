@@ -11,6 +11,7 @@ import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top
 import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {FormModule} from "../../shared/form/form.module";
 import {ViewInfoComponent} from "./view-info/view-info.component";
+import {LiveRoomInfoUpperModule} from "../../shared/live-room-info-upper/live-room-info-upper.module";
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {ViewInfoComponent} from "./view-info/view-info.component";
     LiveRoomTopBarModule,
     ReactiveFormsModule,
     FormModule,
+    LiveRoomInfoUpperModule,
   ],
   declarations: [
     SettingsComponent,

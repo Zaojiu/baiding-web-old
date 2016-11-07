@@ -1,13 +1,12 @@
 <div class="live-room-info-upper">
-
-
   <div class="info-status-wrapper"
        [ngClass]="{'is-countdown': liveInfo.isCreated(),'is-started':liveInfo.isStarted(),'is-closed':liveInfo.isClosed()}">
+
     <div class="live-room-info-status">
       {{liveRoomStatusHumanize}}
     </div>
-    <div class="live-room-info-status-timer">
 
+    <div class="live-room-info-status-timer">
       <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
           {{liveInfo.closedAt | timeFormater:'YYYY.MM.DD HH:mm'}}
       </span>
@@ -17,6 +16,7 @@
       <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">{{liveInfo.startedAt | timeTo:timeNow | durationFormater:1}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:3}}</span>
 
     </div>
+
   </div>
 
   <div class="live-cover">

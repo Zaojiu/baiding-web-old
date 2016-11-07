@@ -1,6 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {LiveService} from '../../shared/api/live/live.service';
 import {LiveStatus} from '../../shared/api/live/live.enums';
 import {UtilsService} from '../../shared/utils/utils';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
@@ -14,12 +13,10 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
   liveId: string;
   @Input() liveInfo: LiveInfoModel;
-  @Input() isShow: boolean;
-  @Output() isShowChange = new EventEmitter<boolean>();
   timeNow = UtilsService.now.toString();
   timer: any;
 
-  constructor(private liveService: LiveService, private sanitizer: DomSanitizer ) {
+  constructor(private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -32,10 +29,6 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
     if (this.timer) {
       clearInterval(this.timer);
     }
-  }
-
-  close() {
-    this.isShowChange.emit(false);
   }
 
   get liveRoomStatusHumanize(): string {

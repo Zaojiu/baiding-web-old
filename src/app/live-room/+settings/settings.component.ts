@@ -58,7 +58,7 @@ export class SettingsComponent implements OnInit {
   }
 
   gotoRoomInfo() {
-    this.router.navigate([`/lives/${this.liveId}/settings/edit-info`]);
+    this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
   }
 
   closeWindow() {

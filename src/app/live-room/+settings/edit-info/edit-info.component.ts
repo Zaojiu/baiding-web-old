@@ -37,7 +37,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
-    if (!this.liveService.isAdmin(this.liveId)) this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
+    if (!this.liveService.isAdmin(this.liveId)) this.backToViewInfo();
 
     let expectStartAt = moment(this.liveInfo.expectStartAt);
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDThh:mm');
@@ -91,9 +91,15 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   cancelComfirm() {
+    if (!this.form.dirty) return this.backToViewInfo();
+
     this.modalService.popup('您的内容未保存,确定退出吗?').then((result) => {
-      if (result) this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
+      if (result) this.backToViewInfo();
     });
+  }
+
+  backToViewInfo() {
+    this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
   }
 
   submit() {
