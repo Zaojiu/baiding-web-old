@@ -4,11 +4,11 @@ import {TimeFormaterPipe, TimeToPipe, DurationFormaterPipe, FromNowPipe} from '.
 
 describe('TimeFormaterPipe test', () => {
   let now = 0;
-  let pipe: TimeFormaterPipe;
+  let timeFormaterPipe: TimeFormaterPipe;
 
   beforeEach(() => {
     now = UtilsService.now;
-    pipe = new TimeFormaterPipe();
+    timeFormaterPipe = new TimeFormaterPipe();
   });
 
   it('now should return number', async(() => {
@@ -18,36 +18,36 @@ describe('TimeFormaterPipe test', () => {
   it('transforms "Date String"', () => {
     let value = '2016.10.01 12:00';
     let arg = 'YYYY.MM.DD HH:mm';
-    expect(pipe.transform(value, arg)).toEqual('2016.10.01 12:00');
+    expect(timeFormaterPipe.transform(value, arg)).toEqual('2016.10.01 12:00');
   });
 
-  it('transforms "void time"', () => {
+  it('transforms "invalid time"', () => {
     let value = 'ss';
     let arg = 'YYYY.MM.DD HH:mm';
-    pipe = new TimeFormaterPipe();
-    expect(pipe.transform(value, arg)).toEqual('无效时间');
+    timeFormaterPipe = new TimeFormaterPipe();
+    expect(timeFormaterPipe.transform(value, arg)).toEqual('无效时间');
   });
 })
 
 describe('TimeToPipe test', () => {
-  let pipe: TimeToPipe;
+  let timeToPipe: TimeToPipe;
 
   beforeEach(() => {
-    pipe = new TimeToPipe();
+    timeToPipe = new TimeToPipe();
   });
 
   it('should return 2hr seconds', () => {
     let fromTime = '2016.10.01 12:00';
     let endTime = '2016.10.01 14:00';
 
-    expect(pipe.transform(fromTime, endTime)).toEqual(7200);
+    expect(timeToPipe.transform(fromTime, endTime)).toEqual(7200);
   });
 
-  it('void format should return 0', () => {
+  it('invalid format should return 0', () => {
     let fromTime = '2016.1x00';
     let endTime = '2016.1x 14:00';
 
-    expect(pipe.transform(fromTime, endTime)).toEqual(0);
+    expect(timeToPipe.transform(fromTime, endTime)).toEqual(0);
   });
 });
 
@@ -62,7 +62,7 @@ describe('DurationFormaterPipe test', () => {
     durationPipe = new DurationFormaterPipe();
     timeToPipe = new TimeToPipe();
   });
-  it('void should return 00', () => {
+  it('invalid duration should return 00', () => {
     expect(durationPipe.transform(-403, 1)).toEqual('00');
   });
 
@@ -85,7 +85,7 @@ describe('DurationFormaterPipe test', () => {
   });
 });
 
-describe('formNow test', () => {
+describe('fromNow test', () => {
   let pipe: FromNowPipe;
 
   beforeEach(() => {
