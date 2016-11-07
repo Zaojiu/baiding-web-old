@@ -9,7 +9,7 @@ import {LiveStatus} from '../../shared/api/live/live.enums';
 import {WechatService} from '../../shared/wechat/wechat.service';
 import {ModalService} from '../../shared/modal/modal.service';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
-import {InvitationModel} from '../../shared/api/invite/invite.model';
+import {InvitationModel, AudienceInvitationModel} from '../../shared/api/invite/invite.model';
 
 @Component({
   templateUrl: './settings.component.html',
@@ -23,6 +23,7 @@ export class SettingsComponent implements OnInit {
   unreadCount = 0;
   liveStatusEnums = LiveStatus;
   invitations: InvitationModel[];
+  audienceListInvitations: AudienceInvitationModel[];
 
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService,
@@ -38,6 +39,10 @@ export class SettingsComponent implements OnInit {
     if (this.isAdmin) {
       this.inviteApiService.listInvitations(this.liveId).then((res)=> {
         this.invitations = res;
+      });
+    }else{
+      this.inviteApiService.audienceListInvitations(this.liveId).then((res)=>{
+        this.audienceListInvitations = res;
       });
     }
   }
