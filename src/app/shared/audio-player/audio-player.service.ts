@@ -5,7 +5,6 @@ import {Observable} from 'rxjs/Observable';
 import {WechatService} from '../wechat/wechat.service';
 import {MessageModel} from '../api/message/message.model';
 import {Http, ResponseContentType} from '@angular/http';
-import {RingAudioBufferCache} from './ring-audio-buffer-cache';
 
 @Injectable()
 export class AudioPlayerService {
@@ -13,7 +12,6 @@ export class AudioPlayerService {
   private static h5AudioContext: AudioContext;
   private static playingSource: AudioBufferSourceNode;
   private static playingMessageId: string;
-  private static audioBufferCache = new RingAudioBufferCache(10);
 
   constructor(private wechatService: WechatService, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
@@ -21,7 +19,6 @@ export class AudioPlayerService {
   }
 
   play(msg: MessageModel): Observable<string> {
-
 
     return new Observable<string>(observer => {
 
@@ -43,18 +40,11 @@ export class AudioPlayerService {
 
       AudioPlayerService.playingSource = AudioPlayerService.h5AudioContext.createBufferSource();
       AudioPlayerService.playingMessageId = msg.id;
-
-      let buffer = AudioPlayerService.audioBufferCache.get(msg.id);
-      if (buffer) {
-        observer.next('loaded');
-        this.playBuffer(AudioPlayerService.h5AudioContext, AudioPlayerService.playingSource, buffer, msg, observer);
-        return;
-      }
-      this.playRemoteURLAudio(AudioPlayerService.h5AudioContext, AudioPlayerService.playingSource, msg, observer);
+      this.playRemoteURLAudio(AudioPlayerService.h5AudioContext, msg, observer);
     });
   }
 
-  playRemoteURLAudio(context: AudioContext, source: AudioBufferSourceNode, msg: MessageModel, observer: any) {
+  playRemoteURLAudio(context: AudioContext, msg: MessageModel, observer: any) {
 
     this.$http.get(msg.audio.link, {
       withCredentials: false,
@@ -62,8 +52,9 @@ export class AudioPlayerService {
     }).toPromise().then(res => {
       observer.next('loaded');
       context.decodeAudioData(res.arrayBuffer(), buffer => {
-        AudioPlayerService.audioBufferCache.set(msg.id, buffer);
-        this.playBuffer(context, source, buffer, msg, observer);
+        if (AudioPlayerService.playingMessageId === msg.id && AudioPlayerService.playingSource) {
+          this.playBuffer(context, AudioPlayerService.playingSource, buffer, msg, observer);
+        }
       }, null);
     });
   }
