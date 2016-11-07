@@ -1,5 +1,5 @@
 <a class="switch-btn" [ngClass]="{'opened': isOpened}" (click)="emitToggleEvent()">
   <span class="toggler">
-    <span class="toggler-inner" [innerHtml]="getTrustedContent(btnText)"></span>
+    <span class="toggler-inner" [innerHtml]="_btnText"></span>
   </span>
 </a>
