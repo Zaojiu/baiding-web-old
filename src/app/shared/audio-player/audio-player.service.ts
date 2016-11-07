@@ -13,7 +13,7 @@ export class AudioPlayerService {
   private static playingSource: AudioBufferSourceNode;
   private static playingMessageId: string;
 
-  private loadingAudios: any = {};
+  private loadingAudios: { [key: string]: boolean; } = {};
 
   constructor(private wechatService: WechatService, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
