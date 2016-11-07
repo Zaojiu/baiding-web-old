@@ -29,7 +29,7 @@
     </div>
     <div class="content">
       <div class="avatar-container" *ngFor="let vip of invitations">
-        <div class="accepted-wrapper" *ngIf="vip.userInfo">
+        <div class="accepted-wrapper" *ngIf="vip.userInfo.uid">
           <img class="avatar" [src]="vip.userInfo.avatar" alt="嘉宾头像">
           <div class="tick" ><i class="bi bi-tick"></i></div>
           <p class="nick">{{vip.userInfo.nick}}</p>

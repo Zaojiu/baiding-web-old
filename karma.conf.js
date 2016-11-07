@@ -12,6 +12,7 @@ module.exports = function (config) {
       require('angular-cli/plugins/karma'),
       require('karma-phantomjs-launcher'),
       require('karma-ng-html2js-preprocessor'),
+      require('karma-spec-reporter'),
     ],
     files: [
       { pattern: './src/test.ts', watched: false }
@@ -29,7 +30,7 @@ module.exports = function (config) {
       config: './angular-cli.json',
       environment: 'dev'
     },
-    reporters: ['progress', 'karma-remap-istanbul'],
+    reporters: ['spec', 'karma-remap-istanbul'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
