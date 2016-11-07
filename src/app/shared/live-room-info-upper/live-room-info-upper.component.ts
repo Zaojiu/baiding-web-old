@@ -12,12 +12,12 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 })
 
 export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
+  liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @Input() isShow: boolean;
   @Output() isShowChange = new EventEmitter<boolean>();
   timeNow = UtilsService.now.toString();
   timer: any;
-  liveId: string;
 
   constructor(private liveService: LiveService, private sanitizer: DomSanitizer ) {
   }
@@ -26,8 +26,6 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
     this.timer = setInterval(()=> {
       this.timeNow = UtilsService.now.toString();
     }, 1000);
-
-
   }
 
   ngOnDestroy() {
@@ -39,7 +37,6 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
   close() {
     this.isShowChange.emit(false);
   }
-
 
   get liveRoomStatusHumanize(): string {
     switch (this.liveInfo.status) {
