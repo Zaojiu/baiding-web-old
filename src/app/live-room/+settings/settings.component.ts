@@ -57,6 +57,10 @@ export class SettingsComponent implements OnInit {
     this.router.navigate([`/lives/${this.liveId}/vip-info`]);
   }
 
+  gotoRoomInfo() {
+    this.router.navigate([`/lives/${this.liveId}/settings/edit-info`]);
+  }
+
   closeWindow() {
     this.wechatService.closeWindow();
   }

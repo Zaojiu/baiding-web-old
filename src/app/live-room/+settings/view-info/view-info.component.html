@@ -1,0 +1,11 @@
+<div class="view-info">
+  <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
+
+  <div class="info-container">
+
+  </div>
+
+  <div class="operation-area" *ngIf="isAdmin">
+    <a class="btn" (click)="gotoEdit()">编辑</a>
+  </div>
+</div>

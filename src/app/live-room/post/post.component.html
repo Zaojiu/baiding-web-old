@@ -19,7 +19,7 @@
 
   <div class="bottom-bar scrollable">
     <label class="add-image" [ngClass]="{'is-closed':isClosed()}" for="image-selector"  *ngIf="!messageId && !commentId">
-      <input class="fileSelector" id="image-selector" type="file"  [(fileSelector)]="images">
+      <input class="fileSelector" id="image-selector" type="file"  [(ngModel)]="images">
       <i class="bi bi-image"></i>
     </label>
     <a class="face" (click)="content = content + '😄'">😄</a>

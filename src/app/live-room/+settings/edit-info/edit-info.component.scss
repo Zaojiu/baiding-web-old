@@ -1,0 +1,103 @@
+.edit-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+
+  .top-bar {
+    flex-shrink: 0;
+  }
+
+  .form {
+    flex-grow: 1;
+    padding-bottom: 44px;
+    overflow: auto;
+
+    .operation-area {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+}
+
+.cover-container{
+  position: relative;
+
+  .cover-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: rgb(245, 245, 245);
+    border: solid 1px rgb(205, 205, 205);
+    border-radius: 4px;
+    background-size: cover;
+
+    &:before {
+      display: block;
+      content: "";
+      padding-top: 51.4%;
+    }
+
+    .cover-image {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      text-indent: -10000px
+    }
+
+    .no-cover-tips {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      color: rgb(158, 161, 165);
+    }
+  }
+
+  .upload-btn {
+    text-align: center;
+    font-size: 16px;
+    line-height: 20px;
+    color: rgb(75, 75, 75);
+    margin-top: 15px;
+
+    .bi-upload-round {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+  }
+
+  .file-selector {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+  }
+}
+
+.desc {
+  min-height: 229px;
+}
+
+.operation-area {
+  display: flex;
+  background-color: rgb(33, 150, 243);
+
+  .btn {
+    width: 50%;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+  }
+}
+

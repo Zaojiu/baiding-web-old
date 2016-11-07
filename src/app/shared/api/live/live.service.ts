@@ -132,6 +132,20 @@ export class LiveService {
     // .catch();
   }
 
+  updateLiveInfo(id: string, title: string, desc: string, coverKey: string, expectStartAt: string): Promise<void> {
+    let data = {
+      subject: title,
+      desc: desc,
+      coverKey: coverKey,
+      expectStartAt: expectStartAt,
+    };
+
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}`;
+    return this.http.put(url, data).toPromise().then(res => {
+      return;
+    });
+  }
+
   closeLive(id: string): Promise<any> {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/close`;
     return this.http.put(url, null).toPromise().then(res => {

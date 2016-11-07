@@ -9,7 +9,7 @@
 
     <div class="post-image" (click)="switchMode(modeEnums.None)" (contextmenu)="$event.preventDefault()">
       <label class="add-image" for="image-selector">
-        <input class="fileSelector" id="image-selector" type="file" [(fileSelector)]="images">
+        <input class="fileSelector" id="image-selector" type="file" [(ngModel)]="images">
       </label>
       <i class="bi bi-image"></i>
     </div>

@@ -47,18 +47,33 @@
       align-items: center;
       line-height: 1em;
 
-      .live-title {
+      .content-wrapper {
+        flex-grow: 1;
+        display: flex;
+        white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 16px;
-        color: rgb(75, 75, 75);
-        margin-right: 10px;
+
+        .live-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 16px;
+          color: rgb(75, 75, 75);
+          margin-right: 10px;
+        }
+
+        .live-status {
+          flex-shrink: 0;
+          color: rgb(158, 161, 165);
+          font-size: 14px;
+        }
       }
 
-      .live-status {
-        flex-shrink: 0;
-        color: rgb(158, 161, 165);
-        font-size: 14px;
+      .bi-right-arrow {
+        color: rgb(199, 199, 204);
+        font-size: 13px;
+        height: 16px;
+        line-height: 16px;
+        margin-left: 10px;
       }
     }
   }
