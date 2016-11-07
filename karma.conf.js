@@ -11,6 +11,7 @@ module.exports = function (config) {
       require('karma-remap-istanbul'),
       require('angular-cli/plugins/karma'),
       require('karma-phantomjs-launcher'),
+      require('karma-ng-html2js-preprocessor'),
       require('karma-spec-reporter'),
     ],
     files: [
