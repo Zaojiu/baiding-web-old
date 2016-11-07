@@ -22,15 +22,12 @@ describe('TimeFormaterPipe test', () => {
   });
 
   it('transforms "void time"', () => {
-  let value = 'ss';
-  let arg = 'YYYY.MM.DD HH:mm';
-  pipe = new TimeFormaterPipe();
-  expect(pipe.transform(value, arg)).toEqual('无效时间');
-});
-
-
+    let value = 'ss';
+    let arg = 'YYYY.MM.DD HH:mm';
+    pipe = new TimeFormaterPipe();
+    expect(pipe.transform(value, arg)).toEqual('无效时间');
+  });
 })
-;
 
 describe('TimeToPipe test', () => {
   let pipe: TimeToPipe;
@@ -41,14 +38,14 @@ describe('TimeToPipe test', () => {
 
   it('should return 2hr seconds', () => {
     let fromTime = '2016.10.01 12:00';
-    let endTime ='2016.10.01 14:00';
+    let endTime = '2016.10.01 14:00';
 
     expect(pipe.transform(fromTime, endTime)).toEqual(7200);
   });
 
   it('void format should return 0', () => {
     let fromTime = '2016.1x00';
-    let endTime ='2016.1x 14:00';
+    let endTime = '2016.1x 14:00';
 
     expect(pipe.transform(fromTime, endTime)).toEqual(0);
   });
@@ -56,7 +53,7 @@ describe('TimeToPipe test', () => {
 
 describe('DurationFormaterPipe test', () => {
   let now = 0;
-  let timeToPipe :TimeToPipe;
+  let timeToPipe: TimeToPipe;
   let durationPipe: DurationFormaterPipe;
 
 
@@ -65,26 +62,26 @@ describe('DurationFormaterPipe test', () => {
     durationPipe = new DurationFormaterPipe();
     timeToPipe = new TimeToPipe();
   });
-   it('void should return 00', () => {
-    expect(durationPipe.transform(-403, 1 )).toEqual('00');
+  it('void should return 00', () => {
+    expect(durationPipe.transform(-403, 1)).toEqual('00');
   });
 
   it('left days', () => {
-    let value = timeToPipe.transform('2016.10.01 12:00','2016.10.02 14:22');
-    expect(durationPipe.transform(value,0)).toEqual('01');
+    let value = timeToPipe.transform('2016.10.01 12:00', '2016.10.02 14:22');
+    expect(durationPipe.transform(value, 0)).toEqual('01');
   });
 
   it('left hours', () => {
-    let value = timeToPipe.transform('2016.10.01 12:00','2016.10.02 14:22');
-    expect(durationPipe.transform(value,1)).toEqual('02');
+    let value = timeToPipe.transform('2016.10.01 12:00', '2016.10.02 14:22');
+    expect(durationPipe.transform(value, 1)).toEqual('02');
   });
   it('left mins', () => {
-    let value = timeToPipe.transform('2016.10.01 12:00','2016.10.02 14:22');
-    expect(durationPipe.transform(value,2)).toEqual('22');
+    let value = timeToPipe.transform('2016.10.01 12:00', '2016.10.02 14:22');
+    expect(durationPipe.transform(value, 2)).toEqual('22');
   });
   it('left seconds', () => {
-    let value = timeToPipe.transform('2016.10.01 12:00','2016.10.02 14:22');
-    expect(durationPipe.transform(value,3)).toEqual('00');
+    let value = timeToPipe.transform('2016.10.01 12:00', '2016.10.02 14:22');
+    expect(durationPipe.transform(value, 3)).toEqual('00');
   });
 });
 
@@ -96,7 +93,7 @@ describe('formNow test', () => {
   });
 
   it('fromNow should return string', async(() => {
-    let now =  UtilsService.now.toString();
+    let now = UtilsService.now.toString();
     let pipeNow = pipe.transform(now);
     expect(typeof pipeNow === 'string').toBeTruthy();
   }));
