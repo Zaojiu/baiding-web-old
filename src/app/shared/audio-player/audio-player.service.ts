@@ -13,6 +13,8 @@ export class AudioPlayerService {
   private static playingSource: AudioBufferSourceNode;
   private static playingMessageId: string;
 
+  private loadingAudios: any = {};
+
   constructor(private wechatService: WechatService, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
     AudioPlayerService.h5AudioContext = AudioPlayerService.h5AudioContext || new AudioContext();
@@ -46,6 +48,11 @@ export class AudioPlayerService {
 
   playRemoteURLAudio(context: AudioContext, msg: MessageModel, observer: any) {
 
+    if (this.loadingAudios[msg.id]) {
+      return;
+    }
+    this.loadingAudios[msg.id] = true;
+
     this.$http.get(msg.audio.link, {
       withCredentials: false,
       responseType: ResponseContentType.ArrayBuffer
@@ -56,6 +63,8 @@ export class AudioPlayerService {
           this.playBuffer(context, AudioPlayerService.playingSource, buffer, msg, observer);
         }
       }, null);
+    }).finally(() => {
+      delete this.loadingAudios[msg.id];
     });
   }
 
