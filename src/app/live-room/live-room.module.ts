@@ -4,6 +4,7 @@ import {FormsModule}   from '@angular/forms';
 
 import {ROUTES} from './live-room.route';
 import {LiveRoomComponent} from './live-room.component';
+import {LiveRoomInfoUpperComponent} from '../shared/live-room-info-upper/live-room-info-upper.component';
 import {CommentComponent} from './comment/comment.component';
 import {AudienceToolBarComponent} from './audience-tool-bar/audience-tool-bar.component';
 import {TimelineComponent} from './timeline/timeline.component';
@@ -53,6 +54,7 @@ import {ScrollerModule} from "../shared/scroller/scroller.module";
   ],
   declarations: [
     LiveRoomComponent,
+    LiveRoomInfoUpperComponent,
     CommentComponent,
     TimelineComponent,
     MessageComponent,

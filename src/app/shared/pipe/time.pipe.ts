@@ -17,21 +17,23 @@ export class TimeFormaterPipe implements PipeTransform {
 export class DurationFormaterPipe implements PipeTransform {
   transform(durationSecond: number, index: number): string {
     let fixDigest = (num: string) => {
-      if (num.length == 1) return `0${num}`;
+      if (num.length === 1) return `0${num}`;
       return num;
     };
 
     if (durationSecond <= 0) return '00';
 
-    let h = Math.floor(durationSecond / (24 * 60 * 60));
-    let m = Math.floor(durationSecond % (24 * 60 * 60) / (60 * 60));
-    let s = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) / 60);
+    let d = Math.floor(durationSecond / (24 * 60 * 60));
+    let h = Math.floor(durationSecond % (24 * 60 * 60) / (60 * 60));
+    let m = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) / 60);
+    let s = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) % 60);
 
-    if (index === 0) return fixDigest(h.toString());
-    if (index === 1) return fixDigest(m.toString());
-    if (index === 2) return fixDigest(s.toString());
+    if (index === 0) return fixDigest(d.toString());
+    if (index === 1) return fixDigest(h.toString());
+    if (index === 2) return fixDigest(m.toString());
+    if (index === 3) return fixDigest(s.toString());
 
-    return '无效时间'
+    return '无效时间';
   }
 }
 
