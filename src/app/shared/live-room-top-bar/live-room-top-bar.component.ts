@@ -5,6 +5,7 @@ import {MqEvent, EventType} from "../../shared/mq/mq.service";
 import {TimelineService} from '../../live-room/timeline/timeline.service';
 
 @Component({
+  selector: 'live-room-top-bar',
   templateUrl: './live-room-top-bar.component.html',
   styleUrls: ['./live-room-top-bar.component.scss'],
 })
