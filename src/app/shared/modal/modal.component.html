@@ -1,11 +1,11 @@
 <div class="modal-selector-container" [ngClass]="{ 'is-opened': isOpened}" (click)="close()">
-  <ul class="popup-selecter-items">
+  <div class="popup-selecter-items">
 
     <div class="modal-context">{{content}}</div>
     <div class="button-wrapper">
-      <li (click)="close()" *ngIf="hasCancelBtn">{{cancelText}}</li>
-      <li (click)="confirm()">{{confirmText}}</li>
+      <div class="button" (click)="close()" *ngIf="hasCancelBtn">{{cancelText}}</div>
+      <div class="button" (click)="confirm()">{{confirmText}}</div>
     </div>
-  </ul>
+  </div>
 
 </div>
