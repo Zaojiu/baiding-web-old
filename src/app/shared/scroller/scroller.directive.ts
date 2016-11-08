@@ -291,9 +291,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
     let position: ScrollerPosition;
 
-    if (this.el.scrollTop >= 0 && this.el.scrollTop <= 0) {
+    if (this.el.scrollTop >= 0 && this.el.scrollTop <= 10) {
       position = ScrollerPosition.OnTop;
-    } else if (scrollBottom >= 0 && scrollBottom <= 0) {
+    } else if (scrollBottom >= 0 && scrollBottom <= 10) {
       position = ScrollerPosition.OnBottom;
     } else {
       position = ScrollerPosition.OnMiddle;
@@ -310,7 +310,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
           // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
           if (loadCount === 0) this.scroller.emit(scrollEvent);
-        }, 500);
+        }, 200);
 
         // this.startObserveTouch();
       }
@@ -323,7 +323,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
           // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
           if (loadCount === 0) this.scroller.emit(scrollEvent);
-        }, 500);
+        }, 200);
 
         // this.startObserveTouch();
       }
