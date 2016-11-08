@@ -11,16 +11,14 @@
     flex-shrink: 0;
   }
 
-  .form {
+  .main-form {
     flex-grow: 1;
-    padding-bottom: 44px;
     overflow: auto;
+    padding-bottom: 20px;
+  }
 
-    .operation-area {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-    }
+  .operation-area {
+    flex-shrink: 0;
   }
 }
 
@@ -84,6 +82,7 @@
 }
 
 .desc {
+  display: block;
   min-height: 229px;
 }
 
