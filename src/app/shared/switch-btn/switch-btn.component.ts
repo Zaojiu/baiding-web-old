@@ -11,7 +11,7 @@ export class SwitchBtnComponent implements OnInit {
   @Input() isOpened: boolean;
   @Input() btnText: string;
   @Output() toggling = new EventEmitter<boolean>();
-  private _btnText: SafeHtml;
+  _btnText: SafeHtml;
 
   constructor(private sanitizer: DomSanitizer) {
   }
