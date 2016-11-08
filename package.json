@@ -52,6 +52,7 @@
     "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git#c52aeccb5716f279d36203ee0751d67431991b2b",
     "autoprefixer": "^6.5.0",
     "codelyzer": "~0.0.26",
+    "fsevents": "^1.0.15",
     "gulp": "^3.9.1",
     "gulp-filter": "^4.0.0",
     "gulp-if": "^2.0.1",
