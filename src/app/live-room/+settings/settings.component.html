@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="avatar-container" *ngFor="let editor of audienceListInvitations">
-        <div class="accepted-wrapper" *ngIf="editor.userInfo.uid">
+        <div class="accepted-wrapper" *ngIf="editor.userInfo">
           <img class="avatar" [src]="editor.userInfo.avatar" alt="嘉宾头像">
           <div class="tick" ><i class="bi bi-tick"></i></div>
           <p class="nick">{{editor.userInfo.nick}}</p>
