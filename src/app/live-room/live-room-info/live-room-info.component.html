@@ -1,19 +1,21 @@
 <div class="live-room-info">
+  <div class="room-wrapper">
 
-  <div class="live-room-info-header">
-    <div class="online-people">
-      <i class="bi bi-people"></i>
-      {{liveInfo.onlines > 999 ? '999+' : liveInfo.onlines}}人观看
+    <div class="live-room-info-header">
+      <div class="online-people">
+        <i class="bi bi-people"></i>
+        {{liveInfo.onlines > 999 ? '999+' : liveInfo.onlines}}人观看
+      </div>
+      <a class="close-button" (click)="close()">
+        <i class="bi bi-close"></i>
+      </a>
     </div>
-    <a class="close-button" (click)="close()">
-      <i class="bi bi-close"></i>
-    </a>
+
+    <live-room-info-upper [liveInfo]="liveInfo"></live-room-info-upper>
+
+    <div class="button-wrapper" (click)="toBeginnerGuide()">
+      <button class="enter-room">进入房间</button>
+    </div>
+
   </div>
-
-<live-room-info-upper [liveInfo]="liveInfo"></live-room-info-upper>
-
-  <div class="button-wrapper" (click)="toBeginnerGuide()">
-    <button class="enter-room">进入房间</button>
-  </div>
-
 </div>
