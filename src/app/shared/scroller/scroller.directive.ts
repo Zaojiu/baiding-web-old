@@ -121,9 +121,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
       if (loadCount !== 0) {
         this.data.splice(0, 0, ..._data);
         this.checkDataOverflow();
-        // this.resetScrollTop(true);
+        this.resetScrollTop(true);
         this.calculateHash();
-        this.checkTouch();
+        // this.checkTouch();
       }
     }
 
@@ -137,7 +137,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
     this.data.splice(0, unloadCount);
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
   }
 
   loadFoot(): number {
@@ -165,9 +165,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
       if (loadCount !== 0) {
         this.data.splice(this.data.length, 0, ..._data);
         this.checkDataOverflow();
-        // this.resetScrollTop(false);
+        this.resetScrollTop(false);
         this.calculateHash();
-        this.checkTouch();
+        // this.checkTouch();
       }
     }
 
@@ -181,7 +181,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
     this.data.splice(this.data.length - unloadCount, unloadCount);
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
   }
 
   prependData(data: any[]) {
@@ -190,9 +190,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.data.splice(0, 0, ...data);
     this.dataCache.splice(0, 0, ...data);
     this.checkDataOverflow();
-    // this.resetScrollTop(true);
+    this.resetScrollTop(true);
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
   }
 
   appendData(data: any[]) {
@@ -201,9 +201,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.data.splice(this.data.length, 0, ...data);
     this.dataCache.splice(this.dataCache.length, 0, ...data);
     this.checkDataOverflow();
-    // this.resetScrollTop(false);
+    this.resetScrollTop(false);
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
   }
 
   insertData(start: number, data: any[]) {
@@ -216,7 +216,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.dataCache.splice(startIndexInCache, 0, ...data);
     this.checkDataOverflow();
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
   }
 
   deleteData(start: number, length: number) {
@@ -227,7 +227,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.dataCache.splice(startIndexInCache, length);
     this.checkDataOverflow();
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
   }
 
   replaceData(start: number, length: number, data: any[]) {
@@ -240,7 +240,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.dataCache.splice(startIndexInCache, length, ...data);
 
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
     this.checkDataOverflow();
   }
 
@@ -251,7 +251,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.setDataToCache();
 
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
     this.checkDataOverflow();
   }
 
@@ -262,7 +262,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   setCacheToData() {
     this.data = clone(this.dataCache);
     this.calculateHash();
-    this.checkTouch();
+    // this.checkTouch();
     this.checkDataOverflow();
   }
 
@@ -305,33 +305,33 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
       if (!this.enterHead) {
         this.enterHead = true;
 
-        // setTimeout(() => {
-        let loadCount = this.loadHead();
+        setTimeout(() => {
+          let loadCount = this.loadHead();
 
-        // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-        if (loadCount === 0) this.scroller.emit(scrollEvent);
-        // }, 500);
+          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+          if (loadCount === 0) this.scroller.emit(scrollEvent);
+        }, 500);
 
-        this.startObserveTouch();
+        // this.startObserveTouch();
       }
     } else if (scrollEvent.position === ScrollerPosition.OnBottom) {
       if (!this.enterFoot) {
         this.enterFoot = true;
 
-        // setTimeout(() => {
-        let loadCount = this.loadFoot();
+        setTimeout(() => {
+          let loadCount = this.loadFoot();
 
-        // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
-        if (loadCount === 0) this.scroller.emit(scrollEvent);
-        // }, 500);
+          // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
+          if (loadCount === 0) this.scroller.emit(scrollEvent);
+        }, 500);
 
-        this.startObserveTouch();
+        // this.startObserveTouch();
       }
     } else {
       this.enterHead = false;
       this.enterFoot = false;
       this.scroller.emit(scrollEvent);
-      this.stopObserveTouch();
+      // this.stopObserveTouch();
     }
   }
 
@@ -339,84 +339,84 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     this.dataCur = clone(this.data);
   }
 
-  // resetScrollTop(isPrepend: boolean) {
-  //   let $container = this.$dataContainer && this.$dataContainer.length ? this.$dataContainer : this.$el;
-  //
-  //   let $child = isPrepend ? $container.children().first() : $container.children().last();
-  //
-  //   if ($child.length) {
-  //     if (isPrepend) {
-  //       setTimeout(() => {
-  //         this.$el.scrollTop($child.position().top);
-  //       }, 0);
-  //     } else {
-  //       setTimeout(() => {
-  //         this.$el.scrollTop($child.position().top + this.containerOffset - this.$el.outerHeight() + $child.outerHeight(true));
-  //       }, 0);
-  //     }
-  //   }
-  // }
+  resetScrollTop(isPrepend: boolean) {
+    let $container = this.$dataContainer && this.$dataContainer.length ? this.$dataContainer : this.$el;
 
-  checkTouch() {
-    let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
+    let $child = isPrepend ? $container.children().first() : $container.children().last();
 
-    setTimeout(() => {
-      if (this.el.scrollTop >= 0 && this.el.scrollTop <= 0) {
-        this.startObserveTouch();
-      } else if (scrollBottom >= 0 && scrollBottom <= 0) {
-        this.startObserveTouch();
+    if ($child.length) {
+      if (isPrepend) {
+        setTimeout(() => {
+          this.$el.scrollTop($child.position().top);
+        }, 0);
       } else {
-        this.stopObserveTouch();
+        setTimeout(() => {
+          this.$el.scrollTop($child.position().top + this.containerOffset - this.$el.outerHeight() + $child.outerHeight(true));
+        }, 0);
       }
-    }, 0);
+    }
   }
 
-  startObserveTouch() {
-    if (this.touchObserving) return;
-
-    this.touchObserving = true;
-    let touchStart = 0;
-
-    this.$el.on('touchstart', (e) => {
-      touchStart = e.originalEvent.touches[0].clientY;
-    });
-
-    this.$el.on('touchend', (e) => {
-      let isUp = e.originalEvent.changedTouches[0].clientY > touchStart;
-
-      if (this.emiting) {
-        let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
-        let scrollEvent = new ScrollerEventModel();
-
-        if (isUp && this.el.scrollTop === 0) {
-          let loadCount = this.loadHead();
-
-          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-          if (loadCount === 0) {
-            scrollEvent.position = ScrollerPosition.OnTop;
-            scrollEvent.scrollTop = 0;
-            this.scroller.emit(scrollEvent);
-          }
-        }
-
-        if (!isUp && scrollBottom === 0) {
-          let loadCount = this.loadFoot();
-
-          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-          if (loadCount === 0) {
-            scrollEvent.position = ScrollerPosition.OnBottom;
-            scrollEvent.scrollTop = this.el.scrollTop;
-            this.scroller.emit(scrollEvent);
-          }
-        }
-      }
-    });
-  }
-
-  stopObserveTouch() {
-    this.touchObserving = false;
-    this.$el.off('touchstart touchend');
-  }
+  // checkTouch() {
+  //   let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
+  //
+  //   setTimeout(() => {
+  //     if (this.el.scrollTop >= 0 && this.el.scrollTop <= 0) {
+  //       this.startObserveTouch();
+  //     } else if (scrollBottom >= 0 && scrollBottom <= 0) {
+  //       this.startObserveTouch();
+  //     } else {
+  //       this.stopObserveTouch();
+  //     }
+  //   }, 0);
+  // }
+  //
+  // startObserveTouch() {
+  //   if (this.touchObserving) return;
+  //
+  //   this.touchObserving = true;
+  //   let touchStart = 0;
+  //
+  //   this.$el.on('touchstart', (e) => {
+  //     touchStart = e.originalEvent.touches[0].clientY;
+  //   });
+  //
+  //   this.$el.on('touchend', (e) => {
+  //     let isUp = e.originalEvent.changedTouches[0].clientY > touchStart;
+  //
+  //     if (this.emiting) {
+  //       let scrollBottom = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
+  //       let scrollEvent = new ScrollerEventModel();
+  //
+  //       if (isUp && this.el.scrollTop === 0) {
+  //         let loadCount = this.loadHead();
+  //
+  //         // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+  //         if (loadCount === 0) {
+  //           scrollEvent.position = ScrollerPosition.OnTop;
+  //           scrollEvent.scrollTop = 0;
+  //           this.scroller.emit(scrollEvent);
+  //         }
+  //       }
+  //
+  //       if (!isUp && scrollBottom === 0) {
+  //         let loadCount = this.loadFoot();
+  //
+  //         // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+  //         if (loadCount === 0) {
+  //           scrollEvent.position = ScrollerPosition.OnBottom;
+  //           scrollEvent.scrollTop = this.el.scrollTop;
+  //           this.scroller.emit(scrollEvent);
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+  //
+  // stopObserveTouch() {
+  //   this.touchObserving = false;
+  //   this.$el.off('touchstart touchend');
+  // }
 
   ngOnInit() {
     this.setDataToCache();

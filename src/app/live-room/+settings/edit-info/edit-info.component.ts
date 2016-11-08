@@ -1,12 +1,14 @@
 import {Component, OnInit, DoCheck} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {LiveInfoModel} from "../../../shared/api/live/live.model";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
-import {sizeValidator, typeValidator} from "../../../shared/file-selector/file-selector.validator";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import * as moment from "moment";
-import {ModalService} from "../../../shared/modal/modal.service";
+
+import {LiveInfoModel} from "../../../shared/api/live/live.model";
+import {sizeValidator, typeValidator} from "../../../shared/file-selector/file-selector.validator";
 import {LiveService} from "../../../shared/api/live/live.service";
+import {futureValidator} from "../../../shared/form/future.validator";
+import {UploadApiService} from "../../../shared/api/upload/upload.api";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -20,17 +22,19 @@ export class EditInfoComponent implements OnInit, DoCheck {
   coverFiles: File[];
   coverSrc: SafeUrl;
   originCoverSrc: SafeUrl;
+  defaultCoverSrc: SafeUrl;
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
-  maxTitleLength = 50;
+  maxTitleLength = 20;
   maxDescLength = 600;
   time = '';
   title = '';
   desc = '';
+  oldFileName = '';
+  submitted = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
-              private modalService: ModalService, private fb: FormBuilder,
-              private liveService: LiveService) {
+              private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService) {
   }
 
   ngOnInit() {
@@ -42,24 +46,16 @@ export class EditInfoComponent implements OnInit, DoCheck {
     let expectStartAt = moment(this.liveInfo.expectStartAt);
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDThh:mm');
 
-    if (this.liveInfo.coverUrl) this.originCoverSrc = this.sanitizer.bypassSecurityTrustUrl(this.liveInfo.coverUrl);
+    if (this.liveInfo.coverUrl) this.originCoverSrc = this.sanitizer.bypassSecurityTrustUrl(`${this.liveInfo.coverUrl}?${this.liveInfo.updatedAt}`);
 
     this.title = this.liveInfo.subject;
     this.desc = this.liveInfo.desc;
 
-    let coverValidator = [
-      sizeValidator(this.maxSizeMB),
-      typeValidator(this.fileTypeRegexp),
-    ];
-
-    if (!this.originCoverSrc) coverValidator.unshift(Validators.required);
-
     this.form = this.fb.group({
-      'time': new FormControl(this.time, [
-        Validators.required,
-        Validators.pattern('\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}'),
+      'cover': new FormControl(this.coverFiles, [
+        sizeValidator(this.maxSizeMB),
+        typeValidator(this.fileTypeRegexp),
       ]),
-      'cover': new FormControl(this.coverFiles, coverValidator),
       'title': new FormControl(this.title, [
         Validators.required,
         Validators.maxLength(this.maxTitleLength)
@@ -69,33 +65,39 @@ export class EditInfoComponent implements OnInit, DoCheck {
         Validators.maxLength(this.maxDescLength)
       ]),
     });
+
+    if (this.liveInfo.isCreated()) {
+      this.form.addControl('time', new FormControl(this.time, [
+        Validators.required,
+        Validators.pattern('\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}'),
+        futureValidator(),
+      ]));
+    }
+
+    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/liveroombanner-blur.jpg');
   }
 
   ngDoCheck() {
     if (this.form.controls['cover'].valid && this.coverFiles) {
       if (this.coverFiles.length) {
         let file = this.coverFiles[0];
+
+        if (this.oldFileName === file.name) return;
+
         let reader = new FileReader();
 
         reader.onload = (e) => {
           this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
+          this.oldFileName = file.name;
         };
 
         reader.readAsDataURL(file);
       } else {
-        this.coverSrc = this.originCoverSrc || null;
+        this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
       }
     } else {
-      this.coverSrc = this.originCoverSrc || null;
+      this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
     }
-  }
-
-  cancelComfirm() {
-    if (!this.form.dirty) return this.backToViewInfo();
-
-    this.modalService.popup('您的内容未保存,确定退出吗?').then((result) => {
-      if (result) this.backToViewInfo();
-    });
   }
 
   backToViewInfo() {
@@ -114,12 +116,34 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   postLiveInfo() {
-    let expectStartAt = `${this.time}:00`;
+    if (this.coverFiles && this.coverFiles.length) {
+      this.liveService.getCoverUploadToken(this.liveId).then((data) => {
+        let uploadOption = {
+          key: data.coverKey,
+          token: data.token,
+        };
 
-    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, '', expectStartAt).then(() => {
+        return this.uploadService.uploadToQiniu(this.coverFiles[0], uploadOption);
+      }).then((imageKey) => {
+        this.updateLiveInfo(imageKey);
+      });
+    } else {
+      this.updateLiveInfo();
+    }
+  }
+
+  updateLiveInfo(coverKey?: string) {
+    let expectStartAt = moment(`${this.time}:00`).local();
+
+    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey).then(() => {
       return this.liveService.getLiveInfo(this.liveId, true);
     }).then(() => {
+      this.submitted = true;
       this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
     });
+  }
+
+  canDeactivate() {
+    return !this.form.dirty || this.submitted;
   }
 }

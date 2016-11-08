@@ -25,6 +25,7 @@ export class LiveInfoModel {
   startedAt: string;
   closedAt: string;
   createdAt: string;
+  updatedAt: string;
   onlines: number;
 
   isCreated(): boolean {
@@ -37,5 +38,15 @@ export class LiveInfoModel {
 
   isClosed(): boolean {
     return this.status == LiveStatus.Ended;
+  }
+}
+
+export class UploadCoverTokenModel {
+  coverKey: string;
+  token: string;
+
+  constructor(coverKey: string, token: string) {
+    this.coverKey = coverKey;
+    this.token = token;
   }
 }

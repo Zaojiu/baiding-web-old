@@ -13,6 +13,6 @@ export class QuitEditGuard implements CanDeactivate<QuitEditGuardComponent> {
 
   canDeactivate(component: QuitEditGuardComponent): Promise<boolean> {
     if (component.canDeactivate()) return Promise.resolve(true);
-    return this.modalService.popup('退出此次编辑', '取消', '退出')
+    return this.modalService.popup('您的内容未保存,确定退出吗?', '取消', '退出')
   }
 }

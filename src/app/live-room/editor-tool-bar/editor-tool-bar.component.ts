@@ -1,6 +1,6 @@
 import {
   Component, Input, ViewChild, ElementRef, AfterViewInit,
-  DoCheck, OnDestroy
+  DoCheck, OnDestroy, OnInit
 } from "@angular/core";
 import * as autosize from "autosize";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
@@ -14,6 +14,8 @@ import {ModalService} from "../../shared/modal/modal.service";
 import {Router} from "@angular/router";
 import {RecordStatus} from "./recorder/recorder.enums";
 import {UtilsService} from "../../shared/utils/utils";
+import {FormGroup, FormBuilder, FormControl} from "@angular/forms";
+import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 
 declare var $: any;
 
@@ -23,7 +25,7 @@ declare var $: any;
   styleUrls: ['./editor-tool-bar.component.scss'],
 })
 
-export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy {
+export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy, OnInit {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @ViewChild('recorder') recorder: RecorderComponent;
@@ -35,9 +37,21 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   messageContent = '';
   isMessageSubmitting = false;
   images: File[];
+  form: FormGroup;
+  fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
+  maxSizeMB = 8;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
-              private modalService: ModalService, private router: Router) {
+              private modalService: ModalService, private router: Router, private fb: FormBuilder) {
+  }
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      'images': new FormControl(this.images, [
+        sizeValidator(this.maxSizeMB),
+        typeValidator(this.fileTypeRegexp),
+      ]),
+    });
   }
 
   ngAfterViewInit() {
@@ -48,7 +62,19 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
   ngDoCheck() {
-    if (this.images && this.images.length) this.postImage();
+    if (this.form.controls['images'].valid && this.images && this.images.length) {
+      this.postImage();
+    }
+
+    if (this.form.controls['images'].errors && this.form.controls['images'].errors['size']) {
+      this.images = [];
+      this.modalService.popup('图片不能大于8M', '', '确定', false);
+    }
+
+    if (this.form.controls['images'].errors && this.form.controls['images'].errors['accept']) {
+      this.images = [];
+      this.modalService.popup('图片类型必须符合jpg、png、gif、bmp', '', '确定', false);
+    }
   }
 
   ngOnDestroy(){

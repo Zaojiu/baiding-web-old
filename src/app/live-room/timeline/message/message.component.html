@@ -1,37 +1,4 @@
-<div class="live-info" *ngIf="message.type === messageType.LiveRoomInfo">
-  <div [style.background-image]="coverUrl" class="banner-blur" *ngIf="liveInfo.isCreated()">
-    <div class="countdown-container">
-      <div class="countdown-day">
-        <div class="countdown-day-item">
-          <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:0}}</span>
-          <span class="countdown-day-item-day-cn">天</span>
-        </div>
-        <div class="countdown-day-item">
-          <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:1}}</span>
-          <span class="countdown-day-item-day-cn">时</span>
-        </div>
-        <div class="countdown-day-item">
-          <span class="countdown-day-item-day">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:2}}</span>
-          <span class="countdown-day-item-day-cn">分</span>
-        </div>
-      </div>
-      <div class="countdown-date">
-        <div class="countdown-date-splitleft"></div>
-        <div class="countdown-date-time">{{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD HH:mm'}} 开始</div>
-        <div class="countdown-date-splitright"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="article">
-    <div class="talent">
-      <img class="talent-avatar" [src]="liveInfo.admin.avatar" alt="">
-      <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin | role : liveInfo}}</div>
-    </div>
-    <div class="title">{{liveInfo.subject}}</div>
-    <div class="words">{{liveInfo.desc}}</div>
-  </div>
-</div>
+<live-room-info-upper class="live-room-info-component" *ngIf="message.type === messageType.LiveRoomInfo" [liveInfo]="liveInfo"></live-room-info-upper>
 
 <div class="live-started" *ngIf="message.type === messageType.LiveStart">
   <div class="live-started-tip">直播正式开始啦!</div>

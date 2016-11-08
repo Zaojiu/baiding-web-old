@@ -4,6 +4,7 @@ import {SettingsComponent} from "./settings.component";
 import {LiveInfoResolver} from "../../shared/guard/live.guard";
 import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {ViewInfoComponent} from "./view-info/view-info.component";
+import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 
 const route: Routes = [
   {
@@ -21,6 +22,7 @@ const route: Routes = [
   },
   {
     path: 'edit-info', component: EditInfoComponent,
+    canDeactivate: [QuitEditGuard],
     resolve: {
       liveInfo: LiveInfoResolver,
     },

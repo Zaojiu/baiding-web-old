@@ -7,12 +7,24 @@
       [ngClass]="{activate: mode === modeEnums.Text}"
     ></i>
 
-    <div class="post-image" (click)="switchMode(modeEnums.None)" (contextmenu)="$event.preventDefault()">
+    <form
+      [formGroup]="form"
+      name="editInfo"
+      class="post-image"
+      (click)="switchMode(modeEnums.None)"
+      (contextmenu)="$event.preventDefault()"
+    >
       <label class="add-image" for="image-selector">
-        <input class="fileSelector" id="image-selector" type="file" [(ngModel)]="images">
+        <input
+          class="fileSelector"
+          id="image-selector"
+          type="file"
+          formControlName="images"
+          [(ngModel)]="images"
+        >
       </label>
       <i class="bi bi-image"></i>
-    </div>
+    </form>
 
     <div class="record-btn-container"
          [ngClass]="{recording: recorder && recorder.status === recordEnums.Recording, activate: mode === modeEnums.Audio}"

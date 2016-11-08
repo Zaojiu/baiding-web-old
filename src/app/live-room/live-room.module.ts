@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule}   from '@angular/forms';
+import {ReactiveFormsModule, FormsModule}   from '@angular/forms';
 
 import {ROUTES} from './live-room.route';
 import {LiveRoomComponent} from './live-room.component';
@@ -41,6 +41,7 @@ import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-
     ROUTES,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     PipeModule,
     LoadingModule,
     AudioPlayerModule,

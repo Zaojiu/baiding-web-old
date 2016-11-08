@@ -278,7 +278,7 @@ export class MessageApiService {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/image/uptoken`;
     return this.http.get(url).toPromise()
       .then(res => {
-        let data = res.json()
+        let data = res.json();
         return data;
       }).catch(res => {
         // TODO: error;
