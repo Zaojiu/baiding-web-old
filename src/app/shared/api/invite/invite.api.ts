@@ -50,7 +50,7 @@ export class InviteApiService {
 
   listInvitations(liveId: string): Promise<InvitationModel[]> {
 
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites?size=1000`;
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites/by/admin?size=1000`;
 
     return this.http.get(url).toPromise()
       .then(res=> {
@@ -76,6 +76,38 @@ export class InviteApiService {
     invitation.name = data.name;
     invitation.desc = data.desc;
     invitation.token = data.token;
+    invitation.userInfo = users[data.acceptedBy] || null;
+
+    return invitation;
+  }
+
+  audienceListInvitations(liveId: string): Promise<InvitationModel[]> {
+
+    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites/by/audience?size=1000`;
+
+    return this.http.get(url).toPromise()
+      .then(res=> {
+        let data = res.json();
+        let users = data.include.users;
+
+        let invitations: InvitationModel[] = [];
+
+        if (data && data.result) {
+          for (let invitationData of data.result) {
+            let invitation = this.audienceParseInvitation(invitationData, users);
+            invitations.push(invitation);
+          }
+        }
+
+        return invitations;
+      });
+  }
+
+  audienceParseInvitation(data: any, users: any[]): InvitationModel {
+    let invitation = new InvitationModel();
+    invitation.id = data.id;
+    invitation.name = data.name;
+    invitation.desc = data.desc;
     invitation.userInfo = users[data.acceptedBy] || null;
 
     return invitation;

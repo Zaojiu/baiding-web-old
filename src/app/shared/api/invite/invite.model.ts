@@ -13,3 +13,10 @@ export class PostInvitationModel {
   desc: string;
 
 }
+
+export class AudienceInvitationModel {
+  id: string;
+  name: string;
+  desc: string;
+  userInfo: UserInfoModel;
+}
