@@ -1,6 +1,10 @@
 .form-group {
   margin: 20px 15px;
 
+  &:last-child {
+    margin-bottom: 0px;
+  }
+
   label {
     display: block;
     font-size: 18px;
