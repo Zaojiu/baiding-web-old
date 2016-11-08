@@ -1,4 +1,6 @@
 .live-room-info-upper {
+  position: relative;
+  overflow: hidden;
 
   .live-room-info-header {
     display: flex;
@@ -27,10 +29,8 @@
   .info-status-wrapper {
     display: flex;
     position: absolute;
-    z-index: 4;
-    margin-top: 12px;
-    margin-left: -8px;
-    margin-left: 12px;
+    top: 12px;
+    left: 12px;
 
     &.is-countdown {
       background: rgba(42, 42, 42, 1);
@@ -84,21 +84,8 @@
   .article {
     margin-top: 33px;
     position: relative;
-    padding-bottom: 60px;
+    margin-bottom: 33px;
     overflow: hidden;
-
-    &:after {
-      position: absolute;
-      margin-top: 40px;
-      left: 50%;
-      content: "";
-      margin-left: -17px;
-      width: 33.5px;
-      border: 1px solid rgb(158, 161, 165);
-      border-left-color: transparent;
-      border-bottom-color: transparent;
-      border-right-color: transparent;
-    }
 
     .talent {
       display: flex;
@@ -143,6 +130,7 @@
       letter-spacing: 0px;
       line-height: 24px;
       word-break: break-all;
+      white-space: pre;
     }
   }
 }

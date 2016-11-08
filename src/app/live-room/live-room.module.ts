@@ -1,10 +1,9 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule}   from '@angular/forms';
+import {ReactiveFormsModule, FormsModule}   from '@angular/forms';
 
 import {ROUTES} from './live-room.route';
 import {LiveRoomComponent} from './live-room.component';
-import {LiveRoomInfoUpperComponent} from '../shared/live-room-info-upper/live-room-info-upper.component';
 import {CommentComponent} from './comment/comment.component';
 import {AudienceToolBarComponent} from './audience-tool-bar/audience-tool-bar.component';
 import {TimelineComponent} from './timeline/timeline.component';
@@ -35,12 +34,14 @@ import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
 import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
+import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 
 @NgModule({
   imports: [
     ROUTES,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     PipeModule,
     LoadingModule,
     AudioPlayerModule,
@@ -51,10 +52,10 @@ import {ScrollerModule} from "../shared/scroller/scroller.module";
     AutoBlurModule,
     FileSelectorModule,
     ScrollerModule,
+    LiveRoomInfoUpperModule,
   ],
   declarations: [
     LiveRoomComponent,
-    LiveRoomInfoUpperComponent,
     CommentComponent,
     TimelineComponent,
     MessageComponent,

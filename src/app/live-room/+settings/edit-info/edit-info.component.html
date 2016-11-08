@@ -1,0 +1,92 @@
+<div class="edit-info">
+  <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
+
+  <form class="form" [formGroup]="form" name="editInfo" (submit)="submit()">
+    <div class="form-group" *ngIf="liveInfo.isCreated()" [ngClass]="{'has-error': form.controls['time'].dirty && form.controls['time'].invalid}">
+      <label>预计开始时间</label>
+      <input
+        id="time"
+        class="time"
+        name="time"
+        type="datetime-local"
+        formControlName="time"
+        validate-onblur
+        [(ngModel)]="time"
+      >
+      <div *ngIf="form.controls.time.errors">
+        <p class="helper error" *ngIf="form.controls['time'].errors.required">请填写预计开始时间</p>
+        <p class="helper error" *ngIf="form.controls['time'].errors.pattern">预计开始时间格式错误</p>
+        <p class="helper error" *ngIf="form.controls['time'].errors.future">预计开始时间须晚于当前时间</p>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': form.controls['cover'].dirty && form.controls['cover'].invalid}">
+      <label>封面编辑</label>
+      <p class="helper">封面尺寸: 350*180, 格式: jpg、png、gif、bmp, 并小于8M。</p>
+      <div class="cover-container">
+        <div class="cover-wrapper">
+          <img class="cover-image" *ngIf="coverSrc" [src]="coverSrc" alt="封面图">
+          <span class="no-cover-tips" *ngIf="!coverSrc">暂无封面</span>
+        </div>
+        <div class="upload-btn">
+          <i class="bi bi-upload-round"></i>编辑
+        </div>
+        <input
+          class="file-selector"
+          id="cover"
+          name="cover"
+          type="file"
+          formControlName="cover"
+          (focus)="form.controls['cover'].setErrors(null)"
+          [(ngModel)]="coverFiles"
+        >
+      </div>
+      <div *ngIf="form.controls['cover'].errors">
+        <p class="helper error" *ngIf="form.controls['cover'].errors.size">封面图大小须小于8M</p>
+        <p class="helper error" *ngIf="form.controls['cover'].errors.accept">封面图格式须符合jpg、png、gif、bmp</p>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': form.controls['title'].dirty && form.controls['title'].invalid}">
+      <label>标题</label>
+      <p class="helper">标题字数20字以内</p>
+      <input
+        id="title"
+        class="time"
+        name="title"
+        type="text"
+        formControlName="title"
+        validate-onblur
+        [(ngModel)]="title"
+      >
+      <div *ngIf="form.controls['title'].errors">
+        <p class="helper error" *ngIf="form.controls['title'].errors.required">请填写标题</p>
+        <p class="helper error" *ngIf="form.controls['title'].errors.maxlength">请确认标题字数小于20字</p>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': form.controls['desc'].dirty && form.controls['desc'].invalid}">
+      <label>简介</label>
+      <p class="helper">简介字数600字以内</p>
+      <textarea
+        id="desc"
+        class="desc"
+        name="desc"
+        formControlName="desc"
+        validate-onblur
+        [(ngModel)]="desc"
+      ></textarea>
+      <div *ngIf="form.controls['desc'].errors">
+        <p class="helper error" *ngIf="form.controls['desc'].errors.required">请填写简介</p>
+        <p class="helper error" *ngIf="form.controls['desc'].errors.maxlength">请确认简介字数小于600字</p>
+      </div>
+    </div>
+
+    <div class="operation-area">
+      <a class="btn" (click)="backToViewInfo()">取消</a>
+      <button class="btn">保存</button>
+    </div>
+
+  </form>
+
+</div>

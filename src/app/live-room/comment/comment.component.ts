@@ -65,6 +65,8 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   parseContent(comment: CommentModel): SafeHtml {
+    if (comment.parsedContent) return comment.parsedContent;
+
     let content = '';
 
     switch (comment.type) {
@@ -75,11 +77,13 @@ export class CommentComponent implements OnInit, OnDestroy {
           content = UtilsService.parseAt(comment.content, true);
         }
 
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
 
       case CommentType.AudienceJoined:
         content = `${comment.eventData.user.nick}加入话题讨论`;
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
 
       case CommentType.CommentPushed:
         if (comment.eventData.comment_user.uid === this.userInfo.uid) {
@@ -88,10 +92,15 @@ export class CommentComponent implements OnInit, OnDestroy {
           content = `${comment.eventData.comment_user.nick}的评论被推送了`;
         }
 
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
+
       default:
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
     }
+
+    return comment.parsedContent;
   }
 
   startPushComment() {

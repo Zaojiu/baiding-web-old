@@ -1,24 +1,22 @@
 <div class="settings-container" *ngIf="liveInfo">
-  <div class="top-bar">
-    <div class="back-to-home" (click)="backToMainScreen()">返回直播间</div>
-    <div class="chat-info" *ngIf="unreadCount">
-      <i class="bi bi-chat6"></i>
-      {{unreadCount}}条新的消息
-    </div>
-  </div>
+  <live-room-top-bar [liveId]="liveId"></live-room-top-bar>
 
-  <div class="live-info-container block">
+  <div class="live-info-container block" (click)="gotoRoomInfo()">
     <div class="title">
       <i class="bi bi-tv"></i>
       话题间信息
     </div>
     <div class="content">
-      <div class="live-title">{{liveInfo.subject}}</div>
-      <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Created">未开始</span>
-      <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Started">
-        正在直播 {{liveInfo.startedAt | timeTo:timeNow | durationFormater:1}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:2}}
-      </span>
-      <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Ended">已结束</span>
+      <div class="content-wrapper">
+        <div class="live-title">{{liveInfo.subject}}</div>
+        <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Created">未开始</span>
+        <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Started">
+          正在直播 {{liveInfo.startedAt | timeTo:timeNow | durationFormater:1}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:2}}
+        </span>
+        <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Ended">已结束</span>
+      </div>
+
+      <i class="bi bi-right-arrow"></i>
     </div>
   </div>
 
@@ -38,7 +36,7 @@
       <div class="avatar-container" *ngFor="let vip of invitations">
         <div class="accepted-wrapper" *ngIf="vip.userInfo">
           <img class="avatar" [src]="vip.userInfo.avatar" alt="嘉宾头像">
-          <div class="tick" ><i class="bi bi-tick"></i></div>
+          <div class="tick"><i class="bi bi-tick"></i></div>
           <p class="nick">{{vip.userInfo.nick}}</p>
         </div>
 

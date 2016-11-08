@@ -38,7 +38,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   isOnLatest: boolean;
   isOnNewest: boolean;
   isLoading: boolean;
-  unreadCount = 0;
   popupSelectorSubscription: Subscription;
   closeSelectorSubscription: Subscription;
   marker = '';
@@ -49,8 +48,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private operationTips: OperationTipsService, private userInfoService: UserInfoService,
-              private liveService: LiveService, private timelineService: TimelineService,
-              private bottomPopupService: BottomPopupSelectorService, private sanitizer: DomSanitizer) {
+              private liveService: LiveService, private bottomPopupService: BottomPopupSelectorService,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -78,21 +77,12 @@ export class PushCommentComponent implements OnInit, OnDestroy {
       this.userInfo = result[0];
       this.liveInfo = result[1];
     });
-
-    this.timelineService.startReceive(this.liveId);
-    this.timelineService.onReceivedEvents(evt => this.onReceivedEventsReturn(evt));
   }
 
   ngOnDestroy() {
     this.bottomPopupService.close();
     if (this.popupSelectorSubscription) this.popupSelectorSubscription.unsubscribe();
     if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
-  }
-
-  onReceivedEventsReturn(evt: MqEvent) {
-    if (evt.event === EventType.LiveMsgUpdate) {
-      this.unreadCount++;
-    }
   }
 
   resetRouteParams() {
@@ -183,10 +173,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   parseContent(content: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
-  }
-
-  backToMainScreen() {
-    this.router.navigate(['/lives/' + this.liveId]);
   }
 
   popupBottomSelector() {
@@ -290,6 +276,5 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.uids = uidNums;
 
     this.router.navigate([`lives/${this.liveId}/push-comment`, query]);
-
   }
 }

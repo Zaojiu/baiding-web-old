@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {LocalStorage} from "angular2-localstorage/WebStorage";
 
-import {LiveInfoModel} from './live.model';
+import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {AppConfig} from '../../../app.config';
 import {StoreService} from '../../store/store.service';
@@ -89,6 +89,7 @@ export class LiveService {
     liveInfo.startedAt = stream.startedAt;
     liveInfo.closedAt = stream.closedAt;
     liveInfo.createdAt = (+stream.createdAt / 1e6).toString();
+    liveInfo.updatedAt = (+stream.updatedAt / 1e6).toString();
     liveInfo.isDraft = stream.isDraft;
 
     if (stream.status === 'created') liveInfo.status = LiveStatus.Created;
@@ -132,6 +133,21 @@ export class LiveService {
     // .catch();
   }
 
+  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<void> {
+    let data: { [key: string]: string } = {
+      subject: title,
+      desc: desc,
+      expectStartAt: expectStartAt,
+    };
+
+    if (coverKey) data['coverKey'] = coverKey;
+
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}`;
+    return this.http.put(url, data).toPromise().then(res => {
+      return;
+    });
+  }
+
   closeLive(id: string): Promise<any> {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/close`;
     return this.http.put(url, null).toPromise().then(res => {
@@ -162,6 +178,18 @@ export class LiveService {
 
     return this.http.post(url, null).toPromise().then(() => {
       return;
+    });
+  }
+
+  getCoverUploadToken(id: string): Promise<UploadCoverTokenModel> {
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/cover/uptoken`;
+
+    return this.http.post(url, null).toPromise().then((res) => {
+      let data = res.json();
+
+      let model = new UploadCoverTokenModel(data.key, data.token);
+
+      return model;
     });
   }
 

@@ -1,16 +1,16 @@
-import {Component, OnInit, OnDestroy, OnChanges, EventEmitter} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
-import { TimelineService } from './timeline/timeline.service';
+import {TimelineService} from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {LiveInfoModel} from '../shared/api/live/live.model';
 import {TitleService} from '../shared/title/title.service';
 import {WechatService} from '../shared/wechat/wechat.service';
 import {UserInfoService} from '../shared/api/user-info/user-info.service';
-import { UserInfoModel } from '../shared/api/user-info/user-info.model';
-import { UserAnimEmoji } from '../shared/praised-animation/praised-animation.model';
-import { MqEvent, EventType } from '../shared/mq/mq.service';
+import {UserInfoModel} from '../shared/api/user-info/user-info.model';
+import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
+import {MqEvent, EventType} from '../shared/mq/mq.service';
 
 @Component({
   templateUrl: './live-room.component.html',
