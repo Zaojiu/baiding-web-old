@@ -42,10 +42,6 @@
   }
 
   &.has-error {
-    input[type="text"], input[type="datetime-local"], textarea {
-      border: solid 1px rgb(233, 66, 63);
-    }
-
     .helper.error {
       display: block;
     }

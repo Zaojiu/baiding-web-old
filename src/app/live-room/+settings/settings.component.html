@@ -42,9 +42,9 @@
 
         <div class="invited-wrapper" *ngIf="!vip.userInfo">
           <div class="invite-people-bg">
-            <i class="bi bi-invite-people"></i>
+            <i class="bi bi-people2"></i>
           </div>
-          <p class="nick">{{vip.name}}</p>
+          <p class="nick">{{vip.name || '无名'}}</p>
         </div>
       </div>
 
@@ -69,7 +69,7 @@
         <div class="accepted-wrapper" *ngIf="editor.userInfo">
           <img class="avatar" [src]="editor.userInfo.avatar" alt="嘉宾头像">
           <div class="tick" ><i class="bi bi-tick"></i></div>
-          <p class="nick">{{editor.userInfo.nick}}</p>
+          <p class="nick">{{editor.userInfo.nick || '无名'}}</p>
         </div>
       </div>
 
@@ -80,6 +80,11 @@
     <span class="title">语音自动播放</span>
     <switch-btn class="switch-btn" [isOpened]="audioAutoPlay" [btnText]="''"
                 (toggling)="audioAutoPlay = $event"></switch-btn>
+  </div>
+
+  <div class="auto-play-switch bar" (click)="gotoCreate()">
+    <span class="title">我要发起话题</span>
+    <i class="bi bi-right-arrow"></i>
   </div>
 
   <a class="end-btn" *ngIf="liveInfo.status === liveStatusEnums.Started && isAdmin" (click)="closeLive()">结束直播</a>

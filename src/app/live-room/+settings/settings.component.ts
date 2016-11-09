@@ -61,6 +61,10 @@ export class SettingsComponent implements OnInit {
     this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
   }
 
+  gotoCreate() {
+    this.router.navigate([`/lives/create`]);
+  }
+
   closeWindow() {
     this.wechatService.closeWindow();
   }

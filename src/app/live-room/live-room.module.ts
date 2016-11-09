@@ -35,6 +35,7 @@ import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
+import {EmptyModule} from "../shared/empty/empty.module";
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-
     FileSelectorModule,
     ScrollerModule,
     LiveRoomInfoUpperModule,
+    EmptyModule,
   ],
   declarations: [
     LiveRoomComponent,
