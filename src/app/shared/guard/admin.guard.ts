@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {LiveService} from "../api/live/live.service";

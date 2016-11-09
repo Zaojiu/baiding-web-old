@@ -37,6 +37,7 @@ import {LiveService} from "./shared/api/live/live.service";
 import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 import {AdminGuard} from "./shared/guard/admin.guard";
+import {UserInfoResolver} from "./shared/guard/user-info.resolver";
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import {AdminGuard} from "./shared/guard/admin.guard";
     LiveService,
     OperationTipsService,
     Angulartics2GoogleAnalytics,
+    UserInfoResolver,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],
   bootstrap: [AppComponent]

@@ -3,11 +3,12 @@ import {Routes, RouterModule} from '@angular/router';
 import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 import {CreateComponent} from "./create.component";
 import {AuthGuard} from "../../shared/guard/auth.guard";
+import {CreateGuard} from "../../shared/guard/create.guard";
 
 const route: Routes = [
   {
     path: '',
-    canActivate: [AuthGuard], // TODO: 创建权限guard.
+    canActivate: [AuthGuard, CreateGuard],
     canDeactivate: [QuitEditGuard],
     component: CreateComponent,
   }

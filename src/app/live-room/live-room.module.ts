@@ -11,7 +11,7 @@ import {MessageComponent} from './timeline/message/message.component';
 import {PostComponent} from './post/post.component';
 import {PraisedAnimationDirective} from '../shared/praised-animation/praised-animation.directive';
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
-import {LiveInfoResolver} from '../shared/guard/live.guard';
+import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {TimelineService} from './timeline/timeline.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message/message.api";
