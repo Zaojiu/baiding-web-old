@@ -2,9 +2,9 @@
   <div class="editor-tool-bar" [ngClass]="{'is-closed': isClose}">
     <i
       class="bi bi-comment post-message"
-      (click)="switchMode(modeEnums.Text)"
+      (click)="switchMode(modeEnums.Text); focusMessageInput() "
       (contextmenu)="$event.preventDefault()"
-      [ngClass]="{activate: mode === modeEnums.Text}"
+      [ngClass]="{activate: mode === modeEnums.Text || mode === modeEnums.At}"
     ></i>
 
     <form
@@ -44,12 +44,37 @@
   <recorder class="recorder" #recorder [ngClass]="{activate: mode === modeEnums.Audio}"
             (recordEnd)="recordEnd($event)"></recorder>
 
-  <form class="post-message-container" #messageContainer [ngClass]="{activate: mode === modeEnums.Text}"
-        (ngSubmit)="postMessage(); focusMessageInput();">
-    <div class="input-wrapper">
-      <textarea #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
-                [(ngModel)]="messageContent"></textarea>
+  <div class="post-message-container-hidden-wrapper" [ngClass]="{activate: mode === modeEnums.Text || mode === modeEnums.At}">
+    <form class="post-message-container" #messageContainer [ngClass]="{activate: mode !== modeEnums.None}"
+          (ngSubmit)="postMessage(); switchMode(modeEnums.None);">
+      <div class="input-wrapper">
+        <input #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
+               (focus)="switchMode(modeEnums.Text)" [(ngModel)]="messageContent">
+      </div>
+      <button class="sender">发送</button>
+      <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
+        <i class="bi bi-at-people-keyboard"></i>
+      </a>
+      <a class="switcher" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text">
+        <i class="bi bi-at-people"></i>
+      </a>
+    </form>
+  </div>
+
+  <div class="at-people-keyboard" [ngClass]="{activate: mode === modeEnums.At}">
+    <div class="user-row" (click)="changeCommentContent(liveInfo.admin)">
+      <img class="avatar" [src]="liveInfo.admin.avatar">
+      <div class="name">{{liveInfo.admin.nick}}</div>
+      <div class="tick" [ngClass]="{'selected': selected(liveInfo.admin.uid)}"><i class="bi bi-tick"
+      ></i></div>
     </div>
-    <button class="sender">发送</button>
-  </form>
+
+    <div class="user-row" *ngFor="let vip of liveInfo.editors" (click)="changeCommentContent(vip)">
+      <img class="avatar" [src]="vip.avatar">
+      <div class="name">{{vip.nick}}</div>
+      <div class="tick" [ngClass]="{'selected': selected(vip.uid)}"><i class="bi bi-tick"></i></div>
+    </div>
+
+  </div>
+
 </div>

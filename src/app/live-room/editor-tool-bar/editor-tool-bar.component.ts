@@ -16,6 +16,9 @@ import {RecordStatus} from "./recorder/recorder.enums";
 import {UtilsService} from "../../shared/utils/utils";
 import {FormGroup, FormBuilder, FormControl} from "@angular/forms";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
+import {Subscription} from "rxjs";
+import {MessageService} from "../timeline/message/message.service";
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 declare var $: any;
 
@@ -40,9 +43,10 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   form: FormGroup;
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
+  receviedAvatarTouchedSub: Subscription;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
-              private modalService: ModalService, private router: Router, private fb: FormBuilder) {
+              private modalService: ModalService, private router: Router, private fb: FormBuilder, private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -51,6 +55,38 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
         sizeValidator(this.maxSizeMB),
         typeValidator(this.fileTypeRegexp),
       ]),
+    });
+
+    //监听点击用户头像事件
+    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
+      this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
+      this.mode = EditMode.Text;
+      this.switchMode(this.mode);
+    });
+  }
+
+  switchMode(mode: EditMode) {
+    if (mode !== EditMode.Text) this.blurMessageInput();
+
+    this.mode = mode;
+
+    if (mode === EditMode.None)this.messageContent = '';
+
+    if (this.mode === EditMode.Text) {
+      this.focusMessageInput();
+      this.detectContentChange();
+    }
+  }
+
+  detectContentChange() {
+    $(this.messageInput.nativeElement).on('input', () => {
+      if (this.messageContent === '') return;
+      if ($.isNumeric(this.messageContent[this.messageContent.length - 1])) {
+        this.messageContent = this.messageContent.replace(/(.*)@[\W\w]+?\(\d+?$/g, '$1');
+      }
+      if (this.messageContent[this.messageContent.length - 1] === '@') {
+        this.switchMode(EditMode.Text);
+      }
     });
   }
 
@@ -77,7 +113,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
     }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     $(this.messageInput.nativeElement).off('focus');
   }
 
@@ -97,13 +133,6 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
     return `${duration.toFixed(0)}s`;
   }
 
-  switchMode(mode: EditMode) {
-    if (mode !== EditMode.Text) this.blurMessageInput();
-
-    this.mode = this.mode !== mode ? mode : EditMode.None;
-
-    if (this.mode === EditMode.Text) this.focusMessageInput();
-  }
 
   recordEnd(audioModel: WechatAudioModel) {
     this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult, '', audioModel.duration);
@@ -163,5 +192,23 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
   goSettings() {
     this.router.navigate([`/lives/${this.liveId}/settings`]);
+  }
+
+  changeCommentContent(editor: UserInfoModel) {
+    if (this.messageContent.indexOf(editor.uid.toString()) !== -1) {
+      this.messageContent = this.messageContent.replace(`@${editor.nick}(${editor.uid}) `, '');
+    } else {
+      if (this.messageContent === '') {
+        this.messageContent += `@${editor.nick}(${editor.uid}) `;
+      } else if (this.messageContent[this.messageContent.length - 1] === '@') {
+        this.messageContent += `${editor.nick}(${editor.uid}) `;
+      } else {
+        this.messageContent += `@${editor.nick}(${editor.uid}) `;
+      }
+    }
+  }
+
+  selected(uid: number): boolean {
+    return this.messageContent.indexOf(uid.toString()) !== -1;
   }
 }
