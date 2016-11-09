@@ -123,8 +123,6 @@ export class CreateComponent implements OnInit, DoCheck {
   }
 
   gotoInfoCenter() {
-    // TODO: 跳转列表页
-    console.log('goto center');
     this.router.navigate([`/info-center`]);
   }
 
