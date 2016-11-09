@@ -35,6 +35,7 @@ import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
 import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
+import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 
 @NgModule({
   imports: [
@@ -77,6 +78,7 @@ import {ScrollerModule} from "../shared/scroller/scroller.module";
     QuitEditGuard,
     UploadApiService,
     MessageService,
+    AudioPlayerService
   ]
 })
 

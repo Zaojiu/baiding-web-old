@@ -103,4 +103,9 @@ export class AudioPlayerService {
     AudioPlayerService.playingSource = null;
   }
 
+  // 当前正在播放音频
+  get hasPlaying(): boolean {
+    return !!AudioPlayerService.playingMessageId;
+  }
+
 }

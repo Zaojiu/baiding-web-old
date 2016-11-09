@@ -10,8 +10,8 @@ export class AppConfig {
 
   constructor() {
     this.urlPrefix = new UrlPrefix();
-    this.urlPrefix.auth = 'http://auth.zaojiu.io';
-    this.urlPrefix.io = 'http://io.zaojiu.io';
+    this.urlPrefix.auth = 'http://auth.zaojiu.im';
+    this.urlPrefix.io = 'http://io.zaojiu.im';
     this.lcAppId = "UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz";
     this.lcAppKey = "dbbAJuix9SThsVPWMkNSAQ9d";
   }

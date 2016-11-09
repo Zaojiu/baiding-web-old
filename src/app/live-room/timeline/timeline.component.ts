@@ -17,6 +17,7 @@ import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {UtilsService} from '../../shared/utils/utils';
+import {AudioPlayerService} from '../../shared/audio-player/audio-player.service'
 
 import {MessageComponent} from './message/message.component';
 import {HackMessages} from "./hack-messages";
@@ -46,7 +47,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
-              private liveService: LiveService, private messageApiService: MessageApiService) {
+              private liveService: LiveService, private messageApiService: MessageApiService, private  audioPlayerService: AudioPlayerService) {
   }
 
   ngOnInit() {
@@ -120,9 +121,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
         if (this.isOnBottom) {
+          let has = this.hasNoPlayedAudio();
           this.gotoLatestMessages().then(() => {
             setTimeout(() => {
               this.scroller.scrollToBottom();
+              if (!has) {
+                this.autoPlayReceived();
+              }
             }, 0);
           });
         } else {
@@ -136,6 +141,31 @@ export class TimelineComponent implements OnInit, OnDestroy {
         });
         break;
     }
+  }
+
+  autoPlayReceived() {
+
+    if (this.audioPlayerService.hasPlaying) {
+      return;
+    }
+    for (let comp of this.messagesComponents.toArray()) {
+      if (!comp.audioPlayer) {
+        continue;
+      }
+      if (comp.audioPlayer.isPlayed) {
+        continue;
+      }
+      if (comp.message.user.uid === this.userInfo.uid) {
+        continue;
+      }
+      return comp.playAudio();
+    }
+  }
+
+  hasNoPlayedAudio(): boolean {
+    return !!this.messagesComponents.toArray().filter((v) => {
+      return v.audioPlayer && !v.audioPlayer.isPlayed;
+    }).length;
   }
 
   onReceivedPraises(praisedUser: MqPraisedUser) {
