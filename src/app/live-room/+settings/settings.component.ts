@@ -53,6 +53,14 @@ export class SettingsComponent implements OnInit {
     this.liveService.toggleAudioAutoPlay(this.liveId);
   }
 
+  get translationExpanded(): boolean{
+    return this.liveService.isTranslationExpanded(this.liveId);
+  }
+
+  set translationExpanded(result: boolean){
+    this.liveService.toggleTranslationExpanded(this.liveId);
+  }
+
   get isAdmin() {
     return this.liveService.isAdmin(this.liveId);
   }

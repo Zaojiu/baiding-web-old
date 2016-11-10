@@ -10,11 +10,16 @@ import {AppConfig} from '../../../app.config';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus} from './live.enums';
 import {UserInfoService} from '../user-info/user-info.service';
+import {Subject} from "rxjs";
 
 @Injectable()
 export class LiveService {
+  tranlationExpandedSource = new Subject<boolean>();
+  $tranlationExpanded = this.tranlationExpandedSource.asObservable();
 
   @LocalStorage() public audioAutoPlayDisabled: Object = {};
+  @LocalStorage() public wordExpandedDisabled: Object = {};
+
 
   constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {
   }
@@ -216,5 +221,16 @@ export class LiveService {
 
   isAudioAutoPlay(liveId: string): boolean {
     return !this.audioAutoPlayDisabled[liveId];
+  }
+
+  toggleTranslationExpanded(liveId: string) {
+    let expanded = !this.wordExpandedDisabled[liveId];
+    this.wordExpandedDisabled[liveId] = expanded;
+    this.tranlationExpandedSource.next(expanded);
+
+  }
+
+  isTranslationExpanded(liveId: string): boolean {
+    return !this.wordExpandedDisabled[liveId];
   }
 }
