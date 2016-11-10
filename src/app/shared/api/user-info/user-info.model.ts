@@ -24,7 +24,6 @@ export class UserPublicInfoModel {
   city = '';
 
   get userSex(): string {
-    console.log(this.sex,'this.sexx')
     switch (this.sex) {
       case UserSex.Unknow:
         return '未知';

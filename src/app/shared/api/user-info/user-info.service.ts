@@ -73,11 +73,11 @@ export class UserInfoService {
     return this.http.get(this.userPublicInfoUrl).toPromise()
       .then(res => {
         let data = res.json();
-        return this.praseUserPublicInfo(data);
+        return this.parseUserPublicInfo(data);
       })
   }
 
-  praseUserPublicInfo(data: any): UserPublicInfoModel {
+  parseUserPublicInfo(data: any): UserPublicInfoModel {
     let userPublicInfo = new UserPublicInfoModel();
 
     if (data.uid) userPublicInfo.uid = data.uid;
