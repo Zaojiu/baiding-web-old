@@ -263,8 +263,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.router.navigate([`/lives/${this.liveId}/history`]);
   }
 
-  get
-  coverUrl(): SafeStyle {
+  get coverUrl(): SafeStyle {
     let coverUrl = this.liveInfo.coverUrl ? `url(${this.liveInfo.coverUrl})` : 'url(/assets/img/liveroombanner-blur.jpg)';
     return this.sanitizer.bypassSecurityTrustStyle(coverUrl);
   }
