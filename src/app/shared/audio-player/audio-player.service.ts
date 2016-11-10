@@ -69,7 +69,6 @@ export class AudioPlayerService {
   }
 
   playBuffer(context: AudioContext, source: AudioBufferSourceNode, buffer: AudioBuffer, observer: any) {
-    alert('start play');
     source.buffer = buffer;
     source.connect(context.destination);
     source.start(0);

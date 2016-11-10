@@ -14,6 +14,8 @@ import {LiveStatus} from "../../../shared/api/live/live.enums";
 import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 
+import {ModalService} from "../../../shared/modal/modal.service";
+
 @Component({
   selector: 'message',
   templateUrl: './message.component.html',
@@ -41,7 +43,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,private modalService: ModalService) {
   }
 
   ngOnInit() {
@@ -162,6 +164,12 @@ export class MessageComponent implements OnInit, OnDestroy {
       items.push(autoPlay);
     }
 
+    if (this.message.type === MessageType.Text) {
+      let autoPlay = new ToolTipsModel('text-expand',
+        `<span class="audio-auto-play-checked">查看</span>`, true);
+      items.push(autoPlay);
+    }
+
     if (this.canReply()) {
       let enable = !this.isClosed();
       let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>', enable);
@@ -188,6 +196,8 @@ export class MessageComponent implements OnInit, OnDestroy {
       return this.gotoReply();
     } else if (item.id === 'audio-auto-play') {
       this._toggleAudioAutoPlay();
+    } else if (item.id === 'text-expand') {
+      this.modalService.popup(this.message.content)
     }
   }
 
