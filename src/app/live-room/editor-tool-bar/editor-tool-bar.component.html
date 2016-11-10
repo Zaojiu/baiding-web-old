@@ -49,7 +49,7 @@
           (ngSubmit)="postMessage(); switchMode(modeEnums.None);">
       <div class="input-wrapper">
         <input #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
-               (focus)="switchMode(modeEnums.Text)" [(ngModel)]="messageContent">
+               (focus)="messageInputFocused()" [(ngModel)]="messageContent">
       </div>
       <button class="sender">发送</button>
       <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">

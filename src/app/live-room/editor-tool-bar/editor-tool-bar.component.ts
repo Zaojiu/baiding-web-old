@@ -58,10 +58,9 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
     });
 
     //监听点击用户头像事件
-    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
+    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched) => {
       this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
-      this.mode = EditMode.Text;
-      this.switchMode(this.mode);
+      if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
     });
   }
 
@@ -70,7 +69,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
     this.mode = mode;
 
-    if (mode === EditMode.None)this.messageContent = '';
+    if (mode !== EditMode.Text && mode !== EditMode.At) this.messageContent = '';
 
     if (this.mode === EditMode.Text) {
       this.focusMessageInput();
@@ -114,6 +113,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
   ngOnDestroy() {
+    this.receviedAvatarTouchedSub.unsubscribe();
     $(this.messageInput.nativeElement).off('focus');
   }
 
@@ -173,6 +173,10 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
   blurMessageInput() {
     this.messageInput.nativeElement.blur();
+  }
+
+  messageInputFocused() {
+    if (this.mode === EditMode.At) this.switchMode(EditMode.Text);
   }
 
   postImage() {
