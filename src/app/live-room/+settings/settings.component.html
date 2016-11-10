@@ -1,93 +1,115 @@
-<div class="settings-container" *ngIf="liveInfo">
-  <live-room-top-bar [liveId]="liveId"></live-room-top-bar>
+<div class="settings">
+  <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
 
-  <div class="live-info-container block" (click)="gotoRoomInfo()">
-    <div class="title">
-      <i class="bi bi-tv"></i>
-      话题间信息
-    </div>
-    <div class="content">
-      <div class="content-wrapper">
-        <div class="live-title">{{liveInfo.subject}}</div>
-        <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Created">未开始</span>
-        <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Started">
+  <div class="settings-container" *ngIf="liveInfo">
+    <div class="live-info-container block" (click)="gotoRoomInfo()">
+      <div class="title">
+        <i class="bi bi-tv"></i>
+        话题间信息
+      </div>
+      <div class="content">
+        <div class="content-wrapper">
+          <div class="live-title">{{liveInfo.subject}}</div>
+          <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Created">未开始</span>
+          <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Started">
           正在直播 {{liveInfo.startedAt | timeTo:timeNow | durationFormater:1}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:2}}
         </span>
-        <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Ended">已结束</span>
-      </div>
+          <span class="live-status" *ngIf="liveInfo.status === liveStatusEnums.Ended">已结束</span>
+        </div>
 
+        <i class="bi bi-right-arrow"></i>
+      </div>
+    </div>
+
+    <div class="vips-container block" *ngIf="isAdmin">
+      <div class="title">
+        <i class="bi bi-envelop"></i>
+        嘉宾列表
+      </div>
+      <div class="content">
+        <div class="avatar-container">
+          <div class="accepted">
+            <div class="accepted-wrapper">
+              <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+              <div class="tick"><i class="bi bi-tick"></i></div>
+            </div>
+            <p class="nick">{{liveInfo.admin.nick}}</p>
+          </div>
+        </div>
+
+        <div class="avatar-container" *ngFor="let vip of invitations">
+          <div class="accepted" *ngIf="vip.userInfo">
+            <div class="accepted-wrapper">
+              <img class="avatar" [src]="vip.userInfo.avatar" alt="嘉宾头像">
+              <div class="tick"><i class="bi bi-tick"></i></div>
+            </div>
+            <p class="nick">{{vip.userInfo.nick}}</p>
+          </div>
+
+          <div class="invited" *ngIf="!vip.userInfo">
+            <div class="invited-wrapper">
+              <div class="invite-people-bg">
+                <i class="bi bi-people2"></i>
+              </div>
+            </div>
+            <p class="nick">{{vip.name || '无名'}}</p>
+          </div>
+        </div>
+
+        <div class="invite" (click)="goInvitation()" *ngIf="isAdmin"></div>
+      </div>
+    </div>
+
+    <div class="vips-container block" *ngIf="!isAdmin">
+      <div class="title">
+        <i class="bi bi-envelop"></i>
+        嘉宾列表
+      </div>
+      <div class="content">
+        <div class="avatar-container">
+          <div class="accepted-wrapper">
+            <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+            <div class="tick"><i class="bi bi-tick"></i></div>
+          </div>
+          <p class="nick">{{liveInfo.admin.nick}}</p>
+        </div>
+
+        <div class="avatar-container" *ngFor="let editor of audienceListInvitations">
+          <div class="accepted" *ngIf="editor.userInfo">
+            <div class="accepted-wrapper">
+              <img class="avatar" [src]="editor.userInfo.avatar" alt="嘉宾头像">
+              <div class="tick"><i class="bi bi-tick"></i></div>
+            </div>
+            <p class="nick">{{editor.userInfo.nick || '无名'}}</p>
+          </div>
+
+          <div class="invited" *ngIf="!editor.userInfo">
+            <div class="invited-wrapper">
+              <div class="invite-people-bg">
+                <i class="bi bi-people2"></i>
+              </div>
+            </div>
+            <p class="nick">{{editor.name || '无名'}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="auto-play-switch bar">
+      <span class="title">语音自动播放</span>
+      <switch-btn class="switch-btn" [isOpened]="audioAutoPlay" [btnText]="''"
+                  (toggling)="audioAutoPlay = $event"></switch-btn>
+    </div>
+
+    <div class="auto-play-switch bar" *ngIf="userInfo.canPublish" (click)="gotoCreate()">
+      <span class="title">我要发起话题</span>
       <i class="bi bi-right-arrow"></i>
     </div>
+
+    <a class="end-btn" *ngIf="liveInfo.status === liveStatusEnums.Started && isAdmin" (click)="closeLive()">结束直播</a>
+    <a class="end-btn" *ngIf="(liveInfo.status !== liveStatusEnums.Started && isAdmin) || !isAdmin"
+       (click)="closeWindow()">退出房间</a>
   </div>
 
-  <div class="vips-container block" *ngIf="isAdmin">
-    <div class="title">
-      <i class="bi bi-envelop"></i>
-      嘉宾列表
-    </div>
-    <div class="content">
-      <div class="avatar-container">
-        <div class="accepted-wrapper">
-          <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
-          <div class="tick" ><i class="bi bi-tick"></i></div>
-          <p class="nick">{{liveInfo.admin.nick}}</p>
-        </div>
-      </div>
-      <div class="avatar-container" *ngFor="let vip of invitations">
-        <div class="accepted-wrapper" *ngIf="vip.userInfo">
-          <img class="avatar" [src]="vip.userInfo.avatar" alt="嘉宾头像">
-          <div class="tick"><i class="bi bi-tick"></i></div>
-          <p class="nick">{{vip.userInfo.nick}}</p>
-        </div>
-
-        <div class="invited-wrapper" *ngIf="!vip.userInfo">
-          <div class="invite-people-bg">
-            <i class="bi bi-people2"></i>
-          </div>
-          <p class="nick">{{vip.name || '无名'}}</p>
-        </div>
-      </div>
-
-      <div class="invite" (click)="goInvitation()" *ngIf="isAdmin"></div>
-    </div>
-  </div>
-
-  <div class="vips-container block" *ngIf="!isAdmin">
-    <div class="title">
-      <i class="bi bi-envelop"></i>
-      嘉宾列表
-    </div>
-    <div class="content">
-      <div class="avatar-container">
-        <div class="accepted-wrapper">
-          <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
-          <div class="tick" ><i class="bi bi-tick"></i></div>
-          <p class="nick">{{liveInfo.admin.nick}}</p>
-        </div>
-      </div>
-      <div class="avatar-container" *ngFor="let editor of audienceListInvitations">
-        <div class="accepted-wrapper" *ngIf="editor.userInfo">
-          <img class="avatar" [src]="editor.userInfo.avatar" alt="嘉宾头像">
-          <div class="tick" ><i class="bi bi-tick"></i></div>
-          <p class="nick">{{editor.userInfo.nick || '无名'}}</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="auto-play-switch bar">
-    <span class="title">语音自动播放</span>
-    <switch-btn class="switch-btn" [isOpened]="audioAutoPlay" [btnText]="''"
-                (toggling)="audioAutoPlay = $event"></switch-btn>
-  </div>
-
-  <div class="auto-play-switch bar" *ngIf="userInfo.canPublish" (click)="gotoCreate()">
-    <span class="title">我要发起话题</span>
-    <i class="bi bi-right-arrow"></i>
-  </div>
-
-  <a class="end-btn" *ngIf="liveInfo.status === liveStatusEnums.Started && isAdmin" (click)="closeLive()">结束直播</a>
-  <a class="end-btn" *ngIf="(liveInfo.status !== liveStatusEnums.Started && isAdmin) || !isAdmin"
-     (click)="closeWindow()">退出房间</a>
 </div>
