@@ -13,7 +13,7 @@
         validate-onblur
         [(ngModel)]="time"
       >
-      <div *ngIf="form.controls.time.errors">
+      <div *ngIf="form.controls['time'].errors">
         <p class="helper error" *ngIf="form.controls['time'].errors.required">请填写预计开始时间</p>
         <p class="helper error" *ngIf="form.controls['time'].errors.pattern">预计开始时间格式错误</p>
         <p class="helper error" *ngIf="form.controls['time'].errors.future">预计开始时间须晚于当前时间</p>
