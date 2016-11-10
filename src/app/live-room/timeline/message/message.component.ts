@@ -247,19 +247,14 @@ export class MessageComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustStyle(coverUrl);
   }
 
-<<<<<<< 82d9003544a366015fd2e4ba8be516610eedf6ac
   toggleTranslatioExpanded(msg) {
     if (msg.length <= this.tranlationMaxLength) return;
     this.isTranslationExpanded = !this.isTranslationExpanded;
   }
 
-  popUpEditorCard(msg) {
-    this.editorCardService.popup(msg);
-=======
   getUserPublicInfoAndPopUpCard(userUid: number) {
     this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
       this.editorCardService.popup(userPublicInfo);
     });
->>>>>>> implement new use public api
   }
 }
