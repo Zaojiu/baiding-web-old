@@ -115,9 +115,9 @@
 <<<<<<< 41a465c3f1f2b2ca7dc56588867de8f5df17d652
 =======
   <div class="word-expand-switch bar">
-    <span class="title">机器翻译折叠</span>
+    <span class="title">折叠机器翻译</span>
     <switch-btn class="switch-btn" [isOpened]="!translationExpanded" [btnText]="''"
-                (toggling)="wordExpanded = $event"></switch-btn>
+                (toggling)="translationExpanded = $event"></switch-btn>
   </div>
 
   <a class="end-btn" *ngIf="liveInfo.status === liveStatusEnums.Started && isAdmin" (click)="closeLive()">结束直播</a>

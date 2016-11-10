@@ -51,8 +51,7 @@
         <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
                       [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
 
-        <div class="translate" #translationContent
-             [ngClass]="{'not-expanded': isTranslationExpanded}"
+        <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
              (click)="toggleTranslatioExpanded(message.audio.translateResult)">
           <div class="translate-tips">以下由机器自动翻译</div>
           {{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}

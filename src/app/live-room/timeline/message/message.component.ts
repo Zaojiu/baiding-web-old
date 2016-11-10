@@ -26,7 +26,6 @@ export class MessageComponent implements OnInit, OnDestroy {
   @Input() message: MessageModel;
   @Input() userInfo: UserInfoModel;
   @Input() liveInfo: LiveInfoModel;
-  @ViewChild('translationContent') translationContent: ElementRef;
 
   @Output() audioPlayEnded = new EventEmitter();
   @ViewChild('audioPlayer') audioPlayer: AudioPlayerComponent;
@@ -42,6 +41,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   countdownTimer: any;
   isTranslationExpanded: boolean;
   tranlationExpandedSub: Subscription;
+  tranlationLength = 32;
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
@@ -57,18 +57,11 @@ export class MessageComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length <= 32) {
-      this.isTranslationExpanded = false;
-    } else {
-      this.isTranslationExpanded = !this.liveService.isTranslationExpanded(this.liveId);
-    }
+    let tranlationExpand = !this.liveService.isTranslationExpanded(this.liveId);
+    this.judgeTranlastionLength(tranlationExpand, this.tranlationLength);
 
     this.tranlationExpandedSub = this.liveService.$tranlationExpanded.subscribe((result) => {
-      if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length <= 32) {
-        this.isTranslationExpanded = false;
-      } else {
-        this.isTranslationExpanded = result;
-      }
+      this.judgeTranlastionLength(result, this.tranlationLength);
     });
   }
 
@@ -77,6 +70,14 @@ export class MessageComponent implements OnInit, OnDestroy {
       clearInterval(this.countdownTimer);
     }
     this.tranlationExpandedSub.unsubscribe();
+  }
+
+  judgeTranlastionLength(tranlationExpand: boolean, tranlationLength: number) {
+    if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length <= tranlationLength) {
+      this.isTranslationExpanded = false;
+    } else {
+      this.isTranslationExpanded = tranlationExpand;
+    }
   }
 
   touchStart() {
@@ -245,7 +246,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   toggleTranslatioExpanded(msg) {
-    if (msg.length <= 32) return;
+    if (msg.length <= this.tranlationLength) return;
     this.isTranslationExpanded = !this.isTranslationExpanded;
   }
 }
