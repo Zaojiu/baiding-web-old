@@ -1,12 +1,8 @@
 <div class="editor-card-container" (click)="isPopup = false" [ngClass]="{opened: isPopup}">
 
   <div class="editor-info-wrapper" *ngIf="msgUser">
-    <div class="talent-wrapper">
-      <div class="talent">
-        <img class="talent-avatar" [src]="msgUser.avatar" alt="">
-      </div>
-      <div class="talent-info">{{msgUser.nick}}</div>
-    </div>
+    <img class="talent-avatar" [src]="msgUser.avatar" alt="">
+    <div class="talent-info">{{msgUser.nick}}</div>
 
     <div class="word-container">
       <div class="provice">
@@ -18,7 +14,7 @@
         <div class="content">城市</div>
       </div>
       <div class="gender">
-        <div class="title">{{msgUserSex(msgUser.sex)}}</div>
+        <div class="title">{{msgUser.userSex}}</div>
         <div class="content">性别</div>
       </div>
     </div>

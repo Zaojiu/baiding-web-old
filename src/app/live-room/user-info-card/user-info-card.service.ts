@@ -3,7 +3,7 @@ import {Subject}    from 'rxjs/Subject';
 import { UserPublicInfoModel} from "../../shared/api/user-info/user-info.model";
 
 @Injectable()
-export class EditorCardService {
+export class UserInfoCardService {
   private popupSource = new Subject<UserPublicInfoModel>();
 
   popup$ = this.popupSource.asObservable();

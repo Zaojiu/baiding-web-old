@@ -67,26 +67,29 @@ export class UserInfoService {
       });
   }
 
-  getUserPublicInfo(userUid: number, needWechatAuth?: boolean, needRefresh?: boolean): Promise<UserPublicInfoModel> {
+  getUserPublicInfo(userUid: number): Promise<UserPublicInfoModel> {
     this.userPublicInfoUrl = `${this.config.urlPrefix.io}/api/user/${userUid}`;
 
     return this.http.get(this.userPublicInfoUrl).toPromise()
       .then(res => {
-        let userInfo = res.json() as UserPublicInfoModel;
-        return userInfo;
+        let data = res.json();
+        return this.praseUserPublicInfo(data);
       })
-      .catch(res => {
-        if (+res.status === 401) {
-          if (needWechatAuth) {
-            this.goWechatAuth();
-          } else {
-            // TODO: pc auth;
-          }
-        } else {
-          // TODO: error;
-        }
-        return Promise.reject(res);
-      });
+  }
+
+  praseUserPublicInfo(data: any): UserPublicInfoModel {
+    let userPublicInfo = new UserPublicInfoModel();
+
+    if (data.uid) userPublicInfo.uid = data.uid;
+    if (data.sex) userPublicInfo.sex = data.sex;
+    if (data.nick) userPublicInfo.nick = data.nick;
+    if (data.avatar) userPublicInfo.avatar = data.avatar;
+    if (data.realName) userPublicInfo.realName = data.realName;
+    if (data.country) userPublicInfo.country = data.country;
+    if (data.province) userPublicInfo.province = data.province;
+    if (data.city) userPublicInfo.city = data.city;
+
+    return userPublicInfo;
 
   }
 }

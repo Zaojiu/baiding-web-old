@@ -14,7 +14,7 @@ import {LiveStatus} from "../../../shared/api/live/live.enums";
 import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 import {Subscription} from "rxjs";
-import {EditorCardService} from "../../+editor-card/editor-card.service";
+import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 
 @Component({
@@ -47,7 +47,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer, private editorCardService: EditorCardService, private userInfoService: UserInfoService) {
+              private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {

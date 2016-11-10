@@ -15,7 +15,7 @@ import {TimelineService} from '../timeline/timeline.service';
 import * as _ from 'lodash';
 import {UtilsService} from "../../shared/utils/utils";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
-import {EditorCardService} from "../+editor-card/editor-card.service";
+import {UserInfoCardService} from "../user-info-card/user-info-card.service";
 
 @Component({
   selector: 'comments',
@@ -40,7 +40,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   constructor(private commentService: CommentService, private router: Router,
               private commentApiService: CommentApiService, private sanitizer: DomSanitizer,
-              private timelineService: TimelineService,private userInfoService: UserInfoService,private editorCardService: EditorCardService) {
+              private timelineService: TimelineService,private userInfoService: UserInfoService,private editorCardService: UserInfoCardService) {
   }
 
   ngOnInit() {

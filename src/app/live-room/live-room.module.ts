@@ -13,7 +13,7 @@ import {PraisedAnimationDirective} from '../shared/praised-animation/praised-ani
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {TimelineService} from './timeline/timeline.service';
-import {EditorCardService} from './+editor-card/editor-card.service';
+import {UserInfoCardService} from './user-info-card/user-info-card.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message/message.api";
 import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
@@ -31,7 +31,7 @@ import {AnimationModule} from "../shared/animation/animation.module";
 import {MessageService} from "./timeline/message/message.service";
 import {AutoBlurModule} from "../shared/auto-blur/auto-blur.module";
 import {EditorToolBarComponent} from "./editor-tool-bar/editor-tool-bar.component";
-import {EditorCardComponent} from "./+editor-card/editor-card.component";
+import {UserInfoCardComponent} from "./user-info-card/user-info-card.component";
 import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
 import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
@@ -72,7 +72,7 @@ import {EmptyModule} from "../shared/empty/empty.module";
     TopBarComponent,
     BeginnerGuideComponent,
     RecorderComponent,
-    EditorCardComponent
+    UserInfoCardComponent
   ],
   providers: [
     TimelineService,
@@ -83,7 +83,7 @@ import {EmptyModule} from "../shared/empty/empty.module";
     QuitEditGuard,
     UploadApiService,
     MessageService,
-    EditorCardService
+    UserInfoCardService
   ]
 })
 

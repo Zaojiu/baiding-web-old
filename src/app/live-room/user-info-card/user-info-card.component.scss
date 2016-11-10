@@ -6,7 +6,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 4;
+  z-index: 3;
   color: rgb(255, 255, 255);
   text-align: right;
   font-size: 20px;
@@ -24,23 +24,13 @@
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 
-    .talent-wrapper {
-      .talent {
-        display: flex;
+      .talent-avatar {
         height: 40px;
-        font-size: 14px;
-        color: rgb(158, 161, 165);
-        overflow: hidden;
         position: absolute;
         bottom: 70px;
         left: 50%;
         transform: translateX(-50%) translateY(-50%);
-
-        .talent-avatar {
-          height: 100%;
-          border-radius: 24px;
-          margin: auto;
-        }
+        border-radius: 50%;
       }
 
       .talent-info {
@@ -54,17 +44,12 @@
         left: 50%;
         transform: translateX(-50%) translateY(-50%);
       }
-    }
 
     .word-container {
       display: flex;
       color: rgb(0, 0, 0);
       margin-top: 60px;
       margin-right: 10px;
-
-      .gender {
-        border-right: none !important;
-      }
 
       .provice, .city, .gender {
         flex-grow: 1;
@@ -83,10 +68,13 @@
         .content {
           font-size: 12px;
           color: rgb(158, 161, 165);
-          letter-spacing: 0px;
           line-height: 1em;
           margin-top: 6px;
         }
+      }
+
+      .gender {
+        border-right: none;
       }
     }
   }
