@@ -221,10 +221,18 @@
       }
 
       .audio-content {
+        display: flex;
+        flex-direction: column;
         .translate {
           position: relative;
           margin-top: 12px;
           padding-top: 12px;
+          line-height: 22px;
+
+          &.not-expanded {
+            max-height: 84px;
+            overflow: hidden;
+          }
 
           &:before {
             position: absolute;
@@ -241,6 +249,13 @@
             font-size: 14px;
             margin-bottom: 6px;
           }
+        }
+
+        .bi {
+          margin-top: 4px;
+          font-size: 12px;
+          color: rgb(75, 75, 75);
+          transform: scale(.25);
         }
       }
 

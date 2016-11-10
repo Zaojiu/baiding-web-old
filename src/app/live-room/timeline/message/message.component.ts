@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy, ElementRef} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {MessageModel} from '../../../shared/api/message/message.model';
@@ -13,6 +13,7 @@ import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
 import {LiveStatus} from "../../../shared/api/live/live.enums";
 import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'message',
@@ -25,6 +26,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   @Input() message: MessageModel;
   @Input() userInfo: UserInfoModel;
   @Input() liveInfo: LiveInfoModel;
+  @ViewChild('translationContent') translationContent: ElementRef;
 
   @Output() audioPlayEnded = new EventEmitter();
   @ViewChild('audioPlayer') audioPlayer: AudioPlayerComponent;
@@ -38,6 +40,8 @@ export class MessageComponent implements OnInit, OnDestroy {
   messagePressDuration = 0;
   messageType = MessageType;
   countdownTimer: any;
+  isTranslationExpanded: boolean;
+  tranlationExpandedSub: Subscription;
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
@@ -52,12 +56,27 @@ export class MessageComponent implements OnInit, OnDestroy {
         }, 60000);
       }
     }
+
+    if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length <= 32) {
+      this.isTranslationExpanded = false;
+    } else {
+      this.isTranslationExpanded = !this.liveService.isTranslationExpanded(this.liveId);
+    }
+
+    this.tranlationExpandedSub = this.liveService.$tranlationExpanded.subscribe((result) => {
+      if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length <= 32) {
+        this.isTranslationExpanded = false;
+      } else {
+        this.isTranslationExpanded = result;
+      }
+    });
   }
 
   ngOnDestroy() {
     if (this.countdownTimer) {
       clearInterval(this.countdownTimer);
     }
+    this.tranlationExpandedSub.unsubscribe();
   }
 
   touchStart() {
@@ -168,6 +187,11 @@ export class MessageComponent implements OnInit, OnDestroy {
       items.push(reply);
     }
 
+    let checked = !this.liveService.isTranslationExpanded(this.liveId) ? 'bi-check-round' : 'bi-circle';
+    let translationExpand = new ToolTipsModel('translation-expand',
+      `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">翻译折叠</span>`, true);
+    items.push(translationExpand);
+
     return items;
   }
 
@@ -188,11 +212,17 @@ export class MessageComponent implements OnInit, OnDestroy {
       return this.gotoReply();
     } else if (item.id === 'audio-auto-play') {
       this._toggleAudioAutoPlay();
+    } else if (item.id === 'translation-expand') {
+      this._toggleTranslationExpand();
     }
   }
 
   private _toggleAudioAutoPlay() {
     this.liveService.toggleAudioAutoPlay(this.liveId);
+  }
+
+  private _toggleTranslationExpand() {
+    this.liveService.toggleTranslationExpanded(this.liveId);
   }
 
   emitAvatarClick(userInfo: UserInfoModel) {
@@ -212,5 +242,10 @@ export class MessageComponent implements OnInit, OnDestroy {
   get coverUrl(): SafeStyle {
     let coverUrl = this.liveInfo.coverUrl ? `url(${this.liveInfo.coverUrl})` : 'url(/assets/img/liveroombanner-blur.jpg)';
     return this.sanitizer.bypassSecurityTrustStyle(coverUrl);
+  }
+
+  toggleTranslatioExpanded(msg) {
+    if (msg.length <= 32) return;
+    this.isTranslationExpanded = !this.isTranslationExpanded;
   }
 }

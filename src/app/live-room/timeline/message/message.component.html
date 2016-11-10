@@ -1,4 +1,5 @@
-<live-room-info-upper class="live-room-info-component" *ngIf="message.type === messageType.LiveRoomInfo" [liveInfo]="liveInfo"></live-room-info-upper>
+<live-room-info-upper class="live-room-info-component" *ngIf="message.type === messageType.LiveRoomInfo"
+                      [liveInfo]="liveInfo"></live-room-info-upper>
 
 <div class="live-started" *ngIf="message.type === messageType.LiveStart">
   <div class="live-started-tip">直播正式开始啦!</div>
@@ -15,9 +16,9 @@
   <div class="live-ended-tip">直播结束</div>
 
   <!--<div class="ended-review">-->
-    <!--<i class="bi bi-paper"></i>-->
-    <!--<div class="published">直播记录已经发布</div>-->
-    <!--<div class="read"><a (click)="gotoHistory()">阅读</a></div>-->
+  <!--<i class="bi bi-paper"></i>-->
+  <!--<div class="published">直播记录已经发布</div>-->
+  <!--<div class="read"><a (click)="gotoHistory()">阅读</a></div>-->
   <!--</div>-->
 </div>
 
@@ -49,10 +50,14 @@
       <div class="content audio-content" *ngIf="message.type === 2">
         <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
                       [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
-        <div class="translate">
+
+        <div class="translate" #translationContent
+             [ngClass]="{'not-expanded': isTranslationExpanded}"
+             (click)="toggleTranslatioExpanded(message.audio.translateResult)">
           <div class="translate-tips">以下由机器自动翻译</div>
           {{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}
         </div>
+        <i class="bi bi-elliplis" *ngIf="isTranslationExpanded"></i>
       </div>
 
       <div class="tooltips-container">
