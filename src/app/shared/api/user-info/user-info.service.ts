@@ -2,15 +2,9 @@ import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-<<<<<<< b1f9317b321da2fea1a33d33ad6c6ea49324c117
-import { AppConfig } from '../../../app.config'
-import {UserInfoModel, PermissionModel} from './user-info.model';
-import { StoreService } from '../../store/store.service';
-=======
 import {AppConfig} from '../../../app.config'
-import {UserInfoModel, UserPublicInfoModel} from './user-info.model';
+import {UserInfoModel, PermissionModel, UserPublicInfoModel} from './user-info.model';
 import {StoreService} from '../../store/store.service';
->>>>>>> implement new use public api
 
 
 @Injectable()
