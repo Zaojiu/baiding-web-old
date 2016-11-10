@@ -41,7 +41,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   countdownTimer: any;
   isTranslationExpanded: boolean;
   tranlationExpandedSub: Subscription;
-  tranlationLength = 32;
+  tranlationMaxLength = 32;
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
@@ -58,10 +58,10 @@ export class MessageComponent implements OnInit, OnDestroy {
     }
 
     let tranlationExpand = !this.liveService.isTranslationExpanded(this.liveId);
-    this.judgeTranlastionLength(tranlationExpand, this.tranlationLength);
+    this.judgeTranlastionLength(tranlationExpand, this.tranlationMaxLength);
 
     this.tranlationExpandedSub = this.liveService.$tranlationExpanded.subscribe((result) => {
-      this.judgeTranlastionLength(result, this.tranlationLength);
+      this.judgeTranlastionLength(result, this.tranlationMaxLength);
     });
   }
 
@@ -246,7 +246,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   toggleTranslatioExpanded(msg) {
-    if (msg.length <= this.tranlationLength) return;
+    if (msg.length <= this.tranlationMaxLength) return;
     this.isTranslationExpanded = !this.isTranslationExpanded;
   }
 }
