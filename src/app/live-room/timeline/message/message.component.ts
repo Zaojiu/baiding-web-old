@@ -14,16 +14,9 @@ import {LiveStatus} from "../../../shared/api/live/live.enums";
 import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 import {Subscription} from "rxjs";
-<<<<<<< 10
-a87dbf41bf1e12302be663fa90a301fd691cc5
 import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
-======
-=
 import {TextPopupService} from "../../../shared/text-popup/text-popup.service";
->>>>>>>
-copy
-text
 
 @Component({
   selector: 'message',
@@ -248,13 +241,11 @@ export class MessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private
-  _toggleAudioAutoPlay() {
+  private _toggleAudioAutoPlay() {
     this.liveService.toggleAudioAutoPlay(this.liveId);
   }
 
-  private
-  _toggleTranslationExpand() {
+  private _toggleTranslationExpand() {
     this.liveService.toggleTranslationExpanded(this.liveId);
   }
 
