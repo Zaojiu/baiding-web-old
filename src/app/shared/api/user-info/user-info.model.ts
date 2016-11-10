@@ -12,3 +12,33 @@ export class UserInfoModel {
     return this.permissions.publish;
   }
 }
+
+export class UserPublicInfoModel {
+  uid = 0;
+  sex = UserSex.Unknow;
+  nick = '';
+  avatar = '';
+  realName = '';
+  country = '';
+  province = '';
+  city = '';
+
+  get userSex(): string {
+    switch (this.sex) {
+      case UserSex.Unknow:
+        return '未知';
+      case UserSex.Male:
+        return '男';
+      case UserSex.Female:
+        return '女';
+      default:
+        return '未知';
+    }
+  }
+}
+
+export enum UserSex {
+  Unknow = 0,
+  Male,
+  Female,
+}

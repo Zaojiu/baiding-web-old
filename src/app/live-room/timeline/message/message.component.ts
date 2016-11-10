@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 
 import {MessageModel} from '../../../shared/api/message/message.model';
 import {MessageType} from '../../../shared/api/message/message.enum';
-import {UserInfoModel} from '../../../shared/api/user-info/user-info.model';
+import {UserInfoModel, UserPublicInfoModel} from '../../../shared/api/user-info/user-info.model';
 import {LiveService} from '../../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../../shared/api/live/live.model';
 import {MessageService} from './message.service';
@@ -14,6 +14,8 @@ import {LiveStatus} from "../../../shared/api/live/live.enums";
 import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 import {Subscription} from "rxjs";
+import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
+import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 
 @Component({
   selector: 'message',
@@ -45,7 +47,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
@@ -248,5 +250,11 @@ export class MessageComponent implements OnInit, OnDestroy {
   toggleTranslatioExpanded(msg) {
     if (msg.length <= this.tranlationMaxLength) return;
     this.isTranslationExpanded = !this.isTranslationExpanded;
+  }
+
+  getUserPublicInfoAndPopUpCard(userUid: number) {
+    this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
+      this.editorCardService.popup(userPublicInfo);
+    });
   }
 }

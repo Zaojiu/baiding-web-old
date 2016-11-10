@@ -1,0 +1,23 @@
+<div class="editor-card-container" (click)="isPopup = false" [ngClass]="{opened: isPopup}">
+
+  <div class="editor-info-wrapper" *ngIf="msgUser">
+    <img class="talent-avatar" [src]="msgUser.avatar" alt="">
+    <div class="talent-info">{{msgUser.nick}}</div>
+
+    <div class="word-container">
+      <div class="provice">
+        <div class="title">{{msgUser.province || '未知'}}</div>
+        <div class="content">省会</div>
+      </div>
+      <div class="city">
+        <div class="title">{{msgUser.city || '未知'}}</div>
+        <div class="content">城市</div>
+      </div>
+      <div class="gender">
+        <div class="title">{{msgUser.userSex}}</div>
+        <div class="content">性别</div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -6,7 +6,7 @@
 </div>
 
 <div class="message-type-join" *ngIf="message.type === messageType.EditorJoin">
-  <div>
+  <div (click)="getUserPublicInfoAndPopUpCard(message.user.uid)">
     <img class="avatar-sm" [src]="message.user.avatar">
     <span> 嘉宾<span>{{message.user.nick}}</span>加入了话题 </span>
   </div>
