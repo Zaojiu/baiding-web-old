@@ -67,11 +67,13 @@
       </div>
       <div class="content">
         <div class="avatar-container">
-          <div class="accepted-wrapper">
-            <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
-            <div class="tick"><i class="bi bi-tick"></i></div>
+          <div class="accepted">
+            <div class="accepted-wrapper">
+              <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+              <div class="tick"><i class="bi bi-tick"></i></div>
+            </div>
+            <p class="nick">{{liveInfo.admin.nick}}</p>
           </div>
-          <p class="nick">{{liveInfo.admin.nick}}</p>
         </div>
 
         <div class="avatar-container" *ngFor="let editor of audienceListInvitations">
