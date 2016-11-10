@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 
 import {MessageModel} from '../../../shared/api/message/message.model';
 import {MessageType} from '../../../shared/api/message/message.enum';
-import {UserInfoModel} from '../../../shared/api/user-info/user-info.model';
+import {UserInfoModel, UserPublicInfoModel} from '../../../shared/api/user-info/user-info.model';
 import {LiveService} from '../../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../../shared/api/live/live.model';
 import {MessageService} from './message.service';
@@ -15,6 +15,7 @@ import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 import {Subscription} from "rxjs";
 import {EditorCardService} from "../../+editor-card/editor-card.service";
+import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 
 @Component({
   selector: 'message',
@@ -46,7 +47,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer, private editorCardService: EditorCardService) {
+              private sanitizer: DomSanitizer, private editorCardService: EditorCardService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
@@ -246,6 +247,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustStyle(coverUrl);
   }
 
+<<<<<<< 82d9003544a366015fd2e4ba8be516610eedf6ac
   toggleTranslatioExpanded(msg) {
     if (msg.length <= this.tranlationMaxLength) return;
     this.isTranslationExpanded = !this.isTranslationExpanded;
@@ -253,5 +255,11 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   popUpEditorCard(msg) {
     this.editorCardService.popup(msg);
+=======
+  getUserPublicInfoAndPopUpCard(userUid: number) {
+    this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
+      this.editorCardService.popup(userPublicInfo);
+    });
+>>>>>>> implement new use public api
   }
 }

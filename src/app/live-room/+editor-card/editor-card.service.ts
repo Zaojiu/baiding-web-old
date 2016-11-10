@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Subject}    from 'rxjs/Subject';
-import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import { UserPublicInfoModel} from "../../shared/api/user-info/user-info.model";
 
 @Injectable()
 export class EditorCardService {
-  private popupSource = new Subject<UserInfoModel>();
+  private popupSource = new Subject<UserPublicInfoModel>();
 
   popup$ = this.popupSource.asObservable();
 
-  popup(msg: UserInfoModel ) {
+  popup(msg: UserPublicInfoModel ) {
     this.popupSource.next(msg);
   }
 }

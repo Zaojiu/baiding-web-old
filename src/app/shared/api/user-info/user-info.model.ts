@@ -12,3 +12,14 @@ export class UserInfoModel {
     return this.permissions.publish;
   }
 }
+
+export class UserPublicInfoModel{
+  uid:number;
+  sex: string;
+  nick: string;
+  avatar: string;
+  realName: string;
+  country: string;
+  province: string;
+  city: string;
+}
