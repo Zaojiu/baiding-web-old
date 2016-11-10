@@ -197,7 +197,6 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
   prependData(data: any[]) {
     this.isHeadLoadingShown = false;
-    console.log('hide head on prepend');
 
     if (data.length === 0) return;
 
@@ -376,7 +375,6 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
   hideHeadLoading() {
     this.isHeadLoadingShown = false;
-    console.log('hide head on func');
   }
 
   hideFootLoading() {
