@@ -165,8 +165,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-  gotoLatestMessages(): Promise<boolean> {
-    if (this.isLoading) return Promise.resolve(false);
+  gotoLatestMessages(): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
@@ -186,13 +186,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.isOnLatest = true;
       this.isOnBottom = true;
       this.unreadCount = 0;
+      return;
+    }).finally(() => {
       this.isLoading = false;
-      return true;
     });
   }
 
-  gotoOldestMessages(): Promise<boolean> {
-    if (this.isLoading) return Promise.resolve(false);
+  gotoOldestMessages(): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
@@ -205,17 +206,18 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;
+      return;
+    }).finally(() => {
       this.isLoading = false;
-      return true;
     });
   }
 
-  getNextMessages(marker: string, limit: number, sorts: string[]) {
-    if (this.isLoading) return;
+  getNextMessages(marker: string, limit: number, sorts: string[]): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
-    this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+    return this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
       this.removeRepeat(messages);
 
       if ((messages.length < limit || messages.length === 0) && this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
@@ -229,16 +231,18 @@ export class TimelineComponent implements OnInit, OnDestroy {
         this.unreadCount = 0;
       }
 
+      return;
+    }).finally(() => {
       this.isLoading = false;
     });
   }
 
-  getPrevMessages(marker: string, limit: number, sorts: string[]) {
-    if (this.isLoading) return;
+  getPrevMessages(marker: string, limit: number, sorts: string[]): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
-    this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+    return this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
       this.removeRepeat(messages);
 
       messages.reverse();
@@ -253,6 +257,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         this.isOnOldest = true;
       }
 
+      return;
+    }).finally(() => {
       this.isLoading = false;
     });
   }
@@ -261,12 +267,26 @@ export class TimelineComponent implements OnInit, OnDestroy {
     if (this.messages.length !== 0) {
       if (e.position == ScrollerPosition.OnTop) {
         let firstMessage = this.findFirstAvailableMessage(this.messages);
-        if (!firstMessage) return;
-        this.getPrevMessages(`$lt${firstMessage.createdAt}`, 10, ['-createdAt']);
+        if (!firstMessage) {
+          this.scroller.hideHeadLoading();
+          return;
+        }
+        if (!this.isOnOldest) {
+          this.getPrevMessages(`$lt${firstMessage.createdAt}`, 10, ['-createdAt']).finally(() => {
+            this.scroller.hideHeadLoading();
+          });
+        } else {
+          this.scroller.hideHeadLoading();
+        }
       } else if (e.position == ScrollerPosition.OnBottom) {
         let lastMessage = this.findLastAvailableMessage(this.messages);
-        if (!lastMessage) return;
-        this.getNextMessages(`$gt${lastMessage.createdAt}`, 10, ['createdAt']);
+        if (!lastMessage) {
+          this.scroller.hideFootLoading();
+          return;
+        }
+        this.getNextMessages(`$gt${lastMessage.createdAt}`, 10, ['createdAt']).finally(() => {
+          this.scroller.hideFootLoading();
+        });
       }
     }
 

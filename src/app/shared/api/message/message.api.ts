@@ -34,8 +34,7 @@ export class MessageApiService {
     };
     const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages?${$.param(query)}`;
 
-    return this.http.get(url).toPromise()
-      .then(res => {
+    return this.http.get(url).toPromise().then(res => {
         let data = res.json();
         let messages: MessageModel[] = [];
 
@@ -47,8 +46,6 @@ export class MessageApiService {
         }
 
         return messages;
-      }).catch(res => {
-        // TODO: error;
       });
   }
 

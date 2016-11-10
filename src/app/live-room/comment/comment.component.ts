@@ -161,12 +161,12 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPrevComments(marker: string, limit: number, sorts: string[]) {
-    if (this.isLoading) return;
+  getPrevComments(marker: string, limit: number, sorts: string[]): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
+    return this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
       comments.reverse();
       this.scroller.prependData(comments);
 
@@ -174,12 +174,14 @@ export class CommentComponent implements OnInit, OnDestroy {
         this.isOnOldest = true;
       }
 
+      return;
+    }).finally(() => {
       this.isLoading = false;
     });
   }
 
-  gotoLatestComments(): Promise<boolean> {
-    if (this.isLoading) return Promise.resolve(false);
+  gotoLatestComments(): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
@@ -189,14 +191,15 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.isOnOldest = false;
       this.isOnLatest = true;
       this.isOnBottom = true;
-      this.isLoading = false;
       this.unreadCount = 0;
-      return true;
+      return;
+    }).finally(() => {
+      this.isLoading = false;
     });
   }
 
-  gotoOldestComments(): Promise<boolean> {
-    if (this.isLoading) return Promise.resolve(false);
+  gotoOldestComments(): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
@@ -205,8 +208,9 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;
+      return;
+    }).finally(() => {
       this.isLoading = false;
-      return true;
     });
   }
 
@@ -214,11 +218,15 @@ export class CommentComponent implements OnInit, OnDestroy {
     if (this.comments.length !== 0) {
       if (e.position === ScrollerPosition.OnTop) {
         let firstComment = this.comments[0];
-        this.getPrevComments(`$lt${firstComment.createdAt}`, 10, ['-createdAt']);
+        this.getPrevComments(`$lt${firstComment.createdAt}`, 10, ['-createdAt']).finally(() => {
+          this.scroller.hideHeadLoading();
+        });
+      } else if (e.position === ScrollerPosition.OnBottom) {
+        // 不要做滚动拉取最新, 弹幕有自动推送, 重复拉会有问题
+        this.scroller.hideFootLoading();
       }
     }
 
-    // 不要做滚动拉取最新, 弹幕有自动推送, 重复拉会有问题
 
     this.isOnBottom = e.position == ScrollerPosition.OnBottom;
   }

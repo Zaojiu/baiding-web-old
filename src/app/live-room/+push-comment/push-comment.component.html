@@ -1,14 +1,18 @@
 <div class="push-comment-container">
   <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
 
-  <div class="no-result" *ngIf="comments && !comments.length">暂无评论</div>
+  <div class="no-result" *ngIf="comments && !comments.length && !isLoading">暂无评论</div>
 
-  <bd-loading class="loading" *ngIf="!liveInfo || !userInfo"></bd-loading>
+  <bd-loading class="loading" *ngIf="!liveInfo || !userInfo || (!comments.length && isLoading)"></bd-loading>
 
-  <div class="comment-container scrollable"
-       (scroller)="onScroll($event)"
-       [data]="comments" [dataContainerSelector]="'.comment-container-inner'"
-       *ngIf="liveInfo && userInfo">
+  <div
+    class="comment-container scrollable"
+    (scroller)="onScroll($event)"
+    [data]="comments"
+    [dataContainerSelector]="'.comment-container-inner'"
+  >
+    <bd-loading class="loading-head" *ngIf="scroller.isHeadLoadingShown"></bd-loading>
+
     <div class="comment-container-inner">
       <div class="comment-row" *ngFor="let comment of comments" (click)="banComment(comment.user.uid)">
         <div class="avatar-container">
@@ -21,9 +25,10 @@
           </div>
           <div class="content" [innerHtml]="parseContent(comment.content)"></div>
         </div>
-        <div class="operation-container">
+        <div class="operation-container" *ngIf="liveInfo && userInfo">
           <div *ngIf="userInfo.uid == liveInfo.admin.uid">
-            <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId" [ngClass]="{'is-closed': isClosed()}">推送</a>
+            <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId"
+               [ngClass]="{'is-closed': isClosed()}">推送</a>
             <span class="operation-btn pushed" *ngIf="comment.msgId">已推送</span>
           </div>
           <div *ngIf="userInfo.uid && liveInfo && userInfo.uid !== liveInfo.admin.uid">
@@ -32,14 +37,16 @@
         </div>
       </div>
     </div>
+
+    <bd-loading class="loading-foot" *ngIf="scroller.isFootLoadingShown"></bd-loading>
   </div>
 
   <div class="bottom-bar">
-    <div class="live-info" *ngIf="liveInfo" >
+    <div class="live-info" *ngIf="liveInfo">
       <i class="bi bi-chat4"></i>
       {{liveInfo.commented}}
     </div>
-    <div class="push-info" *ngIf="liveInfo" >
+    <div class="push-info" *ngIf="liveInfo">
       <i class="bi bi-chat5"></i>
       {{liveInfo.niced}}
     </div>

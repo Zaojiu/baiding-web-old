@@ -117,32 +117,35 @@ export class PushCommentComponent implements OnInit, OnDestroy {
       this.scroller.resetData(comments);
       this.isOnNewest = true;
       this.isOnLatest = false;
+    }).finally(() => {
       this.isLoading = false;
     });
   }
 
-  getNextComments(toUids: number[], marker: string, limit: number, sorts: string[]) {
-    if (this.isLoading) return;
+  getNextComments(toUids: number[], marker: string, limit: number, sorts: string[]): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
+    return this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
       this.scroller.appendData(comments);
 
       if (comments.length === 0) {
         this.isOnLatest = true;
       }
 
+      return;
+    }).finally(() => {
       this.isLoading = false;
     });
   }
 
-  getPrevComments(toUids: number[], marker: string, limit: number, sorts: string[]) {
-    if (this.isLoading) return;
+  getPrevComments(toUids: number[], marker: string, limit: number, sorts: string[]): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
+    return this.commentApiService.listComments(this.liveId, toUids, marker, limit, sorts).then(comments => {
       comments.reverse();
 
       this.scroller.prependData(comments);
@@ -151,6 +154,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
         this.isOnNewest = true;
       }
 
+      return;
+    }).finally(() => {
       this.isLoading = false;
     });
   }
@@ -159,10 +164,14 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     if (this.comments.length !== 0) {
       if (e.position === ScrollerPosition.OnTop) {
         let firstComment = this.comments[0];
-        this.getPrevComments(this.uids, `$lt${firstComment.createdAt}`, 10, ['-createdAt']);
+        this.getPrevComments(this.uids, `$lt${firstComment.createdAt}`, 10, ['-createdAt']).finally(() => {
+          this.scroller.hideHeadLoading();
+        });
       } else if (e.position === ScrollerPosition.OnBottom) {
         let lastComment = this.comments[this.comments.length - 1];
-        this.getNextComments(this.uids, `$gt${lastComment.createdAt}`, 10, ['createdAt']);
+        this.getNextComments(this.uids, `$gt${lastComment.createdAt}`, 10, ['createdAt']).finally(() => {
+          this.scroller.hideFootLoading();
+        });
       }
     }
   }
