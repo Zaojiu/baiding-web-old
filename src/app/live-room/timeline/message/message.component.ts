@@ -16,6 +16,7 @@ import {UtilsService} from "../../../shared/utils/utils";
 import {Subscription} from "rxjs";
 import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
+import {TextPopupService} from "../../../shared/text-popup/text-popup.service";
 
 @Component({
   selector: 'message',
@@ -47,8 +48,10 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService, private userInfoService: UserInfoService) {
+              private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
+              private userInfoService: UserInfoService, private textPopupService: TextPopupService) {
   }
+
 
   ngOnInit() {
     if (this.message.type === MessageType.LiveRoomInfo) {
@@ -141,11 +144,11 @@ export class MessageComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  isEditor(uid?: number) {
+  isEditor(uid ?: number) {
     return this.liveService.isEditor(this.liveId, uid);
   }
 
-  isAudience(uid?: number) {
+  isAudience(uid ?: number) {
     return this.liveService.isAudience(this.liveId, uid);
   }
 
@@ -176,8 +179,9 @@ export class MessageComponent implements OnInit, OnDestroy {
   getToolTipsItems(): string[] {
 
     let items = [];
+    let t = this.message.type;
 
-    if (this.message.type === MessageType.Audio) {
+    if (t === MessageType.Audio) {
       let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'bi-check-round' : 'bi-circle';
       let autoPlay = new ToolTipsModel('audio-auto-play',
         `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`, true);
@@ -194,6 +198,11 @@ export class MessageComponent implements OnInit, OnDestroy {
     let translationExpand = new ToolTipsModel('translation-expand',
       `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">翻译折叠</span>`, true);
     items.push(translationExpand);
+
+    if (t === MessageType.Audio || t === MessageType.Text || t === MessageType.Nice) {
+      let autoPlay = new ToolTipsModel('text-popup', `<span>复制</span>`, true);
+      items.push(autoPlay);
+    }
 
     return items;
   }
@@ -217,6 +226,18 @@ export class MessageComponent implements OnInit, OnDestroy {
       this._toggleAudioAutoPlay();
     } else if (item.id === 'translation-expand') {
       this._toggleTranslationExpand();
+    } else if (item.id === 'text-popup') {
+      let text: string;
+      if (this.message.type === MessageType.Text) {
+        text = this.message.content;
+      } else if (this.message.type === MessageType.Audio) {
+        text = this.message.audio.translateResult;
+      } else if (this.message.type === MessageType.Nice) {
+        text = this.message.content;
+      }
+      if (text) {
+        this.textPopupService.popup(text);
+      }
     }
   }
 

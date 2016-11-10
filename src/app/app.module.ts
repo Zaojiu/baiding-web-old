@@ -4,8 +4,8 @@ import {HttpModule, BrowserXhr} from '@angular/http';
 
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
-import { Angulartics2Module } from 'angulartics2';
-import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
+import {Angulartics2Module} from 'angulartics2';
+import {Angulartics2GoogleAnalytics} from 'angulartics2/dist/providers';
 
 import {AppComponent} from './app.component';
 import {ROUTES} from './app.routes';
@@ -22,6 +22,8 @@ import {BottomPopupSelectorComponent} from './shared/bottom-popup-selector/botto
 import {BottomPopupSelectorService} from './shared/bottom-popup-selector/bottom-popup-selector.service';
 import {SharePopupComponent} from './shared/share-popup/share-popup.component';
 import {SharePopupService} from './shared/share-popup/share-popup.service';
+import {TextPopupService} from './shared/text-popup/text-popup.service';
+import {TextPopupComponent} from './shared/text-popup/text-popup.component';
 import {ModalComponent} from "./shared/modal/modal.component";
 import {OperationTipsComponent} from "./shared/operation-tips/operation-tips.component";
 import {ModalService} from "./shared/modal/modal.service";
@@ -54,6 +56,7 @@ import {UserInfoResolver} from "./shared/guard/user-info.resolver";
     BottomPopupSelectorComponent,
     TitleSetterDirective,
     SharePopupComponent,
+    TextPopupComponent,
     AutofocusDirective,
     ModalComponent,
     OperationTipsComponent,
@@ -71,6 +74,7 @@ import {UserInfoResolver} from "./shared/guard/user-info.resolver";
     BottomPopupSelectorService,
     SharePopupService,
     ModalService,
+    TextPopupService,
     LocalStorageService,
     LiveService,
     OperationTipsService,
