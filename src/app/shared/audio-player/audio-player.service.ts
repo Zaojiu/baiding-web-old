@@ -60,7 +60,7 @@ export class AudioPlayerService {
       observer.next('loaded');
       context.decodeAudioData(res.arrayBuffer(), buffer => {
         if (AudioPlayerService.playingMessageId === msg.id && AudioPlayerService.playingSource) {
-          this.playBuffer(context, AudioPlayerService.playingSource, buffer, msg, observer);
+          this.playBuffer(context, AudioPlayerService.playingSource, buffer, observer);
         }
       }, null);
     }).finally(() => {
@@ -68,7 +68,8 @@ export class AudioPlayerService {
     });
   }
 
-  playBuffer(context: AudioContext, source: AudioBufferSourceNode, buffer: AudioBuffer, msg: MessageModel, observer: any) {
+  playBuffer(context: AudioContext, source: AudioBufferSourceNode, buffer: AudioBuffer, observer: any) {
+    alert('start play');
     source.buffer = buffer;
     source.connect(context.destination);
     source.start(0);
