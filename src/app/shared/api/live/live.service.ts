@@ -133,6 +133,23 @@ export class LiveService {
     // .catch();
   }
 
+  createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind = 'text'): Promise<string> {
+    let data: { [key: string]: string } = {
+      subject: subject,
+      desc: desc,
+      coverUrl: coverUrl,
+      expectStartAt: expectStartAt,
+      kind: kind,
+    };
+
+    const url = `${this.config.urlPrefix.io}/api/live/streams`;
+    return this.http.post(url, data).toPromise().then(res => {
+      let data = res.json();
+
+      return data.id;
+    });
+  }
+
   updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<void> {
     let data: { [key: string]: string } = {
       subject: title,

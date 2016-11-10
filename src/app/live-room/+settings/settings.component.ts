@@ -8,6 +8,7 @@ import {WechatService} from '../../shared/wechat/wechat.service';
 import {ModalService} from '../../shared/modal/modal.service';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {InvitationModel, AudienceInvitationModel} from '../../shared/api/invite/invite.model';
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 @Component({
   templateUrl: './settings.component.html',
@@ -18,6 +19,7 @@ import {InvitationModel, AudienceInvitationModel} from '../../shared/api/invite/
 export class SettingsComponent implements OnInit {
   liveId: string;
   liveInfo: LiveInfoModel;
+  userInfo: UserInfoModel;
   liveStatusEnums = LiveStatus;
   invitations: InvitationModel[];
   audienceListInvitations: AudienceInvitationModel[];
@@ -30,6 +32,8 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
+
     if (this.isAdmin) {
       this.inviteApiService.listInvitations(this.liveId).then((res)=> {
         this.invitations = res;
@@ -59,6 +63,10 @@ export class SettingsComponent implements OnInit {
 
   gotoRoomInfo() {
     this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
+  }
+
+  gotoCreate() {
+    this.router.navigate([`/lives/create`]);
   }
 
   closeWindow() {

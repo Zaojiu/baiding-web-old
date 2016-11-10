@@ -14,7 +14,6 @@ import {ROUTES} from './app.routes';
 import {AppConfig} from './app.config';
 
 // import模块
-import {LiveListModule} from './live-list/live-list.module';
 import {LiveRoomModule} from './live-room/live-room.module';
 import {ImageViewerModule} from "./shared/image-viewer/image-viewer.module";
 
@@ -37,6 +36,8 @@ import {TitleService} from './shared/title/title.service'
 import {LiveService} from "./shared/api/live/live.service";
 import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
+import {AdminGuard} from "./shared/guard/admin.guard";
+import {UserInfoResolver} from "./shared/guard/user-info.resolver";
 
 @NgModule({
   imports: [
@@ -45,7 +46,6 @@ import {OperationTipsService} from "./shared/operation-tips/operation-tips.servi
     ROUTES,
     Angulartics2Module.forRoot(),
 
-    LiveListModule,
     LiveRoomModule,
     ImageViewerModule
   ],
@@ -62,6 +62,7 @@ import {OperationTipsService} from "./shared/operation-tips/operation-tips.servi
     Title,
     AppConfig,
     AuthGuard,
+    AdminGuard,
     UserInfoService,
     WechatService,
     StoreService,
@@ -74,6 +75,7 @@ import {OperationTipsService} from "./shared/operation-tips/operation-tips.servi
     LiveService,
     OperationTipsService,
     Angulartics2GoogleAnalytics,
+    UserInfoResolver,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],
   bootstrap: [AppComponent]

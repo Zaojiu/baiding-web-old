@@ -11,7 +11,7 @@ import {MessageComponent} from './timeline/message/message.component';
 import {PostComponent} from './post/post.component';
 import {PraisedAnimationDirective} from '../shared/praised-animation/praised-animation.directive';
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
-import {LiveInfoResolver} from '../shared/guard/live.guard';
+import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {TimelineService} from './timeline/timeline.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message/message.api";
@@ -35,6 +35,7 @@ import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
+import {EmptyModule} from "../shared/empty/empty.module";
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-
     FileSelectorModule,
     ScrollerModule,
     LiveRoomInfoUpperModule,
+    EmptyModule,
   ],
   declarations: [
     LiveRoomComponent,

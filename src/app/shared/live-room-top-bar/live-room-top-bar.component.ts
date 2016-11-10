@@ -14,18 +14,20 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   unreadCount = 0;
 
-  constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService) {
+  constructor(private router: Router, private timelineService: TimelineService) {
   }
 
   ngOnInit() {
-    this.liveId = this.route.parent.snapshot.params['id'];
-
-    this.timelineService.startReceive(this.liveId);
-    this.timelineService.onReceivedEvents(evt => this.receivedEvents(evt));
+    if (this.liveId) {
+      this.timelineService.startReceive(this.liveId);
+      this.timelineService.onReceivedEvents(evt => this.receivedEvents(evt));
+    }
   }
 
   ngOnDestroy() {
-    this.timelineService.stopReceive(this.liveId);
+    if (this.liveId) {
+      this.timelineService.stopReceive(this.liveId);
+    }
   }
 
   receivedEvents(evt: MqEvent) {
