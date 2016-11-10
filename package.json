@@ -4,13 +4,12 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
-    "start": "./node_modules/.bin/ng serve",
-    "build.prod": "rm -rf dist && rm -rf tmp && gulp && ./node_modules/.bin/ngc -p tmp && ./node_modules/.bin/ng build --prod; mv angular-cli.tmp.json angular-cli.json; rm -rf tmp;",
-    "serve.dev": "./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0",
-    "serve.prod": "npm run build.prod && static-server -p 9000 ./dist",
-    "clean": "rm -rf dist tmp",
+    "build.prod": "./hack/run.sh build.prod",
+    "serve.dev": "./hack/run.sh serve.dev",
+    "serve.prod": "./hack/run.sh build.prod && static-server -p 9000 ./dist",
+    "clean": "./hack/run.sh clean",
     "lint": "tslint \"src/**/*.ts\"",
-    "test": "./node_modules/.bin/ng test --log-level=debug",
+    "test": "./hack/run.sh test",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor"
   },
