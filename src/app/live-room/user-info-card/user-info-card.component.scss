@@ -24,26 +24,26 @@
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 
-      .talent-avatar {
-        height: 40px;
-        position: absolute;
-        bottom: 70px;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        border-radius: 50%;
-      }
+    .talent-avatar {
+      height: 40px;
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      border-radius: 50%;
+    }
 
-      .talent-info {
-        font-size: 14px;
-        color: rgb(158, 161, 165);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        position: absolute;
-        bottom: 56px;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-      }
+    .talent-info {
+      font-size: 14px;
+      color: rgb(158, 161, 165);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+      bottom: 56px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
 
     .word-container {
       display: flex;
