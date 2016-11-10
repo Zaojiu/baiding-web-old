@@ -7,6 +7,7 @@ import {FileSelectorModule} from "../../shared/file-selector/file-selector.modul
 import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top-bar.module";
 import {FormModule} from "../../shared/form/form.module";
 import {CreateComponent} from "./create.component";
+import {CreateGuard} from "../../shared/guard/create.guard";
 
 @NgModule({
   imports: [
@@ -20,6 +21,9 @@ import {CreateComponent} from "./create.component";
   declarations: [
     CreateComponent
   ],
+  providers: [
+    CreateGuard,
+  ]
 })
 
 export class CreateModule {

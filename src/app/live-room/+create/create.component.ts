@@ -112,27 +112,31 @@ export class CreateComponent implements OnInit, DoCheck {
           return this.updateLiveInfo(liveId, imageKey);
         });
       }else {
-        return Promise.resolve();
+        return Promise.resolve(liveId);
       }
-    }).then(() => {
+    }).then((liveId) => {
       this.submitted = true;
-      this.gotoInfoCenter();
+      this.gotoLive(liveId);
     }).finally(() => {
       this.isSubmitting = false;
     });
+  }
+
+  gotoLive(liveId: string) {
+    this.router.navigate([`/lives/${liveId}`]);
   }
 
   gotoInfoCenter() {
     this.router.navigate([`/info-center`]);
   }
 
-  updateLiveInfo(liveId: string, coverKey?: string): Promise<void> {
+  updateLiveInfo(liveId: string, coverKey?: string): Promise<string> {
     let expectStartAt = moment(`${this.time}:00`).local();
 
     return this.liveService.updateLiveInfo(liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey).then(() => {
       return this.liveService.getLiveInfo(liveId, true);
     }).then(() => {
-      return;
+      return liveId;
     });
   }
 
