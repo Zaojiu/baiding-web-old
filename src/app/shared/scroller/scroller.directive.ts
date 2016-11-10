@@ -22,6 +22,8 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   @Input() dataContainerSelector: string;
   @Input() loadCount = 10;
   @Input() maxDataCount = 20;
+  isHeadLoadingShown = false;
+  isFootLoadingShown = false;
   private dataCache: any[];
   private dataCur: any[];
   private $dataContainer: any;
@@ -119,10 +121,14 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
 
       if (loadCount !== 0) {
-        this.data.splice(0, 0, ..._data);
-        this.checkDataOverflow();
-        this.resetScrollTop(true);
-        this.calculateHash();
+        setTimeout(() => {
+          this.data.splice(0, 0, ..._data);
+          this.isHeadLoadingShown = false;
+          this.checkDataOverflow();
+          this.resetScrollTop(true);
+          this.calculateHash();
+        }, 500);
+
         // this.checkTouch();
       }
     }
@@ -163,10 +169,15 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
       }
 
       if (loadCount !== 0) {
-        this.data.splice(this.data.length, 0, ..._data);
-        this.checkDataOverflow();
-        this.resetScrollTop(false);
-        this.calculateHash();
+        // 为了保持loading的显示, 不要消失太快, 避免闪烁。
+        setTimeout(() => {
+          this.data.splice(this.data.length, 0, ..._data);
+          this.isFootLoadingShown = false;
+          this.checkDataOverflow();
+          this.resetScrollTop(false);
+          this.calculateHash();
+        }, 500);
+
         // this.checkTouch();
       }
     }
@@ -185,6 +196,9 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   }
 
   prependData(data: any[]) {
+    this.isHeadLoadingShown = false;
+    console.log('hide head on prepend');
+
     if (data.length === 0) return;
 
     this.data.splice(0, 0, ...data);
@@ -196,6 +210,8 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   }
 
   appendData(data: any[]) {
+    this.isFootLoadingShown = false;
+
     if (data.length === 0) return;
 
     this.data.splice(this.data.length, 0, ...data);
@@ -302,29 +318,30 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
     scrollEvent.position = position;
 
     if (scrollEvent.position === ScrollerPosition.OnTop) {
-      if (!this.enterHead) {
+      if (!this.enterHead && !this.isHeadLoadingShown) {
         this.enterHead = true;
+        this.isHeadLoadingShown = true;
 
-        setTimeout(() => {
-          let loadCount = this.loadHead();
+        let loadCount = this.loadHead();
 
-          // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
-          if (loadCount === 0) this.scroller.emit(scrollEvent);
-        }, 200);
+        // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
+        if (loadCount === 0) this.scroller.emit(scrollEvent);
 
         // this.startObserveTouch();
       }
     } else if (scrollEvent.position === ScrollerPosition.OnBottom) {
-      if (!this.enterFoot) {
+      if (!this.enterFoot && !this.isFootLoadingShown) {
         this.enterFoot = true;
+        this.isFootLoadingShown = true;
 
         setTimeout(() => {
-          let loadCount = this.loadFoot();
+          this.scrollToBottom();
+        }, 0);
 
-          // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
-          if (loadCount === 0) this.scroller.emit(scrollEvent);
-        }, 200);
+        let loadCount = this.loadFoot();
 
+        // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
+        if (loadCount === 0) this.scroller.emit(scrollEvent);
         // this.startObserveTouch();
       }
     } else {
@@ -355,6 +372,15 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
         }, 0);
       }
     }
+  }
+
+  hideHeadLoading() {
+    this.isHeadLoadingShown = false;
+    console.log('hide head on func');
+  }
+
+  hideFootLoading() {
+    this.isFootLoadingShown = false;
   }
 
   // checkTouch() {

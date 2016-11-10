@@ -26,8 +26,22 @@
   .comment-container {
     flex-grow: 1;
 
+    .loading-head, .loading-foot {
+      display: block;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .loading-head {
+      border-bottom: solid 1px rgb(198, 198, 198);
+    }
+
+    .loading-foot {
+      border-top: solid 1px rgb(198, 198, 198);
+    }
+
     .comment-container-inner {
-      position: absolute;
+      position: relative;
       min-height: 100%;
       width: 100%;
     }

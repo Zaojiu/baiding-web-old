@@ -3,9 +3,15 @@
   flex-grow: 1;
 
   .data-container {
-    position: absolute;
+    position: relative;
     min-height: calc(100% - 50px);
     width: 100%;
+  }
+
+  .loading-head, .loading-foot {
+    display: block;
+    margin: 20px 0;
+    text-align: center;
   }
 }
 

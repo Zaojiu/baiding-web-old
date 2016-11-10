@@ -118,8 +118,6 @@ export class CommentApiService {
       }
 
       return comments;
-    }).catch(res => {
-      // TODO: error;
     });
   }
 }
