@@ -13,8 +13,8 @@ export class UserInfoModel {
   }
 }
 
-export class UserPublicInfoModel{
-  uid:number;
+export class UserPublicInfoModel {
+  uid: number;
   sex: string;
   nick: string;
   avatar: string;
@@ -22,4 +22,10 @@ export class UserPublicInfoModel{
   country: string;
   province: string;
   city: string;
+}
+
+export enum UserSex {
+  Unknow = 0,
+  Male,
+  Female,
 }

@@ -10,15 +10,15 @@
 
     <div class="word-container">
       <div class="provice">
-        <div class="title">{{msgUser.province}}</div>
+        <div class="title">{{msgUser.province || '未知'}}</div>
         <div class="content">省会</div>
       </div>
       <div class="city">
-        <div class="title">{{msgUser.city}}</div>
+        <div class="title">{{msgUser.city || '未知'}}</div>
         <div class="content">城市</div>
       </div>
       <div class="gender">
-        <div class="title">{{msgUser.sex}}</div>
+        <div class="title">{{msgUserSex(msgUser.sex)}}</div>
         <div class="content">性别</div>
       </div>
     </div>
