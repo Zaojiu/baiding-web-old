@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {AppConfig} from '../../app.config';
 import {WechatConfigModel, WechatAudioModel} from './wechat.model';
 import {StoreService} from '../store/store.service';
+import {environment} from "../../../environments/environment";
 
 interface Window {
   navigator: any;
@@ -22,8 +22,8 @@ export class WechatService {
   private autoCompleteResolver: (localId: string) => void;
   private autoCompleteRejecter: (reason: string) => void;
 
-  constructor(private http: Http, private config: AppConfig, private store: StoreService) {
-    this.wechatUrl = `${config.urlPrefix.io}/api/wechat/signature/config`;
+  constructor(private http: Http, private store: StoreService) {
+    this.wechatUrl = `${environment.config.host.io}/api/wechat/signature/config`;
   }
 
   static isInWechat(): boolean {
@@ -176,7 +176,7 @@ export class WechatService {
   }
 
   confirmShare(liveId: string): Promise<void> {
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/share`;
+    let url = `${environment.config.host.io}/api/live/streams/${liveId}/share`;
 
     return this.http.post(url, null).toPromise().then(res => {});
   }
