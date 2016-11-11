@@ -1,4 +1,5 @@
 import { UserInfoModel } from '../user-info/user-info.model'
+import {SafeHtml} from "@angular/platform-browser";
 
 export class PostCommentModel {
   content: string;
@@ -15,6 +16,7 @@ export class CommentModel {
   id: string;
   user: UserInfoModel;
   content: string;
+  parsedContent: SafeHtml;
   type: CommentType;
   eventData: any = null;
   msgId: string;

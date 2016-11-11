@@ -1,0 +1,83 @@
+.editor-card-container {
+  display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, .6);
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  color: rgb(255, 255, 255);
+  text-align: right;
+  font-size: 20px;
+
+  &.opened {
+    display: block;
+  }
+
+  .editor-info-wrapper {
+    position: absolute;
+    bottom: 0px;
+    height: 110px;
+    background: rgb(255, 255, 255);
+    width: 100%;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+
+    .talent-avatar {
+      height: 40px;
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      border-radius: 50%;
+    }
+
+    .talent-info {
+      font-size: 14px;
+      color: rgb(158, 161, 165);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+      bottom: 56px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    .word-container {
+      display: flex;
+      color: rgb(0, 0, 0);
+      margin-top: 60px;
+      margin-right: 10px;
+
+      .provice, .city, .gender {
+        flex-grow: 1;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        border-right: solid 1px rgba(143, 143, 143, 0.5);
+
+        .title {
+          font-size: 14px;
+          color: rgb(75, 75, 75);
+          letter-spacing: 0px;
+          line-height: 1em;
+        }
+
+        .content {
+          font-size: 12px;
+          color: rgb(158, 161, 165);
+          line-height: 1em;
+          margin-top: 6px;
+        }
+      }
+
+      .gender {
+        border-right: none;
+      }
+    }
+  }
+}
+
+

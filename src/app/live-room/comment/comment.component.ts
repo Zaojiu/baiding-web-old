@@ -14,6 +14,8 @@ import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../timeline/timeline.service';
 import * as _ from 'lodash';
 import {UtilsService} from "../../shared/utils/utils";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {UserInfoCardService} from "../user-info-card/user-info-card.service";
 
 @Component({
   selector: 'comments',
@@ -38,7 +40,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   constructor(private commentService: CommentService, private router: Router,
               private commentApiService: CommentApiService, private sanitizer: DomSanitizer,
-              private timelineService: TimelineService) {
+              private timelineService: TimelineService,private userInfoService: UserInfoService,private editorCardService: UserInfoCardService) {
   }
 
   ngOnInit() {
@@ -65,6 +67,8 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   parseContent(comment: CommentModel): SafeHtml {
+    if (comment.parsedContent) return comment.parsedContent;
+
     let content = '';
 
     switch (comment.type) {
@@ -75,11 +79,13 @@ export class CommentComponent implements OnInit, OnDestroy {
           content = UtilsService.parseAt(comment.content, true);
         }
 
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
 
       case CommentType.AudienceJoined:
         content = `${comment.eventData.user.nick}加入话题讨论`;
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
 
       case CommentType.CommentPushed:
         if (comment.eventData.comment_user.uid === this.userInfo.uid) {
@@ -88,10 +94,15 @@ export class CommentComponent implements OnInit, OnDestroy {
           content = `${comment.eventData.comment_user.nick}的评论被推送了`;
         }
 
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
+
       default:
-        return this.sanitizer.bypassSecurityTrustHtml(content);
+        comment.parsedContent = this.sanitizer.bypassSecurityTrustHtml(content);
+        break;
     }
+
+    return comment.parsedContent;
   }
 
   startPushComment() {
@@ -152,12 +163,12 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPrevComments(marker: string, limit: number, sorts: string[]) {
-    if (this.isLoading) return;
+  getPrevComments(marker: string, limit: number, sorts: string[]): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
+    return this.commentApiService.listComments(this.streamId, [], marker, limit, sorts).then(comments => {
       comments.reverse();
       this.scroller.prependData(comments);
 
@@ -165,12 +176,14 @@ export class CommentComponent implements OnInit, OnDestroy {
         this.isOnOldest = true;
       }
 
+      return;
+    }).finally(() => {
       this.isLoading = false;
     });
   }
 
-  gotoLatestComments(): Promise<boolean> {
-    if (this.isLoading) return Promise.resolve(false);
+  gotoLatestComments(): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
@@ -180,14 +193,15 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.isOnOldest = false;
       this.isOnLatest = true;
       this.isOnBottom = true;
-      this.isLoading = false;
       this.unreadCount = 0;
-      return true;
+      return;
+    }).finally(() => {
+      this.isLoading = false;
     });
   }
 
-  gotoOldestComments(): Promise<boolean> {
-    if (this.isLoading) return Promise.resolve(false);
+  gotoOldestComments(): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
@@ -196,8 +210,9 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;
+      return;
+    }).finally(() => {
       this.isLoading = false;
-      return true;
     });
   }
 
@@ -205,11 +220,15 @@ export class CommentComponent implements OnInit, OnDestroy {
     if (this.comments.length !== 0) {
       if (e.position === ScrollerPosition.OnTop) {
         let firstComment = this.comments[0];
-        this.getPrevComments(`$lt${firstComment.createdAt}`, 10, ['-createdAt']);
+        this.getPrevComments(`$lt${firstComment.createdAt}`, 10, ['-createdAt']).finally(() => {
+          this.scroller.hideHeadLoading();
+        });
+      } else if (e.position === ScrollerPosition.OnBottom) {
+        // 不要做滚动拉取最新, 弹幕有自动推送, 重复拉会有问题
+        this.scroller.hideFootLoading();
       }
     }
 
-    // 不要做滚动拉取最新, 弹幕有自动推送, 重复拉会有问题
 
     this.isOnBottom = e.position == ScrollerPosition.OnBottom;
   }
@@ -274,5 +293,11 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.scroller.scrollToBottom();
     this.unreadCount = 0;
     this.isOnBottom = true;
+  }
+
+  getUserPublicInfoAndPopUpCard(userUid: number) {
+    this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
+      this.editorCardService.popup(userPublicInfo);
+    });
   }
 }

@@ -1,9 +1,9 @@
-import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy, ElementRef} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {MessageModel} from '../../../shared/api/message/message.model';
 import {MessageType} from '../../../shared/api/message/message.enum';
-import {UserInfoModel} from '../../../shared/api/user-info/user-info.model';
+import {UserInfoModel, UserPublicInfoModel} from '../../../shared/api/user-info/user-info.model';
 import {LiveService} from '../../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../../shared/api/live/live.model';
 import {MessageService} from './message.service';
@@ -13,6 +13,10 @@ import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
 import {LiveStatus} from "../../../shared/api/live/live.enums";
 import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
+import {Subscription} from "rxjs";
+import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
+import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
+import {TextPopupService} from "../../../shared/text-popup/text-popup.service";
 
 import {ModalService} from "../../../shared/modal/modal.service";
 
@@ -40,11 +44,17 @@ export class MessageComponent implements OnInit, OnDestroy {
   messagePressDuration = 0;
   messageType = MessageType;
   countdownTimer: any;
+  isTranslationExpanded: boolean;
+  tranlationExpandedSub: Subscription;
+  tranlationMaxLength = 32;
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer,private modalService: ModalService) {
+              private sanitizer: DomSanitizer, private modalService: ModalService,
+              private editorCardService: UserInfoCardService,
+              private userInfoService: UserInfoService, private textPopupService: TextPopupService) {
   }
+
 
   ngOnInit() {
     if (this.message.type === MessageType.LiveRoomInfo) {
@@ -54,11 +64,27 @@ export class MessageComponent implements OnInit, OnDestroy {
         }, 60000);
       }
     }
+
+    let tranlationExpand = !this.liveService.isTranslationExpanded(this.liveId);
+    this.judgeTranlastionLength(tranlationExpand, this.tranlationMaxLength);
+
+    this.tranlationExpandedSub = this.liveService.$tranlationExpanded.subscribe((result) => {
+      this.judgeTranlastionLength(result, this.tranlationMaxLength);
+    });
   }
 
   ngOnDestroy() {
     if (this.countdownTimer) {
       clearInterval(this.countdownTimer);
+    }
+    this.tranlationExpandedSub.unsubscribe();
+  }
+
+  judgeTranlastionLength(tranlationExpand: boolean, tranlationLength: number) {
+    if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length <= tranlationLength) {
+      this.isTranslationExpanded = false;
+    } else {
+      this.isTranslationExpanded = tranlationExpand;
     }
   }
 
@@ -121,11 +147,11 @@ export class MessageComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  isEditor(uid?: number) {
+  isEditor(uid ?: number) {
     return this.liveService.isEditor(this.liveId, uid);
   }
 
-  isAudience(uid?: number) {
+  isAudience(uid ?: number) {
     return this.liveService.isAudience(this.liveId, uid);
   }
 
@@ -156,17 +182,12 @@ export class MessageComponent implements OnInit, OnDestroy {
   getToolTipsItems(): string[] {
 
     let items = [];
+    let t = this.message.type;
 
-    if (this.message.type === MessageType.Audio) {
+    if (t === MessageType.Audio) {
       let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'bi-check-round' : 'bi-circle';
       let autoPlay = new ToolTipsModel('audio-auto-play',
         `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`, true);
-      items.push(autoPlay);
-    }
-
-    if (this.message.type === MessageType.Text) {
-      let autoPlay = new ToolTipsModel('text-expand',
-        `<span class="audio-auto-play-checked">查看</span>`, true);
       items.push(autoPlay);
     }
 
@@ -174,6 +195,16 @@ export class MessageComponent implements OnInit, OnDestroy {
       let enable = !this.isClosed();
       let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>', enable);
       items.push(reply);
+    }
+
+    let checked = !this.liveService.isTranslationExpanded(this.liveId) ? 'bi-check-round' : 'bi-circle';
+    let translationExpand = new ToolTipsModel('translation-expand',
+      `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">翻译折叠</span>`, true);
+    items.push(translationExpand);
+
+    if (t === MessageType.Audio || t === MessageType.Text || t === MessageType.Nice) {
+      let autoPlay = new ToolTipsModel('text-popup', `<span>复制</span>`, true);
+      items.push(autoPlay);
     }
 
     return items;
@@ -196,13 +227,29 @@ export class MessageComponent implements OnInit, OnDestroy {
       return this.gotoReply();
     } else if (item.id === 'audio-auto-play') {
       this._toggleAudioAutoPlay();
-    } else if (item.id === 'text-expand') {
-      this.modalService.popup(this.message.content)
+    } else if (item.id === 'translation-expand') {
+      this._toggleTranslationExpand();
+    } else if (item.id === 'text-popup') {
+      let text: string;
+      if (this.message.type === MessageType.Text) {
+        text = this.message.content;
+      } else if (this.message.type === MessageType.Audio) {
+        text = this.message.audio.translateResult;
+      } else if (this.message.type === MessageType.Nice) {
+        text = this.message.content;
+      }
+      if (text) {
+        this.textPopupService.popup(text);
+      }
     }
   }
 
   private _toggleAudioAutoPlay() {
     this.liveService.toggleAudioAutoPlay(this.liveId);
+  }
+
+  private _toggleTranslationExpand() {
+    this.liveService.toggleTranslationExpanded(this.liveId);
   }
 
   emitAvatarClick(userInfo: UserInfoModel) {
@@ -222,5 +269,16 @@ export class MessageComponent implements OnInit, OnDestroy {
   get coverUrl(): SafeStyle {
     let coverUrl = this.liveInfo.coverUrl ? `url(${this.liveInfo.coverUrl})` : 'url(/assets/img/liveroombanner-blur.jpg)';
     return this.sanitizer.bypassSecurityTrustStyle(coverUrl);
+  }
+
+  toggleTranslatioExpanded(msg) {
+    if (msg.length <= this.tranlationMaxLength) return;
+    this.isTranslationExpanded = !this.isTranslationExpanded;
+  }
+
+  getUserPublicInfoAndPopUpCard(userUid: number) {
+    this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
+      this.editorCardService.popup(userPublicInfo);
+    });
   }
 }

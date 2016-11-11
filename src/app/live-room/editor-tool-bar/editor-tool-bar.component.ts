@@ -1,6 +1,6 @@
 import {
   Component, Input, ViewChild, ElementRef, AfterViewInit,
-  DoCheck, OnDestroy
+  DoCheck, OnDestroy, OnInit
 } from "@angular/core";
 import * as autosize from "autosize";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
@@ -14,6 +14,11 @@ import {ModalService} from "../../shared/modal/modal.service";
 import {Router} from "@angular/router";
 import {RecordStatus} from "./recorder/recorder.enums";
 import {UtilsService} from "../../shared/utils/utils";
+import {FormGroup, FormBuilder, FormControl} from "@angular/forms";
+import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
+import {Subscription} from "rxjs";
+import {MessageService} from "../timeline/message/message.service";
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 declare var $: any;
 
@@ -23,7 +28,7 @@ declare var $: any;
   styleUrls: ['./editor-tool-bar.component.scss'],
 })
 
-export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy {
+export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy, OnInit {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @ViewChild('recorder') recorder: RecorderComponent;
@@ -35,9 +40,53 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   messageContent = '';
   isMessageSubmitting = false;
   images: File[];
+  form: FormGroup;
+  fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
+  maxSizeMB = 8;
+  receviedAvatarTouchedSub: Subscription;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
-              private modalService: ModalService, private router: Router) {
+              private modalService: ModalService, private router: Router, private fb: FormBuilder, private messageService: MessageService) {
+  }
+
+  ngOnInit() {
+    this.form = this.fb.group({
+      'images': new FormControl(this.images, [
+        sizeValidator(this.maxSizeMB),
+        typeValidator(this.fileTypeRegexp),
+      ]),
+    });
+
+    //监听点击用户头像事件
+    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched) => {
+      this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
+      if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
+    });
+  }
+
+  switchMode(mode: EditMode) {
+    if (mode !== EditMode.Text) this.blurMessageInput();
+
+    this.mode = mode;
+
+    if (mode !== EditMode.Text && mode !== EditMode.At) this.messageContent = '';
+
+    if (this.mode === EditMode.Text) {
+      this.focusMessageInput();
+      this.detectContentChange();
+    }
+  }
+
+  detectContentChange() {
+    $(this.messageInput.nativeElement).on('input', () => {
+      if (this.messageContent === '') return;
+      if ($.isNumeric(this.messageContent[this.messageContent.length - 1])) {
+        this.messageContent = this.messageContent.replace(/(.*)@[\W\w]+?\(\d+?$/g, '$1');
+      }
+      if (this.messageContent[this.messageContent.length - 1] === '@') {
+        this.switchMode(EditMode.Text);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -48,10 +97,23 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
   ngDoCheck() {
-    if (this.images && this.images.length) this.postImage();
+    if (this.form.controls['images'].valid && this.images && this.images.length) {
+      this.postImage();
+    }
+
+    if (this.form.controls['images'].errors && this.form.controls['images'].errors['size']) {
+      this.images = [];
+      this.modalService.popup('图片不能大于8M', '', '确定', false);
+    }
+
+    if (this.form.controls['images'].errors && this.form.controls['images'].errors['accept']) {
+      this.images = [];
+      this.modalService.popup('图片类型必须符合jpg、png、gif、bmp', '', '确定', false);
+    }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
+    this.receviedAvatarTouchedSub.unsubscribe();
     $(this.messageInput.nativeElement).off('focus');
   }
 
@@ -71,13 +133,6 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
     return `${duration.toFixed(0)}s`;
   }
 
-  switchMode(mode: EditMode) {
-    if (mode !== EditMode.Text) this.blurMessageInput();
-
-    this.mode = this.mode !== mode ? mode : EditMode.None;
-
-    if (this.mode === EditMode.Text) this.focusMessageInput();
-  }
 
   recordEnd(audioModel: WechatAudioModel) {
     this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult, '', audioModel.duration);
@@ -120,6 +175,10 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
     this.messageInput.nativeElement.blur();
   }
 
+  messageInputFocused() {
+    if (this.mode === EditMode.At) this.switchMode(EditMode.Text);
+  }
+
   postImage() {
     if (!this.images || !this.images.length || this.isMessageSubmitting) return;
 
@@ -137,5 +196,23 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
   goSettings() {
     this.router.navigate([`/lives/${this.liveId}/settings`]);
+  }
+
+  changeCommentContent(editor: UserInfoModel) {
+    if (this.messageContent.indexOf(editor.uid.toString()) !== -1) {
+      this.messageContent = this.messageContent.replace(`@${editor.nick}(${editor.uid}) `, '');
+    } else {
+      if (this.messageContent === '') {
+        this.messageContent += `@${editor.nick}(${editor.uid}) `;
+      } else if (this.messageContent[this.messageContent.length - 1] === '@') {
+        this.messageContent += `${editor.nick}(${editor.uid}) `;
+      } else {
+        this.messageContent += `@${editor.nick}(${editor.uid}) `;
+      }
+    }
+  }
+
+  selected(uid: number): boolean {
+    return this.messageContent.indexOf(uid.toString()) !== -1;
   }
 }

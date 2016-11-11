@@ -221,10 +221,18 @@
       }
 
       .audio-content {
+        display: flex;
+        flex-direction: column;
         .translate {
           position: relative;
           margin-top: 12px;
           padding-top: 12px;
+          line-height: 22px;
+
+          &.not-expanded {
+            max-height: 84px;
+            overflow: hidden;
+          }
 
           &:before {
             position: absolute;
@@ -241,6 +249,13 @@
             font-size: 14px;
             margin-bottom: 6px;
           }
+        }
+
+        .bi {
+          margin-top: 4px;
+          font-size: 12px;
+          color: rgb(75, 75, 75);
+          transform: scale(.25);
         }
       }
 
@@ -344,113 +359,6 @@
       margin-right: 6px;
       border-radius: 24px;
       border: 1px solid #EFEFEF;
-    }
-  }
-}
-
-
-.live-info {
-  overflow: hidden;
-
-  .banner-blur {
-    position: relative;
-    display: flex;
-    margin: 12px;
-    margin-bottom: 7px;
-    height: 180px;
-  }
-
-  .countdown-container {
-    margin: auto;
-
-    .countdown-day {
-      display: flex;
-      justify-content: space-between;
-      width: 282px;
-      color: rgb(255, 255, 255);
-      letter-spacing: 0px;
-
-      .countdown-day-item {
-        .countdown-day-item-day {
-          font-size: 40px;
-        }
-
-        .countdown-day-item-day-cn {
-          font-size: 20px
-        }
-      }
-    }
-
-    .countdown-date {
-      display: flex;
-      width: 282px;
-      font-size: 12px;
-      color: rgb(255, 255, 255);
-      letter-spacing: 0px;
-
-      .countdown-date-time {
-        flex-grow: 0;
-      }
-
-      .countdown-date-splitleft, .countdown-date-splitright {
-        flex-grow: 1;
-        margin-right: 5px;
-        margin-top: 9px;
-        border: 1px solid rgb(151, 151, 151);
-        border-left-color: transparent;
-        border-bottom-color: transparent;
-        border-right-color: transparent;
-      }
-    }
-  }
-
-  .article {
-    overflow: hidden;
-    position: relative;
-    padding-bottom: 40px;
-
-    .talent {
-      display: flex;
-      margin: 13px;
-      height: 24px;
-      font-size: 14px;
-      color: rgb(158, 161, 165);
-      letter-spacing: 0px;
-      overflow: hidden;
-
-      .talent-avatar {
-        height: 100%;
-        border-radius: 24px;
-      }
-
-      .talent-info {
-        margin-left: 10px;
-        padding-top: 3px;
-        font-size: 14px;
-        color: rgb(158, 161, 165);
-        letter-spacing: 0px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-    }
-
-    .title {
-      margin: 15px 12px 10px 12px;
-      text-align: justify;
-      font-size: 20px;
-      color: rgb(75, 75, 75);
-      letter-spacing: 0.58px;
-      line-height: 28px;
-      word-wrap:break-word;
-    }
-
-    .words {
-      word-break: break-all;
-      font-size: 16px;
-      color: rgb(158, 161, 165);
-      letter-spacing: 0px;
-      line-height: 1.5em;
-      padding: 0 12px;
     }
   }
 }

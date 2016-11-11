@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Output, EventEmitter} from '@angular/core';
 import {WechatService} from '../../../shared/wechat/wechat.service';
 import {WechatAudioModel} from '../../../shared/wechat/wechat.model';
 import {RecordStatus} from './recorder.enums';

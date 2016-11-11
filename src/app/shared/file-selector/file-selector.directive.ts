@@ -1,50 +1,55 @@
-import {Directive, ElementRef, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges} from '@angular/core'
-import {ModalService} from "../modal/modal.service";
+import {Directive, ElementRef, forwardRef, Renderer} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 declare var $: any;
 
+export const FILE_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => FileControlValueAccessor),
+  multi: true
+};
+
 @Directive({
-  selector: '[fileSelector]'
+  selector: 'input[type=file][formControlName],input[type=file][formControl],input[type=file][ngModel]',
+  host: {'(change)': '_onChange($event)', '(blur)': 'onTouched()'},
+  providers: [FILE_VALUE_ACCESSOR]
 })
 
-export class FileSelectorDirective implements OnInit, OnChanges {
+export class FileControlValueAccessor implements ControlValueAccessor {
+  private _elementRef: ElementRef;
   private el: HTMLElement;
-  @Input() fileSelector: File[] = [];
-  @Output() fileSelectorChange = new EventEmitter<File[]>();
+  private $el: any;
 
-  constructor(el: ElementRef, private modalService: ModalService) {
-    this.el = el.nativeElement
+  onChange = (_: any) => {
+  };
+  onTouched = () => {
+  };
+
+  constructor(private _renderer: Renderer, _elementRef: ElementRef) {
+    this._elementRef = _elementRef;
+    this.el = _elementRef.nativeElement;
+    this.$el = $(_elementRef.nativeElement);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    let files = changes['fileSelector'];
+  _onChange(e: any) {
+    this.onChange(e.target.files);
+  }
 
-    if (files && !files.currentValue) {
-      let $this = $(this.el);
-      $this.wrap('<form>').closest('form').get(0).reset();
-      $this.unwrap();
+  writeValue(value: any): void {
+    if (!value || !value.length) {
+      this.$el.wrap('<form>').closest('form').get(0).reset();
+      this.$el.unwrap();
     }
   }
 
-  ngOnInit() {
-    let $this = $(this.el);
-    let maxSize = 1024 * 1024 * 8;
+  registerOnChange(fn: (_: any) => {}): void {
+    this.onChange = fn;
+  }
 
-    $this.on('change', () => {
-      if ($this[0].files.length) {
-        let file = $this[0].value;
-        let fileSize = $this[0].files[0].size;
-        let fileType = $this[0].files[0].type;
+  registerOnTouched(fn: () => {}): void {
+    this.onTouched = fn;
+  }
 
-        if (!/^image\/gif|jpg|jpeg|png|bmp|raw$/.test(fileType)) {
-          this.modalService.popup("图片不符合类型", '取消', '确定', false);
-          return false
-        } else if (fileSize > maxSize) {
-          this.modalService.popup("图片大小不能超过8M", '取消', '确定', false);
-          return false
-        }
-      }
-      this.fileSelector = $this[0].files;
-      this.fileSelectorChange.emit(this.fileSelector);
-    })
+  setDisabledState(isDisabled: boolean): void {
+    this._renderer.setElementProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
   }
 }

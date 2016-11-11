@@ -1,0 +1,23 @@
+.text-popup-container {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  padding: 30px;
+  background: rgb(255, 255, 255);
+  z-index:4;
+
+  &.opened {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tip{
+    font-size:12px;
+    color: rgb(170, 170, 170);
+    margin-bottom: 20px;
+  }
+}

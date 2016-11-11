@@ -1,5 +1,5 @@
 .comments {
-  position: fixed;
+  position: absolute;
   top: 62px;
   right: 12px;
   max-width: 80%;
@@ -19,6 +19,19 @@
 
   .comment-container {
     max-height: 152px;
+
+    .loading-head, .loading-foot {
+      display: flex;
+      justify-content: flex-end;
+      margin: 10px auto;
+
+      /deep/ {
+        .sk-three-bounce {
+          transform: scale(.5);
+          margin: 0;
+        }
+      }
+    }
 
     .comment-container-inner {
       display: flex;

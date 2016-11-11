@@ -1,20 +1,25 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {LocalStorage} from "angular2-localstorage/WebStorage";
 
-import {LiveInfoModel} from './live.model';
+import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {AppConfig} from '../../../app.config';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus} from './live.enums';
 import {UserInfoService} from '../user-info/user-info.service';
+import {Subject} from "rxjs";
 
 @Injectable()
 export class LiveService {
+  tranlationExpandedSource = new Subject<boolean>();
+  $tranlationExpanded = this.tranlationExpandedSource.asObservable();
 
   @LocalStorage() public audioAutoPlayDisabled: Object = {};
+  @LocalStorage() public wordExpandedDisabled: Object = {};
+
 
   constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {
   }
@@ -89,6 +94,7 @@ export class LiveService {
     liveInfo.startedAt = stream.startedAt;
     liveInfo.closedAt = stream.closedAt;
     liveInfo.createdAt = (+stream.createdAt / 1e6).toString();
+    liveInfo.updatedAt = (+stream.updatedAt / 1e6).toString();
     liveInfo.isDraft = stream.isDraft;
 
     if (stream.status === 'created') liveInfo.status = LiveStatus.Created;
@@ -132,6 +138,38 @@ export class LiveService {
     // .catch();
   }
 
+  createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind = 'text'): Promise<string> {
+    let data: { [key: string]: string } = {
+      subject: subject,
+      desc: desc,
+      coverUrl: coverUrl,
+      expectStartAt: expectStartAt,
+      kind: kind,
+    };
+
+    const url = `${this.config.urlPrefix.io}/api/live/streams`;
+    return this.http.post(url, data).toPromise().then(res => {
+      let data = res.json();
+
+      return data.id;
+    });
+  }
+
+  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<void> {
+    let data: { [key: string]: string } = {
+      subject: title,
+      desc: desc,
+      expectStartAt: expectStartAt,
+    };
+
+    if (coverKey) data['coverKey'] = coverKey;
+
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}`;
+    return this.http.put(url, data).toPromise().then(res => {
+      return;
+    });
+  }
+
   closeLive(id: string): Promise<any> {
     const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/close`;
     return this.http.put(url, null).toPromise().then(res => {
@@ -165,11 +203,34 @@ export class LiveService {
     });
   }
 
+  getCoverUploadToken(id: string): Promise<UploadCoverTokenModel> {
+    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/cover/uptoken`;
+
+    return this.http.post(url, null).toPromise().then((res) => {
+      let data = res.json();
+
+      let model = new UploadCoverTokenModel(data.key, data.token);
+
+      return model;
+    });
+  }
+
   toggleAudioAutoPlay(liveId: string) {
     this.audioAutoPlayDisabled[liveId] = !this.audioAutoPlayDisabled[liveId];
   }
 
   isAudioAutoPlay(liveId: string): boolean {
     return !this.audioAutoPlayDisabled[liveId];
+  }
+
+  toggleTranslationExpanded(liveId: string) {
+    let expanded = !this.wordExpandedDisabled[liveId];
+    this.wordExpandedDisabled[liveId] = expanded;
+    this.tranlationExpandedSource.next(expanded);
+
+  }
+
+  isTranslationExpanded(liveId: string): boolean {
+    return !this.wordExpandedDisabled[liveId];
   }
 }

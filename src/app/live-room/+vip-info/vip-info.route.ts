@@ -1,11 +1,14 @@
-import { ModuleWithProviders } from "@angular/core";
-import { Routes, RouterModule } from '@angular/router';
+import {ModuleWithProviders} from "@angular/core";
+import {Routes, RouterModule} from '@angular/router';
 
-import { VipInfoComponent } from './vip-info.component';
+import {VipInfoComponent} from './vip-info.component';
+import {AdminGuard} from "../../shared/guard/admin.guard";
 
 const route: Routes = [
   {
-    path: '', component: VipInfoComponent
+    path: '',
+    canActivate: [AdminGuard],
+    component: VipInfoComponent,
   }
 ]
 

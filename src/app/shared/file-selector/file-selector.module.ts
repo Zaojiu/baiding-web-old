@@ -1,12 +1,17 @@
 import {NgModule} from '@angular/core';
-import {FileSelectorDirective} from "./file-selector.directive";
+import {FileSelectorSizeDirective, FileSelectorTypeDirective} from "./file-selector.validator";
+import {FileControlValueAccessor} from "./file-selector.directive";
 
 @NgModule({
   declarations: [
-    FileSelectorDirective
+    FileControlValueAccessor,
+    FileSelectorSizeDirective,
+    FileSelectorTypeDirective,
   ],
   exports: [
-    FileSelectorDirective,
+    FileControlValueAccessor,
+    FileSelectorSizeDirective,
+    FileSelectorTypeDirective,
   ]
 })
 
