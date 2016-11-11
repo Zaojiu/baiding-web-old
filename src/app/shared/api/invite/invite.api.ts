@@ -1,20 +1,20 @@
 import {Injectable}     from '@angular/core';
 import {Http, Response, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {AppConfig} from '../../../app.config';
 import {InvitationModel} from './invite.model';
 import {PostInvitationModel} from './invite.model';
+import {environment} from "../../../../environments/environment";
 
 @Injectable()
 export class InviteApiService {
-  constructor(private http: Http, private config: AppConfig) {
+  constructor(private http: Http) {
   }
 
   getInvited(liveId: string, name: string, desc: string): Promise<InvitationModel> {
     let data = new PostInvitationModel();
     data.name = name;
     data.desc = desc;
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invite`;
+    let url = `${environment.config.host.io}/api/live/streams/${liveId}/invite`;
 
     return this.http.post(url, JSON.stringify(data)).toPromise()
       .then(res => {
@@ -30,7 +30,7 @@ export class InviteApiService {
   }
 
   checkInviteToken(token: string): Promise<boolean> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/invite_token?token=${token}`;
+    const url = `${environment.config.host.io}/api/live/streams/invite_token?token=${token}`;
     return this.http.get(url).toPromise()
       .then(response => {
         let data = response.json()
@@ -40,7 +40,7 @@ export class InviteApiService {
 
   acceptInvitation(liveId: string, token: string): Promise<void> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/accept_invite`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/accept_invite`;
     return this.http.post(url, { "token" : token}, headers).toPromise()
       .then(response => {
         return;
@@ -50,7 +50,7 @@ export class InviteApiService {
 
   listInvitations(liveId: string): Promise<InvitationModel[]> {
 
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites/by/admin?size=1000`;
+    let url = `${environment.config.host.io}/api/live/streams/${liveId}/invites/by/admin?size=1000`;
 
     return this.http.get(url).toPromise()
       .then(res=> {
@@ -83,7 +83,7 @@ export class InviteApiService {
 
   audienceListInvitations(liveId: string): Promise<InvitationModel[]> {
 
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/invites/by/audience?size=1000`;
+    let url = `${environment.config.host.io}/api/live/streams/${liveId}/invites/by/audience?size=1000`;
 
     return this.http.get(url).toPromise()
       .then(res=> {

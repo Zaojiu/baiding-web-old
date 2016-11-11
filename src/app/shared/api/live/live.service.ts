@@ -6,11 +6,11 @@ import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
-import {AppConfig} from '../../../app.config';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus} from './live.enums';
 import {UserInfoService} from '../user-info/user-info.service';
 import {Subject} from "rxjs";
+import {environment} from "../../../../environments/environment";
 
 @Injectable()
 export class LiveService {
@@ -21,7 +21,7 @@ export class LiveService {
   @LocalStorage() public wordExpandedDisabled: Object = {};
 
 
-  constructor(private http: Http, private config: AppConfig, private store: StoreService, private userInfoService: UserInfoService) {
+  constructor(private http: Http, private store: StoreService, private userInfoService: UserInfoService) {
   }
 
   isEditor(liveId: string, uid?: number): boolean {
@@ -124,7 +124,7 @@ export class LiveService {
     let liveInfoCache = lives[id];
     if (liveInfoCache && !needRefresh) return Promise.resolve(liveInfoCache);
 
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}`;
+    const url = `${environment.config.host.io}/api/live/streams/${id}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let liveInfo = this.parseLiveInfo(data);
@@ -147,7 +147,7 @@ export class LiveService {
       kind: kind,
     };
 
-    const url = `${this.config.urlPrefix.io}/api/live/streams`;
+    const url = `${environment.config.host.io}/api/live/streams`;
     return this.http.post(url, data).toPromise().then(res => {
       let data = res.json();
 
@@ -164,14 +164,14 @@ export class LiveService {
 
     if (coverKey) data['coverKey'] = coverKey;
 
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}`;
+    const url = `${environment.config.host.io}/api/live/streams/${id}`;
     return this.http.put(url, data).toPromise().then(res => {
       return;
     });
   }
 
   closeLive(id: string): Promise<any> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/close`;
+    const url = `${environment.config.host.io}/api/live/streams/${id}/close`;
     return this.http.put(url, null).toPromise().then(res => {
       let data = res.json();
 
@@ -180,7 +180,7 @@ export class LiveService {
   }
 
   praiseLive(id: string, praised: boolean, emoji: string = '👍'): Promise<any> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/praises`;
+    const url = `${environment.config.host.io}/api/live/streams/${id}/praises`;
 
     let data = {
       praised: praised,
@@ -196,7 +196,7 @@ export class LiveService {
   }
 
   banComment(id: string, uid: number): Promise<void> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/users/${uid}/silence`;
+    const url = `${environment.config.host.io}/api/live/streams/${id}/users/${uid}/silence`;
 
     return this.http.post(url, null).toPromise().then(() => {
       return;
@@ -204,7 +204,7 @@ export class LiveService {
   }
 
   getCoverUploadToken(id: string): Promise<UploadCoverTokenModel> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${id}/cover/uptoken`;
+    const url = `${environment.config.host.io}/api/live/streams/${id}/cover/uptoken`;
 
     return this.http.post(url, null).toPromise().then((res) => {
       let data = res.json();

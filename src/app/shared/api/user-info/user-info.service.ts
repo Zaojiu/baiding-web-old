@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {AppConfig} from '../../../app.config'
 import {UserInfoModel, PermissionModel, UserPublicInfoModel} from './user-info.model';
 import {StoreService} from '../../store/store.service';
+import {environment} from "../../../../environments/environment";
 
 
 @Injectable()
@@ -12,12 +12,12 @@ export class UserInfoService {
   private userInfoUrl: string;
   private userPublicInfoUrl: string;
 
-  constructor(private http: Http, private config: AppConfig, private store: StoreService) {
-    this.userInfoUrl = `${config.urlPrefix.io}/api/user`;
+  constructor(private http: Http, private store: StoreService) {
+    this.userInfoUrl = `${environment.config.host.io}/api/user`;
   }
 
   goWechatAuth() {
-    location.href = `${this.config.urlPrefix.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(window.location.href)}`;
+    location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(window.location.href)}`;
   }
 
   getUserInfoCache(): UserInfoModel {
@@ -68,7 +68,7 @@ export class UserInfoService {
   }
 
   getUserPublicInfo(userUid: number): Promise<UserPublicInfoModel> {
-    this.userPublicInfoUrl = `${this.config.urlPrefix.io}/api/user/${userUid}`;
+    this.userPublicInfoUrl = `${environment.config.host.io}/api/user/${userUid}`;
 
     return this.http.get(this.userPublicInfoUrl).toPromise()
       .then(res => {
