@@ -36,4 +36,3 @@ Thumbs.db
 
 # config
 /src/environments/environment.dev.ts
-/src/app/app.config.dev.ts

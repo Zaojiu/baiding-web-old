@@ -3,7 +3,16 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
-import {appConfig} from "../app/app.config";
+export const host = {
+  auth: 'http://auth.zaojiu.io',
+  io: 'http://io.zaojiu.io',
+};
+
+export const appConfig = {
+  host: host,
+  lcAppId: 'UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz',
+  lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
+};
 
 export const environment = {
   production: false,

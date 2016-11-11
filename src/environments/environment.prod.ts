@@ -1,4 +1,13 @@
-import {appConfig} from "../app/app.config.prod";
+export const host = {
+  auth: '<% AUTH_HOST %>',
+  io:  '<% IO_HOST %>',
+};
+
+export const appConfig = {
+  host: host,
+  lcAppId: '<% LEADCLOUD_ID %>',
+  lcAppKey: '<% LEADCLOUD_KEY %>',
+};
 
 export const environment = {
   production: true,
