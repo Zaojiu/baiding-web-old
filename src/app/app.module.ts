@@ -10,9 +10,6 @@ import {Angulartics2GoogleAnalytics} from 'angulartics2/dist/providers';
 import {AppComponent} from './app.component';
 import {ROUTES} from './app.routes';
 
-// 程序配置
-import {AppConfig} from './app.config';
-
 // import模块
 import {LiveRoomModule} from './live-room/live-room.module';
 import {ImageViewerModule} from "./shared/image-viewer/image-viewer.module";
@@ -63,7 +60,6 @@ import {UserInfoResolver} from "./shared/guard/user-info.resolver";
   ],
   providers: [
     Title,
-    AppConfig,
     AuthGuard,
     AdminGuard,
     UserInfoService,

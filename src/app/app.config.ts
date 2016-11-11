@@ -1,11 +1,11 @@
-export class UrlPrefix {
-  auth = 'http://auth.tengxunsb.io';
-  io = 'http://io.tengxunsb.io';
+export const host = {
+  auth: 'http://auth.zaojiu.io',
+  io: 'http://io.zaojiu.io',
 }
 
-export class AppConfig {
-  host = new UrlPrefix;
-  lcAppId = 'UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz';
-  lcAppKey = 'dbbAJuix9SThsVPWMkNSAQ9d';
+export const appConfig = {
+  host: host,
+  lcAppId: 'UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz',
+  lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
 }
 

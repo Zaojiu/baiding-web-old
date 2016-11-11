@@ -1,5 +1,6 @@
-import {AppConfig} from "../app/app.config.prod";
+import {appConfig} from "../app/app.config.prod";
+
 export const environment = {
   production: true,
-  config: new AppConfig,
+  config: appConfig,
 };

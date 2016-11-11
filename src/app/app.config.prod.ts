@@ -1,11 +1,11 @@
-export class UrlPrefix {
-  auth = '<% AUTH_HOST %>';
-  io = '<% IO_HOST %>';
+export const host = {
+  auth: '<% AUTH_HOST %>',
+  io:  '<% IO_HOST %>',
 }
 
-export class AppConfig {
-  host = new UrlPrefix;
-  lcAppId = '<% LEADCLOUD_ID %>';
-  lcAppKey = '<% LEADCLOUD_KEY %>';
+export const appConfig = {
+  host: host,
+  lcAppId: '<% LEADCLOUD_ID %>',
+  lcAppKey: '<% LEADCLOUD_KEY %>',
 }
 
