@@ -1,5 +1,3 @@
-System.import('./app/shared/utils/ga');
-
 // This file includes polyfills needed by Angular 2 and is loaded before
 // the app. You can add your own extra polyfills to this file.
 import 'core-js/es6/symbol';
@@ -19,17 +17,3 @@ import 'core-js/es6/reflect';
 
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
-
-import 'lodash';
-import 'leancloud-push';
-import 'hammerjs';
-import 'moment/locale/zh-cn';
-import * as $ from 'jquery';
-import './icons.font';
-import './app/shared/utils/promise';
-import 'inobounce';
-
-(<any>window).$ = $;
-import * as fastclick from 'fastclick';
-fastclick.attach(document.body);
-(<any>window).wx = require('weixin-js-sdk');

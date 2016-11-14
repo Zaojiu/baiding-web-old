@@ -12,9 +12,7 @@ export class UserInfoService {
   private userInfoUrl: string;
   private userPublicInfoUrl: string;
 
-  constructor(private http: Http, private store: StoreService) {
-    this.userInfoUrl = `${environment.config.host.io}/api/user`;
-  }
+  constructor(private http: Http, private store: StoreService) {}
 
   goWechatAuth() {
     location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(window.location.href)}`;
@@ -46,7 +44,7 @@ export class UserInfoService {
       return Promise.resolve(userInfoCache);
     }
 
-    return this.http.get(this.userInfoUrl).toPromise()
+    return this.http.get(`${environment.config.host.io}/api/user`).toPromise()
       .then(res => {
         let data = res.json();
         let userInfo = this.parseUserInfo(data);

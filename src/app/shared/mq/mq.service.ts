@@ -1,6 +1,6 @@
-import { Subject } from 'rxjs/Subject';
+import {Subject} from 'rxjs/Subject';
 
-import { UserInfoModel } from '../api/user-info/user-info.model';
+import {UserInfoModel} from '../api/user-info/user-info.model';
 import {environment} from "../../../environments/environment";
 
 declare var AV: any;
@@ -44,7 +44,9 @@ export class MqService {
       appKey: environment.config.lcAppKey,
     });
 
-    this.client.open(() => { this.onOpen() });
+    this.client.open(() => {
+      this.onOpen()
+    });
     this.client.on('message', (data) => {
       this.onMessage(data)
     });

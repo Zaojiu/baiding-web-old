@@ -2,7 +2,6 @@ import {Component, OnInit, DoCheck} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import * as moment from "moment";
 
 import {LiveInfoModel} from "../../../shared/api/live/live.model";
 import {sizeValidator, typeValidator} from "../../../shared/file-selector/file-selector.validator";

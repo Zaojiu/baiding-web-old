@@ -1,6 +1,3 @@
-// import * as _ from "lodash";
-// import * as moment from "moment";
-
 import {MessageModel} from "../../shared/api/message/message.model";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {MessageType} from "../../shared/api/message/message.enum";

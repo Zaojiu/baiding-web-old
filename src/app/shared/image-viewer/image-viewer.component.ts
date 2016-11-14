@@ -1,10 +1,9 @@
-import {Component, ElementRef, EventEmitter, Output, Input, OnInit, OnChanges, SimpleChange} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {ModalService} from '../modal/modal.service';
 import {ImgEvent} from './image-viewer.model';
 import {ImageViewerService} from './image-viewer.service';
 
-import * as Hammer from 'hammerjs';
-declare var $: any
+declare var $: any;
 
 @Component({
   selector: 'image-viewer',

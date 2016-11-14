@@ -1,5 +1,3 @@
-import * as _random from 'lodash/random';
-
 import {MessageType} from './message.enum';
 import {UserInfoModel} from '../user-info/user-info.model'
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model'
@@ -74,7 +72,7 @@ export class MessageModel {
 
       setTimeout(() => {
         this.praisedAnimations.push(userAnim);
-      }, _random(1, 10) * 150);
+      }, _.random(1, 10) * 150);
     }
   }
 }

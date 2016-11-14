@@ -1,5 +1,4 @@
 import {Directive, ElementRef, Output, EventEmitter, Input, OnChanges, SimpleChanges} from '@angular/core'
-import * as _random from 'lodash/random';
 
 declare var $: any;
 
@@ -9,7 +8,7 @@ declare var $: any;
 
 export class AutoBlurDirective implements OnChanges {
   private $el: any;
-  private randomId = _random(0, 100000, false);
+  private randomId = _.random(0, 100000, false);
   @Input('autoblur') isBlurred: boolean;
   @Output() blurred = new EventEmitter<void>();
 

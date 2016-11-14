@@ -8,5 +8,5 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/dist/providers';
 })
 
 export class AppComponent {
-  constructor(angulartics2: Angulartics2, angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) { }
+  constructor(angulartics2: Angulartics2, angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {}
 }

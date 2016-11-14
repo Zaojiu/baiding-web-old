@@ -1,31 +1,36 @@
-# Ngcli
+# 初始化
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.14.
+* 安装依赖: `npm i`
+* 运行开发环境前端: `npm run serve.dev`
+* 运行线上环境前端: `npm run serve.prod`
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# 开发配置
 
-## Code scaffolding
+* environment.ts: 入库，默认配置。
+* environment.dev.ts: 不入库，开发配置，开发自己本地维护。
+* environment.prod.ts: 入库，线上配置，key和id只用渲染变量，线上docker运行时替换为真实值。
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class`.
+# 如何引入第三方库
 
-## Build
+首先, 需要评估第三方库, 包括以下方面:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+* 体积: 移动端应用, js体积敏感, 50k-100k可接受, 50k以下为佳。
+* 依赖: 第三方库如果有依赖, 需要查看依赖的稳定性, 有无严重的缺陷。
+* 第三方库自身情况:
+  - 有无定义文件(.d.ts, 一般去 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) 找)
+  - 多少star
+  - 社区支持如何
+  - 有无严重缺陷
+  - 最近更新日期是什么时候
+* 安装方式:
+  - 能否通过npm安装, 这个最方便。
+  - 不行的话, 最少可以github引入。
+  - 实在不行, 自己起个repo, 写个package.json进行安装。
 
-## Running unit tests
+如果通过以上评估, 觉得可以引入, 那么:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/). 
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Deploying to Github Pages
-
-Run `ng github-pages:deploy` to deploy to Github Pages.
-
-## Further help
-
-To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+* npm i xxx --save
+* npm i @types/xxx --save-dev (定义文件)
+* 在 angular-cli.json 的 scripts 中引入 or 如果不是全局库, 不能独立打包运行, 那么在用到的地方import
+* 如果没有定义文件, 那么需要在用的地方定义, declare var xxx: any;
+* 或者, 在 `/baiding-web/manual_typings` 下, 手写定义文件。
