@@ -4,6 +4,7 @@ import {TimelineService} from "../timeline/timeline.service";
 import {Subscription} from "rxjs";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {FadeDirective} from "../../shared/animation/fade/fade.directive";
+import {Router} from "@angular/router";
 
 declare var $: any;
 
@@ -26,7 +27,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   originTop: number;
   distance = 200;
 
-  constructor(private sharePopupService: SharePopupService, private timelineService: TimelineService) {
+  constructor(private sharePopupService: SharePopupService, private timelineService: TimelineService, private router: Router) {
   }
 
   ngOnInit() {
@@ -102,6 +103,10 @@ export class TopBarComponent implements OnInit, OnDestroy {
     this.hideGotoLatest();
 
     this.timelineService.gotoLastMessage();
+  }
+
+  gotoInfoCenter() {
+    this.router.navigate([`/info-center`]);
   }
 
   toggleComment(isOpened: boolean) {
