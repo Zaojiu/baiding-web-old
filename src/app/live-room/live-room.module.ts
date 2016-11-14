@@ -36,6 +36,7 @@ import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
 import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
+import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 import {EmptyModule} from "../shared/empty/empty.module";
 
@@ -83,6 +84,7 @@ import {EmptyModule} from "../shared/empty/empty.module";
     QuitEditGuard,
     UploadApiService,
     MessageService,
+    AudioPlayerService,
     UserInfoCardService
   ]
 })

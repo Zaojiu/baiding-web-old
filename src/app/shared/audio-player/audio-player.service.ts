@@ -15,6 +15,8 @@ export class AudioPlayerService {
 
   private loadingAudios: { [key: string]: boolean; } = {};
 
+  userActivated = false;
+
   constructor(private wechatService: WechatService, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
     AudioPlayerService.h5AudioContext = AudioPlayerService.h5AudioContext || new AudioContext();
@@ -60,7 +62,7 @@ export class AudioPlayerService {
       observer.next('loaded');
       context.decodeAudioData(res.arrayBuffer(), buffer => {
         if (AudioPlayerService.playingMessageId === msg.id && AudioPlayerService.playingSource) {
-          this.playBuffer(context, AudioPlayerService.playingSource, buffer, msg, observer);
+          this.playBuffer(context, AudioPlayerService.playingSource, buffer, observer);
         }
       }, null);
     }).finally(() => {
@@ -68,7 +70,7 @@ export class AudioPlayerService {
     });
   }
 
-  playBuffer(context: AudioContext, source: AudioBufferSourceNode, buffer: AudioBuffer, msg: MessageModel, observer: any) {
+  playBuffer(context: AudioContext, source: AudioBufferSourceNode, buffer: AudioBuffer, observer: any) {
     source.buffer = buffer;
     source.connect(context.destination);
     source.start(0);
@@ -101,6 +103,11 @@ export class AudioPlayerService {
       }
     }
     AudioPlayerService.playingSource = null;
+  }
+
+  // 当前正在播放音频
+  get hasPlaying(): boolean {
+    return !!AudioPlayerService.playingMessageId;
   }
 
 }
