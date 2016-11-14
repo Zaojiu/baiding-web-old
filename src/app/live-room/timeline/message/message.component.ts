@@ -18,8 +18,6 @@ import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 import {TextPopupService} from "../../../shared/text-popup/text-popup.service";
 
-import {ModalService} from "../../../shared/modal/modal.service";
-
 @Component({
   selector: 'message',
   templateUrl: './message.component.html',
@@ -50,8 +48,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   constructor(private messageService: MessageService,
               private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer, private modalService: ModalService,
-              private editorCardService: UserInfoCardService,
+              private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
               private userInfoService: UserInfoService, private textPopupService: TextPopupService) {
   }
 
