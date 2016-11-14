@@ -2,19 +2,18 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {AppConfig} from '../../../app.config';
 import {PostCommentModel, CommentType} from './comment.model';
 import {UserInfoService} from '../user-info/user-info.service';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {CommentService} from '../../../live-room/comment/comment.service';
 import {CommentModel} from './comment.model';
+import {environment} from "../../../../environments/environment";
 
 declare var $: any;
 
 @Injectable()
 export class CommentApiService {
-  constructor(private http: Http, private config: AppConfig,
-              private userInfoService: UserInfoService, private commentService: CommentService) {
+  constructor(private http: Http, private userInfoService: UserInfoService, private commentService: CommentService) {
   }
 
   parseComment(data: any, users: any): CommentModel {
@@ -58,7 +57,7 @@ export class CommentApiService {
 
   postComment(liveId: string, content: string, toUsers: UserInfoModel[] = []): Promise<CommentModel> {
     let headers = new Headers({'Content-Type': 'application/json'})
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/comments`
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments`
     let comment = new PostCommentModel();
     comment.content = content;
     comment.toUids = [];
@@ -84,7 +83,7 @@ export class CommentApiService {
   }
 
   getComment(liveId: string, commentId: string): Promise<CommentModel> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/comments/${commentId}`
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments/${commentId}`
 
     return this.http.get(url).toPromise()
       .then(res => {
@@ -104,7 +103,7 @@ export class CommentApiService {
     };
     if (toUids.length) query.toUids = toUids.join(',');
 
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/comments?${$.param(query)}`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments?${$.param(query)}`;
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();

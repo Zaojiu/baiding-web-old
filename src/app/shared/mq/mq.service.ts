@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs/Subject';
 
 import { UserInfoModel } from '../api/user-info/user-info.model';
-import { AppConfig } from '../../app.config'
+import {environment} from "../../../environments/environment";
 
 declare var AV: any;
 
@@ -39,10 +39,9 @@ export class MqService {
   private static subs: Subject<any>[] = [];
 
   constructor() {
-    let conf: AppConfig = new AppConfig();
     this.client = AV.push({
-      appId: conf.lcAppId,
-      appKey: conf.lcAppKey
+      appId: environment.config.lcAppId,
+      appKey: environment.config.lcAppKey,
     });
 
     this.client.open(() => { this.onOpen() });

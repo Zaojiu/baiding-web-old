@@ -3,7 +3,6 @@ import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
 
-import {AppConfig} from '../../../app.config'
 import {MessageType} from './message.enum';
 import {
   MessageModel, AudioMessageModel, ReplyMessageModel,
@@ -13,13 +12,13 @@ import {PostMessageModel, PostAudioMessageModel, PostNiceMessageModel, PostImage
 import {UserInfoService} from '../user-info/user-info.service';
 import {TimelineService} from '../../../live-room/timeline/timeline.service';
 import {UploadApiService} from '../upload/upload.api'
+import {environment} from "../../../../environments/environment";
 
 declare var $: any;
 
 @Injectable()
 export class MessageApiService {
   constructor(private http: Http,
-              private config: AppConfig,
               private userInfoService: UserInfoService,
               private timelineService: TimelineService,
               private uploadService: UploadApiService,) {
@@ -32,7 +31,10 @@ export class MessageApiService {
       sorts: sorts.join(','),
       parentId: parentId
     };
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages?${$.param(query)}`;
+
+
+
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages?${$.param(query)}`;
 
     return this.http.get(url).toPromise().then(res => {
         let data = res.json();
@@ -50,7 +52,7 @@ export class MessageApiService {
   }
 
   getMessage(liveId: string, messageId: string): Promise<MessageModel> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/${messageId}`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages/${messageId}`;
 
     return this.http.get(url).toPromise()
       .then(res => {
@@ -163,7 +165,7 @@ export class MessageApiService {
 
   postTextMessage(liveId: string, content: string, replyParent = ''): Promise<any> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages`;
     let message = new PostMessageModel();
     message.type = 'text';
     message.content = content;
@@ -204,7 +206,7 @@ export class MessageApiService {
 
   postAudioMessage(liveId: string, localId: string, serverId: string, translateResult: string, link = '', duration: number = 0): Promise<MessageModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages`;
     let message = new PostMessageModel();
     message.type = 'audio';
     message.audio = new PostAudioMessageModel();
@@ -234,7 +236,7 @@ export class MessageApiService {
 
   postNiceMessage(liveId: string, content: string, commentId: string, uid: number, commentContent: string): Promise<MessageModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages`;
     let message = new PostMessageModel();
     message.type = 'nice';
     message.content = content || '';
@@ -272,7 +274,7 @@ export class MessageApiService {
   }
 
   getUploadToken(liveId: string): Promise<string> {
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages/image/uptoken`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages/image/uptoken`;
     return this.http.get(url).toPromise()
       .then(res => {
         let data = res.json();
@@ -285,7 +287,7 @@ export class MessageApiService {
 
   getImgLink(liveId: string, key: string, replyParent = ''): Promise<MessageModel> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/messages`;
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages`;
     let message = new PostMessageModel();
     message.type = 'image';
     message.image = new PostImageMessageModel();
@@ -340,7 +342,7 @@ export class MessageApiService {
   }
 
   history(liveId: string): Promise<MessageModel[]> {
-    let url = `${this.config.urlPrefix.io}/api/live/streams/${liveId}/all_messages`;
+    let url = `${environment.config.host.io}/api/live/streams/${liveId}/all_messages`;
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
