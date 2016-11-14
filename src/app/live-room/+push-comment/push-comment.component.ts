@@ -17,7 +17,6 @@ import {
   BottomPopupSelectorModel,
   BottomPopupSelectorItemModel, BottomPopupSelectorMode
 } from "../../shared/bottom-popup-selector/bottom-popup-selector.model";
-import * as _ from 'lodash';
 import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
 import {UtilsService} from "../../shared/utils/utils";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";

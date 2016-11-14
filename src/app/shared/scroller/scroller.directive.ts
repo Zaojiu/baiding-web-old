@@ -4,8 +4,6 @@ import {
 } from '@angular/core';
 import {ScrollerEventModel} from "./scroller.model";
 import {ScrollerPosition} from "./scroller.enums";
-import * as clone from "lodash/clone";
-import * as _ from "lodash";
 
 declare var $: any;
 
@@ -271,11 +269,11 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   }
 
   setDataToCache() {
-    this.dataCache = clone(this.data);
+    this.dataCache = _.clone(this.data);
   }
 
   setCacheToData() {
-    this.data = clone(this.dataCache);
+    this.data = _.clone(this.dataCache);
     this.calculateHash();
     // this.checkTouch();
     this.checkDataOverflow();
@@ -352,7 +350,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   }
 
   calculateHash() {
-    this.dataCur = clone(this.data);
+    this.dataCur = _.clone(this.data);
   }
 
   resetScrollTop(isPrepend: boolean) {

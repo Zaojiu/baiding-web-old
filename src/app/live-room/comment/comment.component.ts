@@ -12,7 +12,6 @@ import {SafeHtml, DomSanitizer} from '@angular/platform-browser';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../timeline/timeline.service';
-import * as _ from 'lodash';
 import {UtilsService} from "../../shared/utils/utils";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {UserInfoCardService} from "../user-info-card/user-info-card.service";

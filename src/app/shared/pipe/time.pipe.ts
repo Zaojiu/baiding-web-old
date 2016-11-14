@@ -1,7 +1,4 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import * as moment from 'moment';
-
-moment.locale('zh-cn');
 
 @Pipe({name: 'timeFormater'})
 export class TimeFormaterPipe implements PipeTransform {

@@ -1,6 +1,5 @@
 import {Directive, forwardRef} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, Validator, ValidatorFn} from '@angular/forms';
-import * as moment from 'moment';
 
 export function futureValidator(): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} => {

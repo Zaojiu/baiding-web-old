@@ -1,4 +1,5 @@
-import './polyfills.ts';
+import './polyfills';
+import './scripts';
 
 import { platformBrowser } from '@angular/platform-browser';
 import { enableProdMode } from '@angular/core';

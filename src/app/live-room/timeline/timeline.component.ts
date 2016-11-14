@@ -20,7 +20,6 @@ import {UtilsService} from '../../shared/utils/utils';
 
 import {MessageComponent} from './message/message.component';
 import {HackMessages} from "./hack-messages";
-import * as _ from 'lodash';
 
 @Component({
   selector: 'timeline',
