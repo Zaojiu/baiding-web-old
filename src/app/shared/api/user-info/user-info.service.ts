@@ -49,6 +49,7 @@ export class UserInfoService {
         let data = res.json();
         let userInfo = this.parseUserInfo(data);
         this.store.set('userinfo', userInfo);
+        (<any>window).ga('set', 'userId', userInfo.uid); // 登录用户增加ga的userId追踪
         return userInfo;
       })
       .catch(res => {
