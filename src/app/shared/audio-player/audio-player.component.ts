@@ -39,7 +39,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
       this.played = true;
       this.audioPlayed[this.message.id] = true;
     }
-
+    this.audioPlayerService.userActivated = true;
     this.audioPlayerService.play(this.message).subscribe(value => {
       if (value === 'loaded') {
         this.isLoaded = true;

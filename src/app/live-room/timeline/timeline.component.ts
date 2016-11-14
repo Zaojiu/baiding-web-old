@@ -148,6 +148,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
     if (this.audioPlayerService.hasPlaying) {
       return;
     }
+
+    if (!this.audioPlayerService.userActivated) {
+      return;
+    }
+
     for (let comp of this.messagesComponents.toArray()) {
       if (!comp.audioPlayer) {
         continue;

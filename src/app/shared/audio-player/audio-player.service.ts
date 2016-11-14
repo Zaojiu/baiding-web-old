@@ -15,6 +15,8 @@ export class AudioPlayerService {
 
   private loadingAudios: { [key: string]: boolean; } = {};
 
+  userActivated = false;
+
   constructor(private wechatService: WechatService, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
     AudioPlayerService.h5AudioContext = AudioPlayerService.h5AudioContext || new AudioContext();
