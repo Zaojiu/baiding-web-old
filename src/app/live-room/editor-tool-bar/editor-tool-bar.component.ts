@@ -4,7 +4,6 @@ import {
 } from "@angular/core";
 import * as autosize from "autosize";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
-import {WechatAudioModel} from "../../shared/wechat/wechat.model";
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {EditMode} from "./editor-tool-bar.enums";
 import {RecorderComponent} from "./recorder/recorder.component";
@@ -19,6 +18,7 @@ import {sizeValidator, typeValidator} from "../../shared/file-selector/file-sele
 import {Subscription} from "rxjs";
 import {MessageService} from "../timeline/message/message.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {AudioModel} from "../../shared/bridge/bridge.interface";
 
 declare var $: any;
 
@@ -134,7 +134,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
 
-  recordEnd(audioModel: WechatAudioModel) {
+  recordEnd(audioModel: AudioModel) {
     this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult, '', audioModel.duration);
   }
 

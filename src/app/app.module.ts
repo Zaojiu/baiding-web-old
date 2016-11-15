@@ -28,7 +28,6 @@ import {TitleSetterDirective} from './shared/title/title.directive';
 import {AutofocusDirective} from './shared/autofocus/autofocus.directive';
 import {AuthGuard} from './shared/guard/auth.guard'
 import {UserInfoService} from './shared/api/user-info/user-info.service'
-import {WechatService} from './shared/wechat/wechat.service'
 import {ImageViewerService} from "./shared/image-viewer/image-viewer.service";
 import {StoreService} from './shared/store/store.service'
 import {TitleService} from './shared/title/title.service'
@@ -37,6 +36,21 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 import {AdminGuard} from "./shared/guard/admin.guard";
 import {UserInfoResolver} from "./shared/guard/user-info.resolver";
+import {AudioBridge, AuthBridge, ShareBridge} from "./shared/bridge/bridge.interface";
+import {UtilsService} from "./shared/utils/utils";
+import {WechatAudioService} from "./shared/bridge/audio/wechat-audio.service";
+import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
+import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
+
+let audioSerivce = null;
+let authSerivce = null;
+let shareSerivce = null;
+
+if (UtilsService.isInWechat) {
+  audioSerivce = {provide: AudioBridge, useClass: WechatAudioService};
+  authSerivce = {provide: AuthBridge, useClass: WechatAuthService};
+  shareSerivce = {provide: ShareBridge, useClass: WechatShareService};
+}
 
 @NgModule({
   imports: [
@@ -59,11 +73,13 @@ import {UserInfoResolver} from "./shared/guard/user-info.resolver";
     OperationTipsComponent,
   ],
   providers: [
+    audioSerivce,
+    authSerivce,
+    shareSerivce,
     Title,
     AuthGuard,
     AdminGuard,
     UserInfoService,
-    WechatService,
     StoreService,
     ImageViewerService,
     TitleService,

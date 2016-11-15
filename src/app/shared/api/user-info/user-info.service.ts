@@ -14,10 +14,6 @@ export class UserInfoService {
 
   constructor(private http: Http, private store: StoreService) {}
 
-  goWechatAuth() {
-    location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(window.location.href)}`;
-  }
-
   getUserInfoCache(): UserInfoModel {
     return this.store.get('userinfo') as UserInfoModel;
   }
@@ -38,7 +34,7 @@ export class UserInfoService {
 
   }
 
-  getUserInfo(needWechatAuth?: boolean, needRefresh?: boolean): Promise<UserInfoModel> {
+  getUserInfo(needRefresh?: boolean): Promise<UserInfoModel> {
     let userInfoCache = this.store.get('userinfo') as UserInfoModel;
     if (userInfoCache && !needRefresh) {
       return Promise.resolve(userInfoCache);
@@ -51,18 +47,6 @@ export class UserInfoService {
         this.store.set('userinfo', userInfo);
         (<any>window).ga('set', 'userId', userInfo.uid); // 登录用户增加ga的userId追踪
         return userInfo;
-      })
-      .catch(res => {
-        if (+res.status === 401) {
-          if (needWechatAuth) {
-            this.goWechatAuth();
-          } else {
-            // TODO: pc auth;
-          }
-        } else {
-          // TODO: error;
-        }
-        return Promise.reject(res);
       });
   }
 

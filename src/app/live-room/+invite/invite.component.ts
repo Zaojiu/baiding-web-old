@@ -1,17 +1,17 @@
-import { Component, OnInit }      from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit}      from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
-import { LiveService } from '../../shared/api/live/live.service';
-import { LiveInfoModel } from '../../shared/api/live/live.model';
-import { UserInfoService } from '../../shared/api/user-info/user-info.service';
-import { UserInfoModel } from '../../shared/api/user-info/user-info.model';
-import { InviteApiService } from '../../shared/api/invite/invite.api';
-import { WechatService } from '../../shared/wechat/wechat.service';
+import {LiveService} from '../../shared/api/live/live.service';
+import {LiveInfoModel} from '../../shared/api/live/live.model';
+import {UserInfoService} from '../../shared/api/user-info/user-info.service';
+import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
+import {InviteApiService} from '../../shared/api/invite/invite.api';
+import {ShareBridge} from "../../shared/bridge/bridge.interface";
 
 @Component({
   templateUrl: './invite.component.html',
   styleUrls: ['./invite.component.scss'],
-  providers: [ InviteApiService ]
+  providers: [InviteApiService]
 })
 
 export class InviteComponent implements OnInit {
@@ -24,8 +24,9 @@ export class InviteComponent implements OnInit {
   isTokenUsed: boolean;
 
   constructor(private userInfoService: UserInfoService, private liveService: LiveService,
-    private route: ActivatedRoute, private router: Router, private inviteApiService: InviteApiService,
-    private wechatService: WechatService) {}
+              private route: ActivatedRoute, private router: Router, private inviteApiService: InviteApiService,
+              private shareService: ShareBridge) {
+  }
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
@@ -36,7 +37,7 @@ export class InviteComponent implements OnInit {
 
     this.isLoading = true;
 
-    Promise.all([userInfoPromise, liveInfoPromise]).then((result:any[]) => {
+    Promise.all([userInfoPromise, liveInfoPromise]).then((result: any[]) => {
       this.userInfo = result[0];
       this.liveInfo = result[1];
 
@@ -67,10 +68,10 @@ export class InviteComponent implements OnInit {
   }
 
   createTokenUrl(token: string) {
-    return this.router.serializeUrl(this.router.createUrlTree([`/lives/${this.liveId}/invitation`, { token: token }]))
+    return this.router.serializeUrl(this.router.createUrlTree([`/lives/${this.liveId}/invitation`, {token: token}]))
   }
 
   wechatShare(url: string) {
-    this.wechatService.share(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverUrl, url)
+    this.shareService.share(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverUrl, url)
   }
 }

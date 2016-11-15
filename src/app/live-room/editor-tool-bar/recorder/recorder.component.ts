@@ -1,7 +1,6 @@
 import {Component, Output, EventEmitter} from '@angular/core';
-import {WechatService} from '../../../shared/wechat/wechat.service';
-import {WechatAudioModel} from '../../../shared/wechat/wechat.model';
 import {RecordStatus} from './recorder.enums';
+import {AudioBridge, AudioModel} from "../../../shared/bridge/bridge.interface";
 
 @Component({
   selector: 'recorder',
@@ -15,9 +14,9 @@ export class RecorderComponent {
   timer: any;
   recordDuration: number = 0;
   minRecordDuration = 10;
-  @Output() recordEnd = new EventEmitter<WechatAudioModel>();
+  @Output() recordEnd = new EventEmitter<AudioModel>();
 
-  constructor(private wechatService: WechatService) {
+  constructor(private audioBridge: AudioBridge) {
   }
 
   startRecord() {
@@ -25,10 +24,10 @@ export class RecorderComponent {
 
     this.status = RecordStatus.Preparing;
 
-    this.wechatService.startRecord().then(() => {
+    this.audioBridge.startRecord().then(() => {
       if (this.status !== RecordStatus.Preparing) {
         setTimeout(() => {
-          this.wechatService.cancelRecord();
+          this.audioBridge.cancelRecord();
           this.status = RecordStatus.Waitting;
         }, 1000);
         return;
@@ -46,9 +45,16 @@ export class RecorderComponent {
   }
 
   autoComplete() {
-    this.wechatService.autoCompelete().then(localId => {
-      this.wechatService.processVoice(localId).then(audioModel => {
+    this.audioBridge.autoCompelete().then(localId => {
+      Promise.all([this.audioBridge.translateVoice(localId), this.audioBridge.uploadVoice(localId)]).then(result => {
+        let translateResult = result[0] || '';
+        let serverId = result[1];
+        var audioModel = new AudioModel();
+        audioModel.localId = localId;
+        audioModel.serverId = serverId;
+        audioModel.translateResult = translateResult;
         audioModel.duration = 60 * 1000;
+
         this.recordEnd.emit(audioModel);
       }, (err) => {
         // TODO: error handler;
@@ -73,7 +79,7 @@ export class RecorderComponent {
       if (this.recordDuration < this.minRecordDuration) {
         // 防止录音太短听不清。
         this.status = RecordStatus.TooShort;
-        this.wechatService.cancelRecord().finally(() => {
+        this.audioBridge.cancelRecord().finally(() => {
           setTimeout(() => this.status = RecordStatus.Waitting, 1000);
         });
       } else {
@@ -81,7 +87,7 @@ export class RecorderComponent {
 
         this.status = RecordStatus.Uploading;
 
-        this.wechatService.stopRecord(millisecond).then(audioModel => {
+        this.audioBridge.stopRecord(millisecond).then(audioModel => {
           this.recordEnd.emit(audioModel);
         }).finally(() => {
           // 停止成功或失败, 都要重置状态
@@ -104,7 +110,7 @@ export class RecorderComponent {
 
     this.status = RecordStatus.Canceled;
 
-    this.wechatService.cancelRecord().finally(() => {
+    this.audioBridge.cancelRecord().finally(() => {
       setTimeout(() => this.status = RecordStatus.Waitting, 1000);
     });
   }

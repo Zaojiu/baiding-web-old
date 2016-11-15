@@ -6,11 +6,3 @@ export class WechatConfigModel {
   signature: string;
   jsApiList: string[];
 }
-
-export class WechatAudioModel {
-  localId: string;
-  serverId: string;
-  translateResult: string;
-  duration: number;
-}
-

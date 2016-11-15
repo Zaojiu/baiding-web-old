@@ -6,11 +6,11 @@ import {TimelineService} from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {LiveInfoModel} from '../shared/api/live/live.model';
 import {TitleService} from '../shared/title/title.service';
-import {WechatService} from '../shared/wechat/wechat.service';
 import {UserInfoService} from '../shared/api/user-info/user-info.service';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
+import {ShareBridge} from "../shared/bridge/bridge.interface";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -31,7 +31,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   praisedSub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService, private timelineService: TimelineService,
-              private titleService: TitleService, private wechatService: WechatService, private userInfoService: UserInfoService) {
+              private titleService: TitleService, private shareService: ShareBridge, private userInfoService: UserInfoService) {
   }
 
   toShowBeginnerGuide(result: boolean) {
@@ -68,7 +68,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   resetLiveRoom() {
     this.titleService.set(this.liveInfo.subject);
-    this.wechatService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, this.getShareUri(), this.id);
+    this.shareService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverUrl, this.getShareUri(), this.id);
   }
 
   timelineGotoLatest() {

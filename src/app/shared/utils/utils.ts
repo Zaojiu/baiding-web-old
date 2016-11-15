@@ -1,4 +1,18 @@
+interface Window {
+  navigator: any;
+}
+
+declare var window: Window;
+
 export class UtilsService {
+  static get isInWechat(): boolean {
+    return /micromessenger/i.test(window.navigator.userAgent);
+  }
+
+  static get isInApp(): boolean {
+    return /baidingapp/i.test(window.navigator.userAgent);
+  }
+
   static get now(): number {
     return Math.floor((new Date()).getTime() / 1000);
   }
