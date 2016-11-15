@@ -80,9 +80,8 @@ export class LiveService {
 
     liveInfo.owner = users[stream.owner] as UserInfoModel;
     liveInfo.admin = users[stream.admin] as UserInfoModel;
+
     liveInfo.editors = [];
-
-
     stream.editors.forEach(function (val) {
       let user = users[val];
       if (user) {
