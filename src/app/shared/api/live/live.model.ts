@@ -13,6 +13,7 @@ export class LiveInfoModel {
   owner: UserInfoModel;
   admin: UserInfoModel;
   editors: UserInfoModel[];
+  latestUsers: UserInfoModel[]; // 最近访问的用户
   praised: number;
   commented: number;
   niced: number;
@@ -26,7 +27,7 @@ export class LiveInfoModel {
   closedAt: string;
   createdAt: string;
   updatedAt: string;
-  onlines: number;
+  totalUsers: number; //  参与人数
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;
