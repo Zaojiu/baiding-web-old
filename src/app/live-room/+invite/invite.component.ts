@@ -6,7 +6,7 @@ import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {UserInfoService} from '../../shared/api/user-info/user-info.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
-import {ShareBridge} from "../../shared/bridge/bridge.interface";
+import {ShareBridge} from "../../shared/bridge/share.interface";
 
 @Component({
   templateUrl: './invite.component.html',

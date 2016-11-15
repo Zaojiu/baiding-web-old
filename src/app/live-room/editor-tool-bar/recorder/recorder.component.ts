@@ -1,6 +1,7 @@
 import {Component, Output, EventEmitter} from '@angular/core';
 import {RecordStatus} from './recorder.enums';
-import {AudioBridge, AudioModel} from "../../../shared/bridge/bridge.interface";
+import {AudioBridge} from "../../../shared/bridge/audio.interface";
+import {AudioModel} from "../../../shared/bridge/audio.model";
 
 @Component({
   selector: 'recorder',

@@ -36,20 +36,27 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 import {AdminGuard} from "./shared/guard/admin.guard";
 import {UserInfoResolver} from "./shared/guard/user-info.resolver";
-import {AudioBridge, AuthBridge, ShareBridge} from "./shared/bridge/bridge.interface";
 import {UtilsService} from "./shared/utils/utils";
 import {WechatAudioService} from "./shared/bridge/audio/wechat-audio.service";
 import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
 import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
+import {AudioBridge} from "./shared/bridge/audio.interface";
+import {AuthBridge} from "./shared/bridge/auth.interface";
+import {ShareBridge} from "./shared/bridge/share.interface";
+import {WechatConfigService} from "./shared/wechat/wechat.service";
 
-let audioSerivce = null;
-let authSerivce = null;
-let shareSerivce = null;
+let bridgeServices = [];
 
 if (UtilsService.isInWechat) {
-  audioSerivce = {provide: AudioBridge, useClass: WechatAudioService};
-  authSerivce = {provide: AuthBridge, useClass: WechatAuthService};
-  shareSerivce = {provide: ShareBridge, useClass: WechatShareService};
+  bridgeServices = [
+    WechatAudioService,
+    WechatAuthService,
+    WechatShareService,
+    WechatConfigService,
+    {provide: AudioBridge, useExisting: WechatAudioService},
+    {provide: AuthBridge, useExisting: WechatAuthService},
+    {provide: ShareBridge, useExisting: WechatShareService},
+  ];
 }
 
 @NgModule({
@@ -73,9 +80,7 @@ if (UtilsService.isInWechat) {
     OperationTipsComponent,
   ],
   providers: [
-    audioSerivce,
-    authSerivce,
-    shareSerivce,
+    ...bridgeServices,
     Title,
     AuthGuard,
     AdminGuard,

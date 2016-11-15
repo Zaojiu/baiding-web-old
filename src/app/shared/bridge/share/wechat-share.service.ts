@@ -4,11 +4,12 @@ import 'rxjs/add/operator/toPromise';
 
 import {WechatConfigService} from "../../wechat/wechat.service";
 import {environment} from "../../../../environments/environment";
+import {ShareBridge} from "../share.interface";
 
 declare var wx: any;
 
 @Injectable()
-export class WechatShareService {
+export class WechatShareService implements ShareBridge {
   constructor(private http: Http, private wechatConfigService: WechatConfigService) {
   }
 

@@ -18,7 +18,7 @@ import {sizeValidator, typeValidator} from "../../shared/file-selector/file-sele
 import {Subscription} from "rxjs";
 import {MessageService} from "../timeline/message/message.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
-import {AudioModel} from "../../shared/bridge/bridge.interface";
+import {AudioModel} from "../../shared/bridge/audio.model";
 
 declare var $: any;
 

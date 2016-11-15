@@ -1,20 +1,6 @@
-export class AudioModel {
-  localId: string;
-  serverId: string;
-  translateResult: string;
-  duration: number;
-}
+import {AudioModel} from "./audio.model";
 
-
-export declare abstract class ShareBridge {
-  abstract share(title: string, desc: string, cover: string, link: string, liveId?: string);
-}
-
-export declare abstract class AuthBridge {
-  abstract auth(redirectTo: string);
-}
-
-export declare abstract class AudioBridge {
+export abstract class AudioBridge {
   playingVoiceId: string;
 
   abstract startRecord(): Promise<void>;

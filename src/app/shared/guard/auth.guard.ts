@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {CanActivate} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
-import {AuthBridge} from "../bridge/bridge.interface";
+import {AuthBridge} from "../bridge/auth.interface";
 
 @Injectable()
 export class AuthGuard implements CanActivate {

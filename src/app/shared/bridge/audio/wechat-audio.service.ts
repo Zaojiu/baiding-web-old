@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {WechatConfigService} from "../../wechat/wechat.service";
-import {AudioModel} from "../bridge.interface";
+import {AudioBridge} from "../audio.interface";
+import {AudioModel} from "../audio.model";
 
 declare var wx: any;
 
 @Injectable()
-export class WechatAudioService {
+export class WechatAudioService implements AudioBridge {
   playingVoiceId = '';
   private onVoicePlayEnd: (id: string) => void;
   private autoCompleteResolver: (localId: string) => void;

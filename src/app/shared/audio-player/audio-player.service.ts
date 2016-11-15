@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Observable';
 
 import {MessageModel} from '../api/message/message.model';
 import {Http, ResponseContentType} from '@angular/http';
-import {AudioBridge} from "../bridge/bridge.interface";
+import {AudioBridge} from "../bridge/audio.interface";
 
 @Injectable()
 export class AudioPlayerService {

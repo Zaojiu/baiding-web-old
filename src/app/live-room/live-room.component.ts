@@ -10,7 +10,7 @@ import {UserInfoService} from '../shared/api/user-info/user-info.service';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
-import {ShareBridge} from "../shared/bridge/bridge.interface";
+import {ShareBridge} from "../shared/bridge/share.interface";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -30,8 +30,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isBeginnerGuideShow: boolean;
   praisedSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService, private timelineService: TimelineService,
-              private titleService: TitleService, private shareService: ShareBridge, private userInfoService: UserInfoService) {
+  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
+              private timelineService: TimelineService, private titleService: TitleService,
+              private shareService: ShareBridge, private userInfoService: UserInfoService) {
   }
 
   toShowBeginnerGuide(result: boolean) {
