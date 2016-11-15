@@ -296,13 +296,13 @@ angular2-websocket@^0.8.1:
     rxjs "5.0.0-beta.12"
     zone.js "^0.6.25"
 
+"angulartics2@git://github.com/slene/angulartics2.git#9ae8535fda2369fe70ac5c376c721cc14919af28":
+  version "1.4.0"
+  resolved "git://github.com/slene/angulartics2.git#9ae8535fda2369fe70ac5c376c721cc14919af28"
+
 ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "http://registry.npm.taobao.org/ansi-escapes/download/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
-
-ansi-regex@*, ansi-regex@^2.0.0:
-  version "2.0.0"
-  resolved "http://registry.npm.taobao.org/ansi-regex/download/ansi-regex-2.0.0.tgz#c5061b6e0ef8a81775e50f5d66151bf6bf371107"
 
 ansi-regex@^0.2.0, ansi-regex@^0.2.1:
   version "0.2.1"
@@ -311,6 +311,10 @@ ansi-regex@^0.2.0, ansi-regex@^0.2.1:
 ansi-regex@^1.0.0:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/ansi-regex/download/ansi-regex-1.1.1.tgz#41c847194646375e6a1a5d10c3ca054ef9fc980d"
+
+ansi-regex@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/ansi-regex/download/ansi-regex-2.0.0.tgz#c5061b6e0ef8a81775e50f5d66151bf6bf371107"
 
 ansi-styles@^1.1.0:
   version "1.1.0"
@@ -3128,7 +3132,7 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/fs.realpath/download/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
 
-fsevents@^1.0.0:
+fsevents@^1.0.0, fsevents@^1.0.15:
   version "1.0.15"
   resolved "http://registry.npm.taobao.org/fsevents/download/fsevents-1.0.15.tgz#fa63f590f3c2ad91275e4972a6cea545fb0aae44"
   dependencies:
@@ -3822,7 +3826,7 @@ image-size@~0.5.0:
   version "0.5.0"
   resolved "http://registry.npm.taobao.org/image-size/download/image-size-0.5.0.tgz#be7aed1c37b5ac3d9ba1d66a24b4c47ff8397651"
 
-imurmurhash@*, imurmurhash@^0.1.4:
+imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "http://registry.npm.taobao.org/imurmurhash/download/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
 
@@ -4383,7 +4387,11 @@ karma-jasmine@^1.0.2:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/karma-jasmine/download/karma-jasmine-1.0.2.tgz#c0b3ab327bf207db60e17fa27db37cfdef5d8e6c"
 
-karma-phantomjs-launcher@~1.0.0:
+karma-ng-html2js-preprocessor@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/karma-ng-html2js-preprocessor/download/karma-ng-html2js-preprocessor-1.0.0.tgz#10d8c8cfaa4136f1c8a76d91a4cbceedebec4a31"
+
+karma-phantomjs-launcher@^1.0.2:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/karma-phantomjs-launcher/download/karma-phantomjs-launcher-1.0.2.tgz#19e1041498fd75563ed86730a22c1fe579fa8fb1"
   dependencies:
@@ -4419,9 +4427,9 @@ karma-webpack@^1.8.0:
     source-map "^0.1.41"
     webpack-dev-middleware "^1.0.11"
 
-karma@1.2.0:
-  version "1.2.0"
-  resolved "http://registry.npm.taobao.org/karma/download/karma-1.2.0.tgz#6dca89ec25f4753f120f834c89398098040fd63e"
+karma@^1.2.0:
+  version "1.3.0"
+  resolved "http://registry.npm.taobao.org/karma/download/karma-1.3.0.tgz#b2b94e8f499fadd0069d54f9aef4a4d48ec5cc1f"
   dependencies:
     bluebird "^3.3.0"
     body-parser "^1.12.4"
@@ -4443,6 +4451,7 @@ karma@1.2.0:
     minimatch "^3.0.0"
     optimist "^0.6.1"
     qjobs "^1.1.4"
+    range-parser "^1.2.0"
     rimraf "^2.3.3"
     socket.io "1.4.7"
     source-map "^0.5.3"
@@ -6715,7 +6724,7 @@ randombytes@^2.0.0, randombytes@^2.0.1:
   version "2.0.3"
   resolved "http://registry.npm.taobao.org/randombytes/download/randombytes-2.0.3.tgz#674c99760901c3c4112771a31e521dc349cc09ec"
 
-range-parser@^1.0.3, range-parser@~1.2.0:
+range-parser@^1.0.3, range-parser@^1.2.0, range-parser@~1.2.0:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/range-parser/download/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
 
@@ -7832,12 +7841,6 @@ stringstream@~0.0.4:
   version "0.0.5"
   resolved "http://registry.npm.taobao.org/stringstream/download/stringstream-0.0.5.tgz#4e484cd4de5a0bbbee18e46307710a8a81621878"
 
-strip-ansi@*, strip-ansi@^3.0.0, strip-ansi@^3.0.1:
-  version "3.0.1"
-  resolved "http://registry.npm.taobao.org/strip-ansi/download/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
-  dependencies:
-    ansi-regex "^2.0.0"
-
 strip-ansi@^0.3.0:
   version "0.3.0"
   resolved "http://registry.npm.taobao.org/strip-ansi/download/strip-ansi-0.3.0.tgz#25f48ea22ca79187f3174a4db8759347bb126220"
@@ -7849,6 +7852,12 @@ strip-ansi@^2.0.1:
   resolved "http://registry.npm.taobao.org/strip-ansi/download/strip-ansi-2.0.1.tgz#df62c1aa94ed2f114e1d0f21fd1d50482b79a60e"
   dependencies:
     ansi-regex "^1.0.0"
+
+strip-ansi@^3.0.0, strip-ansi@^3.0.1:
+  version "3.0.1"
+  resolved "http://registry.npm.taobao.org/strip-ansi/download/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
+  dependencies:
+    ansi-regex "^2.0.0"
 
 strip-bom@^1.0.0:
   version "1.0.0"

@@ -12,7 +12,7 @@
     </a>
   </div>
 
-  <switch-btn class="switch-btn" [isOpened]="isCommentOpened" [btnText]="btnText" (toggling)="toggleComment($event)"></switch-btn>
+  <topbar-switch-btn class="switch-btn" [isOpened]="isCommentOpened" [btnText]="btnText" (toggling)="toggleComment($event)"></topbar-switch-btn>
 
   <div class="people-count-wrapper">
     <span class="people-count" [ngClass]="{'is-opened':isCommentOpened,'is-closed':!isCommentOpened}">  {{onlineCount > 999 ? '999+' : onlineCount}}人次</span>
