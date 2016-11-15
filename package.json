@@ -4,9 +4,18 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
+    "bootstrap.init": "./hack/run.sh bootstrap.init",
+    "bootstrap.update": "./hack/run.sh bootstrap.update",
+    "bootstrap.clean": "./hack/run.sh bootstrap.clean",
+    "bootstrap.shell": "./hack/run.sh bootstrap.shell",
+    "bootstrap.kill": "./hack/run.sh bootstrap.kill",
+    "build.prod.docker": "./hack/run.sh build.prod.docker",
+    "serve.dev.docker": "./hack/run.sh serve.dev.docker",
+    "serve.prod.docker": "./hack/run.sh serve.prod.docker",
+    "test.docker": "./hack/run.sh test.docker",
     "build.prod": "./hack/run.sh build.prod",
     "serve.dev": "./hack/run.sh serve.dev",
-    "serve.prod": "./hack/run.sh build.prod && static-server -p 9000 ./dist",
+    "serve.prod": "./hack/run.sh serve.prod",
     "clean": "./hack/run.sh clean",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "./hack/run.sh test",
@@ -50,7 +59,6 @@
     "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git#c52aeccb5716f279d36203ee0751d67431991b2b",
     "autoprefixer": "^6.5.0",
     "codelyzer": "~0.0.26",
-    "fsevents": "^1.0.15",
     "gulp": "^3.9.1",
     "gulp-filter": "^4.0.0",
     "gulp-if": "^2.0.1",
@@ -75,7 +83,8 @@
     "static-server": "2.0.3",
     "ts-node": "1.2.1",
     "tslint": "3.13.0",
-    "typescript": "2.0.2"
+    "typescript": "2.0.2",
+    "typings": "^2.0.0"
   },
   "optionalDependencies": {
     "phantomjs": "~2.1.7"
