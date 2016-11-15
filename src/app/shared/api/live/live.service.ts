@@ -82,16 +82,16 @@ export class LiveService {
     liveInfo.admin = users[stream.admin] as UserInfoModel;
 
     liveInfo.editors = [];
-    stream.editors && stream.editors.forEach(function (val) {
-      let user = users[val];
+    stream.editors && stream.editors.forEach(function (uid) {
+      let user = users[uid];
       if (user) {
         liveInfo.editors.push(user);
       }
     });
 
     liveInfo.latestUsers = [];
-    stream.latestUserUids && stream.latestUserUids.forEach(function (val) {
-      let user = users[val];
+    stream.latestUserUids && stream.latestUserUids.forEach(function (uid) {
+      let user = users[uid];
       if (user) {
         liveInfo.latestUsers.push(user);
       }
