@@ -8,7 +8,7 @@
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <top-bar
     class="top-bar"
-    [onlineCount]="liveInfo.onlines"
+    [onlineCount]="liveInfo.totalUsers"
     [(isCommentOpened)]="isCommentOpened"
     [isTimelineOnOldest]="timeline.isOnOldest"
     [isTimelineOnLatest]="timeline.isOnLatest"

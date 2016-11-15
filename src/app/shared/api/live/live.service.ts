@@ -80,14 +80,22 @@ export class LiveService {
 
     liveInfo.owner = users[stream.owner] as UserInfoModel;
     liveInfo.admin = users[stream.admin] as UserInfoModel;
+
     liveInfo.editors = [];
-    for (let uid of stream.editors) {
+    stream.editors && stream.editors.forEach(function (uid) {
       let user = users[uid];
-      if (!user) {
-        continue
+      if (user) {
+        liveInfo.editors.push(user);
       }
-      liveInfo.editors.push(user);
-    }
+    });
+
+    liveInfo.latestUsers = [];
+    stream.latestUserUids && stream.latestUserUids.forEach(function (uid) {
+      let user = users[uid];
+      if (user) {
+        liveInfo.latestUsers.push(user);
+      }
+    });
 
     liveInfo.expectStartAt = stream.expectStartAt;
     liveInfo.expectDuration = stream.expectDuration;
@@ -109,9 +117,9 @@ export class LiveService {
     liveInfo.lcConvId = stream.lcConvId;
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
 
-    if (data.onlines) liveInfo.onlines = data.onlines;
+    liveInfo.totalUsers = stream.totalUsers;
 
-    return liveInfo
+    return liveInfo;
   }
 
   getLiveInfoCache(id: string): LiveInfoModel {
