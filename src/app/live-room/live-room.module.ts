@@ -25,6 +25,7 @@ import {ImageViewerModule} from "../shared/image-viewer/image-viewer.module";
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
 import {BeginnerGuideComponent} from "./beginner-guide/beginner-guide.component";
 import {TopBarComponent} from "./top-bar/top-bar.component";
+import {TopBarSwitchBtnModule} from "../shared/topbar-switch-btn/topbar-switch-btn.module";
 import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
 import {ToolTipsModule} from "../shared/tooltips/tooltips.module";
 import {AnimationModule} from "../shared/animation/animation.module";
@@ -51,6 +52,7 @@ import {EmptyModule} from "../shared/empty/empty.module";
     AudioPlayerModule,
     ImageViewerModule,
     SwitchBtnModule,
+    TopBarSwitchBtnModule,
     ToolTipsModule,
     AnimationModule,
     AutoBlurModule,
