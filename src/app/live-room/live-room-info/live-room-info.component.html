@@ -2,7 +2,7 @@
   <div class="live-room-info-header">
     <div class="online-people">
       <i class="bi bi-people"></i>
-      {{liveInfo.onlines > 999 ? '999+' : liveInfo.onlines}}人观看
+      {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
     </div>
     <a class="close-button" (click)="close()">
       <i class="bi bi-close"></i>
