@@ -28,7 +28,6 @@ import {TitleSetterDirective} from './shared/title/title.directive';
 import {AutofocusDirective} from './shared/autofocus/autofocus.directive';
 import {AuthGuard} from './shared/guard/auth.guard'
 import {UserInfoService} from './shared/api/user-info/user-info.service'
-import {WechatService} from './shared/wechat/wechat.service'
 import {ImageViewerService} from "./shared/image-viewer/image-viewer.service";
 import {StoreService} from './shared/store/store.service'
 import {TitleService} from './shared/title/title.service'
@@ -37,6 +36,28 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 import {AdminGuard} from "./shared/guard/admin.guard";
 import {UserInfoResolver} from "./shared/guard/user-info.resolver";
+import {UtilsService} from "./shared/utils/utils";
+import {WechatAudioService} from "./shared/bridge/audio/wechat-audio.service";
+import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
+import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
+import {AudioBridge} from "./shared/bridge/audio.interface";
+import {AuthBridge} from "./shared/bridge/auth.interface";
+import {ShareBridge} from "./shared/bridge/share.interface";
+import {WechatConfigService} from "./shared/wechat/wechat.service";
+
+let bridgeServices = [];
+
+if (UtilsService.isInWechat) {
+  bridgeServices = [
+    WechatAudioService,
+    WechatAuthService,
+    WechatShareService,
+    WechatConfigService,
+    {provide: AudioBridge, useExisting: WechatAudioService},
+    {provide: AuthBridge, useExisting: WechatAuthService},
+    {provide: ShareBridge, useExisting: WechatShareService},
+  ];
+}
 
 @NgModule({
   imports: [
@@ -59,11 +80,11 @@ import {UserInfoResolver} from "./shared/guard/user-info.resolver";
     OperationTipsComponent,
   ],
   providers: [
+    ...bridgeServices,
     Title,
     AuthGuard,
     AdminGuard,
     UserInfoService,
-    WechatService,
     StoreService,
     ImageViewerService,
     TitleService,

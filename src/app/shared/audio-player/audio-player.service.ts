@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import {Observable} from 'rxjs/Observable';
 
-import {WechatService} from '../wechat/wechat.service';
 import {MessageModel} from '../api/message/message.model';
 import {Http, ResponseContentType} from '@angular/http';
+import {AudioBridge} from "../bridge/audio.interface";
 
 @Injectable()
 export class AudioPlayerService {
@@ -17,7 +17,7 @@ export class AudioPlayerService {
 
   userActivated = false;
 
-  constructor(private wechatService: WechatService, private $http: Http) {
+  constructor(private audioService: AudioBridge, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
     AudioPlayerService.h5AudioContext = AudioPlayerService.h5AudioContext || new AudioContext();
   }
@@ -28,7 +28,7 @@ export class AudioPlayerService {
 
       if (msg.audio.localId) {
         observer.next('loaded');
-        this.wechatService.playVoice(msg.audio.localId).then(localId => {
+        this.audioService.playVoice(msg.audio.localId).then(localId => {
           observer.complete();
         });
         return;
@@ -83,7 +83,7 @@ export class AudioPlayerService {
   isPlaying(msg: MessageModel): boolean {
 
     if (msg.audio.localId) {
-      return msg.audio.localId === this.wechatService.playingVoiceId;
+      return msg.audio.localId === this.audioService.playingVoiceId;
     }
     return msg.id === AudioPlayerService.playingMessageId;
   }
@@ -91,7 +91,7 @@ export class AudioPlayerService {
   stop(msg: MessageModel) {
 
     if (msg.audio.localId) {
-      return this.wechatService.stopVoice(msg.audio.localId);
+      return this.audioService.stopVoice(msg.audio.localId);
     }
 
     AudioPlayerService.playingMessageId = '';
