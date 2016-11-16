@@ -13,8 +13,7 @@ describe('TimeFormaterPipe test', () => {
     timeFormaterPipe = new TimeFormaterPipe();
   });
 
-  //TODO report: 'moment is not defined'
-  fit('now should return number', async(() => {
+  it('now should return number', async(() => {
     expect(typeof now === 'number').toBeTruthy();
   }));
 
