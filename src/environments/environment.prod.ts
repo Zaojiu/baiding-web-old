@@ -1,12 +1,12 @@
 export const host = {
-  auth: '<% AUTH_HOST %>',
-  io:  '<% IO_HOST %>',
+  auth: '_REPL_AUTH_HOST_',
+  io:  '_REPL_IO_HOST_',
 };
 
 export const appConfig = {
   host: host,
-  lcAppId: '<% LEADCLOUD_ID %>',
-  lcAppKey: '<% LEADCLOUD_KEY %>',
+  lcAppId: '_REPL_LEADCLOUD_ID_',
+  lcAppKey: '_REPL_LEADCLOUD_APP_KEY_',
 };
 
 export const environment = {

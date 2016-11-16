@@ -1,10 +1,31 @@
-# 初始化
+# 使用
 
-* 安装依赖: `npm i`
-* 运行开发环境前端: `npm run serve.dev`
-* 运行线上环境前端: `npm run serve.prod`
+## 命令
 
-# 开发配置
+### 直接运行
+
+* `npm i`：安装依赖
+* `npm run serve.dev`：运行开发环境
+* `npm run serve.prod`：运行线上环境
+* `npm run test`：运行测试
+
+### 容器环境运行
+
+`npm run <command>`
+
+* `npm run bootstrap.init`：初始化（强制运行 install / update）
+* `npm run bootstrap.update`：初始化（依据 package.json 来决定是否运行 install / update）
+* `npm run bootstrap.clean`：清理所有容器生成的内容
+* `npm run bootstrap.shell`：登录运行中的容器
+* `npm run bootstrap.kill`：停止容器
+* `npm run build.prod.docker`：编译 prod 文件
+* `npm run serve.dev.docker`：运行开发环境
+* `npm run serve.prod.docker`：运行线上环境
+* `npm run test.docker`：运行测试
+
+ps：如果没有安装 `node/npm` 那么也可以使用 `./hack/run.sh <command>` 直接执行
+
+## 环境配置
 
 * environment.ts: 入库，默认配置。
 * environment.dev.ts: 不入库，开发配置，开发自己本地维护。
