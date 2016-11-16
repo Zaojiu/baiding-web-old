@@ -22,6 +22,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   coverSrc: SafeUrl;
   originCoverSrc: SafeUrl;
   defaultCoverSrc: SafeUrl;
+  coverKey: string;
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
   maxTitleLength = 20;
@@ -49,6 +50,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
     this.title = this.liveInfo.subject;
     this.desc = this.liveInfo.desc;
+    this.coverKey = this.urlPath(this.liveInfo.coverUrl);
 
     this.form = this.fb.group({
       'cover': new FormControl(this.coverFiles, [
@@ -124,17 +126,35 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
         return this.uploadService.uploadToQiniu(this.coverFiles[0], uploadOption);
       }).then((imageKey) => {
-        this.updateLiveInfo(imageKey);
+        this.coverKey = imageKey;
+        this.updateLiveInfo();
       });
     } else {
       this.updateLiveInfo();
     }
   }
 
-  updateLiveInfo(coverKey?: string) {
+  private urlPath(url: string): string {
+
+    if (!url) {
+      return '';
+    }
+    let i = url.indexOf('//');
+    if (i <= 0) {
+      return '';
+    }
+
+    i = url.indexOf('/', i + 2);
+    if (i <= 0) {
+      return '';
+    }
+    return url.substr(i + 1);
+  }
+
+  updateLiveInfo() {
     let expectStartAt = moment(`${this.time}:00`).local();
 
-    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey).then(() => {
+    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey).then(() => {
       return this.liveService.getLiveInfo(this.liveId, true);
     }).then(() => {
       this.submitted = true;
