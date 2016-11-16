@@ -2,6 +2,8 @@ import {async} from '@angular/core/testing';
 import {UtilsService} from '../utils/utils';
 import {TimeFormaterPipe, TimeToPipe, DurationFormaterPipe, FromNowPipe} from './time.pipe';
 
+(<any>window).moment = require('moment');
+
 describe('TimeFormaterPipe test', () => {
   let now = 0;
   let timeFormaterPipe: TimeFormaterPipe;
