@@ -25,11 +25,51 @@ function docker_start(){
 }
 
 function docker_exec(){
-    docker exec -i baiding-web ${@}
+    docker exec -i baiding-web "${@}"
 }
 
 function docker_exect(){
-    docker exec -ti baiding-web ${@}
+    docker exec -ti baiding-web "${@}"
+}
+
+function update_if_pkg_change(){
+    is_hash_changed
+    [ "$?" != "1" ] && echo "package.json not changed" && return
+    echo "package.json has changed"
+    docker_exec npm i || { exit 1; }
+    docker_exec npm update || { exit 1; }
+    pkg_hash_cache_update
+}
+
+function update_force(){
+    docker_exec npm i || { exit 1; }
+    docker_exec npm update || { exit 1; }
+    pkg_hash_cache_update
+}
+
+function pkg_hash_get(){
+    if [ ! -f "package.json" ]; then
+        return
+    fi
+    cat package.json|md5sum
+}
+
+function pkg_hash_cache_get(){
+    docker_exec touch node_modules/package.json.hash
+    docker_exec cat node_modules/package.json.hash
+}
+
+function pkg_hash_cache_update(){
+    hash=`pkg_hash_get`
+    docker_exec sh -c "echo '${hash}' > node_modules/package.json.hash"
+    echo "package.json hash writed"
+}
+
+function is_hash_changed(){
+    hash=`pkg_hash_get`
+    cache=`pkg_hash_cache_get`
+    [ "${hash}" == "${cache}" ] && [ "${cache}" != "" ] && return
+    return 1
 }
 
 for target in $@; do
@@ -38,8 +78,13 @@ for target in $@; do
             docker_killrm
             docker build -f hack/env.Dockerfile -t ${image} .
             docker_start
-            docker_exec npm i
-            docker_exec npm update
+            update_force
+            ;;
+        bootstrap.update)
+            docker_killrm
+            docker build -f hack/env.Dockerfile -t ${image} .
+            docker_start
+            update_if_pkg_change
             ;;
         bootstrap.clean)
             docker_killrm
