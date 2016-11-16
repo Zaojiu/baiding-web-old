@@ -10,7 +10,7 @@ export class UtilsService {
   }
 
   static get isInApp(): boolean {
-    return /baidingapp/i.test(window.navigator.userAgent);
+    return /zaojiulive/i.test(window.navigator.userAgent);
   }
 
   static get now(): number {

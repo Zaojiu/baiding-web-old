@@ -45,7 +45,7 @@ export class WechatConfigService {
       console.log('wechat config: ', config);
 
       wx.config(config);
-    })
+    });
   }
 
 
@@ -72,7 +72,7 @@ export class WechatConfigService {
       });
 
       this.configWechat();
-    })
+    });
   }
 
   closeWindow() {
