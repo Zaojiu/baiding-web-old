@@ -4,8 +4,7 @@ import {HttpModule, BrowserXhr} from '@angular/http';
 
 import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
 
-import {Angulartics2Module} from 'angulartics2';
-import {Angulartics2GoogleAnalytics} from 'angulartics2/dist/providers';
+import {Angulartics2Module, Angulartics2GoogleAnalytics} from 'angulartics2';
 
 import {AppComponent} from './app.component';
 import {ROUTES} from './app.routes';
@@ -36,7 +35,7 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 import {AdminGuard} from "./shared/guard/admin.guard";
 import {UserInfoResolver} from "./shared/guard/user-info.resolver";
-// import {UtilsService} from "./shared/utils/utils";
+import {UtilsService} from "./shared/utils/utils";
 import {WechatAudioService} from "./shared/bridge/audio/wechat-audio.service";
 import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
 import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
@@ -44,7 +43,7 @@ import {AudioBridge} from "./shared/bridge/audio.interface";
 import {AuthBridge} from "./shared/bridge/auth.interface";
 import {ShareBridge} from "./shared/bridge/share.interface";
 import {WechatConfigService} from "./shared/wechat/wechat.service";
-// import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
+import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
 
 @NgModule({
   imports: [
@@ -67,13 +66,23 @@ import {WechatConfigService} from "./shared/wechat/wechat.service";
     OperationTipsComponent,
   ],
   providers: [
+    WechatConfigService,
     WechatAudioService,
     WechatAuthService,
     WechatShareService,
-    WechatConfigService,
-    {provide: AudioBridge, useExisting: WechatAudioService},
-    {provide: AuthBridge, useExisting: WechatAuthService},
-    {provide: ShareBridge, useExisting: WechatShareService},
+    PcAuthService,
+    {
+      provide: AudioBridge,
+      useExisting: UtilsService.isInWechat ? WechatAudioService : UtilsService.isInApp ? WechatAudioService : WechatAudioService,
+    },
+    {
+      provide: AuthBridge,
+      useExisting: UtilsService.isInWechat ? WechatAuthService : UtilsService.isInApp ? WechatAuthService : PcAuthService,
+    },
+    {
+      provide: ShareBridge,
+      useExisting: UtilsService.isInWechat ? WechatShareService : UtilsService.isInApp ? WechatShareService : WechatShareService,
+    },
     Title,
     AuthGuard,
     AdminGuard,
@@ -88,8 +97,8 @@ import {WechatConfigService} from "./shared/wechat/wechat.service";
     LocalStorageService,
     LiveService,
     OperationTipsService,
-    Angulartics2GoogleAnalytics,
     UserInfoResolver,
+    Angulartics2GoogleAnalytics,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],
   bootstrap: [AppComponent]
