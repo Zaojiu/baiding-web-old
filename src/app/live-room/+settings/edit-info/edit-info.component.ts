@@ -46,7 +46,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
     let expectStartAt = moment(this.liveInfo.expectStartAt);
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDTHH:mm');
 
-    if (this.liveInfo.coverUrl) this.originCoverSrc = this.sanitizer.bypassSecurityTrustUrl(`${this.liveInfo.coverUrl}?${this.liveInfo.updatedAt}`);
+    if (this.liveInfo.coverSmallUrl) this.originCoverSrc = this.sanitizer.bypassSecurityTrustUrl(this.liveInfo.coverSmallUrl);
 
     this.title = this.liveInfo.subject;
     this.desc = this.liveInfo.desc;
