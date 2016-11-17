@@ -20,7 +20,7 @@ import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
     PipeModule,
     LiveRoomTopBarModule,
     LiveRoomInfoUpperModule,
-    LoadingModule
+    LoadingModule,
   ],
   declarations: [
     InfoCenterComponent,

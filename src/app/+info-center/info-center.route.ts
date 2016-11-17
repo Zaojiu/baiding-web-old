@@ -5,7 +5,7 @@ import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {LiveInfoResolver} from "../shared/guard/live-info.resolver";
 import {UserInfoResolver} from "../shared/guard/user-info.resolver";
 import {QuitEditGuard} from "../shared/guard/quit-edit.guard";
-import {AdminGuard} from "../shared/guard/admin.guard";
+import {AuthGuard} from "../shared/guard/auth.guard";
 
 const route: Routes = [
   {
@@ -15,6 +15,7 @@ const route: Routes = [
   {
     path: ':uid/edit-info',
     component: EditInfoComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

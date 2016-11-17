@@ -5,14 +5,11 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
-import {LiveService} from "../../shared/api/live/live.service";
 import {futureValidator} from "../../shared/form/future.validator";
-import {UploadApiService} from "../../shared/api/upload/upload.api";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
-import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {UserInfoModel, UserDetailInfoModel} from "../../shared/api/user-info/user-info.model";
 import {Headers, Http} from "@angular/http";
 import {environment} from "../../../environments/environment";
-import {InvitationModel} from "../../shared/api/invite/invite.model";
 import {Location} from '@angular/common';
 
 @Component({
@@ -20,112 +17,47 @@ import {Location} from '@angular/common';
   styleUrls: ['./edit-info.component.scss'],
 })
 
-export class EditInfoComponent implements OnInit, DoCheck {
+export class EditInfoComponent implements OnInit {
   liveId: string;
   liveInfo: LiveInfoModel;
   form: FormGroup;
-  coverFiles: File[];
-  coverSrc: SafeUrl;
-  originCoverSrc: SafeUrl;
-  defaultCoverSrc: SafeUrl;
-  fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
-  maxSizeMB = 8;
-  maxTitleLength = 20;
-  maxDescLength = 600;
-  time = '';
-  title = '';
-  desc = '';
-  oldFileName = '';
-  submitted = false;
-  user: UserInfoModel;
+  maxTitleLength = 30;
+  maxDescLength = 150;
+  user: UserDetailInfoModel;
   nameContent = '';
   introContent = '';
   uid: number;
 
   constructor(private http: Http, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
-              private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService, private userInfoService: UserInfoService, private _location: Location) {
+              private fb: FormBuilder, private userInfoService: UserInfoService, private _location: Location) {
   }
 
   ngOnInit() {
-    this.user = this.userInfoService.getUserInfoCache();
-    console.log(this.user, 'edit-currentUserInfo')
-    // if(!this.currentUserInfo) this.router.navigate(['404']);
-    this.nameContent = this.user.nick;
+    this.uid = +this.route.snapshot.params['uid'];
+    this.userInfoService.getUserDetailInfo(this.uid).then((user)=> {
+      this.user = user;
+      this.nameContent = this.user.nick;
+      this.introContent = this.user.intro;
+    });
+
+    this.form = this.fb.group({
+      'nameContent': new FormControl(this.nameContent, [
+        Validators.required,
+        Validators.maxLength(this.maxTitleLength)
+      ]),
+      'introContent': new FormControl(this.introContent, [
+        Validators.maxLength(this.maxDescLength)
+      ]),
+    });
   }
 
-  ngDoCheck() {
-    //   if (this.form.controls['cover'].valid && this.coverFiles) {
-    //     if (this.coverFiles.length) {
-    //       let file = this.coverFiles[0];
-    //
-    //       if (this.oldFileName === file.name) return;
-    //
-    //       let reader = new FileReader();
-    //
-    //       reader.onload = (e) => {
-    //         this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
-    //         this.oldFileName = file.name;
-    //       };
-    //
-    //       reader.readAsDataURL(file);
-    //     } else {
-    //       this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
-    //     }
-    //   } else {
-    //     this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
-    //   }
-  }
-
-  //
   backToViewInfo() {
     this._location.back();
   }
 
-  //
-  // submit() {
-  //   Object.keys(this.form.controls).forEach((key) => {
-  //     this.form.controls[key].markAsDirty();
-  //     this.form.controls[key].updateValueAndValidity();
-  //   });
-  //
-  //   if (this.form.invalid) return;
-  //
-  //   this.postLiveInfo();
-  // }
-  //
-  // postLiveInfo() {
-  //   if (this.coverFiles && this.coverFiles.length) {
-  //     this.liveService.getCoverUploadToken(this.liveId).then((data) => {
-  //       let uploadOption = {
-  //         key: data.coverKey,
-  //         token: data.token,
-  //       };
-  //
-  //       return this.uploadService.uploadToQiniu(this.coverFiles[0], uploadOption);
-  //     }).then((imageKey) => {
-  //       this.updateLiveInfo(imageKey);
-  //     });
-  //   } else {
-  //     this.updateLiveInfo();
-  //   }
-  // }
-  //
-  // updateLiveInfo(coverKey?: string) {
-  //   let expectStartAt = moment(`${this.time}:00`).local();
-  //
-  //   this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey).then(() => {
-  //     return this.liveService.getLiveInfo(this.liveId, true);
-  //   }).then(() => {
-  //     this.submitted = true;
-  //     this.router.navigate([`/livesList/${this.liveId}/settings/view-info`]);
-  //   });
-  // }
-  //
-  // canDeactivate() {
-  //   return !this.form.dirty || this.submitted;
-  // }
 
   submit() {
+    if (this.form.invalid) return
     this.postUserInfo();
   }
 

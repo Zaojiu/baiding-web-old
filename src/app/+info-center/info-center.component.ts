@@ -62,7 +62,7 @@ export class InfoCenterComponent {
   }
 
   goToEdit() {
-    this.router.navigate([`/info-center/${this.currentUserInfo.uid}/edit-info`]);
+    this.router.navigate([`/info-center/${this.currentUserInfo.uid}/edit-info`, {'uid': this.currentUserInfo.uid.toString()}]);
   }
 
   isAudience() {
