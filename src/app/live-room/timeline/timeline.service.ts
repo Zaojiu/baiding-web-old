@@ -11,6 +11,7 @@ import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 export class TimelineService {
   // Observable string sources
   private receivedMessageSource = new Subject<MessageModel>();
+  private deleteMessageSource = new Subject<MessageModel>();
   private receivedReplySource = new Subject<ReplyMessageModel>();
   private timelineSource = new Subject<boolean>();
   private praisesSource = new Subject<UserInfoModel>();
@@ -19,6 +20,7 @@ export class TimelineService {
 
   // Observable string streams
   private receivedMessage$ = this.receivedMessageSource.asObservable();
+  private deleteMessage$ = this.deleteMessageSource.asObservable();
   receivedReply$ = this.receivedReplySource.asObservable();
   timeline$ = this.timelineSource.asObservable();
   private receivedPraises$ = this.praisesSource.asObservable();
@@ -26,6 +28,7 @@ export class TimelineService {
   scroll$ = this.scrollSource.asObservable();
 
   private receviedMessageSub: Subscription;
+  private deleteMessageSub: Subscription;
   private receviedPraisedUserSubscription: Subscription;
   private receivedEventSub: Subscription;
 
@@ -44,18 +47,22 @@ export class TimelineService {
     this.receivedMessageSource.next(message);
   }
 
+  deleteMessage(message: MessageModel) {
+    this.deleteMessageSource.next(message);
+  }
+
   pushReply(reply: ReplyMessageModel) {
     this.receivedReplySource.next(reply);
   }
 
   startReceive(id: string) {
-    MqService.subscribeLiveEvents(id, this.eventSource)
-    MqService.subscribeLivePraises(id, this.praisesSource)
+    MqService.subscribeLiveEvents(id, this.eventSource);
+    MqService.subscribeLivePraises(id, this.praisesSource);
   }
 
   stopReceive(id: string) {
-    MqService.unsubscribeLiveEvents(id)
-    MqService.unsubscribeLivePraises(id)
+    MqService.unsubscribeLiveEvents(id);
+    MqService.unsubscribeLivePraises(id);
 
     if (this.receivedEventSub) {
       this.receivedEventSub.unsubscribe()
@@ -81,6 +88,11 @@ export class TimelineService {
   // 自己发送的
   onReceiveMessages(f: any) {
     this.receviedMessageSub = this.receivedMessage$.subscribe(f)
+  }
+
+  // 删除时间线上的消息
+  onDeleteMessages(f: any) {
+    this.deleteMessageSub = this.deleteMessage$.subscribe(f)
   }
 
   onScroll(e: ScrollerEventModel) {

@@ -16,5 +16,6 @@
 
   <!--加载完成并播放-->
   <playing-btn *ngIf="isPlaying&&isLoaded" class="animation-playing-btn" [audioDuration]="message.audio.duration / 1000"></playing-btn>
-  <span class="dot" *ngIf="!isPlayed"></span>
+
+  <span class="dot" *ngIf="!isPlayed && message.postStatus === postStatus.PostSuccessful"></span>
 </div>

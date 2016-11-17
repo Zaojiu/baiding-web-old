@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {WechatConfigService} from "../../wechat/wechat.service";
 import {AudioBridge} from "../audio.interface";
-import {AudioModel} from "../audio.model";
 
 declare var wx: any;
 
@@ -77,20 +76,13 @@ export class WechatAudioService implements AudioBridge {
 
   }
 
-  private _stopRecord(duration: number): Promise<AudioModel> {
+  private _stopRecord(): Promise<string> {
     return new Promise((resolve, reject) => {
       wx.stopRecord({
         success: (res) => {
           console.log('wechat audio stop successful');
 
-          this.processVoice(res.localId).then((audioModel) => {
-            audioModel.duration = duration;
-            console.log('wechat audio translate & upload done successful: ', res.localId, audioModel);
-            resolve(audioModel);
-          }, (err) => {
-            console.log('wechat audio translate & upload done failed');
-            reject(err);
-          });
+          resolve(res.localId);
         },
         fail: (err) => {
           console.log('wechat audio stop failed');
@@ -100,13 +92,13 @@ export class WechatAudioService implements AudioBridge {
     });
   }
 
-  stopRecord(duration: number): Promise<AudioModel> {
+  stopRecord(): Promise<string> {
     if (!this.wechatConfigService.hasInit) {
       return this.wechatConfigService.initWechat().then(() => {
-        return this._stopRecord(duration);
+        return this._stopRecord();
       });
     } else {
-      return this._stopRecord(duration);
+      return this._stopRecord();
     }
   }
 
@@ -189,26 +181,6 @@ export class WechatAudioService implements AudioBridge {
           reject(err);
         }
       })
-    })
-  }
-
-  private processVoice(id: string): Promise<AudioModel> {
-    console.log('start process voice');
-
-    return new Promise<AudioModel>((resolve, reject) => {
-      Promise.all([this.translateVoice(id), this.uploadVoice(id)]).then(result => {
-        console.log('process voice result: ', result);
-        let translateResult = result[0] || '';
-        let serverId = result[1];
-        var audioModel = new AudioModel();
-        audioModel.localId = id;
-        audioModel.serverId = serverId;
-        audioModel.translateResult = translateResult;
-
-        resolve(audioModel);
-      }, (err) => {
-        reject(err);
-      });
     })
   }
 }

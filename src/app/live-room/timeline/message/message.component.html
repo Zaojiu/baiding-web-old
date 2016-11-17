@@ -41,22 +41,51 @@
         <span class="time">{{message.createdAt | fromNow}}</span>
       </div>
 
-      <div class="content" *ngIf="message.type === 0 || message.type === 3"
-           [innerHtml]="parseContent(message.content)"></div>
+      <div class="content" *ngIf="message.type === 0 || message.type === 3">
+        <div [innerHtml]="parseContent(message.content)"></div>
+        <div class="post-status">
+          <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
+          <i class="bi bi-warning-round"
+             (click)="resendMessage(message)"
+             *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
+          ></i>
+        </div>
+      </div>
+
       <div class="content image-content" *ngIf="message.type === 1">
-        <image-viewer-preview [imageLinks]="[message.image]"></image-viewer-preview>
+        <image-viewer-preview
+          [imageLinks]="[message.image]"
+          *ngIf="message.postStatus === postStatus.PostSuccessful"
+        ></image-viewer-preview>
+        <image-viewer-preview
+          [imageFiles]="[message.image.imageData]"
+          *ngIf="message.postStatus !== postStatus.PostSuccessful"
+        ></image-viewer-preview>
+        <div class="post-status">
+          <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
+          <i class="bi bi-warning-round"
+             (click)="resendMessage(message)"
+             *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
+          ></i>
+        </div>
       </div>
 
       <div class="content audio-content" *ngIf="message.type === 2">
         <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
                       [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
-
         <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
              (click)="toggleTranslatioExpanded(message.audio.translateResult)">
           <div class="translate-tips">以下由机器自动翻译</div>
           {{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}
         </div>
         <i class="bi bi-elliplis" *ngIf="isTranslationExpanded"></i>
+        <div class="post-status">
+          <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
+          <i class="bi bi-warning-round"
+             (click)="resendMessage(message)"
+             *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
+          ></i>
+        </div>
       </div>
 
       <div class="tooltips-container">
@@ -69,10 +98,14 @@
       <div class="thumbs-up-animations" praisedAnimation>
         <praised-animation *ngFor="let userAnim of message.praisedAnimations" [userAnim]="userAnim"></praised-animation>
       </div>
-      <a class="thumbs-up-btn" (click)="setPraise()">
-        <i class="bi bi-thumbsup"></i>
-      </a>
-      <span class="thumbs-up-count" (click)="setPraise()">{{message.praisedAmount}}</span>
+
+      <div class="thumbs-up-inner" *ngIf="message.postStatus === postStatus.PostSuccessful">
+        <a class="thumbs-up-btn" (click)="setPraise()">
+          <i class="bi bi-thumbsup"></i>
+        </a>
+
+        <span class="thumbs-up-count" (click)="setPraise()">{{message.praisedAmount}}</span>
+      </div>
     </div>
   </div>
 
@@ -88,6 +121,13 @@
         <div class="content">
           {{reply.user.nick}}回复{{message.user.nick}}
           <div [innerHtml]="parseContent(reply.content)"></div>
+          <div class="post-status">
+            <i class="bi bi-sun-flow loading-animation" *ngIf="reply.postStatus === postStatus.Pending"></i>
+            <i class="bi bi-warning-round"
+               (click)="resendMessage(reply)"
+               *ngIf="reply.postStatus !== postStatus.PostSuccessful && reply.postStatus !== postStatus.Pending"
+            ></i>
+          </div>
         </div>
       </div>
     </div>

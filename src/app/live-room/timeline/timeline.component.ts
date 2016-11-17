@@ -56,6 +56,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.timelineService.onReceivedEvents(evt => this.onReceivedEvents(evt));
     this.timelineService.onReceivedPraises(prised => this.onReceivedPraises(prised));
     this.timelineService.onReceiveMessages(message => this.onReceiveMessages(message));
+    this.timelineService.onDeleteMessages(message => this.onDeleteMessages(message));
 
     this.startObserveTimelineAction();
     this.startReceiveReply();
@@ -197,6 +198,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.scroller.scrollToBottom();
     }, 0);
+  }
+
+  onDeleteMessages(message: MessageModel) {
+    for (let idx in this.messages) {
+      if (this.messages[idx].id == message.id) {
+        this.scroller.deleteData(+idx, 1);
+      }
+    }
   }
 
   gotoLatestMessages(): Promise<void> {
@@ -370,7 +379,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
       reply => {
         for (let message of this.messages) {
           if (message.id === reply.parentId) {
-            message.replies.push(reply)
+            let hasReply = false;
+
+            for (let _reply of message.replies) {
+              if (reply.id === _reply.id) {
+                hasReply = true;
+              }
+            }
+
+            if (!hasReply) message.replies.push(reply);
           }
         }
       }

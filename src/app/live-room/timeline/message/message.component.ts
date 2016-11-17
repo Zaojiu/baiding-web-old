@@ -1,9 +1,9 @@
 import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy, ElementRef} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {MessageModel} from '../../../shared/api/message/message.model';
-import {MessageType} from '../../../shared/api/message/message.enum';
-import {UserInfoModel, UserPublicInfoModel} from '../../../shared/api/user-info/user-info.model';
+import {MessageModel, ReplyMessageModel} from '../../../shared/api/message/message.model';
+import {MessageType, PostMessageStatus} from '../../../shared/api/message/message.enum';
+import {UserInfoModel} from '../../../shared/api/user-info/user-info.model';
 import {LiveService} from '../../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../../shared/api/live/live.model';
 import {MessageService} from './message.service';
@@ -17,6 +17,8 @@ import {Subscription} from "rxjs";
 import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 import {TextPopupService} from "../../../shared/text-popup/text-popup.service";
+import {ModalService} from "../../../shared/modal/modal.service";
+import {MessageApiService} from "../../../shared/api/message/message.api";
 
 @Component({
   selector: 'message',
@@ -45,11 +47,13 @@ export class MessageComponent implements OnInit, OnDestroy {
   isTranslationExpanded: boolean;
   tranlationExpandedSub: Subscription;
   tranlationMaxLength = 32;
+  postStatus = PostMessageStatus;
 
-  constructor(private messageService: MessageService,
+  constructor(private messageService: MessageService, private messageApiService: MessageApiService,
               private router: Router, private liveService: LiveService,
               private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
-              private userInfoService: UserInfoService, private textPopupService: TextPopupService) {
+              private userInfoService: UserInfoService, private textPopupService: TextPopupService,
+              private modalService: ModalService) {
   }
 
 
@@ -161,7 +165,9 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   canReply(): boolean {
-    return this.message.user.uid !== this.userInfo.uid && !this.isAudience();
+    // 发送成功才能回复(特殊情况,例如推送,信息uid不是推送人), 不然id是前端随机id, 会有问题。
+    return this.message.user.uid !== this.userInfo.uid && !this.isAudience() &&
+      this.message.postStatus === PostMessageStatus.PostSuccessful;
   }
 
   goToShare() {
@@ -272,6 +278,12 @@ export class MessageComponent implements OnInit, OnDestroy {
   getUserPublicInfoAndPopUpCard(userUid: number) {
     this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
       this.editorCardService.popup(userPublicInfo);
+    });
+  }
+
+  resendMessage(message: MessageModel|ReplyMessageModel) {
+    this.modalService.popup('确定重发消息吗?').then((result) => {
+      if (result) this.messageApiService.resendMessage(this.liveId, this.message);
     });
   }
 }

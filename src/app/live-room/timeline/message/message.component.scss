@@ -11,6 +11,8 @@
     }
 
     .content-container {
+      flex-grow: 1;
+
       img {
         max-width: 100%;
       }
@@ -26,8 +28,6 @@
           flex-shrink: 0;
         }
       }
-
-      flex-grow: 1;
     }
   }
 
@@ -44,8 +44,10 @@
     &.had-thumbs-up {
       color: rgb(33, 150, 243);
 
-      .thumbs-up-btn {
-        color: rgb(33, 150, 243);
+      .thumbs-up-inner {
+        .thumbs-up-btn {
+          color: rgb(33, 150, 243);
+        }
       }
     }
 
@@ -59,19 +61,24 @@
       pointer-events: none;
     }
 
-    .thumbs-up-btn, .thumbs-up-count {
-      flex-shrink: 0;
-      line-height: 1em;
-    }
+    .thumbs-up-inner {
+      display: flex;
+      flex-direction: column;
 
-    .thumbs-up-btn {
-      padding-bottom: 5px;
-      font-size: 21px;
-      color: rgb(75, 75, 75);
-    }
+      .thumbs-up-btn, .thumbs-up-count {
+        flex-shrink: 0;
+        line-height: 1em;
+      }
 
-    .thumbs-up-count {
-      font-size: 14px;
+      .thumbs-up-btn {
+        padding-bottom: 5px;
+        font-size: 21px;
+        color: rgb(75, 75, 75);
+      }
+
+      .thumbs-up-count {
+        font-size: 14px;
+      }
     }
   }
 }
@@ -118,6 +125,7 @@
     }
 
     .content-container .content {
+      position: relative;
       user-select: none;
       touch-callout: none;
       padding: 12px;
@@ -126,6 +134,25 @@
       font-size: 16px;
       border-radius: 10px;
       word-break: break-all;
+
+      .post-status {
+        position: absolute;
+        right: -38px;
+        top: 14px;
+        z-index: 1;
+
+        .bi {
+          font-size: 24px;
+        }
+
+        .bi-warning-round {
+          color: rgb(243, 33, 33);
+        }
+
+        .bi-sun-flow {
+          color: rgb(158, 161, 165);
+        }
+      }
     }
 
     // 我的内容，用蓝色背景
@@ -196,6 +223,7 @@
 
     .content-container {
       width: calc(100% - 54px - 68px);
+
       .content-info {
         line-height: 1em;
         margin-bottom: 4px;
@@ -223,6 +251,7 @@
       .audio-content {
         display: flex;
         flex-direction: column;
+
         .translate {
           position: relative;
           margin-top: 12px;
@@ -251,7 +280,7 @@
           }
         }
 
-        .bi {
+        .bi-elliplis {
           margin-top: 4px;
           font-size: 12px;
           color: rgb(75, 75, 75);

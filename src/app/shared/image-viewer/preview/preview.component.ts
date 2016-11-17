@@ -1,7 +1,6 @@
 import {
-  Component, ElementRef, EventEmitter, Output, Input, OnInit, OnDestroy, OnChanges, SimpleChange
+  Component, ElementRef, EventEmitter, Output, Input, OnDestroy, SimpleChange
 } from '@angular/core';
-import {ModalService} from "../../modal/modal.service";
 import {ImageViewerService} from "../image-viewer.service";
 import {Subscription} from 'rxjs/Subscription';
 import {ImageMessageModel} from "../../api/message/message.model";
@@ -14,22 +13,19 @@ declare var $: any;
 
 })
 
-export class PreviewComponent implements OnInit,OnDestroy {
+export class PreviewComponent implements OnDestroy {
   private el: HTMLElement;
   closeImgSubscription: Subscription;
   deleteImgSubscription: Subscription;
   @Input() imageFiles: File[];
   @Output() imageFilesChange = new EventEmitter<File[]>();
   @Input() imageLinks: ImageMessageModel[];
+  @Input() canDelete = false;
   imageSrc = '';
   isPopup: boolean;
 
-  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService) {
+  constructor(el: ElementRef, private imageViewerService: ImageViewerService) {
     this.el = el.nativeElement
-  }
-
-  ngOnInit() {
-
   }
 
   unsubcribe() {
@@ -63,7 +59,7 @@ export class PreviewComponent implements OnInit,OnDestroy {
   }
 
   imagePopup() {
-    this.imageViewerService.popup(this.imageLinks, this.imageFiles);
+    this.imageViewerService.popup(this.imageLinks, this.imageFiles, this.canDelete);
 
     this.closeImgSubscription = this.imageViewerService.imageClose$.subscribe(() => {
       this.unsubcribe();
