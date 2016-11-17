@@ -1,26 +1,24 @@
-<div class="loading" *ngIf="isLoading">
-
-</div>
+<div class="loading" *ngIf="isLoading"></div>
 
 <form class="vip-info-container" *ngIf="!isLoading" (ngSubmit)="submit()">
-  <live-room-top-bar [liveId]="liveId"></live-room-top-bar>
+  <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
 
-  <div class="vip-name-wrapper ">
-    <div class="name">嘉宾名字</div>
-    <div class="input-container">
-      <input class="input" name="nameContent" [(ngModel)]="nameContent" autofocus>
+  <div class="main-form">
+    <div class="vip-name-wrapper ">
+      <div class="name">嘉宾名字</div>
+      <div class="input-container">
+        <input class="input" name="nameContent" [(ngModel)]="nameContent" autofocus>
+      </div>
     </div>
-  </div>
 
-
-  <div class="vip-intro-wrapper ">
-    <div class="intro">嘉宾介绍</div>
-    <span class="intro-word">简介字数100字以内，可不填写</span>
-    <div class="input-container">
+    <div class="vip-intro-wrapper ">
+      <div class="intro">嘉宾介绍</div>
+      <span class="intro-word">简介字数100字以内，可不填写</span>
+      <div class="input-container">
     <textarea class="input" name="introContent" [(ngModel)]="introContent"
               autofocus></textarea>
+      </div>
     </div>
-
   </div>
 
   <div class="button-wrapper">
