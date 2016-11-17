@@ -44,6 +44,7 @@ import {AudioBridge} from "./shared/bridge/audio.interface";
 import {AuthBridge} from "./shared/bridge/auth.interface";
 import {ShareBridge} from "./shared/bridge/share.interface";
 import {WechatConfigService} from "./shared/wechat/wechat.service";
+import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
 
 let bridgeServices = [];
 
@@ -56,6 +57,18 @@ if (UtilsService.isInWechat) {
     {provide: AudioBridge, useExisting: WechatAudioService},
     {provide: AuthBridge, useExisting: WechatAuthService},
     {provide: ShareBridge, useExisting: WechatShareService},
+  ];
+} else if (UtilsService.isInApp) {
+
+} else {
+  bridgeServices = [
+    // WechatAudioService,
+    PcAuthService,
+    // WechatShareService,
+    // WechatConfigService,
+    // {provide: AudioBridge, useExisting: WechatAudioService},
+    {provide: AuthBridge, useExisting: PcAuthService},
+    // {provide: ShareBridge, useExisting: WechatShareService},
   ];
 }
 
