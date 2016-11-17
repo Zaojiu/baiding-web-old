@@ -36,7 +36,7 @@ import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 import {AdminGuard} from "./shared/guard/admin.guard";
 import {UserInfoResolver} from "./shared/guard/user-info.resolver";
-import {UtilsService} from "./shared/utils/utils";
+// import {UtilsService} from "./shared/utils/utils";
 import {WechatAudioService} from "./shared/bridge/audio/wechat-audio.service";
 import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
 import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
@@ -44,33 +44,7 @@ import {AudioBridge} from "./shared/bridge/audio.interface";
 import {AuthBridge} from "./shared/bridge/auth.interface";
 import {ShareBridge} from "./shared/bridge/share.interface";
 import {WechatConfigService} from "./shared/wechat/wechat.service";
-import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
-
-let bridgeServices = [];
-
-if (UtilsService.isInWechat) {
-  bridgeServices = [
-    WechatAudioService,
-    WechatAuthService,
-    WechatShareService,
-    WechatConfigService,
-    {provide: AudioBridge, useExisting: WechatAudioService},
-    {provide: AuthBridge, useExisting: WechatAuthService},
-    {provide: ShareBridge, useExisting: WechatShareService},
-  ];
-} else if (UtilsService.isInApp) {
-
-} else {
-  bridgeServices = [
-    // WechatAudioService,
-    PcAuthService,
-    // WechatShareService,
-    // WechatConfigService,
-    // {provide: AudioBridge, useExisting: WechatAudioService},
-    {provide: AuthBridge, useExisting: PcAuthService},
-    // {provide: ShareBridge, useExisting: WechatShareService},
-  ];
-}
+// import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
 
 @NgModule({
   imports: [
@@ -93,7 +67,13 @@ if (UtilsService.isInWechat) {
     OperationTipsComponent,
   ],
   providers: [
-    ...bridgeServices,
+    WechatAudioService,
+    WechatAuthService,
+    WechatShareService,
+    WechatConfigService,
+    {provide: AudioBridge, useExisting: WechatAudioService},
+    {provide: AuthBridge, useExisting: WechatAuthService},
+    {provide: ShareBridge, useExisting: WechatShareService},
     Title,
     AuthGuard,
     AdminGuard,
