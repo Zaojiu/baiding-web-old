@@ -3,6 +3,7 @@ import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
+import {PostMessageStatus} from "../api/message/message.enum";
 
 @Component({
   selector: 'audio-player',
@@ -15,6 +16,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   @Input() message: MessageModel;
   @Input() isWhiteTheme: MessageModel;
   @LocalStorage() public audioPlayed: Object = {};
+  postStatus = PostMessageStatus;
 
   @Output() playEnded = new EventEmitter();
 
@@ -39,6 +41,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
       this.played = true;
       this.audioPlayed[this.message.id] = true;
     }
+
     this.audioPlayerService.userActivated = true;
     this.audioPlayerService.play(this.message).subscribe(value => {
       if (value === 'loaded') {

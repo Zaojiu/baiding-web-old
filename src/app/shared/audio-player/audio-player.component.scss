@@ -57,6 +57,7 @@
     border: solid 1px rgb(75, 75, 75);
     border-radius: 50%;
     box-sizing: content-box;
+
     &.no-border{
       border-color:transparent;
     }
@@ -83,20 +84,5 @@
     right: 0;
     top: -12px;
     right: -36px;
-  }
-}
-
-.loading-animation{
-  animation: rotateFrames linear 1s;
-  animation-iteration-count: infinite;
-  transform-origin: 50% 50%;
-}
-
-@keyframes rotateFrames{
-  0% {
-    transform:  rotate(0deg) ;
-  }
-  100% {
-    transform:  rotate(180deg) ;
   }
 }

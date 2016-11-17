@@ -18,7 +18,7 @@ import {sizeValidator, typeValidator} from "../../shared/file-selector/file-sele
 import {Subscription} from "rxjs";
 import {MessageService} from "../timeline/message/message.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
-import {AudioModel} from "../../shared/bridge/audio.model";
+import {RecorderData} from "./recorder/recorder.models";
 
 declare var $: any;
 
@@ -134,23 +134,20 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
 
-  recordEnd(audioModel: AudioModel) {
-    this.messageApiService.postAudioMessage(this.liveId, audioModel.localId, audioModel.serverId, audioModel.translateResult, '', audioModel.duration);
+  recordEnd(recorderData: RecorderData) {
+    this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, null, recorderData.duration);
   }
 
   postMessage() {
     if (this.messageContent === '' || this.isMessageSubmitting) return;
 
-    this.isMessageSubmitting = true;
-
     if (!this.isClose) {
-      return this.messageApiService.postTextMessage(this.liveId, this.messageContent).then(() => {
-        this.isMessageSubmitting = false;
-        this.messageContent = '';
-        setTimeout(() => {
-          this.resizeMessageInput()
-        }, 0);
-      });
+      this.messageApiService.postTextMessage(this.liveId, this.messageContent);
+      this.isMessageSubmitting = false;
+      this.messageContent = '';
+      setTimeout(() => {
+        this.resizeMessageInput()
+      }, 0);
     } else {
       return this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
         this.isMessageSubmitting = false;
@@ -180,14 +177,10 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
   postImage() {
-    if (!this.images || !this.images.length || this.isMessageSubmitting) return;
+    if (!this.images || !this.images.length) return;
 
-    this.isMessageSubmitting = true;
-
-    this.messageApiService.postImgMessage(this.liveId, this.images[0]).then(() => {
-      this.isMessageSubmitting = false;
-      this.images = [];
-    });
+    this.messageApiService.postImageMessage(this.liveId, this.images[0]);
+    this.images = [];
   }
 
   postTips() {

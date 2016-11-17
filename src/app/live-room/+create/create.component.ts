@@ -101,12 +101,7 @@ export class CreateComponent implements OnInit, DoCheck {
     this.liveService.createLive(this.title, '', this.desc, expectStartAt.toISOString()).then(liveId => {
       if (this.coverFiles && this.coverFiles.length) {
         return this.liveService.getCoverUploadToken(liveId).then((data) => {
-          let uploadOption = {
-            key: data.coverKey,
-            token: data.token,
-          };
-
-          return this.uploadService.uploadToQiniu(this.coverFiles[0], uploadOption);
+          return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
         }).then((imageKey) => {
           return this.updateLiveInfo(liveId, imageKey);
         });

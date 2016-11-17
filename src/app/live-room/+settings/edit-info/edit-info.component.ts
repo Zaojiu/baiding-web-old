@@ -119,12 +119,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   postLiveInfo() {
     if (this.coverFiles && this.coverFiles.length) {
       this.liveService.getCoverUploadToken(this.liveId).then((data) => {
-        let uploadOption = {
-          key: data.coverKey,
-          token: data.token,
-        };
-
-        return this.uploadService.uploadToQiniu(this.coverFiles[0], uploadOption);
+        return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
       }).then((imageKey) => {
         this.coverKey = imageKey;
         this.updateLiveInfo();

@@ -38,4 +38,9 @@ export class UtilsService {
       document.body.scrollTop = document.body.scrollHeight;
     }, 400);
   }
+
+  static randomId(size = 10, dic?: string): string {
+    let defaultDic: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return _.sampleSize<string>((dic||defaultDic).split(''), size).join('');
+  }
 }

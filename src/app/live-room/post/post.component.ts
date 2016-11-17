@@ -52,31 +52,19 @@ export class PostComponent implements OnInit {
   submit() {
     /*判断是否存在回复和推送动作*/
     if (this.commentId) {
-      this.pushComment().then(()=> {
-        this.backToMainScreen();
-      });
-    } else if (this.messageId) {
-      this.postMessage().then(()=> {
-        this.backToMainScreen();
-      });
+
+      this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
+        this.additionalContent.user, this.additionalContent.content);
+      this.isSubmited = true;
+      this.backToMainScreen();
+
+    } else if (this.messageId && this.content !== '') {
+
+      this.messageApiService.postTextMessage(this.id, this.content, this.messageId);
+      this.isSubmited = true;
+      this.backToMainScreen();
+
     }
-  }
-
-  pushComment(): Promise<any> {
-    return this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
-      this.additionalContent.user.uid, this.additionalContent.content).then(() => {
-      this.isSubmited = true;
-      return;
-    });
-  }
-
-  postMessage(): Promise<any> {
-    if (this.content === '') return Promise.reject('');
-
-    return this.messageApiService.postTextMessage(this.id, this.content, this.messageId).then(() => {
-      this.isSubmited = true;
-      return;
-    })
   }
 
   canDeactivate() {

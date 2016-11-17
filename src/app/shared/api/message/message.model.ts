@@ -1,8 +1,9 @@
-import {MessageType} from './message.enum';
+import {MessageType, PostMessageStatus} from './message.enum';
 import {UserInfoModel} from '../user-info/user-info.model'
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model'
 
 export class AudioMessageModel {
+  audioData: Blob;
   localId: string;
   serverId: string;
   translateResult: string;
@@ -16,9 +17,11 @@ export class ReplyMessageModel {
   user: UserInfoModel;
   content: string;
   createdAt: string;
+  postStatus = PostMessageStatus.PostSuccessful;
 }
 
 export class ImageMessageModel {
+  imageData: File;
   link: string;
   thumbLink: string;
   smallLink: string;
@@ -33,12 +36,13 @@ export class MessageModel {
   type: MessageType;
   audio: AudioMessageModel;
   image: ImageMessageModel;
-  hadPraised: boolean;
-  praisedAmount: number;
+  hadPraised: boolean = false;
+  praisedAmount: number = 0;
   praisedAnimations: UserAnimEmoji[] = [];
   praisedAvatars: UserInfoModel[] = [];
   replies: ReplyMessageModel[] = [];
   createdAt: string;
+  postStatus = PostMessageStatus.PostSuccessful;
 
   getPraisedAvatars(currentUser: UserInfoModel) {
     let avatars = this.praisedAvatars.filter((item, index) => item.uid != currentUser.uid);
@@ -83,13 +87,15 @@ export class PostPraiseModel {
 }
 
 export class PostImageMessageModel {
+  imageData: File;
   key: string;
 }
 
 export class PostAudioMessageModel {
-  link: string;
   text: string;
   weixinId: string;
+  localId: string;
+  audioData: Blob;
   duration: number;
 }
 
@@ -100,10 +106,22 @@ export class PostNiceMessageModel {
 }
 
 export class PostMessageModel {
+  liveId: string;
   type: string;
   content: string;
   parentId: string;
   audio: PostAudioMessageModel;
   image: PostImageMessageModel;
   nice: PostNiceMessageModel;
+  originMessage: MessageModel|ReplyMessageModel;
+}
+
+export class UploadTokenModel {
+  token: string;
+  key: string;
+
+  constructor(token: string, key: string) {
+    this.token = token;
+    this.key = key;
+  }
 }

@@ -30,9 +30,11 @@ export class ImgEvent {
 export class ImgPopupModel {
   links: ImageMessageModel[];
   images: File[];
+  canDelete: boolean;
 
-  constructor(links: ImageMessageModel[], images: File[]) {
+  constructor(links: ImageMessageModel[], images: File[], canDelete: boolean) {
     this.links = links;
     this.images = images;
+    this.canDelete = canDelete;
   }
 }

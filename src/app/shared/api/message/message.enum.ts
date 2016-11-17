@@ -8,3 +8,11 @@ export enum MessageType {
   LiveEnd,
   LiveRoomInfo,
 }
+
+export enum PostMessageStatus {
+  Pending = 0,
+  PostSuccessful,
+  PostFailed,
+  UploadFailed,
+  TranslateFailed,
+}

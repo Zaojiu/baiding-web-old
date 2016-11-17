@@ -17,6 +17,7 @@ export class ImageViewerComponent implements OnInit {
   isPopup: boolean;
   imgEvent: ImgEvent;
   isLoading: boolean;
+  canDelete: boolean;
 
   constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService) {
     this.el = el.nativeElement
@@ -28,6 +29,7 @@ export class ImageViewerComponent implements OnInit {
 
       this.isPopup = true;
       this.isLoading = true;
+      this.canDelete = model.canDelete;
 
       if (model.images && model.images.length) {
         let imagesFile = model.images[0];
@@ -51,10 +53,6 @@ export class ImageViewerComponent implements OnInit {
     let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {});
     pinchWrapper.get('pinch').set({enable: true});
     pinchWrapper.get('doubletap').set({enable: true});
-  }
-
-  hasFile() {
-    return /^data:image\/.*?;base64/.test(this.imageSrc);
   }
 
   closePopup() {
