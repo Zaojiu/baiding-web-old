@@ -20,6 +20,14 @@
     <div class="live-room-info-upper" *ngFor="let liveInfo of livesList">
 
       <div class="article" *ngIf="liveInfo && liveInfo.admin">
+
+        <div class="title-wrapper">
+          <div class="title">{{liveInfo.subject}}</div>
+          <div class="indicator notstarted" *ngIf="liveInfo.isCreated()">未开始</div>
+          <div class="indicator living" *ngIf="liveInfo.isStarted()">直播中</div>
+          <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">未开始</div>
+        </div>
+
         <div class="talent">
           <img class="talent-avatar" [src]="liveInfo.admin.avatar" alt="">
           <div class="timenick-wrapper">
@@ -39,13 +47,6 @@
       </span>
             </div>
           </div>
-        </div>
-
-        <div class="title-wrapper">
-          <div class="title">{{liveInfo.subject}}</div>
-          <div class="indicator notstarted" *ngIf="liveInfo.isCreated()">未开始</div>
-          <div class="indicator living" *ngIf="liveInfo.isStarted()">直播中</div>
-          <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">未开始</div>
         </div>
 
         <div class="words">{{liveInfo.desc}}</div>

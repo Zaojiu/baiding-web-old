@@ -131,7 +131,9 @@
 
         .talent {
           display: flex;
-          margin-left: 23px;
+          margin-top: 10px;
+          margin-left: 12px;
+          margin-right: 12px;
           height: 28px;
           font-size: 14px;
           color: rgb(158, 161, 165);
@@ -172,7 +174,7 @@
           display: flex;
 
           .title {
-            margin: 17px 29px auto 12px;
+            margin: 0px 29px auto 12px;
             text-align: justify;
             color: rgba(75, 75, 75, 1);
             letter-spacing: 0.58px;
@@ -206,7 +208,7 @@
         }
 
         .words {
-          margin: 10px 23px 5px;
+          margin: 10px 12px 5px;
           word-break: break-all;
           font-size: 16px;
           color: rgba(75, 75, 75, 1);

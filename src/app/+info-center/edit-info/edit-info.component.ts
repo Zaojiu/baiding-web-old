@@ -68,7 +68,7 @@ export class EditInfoComponent implements OnInit {
       let user = new UserInfoModel();
       user.nick = this.nameContent;
       user.intro = this.introContent;
-      return this.http.post(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
+      return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
         this._location.back();
       });
     }
