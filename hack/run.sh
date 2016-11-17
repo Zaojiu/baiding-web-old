@@ -14,8 +14,8 @@ function docker_killrm(){
 }
 
 function docker_start(){
-    state=`docker inspect -f "{{.State.Status}},{{.State.Running}}" baiding-web`
-    [ "${state}" == "running,true" ] && return
+    # state=`docker inspect -f "{{.State.Status}},{{.State.Running}}" baiding-web`
+    # [ "${state}" == "running,true" ] && return
     docker_killrm
     docker run -d -i --name baiding-web -p 9000:9000 \
         -v baiding-web-node-modules:/root/zaojiu/baiding-web/node_modules \
@@ -134,7 +134,6 @@ for target in $@; do
             ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0
             ;;
         serve.prod)
-            ./hack/run.sh build.prod || { exit 1; }
             ./node_modules/static-server/bin/static-server.js -p 9000 ./dist
             ;;
         serve.test-prod)
