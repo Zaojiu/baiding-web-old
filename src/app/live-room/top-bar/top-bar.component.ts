@@ -4,7 +4,9 @@ import {TimelineService} from "../timeline/timeline.service";
 import {Subscription} from "rxjs";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {FadeDirective} from "../../shared/animation/fade/fade.directive";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
+import {LiveService} from "../../shared/api/live/live.service";
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 declare var $: any;
 
@@ -20,6 +22,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   @Input() onlineCount: number;
   @Input() isTimelineOnOldest: boolean;
   @Input() isTimelineOnLatest: boolean;
+  @Input() userInfo: UserInfoModel;
   @ViewChildren(FadeDirective) oldestLatestBtns: QueryList<FadeDirective>;
   isGotoOldestShown = false;
   isGotoLatestShown = false;
@@ -27,7 +30,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   originTop: number;
   distance = 200;
 
-  constructor(private sharePopupService: SharePopupService, private timelineService: TimelineService, private router: Router) {
+  constructor(private sharePopupService: SharePopupService, private timelineService: TimelineService, private route: ActivatedRoute, private router: Router, private  liveService: LiveService) {
   }
 
   ngOnInit() {
@@ -106,7 +109,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   }
 
   gotoInfoCenter() {
-    // this.router.navigate([`/info-center`]);
+    this.router.navigate([`/info-center/` + this.userInfo.uid , {uid: this.userInfo.uid}]);
   }
 
   toggleComment(isOpened: boolean) {

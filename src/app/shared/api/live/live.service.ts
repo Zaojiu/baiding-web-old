@@ -205,6 +205,66 @@ export class LiveService {
     });
   }
 
+  listLiveInfo(uid: number): Promise<LiveInfoModel[]> {
+    const url = `${environment.config.host.io}/api/live/streams/owner/${uid}`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+      let streamData = data.result;
+      let usersData = data.include;
+      let liveInfoList: LiveInfoModel[] = [];
+      for (let liveInfo of streamData) {
+        let liveInfoParsed = this.parseLiveListInfo(liveInfo, usersData);
+        liveInfoList.push(liveInfoParsed);
+      }
+      return liveInfoList;
+    });
+  }
+
+  parseLiveListInfo(streamData: any, usersData: any): LiveInfoModel {
+
+    let liveInfo = new LiveInfoModel;
+    let users = usersData.users;
+    let stream = streamData;
+
+    liveInfo.id = stream.id;
+    liveInfo.subject = stream.subject;
+    liveInfo.desc = stream.desc;
+    liveInfo.coverUrl = stream.coverUrl;
+    liveInfo.kind = stream.kind;
+
+    liveInfo.owner = users[stream.owner] as UserInfoModel;
+    liveInfo.admin = users[stream.admin] as UserInfoModel;
+    liveInfo.editors = [];
+    for (let uid of stream.editors) {
+      let user = users[uid];
+      if (!user) {
+        continue
+      }
+      liveInfo.editors.push(user);
+    }
+
+    liveInfo.expectStartAt = stream.expectStartAt;
+    liveInfo.expectDuration = stream.expectDuration;
+    liveInfo.startedAt = stream.startedAt;
+    liveInfo.closedAt = stream.closedAt;
+    liveInfo.createdAt = (+stream.createdAt / 1e6).toString();
+    liveInfo.updatedAt = (+stream.updatedAt / 1e6).toString();
+    liveInfo.isDraft = stream.isDraft;
+
+    if (stream.status === 'created') liveInfo.status = LiveStatus.Created;
+    if (stream.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
+    if (stream.status === 'started') liveInfo.status = LiveStatus.Started;
+    if (stream.status === 'closed') liveInfo.status = LiveStatus.Ended;
+
+    liveInfo.praised = stream.praised;
+    liveInfo.commented = stream.commented;
+    liveInfo.niced = stream.niced;
+    liveInfo.shared = stream.shared;
+    liveInfo.lcConvId = stream.lcConvId;
+
+    return liveInfo
+  }
+
   banComment(id: string, uid: number): Promise<void> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users/${uid}/silence`;
 

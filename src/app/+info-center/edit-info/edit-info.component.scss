@@ -1,0 +1,114 @@
+.edit-info-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  color: rgb(75, 75, 75);
+  display: flex;
+  flex-direction: column;
+
+  .top-bar {
+    flex-shrink: 0;
+  }
+
+  .main-form {
+    flex-grow: 1;
+    overflow: auto;
+    padding-bottom: 48px;
+  }
+
+  .operation-area {
+    flex-shrink: 0;
+  }
+
+  .main-form {
+    .avatar-wrapper {
+      display: flex;
+
+      .avatar {
+        margin-top: 25px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+    }
+
+    .vip-name-wrapper {
+      margin: 20px 12px auto 12px;
+
+      .name {
+        font-size: 18px;
+      }
+
+      .input-container {
+        border: solid 1px rgb(205, 205, 205);
+        background: rgb(245, 245, 245);
+        border-radius: 4px;
+
+        .input {
+          font-size: 20px;
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          background: rgb(245, 245, 245);
+        }
+      }
+    }
+
+    .vip-intro-wrapper {
+      margin: 20px 12px auto 12px;
+
+      .intro {
+        font-size: 18px;
+      }
+
+      .intro-word {
+        font-size: 12px;
+        color: rgb(158, 161, 165);
+        margin-top: 6px;
+        margin-bottom: 10px;;
+      }
+
+      .input-container {
+        border: solid 1px rgb(205, 205, 205);
+        border-radius: 4px;
+        background: rgb(245, 245, 245);
+        margin-top: 10px;
+
+        .input {
+          font-size: 16px;
+          width: 100%;
+          height: 230px;
+          background: rgb(245, 245, 245);
+          border-radius: 4px;
+          resize: none;
+        }
+      }
+    }
+  }
+
+  .operation-area {
+    display: flex;
+    background-color: rgb(33, 150, 243);
+
+    .btn {
+      width: 50%;
+      text-align: center;
+      height: 44px;
+      line-height: 44px;
+      font-size: 16px;
+      color: rgb(255, 255, 255);
+    }
+  }
+}
+
+.loading{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
