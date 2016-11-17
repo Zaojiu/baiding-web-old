@@ -45,7 +45,7 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
   }
 
   get coverUrl(): SafeUrl {
-    let coverUrl = this.liveInfo.coverUrl ? `${this.liveInfo.coverUrl}?${this.liveInfo.updatedAt}` : '/assets/img/liveroombanner-blur.jpg';
+    let coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
     return this.sanitizer.bypassSecurityTrustUrl(coverUrl);
   }
 }
