@@ -65,7 +65,7 @@ export class SettingsComponent implements OnInit {
     return this.liveService.isAdmin(this.liveId);
   }
 
-  goInvitation() {
+  gotoInvitationInfo() {
     this.router.navigate([`/lives/${this.liveId}/vip-info`]);
   }
 
@@ -75,6 +75,10 @@ export class SettingsComponent implements OnInit {
 
   gotoCreate() {
     this.router.navigate([`/lives/create`]);
+  }
+
+  gotoInvitation(token: string) {
+    this.router.navigate(([`/lives/${this.liveId}/invitation`, {token: token}]));
   }
 
   closeWindow() {

@@ -46,7 +46,7 @@
             <p class="nick">{{vip.userInfo.nick}}</p>
           </div>
 
-          <div class="invited" *ngIf="!vip.userInfo">
+          <div class="invited" *ngIf="!vip.userInfo" (click)="gotoInvitation(vip.token)">
             <div class="invited-wrapper">
               <div class="invite-people-bg">
                 <i class="bi bi-people2"></i>
@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <div class="invite" (click)="goInvitation()" *ngIf="isAdmin"></div>
+        <div class="invite" (click)="gotoInvitationInfo()" *ngIf="isAdmin"></div>
       </div>
     </div>
 
