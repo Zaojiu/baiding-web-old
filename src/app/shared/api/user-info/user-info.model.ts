@@ -14,7 +14,7 @@ export class UserInfoModel {
   }
 }
 export class UserDetailInfoModel {
-  uid = 0;
+  uid: number;
   nick = '';
   intro = '';
   avatar = '';
@@ -22,7 +22,7 @@ export class UserDetailInfoModel {
 }
 
 export class UserPublicInfoModel {
-  uid = 0;
+  uid: number;
   sex = UserSex.Unknow;
   nick = '';
   avatar = '';

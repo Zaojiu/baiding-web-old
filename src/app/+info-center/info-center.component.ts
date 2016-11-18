@@ -66,19 +66,6 @@ export class InfoCenterComponent {
       this.pageUserInfo = pageUserInfo;
     });
 
-    // Promise.all([
-    //   this.liveService.listLiveInfo(this.uid),
-    //   this.userInfoService.getUserInfo(),
-    //   this.userInfoService.getUserPublicInfo(this.uid),
-    // ]).then((result) => {
-    //   this.livesList = result[0];
-    //   this.currentUserInfo = result[1];
-    //   this.pageUserInfo = result[2];
-    // }, (err) => {
-    //   this.router.navigate(['404']);
-    // });
-
-
     this.timer = setInterval(()=> {
       this.timeNow = UtilsService.now.toString();
     }, 1000);
@@ -96,8 +83,7 @@ export class InfoCenterComponent {
 
   goToEdit() {
     this.router.navigate([
-      `/info-center/${this.currentUserInfo.uid}/edit-info`,
-      {'uid': this.currentUserInfo.uid.toString()},
+      `/info-center/edit-info`,
     ]);
   }
 

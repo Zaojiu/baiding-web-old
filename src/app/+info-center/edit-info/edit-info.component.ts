@@ -30,11 +30,12 @@ export class EditInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.uid = +this.route.snapshot.params['uid'];
-    this.userInfoService.getUserDetailInfo(this.uid).then((user)=> {
-      this.user = user;
-      this.nameContent = this.user.nick;
-      this.introContent = this.user.intro;
+    this.userInfoService.getUserInfo().then(userInfo => {
+      this.userInfoService.getUserDetailInfo(userInfo.uid).then((user)=> {
+        this.user = user;
+        this.nameContent = this.user.nick;
+        this.introContent = this.user.intro;
+      });
     });
 
     this.form = this.fb.group({
@@ -58,7 +59,6 @@ export class EditInfoComponent implements OnInit {
   }
 
   postUserInfo() {
-    if (this.nameContent && this.nameContent.length) {
       let headers = new Headers({'Content-Type': 'application/json'});
       const url = `${environment.config.host.io}/api/user/detail`;
       let user = new UserInfoModel();
@@ -67,6 +67,5 @@ export class EditInfoComponent implements OnInit {
       return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
         this._location.back();
       });
-    }
   }
 }

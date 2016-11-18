@@ -9,13 +9,13 @@ import {AuthGuard} from "../shared/guard/auth.guard";
 
 const route: Routes = [
   {
-    path: ':uid',
-    component: InfoCenterComponent,
+    path: 'edit-info',
+    component: EditInfoComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: ':uid/edit-info',
-    component: EditInfoComponent,
+    path: ':uid',
+    component: InfoCenterComponent,
     canActivate: [AuthGuard],
   },
 ];
