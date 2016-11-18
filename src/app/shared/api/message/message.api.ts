@@ -165,29 +165,23 @@ export class MessageApiService {
       // 处理音频信息
       let _originMessage = originMessage as MessageModel;
 
-      this.audioService.translateVoice(_originMessage.audio.localId).then((translateResult) => {
-        _originMessage.audio.translateResult = translateResult;
-        postMessage.audio.text = translateResult;
+      this.audioService.uploadVoice(_originMessage.audio.localId).then((serverId) => {
+        _originMessage.audio.serverId = serverId;
+        postMessage.audio.weixinId = serverId;
+        delete postMessageCopy.audio.audioData;
 
-        this.audioService.uploadVoice(_originMessage.audio.localId).then((serverId) => {
-          _originMessage.audio.serverId = serverId;
-          postMessage.audio.weixinId = serverId;
-          delete postMessageCopy.audio.audioData;
+        this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise().then(res => {
+          let data = res.json();
 
-          this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise().then(res => {
-            let data = res.json();
-
-            _originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
-            _originMessage.id = data.id;
-            _originMessage.postStatus = PostMessageStatus.PostSuccessful;
-          }, (err) => {
-            _originMessage.postStatus = PostMessageStatus.PostFailed;
-          });
-        }, () => {
-          _originMessage.postStatus = PostMessageStatus.UploadFailed;
+          _originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
+          _originMessage.id = data.id;
+          _originMessage.audio.translateResult = data.audio.text;
+          _originMessage.postStatus = PostMessageStatus.PostSuccessful;
+        }, (err) => {
+          _originMessage.postStatus = PostMessageStatus.PostFailed;
         });
       }, () => {
-        _originMessage.postStatus = PostMessageStatus.TranslateFailed;
+        _originMessage.postStatus = PostMessageStatus.UploadFailed;
       }).finally(() => {
         this.posting = false;
         this.postMessage();
@@ -389,31 +383,25 @@ export class MessageApiService {
       postMessage.audio.localId = originMessage.audio.localId;
       postMessage.audio.duration = originMessage.audio.duration;
 
-      this.audioService.translateVoice(originMessage.audio.localId).then((translateResult) => {
-        originMessage.audio.translateResult = translateResult;
-        postMessage.audio.text = translateResult;
+      this.audioService.uploadVoice(originMessage.audio.localId).then((serverId) => {
+        originMessage.audio.serverId = serverId;
+        postMessage.audio.weixinId = serverId;
 
-        this.audioService.uploadVoice(originMessage.audio.localId).then((serverId) => {
-          originMessage.audio.serverId = serverId;
-          postMessage.audio.weixinId = serverId;
+        this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise().then(res => {
+          let data = res.json();
 
-          this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise().then(res => {
-            let data = res.json();
-
-            originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
-            originMessage.id = data.id;
-            originMessage.postStatus = PostMessageStatus.PostSuccessful;
-            this.timelineService.deleteMessage(originMessage);
-            this.timelineService.pushMessage(originMessage);
-          }, (err) => {
-            originMessage.postStatus = PostMessageStatus.PostFailed;
-          });
-        }, () => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
+          originMessage.id = data.id;
+          originMessage.audio.translateResult = data.audio.text;
+          originMessage.postStatus = PostMessageStatus.PostSuccessful;
+          this.timelineService.deleteMessage(originMessage);
+          this.timelineService.pushMessage(originMessage);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.PostFailed;
         });
       }, () => {
-        originMessage.postStatus = PostMessageStatus.TranslateFailed;
-      });
+        originMessage.postStatus = PostMessageStatus.UploadFailed;
+      })
     } else if (message instanceof MessageModel && (message as MessageModel).type === MessageType.Image) {
       // 处理图片信息
       let originMessage = message as MessageModel;
@@ -468,7 +456,7 @@ export class MessageApiService {
         message.postStatus = PostMessageStatus.PostSuccessful;
         message.id = data.id;
 
-        if (message instanceof MessageModel)  {
+        if (message instanceof MessageModel) {
           this.timelineService.deleteMessage(message);
           this.timelineService.pushMessage(message);
         }
