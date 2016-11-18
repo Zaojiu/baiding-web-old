@@ -19,7 +19,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   @Input() data: any[];
   @Input() dataContainerSelector: string;
   @Input() loadCount = 10;
-  @Input() maxDataCount = 20;
+  @Input() maxDataCount = 50;
   isHeadLoadingShown = false;
   isFootLoadingShown = false;
   private dataCache: any[];

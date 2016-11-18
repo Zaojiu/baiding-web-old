@@ -208,7 +208,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }
   }
 
-  gotoLatestMessages(): Promise<void> {
+  gotoLatestMessages(): Promise<MessageModel[]> {
     if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
@@ -229,13 +229,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.isOnLatest = true;
       this.isOnBottom = true;
       this.unreadCount = 0;
-      return;
+      return messages;
     }).finally(() => {
       this.isLoading = false;
     });
   }
 
-  gotoOldestMessages(): Promise<void> {
+  gotoOldestMessages(): Promise<MessageModel[]> {
     if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
@@ -246,10 +246,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
 
       this.scroller.resetData(messages);
+
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;
-      return;
+      return messages;
     }).finally(() => {
       this.isLoading = false;
     });
@@ -310,10 +311,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
     if (this.messages.length !== 0) {
       if (e.position == ScrollerPosition.OnTop) {
         let firstMessage = this.findFirstAvailableMessage(this.messages);
+
         if (!firstMessage) {
           this.scroller.hideHeadLoading();
           return;
         }
+
         if (!this.isOnOldest) {
           this.getPrevMessages(`$lt${firstMessage.createdAt}`, 10, ['-createdAt']).finally(() => {
             this.scroller.hideHeadLoading();
@@ -323,10 +326,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
         }
       } else if (e.position == ScrollerPosition.OnBottom) {
         let lastMessage = this.findLastAvailableMessage(this.messages);
+        
         if (!lastMessage) {
           this.scroller.hideFootLoading();
           return;
         }
+
         this.getNextMessages(`$gt${lastMessage.createdAt}`, 10, ['createdAt']).finally(() => {
           this.scroller.hideFootLoading();
         });
