@@ -1,6 +1,6 @@
 <div class="info-center" *ngIf="pageUserInfo">
   <div class="top-bar">
-    <a class="edit-btn" (click)="goToEdit()" *ngIf="!isAudience() && isSelf"><i class="bi bi-edit-btn"></i></a>
+    <a class="edit-btn" (click)="goToEdit()" *ngIf="isSelf"><i class="bi bi-edit-btn"></i></a>
     <div class="space"></div>
     <a class="share-btn" (click)="popupShare()"><i class="bi bi-share"></i></a>
   </div>
@@ -12,7 +12,7 @@
         <img class="avatar" [src]="pageUserInfo.avatar" alt="嘉宾头像">
       </div>
       <div class="name">{{pageUserInfo.nick}}</div>
-      <div class="intro">{{pageUserInfo.intro}}</div>
+      <div class="intro" *ngIf="pageUserInfo.intro">{{pageUserInfo.intro}}</div>
     </div>
 
     <div class="split-div"></div>
@@ -21,7 +21,7 @@
 
       <div class="article" *ngIf="liveInfo && liveInfo.admin">
 
-        <div class="title-wrapper">
+        <div class="title-wrapper" (click)="gotoLiveRoom(liveInfo.id)">
           <div class="title">{{liveInfo.subject}}</div>
           <div class="indicator notstarted" *ngIf="liveInfo.isCreated()">未开始</div>
           <div class="indicator living" *ngIf="liveInfo.isStarted()">直播中</div>
@@ -53,50 +53,47 @@
       </div>
 
       <div class="live-cover">
-        <img [src]="liveInfo.coverUrl" alt="">
+        <img [src]="covers[liveInfo.id]" alt="">
       </div>
 
-      <div class="invited-people" *ngIf="liveInfo && liveInfo.editors">
-        <div class="vips-container" *ngFor="let vip of liveInfo.editors">
+      <div
+        class="invited-people"
+        *ngIf="liveInfo && liveInfo.editors && liveInfo.editors.length + (invitees[liveInfo.id] || []).length !== 0"
+      >
+        <span class="title">受邀嘉宾</span>
 
-          <div class="title">
-            受邀嘉宾
-          </div>
-          <div class="content">
-
-            <div class="avatar-container" *ngFor="let vip of liveInfo.editors">
-              <div class="accepted" *ngIf="vip">
-                <div class="accepted-wrapper">
-                  <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
-                  <div class="tick"><i class="bi bi-tick"></i></div>
-                </div>
-              </div>
-              <p class="accept-nick" *ngIf="vip">{{vip.nick}}</p>
-
-              <div class="invited" *ngIf="!vip">
-                <div class="invited-wrapper">
-                  <div class="invite-people-bg">
-                    <i class="bi bi-people2"></i>
-                  </div>
-                </div>
-              </div>
-              <p class="invited-nick" *ngIf="!vip">{{vip.nick || '无名'}}</p>
+        <div class="vip-container" *ngFor="let vip of liveInfo.editors">
+          <div class="accepted">
+            <div class="avatar-wrapper">
+              <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
+              <div class="tick"><i class="bi bi-tick"></i></div>
             </div>
 
+            <span class="nick" *ngIf="vip">{{vip.nick}}</span>
+          </div>
+        </div>
+
+        <div class="vip-container" *ngFor="let invitee of (invitees[liveInfo.id] || [])">
+          <div class="invited" (click)="gotoInvitation(liveInfo.id, invitee)">
+            <div class="avatar-wrapper">
+              <div class="invite-people-bg">
+                <i class="bi bi-people2"></i>
+              </div>
+            </div>
+
+            <span class="nick">{{invitee.name || '无名'}}</span>
           </div>
         </div>
       </div>
 
-      <div class="people-and-edit-btn">
-        <div class="people-count">
-          <div class="avatar-wrapper" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
-            <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
-            <div class="total-users">
-              {{liveInfo.totalUsers >
-              999 ? '999+' :
-              liveInfo.totalUsers}}人观看
-            </div>
-          </div>
+      <div class="operation-area">
+        <div class="people-count" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
+          <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
+          <span class="total-users">
+            {{liveInfo.totalUsers >
+            999 ? '999+' :
+            liveInfo.totalUsers}}人观看
+          </span>
         </div>
 
         <div class="invite"

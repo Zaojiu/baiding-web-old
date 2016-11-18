@@ -11,6 +11,7 @@ const route: Routes = [
   {
     path: ':uid',
     component: InfoCenterComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: ':uid/edit-info',

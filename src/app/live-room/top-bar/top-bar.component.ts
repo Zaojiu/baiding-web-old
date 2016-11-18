@@ -109,7 +109,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   }
 
   gotoInfoCenter() {
-    this.router.navigate([`/info-center/` + this.userInfo.uid , {uid: this.userInfo.uid}]);
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 
   toggleComment(isOpened: boolean) {

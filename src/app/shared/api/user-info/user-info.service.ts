@@ -73,7 +73,7 @@ export class UserInfoService {
     if (data.country) userPublicInfo.country = data.country;
     if (data.province) userPublicInfo.province = data.province;
     if (data.city) userPublicInfo.city = data.city;
-    if (data.intro) userPublicInfo.city = data.intro;
+    if (data.intro) userPublicInfo.intro = data.intro;
 
     return userPublicInfo;
 

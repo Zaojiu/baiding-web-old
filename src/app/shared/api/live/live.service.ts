@@ -64,13 +64,9 @@ export class LiveService {
     return enterLiveRoom;
   }
 
-  parseLiveInfo(data: any): LiveInfoModel {
+  parseLiveInfo(stream: any, users: any, currentStreamUser?: any): LiveInfoModel {
 
     let liveInfo = new LiveInfoModel;
-
-    let stream = data.stream;
-    let users = data.users;
-    let currentStreamUser = data.currentStreamUser;
 
     liveInfo.id = stream.id;
     liveInfo.subject = stream.subject;
@@ -82,20 +78,24 @@ export class LiveService {
     liveInfo.admin = users[stream.admin] as UserInfoModel;
 
     liveInfo.editors = [];
-    stream.editors && stream.editors.forEach(function (uid) {
-      let user = users[uid];
-      if (user) {
-        liveInfo.editors.push(user);
-      }
-    });
+    if (stream.editors) {
+      stream.editors.forEach(function (uid) {
+        let user = users[uid];
+        if (user) {
+          liveInfo.editors.push(user);
+        }
+      });
+    }
 
     liveInfo.latestUsers = [];
-    stream.latestUserUids && stream.latestUserUids.forEach(function (uid) {
-      let user = users[uid];
-      if (user) {
-        liveInfo.latestUsers.push(user);
-      }
-    });
+    if (stream.latestUserUids){
+      stream.latestUserUids.forEach(function (uid) {
+        let user = users[uid];
+        if (user) {
+          liveInfo.latestUsers.push(user);
+        }
+      });
+    }
 
     liveInfo.expectStartAt = stream.expectStartAt;
     liveInfo.expectDuration = stream.expectDuration;
@@ -137,13 +137,13 @@ export class LiveService {
     const url = `${environment.config.host.io}/api/live/streams/${id}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let liveInfo = this.parseLiveInfo(data);
+      let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
       lives[liveInfo.id] = liveInfo;
       this.store.set('lives', lives);
 
       return liveInfo;
     }, () => {
-      return Promise.reject(liveInfoCache)
+      return Promise.reject(liveInfoCache);
     })
     // .catch();
   }
@@ -210,61 +210,16 @@ export class LiveService {
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
       let streamData = data.result;
-      let usersData = data.include;
+      let usersData = data.include.users;
       let liveInfoList: LiveInfoModel[] = [];
+
       for (let liveInfo of streamData) {
-        let liveInfoParsed = this.parseLiveListInfo(liveInfo, usersData);
+        let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
         liveInfoList.push(liveInfoParsed);
       }
       return liveInfoList;
     });
   }
-
-  parseLiveListInfo(streamData: any, usersData: any): LiveInfoModel {
-
-    let liveInfo = new LiveInfoModel;
-    let users = usersData.users;
-    let stream = streamData;
-
-    liveInfo.id = stream.id;
-    liveInfo.subject = stream.subject;
-    liveInfo.desc = stream.desc;
-    liveInfo.coverUrl = stream.coverUrl;
-    liveInfo.kind = stream.kind;
-
-    liveInfo.owner = users[stream.owner] as UserInfoModel;
-    liveInfo.admin = users[stream.admin] as UserInfoModel;
-    liveInfo.editors = [];
-    for (let uid of stream.editors) {
-      let user = users[uid];
-      if (!user) {
-        continue
-      }
-      liveInfo.editors.push(user);
-    }
-
-    liveInfo.expectStartAt = stream.expectStartAt;
-    liveInfo.expectDuration = stream.expectDuration;
-    liveInfo.startedAt = stream.startedAt;
-    liveInfo.closedAt = stream.closedAt;
-    liveInfo.createdAt = (+stream.createdAt / 1e6).toString();
-    liveInfo.updatedAt = (+stream.updatedAt / 1e6).toString();
-    liveInfo.isDraft = stream.isDraft;
-
-    if (stream.status === 'created') liveInfo.status = LiveStatus.Created;
-    if (stream.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
-    if (stream.status === 'started') liveInfo.status = LiveStatus.Started;
-    if (stream.status === 'closed') liveInfo.status = LiveStatus.Ended;
-
-    liveInfo.praised = stream.praised;
-    liveInfo.commented = stream.commented;
-    liveInfo.niced = stream.niced;
-    liveInfo.shared = stream.shared;
-    liveInfo.lcConvId = stream.lcConvId;
-
-    return liveInfo;
-  }
-
 
   listLiveAudience(id: string): Promise<UserInfoModel[]> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users`;

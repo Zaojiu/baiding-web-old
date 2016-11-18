@@ -7,6 +7,9 @@ import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {UserInfoModel, UserPublicInfoModel, UserDetailInfoModel} from "../shared/api/user-info/user-info.model";
 import {SharePopupService} from "../shared/share-popup/share-popup.service";
 import {UtilsService} from "../shared/utils/utils";
+import {InvitationModel} from "../shared/api/invite/invite.model";
+import {InviteApiService} from "../shared/api/invite/invite.api";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -14,34 +17,51 @@ import {UtilsService} from "../shared/utils/utils";
 })
 
 export class InfoCenterComponent {
-  constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService, private userInfoService: UserInfoService, private shareService: SharePopupService) {
+  constructor(private router: Router, private route: ActivatedRoute,
+              private liveService: LiveService, private userInfoService: UserInfoService,
+              private shareService: SharePopupService, private inviteApiService: InviteApiService,
+              private sanitizer: DomSanitizer) {
   }
 
-  liveId: string;
   timeNow = UtilsService.now.toString();
   timer: any;
   pageUserInfo: UserPublicInfoModel;
   currentUserInfo: UserInfoModel;
   livesList: LiveInfoModel[];
   uid: number;
-  audienceList: UserInfoModel[];
+  invitees: {[liveId: string]: InvitationModel[]} = {};
+  covers: {[liveId: string]: SafeUrl} = {};
 
   ngOnInit() {
     this.uid = +this.route.snapshot.params['uid'];
 
     this.liveService.listLiveInfo(this.uid).then((livesList) => {
       this.livesList = livesList;
-      for (let liveRoom of this.livesList) {
-        console.log(liveRoom.totalUsers,'each totalusers')
-        this.liveService.listLiveAudience(liveRoom.id).then((audienceList) => {
-          liveRoom.audienceList = audienceList;
+
+      for (let liveInfo of this.livesList) {
+        this.liveService.listLiveAudience(liveInfo.id).then((audienceList) => {
+          liveInfo.audienceList = audienceList;
         });
+
+        if (liveInfo.isAdmin(this.currentUserInfo.uid)) {
+          this.inviteApiService.listInvitations(liveInfo.id).then((invitionWithToken) => {
+            this.invitees[liveInfo.id] = invitionWithToken;
+          });
+        } else {
+          this.inviteApiService.audienceListInvitations(liveInfo.id).then((invitionWithoutToken) => {
+            this.invitees[liveInfo.id] = invitionWithoutToken;
+          });
+        }
+
+        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
+        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
       }
     });
 
     this.userInfoService.getUserInfo().then((currentUserInfo) => {
       this.currentUserInfo = currentUserInfo;
     });
+
     this.userInfoService.getUserPublicInfo(this.uid).then((pageUserInfo) => {
       this.pageUserInfo = pageUserInfo;
     });
@@ -70,21 +90,15 @@ export class InfoCenterComponent {
     }
   }
 
-
   get isSelf(): boolean {
-    if (this.currentUserInfo.uid === this.pageUserInfo.uid) {
-      return true
-    } else {
-      return false
-    }
+    return this.currentUserInfo.uid === this.pageUserInfo.uid;
   }
 
   goToEdit() {
-    this.router.navigate([`/info-center/${this.currentUserInfo.uid}/edit-info`, {'uid': this.currentUserInfo.uid.toString()}]);
-  }
-
-  isAudience() {
-    this.liveService.isAudience(this.liveId, this.currentUserInfo.uid);
+    this.router.navigate([
+      `/info-center/${this.currentUserInfo.uid}/edit-info`,
+      {'uid': this.currentUserInfo.uid.toString()},
+    ]);
   }
 
   popupShare() {
@@ -116,4 +130,11 @@ export class InfoCenterComponent {
     }
   }
 
+  gotoInvitation(liveId: string, invitee: InvitationModel) {
+    if (invitee.token) this.router.navigate(([`/lives/${liveId}/invitation`, {token: invitee.token}]));
+  }
+
+  gotoLiveRoom(liveId: string) {
+    this.router.navigate(([`/lives/${liveId}`]));
+  }
 }

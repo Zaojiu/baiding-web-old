@@ -10,6 +10,7 @@ import {LiveRoomTopBarModule} from "../shared/live-room-top-bar/live-room-top-ba
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 import {PipeModule} from "../shared/pipe/pipe.module";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
+import {InviteApiService} from "../shared/api/invite/invite.api";
 
 @NgModule({
   imports: [
@@ -26,6 +27,9 @@ import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
     InfoCenterComponent,
     EditInfoComponent,
   ],
+  providers: [
+    InviteApiService,
+  ]
 })
 
 export class InfoCenterModule {
