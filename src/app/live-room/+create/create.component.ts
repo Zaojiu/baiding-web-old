@@ -6,6 +6,8 @@ import {LiveService} from "../../shared/api/live/live.service";
 import {UploadApiService} from "../../shared/api/upload/upload.api";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {futureValidator} from "../../shared/form/future.validator";
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './create.component.html',
@@ -27,9 +29,11 @@ export class CreateComponent implements OnInit, DoCheck {
   oldFileName = '';
   submitted = false;
   isSubmitting = false;
+  userInfo: UserInfoModel;
 
-  constructor(private router: Router, private sanitizer: DomSanitizer,
-              private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService) {
+  constructor(private router: Router, private sanitizer: DomSanitizer, private fb: FormBuilder,
+              private userInfoService: UserInfoService, private liveService: LiveService,
+              private uploadService: UploadApiService) {
   }
 
   ngOnInit() {
@@ -57,6 +61,9 @@ export class CreateComponent implements OnInit, DoCheck {
       ]),
     });
 
+    this.userInfoService.getUserInfo().then(userInfo => {
+      this.userInfo = userInfo;
+    });
   }
 
   ngDoCheck() {
@@ -110,7 +117,7 @@ export class CreateComponent implements OnInit, DoCheck {
       }
     }).then((liveId) => {
       this.submitted = true;
-      this.gotoLive(liveId);
+      this.gotoInfoCenter();
     }).finally(() => {
       this.isSubmitting = false;
     });
@@ -121,7 +128,7 @@ export class CreateComponent implements OnInit, DoCheck {
   }
 
   gotoInfoCenter() {
-    this.router.navigate([`/info-center`]);
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 
   updateLiveInfo(liveId: string, coverKey?: string): Promise<string> {

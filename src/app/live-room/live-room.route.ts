@@ -30,7 +30,7 @@ const route: Routes = [
       {path: 'vip-info', loadChildren: 'app/live-room/+vip-info/vip-info.module#VipInfoModule'},
       {path: 'invitation', loadChildren: 'app/live-room/+invite/invite.module#InviteModule'},
       {path: 'share/:message_id', loadChildren: 'app/live-room/+share/share.module#ShareModule'},
-      {path: 'settings', loadChildren: 'app/live-room/+settings/settings.module#SettingsModule'}
+      {path: 'settings', loadChildren: 'app/live-room/+settings/settings.module#SettingsModule'},
     ]
   }
 ]

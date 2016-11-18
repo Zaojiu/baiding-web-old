@@ -1,0 +1,38 @@
+<form [formGroup]="form" name="editInfo" class="edit-info-container" *ngIf="user" (submit)="submit()">
+
+  <div class="main-form">
+    <div class="avatar-wrapper">
+      <img class="avatar" [src]="user.avatar" alt="嘉宾头像">
+    </div>
+    <div class="vip-name-wrapper ">
+      <div class="name">我的名字</div>
+      <div class="input-container">
+        <input class="input" name="nameContent" formControlName="nameContent"
+               [(ngModel)]="nameContent" autofocus>
+      </div>
+      <div *ngIf="form.controls['nameContent'].errors">
+        <p class="helper error" *ngIf="form.controls['nameContent'].errors.required">请填写名字</p>
+        <p class="helper error" *ngIf="form.controls['nameContent'].errors.maxlength">请确认名字字数小于16字</p>
+      </div>
+    </div>
+
+    <div class="vip-intro-wrapper ">
+      <div class="intro">关于我</div>
+      <span class="intro-word">简介字数150字以内，可不填写</span>
+      <div class="input-container">
+        <textarea class="input" name="introContent" formControlName="introContent"
+                  [(ngModel)]="introContent"></textarea>
+      </div>
+      <div *ngIf="form.controls['introContent'].errors">
+        <p class="helper error" *ngIf="form.controls['introContent'].errors.maxlength">请确认介绍字数小于150字</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="operation-area">
+    <a class="btn" (click)="backToViewInfo()">取消</a>
+    <button class="btn">保存</button>
+  </div>
+
+</form>
+

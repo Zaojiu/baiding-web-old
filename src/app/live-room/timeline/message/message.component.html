@@ -29,7 +29,7 @@
 >
   <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
     <div class="avatar-container">
-      <div class="avatar-wrapper" (click)="emitAvatarClick(message.user)" (contextmenu)="$event.preventDefault()">
+      <div class="avatar-wrapper" (doubletap)="emitAvatarClick(message.user)" (click)="goToInfoCenter(message.user)" (contextmenu)="$event.preventDefault()">
         <img class="avatar" [src]="message.user.avatar">
       </div>
     </div>

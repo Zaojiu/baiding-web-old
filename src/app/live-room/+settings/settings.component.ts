@@ -35,11 +35,11 @@ export class SettingsComponent implements OnInit {
     this.userInfo = this.route.snapshot.data['userInfo'];
 
     if (this.isAdmin) {
-      this.inviteApiService.listInvitations(this.liveId).then((res)=> {
+      this.inviteApiService.listInvitations(this.liveId).then((res) => {
         this.invitations = res;
       });
-    }else{
-      this.inviteApiService.audienceListInvitations(this.liveId).then((res)=>{
+    } else {
+      this.inviteApiService.audienceListInvitations(this.liveId).then((res) =>{
         this.audienceListInvitations = res;
       });
     }

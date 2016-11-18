@@ -6,15 +6,23 @@ export class UserInfoModel {
   uid: number;
   nick: string;
   avatar: string;
+  intro: string;
   permissions: PermissionModel;
 
   get canPublish(): boolean {
     return this.permissions.publish;
   }
 }
+export class UserDetailInfoModel {
+  uid: number;
+  nick = '';
+  intro = '';
+  avatar = '';
+  sex = UserSex.Unknow;
+}
 
 export class UserPublicInfoModel {
-  uid = 0;
+  uid: number;
   sex = UserSex.Unknow;
   nick = '';
   avatar = '';
@@ -22,6 +30,7 @@ export class UserPublicInfoModel {
   country = '';
   province = '';
   city = '';
+  intro = '';
 
   get userSex(): string {
     switch (this.sex) {

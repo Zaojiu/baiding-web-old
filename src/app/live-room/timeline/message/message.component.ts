@@ -261,6 +261,10 @@ export class MessageComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToInfoCenter(userInfo: UserInfoModel) {
+    this.router.navigate([`/info-center/` + userInfo.uid, {uid: userInfo.uid}]);
+  }
+
   parseContent(content: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
   }

@@ -1,18 +1,22 @@
 <div class="top-bar">
   <div class="online-count">
-    <i class="bi bi-people"></i>
-    <span class="btn-text">{{onlineCount > 999 ? '999+' : onlineCount}}人观看</span>
+    <i class="bi bi-info-center" (click)="gotoInfoCenter()"></i>
+
+    <a class="oldest-btn" fade (click)="gotoOldest()">
+      <i class="bi bi-up-arrow-round"></i>
+      <span class="btn-text">回到开始</span>
+    </a>
+    <a class="latest-btn" fade (click)="gotoLatest()">
+      <i class="bi bi-down-arrow-round"></i>
+      <span class="btn-text">查看最新</span>
+    </a>
   </div>
 
-  <a class="oldest-btn" fade (click)="gotoOldest()">
-    <i class="bi bi-up-arrow-round"></i>
-    <span class="btn-text">回到开始</span>
-  </a>
-  <a class="latest-btn" fade (click)="gotoLatest()">
-    <i class="bi bi-down-arrow-round"></i>
-    <span class="btn-text">查看最新</span>
-  </a>
+  <topbar-switch-btn class="switch-btn" [isOpened]="isCommentOpened" [btnText]="btnText" (toggling)="toggleComment($event)"></topbar-switch-btn>
 
-  <switch-btn class="switch-btn" [isOpened]="isCommentOpened" [btnText]="btnText" (toggling)="toggleComment($event)"></switch-btn>
+  <div class="people-count-wrapper">
+    <span class="people-count" [ngClass]="{'is-opened':isCommentOpened,'is-closed':!isCommentOpened}">  {{onlineCount > 999 ? '999+' : onlineCount}}人次</span>
+  </div>
+
   <a class="share-btn" (click)="popupShare()"><i class="bi bi-share"></i></a>
 </div>

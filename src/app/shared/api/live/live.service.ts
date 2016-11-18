@@ -64,13 +64,9 @@ export class LiveService {
     return enterLiveRoom;
   }
 
-  parseLiveInfo(data: any): LiveInfoModel {
+  parseLiveInfo(stream: any, users: any, currentStreamUser?: any): LiveInfoModel {
 
     let liveInfo = new LiveInfoModel;
-
-    let stream = data.stream;
-    let users = data.users;
-    let currentStreamUser = data.currentStreamUser;
 
     liveInfo.id = stream.id;
     liveInfo.subject = stream.subject;
@@ -82,20 +78,24 @@ export class LiveService {
     liveInfo.admin = users[stream.admin] as UserInfoModel;
 
     liveInfo.editors = [];
-    stream.editors && stream.editors.forEach(function (uid) {
-      let user = users[uid];
-      if (user) {
-        liveInfo.editors.push(user);
-      }
-    });
+    if (stream.editors) {
+      stream.editors.forEach(function (uid) {
+        let user = users[uid];
+        if (user) {
+          liveInfo.editors.push(user);
+        }
+      });
+    }
 
     liveInfo.latestUsers = [];
-    stream.latestUserUids && stream.latestUserUids.forEach(function (uid) {
-      let user = users[uid];
-      if (user) {
-        liveInfo.latestUsers.push(user);
-      }
-    });
+    if (stream.latestUserUids){
+      stream.latestUserUids.forEach(function (uid) {
+        let user = users[uid];
+        if (user) {
+          liveInfo.latestUsers.push(user);
+        }
+      });
+    }
 
     liveInfo.expectStartAt = stream.expectStartAt;
     liveInfo.expectDuration = stream.expectDuration;
@@ -137,13 +137,13 @@ export class LiveService {
     const url = `${environment.config.host.io}/api/live/streams/${id}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let liveInfo = this.parseLiveInfo(data);
+      let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
       lives[liveInfo.id] = liveInfo;
       this.store.set('lives', lives);
 
       return liveInfo;
     }, () => {
-      return Promise.reject(liveInfoCache)
+      return Promise.reject(liveInfoCache);
     })
     // .catch();
   }
@@ -204,6 +204,49 @@ export class LiveService {
       return data;
     });
   }
+
+  listLiveInfo(uid: number): Promise<LiveInfoModel[]> {
+    const url = `${environment.config.host.io}/api/live/streams/owner/${uid}`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+      let streamData = data.result;
+      let usersData = data.include.users;
+      let liveInfoList: LiveInfoModel[] = [];
+
+      for (let liveInfo of streamData) {
+        let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
+        liveInfoList.push(liveInfoParsed);
+      }
+      return liveInfoList;
+    });
+  }
+
+  listLiveAudience(id: string): Promise<UserInfoModel[]> {
+    const url = `${environment.config.host.io}/api/live/streams/${id}/users`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+      let usersData = data.include.users;
+      let audienceList: UserInfoModel[] = [];
+      let count = 0;
+      for (let audience in usersData) {
+        let audienceParsed = this.parseLiveAudienceInfo(usersData[audience]);
+        audienceList.push(audienceParsed);
+        count++;
+        //最多取五条观众数据
+        if (count >= 4) break;
+      }
+      return audienceList;
+    });
+  }
+
+  parseLiveAudienceInfo(data: any): UserInfoModel {
+    let info = new UserInfoModel();
+    info.nick = data.nick;
+    info.avatar = data.avatar;
+    info.uid = data.uid;
+    return info;
+  }
+
 
   banComment(id: string, uid: number): Promise<void> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users/${uid}/silence`;

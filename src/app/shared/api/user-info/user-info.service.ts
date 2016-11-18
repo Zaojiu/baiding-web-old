@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {UserInfoModel, PermissionModel, UserPublicInfoModel} from './user-info.model';
+import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 
@@ -11,6 +11,7 @@ import {environment} from "../../../../environments/environment";
 export class UserInfoService {
   private userInfoUrl: string;
   private userPublicInfoUrl: string;
+  private userDetailInfoUrl: string;
 
   constructor(private http: Http, private store: StoreService) {}
 
@@ -50,14 +51,15 @@ export class UserInfoService {
       });
   }
 
-  getUserPublicInfo(userUid: number): Promise<UserPublicInfoModel> {
-    this.userPublicInfoUrl = `${environment.config.host.io}/api/user/${userUid}`;
+
+  getUserPublicInfo(uid: number): Promise<UserPublicInfoModel> {
+    this.userPublicInfoUrl = `${environment.config.host.io}/api/user/${uid}`;
 
     return this.http.get(this.userPublicInfoUrl).toPromise()
       .then(res => {
         let data = res.json();
         return this.parseUserPublicInfo(data);
-      })
+      });
   }
 
   parseUserPublicInfo(data: any): UserPublicInfoModel {
@@ -71,8 +73,32 @@ export class UserInfoService {
     if (data.country) userPublicInfo.country = data.country;
     if (data.province) userPublicInfo.province = data.province;
     if (data.city) userPublicInfo.city = data.city;
+    if (data.intro) userPublicInfo.intro = data.intro;
 
     return userPublicInfo;
+
+  }
+
+  getUserDetailInfo(uid: number): Promise<UserDetailInfoModel> {
+    this.userDetailInfoUrl = `${environment.config.host.io}/api/user/detail`;
+
+    return this.http.get(this.userDetailInfoUrl).toPromise()
+      .then(res => {
+        let data = res.json();
+        return this.parseUserDetailInfo(data);
+      });
+  }
+
+  parseUserDetailInfo(data: any): UserDetailInfoModel {
+    let userDetailInfo = new UserDetailInfoModel();
+
+    if (data.uid) userDetailInfo.uid = data.uid;
+    if (data.nick) userDetailInfo.nick = data.nick;
+    if (data.intro) userDetailInfo.intro = data.intro;
+    if (data.avatar) userDetailInfo.avatar = data.avatar;
+    if (data.sex) userDetailInfo.sex = data.sex;
+
+    return userDetailInfo;
 
   }
 }
