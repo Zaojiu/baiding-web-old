@@ -44,6 +44,7 @@ import {AuthBridge} from "./shared/bridge/auth.interface";
 import {ShareBridge} from "./shared/bridge/share.interface";
 import {WechatConfigService} from "./shared/wechat/wechat.service";
 import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
+import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
 
 @NgModule({
   imports: [
@@ -68,8 +69,9 @@ import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
   providers: [
     WechatConfigService,
     WechatAudioService,
-    WechatAuthService,
     WechatShareService,
+    WechatAuthService,
+    IosAuthService,
     PcAuthService,
     {
       provide: AudioBridge,
@@ -77,7 +79,7 @@ import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
     },
     {
       provide: AuthBridge,
-      useExisting: UtilsService.isInWechat ? WechatAuthService : UtilsService.isInApp ? WechatAuthService : PcAuthService,
+      useExisting: UtilsService.isInWechat ? WechatAuthService : UtilsService.isInApp ? IosAuthService : PcAuthService,
     },
     {
       provide: ShareBridge,
