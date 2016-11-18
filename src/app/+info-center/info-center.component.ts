@@ -28,17 +28,27 @@ export class InfoCenterComponent {
   ngOnInit() {
     this.uid = +this.route.snapshot.params['uid'];
 
-    Promise.all([
-      this.liveService.listLiveInfo(this.uid),
-      this.userInfoService.getUserInfo(),
-      this.userInfoService.getUserPublicInfo(this.uid),
-    ]).then((result) => {
-      this.livesList = result[0];
-      this.currentUserInfo = result[1];
-      this.pageUserInfo = result[2];
-    }, (err) => {
-      this.router.navigate(['404']);
+    this.liveService.listLiveInfo(this.uid).then((livesList) => {
+      this.livesList = livesList;
     });
+    this.userInfoService.getUserInfo().then((currentUserInfo) => {
+      this.currentUserInfo = currentUserInfo;
+    });
+    this.userInfoService.getUserPublicInfo(this.uid).then((pageUserInfo) => {
+      this.pageUserInfo = pageUserInfo;
+    });
+
+    // Promise.all([
+    //   this.liveService.listLiveInfo(this.uid),
+    //   this.userInfoService.getUserInfo(),
+    //   this.userInfoService.getUserPublicInfo(this.uid),
+    // ]).then((result) => {
+    //   this.livesList = result[0];
+    //   this.currentUserInfo = result[1];
+    //   this.pageUserInfo = result[2];
+    // }, (err) => {
+    //   this.router.navigate(['404']);
+    // });
 
 
     this.timer = setInterval(()=> {

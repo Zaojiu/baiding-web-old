@@ -1,11 +1,8 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 import {LiveInfoModel} from "../../shared/api/live/live.model";
-import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
-import {futureValidator} from "../../shared/form/future.validator";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {UserInfoModel, UserDetailInfoModel} from "../../shared/api/user-info/user-info.model";
 import {Headers, Http} from "@angular/http";
@@ -28,7 +25,7 @@ export class EditInfoComponent implements OnInit {
   introContent = '';
   uid: number;
 
-  constructor(private http: Http, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
+  constructor(private http: Http, private route: ActivatedRoute, private router: Router,
               private fb: FormBuilder, private userInfoService: UserInfoService, private _location: Location) {
   }
 
@@ -54,7 +51,6 @@ export class EditInfoComponent implements OnInit {
   backToViewInfo() {
     this._location.back();
   }
-
 
   submit() {
     if (this.form.invalid) return
