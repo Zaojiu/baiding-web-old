@@ -220,8 +220,12 @@
           color: rgb(124, 124, 124);
           letter-spacing: 0px;
           line-height: 24px;
-          word-break: break-all;
           white-space: pre-wrap;
+          overflow : hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
         }
       }
 
