@@ -6,7 +6,7 @@ export class AudioMessageModel {
   audioData: Blob;
   localId: string;
   serverId: string;
-  translateResult: string;
+  translateResult = '';
   link: string;
   duration: number;
 }

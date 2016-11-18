@@ -76,7 +76,7 @@
         <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
              (click)="toggleTranslatioExpanded(message.audio.translateResult)">
           <div class="translate-tips">以下由机器自动翻译</div>
-          {{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}
+          {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus !== postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
         </div>
         <i class="bi bi-elliplis" *ngIf="isTranslationExpanded"></i>
         <div class="post-status">
