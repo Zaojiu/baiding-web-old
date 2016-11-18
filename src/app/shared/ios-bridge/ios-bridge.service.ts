@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 
-declare var wx: any;
 declare var window: any;
 
 @Injectable()
