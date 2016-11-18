@@ -91,7 +91,7 @@
         <div class="people-count">
           <div class="avatar-wrapper" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
             <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
-            <div class="total-users" *ngIf="liveInfo.isCreated()">
+            <div class="total-users">
               {{liveInfo.totalUsers >
               999 ? '999+' :
               liveInfo.totalUsers}}人观看

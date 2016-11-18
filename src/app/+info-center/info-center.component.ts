@@ -32,6 +32,7 @@ export class InfoCenterComponent {
     this.liveService.listLiveInfo(this.uid).then((livesList) => {
       this.livesList = livesList;
       for (let liveRoom of this.livesList) {
+        console.log(liveRoom.totalUsers,'each totalusers')
         this.liveService.listLiveAudience(liveRoom.id).then((audienceList) => {
           liveRoom.audienceList = audienceList;
         });
