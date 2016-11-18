@@ -205,8 +205,13 @@ export class LiveService {
     });
   }
 
-  listLiveInfo(uid: number): Promise<LiveInfoModel[]> {
-    const url = `${environment.config.host.io}/api/live/streams/owner/${uid}`;
+  listLiveInfo(uid: number, marker = '', size = 20, sorts = ['-createdAt']): Promise<LiveInfoModel[]> {
+    let query = {
+      createdAt: marker,
+      size: size,
+      sorts: sorts.join(','),
+    };
+    const url = `${environment.config.host.io}/api/live/streams/owner/${uid}?${$.param(query)}`;
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
       let streamData = data.result;

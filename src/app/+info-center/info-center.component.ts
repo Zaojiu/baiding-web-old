@@ -35,7 +35,7 @@ export class InfoCenterComponent {
   ngOnInit() {
     this.uid = +this.route.snapshot.params['uid'];
 
-    this.liveService.listLiveInfo(this.uid).then((livesList) => {
+    this.liveService.listLiveInfo(this.uid, '', 1000, ['-createdAt']).then((livesList) => {
       this.livesList = livesList;
 
       for (let liveInfo of this.livesList) {

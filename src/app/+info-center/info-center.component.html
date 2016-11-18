@@ -1,4 +1,4 @@
-<div class="info-center" *ngIf="pageUserInfo">
+<div class="info-center" *ngIf="pageUserInfo && currentUserInfo">
   <div class="top-bar">
     <a class="edit-btn" (click)="goToEdit()" *ngIf="isSelf"><i class="bi bi-edit-btn"></i></a>
     <div class="space"></div>
