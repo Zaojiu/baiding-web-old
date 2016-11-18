@@ -7,6 +7,7 @@
   background-color: rgb(250, 250, 250);
   display: flex;
   flex-direction: column;
+  overflow: auto;
 
   .top-bar {
     flex-shrink: 0;
@@ -402,7 +403,6 @@
       position: absolute;
       right: 20px;
       bottom: 20px;
-      z-index: 5;
       height: 60px;
       width: 60px;
       box-shadow: 0 0 8px rgb(110, 180, 236);
