@@ -15,6 +15,7 @@ export class LiveInfoModel {
   admin: UserInfoModel;
   editors: UserInfoModel[];
   latestUsers: UserInfoModel[]; // 最近访问的用户
+  audienceList: UserInfoModel[];
   praised: number;
   commented: number;
   niced: number;

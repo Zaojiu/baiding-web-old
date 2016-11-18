@@ -24,13 +24,20 @@ export class InfoCenterComponent {
   currentUserInfo: UserInfoModel;
   livesList: LiveInfoModel[];
   uid: number;
+  audienceList: UserInfoModel[];
 
   ngOnInit() {
     this.uid = +this.route.snapshot.params['uid'];
 
     this.liveService.listLiveInfo(this.uid).then((livesList) => {
       this.livesList = livesList;
+      for (let liveRoom of this.livesList) {
+        this.liveService.listLiveAudience(liveRoom.id).then((audienceList) => {
+          liveRoom.audienceList = audienceList;
+        });
+      }
     });
+
     this.userInfoService.getUserInfo().then((currentUserInfo) => {
       this.currentUserInfo = currentUserInfo;
     });

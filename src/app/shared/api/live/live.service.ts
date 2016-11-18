@@ -262,8 +262,36 @@ export class LiveService {
     liveInfo.shared = stream.shared;
     liveInfo.lcConvId = stream.lcConvId;
 
-    return liveInfo
+    return liveInfo;
   }
+
+
+  listLiveAudience(id: string): Promise<UserInfoModel[]> {
+    const url = `${environment.config.host.io}/api/live/streams/${id}/users`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+      let usersData = data.include.users;
+      let audienceList: UserInfoModel[] = [];
+      let count = 0;
+      for (let audience in usersData) {
+        let audienceParsed = this.parseLiveAudienceInfo(usersData[audience]);
+        audienceList.push(audienceParsed);
+        count++;
+        //最多取五条观众数据
+        if (count >= 4) break;
+      }
+      return audienceList;
+    });
+  }
+
+  parseLiveAudienceInfo(data: any): UserInfoModel {
+    let info = new UserInfoModel();
+    info.nick = data.nick;
+    info.avatar = data.avatar;
+    info.uid = data.uid;
+    return info;
+  }
+
 
   banComment(id: string, uid: number): Promise<void> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users/${uid}/silence`;

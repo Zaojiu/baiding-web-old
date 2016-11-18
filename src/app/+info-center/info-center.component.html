@@ -7,7 +7,7 @@
 
   <div class="main-form">
 
-    <div class="self-intro" >
+    <div class="self-intro">
       <div class="img-wrapper">
         <img class="avatar" [src]="pageUserInfo.avatar" alt="嘉宾头像">
       </div>
@@ -89,9 +89,10 @@
 
       <div class="people-and-edit-btn">
         <div class="people-count">
-          <div class="avatar-wrapper">
-            <img [src]="user.avatar" class="avatar" alt="" *ngFor="let user of liveInfo.editors">
-            <div class="total-users" *ngIf="liveInfo.isCreated() && liveInfo.editors.length>0">{{liveInfo.totalUsers >
+          <div class="avatar-wrapper" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
+            <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
+            <div class="total-users" *ngIf="liveInfo.isCreated()">
+              {{liveInfo.totalUsers >
               999 ? '999+' :
               liveInfo.totalUsers}}人观看
             </div>
