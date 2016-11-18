@@ -59,7 +59,7 @@ export class UserInfoService {
       .then(res => {
         let data = res.json();
         return this.parseUserPublicInfo(data);
-      })
+      });
   }
 
   parseUserPublicInfo(data: any): UserPublicInfoModel {
@@ -73,6 +73,7 @@ export class UserInfoService {
     if (data.country) userPublicInfo.country = data.country;
     if (data.province) userPublicInfo.province = data.province;
     if (data.city) userPublicInfo.city = data.city;
+    if (data.intro) userPublicInfo.city = data.intro;
 
     return userPublicInfo;
 

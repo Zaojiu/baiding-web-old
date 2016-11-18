@@ -30,6 +30,7 @@ export class UserPublicInfoModel {
   country = '';
   province = '';
   city = '';
+  intro = '';
 
   get userSex(): string {
     switch (this.sex) {
