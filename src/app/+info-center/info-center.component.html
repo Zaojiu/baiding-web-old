@@ -121,12 +121,9 @@
       <div class="word">已显示全部内容</div>
     </div>
 
-    <div class="create-btn-wrapper" *ngIf="isSelf" (click)="goToCreateNewRoom()">
-      <div class="create-btn">
-        <i class="bi bi-cross"></i>
-      </div>
+    <div class="create-btn" *ngIf="currentUserInfo.canPublish" (click)="goToCreateNewRoom()">
+      <i class="bi bi-cross"></i>
     </div>
-
   </div>
 
 </div>
