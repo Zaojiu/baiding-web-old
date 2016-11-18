@@ -45,6 +45,7 @@ import {ShareBridge} from "./shared/bridge/share.interface";
 import {WechatConfigService} from "./shared/wechat/wechat.service";
 import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
 import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
+import {IosShareService} from "./shared/bridge/share/ios-share.service";
 
 @NgModule({
   imports: [
@@ -83,7 +84,7 @@ import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
     },
     {
       provide: ShareBridge,
-      useExisting: UtilsService.isInWechat ? WechatShareService : UtilsService.isInApp ? WechatShareService : WechatShareService,
+      useExisting: UtilsService.isInWechat ? WechatShareService : UtilsService.isInApp ? IosShareService : WechatShareService,
     },
     Title,
     AuthGuard,

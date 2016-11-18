@@ -18,5 +18,5 @@
     <span class="people-count" [ngClass]="{'is-opened':isCommentOpened,'is-closed':!isCommentOpened}">  {{onlineCount > 999 ? '999+' : onlineCount}}人次</span>
   </div>
 
-  <a class="share-btn" (click)="popupShare()"><i class="bi bi-share"></i></a>
+  <a class="share-btn"  (click)="fireShare()"><i class="bi bi-share"></i></a>
 </div>
