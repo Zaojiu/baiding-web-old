@@ -122,11 +122,23 @@ for target in $@; do
             ./node_modules/.bin/ng build --prod || { clean; exit 1; }
             clean
             ;;
+        build.test-prod)
+            rm -rf dist
+            clean
+            ./node_modules/gulp/bin/gulp.js || { clean; exit 1; }
+            ./node_modules/.bin/ngc -p tmp || { clean; exit 1; }
+            ./node_modules/.bin/ng build -e test-prod || { clean; exit 1; }
+            clean
+            ;;
         serve.dev)
             ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0
             ;;
         serve.prod)
             ./hack/run.sh build.prod || { exit 1; }
+            ./node_modules/static-server/bin/static-server.js -p 9000 ./dist
+            ;;
+        serve.test-prod)
+            ./hack/run.sh build.test-prod || { exit 1; }
             ./node_modules/static-server/bin/static-server.js -p 9000 ./dist
             ;;
         test)

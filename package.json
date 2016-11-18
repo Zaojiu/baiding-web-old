@@ -16,6 +16,7 @@
     "build.prod": "./hack/run.sh build.prod",
     "serve.dev": "./hack/run.sh serve.dev",
     "serve.prod": "./hack/run.sh serve.prod",
+    "serve.test-prod": "./hack/run.sh serve.test-prod",
     "clean": "./hack/run.sh clean",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "./hack/run.sh test",
