@@ -114,7 +114,7 @@ export class InfoCenterComponent {
   }
 
   goToCreateNewRoom() {
-    //TODO
+    this.router.navigate([`/lives/create`]);
   }
 
   liveRoomStatusHumanize(liveStatus: number): string {
