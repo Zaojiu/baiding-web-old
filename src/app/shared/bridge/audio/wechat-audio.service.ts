@@ -158,7 +158,7 @@ export class WechatAudioService implements AudioBridge {
     return new Promise<string>((resolve, reject) => {
       wx.uploadVoice({
         localId: id, // 需要上传的音频的本地ID，由stopRecord接口获得
-        isShowProgressTips: 1, // 默认为1，显示进度提示
+        isShowProgressTips: 0, // 默认为1，显示进度提示
         success: (res) => {
           resolve(res.serverId); // 返回音频的服务器端ID
         },
@@ -173,7 +173,7 @@ export class WechatAudioService implements AudioBridge {
     return new Promise<string>((resolve, reject) => {
       wx.translateVoice({
         localId: id, // 需要识别的音频的本地Id，由录音相关接口获得
-        isShowProgressTips: 1, // 默认为1，显示进度提示
+        isShowProgressTips: 0, // 默认为1，显示进度提示
         success: (res) => {
           resolve(res.translateResult); // 语音识别的结果
         },
