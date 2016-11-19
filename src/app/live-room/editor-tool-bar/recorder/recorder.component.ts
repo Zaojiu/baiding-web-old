@@ -27,8 +27,9 @@ export class RecorderComponent {
 
     this.audioBridge.startRecord().then(() => {
       if (this.status !== RecordStatus.Preparing) {
-        this.audioBridge.cancelRecord();
-        this.status = RecordStatus.Waitting;
+        this.audioBridge.cancelRecord().finally(() => {
+          this.status = RecordStatus.Waitting;
+        });
         return;
       }
 
@@ -82,7 +83,7 @@ export class RecorderComponent {
         this.audioBridge.stopRecord().then(result => {
           let millisecond = this.recordDuration * 100;
           let recorderData: RecorderData;
-          
+
           if (typeof(result) === 'string') {
             recorderData = new RecorderData(result as string, null, millisecond);
           } else {

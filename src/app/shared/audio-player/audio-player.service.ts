@@ -10,6 +10,7 @@ import {AudioBridge} from "../bridge/audio.interface";
 export class AudioPlayerService {
 
   private static h5AudioContext: AudioContext;
+  private static gainNode: GainNode;
   private static playingSource: AudioBufferSourceNode;
   private static playingMessageId: string;
 
@@ -20,6 +21,8 @@ export class AudioPlayerService {
   constructor(private audioService: AudioBridge, private $http: Http) {
     (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
     AudioPlayerService.h5AudioContext = AudioPlayerService.h5AudioContext || new AudioContext();
+    AudioPlayerService.gainNode = AudioPlayerService.gainNode || AudioPlayerService.h5AudioContext.createGain();
+    AudioPlayerService.gainNode.gain.value = 1;
   }
 
   play(msg: MessageModel): Observable<string> {
