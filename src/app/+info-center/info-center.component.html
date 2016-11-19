@@ -15,8 +15,6 @@
       <div class="intro" *ngIf="pageUserInfo.intro">{{pageUserInfo.intro}}</div>
     </div>
 
-    <div class="split-div"></div>
-
     <div class="live-room-info-upper" *ngFor="let liveInfo of livesList">
 
       <div class="article" *ngIf="liveInfo && liveInfo.admin">
@@ -25,7 +23,6 @@
           <div class="title">{{liveInfo.subject}}</div>
           <div class="indicator notstarted" *ngIf="liveInfo.isCreated()">未开始</div>
           <div class="indicator living" *ngIf="liveInfo.isStarted()">
-            <span class="dot"></span>
             直播中
           </div>
           <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">未开始</div>
@@ -55,7 +52,7 @@
         <div class="words">{{liveInfo.desc}}</div>
       </div>
 
-      <div class="live-cover">
+      <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
         <img [src]="covers[liveInfo.id]" alt="">
       </div>
 
@@ -112,8 +109,6 @@
           编辑
         </div>
       </div>
-
-      <div class="split-div"></div>
 
     </div>
 
