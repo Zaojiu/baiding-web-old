@@ -72,6 +72,6 @@ export class InviteComponent implements OnInit {
   }
 
   wechatShare(url: string) {
-    this.shareService.share(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverSmallUrl, url)
+    this.shareService.setShareInfo(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverSmallUrl, url)
   }
 }

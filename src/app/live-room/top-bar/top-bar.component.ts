@@ -1,5 +1,4 @@
 import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChildren, QueryList} from '@angular/core';
-import {SharePopupService} from "../../shared/share-popup/share-popup.service";
 import {TimelineService} from "../timeline/timeline.service";
 import {Subscription} from "rxjs";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
@@ -7,6 +6,7 @@ import {FadeDirective} from "../../shared/animation/fade/fade.directive";
 import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../../shared/api/live/live.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {ShareBridge} from "../../shared/bridge/share.interface";
 
 declare var $: any;
 
@@ -30,7 +30,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
   originTop: number;
   distance = 200;
 
-  constructor(private sharePopupService: SharePopupService, private timelineService: TimelineService, private route: ActivatedRoute, private router: Router, private  liveService: LiveService) {
+  constructor(private shareBridge: ShareBridge, private timelineService: TimelineService,
+              private route: ActivatedRoute, private router: Router, private  liveService: LiveService) {
   }
 
   ngOnInit() {
@@ -116,8 +117,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
     this.isCommentOpenedChange.emit(isOpened);
   }
 
-  popupShare() {
-    this.sharePopupService.popup();
+  fireShare() {
+    this.shareBridge.share();
   }
 
   get btnText(): string {

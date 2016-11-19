@@ -5,17 +5,30 @@ import 'rxjs/add/operator/toPromise';
 import {WechatConfigService} from "../../wechat/wechat.service";
 import {environment} from "../../../../environments/environment";
 import {ShareBridge} from "../share.interface";
+import {SharePopupService} from "../../share-popup/share-popup.service";
 
 declare var wx: any;
 
 @Injectable()
 export class WechatShareService implements ShareBridge {
-  constructor(private http: Http, private wechatConfigService: WechatConfigService) {
+  title: string;
+  desc: string;
+  cover: string;
+  link: string;
+  liveId?: string;
+
+  constructor(private http: Http, private wechatConfigService: WechatConfigService, private sharePopupService: SharePopupService) {
   }
 
-  private setShare(title: string, desc: string, cover: string, link: string, liveId?: string) {
+  private _setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string) {
     if (desc.length > 19) desc = `${desc.slice(0, 18)}...`;
     desc = `${desc}#白丁直播#`;
+
+    this.title = title;
+    this.desc = desc;
+    this.cover = cover;
+    this.link = link;
+    this.liveId = liveId;
 
     wx.onMenuShareTimeline({
       title: title, // 分享标题
@@ -84,15 +97,19 @@ export class WechatShareService implements ShareBridge {
     });
   }
 
-  share(title: string, desc: string, cover: string, link: string, liveId?: string): Promise<void> {
+  setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string): Promise<void> {
     if (this.wechatConfigService.hasInit) {
-      this.setShare(title, desc, cover, link, liveId);
+      this._setShareInfo(title, desc, cover, link, liveId);
       return Promise.resolve();
     } else {
       return this.wechatConfigService.initWechat().then(() => {
-        this.setShare(title, desc, cover, link, liveId);
+        this._setShareInfo(title, desc, cover, link, liveId);
         return;
       });
     }
+  }
+
+  share() {
+    this.sharePopupService.popup();
   }
 }

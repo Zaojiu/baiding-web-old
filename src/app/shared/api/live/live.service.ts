@@ -291,4 +291,12 @@ export class LiveService {
   isTranslationExpanded(liveId: string): boolean {
     return !this.wordExpandedDisabled[liveId];
   }
+
+  confirmShare(id: string): Promise<void> {
+    let url = `${environment.config.host.io}/api/live/streams/${id}/share`;
+
+    return this.http.post(url, null).toPromise().then(res => {
+      return;
+    });
+  }
 }

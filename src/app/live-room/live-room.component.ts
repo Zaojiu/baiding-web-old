@@ -32,7 +32,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private titleService: TitleService,
-              private shareService: ShareBridge, private userInfoService: UserInfoService) {
+              private shareBridge: ShareBridge, private userInfoService: UserInfoService) {
   }
 
   toShowBeginnerGuide(result: boolean) {
@@ -69,7 +69,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   resetLiveRoom() {
     this.titleService.set(this.liveInfo.subject);
-    this.shareService.share(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
+    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
   }
 
   timelineGotoLatest() {

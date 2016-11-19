@@ -36,3 +36,4 @@ Thumbs.db
 
 # config
 /src/environments/environment.dev.ts
+/src/environments/environment.test-prod.ts

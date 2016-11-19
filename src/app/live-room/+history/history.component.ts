@@ -1,13 +1,13 @@
-import { Component, OnInit }      from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component}      from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
-import { LiveService } from '../../shared/api/live/live.service';
-import { LiveInfoModel } from '../../shared/api/live/live.model';
-import {MessageModel, ImageMessageModel} from '../../shared/api/message/message.model';
-import { MessageApiService } from "../../shared/api/message/message.api";
-import { UserInfoModel } from "../../shared/api/user-info/user-info.model";
-import { UserInfoService } from "../../shared/api/user-info/user-info.service";
-import { SharePopupService } from "../../shared/share-popup/share-popup.service";
+import {LiveService} from '../../shared/api/live/live.service';
+import {LiveInfoModel} from '../../shared/api/live/live.model';
+import {MessageModel} from '../../shared/api/message/message.model';
+import {MessageApiService} from "../../shared/api/message/message.api";
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {ShareBridge} from "../../shared/bridge/share.interface";
 
 @Component({
   templateUrl: './history.component.html',
@@ -23,7 +23,8 @@ export class HistoryComponent {
 
   constructor(private liveService: LiveService, private userInfoService: UserInfoService,
               private route: ActivatedRoute, private router: Router,
-              private messageApiService: MessageApiService, private shareService: SharePopupService) {}
+              private messageApiService: MessageApiService, private shareBridge: ShareBridge) {
+  }
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
@@ -49,7 +50,7 @@ export class HistoryComponent {
     });
   }
 
-  popupShare() {
-    this.shareService.popup();
+  fireShare() {
+    this.shareBridge.share();
   }
 }

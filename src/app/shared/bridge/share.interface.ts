@@ -1,3 +1,10 @@
 export abstract class ShareBridge {
-  abstract share(title: string, desc: string, cover: string, link: string, liveId?: string);
+  title: string;
+  desc: string;
+  cover: string;
+  link: string;
+  liveId?: string;
+
+  abstract setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string);
+  abstract share();
 }
