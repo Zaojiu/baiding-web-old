@@ -29,15 +29,15 @@ export class IosAudioService implements AudioBridge {
         resolve();
       }, (result) => {
         // 结束成功回调,包含自动结束,手动结束
-        if (this.stopType = RecordStopedType.Manual && this.recordStopSuccessfulResolver) {
+        if (this.stopType === RecordStopedType.Manual && this.recordStopSuccessfulResolver) {
           this.recordStopSuccessfulResolver(result);
         }
 
-        if (this.stopType = RecordStopedType.Auto && this.recordAutoCompleteSuccessfulResolver) {
+        if (this.stopType === RecordStopedType.Auto && this.recordAutoCompleteSuccessfulResolver) {
           this.recordAutoCompleteSuccessfulResolver(result);
         }
 
-        if (this.stopType = RecordStopedType.Cancel && this.recordCancelSuccessfulResolver) {
+        if (this.stopType === RecordStopedType.Cancel && this.recordCancelSuccessfulResolver) {
           this.recordCancelSuccessfulResolver();
         }
       }, (failedType: RecordFailedType) => {
