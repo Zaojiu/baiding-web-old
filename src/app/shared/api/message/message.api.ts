@@ -317,7 +317,7 @@ export class MessageApiService {
     message.postStatus = PostMessageStatus.Pending;
     message.audio = new AudioMessageModel();
     message.audio.localId = localId;
-    message.audio.audioData = audioData; // TODO: 本地播放, 还要可以播放Blob中的数据.
+    message.audio.audioData = audioData;
     message.audio.duration = duration;
 
     postMessage.originMessage = message;
