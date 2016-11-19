@@ -14,5 +14,4 @@ export enum PostMessageStatus {
   PostSuccessful,
   PostFailed,
   UploadFailed,
-  TranslateFailed,
 }
