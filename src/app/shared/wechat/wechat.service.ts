@@ -49,7 +49,7 @@ export class WechatConfigService {
   }
 
 
-  initWechat(): Promise<void> {
+  init(): Promise<void> {
     if (this.hasInit) return Promise.resolve();
 
     var hasRetry: boolean;

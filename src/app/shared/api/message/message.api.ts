@@ -164,46 +164,70 @@ export class MessageApiService {
     if (originMessage instanceof MessageModel && (originMessage as MessageModel).type === MessageType.Audio) {
       // 处理音频信息
       let _originMessage = originMessage as MessageModel;
+      let promise = null;
 
-      this.audioService.uploadVoice(_originMessage.audio.localId).then((serverId) => {
-        _originMessage.audio.serverId = serverId;
-        postMessage.audio.weixinId = serverId;
-        delete postMessageCopy.audio.audioData;
+      if (_originMessage.audio.localId) {
+        promise = this.audioService.uploadVoice(_originMessage.audio.localId).then((serverId) => {
+          postMessage.audio.weixinId = serverId;
 
-        this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise().then(res => {
-          let data = res.json();
-
-          _originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
-          _originMessage.id = data.id;
-          _originMessage.audio.translateResult = data.audio.text;
-          _originMessage.postStatus = PostMessageStatus.PostSuccessful;
+          return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
         }, (err) => {
-          _originMessage.postStatus = PostMessageStatus.PostFailed;
+          _originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
         });
-      }, () => {
-        _originMessage.postStatus = PostMessageStatus.UploadFailed;
+      } else {
+        // TODO: 音频流上传七牛
+        // promise = this.audioService.uploadVoice(originMessage.audio.audioData).then((key) => {
+        //   postMessage.audio.key = key;
+        //
+        //   return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        // }, (err) => {
+        //   originMessage.postStatus = PostMessageStatus.UploadFailed;
+        //   return Promise.reject(err);
+        // });
+
+        promise = new Promise((resolve, reject) => {
+          resolve(null);
+        });
+      }
+
+      promise.then(res => {
+        let data = res.json();
+
+        _originMessage.id = data.id;
+        _originMessage.audio.link = data.audio.link;
+        _originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
+        _originMessage.audio.translateResult = data.audio.text;
+        _originMessage.postStatus = PostMessageStatus.PostSuccessful;
+      }, (err) => {
+        _originMessage.postStatus = PostMessageStatus.PostFailed;
       }).finally(() => {
         this.posting = false;
         this.postMessage();
       });
     } else if (originMessage instanceof MessageModel && (originMessage as MessageModel).type === MessageType.Image) {
       // 处理图片信息
+      let _originMessage = originMessage as MessageModel;
+
       this.getUploadToken(postMessage.liveId).then((token) => {
-        return this.uploadService.uploadToQiniu(postMessage.image.imageData, token.key, token.token);
+        return this.uploadService.uploadToQiniu(_originMessage.image.imageData, token.key, token.token);
+      }, (err) => {
+        originMessage.postStatus = PostMessageStatus.UploadFailed;
+        return Promise.reject(err);
       }).then((key) => {
         postMessageCopy.image.key = key;
-        delete postMessageCopy.image.imageData;
 
-        return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise().then(res => {
-          let data = res.json();
-
-          originMessage.postStatus = PostMessageStatus.PostSuccessful;
-          originMessage.id = data.id;
-        }, () => {
-          originMessage.postStatus = PostMessageStatus.PostFailed;
-        });
-      }).catch(() => {
+        return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
+      }, (err) => {
         originMessage.postStatus = PostMessageStatus.UploadFailed;
+        return Promise.reject(err);
+      }).then(res => {
+        let data = res.json();
+
+        originMessage.postStatus = PostMessageStatus.PostSuccessful;
+        originMessage.id = data.id;
+      }, () => {
+        originMessage.postStatus = PostMessageStatus.PostFailed;
       }).finally(() => {
         this.posting = false;
         this.postMessage();
@@ -277,7 +301,6 @@ export class MessageApiService {
     postMessage.liveId = liveId;
     postMessage.type = 'audio';
     postMessage.audio = new PostAudioMessageModel();
-    postMessage.audio.audioData = audioData;
     postMessage.audio.localId = localId;
     postMessage.audio.duration = duration;
 
@@ -294,7 +317,7 @@ export class MessageApiService {
     message.postStatus = PostMessageStatus.Pending;
     message.audio = new AudioMessageModel();
     message.audio.localId = localId;
-    message.audio.audioData = audioData; // TODO: 本地播放, 还要可以播放Blob中的数据.
+    message.audio.audioData = audioData;
     message.audio.duration = duration;
 
     postMessage.originMessage = message;
@@ -345,7 +368,6 @@ export class MessageApiService {
     postMessage.liveId = liveId;
     postMessage.type = 'image';
     postMessage.image = new PostImageMessageModel();
-    postMessage.image.imageData = file;
 
     let message = new MessageModel();
     let userInfo = this.userInfoService.getUserInfoCache();
@@ -360,7 +382,7 @@ export class MessageApiService {
     message.postStatus = PostMessageStatus.Pending;
 
     message.image = new ImageMessageModel();
-    message.image.imageData = file; // TODO: timeline中需要打开File
+    message.image.imageData = file;
 
     postMessage.originMessage = message;
 
@@ -379,55 +401,77 @@ export class MessageApiService {
       let originMessage = message as MessageModel;
       postMessage.type = 'audio';
       postMessage.audio = new PostAudioMessageModel();
-      postMessage.audio.audioData = originMessage.audio.audioData;
       postMessage.audio.localId = originMessage.audio.localId;
       postMessage.audio.duration = originMessage.audio.duration;
 
-      this.audioService.uploadVoice(originMessage.audio.localId).then((serverId) => {
-        originMessage.audio.serverId = serverId;
-        postMessage.audio.weixinId = serverId;
 
-        this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise().then(res => {
-          let data = res.json();
+      let promise = null;
 
-          originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
-          originMessage.id = data.id;
-          originMessage.audio.translateResult = data.audio.text;
-          originMessage.postStatus = PostMessageStatus.PostSuccessful;
-          this.timelineService.deleteMessage(originMessage);
-          this.timelineService.pushMessage(originMessage);
+      if (originMessage.audio.localId) {
+        promise = this.audioService.uploadVoice(originMessage.audio.localId).then((serverId) => {
+          postMessage.audio.weixinId = serverId;
+
+          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
         }, (err) => {
-          originMessage.postStatus = PostMessageStatus.PostFailed;
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
         });
-      }, () => {
-        originMessage.postStatus = PostMessageStatus.UploadFailed;
-      })
+      } else {
+        // TODO: 音频流上传七牛
+        // promise = this.audioService.uploadVoice(originMessage.audio.audioData).then((key) => {
+        //   postMessage.audio.key = key;
+        //
+        //   return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        // }, (err) => {
+        //   originMessage.postStatus = PostMessageStatus.UploadFailed;
+        //   return Promise.reject(err);
+        // });
+
+        promise = new Promise((resolve, reject) => {
+          resolve(null);
+        });
+      }
+
+      promise.then(res => {
+        let data = res.json();
+
+        originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
+        originMessage.id = data.id;
+        originMessage.audio.translateResult = data.audio.text;
+        originMessage.postStatus = PostMessageStatus.PostSuccessful;
+        this.timelineService.deleteMessage(originMessage);
+        this.timelineService.pushMessage(originMessage);
+      }, (err) => {
+        originMessage.postStatus = PostMessageStatus.PostFailed;
+      });
     } else if (message instanceof MessageModel && (message as MessageModel).type === MessageType.Image) {
       // 处理图片信息
       let originMessage = message as MessageModel;
       let postMessage = new PostMessageModel();
       postMessage.type = 'image';
       postMessage.image = new PostImageMessageModel();
-      postMessage.image.imageData = originMessage.image.imageData;
 
       this.getUploadToken(liveId).then((token) => {
         return this.uploadService.uploadToQiniu(originMessage.image.imageData, token.key, token.token);
+      }, (err) => {
+        originMessage.postStatus = PostMessageStatus.UploadFailed;
+        return Promise.reject(err);
       }).then((key) => {
         postMessage.image.key = key;
-
-        this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise().then(res => {
-          let data = res.json();
-
-          originMessage.postStatus = PostMessageStatus.PostSuccessful;
-          originMessage.id = data.id;
-
-          this.timelineService.deleteMessage(originMessage);
-          this.timelineService.pushMessage(originMessage);
-        }, () => {
-          originMessage.postStatus = PostMessageStatus.PostFailed;
-        });
-      }).catch(() => {
+        return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+      }, (err) => {
         originMessage.postStatus = PostMessageStatus.UploadFailed;
+        return Promise.reject(err);
+      }).then(res => {
+        let data = res.json();
+
+        originMessage.postStatus = PostMessageStatus.PostSuccessful;
+        originMessage.id = data.id;
+
+        this.timelineService.deleteMessage(originMessage);
+        this.timelineService.pushMessage(originMessage);
+      }, () => {
+        originMessage.postStatus = PostMessageStatus.PostFailed;
       });
     } else {
       // 处理普通信息

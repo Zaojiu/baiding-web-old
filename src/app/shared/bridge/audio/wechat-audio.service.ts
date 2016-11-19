@@ -31,7 +31,7 @@ export class WechatAudioService implements AudioBridge {
 
   startRecord(): Promise<void> {
     if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.initWechat().then(() => {
+      return this.wechatConfigService.init().then(() => {
         wx.onVoiceRecordEnd({
           // 录音时间超过一分钟没有停止的时候会执行 complete 回调
           complete: (res) => {
@@ -61,7 +61,7 @@ export class WechatAudioService implements AudioBridge {
 
   autoCompelete(): Promise<string> {
     if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.initWechat().then(() => {
+      return this.wechatConfigService.init().then(() => {
         return new Promise((resolve, reject) => {
           this.autoCompleteResolver = resolve;
           this.autoCompleteRejecter = reject;
@@ -94,7 +94,7 @@ export class WechatAudioService implements AudioBridge {
 
   stopRecord(): Promise<string> {
     if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.initWechat().then(() => {
+      return this.wechatConfigService.init().then(() => {
         return this._stopRecord();
       });
     } else {
@@ -119,7 +119,7 @@ export class WechatAudioService implements AudioBridge {
 
   cancelRecord(): Promise<void> {
     if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.initWechat().then(() => {
+      return this.wechatConfigService.init().then(() => {
         return this._cancelRecord();
       });
     } else {

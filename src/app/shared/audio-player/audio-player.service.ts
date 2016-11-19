@@ -32,6 +32,8 @@ export class AudioPlayerService {
           observer.complete();
         });
         return;
+      } else if (msg.audio.audioData) {
+        this.playLocalBlobAudio(msg, observer);
       }
 
       try {
@@ -39,13 +41,35 @@ export class AudioPlayerService {
           AudioPlayerService.playingSource.onended = null;
           AudioPlayerService.playingSource.stop();
         }
-      } catch (Error) {
+      } catch (err) {
+        // TODO: 错误提示
       }
 
       AudioPlayerService.playingSource = AudioPlayerService.h5AudioContext.createBufferSource();
       AudioPlayerService.playingMessageId = msg.id;
       this.playRemoteURLAudio(AudioPlayerService.h5AudioContext, msg, observer);
     });
+  }
+
+  playLocalBlobAudio(msg: MessageModel, observer: any) {
+    let context = AudioPlayerService.h5AudioContext;
+    AudioPlayerService.playingSource = AudioPlayerService.h5AudioContext.createBufferSource();
+    AudioPlayerService.playingMessageId = msg.id;
+
+    var reader = new FileReader();
+
+    reader.onloadend = (e) => {
+      let arrayBuffer = e.target['result'];
+      context.decodeAudioData(arrayBuffer, buffer => {
+        observer.next('loaded');
+
+        if (AudioPlayerService.playingMessageId === msg.id && AudioPlayerService.playingSource) {
+          this.playBuffer(context, AudioPlayerService.playingSource, buffer, observer);
+        }
+      });
+    };
+
+    reader.readAsArrayBuffer(msg.audio.audioData);
   }
 
   playRemoteURLAudio(context: AudioContext, msg: MessageModel, observer: any) {
