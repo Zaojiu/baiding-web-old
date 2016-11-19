@@ -82,8 +82,8 @@ export class RecorderComponent {
         this.audioBridge.stopRecord().then(result => {
           let millisecond = this.recordDuration * 100;
           let recorderData: RecorderData;
-
-          if (result instanceof String) {
+          
+          if (typeof(result) === 'string') {
             recorderData = new RecorderData(result as string, null, millisecond);
           } else {
             recorderData = new RecorderData('', result as Blob, millisecond);

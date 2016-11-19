@@ -135,7 +135,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
 
   recordEnd(recorderData: RecorderData) {
-    this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, null, recorderData.duration);
+    this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
   }
 
   postMessage() {
