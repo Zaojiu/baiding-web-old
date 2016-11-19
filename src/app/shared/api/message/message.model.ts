@@ -87,15 +87,14 @@ export class PostPraiseModel {
 }
 
 export class PostImageMessageModel {
-  imageData: File;
   key: string;
 }
 
 export class PostAudioMessageModel {
   text: string;
   weixinId: string;
-  localId: string;
-  audioData: Blob;
+  localId: string; // 使用微信jssdk录音得到的localId
+  key: string; // 使用ios或者web的普通录音, 上传七牛完成后, 得到的key
   duration: number;
 }
 

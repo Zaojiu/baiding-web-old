@@ -102,7 +102,7 @@ export class WechatShareService implements ShareBridge {
       this._setShareInfo(title, desc, cover, link, liveId);
       return Promise.resolve();
     } else {
-      return this.wechatConfigService.initWechat().then(() => {
+      return this.wechatConfigService.init().then(() => {
         this._setShareInfo(title, desc, cover, link, liveId);
         return;
       });
