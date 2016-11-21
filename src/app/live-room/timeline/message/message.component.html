@@ -77,12 +77,7 @@
         <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
              (click)="toggleTranslatioExpanded(message.audio.translateResult)">
           <div class="translate-tips">以下由机器自动翻译</div>
-<<<<<<< 3586bf4562348185cc7c8e8194ef74935b58ac6d
           {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus === postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
-=======
-          {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus !==
-          postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
->>>>>>> press to emit avatar info; click to info center
         </div>
         <i class="bi bi-elliplis" *ngIf="isTranslationExpanded"></i>
         <div class="post-status">
