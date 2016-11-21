@@ -29,7 +29,8 @@
 >
   <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
     <div class="avatar-container">
-      <div class="avatar-wrapper" (doubletap)="emitAvatarClick(message.user)" (click)="goToInfoCenter(message.user)" (contextmenu)="$event.preventDefault()">
+      <div class="avatar-wrapper" (press)="emitAvatarClick(message.user)" (click)="gotoInfoCenter(message.user,$event)"
+           (contextmenu)="$event.preventDefault()">
         <img class="avatar" [src]="message.user.avatar">
       </div>
     </div>
@@ -76,7 +77,12 @@
         <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
              (click)="toggleTranslatioExpanded(message.audio.translateResult)">
           <div class="translate-tips">以下由机器自动翻译</div>
+<<<<<<< 3586bf4562348185cc7c8e8194ef74935b58ac6d
           {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus === postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
+=======
+          {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus !==
+          postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
+>>>>>>> press to emit avatar info; click to info center
         </div>
         <i class="bi bi-elliplis" *ngIf="isTranslationExpanded"></i>
         <div class="post-status">
