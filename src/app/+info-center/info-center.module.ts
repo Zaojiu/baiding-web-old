@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
-import {BrowserModule, Title} from '@angular/platform-browser';
 
 import {ROUTES} from './info-center.route';
 import {InfoCenterComponent} from "./info-center.component";
