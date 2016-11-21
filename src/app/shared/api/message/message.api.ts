@@ -176,18 +176,18 @@ export class MessageApiService {
           return Promise.reject(err);
         });
       } else {
-        // TODO: 音频流上传七牛
-        // promise = this.audioService.uploadVoice(originMessage.audio.audioData).then((key) => {
-        //   postMessage.audio.key = key;
-        //
-        //   return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
-        // }, (err) => {
-        //   originMessage.postStatus = PostMessageStatus.UploadFailed;
-        //   return Promise.reject(err);
-        // });
+        promise = this.getAudioUploadToken(postMessage.liveId).then((token) => {
+          postMessage.audio.qiniuKey = token.key;
 
-        promise = new Promise((resolve, reject) => {
-          resolve(null);
+          return this.uploadService.uploadToQiniu(_originMessage.audio.audioData, token.key, token.token);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then(() => {
+          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
         });
       }
 
@@ -209,7 +209,7 @@ export class MessageApiService {
       // 处理图片信息
       let _originMessage = originMessage as MessageModel;
 
-      this.getUploadToken(postMessage.liveId).then((token) => {
+      this.getImageUploadToken(postMessage.liveId).then((token) => {
         return this.uploadService.uploadToQiniu(_originMessage.image.imageData, token.key, token.token);
       }, (err) => {
         originMessage.postStatus = PostMessageStatus.UploadFailed;
@@ -417,26 +417,26 @@ export class MessageApiService {
           return Promise.reject(err);
         });
       } else {
-        // TODO: 音频流上传七牛
-        // promise = this.audioService.uploadVoice(originMessage.audio.audioData).then((key) => {
-        //   postMessage.audio.key = key;
-        //
-        //   return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
-        // }, (err) => {
-        //   originMessage.postStatus = PostMessageStatus.UploadFailed;
-        //   return Promise.reject(err);
-        // });
+        promise = this.getAudioUploadToken(liveId).then((token) => {
+          postMessage.audio.qiniuKey = token.key;
 
-        promise = new Promise((resolve, reject) => {
-          resolve(null);
+          return this.uploadService.uploadToQiniu(originMessage.audio.audioData, token.key, token.token);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then(() => {
+          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
         });
       }
 
       promise.then(res => {
         let data = res.json();
 
-        originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
         originMessage.id = data.id;
+        originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
         originMessage.audio.translateResult = data.audio.text;
         originMessage.postStatus = PostMessageStatus.PostSuccessful;
         this.timelineService.deleteMessage(originMessage);
@@ -451,7 +451,7 @@ export class MessageApiService {
       postMessage.type = 'image';
       postMessage.image = new PostImageMessageModel();
 
-      this.getUploadToken(liveId).then((token) => {
+      this.getImageUploadToken(liveId).then((token) => {
         return this.uploadService.uploadToQiniu(originMessage.image.imageData, token.key, token.token);
       }, (err) => {
         originMessage.postStatus = PostMessageStatus.UploadFailed;
@@ -510,8 +510,19 @@ export class MessageApiService {
     }
   }
 
-  getUploadToken(liveId: string): Promise<UploadTokenModel> {
+  getImageUploadToken(liveId: string): Promise<UploadTokenModel> {
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages/image/uptoken`;
+    return this.http.get(url).toPromise().then(res => {
+      let data = res.json();
+
+      let uploadTokenModel = new UploadTokenModel(data.token, data.key);
+
+      return uploadTokenModel;
+    });
+  }
+
+  getAudioUploadToken(liveId: string): Promise<UploadTokenModel> {
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages/audio/uptoken`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
 
