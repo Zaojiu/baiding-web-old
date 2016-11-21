@@ -7,9 +7,6 @@ declare var wx: any;
 @Injectable()
 export class WechatAudioService implements AudioBridge {
   playingVoiceId = '';
-  private onVoicePlayEnd: (id: string) => void;
-  private autoCompleteResolver: (localId: string) => void;
-  private autoCompleteRejecter: (reason: string) => void;
 
   constructor(private wechatConfigService: WechatConfigService) {
   }
@@ -32,26 +29,6 @@ export class WechatAudioService implements AudioBridge {
   startRecord(): Promise<void> {
     if (!this.wechatConfigService.hasInit) {
       return this.wechatConfigService.init().then(() => {
-        wx.onVoiceRecordEnd({
-          // 录音时间超过一分钟没有停止的时候会执行 complete 回调
-          complete: (res) => {
-            if (this.autoCompleteResolver) this.autoCompleteResolver(res.localId);
-          },
-          fail: (reason) => {
-            if (this.autoCompleteRejecter) this.autoCompleteRejecter(reason);
-          }
-        });
-
-        wx.onVoicePlayEnd({
-          success: res => {
-            if (this.onVoicePlayEnd) {
-              this.onVoicePlayEnd(this.playingVoiceId);
-            }
-
-            this.playingVoiceId = ''; // 返回音频的本地ID
-          }
-        });
-
         return this._startRecord();
       });
     } else {
@@ -63,14 +40,14 @@ export class WechatAudioService implements AudioBridge {
     if (!this.wechatConfigService.hasInit) {
       return this.wechatConfigService.init().then(() => {
         return new Promise((resolve, reject) => {
-          this.autoCompleteResolver = resolve;
-          this.autoCompleteRejecter = reject;
+          this.wechatConfigService.autoCompleteResolver = resolve;
+          this.wechatConfigService.autoCompleteRejecter = reject;
         });
       });
     } else {
       return new Promise((resolve, reject) => {
-        this.autoCompleteResolver = resolve;
-        this.autoCompleteRejecter = reject;
+        this.wechatConfigService.autoCompleteResolver = resolve;
+        this.wechatConfigService.autoCompleteRejecter = reject;
       });
     }
 
@@ -102,7 +79,7 @@ export class WechatAudioService implements AudioBridge {
     }
   }
 
-  private _cancelRecord():Promise<void> {
+  private _cancelRecord(): Promise<void> {
     return new Promise((resolve, reject) => {
       wx.stopRecord({
         success: () => {
@@ -133,8 +110,8 @@ export class WechatAudioService implements AudioBridge {
     }
 
     return new Promise<string>((resolve, reject) => {
-      this.onVoicePlayEnd = localId => {
-        resolve(localId);
+      this.wechatConfigService.onVoicePlayEnd = () => {
+        resolve(this.playingVoiceId);
         this.playingVoiceId = '';
       };
 
