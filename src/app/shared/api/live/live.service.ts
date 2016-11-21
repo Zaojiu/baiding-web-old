@@ -214,6 +214,7 @@ export class LiveService {
     const url = `${environment.config.host.io}/api/live/streams/owner/${uid}?${$.param(query)}`;
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
+
       let streamData = data.result;
       let usersData = data.include.users;
       let liveInfoList: LiveInfoModel[] = [];
@@ -230,6 +231,9 @@ export class LiveService {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users`;
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
+
+      if(!data || !data.include) return [];
+
       let usersData = data.include.users;
       let audienceList: UserInfoModel[] = [];
       let count = 0;
@@ -237,7 +241,7 @@ export class LiveService {
         let audienceParsed = this.parseLiveAudienceInfo(usersData[audience]);
         audienceList.push(audienceParsed);
         count++;
-        //最多取五条观众数据
+        // 最多取五条观众数据
         if (count >= 4) break;
       }
       return audienceList;
