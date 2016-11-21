@@ -261,7 +261,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToInfoCenter(userInfo: UserInfoModel) {
+  gotoInfoCenter(userInfo: UserInfoModel) {
     this.router.navigate([`/info-center/` + userInfo.uid, {uid: userInfo.uid}]);
   }
 
@@ -272,7 +272,6 @@ export class MessageComponent implements OnInit, OnDestroy {
   gotoHistory() {
     this.router.navigate([`/lives/${this.liveId}/history`]);
   }
-  
 
   toggleTranslatioExpanded(msg) {
     if (msg.length <= this.tranlationMaxLength) return;
