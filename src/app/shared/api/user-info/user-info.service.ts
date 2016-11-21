@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
+import {Router} from "@angular/router";
 
 
 @Injectable()
@@ -13,7 +14,8 @@ export class UserInfoService {
   private userPublicInfoUrl: string;
   private userDetailInfoUrl: string;
 
-  constructor(private http: Http, private store: StoreService) {}
+  constructor(private http: Http, private router: Router, private store: StoreService) {
+  }
 
   getUserInfoCache(): UserInfoModel {
     return this.store.get('userinfo') as UserInfoModel;
@@ -99,6 +101,18 @@ export class UserInfoService {
     if (data.sex) userDetailInfo.sex = data.sex;
 
     return userDetailInfo;
+  }
 
+  postUserInfo(nameContent: string, introContent: string) {
+    let headers = new Headers({'Content-Type': 'application/json'});
+    const url = `${environment.config.host.io}/api/user/detail`;
+    let user = new UserInfoModel();
+    user.nick = nameContent;
+    user.intro = introContent;
+    return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
+      this.getUserInfo().then((userInfo=> {
+        this.router.navigate([`/info-center/${userInfo.uid}`]);
+      }));
+    });
   }
 }

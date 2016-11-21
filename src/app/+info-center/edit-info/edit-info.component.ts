@@ -55,17 +55,6 @@ export class EditInfoComponent implements OnInit {
 
   submit() {
     if (this.form.invalid) return
-    this.postUserInfo();
-  }
-
-  postUserInfo() {
-      let headers = new Headers({'Content-Type': 'application/json'});
-      const url = `${environment.config.host.io}/api/user/detail`;
-      let user = new UserInfoModel();
-      user.nick = this.nameContent;
-      user.intro = this.introContent;
-      return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
-        this._location.back();
-      });
+    this.userInfoService.postUserInfo(this.nameContent, this.introContent);
   }
 }
