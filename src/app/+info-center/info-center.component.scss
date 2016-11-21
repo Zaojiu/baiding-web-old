@@ -408,23 +408,23 @@
         color: #9EA1A5;
       }
     }
+  }
 
-    .create-btn {
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      height: 60px;
-      width: 60px;
-      box-shadow: 0 0 8px rgb(110, 180, 236);
-      border-radius: 50%;
-      background-color: rgb(33, 150, 243);
-      display: flex;
+  .create-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    height: 60px;
+    width: 60px;
+    box-shadow: 0 0 8px rgb(110, 180, 236);
+    border-radius: 50%;
+    background-color: rgb(33, 150, 243);
+    display: flex;
 
-      .bi {
-        font-size: 20px;
-        color: rgb(255, 255, 255);
-        margin: auto;
-      }
+    .bi {
+      font-size: 20px;
+      color: rgb(255, 255, 255);
+      margin: auto;
     }
   }
 }
