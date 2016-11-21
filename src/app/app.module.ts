@@ -47,6 +47,7 @@ import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
 import {IosShareService} from "./shared/bridge/share/ios-share.service";
 import {IosBridgeService} from "./shared/ios-bridge/ios-bridge.service";
 import {audioServiceFactory, authServiceFactory, shareServiceFactory} from "./app.factory";
+import {IosAudioService} from "./shared/bridge/audio/ios-audio.service";
 
 @NgModule({
   imports: [
@@ -74,10 +75,11 @@ import {audioServiceFactory, authServiceFactory, shareServiceFactory} from "./ap
     WechatShareService,
     WechatAuthService,
     IosBridgeService,
-    IosAuthService,
+    IosAudioService,
     IosShareService,
+    IosAuthService,
     PcAuthService,
-    { provide: AudioBridge, useFactory: audioServiceFactory, deps: [WechatAudioService] },
+    { provide: AudioBridge, useFactory: audioServiceFactory, deps: [WechatAudioService, IosAudioService] },
     { provide: AuthBridge, useFactory: authServiceFactory, deps: [WechatAuthService, IosAuthService, PcAuthService] },
     { provide: ShareBridge, useFactory: shareServiceFactory, deps: [WechatShareService, IosShareService] },
     Title,
