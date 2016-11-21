@@ -1,10 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../shared/api/live/live.service";
 import {LiveInfoModel} from "../shared/api/live/live.model";
 import {LiveStatus} from '../shared/api/live/live.enums';
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
-import {UserInfoModel, UserPublicInfoModel, UserDetailInfoModel} from "../shared/api/user-info/user-info.model";
+import {UserInfoModel, UserPublicInfoModel} from "../shared/api/user-info/user-info.model";
 import {SharePopupService} from "../shared/share-popup/share-popup.service";
 import {UtilsService} from "../shared/utils/utils";
 import {InvitationModel} from "../shared/api/invite/invite.model";
@@ -82,9 +82,7 @@ export class InfoCenterComponent {
   }
 
   goToEdit() {
-    this.router.navigate([
-      `/info-center/edit-info`,
-    ]);
+    this.router.navigate([`/info-center/edit-info`]);
   }
 
   popupShare() {
