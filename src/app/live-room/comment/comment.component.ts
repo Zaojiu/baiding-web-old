@@ -39,7 +39,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   constructor(private commentService: CommentService, private router: Router,
               private commentApiService: CommentApiService, private sanitizer: DomSanitizer,
-              private timelineService: TimelineService,private userInfoService: UserInfoService,private editorCardService: UserInfoCardService) {
+              private timelineService: TimelineService, private userInfoService: UserInfoService, private editorCardService: UserInfoCardService) {
   }
 
   ngOnInit() {
@@ -270,6 +270,8 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   gotoCommentList(comment?: CommentModel) {
     let query: any = {};
+
+    query.commentId = comment.id;
 
     if (comment) {
       query.marker = `$gte${comment.createdAt}`;

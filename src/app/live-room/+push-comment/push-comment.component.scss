@@ -116,6 +116,10 @@
           color: rgb(75, 75, 75);
           font-size: 14px;
           word-break: break-all;
+
+          &.highlight {
+            color: rgb(24, 228, 228);
+          }
         }
       }
 
