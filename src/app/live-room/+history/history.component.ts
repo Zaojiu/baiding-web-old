@@ -29,13 +29,14 @@ export class HistoryComponent {
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
     this.token = this.route.parent.snapshot.params['token'];
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
 
     this.messageApiService.history(this.id).then(messages => {
       this.messages = messages;
+    }, () => {
+      this.backToMainScreen();
     });
-
-    this.userInfoService.getUserInfo().then(userInfo => this.userInfo = userInfo);
-    this.liveService.getLiveInfo(this.id).then(liveInfo => this.liveInfo = liveInfo);
   }
 
   backToMainScreen() {

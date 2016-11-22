@@ -8,11 +8,17 @@ const route: Routes = [
   {
     path: 'edit-info',
     component: EditInfoComponent,
+    resolve: {
+      userInfo: UserInfoResolver,
+    },
     canActivate: [AuthGuard],
   },
   {
     path: ':uid',
     component: InfoCenterComponent,
+    resolve: {
+      userInfo: UserInfoResolver,
+    },
     canActivate: [AuthGuard],
   },
 ];

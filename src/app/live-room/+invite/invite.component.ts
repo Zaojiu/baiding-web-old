@@ -19,7 +19,6 @@ export class InviteComponent implements OnInit {
   token: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
-  isLoading: boolean;
   isTokenExist = false;
   isTokenUsed: boolean;
 
@@ -31,28 +30,17 @@ export class InviteComponent implements OnInit {
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
     this.token = this.route.snapshot.params['token'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
 
-    let userInfoPromise = this.userInfoService.getUserInfo();
-    let liveInfoPromise = this.liveService.getLiveInfo(this.liveId);
+    if (this.token) {
+      this.wechatShare(location.href);
 
-    this.isLoading = true;
-
-    Promise.all([userInfoPromise, liveInfoPromise]).then((result: any[]) => {
-      this.userInfo = result[0];
-      this.liveInfo = result[1];
-
-
-      if (this.token) {
-        this.wechatShare(location.href);
-
-        this.inviteApiService.checkInviteToken(this.token).then(isTokenUsed => {
-          this.isTokenExist = true;
-          this.isTokenUsed = isTokenUsed;
-        });
-      }
-
-      this.isLoading = false;
-    });
+      this.inviteApiService.checkInviteToken(this.token).then(isTokenUsed => {
+        this.isTokenExist = true;
+        this.isTokenUsed = isTokenUsed;
+      });
+    }
   }
 
   acceptInvitation() {

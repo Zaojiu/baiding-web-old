@@ -1,7 +1,7 @@
 <div class="loading" *ngIf="isLoading"></div>
 
 <form class="vip-info-container" *ngIf="!isLoading" (ngSubmit)="submit()">
-  <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
+  <live-room-top-bar class="top-bar" [liveId]="liveId" [userInfo]="userInfo"></live-room-top-bar>
 
   <div class="main-form">
     <div class="vip-name-wrapper ">
