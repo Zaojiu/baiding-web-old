@@ -200,10 +200,12 @@ export class MessageComponent implements OnInit, OnDestroy {
       items.push(reply);
     }
 
-    let checked = !this.liveService.isTranslationExpanded(this.liveId) ? 'bi-check-round' : 'bi-circle';
-    let translationExpand = new ToolTipsModel('translation-expand',
-      `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">翻译折叠</span>`, true);
-    items.push(translationExpand);
+    if (t === MessageType.Audio && this.message.audio.translateResult !== '') {
+      let checked = !this.liveService.isTranslationExpanded(this.liveId) ? 'bi-check-round' : 'bi-circle';
+      let translationExpand = new ToolTipsModel('translation-expand',
+        `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">翻译折叠</span>`, true);
+      items.push(translationExpand);
+    }
 
     if (t === MessageType.Audio || t === MessageType.Text || t === MessageType.Nice) {
       let autoPlay = new ToolTipsModel('text-popup', `<span>复制</span>`, true);
