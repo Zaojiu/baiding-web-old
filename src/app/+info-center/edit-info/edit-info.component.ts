@@ -54,7 +54,15 @@ export class EditInfoComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.invalid) return
-    this.userInfoService.postUserInfo(this.nameContent, this.introContent);
+    if (this.form.invalid) return;
+    this.userInfoService.postUserInfo(this.nameContent, this.introContent).then((response)=> {
+      if (response.status === 200) {
+        this.userInfoService.getUserInfo().then((userInfo=> {
+          this.router.navigate([`/info-center/${userInfo.uid}`]);
+        }));
+      } else {
+        // TODO: handle other status
+      }
+    });
   }
 }

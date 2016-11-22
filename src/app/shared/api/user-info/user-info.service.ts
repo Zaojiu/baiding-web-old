@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import {Http, Headers, Response} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
@@ -103,16 +103,14 @@ export class UserInfoService {
     return userDetailInfo;
   }
 
-  postUserInfo(nameContent: string, introContent: string) {
+  postUserInfo(nameContent: string, introContent: string): Promise<Response> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${environment.config.host.io}/api/user/detail`;
     let user = new UserInfoModel();
     user.nick = nameContent;
     user.intro = introContent;
     return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
-      this.getUserInfo().then((userInfo=> {
-        this.router.navigate([`/info-center/${userInfo.uid}`]);
-      }));
+      return res;
     });
   }
 }
