@@ -34,6 +34,7 @@ export class InfoCenterComponent {
 
   ngOnInit() {
     this.uid = +this.route.snapshot.params['uid'];
+    this.currentUserInfo = this.route.snapshot.data['userInfo'];
 
     this.liveService.listLiveInfo(this.uid, '', 1000, ['-createdAt']).then((livesList) => {
       this.livesList = livesList;
@@ -56,10 +57,6 @@ export class InfoCenterComponent {
         let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
       }
-    });
-
-    this.userInfoService.getUserInfo().then((currentUserInfo) => {
-      this.currentUserInfo = currentUserInfo;
     });
 
     this.userInfoService.getUserPublicInfo(this.uid).then((pageUserInfo) => {

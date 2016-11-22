@@ -12,6 +12,7 @@ export class AdminGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot) {
     let liveId = route.params['id'];
+
     return Promise.all([this.liveService.getLiveInfo(liveId), this.userInfoService.getUserInfo()]).then((result) => {
       let userInfo = result[1];
 

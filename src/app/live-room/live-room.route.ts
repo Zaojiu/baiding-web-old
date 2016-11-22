@@ -5,6 +5,7 @@ import {AuthGuard} from '../shared/guard/auth.guard';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
 import {EmptyComponent} from '../shared/empty/empty.component';
+import {UserInfoResolver} from "../shared/guard/user-info.resolver";
 
 const route: Routes = [
   {
@@ -19,6 +20,7 @@ const route: Routes = [
         path: '', component: LiveRoomComponent,
         resolve: {
           liveInfo: LiveInfoResolver,
+          userInfo: UserInfoResolver,
         },
         children: [
           {path: '', component: EmptyComponent},

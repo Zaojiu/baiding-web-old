@@ -1,8 +1,8 @@
-<form [formGroup]="form" name="editInfo" class="edit-info-container" *ngIf="user" (submit)="submit()">
+<form [formGroup]="form" name="editInfo" class="edit-info-container" *ngIf="userDetailInfo" (submit)="submit()">
 
   <div class="main-form">
     <div class="avatar-wrapper">
-      <img class="avatar" [src]="user.avatar" alt="嘉宾头像">
+      <img class="avatar" [src]="userDetailInfo.avatar" alt="嘉宾头像">
     </div>
 
     <div class="form-group">

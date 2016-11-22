@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MqEvent, EventType} from "../../shared/mq/mq.service";
 import {TimelineService} from '../../live-room/timeline/timeline.service';
 import {UserInfoService} from "../api/user-info/user-info.service";
+import {UserInfoModel} from "../api/user-info/user-info.model";
 
 @Component({
   selector: 'live-room-top-bar',
@@ -13,6 +14,7 @@ import {UserInfoService} from "../api/user-info/user-info.service";
 
 export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
+  @Input() userInfo: UserInfoModel;
   unreadCount = 0;
 
   constructor(private router: Router, private timelineService: TimelineService, private userInfoService: UserInfoService) {
@@ -41,10 +43,7 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
     if (this.liveId) {
       this.router.navigate(['/lives/' + this.liveId]);
     } else {
-      this.userInfoService.getUserInfo().then(userInfo => {
-        let uid = userInfo.uid;
-        this.router.navigate([`/info-center/${uid}`]);
-      });
+      this.router.navigate([`/info-center/${this.userInfo.uid}`]);
     }
   }
 

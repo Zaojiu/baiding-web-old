@@ -1,5 +1,5 @@
 import {Component, OnInit, DoCheck} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {LiveService} from "../../shared/api/live/live.service";
@@ -7,7 +7,6 @@ import {UploadApiService} from "../../shared/api/upload/upload.api";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {futureValidator} from "../../shared/form/future.validator";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
-import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './create.component.html',
@@ -31,14 +30,13 @@ export class CreateComponent implements OnInit, DoCheck {
   isSubmitting = false;
   userInfo: UserInfoModel;
 
-  constructor(private router: Router, private sanitizer: DomSanitizer, private fb: FormBuilder,
-              private userInfoService: UserInfoService, private liveService: LiveService,
-              private uploadService: UploadApiService) {
+  constructor(private router: Router, private route: ActivatedRoute, private sanitizer: DomSanitizer, private fb: FormBuilder,
+              private liveService: LiveService, private uploadService: UploadApiService) {
   }
 
   ngOnInit() {
     this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/liveroombanner-blur.jpg');
-
+    this.userInfo = this.route.snapshot.data['userInfo'];
     this.time = moment().add(moment.duration(1, 'h')).format('YYYY-MM-DDTHH:mm');
 
     this.form = this.fb.group({
@@ -59,10 +57,6 @@ export class CreateComponent implements OnInit, DoCheck {
         Validators.required,
         Validators.maxLength(this.maxDescLength)
       ]),
-    });
-
-    this.userInfoService.getUserInfo().then(userInfo => {
-      this.userInfo = userInfo;
     });
   }
 
@@ -121,10 +115,6 @@ export class CreateComponent implements OnInit, DoCheck {
     }).finally(() => {
       this.isSubmitting = false;
     });
-  }
-
-  gotoLive(liveId: string) {
-    this.router.navigate([`/lives/${liveId}`]);
   }
 
   gotoInfoCenter() {

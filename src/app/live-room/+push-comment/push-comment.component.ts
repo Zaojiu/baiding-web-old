@@ -53,6 +53,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
 
     // 监控router变化，如果route换了，那么重新获取以下值
     this.routerSubscription = this.router.events.subscribe(
@@ -68,14 +70,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
         }
       }
     );
-
-    let userInfoPromise = this.userInfoService.getUserInfo();
-    let liveInfoPromise = this.liveService.getLiveInfo(this.liveId);
-
-    Promise.all([userInfoPromise, liveInfoPromise]).then((result: any[]) => {
-      this.userInfo = result[0];
-      this.liveInfo = result[1];
-    });
   }
 
   ngOnDestroy() {

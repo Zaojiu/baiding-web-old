@@ -10,9 +10,6 @@ import {Router} from "@angular/router";
 
 @Injectable()
 export class UserInfoService {
-  private userInfoUrl: string;
-  private userPublicInfoUrl: string;
-  private userDetailInfoUrl: string;
 
   constructor(private http: Http, private router: Router, private store: StoreService) {
   }
@@ -27,11 +24,7 @@ export class UserInfoService {
     info.avatar = data.avatar;
     info.uid = data.uid;
     info.permissions = new PermissionModel;
-    info.permissions.publish = false;
-
-    if (data.permissions && data.permissions.publish) {
-      info.permissions.publish = true;
-    }
+    info.permissions.publish = data.permissions ? data.permissions.publish : false;
 
     return info;
 
@@ -55,9 +48,7 @@ export class UserInfoService {
 
 
   getUserPublicInfo(uid: number): Promise<UserPublicInfoModel> {
-    this.userPublicInfoUrl = `${environment.config.host.io}/api/user/${uid}`;
-
-    return this.http.get(this.userPublicInfoUrl).toPromise()
+    return this.http.get(`${environment.config.host.io}/api/user/${uid}`).toPromise()
       .then(res => {
         let data = res.json();
         return this.parseUserPublicInfo(data);
@@ -82,9 +73,7 @@ export class UserInfoService {
   }
 
   getUserDetailInfo(uid: number): Promise<UserDetailInfoModel> {
-    this.userDetailInfoUrl = `${environment.config.host.io}/api/user/detail`;
-
-    return this.http.get(this.userDetailInfoUrl).toPromise()
+    return this.http.get(`${environment.config.host.io}/api/user/detail`).toPromise()
       .then(res => {
         let data = res.json();
         return this.parseUserDetailInfo(data);
@@ -103,14 +92,14 @@ export class UserInfoService {
     return userDetailInfo;
   }
 
-  postUserInfo(nameContent: string, introContent: string): Promise<Response> {
+  postUserInfo(nameContent: string, introContent: string): Promise<void> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${environment.config.host.io}/api/user/detail`;
     let user = new UserInfoModel();
     user.nick = nameContent;
     user.intro = introContent;
     return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
-      return res;
+      return;
     });
   }
 }
