@@ -13,12 +13,11 @@ export class NotFoundComponent {
 
   gotoInfoCenter() {
     this.userInfoService.getUserInfo().then(userInfo => {
-      if (userInfo.uid) {
         this.router.navigate([`/info-center/${userInfo.uid}`]);
-      } else {
+      }, () => {
         this.router.navigate([`/info-center`]);
       }
-    });
+    );
 
   }
 }
