@@ -7,6 +7,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../../shared/api/live/live.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {ShareBridge} from "../../shared/bridge/share.interface";
+import {LiveInfoModel} from "../../shared/api/live/live.model";
 
 declare var $: any;
 
@@ -23,6 +24,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   @Input() isTimelineOnOldest: boolean;
   @Input() isTimelineOnLatest: boolean;
   @Input() userInfo: UserInfoModel;
+  @Input() liveInfo: LiveInfoModel;
   @ViewChildren(FadeDirective) oldestLatestBtns: QueryList<FadeDirective>;
   isGotoOldestShown = false;
   isGotoLatestShown = false;
@@ -110,7 +112,7 @@ export class TopBarComponent implements OnInit, OnDestroy {
   }
 
   gotoInfoCenter() {
-    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
+    this.router.navigate([`/info-center/${this.liveInfo.admin.uid}`]);
   }
 
   toggleComment(isOpened: boolean) {

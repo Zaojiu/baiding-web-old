@@ -200,7 +200,7 @@ export class MessageComponent implements OnInit, OnDestroy {
       items.push(reply);
     }
 
-    if (t === MessageType.Audio && this.message.audio.translateResult !== '') {
+    if (t === MessageType.Audio) {
       let checked = !this.liveService.isTranslationExpanded(this.liveId) ? 'bi-check-round' : 'bi-circle';
       let translationExpand = new ToolTipsModel('translation-expand',
         `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">翻译折叠</span>`, true);
