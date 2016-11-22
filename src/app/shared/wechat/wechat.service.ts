@@ -9,6 +9,9 @@ declare var wx: any;
 
 @Injectable()
 export class WechatConfigService {
+  onVoicePlayEnd: () => void;
+  autoCompleteResolver: (localId: string) => void;
+  autoCompleteRejecter: (reason: string) => void;
   hasInit: boolean;
 
   constructor(private http: Http) {}
@@ -67,6 +70,25 @@ export class WechatConfigService {
 
       wx.ready(() => {
         this.hasInit = true;
+
+        console.log('wechat ready');
+
+        wx.onVoiceRecordEnd({
+          // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+          complete: (res) => {
+            console.log(this.autoCompleteResolver, res.localId, 'had auto complete');
+            if (this.autoCompleteResolver) this.autoCompleteResolver(res.localId);
+          },
+          fail: (reason) => {
+            if (this.autoCompleteRejecter) this.autoCompleteRejecter(reason);
+          }
+        });
+
+        wx.onVoicePlayEnd({
+          success: res => {
+            if (this.onVoicePlayEnd) this.onVoicePlayEnd();
+          }
+        });
 
         resolve();
       });

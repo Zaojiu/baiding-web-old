@@ -24,10 +24,7 @@ export class IosAudioService implements AudioBridge {
     return new Promise((resolve, reject) => {
       this.recordStartFailedRejecter = reject;
 
-      this.iosBridgeService.bridge.callHandler('record', {duration: this.maxDuration}, ()=>{
-        this.stopType = RecordStopedType.Auto;
-        resolve();
-      }, (result) => {
+      this.iosBridgeService.bridge.callHandler('record', {duration: this.maxDuration}, (result) => {
         // 结束成功回调,包含自动结束,手动结束
         if (this.stopType === RecordStopedType.Manual && this.recordStopSuccessfulResolver) {
           this.recordStopSuccessfulResolver(result);
@@ -43,21 +40,24 @@ export class IosAudioService implements AudioBridge {
       }, (failedType: RecordFailedType) => {
         // 失败回调,包含开始录音失败, 结束录音失败
 
-        if (failedType === RecordFailedType.StartFailed && this.recordStartFailedRejecter){
+        if (failedType === RecordFailedType.StartFailed && this.recordStartFailedRejecter) {
           this.recordStartFailedRejecter();
         }
 
-        if (failedType === RecordFailedType.StopFailed && this.stopType === RecordStopedType.Manual && this.recordStopFailedRejecter){
+        if (failedType === RecordFailedType.StopFailed && this.stopType === RecordStopedType.Manual && this.recordStopFailedRejecter) {
           this.recordStopFailedRejecter();
         }
 
-        if (failedType === RecordFailedType.StopFailed && this.stopType === RecordStopedType.Auto && this.recordAutoCompleteFailedRejecter){
+        if (failedType === RecordFailedType.StopFailed && this.stopType === RecordStopedType.Auto && this.recordAutoCompleteFailedRejecter) {
           this.recordAutoCompleteFailedRejecter();
         }
 
-        if (failedType === RecordFailedType.StopFailed && this.stopType === RecordStopedType.Cancel && this.recordCancelFailedRejecter){
+        if (failedType === RecordFailedType.StopFailed && this.stopType === RecordStopedType.Cancel && this.recordCancelFailedRejecter) {
           this.recordAutoCompleteFailedRejecter();
         }
+      }, () => {
+        this.stopType = RecordStopedType.Auto;
+        resolve();
       });
     })
   }
@@ -109,7 +109,7 @@ export class IosAudioService implements AudioBridge {
     }
   }
 
-  private _cancelRecord():Promise<void> {
+  private _cancelRecord(): Promise<void> {
     this.stopType = RecordStopedType.Cancel;
 
     return new Promise((resolve, reject) => {
