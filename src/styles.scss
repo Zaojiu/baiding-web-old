@@ -78,7 +78,7 @@ a {
 }
 
 @media screen and (min-width: 768px) {
-  html {
+  html,body {
     background-color: rgb(238, 238, 238);
     width: 768px;
     height: 100%;
