@@ -22,7 +22,8 @@
         [(ngModel)]="commentContent"
       >
       <div class="fake-comment-input"
-             (click)="switchMode(modeEnums.Text)" *ngIf="mode !== modeEnums.Text">发表评论</div>
+           (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.None">发表评论
+      </div>
 
       <button class="sender">发送</button>
       <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
