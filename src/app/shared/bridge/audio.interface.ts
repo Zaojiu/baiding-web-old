@@ -8,4 +8,5 @@ export abstract class AudioBridge {
   abstract playVoice(data: string): Promise<string>;
   abstract stopVoice(data: string);
   abstract uploadVoice(data: string): Promise<string>;
+  abstract encodeVoice(data: Blob): Promise<Blob>;
 }

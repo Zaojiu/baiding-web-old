@@ -23,6 +23,7 @@
     class="record-container"
     (touchstart)="startRecord()"
     (touchend)="stopRecord()"
+    (mouseup)="status === recordStatusEnum.Waitting ? startRecord() : stopRecord()"
     (contextmenu)="$event.preventDefault()"
   ></div>
 

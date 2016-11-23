@@ -160,4 +160,9 @@ export class WechatAudioService implements AudioBridge {
       })
     })
   }
+
+  // 微信不需要用到转码
+  encodeVoice(data: Blob): Promise<Blob> {
+    return Promise.resolve(null);
+  }
 }

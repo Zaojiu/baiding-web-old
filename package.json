@@ -45,6 +45,7 @@
     "leancloud-push": "git://github.com/slene/js-push-sdk.git#cbd62974525255c2cf1e809142a43b304bb02caa",
     "lodash": "^4.15.0",
     "moment": "^2.15.1",
+    "recordrtc": "^5.4.0",
     "rxjs": "5.0.0-beta.12",
     "touch-emulator": "^1.0.0",
     "ts-helpers": "^1.1.1",

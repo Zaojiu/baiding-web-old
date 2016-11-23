@@ -9,9 +9,10 @@ import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
 import {IosShareService} from "./shared/bridge/share/ios-share.service";
 import {ShareBridge} from "./shared/bridge/share.interface";
 import {IosAudioService} from "./shared/bridge/audio/ios-audio.service";
+import {PcAudioService} from "./shared/bridge/audio/pc-audio.service";
 
-export function audioServiceFactory(wechatAudioService: WechatAudioService, iosAudioService: IosAudioService): AudioBridge {
-  return UtilsService.isInWechat ? wechatAudioService : UtilsService.isInApp ? iosAudioService : wechatAudioService;
+export function audioServiceFactory(wechatAudioService: WechatAudioService, iosAudioService: IosAudioService, pcAudioService: PcAudioService): AudioBridge {
+  return UtilsService.isInWechat ? wechatAudioService : UtilsService.isInApp ? iosAudioService : pcAudioService;
 }
 
 export function authServiceFactory(wechatAuthService: WechatAuthService, iosAuthService: IosAuthService, pcAuthService: PcAuthService): AuthBridge {

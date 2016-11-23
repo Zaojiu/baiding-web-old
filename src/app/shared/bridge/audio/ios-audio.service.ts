@@ -143,4 +143,9 @@ export class IosAudioService implements AudioBridge {
   uploadVoice(data: string): Promise<string> {
     return Promise.resolve('');
   }
+
+  // ios不需用到转码。
+  encodeVoice(data: Blob): Promise<Blob> {
+    return Promise.resolve(null);
+  }
 }
