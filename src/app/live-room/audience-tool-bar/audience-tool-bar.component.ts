@@ -104,8 +104,6 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy, AfterViewIni
 
     this.mode = mode;
 
-    if (mode === EditMode.None)this.commentContent = '';
-
     if (this.mode === EditMode.Text) {
       this.focusMessageInput();
       this.detectContentChange();

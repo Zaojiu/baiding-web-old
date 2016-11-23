@@ -69,8 +69,6 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
     this.mode = mode;
 
-    if (mode !== EditMode.Text && mode !== EditMode.At) this.messageContent = '';
-
     if (this.mode === EditMode.Text) {
       this.focusMessageInput();
       this.detectContentChange();
