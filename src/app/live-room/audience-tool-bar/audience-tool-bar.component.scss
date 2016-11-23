@@ -15,6 +15,7 @@
     overflow: hidden;
     transition: width 0.2s;
     flex-grow: 1;
+    position: relative;
 
     &.activate {
       width: 100%;
@@ -32,6 +33,23 @@
       .switcher {
         display: inline-block;
       }
+    }
+
+    .fake-comment-input {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      line-height: 37px;
+      background-color: rgb(255, 255, 255);
+      color: rgb(158, 161, 165);
+      border: solid 1px rgb(236, 236, 236);
+      border-radius: 19px;
+      padding: 0 12px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      font-size: 12px;
     }
 
     .comment-input {
@@ -119,7 +137,7 @@
     padding-left: 15px;
     padding-right: 15px;
 
-   .avatar {
+    .avatar {
       width: 40px;
       height: 40px;
       border-radius: 50%;
