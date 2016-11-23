@@ -38,13 +38,14 @@
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  background-color: rgb(255, 255, 255);
 
   &.blured {
     filter: blur(7px);
   }
 
   .top-bar {
-    position: fixed;
+    position: absolute;
     width: 100%;
     top: 0;
     z-index: 2;

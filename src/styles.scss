@@ -45,7 +45,7 @@ input, textarea {
 }
 
 button {
-  border:none;
+  border: none;
   outline: none;
   padding: 0;
   background-color: transparent;
@@ -74,6 +74,16 @@ a {
     /* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
     text-decoration: none;
     text-transform: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  html {
+    background-color: rgb(238, 238, 238);
+    width: 768px;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
   }
 }
 
