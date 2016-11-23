@@ -21,6 +21,7 @@ const route: Routes = [
     path: 'view-info', component: ViewInfoComponent,
     resolve: {
       liveInfo: LiveInfoResolver,
+      userInfo: UserInfoResolver,
     },
   },
   {
@@ -29,6 +30,7 @@ const route: Routes = [
     canDeactivate: [QuitEditGuard],
     resolve: {
       liveInfo: LiveInfoResolver,
+      userInfo: UserInfoResolver,
     },
   },
 ];

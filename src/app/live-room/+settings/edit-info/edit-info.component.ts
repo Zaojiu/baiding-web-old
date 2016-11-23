@@ -8,6 +8,7 @@ import {sizeValidator, typeValidator} from "../../../shared/file-selector/file-s
 import {LiveService} from "../../../shared/api/live/live.service";
 import {futureValidator} from "../../../shared/form/future.validator";
 import {UploadApiService} from "../../../shared/api/upload/upload.api";
+import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -17,6 +18,7 @@ import {UploadApiService} from "../../../shared/api/upload/upload.api";
 export class EditInfoComponent implements OnInit, DoCheck {
   liveId: string;
   liveInfo: LiveInfoModel;
+  userInfo: UserInfoModel;
   form: FormGroup;
   coverFiles: File[];
   coverSrc: SafeUrl;
@@ -40,6 +42,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
 
     if (!this.liveService.isAdmin(this.liveId)) this.backToViewInfo();
 

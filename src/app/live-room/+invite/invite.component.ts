@@ -3,7 +3,6 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {UserInfoService} from '../../shared/api/user-info/user-info.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {ShareBridge} from "../../shared/bridge/share.interface";
@@ -22,9 +21,8 @@ export class InviteComponent implements OnInit {
   isTokenExist = false;
   isTokenUsed: boolean;
 
-  constructor(private userInfoService: UserInfoService, private liveService: LiveService,
-              private route: ActivatedRoute, private router: Router, private inviteApiService: InviteApiService,
-              private shareService: ShareBridge) {
+  constructor(private liveService: LiveService, private route: ActivatedRoute,
+              private router: Router, private inviteApiService: InviteApiService, private shareService: ShareBridge) {
   }
 
   ngOnInit() {
