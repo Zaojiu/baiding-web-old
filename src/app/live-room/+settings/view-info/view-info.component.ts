@@ -1,7 +1,8 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {LiveInfoModel} from "../../../shared/api/live/live.model";
 import {LiveService} from "../../../shared/api/live/live.service";
+import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
 
 @Component({
   templateUrl: './view-info.component.html',
@@ -11,6 +12,7 @@ import {LiveService} from "../../../shared/api/live/live.service";
 export class ViewInfoComponent implements OnInit {
   liveId: string;
   liveInfo: LiveInfoModel;
+  userInfo: UserInfoModel;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService) {
   }
@@ -18,6 +20,7 @@ export class ViewInfoComponent implements OnInit {
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
   }
 
   get isAdmin() {
