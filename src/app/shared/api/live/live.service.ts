@@ -20,7 +20,6 @@ export class LiveService {
   @LocalStorage() public audioAutoPlayDisabled: Object = {};
   @LocalStorage() public wordExpandedDisabled: Object = {};
 
-
   constructor(private http: Http, private store: StoreService, private userInfoService: UserInfoService) {
   }
 
@@ -53,6 +52,15 @@ export class LiveService {
     if (!userInfo || !liveInfo || !liveInfo.admin) return false;
 
     return _uid === liveInfo.admin.uid;
+  }
+
+  setTextWordsStashed(text: string) {
+    this.store.set('stashedWords', text);
+  };
+
+  getTextWordsStashed(): string {
+    let words = this.store.get('stashedWords') || '';
+    return words;
   }
 
   setLiveRoomAlreadyVisited() {
@@ -88,7 +96,7 @@ export class LiveService {
     }
 
     liveInfo.latestUsers = [];
-    if (stream.latestUserUids){
+    if (stream.latestUserUids) {
       stream.latestUserUids.forEach(function (uid) {
         let user = users[uid];
         if (user) {
@@ -232,7 +240,7 @@ export class LiveService {
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
 
-      if(!data || !data.include) return [];
+      if (!data || !data.include) return [];
 
       let usersData = data.include.users;
       let audienceList: UserInfoModel[] = [];
