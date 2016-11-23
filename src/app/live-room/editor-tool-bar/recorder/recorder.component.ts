@@ -2,6 +2,7 @@ import {Component, Output, EventEmitter} from '@angular/core';
 import {RecordStatus} from './recorder.enums';
 import {AudioBridge} from "../../../shared/bridge/audio.interface";
 import {RecorderData} from "./recorder.models";
+import {OperationTipsService} from "../../../shared/operation-tips/operation-tips.service";
 
 @Component({
   selector: 'recorder',
@@ -17,7 +18,7 @@ export class RecorderComponent {
   minRecordDuration = 10;
   @Output() recordEnd = new EventEmitter<RecorderData>();
 
-  constructor(private audioBridge: AudioBridge) {
+  constructor(private audioBridge: AudioBridge, private operationTips: OperationTipsService) {
   }
 
   startRecord() {
@@ -39,7 +40,12 @@ export class RecorderComponent {
         this.recordDuration++;
       }, 100);
       this.autoComplete();
-    }).catch((reason) => {
+    }, (err) => {
+      if (err && err.name === 'PermissionDeniedError') {
+        this.operationTips.popup('请开启录音权限');
+      } else {
+        this.operationTips.popup('录音失败');
+      }
       this.status = RecordStatus.Waitting;
     });
   }

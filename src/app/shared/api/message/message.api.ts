@@ -166,7 +166,7 @@ export class MessageApiService {
       let _originMessage = originMessage as MessageModel;
       let promise = null;
 
-      if (_originMessage.audio.localId) {
+      if (UtilsService.isInWechat) {
         promise = this.audioService.uploadVoice(_originMessage.audio.localId).then((serverId) => {
           postMessage.audio.weixinId = serverId;
 
@@ -395,6 +395,8 @@ export class MessageApiService {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages`;
 
+    message.postStatus = PostMessageStatus.Pending;
+
     if (message instanceof MessageModel && (message as MessageModel).type === MessageType.Audio) {
       // 处理音频信息
       let postMessage = new PostMessageModel();
@@ -404,10 +406,9 @@ export class MessageApiService {
       postMessage.audio.localId = originMessage.audio.localId;
       postMessage.audio.duration = originMessage.audio.duration;
 
-
       let promise = null;
 
-      if (originMessage.audio.localId) {
+      if (UtilsService.isInWechat) {
         promise = this.audioService.uploadVoice(originMessage.audio.localId).then((serverId) => {
           postMessage.audio.weixinId = serverId;
 

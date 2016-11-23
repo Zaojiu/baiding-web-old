@@ -28,7 +28,7 @@
 
     <div class="record-btn-container"
          [ngClass]="{recording: recorder && recorder.status === recordEnums.Recording, activate: mode === modeEnums.Audio}"
-         (touchstart)="switchMode(modeEnums.Audio)" (contextmenu)="$event.preventDefault()"
+         (mousedown)="switchMode(modeEnums.Audio)" (touchstart)="switchMode(modeEnums.Audio)" (contextmenu)="$event.preventDefault()"
     >
       <i class="bi bi-mic"></i>
       <span class="record-duration">{{recordDuration}}</span>
