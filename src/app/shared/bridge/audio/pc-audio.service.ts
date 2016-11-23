@@ -154,9 +154,9 @@ export class PcAudioService implements AudioBridge {
           }
 
           var amr = this.AMR.encode(pcm, audioBuffer.sampleRate, 7);
-          let encodeBlob = new Blob(amr, {type: 'audio/wav'});
+          let encodeBlob = new Blob([amr], {type: 'audio/amr'});
 
-          resolve(audio);
+          resolve(encodeBlob);
         }, () => {
           reject();
         });

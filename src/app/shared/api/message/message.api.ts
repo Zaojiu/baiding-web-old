@@ -175,11 +175,33 @@ export class MessageApiService {
           _originMessage.postStatus = PostMessageStatus.UploadFailed;
           return Promise.reject(err);
         });
-      } else {
+      } else if (UtilsService.isInApp) {
         promise = this.getAudioUploadToken(postMessage.liveId).then((token) => {
           postMessage.audio.qiniuKey = token.key;
 
           return this.uploadService.uploadToQiniu(_originMessage.audio.audioData, token.key, token.token);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then(() => {
+          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        });
+      } else {
+        let encodeAmr = null;
+
+        promise = this.audioService.encodeVoice(_originMessage.audio.audioData).then((encodeAmrBlob) => {
+          encodeAmr = encodeAmrBlob;
+          return this.getAudioUploadToken(postMessage.liveId);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then((token) => {
+          postMessage.audio.qiniuKey = token.key;
+
+          return this.uploadService.uploadToQiniu(encodeAmr, token.key, token.token);
         }, (err) => {
           originMessage.postStatus = PostMessageStatus.UploadFailed;
           return Promise.reject(err);
@@ -216,7 +238,6 @@ export class MessageApiService {
         return Promise.reject(err);
       }).then((key) => {
         postMessageCopy.image.key = key;
-
         return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
       }, (err) => {
         originMessage.postStatus = PostMessageStatus.UploadFailed;
@@ -417,11 +438,32 @@ export class MessageApiService {
           originMessage.postStatus = PostMessageStatus.UploadFailed;
           return Promise.reject(err);
         });
-      } else {
+      } else if (UtilsService.isInApp) {
         promise = this.getAudioUploadToken(liveId).then((token) => {
           postMessage.audio.qiniuKey = token.key;
 
           return this.uploadService.uploadToQiniu(originMessage.audio.audioData, token.key, token.token);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then(() => {
+          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        });
+      } else {
+        let encodeAmr = null;
+
+        promise = this.audioService.encodeVoice(originMessage.audio.audioData).then((encodeAmrBlob) => {
+          encodeAmr = encodeAmrBlob;
+          return this.getAudioUploadToken(postMessage.liveId);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then((token) => {
+          postMessage.audio.qiniuKey = token.key;
+          return this.uploadService.uploadToQiniu(encodeAmr, token.key, token.token);
         }, (err) => {
           originMessage.postStatus = PostMessageStatus.UploadFailed;
           return Promise.reject(err);
