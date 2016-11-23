@@ -19,6 +19,7 @@ export class LiveService {
 
   @LocalStorage() public audioAutoPlayDisabled: Object = {};
   @LocalStorage() public wordExpandedDisabled: Object = {};
+  @LocalStorage() public textStashed: Object = {};
 
   constructor(private http: Http, private store: StoreService, private userInfoService: UserInfoService) {
   }
@@ -55,12 +56,15 @@ export class LiveService {
   }
 
   setTextWordsStashed(text: string) {
-    this.store.set('stashedWords', text);
+    this.userInfoService.getUserInfo().then(userInfo => {
+      this.textStashed[userInfo.uid] = text;
+    });
   };
 
-  getTextWordsStashed(): string {
-    let words = this.store.get('stashedWords') || '';
-    return words;
+  getTextWordsStashed(): Promise<string> {
+    return this.userInfoService.getUserInfo().then(userInfo => {
+      return this.textStashed[userInfo.uid] || '';
+    });
   }
 
   setLiveRoomAlreadyVisited() {

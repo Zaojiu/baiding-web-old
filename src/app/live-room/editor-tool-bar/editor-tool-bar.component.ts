@@ -51,7 +51,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
   ngOnInit() {
-    this.messageContent = this.liveService.getTextWordsStashed();
+    this.liveService.getTextWordsStashed().then(text => this.messageContent = text);
 
     this.form = this.fb.group({
       'images': new FormControl(this.images, [
