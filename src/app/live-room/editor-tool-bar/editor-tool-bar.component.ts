@@ -19,6 +19,7 @@ import {Subscription} from "rxjs";
 import {MessageService} from "../timeline/message/message.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
+import {LiveService} from "../../shared/api/live/live.service";
 
 declare var $: any;
 
@@ -46,10 +47,12 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   receviedAvatarTouchedSub: Subscription;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
-              private modalService: ModalService, private router: Router, private fb: FormBuilder, private messageService: MessageService) {
+              private modalService: ModalService, private router: Router, private fb: FormBuilder, private messageService: MessageService, private  liveService: LiveService) {
   }
 
   ngOnInit() {
+    this.liveService.getTextWordsStashed().then(text => this.messageContent = text);
+
     this.form = this.fb.group({
       'images': new FormControl(this.images, [
         sizeValidator(this.maxSizeMB),
@@ -65,11 +68,12 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
   switchMode(mode: EditMode) {
-    if (mode !== EditMode.Text) this.blurMessageInput();
+    if (mode !== EditMode.Text) {
+      this.blurMessageInput();
+      this.liveService.setTextWordsStashed(this.messageContent);
+    }
 
     this.mode = mode;
-
-    if (mode !== EditMode.Text && mode !== EditMode.At) this.messageContent = '';
 
     if (this.mode === EditMode.Text) {
       this.focusMessageInput();
