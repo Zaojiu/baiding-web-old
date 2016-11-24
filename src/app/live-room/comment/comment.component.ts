@@ -286,11 +286,19 @@ export class CommentComponent implements OnInit, OnDestroy {
       if (comment.toUids && comment.toUids.length) query.uids = comment.toUids.join(','); // 兼容推送过来的评论, 里面只有toUids, 无用户信息。
     }
 
-    this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 3, ['-createdAt']).then((preFiveMessage)=> {
-      query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
-      this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+    this.commentApiService.listComments(this.streamId, [], `$gte${comment.createdAt}`, 10, [`createAt`]).then((lastTenComment)=> {
+      if (lastTenComment.length < 8) {
+        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 8 - lastTenComment.length, ['-createdAt']).then((preFiveMessage)=> {
+          query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+        });
+      } else {
+        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 3, ['-createdAt']).then((preFiveMessage)=> {
+          query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+        });
+      }
     });
-
   }
 
   triggerGotoLatest() {
