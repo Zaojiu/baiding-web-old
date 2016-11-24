@@ -19,7 +19,6 @@ export class AudioPlayerService {
   userActivated = false;
 
   constructor(private audioService: AudioBridge, private $http: Http) {
-    (<any>window).AudioContext = (<any>window).AudioContext || (<any>window).webkitAudioContext;
     AudioPlayerService.h5AudioContext = AudioPlayerService.h5AudioContext || new AudioContext();
     AudioPlayerService.gainNode = AudioPlayerService.gainNode || AudioPlayerService.h5AudioContext.createGain();
     AudioPlayerService.gainNode.gain.value = 1;

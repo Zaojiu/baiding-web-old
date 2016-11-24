@@ -58,9 +58,19 @@
 
       <div
         class="invited-people"
-        *ngIf="liveInfo && liveInfo.editors && liveInfo.editors.length + (invitees[liveInfo.id] || []).length !== 0"
       >
         <span class="title">受邀嘉宾</span>
+
+        <div class="vip-container">
+          <div class="accepted">
+            <div class="avatar-wrapper">
+              <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+              <div class="tick"><i class="bi bi-tick"></i></div>
+            </div>
+
+            <span class="nick">{{liveInfo.admin.nick}}</span>
+          </div>
+        </div>
 
         <div class="vip-container" *ngFor="let vip of liveInfo.editors">
           <div class="accepted">
@@ -69,7 +79,7 @@
               <div class="tick"><i class="bi bi-tick"></i></div>
             </div>
 
-            <span class="nick" *ngIf="vip">{{vip.nick}}</span>
+            <span class="nick">{{vip.nick}}</span>
           </div>
         </div>
 
