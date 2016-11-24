@@ -272,6 +272,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     let query: any = {};
 
     query.commentId = comment.id;
+    query.scrollToBottom = '';
 
     if (comment) {
 
@@ -287,16 +288,21 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
 
     this.commentApiService.listComments(this.streamId, [], `$gte${comment.createdAt}`, 10, [`createAt`]).then((lastTenComment)=> {
+
       if (lastTenComment.length < 8) {
-        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 8 - lastTenComment.length, ['-createdAt']).then((preFiveMessage)=> {
+        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 8 - lastTenComment.length, ['-createdAt']).then((preFiveMessage) => {
           query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
           this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
         });
       } else {
-        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 3, ['-createdAt']).then((preFiveMessage)=> {
+        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 3, ['-createdAt']).then((preFiveMessage) => {
           query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
           this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
         });
+      }
+
+      if (lastTenComment.length < 4) {
+        query.scrollToBottom = true;
       }
     });
   }
