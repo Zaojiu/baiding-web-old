@@ -41,7 +41,7 @@ export class ApplyComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];
-    this.from = decodeURIComponent(this.route.snapshot.params['from']);
+    this.from = this.route.snapshot.params['from'] ? decodeURIComponent(this.route.snapshot.params['from']) : '';
 
     this.applyService.getApplication().then(application => {
       this.application = application;
@@ -66,11 +66,7 @@ export class ApplyComponent implements OnInit {
     };
 
     let validateUserName = (val: string): Promise<void> => {
-      return new Promise((reslove, reject) => {
-        setTimeout(() => {
-          reject();
-        }, 1000);
-      });
+      return this.userInfoService.verifyUsername(val);
     };
 
     if (this.userInfo.username) {
@@ -118,6 +114,10 @@ export class ApplyComponent implements OnInit {
     } else {
       this.router.navigate([`/info-center/${this.userInfo.uid}`]);
     }
+  }
+
+  gotoCreate() {
+    this.router.navigate([`/lives/create`]);
   }
 
   canDeactivate() {

@@ -105,4 +105,11 @@ export class UserInfoService {
       return;
     });
   }
+
+  verifyUsername(username: string): Promise<void> {
+    return this.http.post(`${environment.config.host.io}/api/user/username/verify`, {username: username}).toPromise()
+      .then(res => {
+        return;
+      });
+  }
 }
