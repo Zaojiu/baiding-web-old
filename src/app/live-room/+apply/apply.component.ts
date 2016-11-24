@@ -79,7 +79,6 @@ export class ApplyComponent implements OnInit {
       fg['username'] = new FormControl(this.username, [
         Validators.required,
         Validators.pattern(RegexpConst.username),
-        Validators.maxLength(20),
       ], [
         apiValidator(validateUserName),
       ]);
