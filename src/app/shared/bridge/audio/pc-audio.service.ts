@@ -15,7 +15,7 @@ export class PcAudioService implements AudioBridge {
 
   constructor() {
   }
-
+  
   private init(): Promise<void> {
     if (!(<any>window).navigator.mediaDevices) {
       (<any>window).navigator.mediaDevices = {};
