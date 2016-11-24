@@ -1,7 +1,10 @@
-<div class="unread-count" *ngIf="!isOnBottom && unreadCount !== 0" (click)="triggerGotoLatest()">有{{unreadCount}}条话题间新消息<i class="bi bi-up-arrow2"></i></div>
+<div class="unread-count" *ngIf="!isOnBottom && unreadCount !== 0" (click)="triggerGotoLatest()">有{{unreadCount}}条话题间新消息<i
+  class="bi bi-up-arrow2"></i></div>
 
-<div class="timeline scrollable" (scroller)="onScroll($event)" [data]="messages" [dataContainerSelector]="'.data-container'">
-  <bd-loading class="loading-head" *ngIf="scroller.isHeadLoadingShown"></bd-loading>
+<div class="timeline scrollable" (scroller)="onScroll($event)" [data]="messages"
+     [dataContainerSelector]="'.data-container'">
+  <bd-loading class="loading-head"
+              [ngClass]="{show: scroller.isHeadLoadingShown,hide:!scroller.isHeadLoadingShown}"></bd-loading>
 
   <div class="data-container">
     <message #messagesComponents *ngFor="let message of messages"
@@ -13,6 +16,7 @@
     ></message>
   </div>
 
-  <bd-loading class="loading-foot" *ngIf="scroller.isFootLoadingShown"></bd-loading>
+  <bd-loading class="loading-foot"
+              [ngClass]="{show: scroller.isFootLoadingShown,hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
 

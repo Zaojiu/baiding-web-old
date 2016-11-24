@@ -8,10 +8,39 @@
     width: 100%;
   }
 
-  .loading-head, .loading-foot {
+  .loading-head {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
     display: block;
-    margin: 20px 0;
+    padding: 10px 0;
     text-align: center;
+
+    &.show {
+      opacity: 1;
+    }
+    &.hide {
+      transition: 1s ease all;
+      opacity: 0;
+    }
+  }
+
+  .loading-foot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+
+    &.show {
+      opacity: 1;
+    }
+    &.hide {
+      transition: 1s ease all;
+      opacity: 0;
+    }
   }
 }
 

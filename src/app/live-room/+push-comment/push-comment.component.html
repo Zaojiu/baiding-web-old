@@ -11,7 +11,8 @@
     [data]="comments"
     [dataContainerSelector]="'.comment-container-inner'"
   >
-    <bd-loading class="loading-head" *ngIf="scroller.isHeadLoadingShown"></bd-loading>
+    <bd-loading class="loading-head"
+                [ngClass]="{show: scroller.isHeadLoadingShown,hide:!scroller.isHeadLoadingShown}"></bd-loading>
 
     <div class="comment-container-inner">
       <div class="comment-row" *ngFor="let comment of comments" (click)="banComment(comment.user.uid)">
@@ -38,7 +39,8 @@
       </div>
     </div>
 
-    <bd-loading class="loading-foot" *ngIf="scroller.isFootLoadingShown"></bd-loading>
+    <bd-loading class="loading-foot"
+                [ngClass]="{show: scroller.isFootLoadingShown,hide:!scroller.isFootLoadingShown}"></bd-loading>
   </div>
 
   <div class="bottom-bar">
