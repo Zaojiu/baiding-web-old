@@ -7,7 +7,7 @@ export class SharePopupService {
 
   popup$ = this.popupSource.asObservable();
 
-  popup() {
-    this.popupSource.next('')
+  popup(link?: string) {
+    this.popupSource.next(link);
   }
 }

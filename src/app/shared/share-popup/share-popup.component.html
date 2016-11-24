@@ -1,3 +1,12 @@
 <div class="share-popup-container" (click)="isPopup = false" [ngClass]="{opened: isPopup}">
-  点击分享<i class="bi bi-arrow"></i>
+  <div class="wechat-share" *ngIf="isInWechat">
+    点击分享<i class="bi bi-arrow"></i>
+  </div>
+
+  <div class="pc-share" *ngIf="isInWeb && isPopup">
+    <img class="qr-code" [src]="getQrcode" alt="二维码">
+    <div class="tips">扫描二维码登录手机网页端</div>
+    <i class="bi bi-zaojiu-logo"></i>
+    <i class="bi bi-zaojiu-slogan"></i>
+  </div>
 </div>
