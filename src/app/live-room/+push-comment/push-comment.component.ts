@@ -31,6 +31,7 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 
 export class PushCommentComponent implements OnInit, OnDestroy {
   liveId: string;
+  commentId: string;
   comments: CommentModel[] = [];
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
@@ -55,18 +56,32 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.liveId = this.route.parent.snapshot.params['id'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.commentId = this.route.snapshot.params['commentId'];
 
     // 监控router变化，如果route换了，那么重新获取以下值
     this.routerSubscription = this.router.events.subscribe(
       event => {
         if (event instanceof NavigationEnd) {
-          this.resetRouteParams();
+          this.resetRouteParams().then(() => {
+            if (!this.hasInit) {
+              // 首次拉取后清除marker;
+              this.marker = '';
+              this.hasInit = true;
 
-          if (!this.hasInit) {
-            // 首次拉取后清除marker;
-            this.marker = '';
-            this.hasInit = true;
-          }
+              // 如果scrollToBottom则滚动到底部
+              if (this.route.snapshot.params['scrollToBottom']) {
+                this.scroller.stopEmitScrollEvent();
+                setTimeout(() => {
+                  this.scroller.scrollToBottom();
+
+                  // 等待滚动完毕
+                  setTimeout(() => {
+                    this.scroller.startEmitScrollEvent();
+                  }, 0);
+                }, 0);
+              }
+            }
+          });
         }
       }
     );
@@ -78,7 +93,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     if (this.closeSelectorSubscription) this.closeSelectorSubscription.unsubscribe();
   }
 
-  resetRouteParams() {
+  resetRouteParams(): Promise<void> {
     this.marker = this.route.parent.snapshot.params['marker'] || '';
 
     let uidsStr = this.route.parent.snapshot.params['uids'];
@@ -94,22 +109,23 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
     this.uids = uidNums;
 
-    this.gotoFirstComments();
+    return this.gotoFirstComments();
   }
 
   isClosed(): boolean {
     return this.liveInfo.status === LiveStatus.Ended;
   }
 
-  gotoFirstComments() {
-    if (this.isLoading) return;
+  gotoFirstComments(): Promise<void> {
+    if (this.isLoading) return Promise.reject('');
 
     this.isLoading = true;
 
-    this.commentApiService.listComments(this.liveId, this.uids, this.marker, 20, ['createdAt']).then(comments => {
+    return this.commentApiService.listComments(this.liveId, this.uids, this.marker, 20, ['createdAt']).then(comments => {
       this.scroller.resetData(comments);
       this.isOnNewest = true;
       this.isOnLatest = false;
+      return;
     }).finally(() => {
       this.isLoading = false;
     });

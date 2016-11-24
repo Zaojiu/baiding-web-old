@@ -39,7 +39,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   constructor(private commentService: CommentService, private router: Router,
               private commentApiService: CommentApiService, private sanitizer: DomSanitizer,
-              private timelineService: TimelineService,private userInfoService: UserInfoService,private editorCardService: UserInfoCardService) {
+              private timelineService: TimelineService, private userInfoService: UserInfoService, private editorCardService: UserInfoCardService) {
   }
 
   ngOnInit() {
@@ -271,8 +271,10 @@ export class CommentComponent implements OnInit, OnDestroy {
   gotoCommentList(comment?: CommentModel) {
     let query: any = {};
 
+    query.commentId = comment.id;
+    query.scrollToBottom = '';
+
     if (comment) {
-      query.marker = `$gte${comment.createdAt}`;
 
       if (comment.toUsers && comment.toUsers.length !== 0) {
         query.uids = [];
@@ -285,7 +287,31 @@ export class CommentComponent implements OnInit, OnDestroy {
       if (comment.toUids && comment.toUids.length) query.uids = comment.toUids.join(','); // 兼容推送过来的评论, 里面只有toUids, 无用户信息。
     }
 
-    this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+    // 首先判断comment是否位于倒数10条内
+    this.commentApiService.listComments(this.streamId, [], `$gte${comment.createdAt}`, 10, [`createAt`]).then((lastTenComment)=> {
+
+      // 如果comment小于8条（目前7条差不多占满一屏幕）
+      if (lastTenComment.length < 8) {
+
+        // mark游标往前移动 8-lastTenComment.length条
+        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 8 - lastTenComment.length, ['-createdAt']).then((preFiveMessage) => {
+          query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+        });
+      } else {
+
+        // 普通情况下： mark游标往前移动3条
+        this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 3, ['-createdAt']).then((preFiveMessage) => {
+          query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+        });
+      }
+
+      // 判断comment是否位于倒数4条内，是则滚动到底部
+      if (lastTenComment.length < 4) {
+        query.scrollToBottom = true;
+      }
+    });
   }
 
   triggerGotoLatest() {
