@@ -274,7 +274,6 @@ export class CommentComponent implements OnInit, OnDestroy {
     query.commentId = comment.id;
 
     if (comment) {
-      query.marker = `$gte${comment.createdAt}`;
 
       if (comment.toUsers && comment.toUsers.length !== 0) {
         query.uids = [];
@@ -287,7 +286,11 @@ export class CommentComponent implements OnInit, OnDestroy {
       if (comment.toUids && comment.toUids.length) query.uids = comment.toUids.join(','); // 兼容推送过来的评论, 里面只有toUids, 无用户信息。
     }
 
-    this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+    this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 3, ['-createdAt']).then((preFiveMessage)=> {
+      query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+      this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
+    });
+
   }
 
   triggerGotoLatest() {
