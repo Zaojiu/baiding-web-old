@@ -58,7 +58,7 @@
     "@types/jasmine": "^2.2.30",
     "@types/jquery": "^2.0.33",
     "@types/node": "^6.0.42",
-    "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git#c52aeccb5716f279d36203ee0751d67431991b2b",
+    "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git#4ecef3adf06288e74d5b505234630cff5d7b617d",
     "autoprefixer": "^6.5.0",
     "codelyzer": "~0.0.26",
     "gulp": "^3.9.1",
