@@ -46,11 +46,21 @@ export class InfoCenterComponent {
 
         if (liveInfo.isAdmin(this.currentUserInfo.uid)) {
           this.inviteApiService.listInvitations(liveInfo.id).then((invitionWithToken) => {
-            this.invitees[liveInfo.id] = invitionWithToken;
+            let invitees = [];
+            // 过滤掉已经接受邀请的
+            for (let invitee of invitionWithToken) {
+              if (!invitee.userInfo) invitees.push(invitee);
+            }
+            this.invitees[liveInfo.id] = invitees;
           });
         } else {
           this.inviteApiService.audienceListInvitations(liveInfo.id).then((invitionWithoutToken) => {
-            this.invitees[liveInfo.id] = invitionWithoutToken;
+            let invitees = [];
+            // 过滤掉已经接受邀请的
+            for (let invitee of invitionWithoutToken) {
+              if (!invitee.userInfo) invitees.push(invitee);
+            }
+            this.invitees[liveInfo.id] = invitees;
           });
         }
 
