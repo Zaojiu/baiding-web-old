@@ -26,18 +26,39 @@
   .comment-container {
     flex-grow: 1;
 
-    .loading-head, .loading-foot {
+    .loading-head {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
       display: block;
       padding: 10px 0;
       text-align: center;
-    }
 
-    .loading-head {
-      border-bottom: solid 1px rgb(198, 198, 198);
+      &.show {
+        opacity: 1;
+      }
+      &.hide {
+        transition: 1s ease all;
+        opacity: 0;
+      }
     }
 
     .loading-foot {
-      border-top: solid 1px rgb(198, 198, 198);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      display: block;
+      padding: 10px 0;
+      text-align: center;
+
+      &.show {
+        opacity: 1;
+      }
+      &.hide {
+        transition: 1s ease all;
+        opacity: 0;
+      }
     }
 
     .comment-container-inner {
