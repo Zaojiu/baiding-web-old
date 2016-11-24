@@ -56,7 +56,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     this.liveId = this.route.parent.snapshot.params['id'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.commentId = this.route.parent.snapshot.params['commentId'];
+    this.commentId = this.route.snapshot.params['commentId'];
 
     // 监控router变化，如果route换了，那么重新获取以下值
     this.routerSubscription = this.router.events.subscribe(
