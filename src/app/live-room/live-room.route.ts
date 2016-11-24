@@ -9,6 +9,10 @@ import {UserInfoResolver} from "../shared/guard/user-info.resolver";
 
 const route: Routes = [
   {
+    path: 'lives/apply',
+    loadChildren: 'app/live-room/+apply/apply.module#ApplyModule'
+  },
+  {
     path: 'lives/create',
     loadChildren: 'app/live-room/+create/create.module#CreateModule'
   },

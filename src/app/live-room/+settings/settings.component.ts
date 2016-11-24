@@ -73,8 +73,12 @@ export class SettingsComponent implements OnInit {
     this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
   }
 
-  gotoCreate() {
-    this.router.navigate([`/lives/create`]);
+  gotoCreateOrApply() {
+    if (this.userInfo.canPublish) {
+      this.router.navigate([`/lives/create`]);
+    } else {
+      this.router.navigate([`/lives/apply`, encodeURIComponent(`/lives/${this.liveId}`)]);
+    }
   }
 
   gotoInvitation(token: string) {

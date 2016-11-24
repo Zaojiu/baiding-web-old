@@ -4,6 +4,7 @@ export class PermissionModel {
 
 export class UserInfoModel {
   uid: number;
+  username: string;
   nick: string;
   avatar: string;
   intro: string;
@@ -15,6 +16,7 @@ export class UserInfoModel {
 }
 export class UserDetailInfoModel {
   uid: number;
+  username: string;
   nick = '';
   intro = '';
   avatar = '';
@@ -23,6 +25,7 @@ export class UserDetailInfoModel {
 
 export class UserPublicInfoModel {
   uid: number;
+  username: string;
   sex = UserSex.Unknow;
   nick = '';
   avatar = '';

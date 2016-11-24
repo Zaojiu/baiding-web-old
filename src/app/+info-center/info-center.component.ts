@@ -94,8 +94,12 @@ export class InfoCenterComponent {
     this.router.navigate([`/lives/${liveId}/settings/edit-info`]);
   }
 
-  goToCreateNewRoom() {
-    this.router.navigate([`/lives/create`]);
+  gotoCreateOrApply() {
+    if (this.currentUserInfo.canPublish) {
+      this.router.navigate([`/lives/create`]);
+    } else {
+      this.router.navigate([`/lives/apply`]);
+    }
   }
 
   liveRoomStatusHumanize(liveStatus: number): string {
