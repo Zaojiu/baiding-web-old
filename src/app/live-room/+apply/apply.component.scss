@@ -1,0 +1,85 @@
+.apply {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+
+  .loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .top-bar {
+    flex-shrink: 0;
+  }
+
+  .main-form {
+    flex-grow: 1;
+    overflow: auto;
+
+    .form-head {
+      margin: 20px 15px;
+
+      .title {
+        color: rgb(75, 75, 75);
+        font-size: 17px;
+        margin-bottom: 10px;
+      }
+
+      font-size: 16px;
+      color: rgb(158, 161, 165);
+    }
+  }
+
+  .operation-area {
+    padding: 40px 0 60px;
+    text-align: center;
+
+    .btn {
+      display: block;
+      margin: auto;
+      width: 200px;
+      height: 50px;
+      line-height: 50px;
+      border-radius: 25px;
+      background-color: rgb(33, 150, 243);
+      color: rgb(255, 255, 255);
+      font-size: 17px;
+
+      &.disabled {
+        background-color: rgb(141, 199, 246);
+      }
+    }
+  }
+
+  .apply-pass, .apply-waitting {
+    margin: 40px 20px;
+
+    .title {
+      text-align: center;
+      color: rgb(75, 75, 75);
+      margin-bottom: 20px;
+
+      .bi-paper-checked, .bi-paper-submitted {
+        display: block;
+        margin: 0 auto 12px;
+        font-size: 90px;
+      }
+    }
+
+    font-size: 16px;
+    color: rgb(158, 161, 165);
+    line-height: 1.37em;
+
+
+  }
+}

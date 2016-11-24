@@ -21,6 +21,7 @@ export class UserInfoService {
   parseUserInfo(data: any): UserInfoModel {
     let info = new UserInfoModel();
     info.nick = data.nick;
+    info.username = data.username;
     info.avatar = data.avatar;
     info.uid = data.uid;
     info.permissions = new PermissionModel;
@@ -60,6 +61,7 @@ export class UserInfoService {
 
     if (data.uid) userPublicInfo.uid = data.uid;
     if (data.sex) userPublicInfo.sex = data.sex;
+    if (data.username) userPublicInfo.username = data.username;
     if (data.nick) userPublicInfo.nick = data.nick;
     if (data.avatar) userPublicInfo.avatar = data.avatar;
     if (data.realName) userPublicInfo.realName = data.realName;
@@ -84,6 +86,7 @@ export class UserInfoService {
     let userDetailInfo = new UserDetailInfoModel();
 
     if (data.uid) userDetailInfo.uid = data.uid;
+    if (data.username) userDetailInfo.username = data.username;
     if (data.nick) userDetailInfo.nick = data.nick;
     if (data.intro) userDetailInfo.intro = data.intro;
     if (data.avatar) userDetailInfo.avatar = data.avatar;
@@ -101,5 +104,12 @@ export class UserInfoService {
     return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
       return;
     });
+  }
+
+  verifyUsername(username: string): Promise<void> {
+    return this.http.post(`${environment.config.host.io}/api/user/username/verify`, {username: username}).toPromise()
+      .then(res => {
+        return;
+      });
   }
 }

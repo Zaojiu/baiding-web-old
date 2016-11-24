@@ -104,7 +104,7 @@
                   (toggling)="audioAutoPlay = $event"></switch-btn>
     </div>
 
-    <div class="auto-play-switch bar" *ngIf="userInfo.canPublish" (click)="gotoCreate()">
+    <div class="auto-play-switch bar" (click)="gotoCreateOrApply()">
       <span class="title">我要发起话题</span>
       <i class="bi bi-right-arrow"></i>
     </div>
