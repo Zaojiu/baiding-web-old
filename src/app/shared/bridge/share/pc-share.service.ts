@@ -20,6 +20,6 @@ export class PcShareService implements ShareBridge {
   }
 
   share() {
-    this.sharePopupService.popup(this.link);
+    this.sharePopupService.popup(this.link || (<any>window).localtion.href);
   }
 }

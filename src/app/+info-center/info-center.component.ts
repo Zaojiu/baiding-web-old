@@ -10,6 +10,7 @@ import {UtilsService} from "../shared/utils/utils";
 import {InvitationModel} from "../shared/api/invite/invite.model";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {ShareBridge} from "../shared/bridge/share.interface";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -19,7 +20,7 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 export class InfoCenterComponent {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private userInfoService: UserInfoService,
-              private shareService: SharePopupService, private inviteApiService: InviteApiService,
+              private shareService: ShareBridge, private inviteApiService: InviteApiService,
               private sanitizer: DomSanitizer) {
   }
 
@@ -93,7 +94,7 @@ export class InfoCenterComponent {
   }
 
   popupShare() {
-    this.shareService.popup();
+    this.shareService.share();
   }
 
   goInvitation(liveId: string) {
