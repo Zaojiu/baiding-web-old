@@ -221,7 +221,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   selectImages() {
     this.imageService.chooseImages().then((localIds) => {
       for (let localId of localIds) {
-        this.messageApiService.postImageMessage(this.liveId, localId, null);
+        this.messageApiService.postImageMessage(this.liveId, (localId as string), null);
       }
     });
   }
