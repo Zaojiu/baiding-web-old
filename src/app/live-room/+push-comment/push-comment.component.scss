@@ -82,6 +82,10 @@
       border-bottom: solid 1px rgb(198, 198, 198);
       padding: 15px 0;
 
+      &.highlight {
+        background-color: rgb(244, 244, 244);
+      }
+
       &:last-child {
         border-bottom: none;
       }
@@ -116,10 +120,6 @@
           color: rgb(75, 75, 75);
           font-size: 14px;
           word-break: break-all;
-
-          &.highlight {
-            color: rgb(24, 228, 228);
-          }
         }
       }
 
