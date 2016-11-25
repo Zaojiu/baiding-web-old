@@ -46,6 +46,38 @@
     }
   }
 
+  .people {
+    padding: 15px;
+    border-bottom: solid 1px rgba(200, 199, 204, .5);
+    background-color: rgb(255, 255, 255);
+
+    .title {
+      color: rgb(158, 161, 165);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      line-height: 1em;
+      margin-bottom: 20px;
+      margin-left:5px;
+
+      .bi {
+        margin-right: 5px;
+      }
+    }
+
+    .people-count {
+      .space{
+        flex-grow: 1;
+      }
+        .bi-right-arrow {
+          color: rgb(199, 199, 204);
+          font-size: 13px;
+          height: 16px;
+          line-height: 16px;
+        }
+    }
+  }
+
   .bar {
     display: flex;
     align-items: center;
@@ -223,6 +255,30 @@
         }
       }
     }
+
+    .people-count {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 25px;
+
+      .avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        margin-left: -5px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  .word-expand-switch, .info-center-bar {
+    margin-top: 0;
+    border-top: none;
   }
 
   .end-btn {
