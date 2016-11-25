@@ -8,6 +8,7 @@
     ></i>
 
     <form
+      *ngIf="!isInWechat"
       [formGroup]="form"
       name="editInfo"
       class="post-image"
@@ -25,6 +26,8 @@
       </label>
       <i class="bi bi-image"></i>
     </form>
+
+    <i class="bi bi-image post-image" *ngIf="isInWechat" (click)="selectImages()"></i>
 
     <div class="record-btn-container"
          [ngClass]="{recording: recorder && recorder.status === recordEnums.Recording, activate: mode === modeEnums.Audio}"

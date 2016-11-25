@@ -21,6 +21,7 @@ export class ReplyMessageModel {
 }
 
 export class ImageMessageModel {
+  localId: string;
   imageData: File;
   link: string;
   thumbLink: string;
@@ -87,13 +88,13 @@ export class PostPraiseModel {
 }
 
 export class PostImageMessageModel {
+  weixinId: string;
   key: string;
 }
 
 export class PostAudioMessageModel {
   text: string;
   weixinId: string;
-  localId: string; // 使用微信jssdk录音得到的localId
   qiniuKey: string; // 使用ios或者web的普通录音, 上传七牛完成后, 得到的key
   duration: number;
 }

@@ -12,8 +12,8 @@ export class ImageViewerService {
   imageDelete$ = this.imageDeleteSource.asObservable();
   imageClose$ = this.imageCloseSource.asObservable();
 
-  popup(links: ImageMessageModel[], images: File[], canDelete: boolean) {
-    let imagePopupModel = new ImgPopupModel(links, images, canDelete);
+  popup(links: ImageMessageModel[], images: File[], weixinLocalIds: string[], canDelete: boolean) {
+    let imagePopupModel = new ImgPopupModel(links, images, weixinLocalIds, canDelete);
     this.imagePopupSource.next(imagePopupModel);
   }
 

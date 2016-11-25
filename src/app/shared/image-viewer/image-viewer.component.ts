@@ -47,6 +47,10 @@ export class ImageViewerComponent implements OnInit {
         this.imageSrc = link;
       }
 
+      if (model.weixinLocalIds && model.weixinLocalIds.length) {
+        this.imageSrc = model.weixinLocalIds[0];
+      }
+
       this.imgEvent = new ImgEvent();
     });
 

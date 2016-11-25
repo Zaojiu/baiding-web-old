@@ -20,6 +20,7 @@ import {MessageService} from "../timeline/message/message.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
 import {LiveService} from "../../shared/api/live/live.service";
+import {ImageBridge} from "../../shared/bridge/image.interface";
 
 declare var $: any;
 
@@ -47,7 +48,8 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   receviedAvatarTouchedSub: Subscription;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
-              private modalService: ModalService, private router: Router, private fb: FormBuilder, private messageService: MessageService, private  liveService: LiveService) {
+              private modalService: ModalService, private router: Router, private fb: FormBuilder,
+              private messageService: MessageService, private liveService: LiveService, private imageService: ImageBridge) {
   }
 
   ngOnInit() {
@@ -137,7 +139,6 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
     return `${duration.toFixed(0)}s`;
   }
 
-
   recordEnd(recorderData: RecorderData) {
     this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
   }
@@ -183,7 +184,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   postImage() {
     if (!this.images || !this.images.length) return;
 
-    this.messageApiService.postImageMessage(this.liveId, this.images[0]);
+    this.messageApiService.postImageMessage(this.liveId, '', this.images[0]);
     this.images = [];
   }
 
@@ -211,5 +212,17 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
   selected(uid: number): boolean {
     return this.messageContent.indexOf(uid.toString()) !== -1;
+  }
+
+  get isInWechat(): boolean {
+    return UtilsService.isInWechat;
+  }
+
+  selectImages() {
+    this.imageService.chooseImages().then((localIds) => {
+      for (let localId of localIds) {
+        this.messageApiService.postImageMessage(this.liveId, localId, null);
+      }
+    });
   }
 }
