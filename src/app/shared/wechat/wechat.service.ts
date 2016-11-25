@@ -40,7 +40,9 @@ export class WechatConfigService {
         'onMenuShareAppMessage',
         'onMenuShareQQ',
         'onMenuShareWeibo',
-        'onMenuShareQZone'
+        'onMenuShareQZone',
+        'chooseImage',
+        'uploadImage',
       ];
 
       config.debug = false;
@@ -50,7 +52,6 @@ export class WechatConfigService {
       wx.config(config);
     });
   }
-
 
   init(): Promise<void> {
     if (this.hasInit) return Promise.resolve();

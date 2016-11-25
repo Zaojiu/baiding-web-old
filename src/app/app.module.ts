@@ -46,10 +46,12 @@ import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
 import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
 import {IosShareService} from "./shared/bridge/share/ios-share.service";
 import {IosBridgeService} from "./shared/ios-bridge/ios-bridge.service";
-import {audioServiceFactory, authServiceFactory, shareServiceFactory} from "./app.factory";
+import {audioServiceFactory, authServiceFactory, shareServiceFactory, imageServiceFactory} from "./app.factory";
 import {IosAudioService} from "./shared/bridge/audio/ios-audio.service";
 import {PcAudioService} from "./shared/bridge/audio/pc-audio.service";
 import {PcShareService} from "./shared/bridge/share/pc-share.service";
+import {ImageBridge} from "./shared/bridge/image.interface";
+import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
 
 @NgModule({
   imports: [
@@ -76,6 +78,7 @@ import {PcShareService} from "./shared/bridge/share/pc-share.service";
     WechatAudioService,
     WechatShareService,
     WechatAuthService,
+    WechatImageService,
     IosBridgeService,
     IosAudioService,
     IosShareService,
@@ -86,6 +89,7 @@ import {PcShareService} from "./shared/bridge/share/pc-share.service";
     { provide: AudioBridge, useFactory: audioServiceFactory, deps: [WechatAudioService, IosAudioService, PcAudioService] },
     { provide: AuthBridge, useFactory: authServiceFactory, deps: [WechatAuthService, IosAuthService, PcAuthService] },
     { provide: ShareBridge, useFactory: shareServiceFactory, deps: [WechatShareService, IosShareService, PcShareService] },
+    { provide: ImageBridge, useFactory: imageServiceFactory, deps: [WechatImageService] },
     Title,
     AuthGuard,
     AdminGuard,

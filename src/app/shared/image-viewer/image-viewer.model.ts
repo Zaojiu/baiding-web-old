@@ -30,11 +30,13 @@ export class ImgEvent {
 export class ImgPopupModel {
   links: ImageMessageModel[];
   images: File[];
+  weixinLocalIds: string[];
   canDelete: boolean;
 
-  constructor(links: ImageMessageModel[], images: File[], canDelete: boolean) {
+  constructor(links: ImageMessageModel[], images: File[], weixinLocalIds: string[], canDelete: boolean) {
     this.links = links;
     this.images = images;
+    this.weixinLocalIds = weixinLocalIds;
     this.canDelete = canDelete;
   }
 }

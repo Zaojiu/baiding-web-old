@@ -60,7 +60,11 @@
         ></image-viewer-preview>
         <image-viewer-preview
           [imageFiles]="[message.image.imageData]"
-          *ngIf="message.postStatus !== postStatus.PostSuccessful"
+          *ngIf="message.postStatus !== postStatus.PostSuccessful && !isInWechat"
+        ></image-viewer-preview>
+        <image-viewer-preview
+          [weixinLocalIds]="[message.image.localId]"
+          *ngIf="message.postStatus !== postStatus.PostSuccessful && isInWechat"
         ></image-viewer-preview>
         <div class="post-status">
           <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>

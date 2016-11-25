@@ -4,6 +4,7 @@ import {
 import {ImageViewerService} from "../image-viewer.service";
 import {Subscription} from 'rxjs/Subscription';
 import {ImageMessageModel} from "../../api/message/message.model";
+import {SafeUrl, DomSanitizer} from "@angular/platform-browser";
 declare var $: any;
 
 @Component({
@@ -20,11 +21,12 @@ export class PreviewComponent implements OnDestroy {
   @Input() imageFiles: File[];
   @Output() imageFilesChange = new EventEmitter<File[]>();
   @Input() imageLinks: ImageMessageModel[];
+  @Input() weixinLocalIds: string[];
   @Input() canDelete = false;
-  imageSrc = '';
+  imageSrc: string|SafeUrl = '';
   isPopup: boolean;
 
-  constructor(el: ElementRef, private imageViewerService: ImageViewerService) {
+  constructor(el: ElementRef, private imageViewerService: ImageViewerService, private sanitizer: DomSanitizer) {
     this.el = el.nativeElement
   }
 
@@ -40,6 +42,7 @@ export class PreviewComponent implements OnDestroy {
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
     let fileChange = changes['imageFiles'];
     let linkChange = changes['imageLinks'];
+    let weixinIdChange = changes['weixinLocalIds'];
 
     if (fileChange && fileChange.currentValue && fileChange.currentValue.length) {
       let file = fileChange.currentValue[0];
@@ -56,10 +59,15 @@ export class PreviewComponent implements OnDestroy {
       let link = linkChange.currentValue[0];
       this.imageSrc = link.thumbLink;
     }
+
+    if (weixinIdChange && weixinIdChange.currentValue && weixinIdChange.currentValue.length) {
+      let localId = weixinIdChange.currentValue[0];
+      this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(localId);
+    }
   }
 
   imagePopup() {
-    this.imageViewerService.popup(this.imageLinks, this.imageFiles, this.canDelete);
+    this.imageViewerService.popup(this.imageLinks, this.imageFiles, this.weixinLocalIds, this.canDelete);
 
     this.closeImgSubscription = this.imageViewerService.imageClose$.subscribe(() => {
       this.unsubcribe();

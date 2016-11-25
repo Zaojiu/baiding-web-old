@@ -15,13 +15,14 @@ import {environment} from "../../../../environments/environment";
 import {UtilsService} from "../../utils/utils";
 import {AudioBridge} from "../../bridge/audio.interface";
 import {UserInfoModel} from "../user-info/user-info.model";
+import {ImageBridge} from "../../bridge/image.interface";
 
 declare var $: any;
 
 @Injectable()
 export class MessageApiService {
   constructor(private http: Http, private userInfoService: UserInfoService, private timelineService: TimelineService,
-              private uploadService: UploadApiService, private audioService: AudioBridge) {
+              private uploadService: UploadApiService, private audioService: AudioBridge, private imageService: ImageBridge) {
   }
 
   postQueue: PostMessageModel[] = [];
@@ -231,18 +232,32 @@ export class MessageApiService {
       // 处理图片信息
       let _originMessage = originMessage as MessageModel;
 
-      this.getImageUploadToken(postMessage.liveId).then((token) => {
-        return this.uploadService.uploadToQiniu(_originMessage.image.imageData, token.key, token.token);
-      }, (err) => {
-        originMessage.postStatus = PostMessageStatus.UploadFailed;
-        return Promise.reject(err);
-      }).then((key) => {
-        postMessageCopy.image.key = key;
-        return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
-      }, (err) => {
-        originMessage.postStatus = PostMessageStatus.UploadFailed;
-        return Promise.reject(err);
-      }).then(res => {
+      let promise = null;
+
+      if (UtilsService.isInWechat) {
+        promise = this.imageService.uploadImage(_originMessage.image.localId).then((serverId) => {
+          postMessageCopy.image.weixinId = serverId;
+          return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        });
+      } else {
+        promise = this.getImageUploadToken(postMessage.liveId).then((token) => {
+          return this.uploadService.uploadToQiniu(_originMessage.image.imageData, token.key, token.token);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then((key) => {
+          postMessageCopy.image.key = key;
+          return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        });
+      }
+
+      promise.then(res => {
         let data = res.json();
 
         originMessage.postStatus = PostMessageStatus.PostSuccessful;
@@ -322,7 +337,6 @@ export class MessageApiService {
     postMessage.liveId = liveId;
     postMessage.type = 'audio';
     postMessage.audio = new PostAudioMessageModel();
-    postMessage.audio.localId = localId;
     postMessage.audio.duration = duration;
 
     let message = new MessageModel();
@@ -384,7 +398,7 @@ export class MessageApiService {
     this.postMessage();
   }
 
-  postImageMessage(liveId: string, file: File) {
+  postImageMessage(liveId: string, localId: string, file: File) {
     let postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'image';
@@ -404,6 +418,7 @@ export class MessageApiService {
 
     message.image = new ImageMessageModel();
     message.image.imageData = file;
+    message.image.localId = localId;
 
     postMessage.originMessage = message;
 
@@ -424,7 +439,6 @@ export class MessageApiService {
       let originMessage = message as MessageModel;
       postMessage.type = 'audio';
       postMessage.audio = new PostAudioMessageModel();
-      postMessage.audio.localId = originMessage.audio.localId;
       postMessage.audio.duration = originMessage.audio.duration;
 
       let promise = null;
@@ -494,18 +508,32 @@ export class MessageApiService {
       postMessage.type = 'image';
       postMessage.image = new PostImageMessageModel();
 
-      this.getImageUploadToken(liveId).then((token) => {
-        return this.uploadService.uploadToQiniu(originMessage.image.imageData, token.key, token.token);
-      }, (err) => {
-        originMessage.postStatus = PostMessageStatus.UploadFailed;
-        return Promise.reject(err);
-      }).then((key) => {
-        postMessage.image.key = key;
-        return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
-      }, (err) => {
-        originMessage.postStatus = PostMessageStatus.UploadFailed;
-        return Promise.reject(err);
-      }).then(res => {
+      let promise = null;
+
+      if (UtilsService.isInWechat) {
+        promise = this.imageService.uploadImage(originMessage.image.localId).then((serverId) => {
+          postMessage.image.weixinId = serverId;
+          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        });
+      } else {
+        promise = this.getImageUploadToken(liveId).then((token) => {
+          return this.uploadService.uploadToQiniu(originMessage.image.imageData, token.key, token.token);
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        }).then((key) => {
+          postMessage.image.key = key;
+          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+        }, (err) => {
+          originMessage.postStatus = PostMessageStatus.UploadFailed;
+          return Promise.reject(err);
+        });
+      }
+
+      promise.then(res => {
         let data = res.json();
 
         originMessage.postStatus = PostMessageStatus.PostSuccessful;

@@ -291,4 +291,8 @@ export class MessageComponent implements OnInit, OnDestroy {
       if (result) this.messageApiService.resendMessage(this.liveId, this.message);
     });
   }
+
+  get isInWechat() {
+    return UtilsService.isInWechat;
+  }
 }

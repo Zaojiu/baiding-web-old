@@ -11,6 +11,8 @@ import {ShareBridge} from "./shared/bridge/share.interface";
 import {IosAudioService} from "./shared/bridge/audio/ios-audio.service";
 import {PcAudioService} from "./shared/bridge/audio/pc-audio.service";
 import {PcShareService} from "./shared/bridge/share/pc-share.service";
+import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
+import {ImageBridge} from "./shared/bridge/image.interface";
 
 export function audioServiceFactory(wechatAudioService: WechatAudioService, iosAudioService: IosAudioService, pcAudioService: PcAudioService): AudioBridge {
   return UtilsService.isInWechat ? wechatAudioService : UtilsService.isInApp ? iosAudioService : pcAudioService;
@@ -22,4 +24,8 @@ export function authServiceFactory(wechatAuthService: WechatAuthService, iosAuth
 
 export function shareServiceFactory(wechatShareService: WechatShareService, iosShareService: IosShareService, pcShareService: PcShareService): ShareBridge {
   return UtilsService.isInWechat ? wechatShareService : UtilsService.isInApp ? iosShareService : pcShareService;
+}
+
+export function imageServiceFactory(wechatImageService: WechatImageService): ImageBridge {
+  return UtilsService.isInWechat ? wechatImageService : UtilsService.isInApp ? wechatImageService : wechatImageService;
 }
