@@ -31,15 +31,19 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
-    this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+
+    this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
+      this.liveInfo = liveInfo;
+      console.log(this.liveInfo);
+    });
 
     if (this.isAdmin) {
       this.inviteApiService.listInvitations(this.liveId).then((res) => {
         this.invitations = res;
       });
     } else {
-      this.inviteApiService.audienceListInvitations(this.liveId).then((res) =>{
+      this.inviteApiService.audienceListInvitations(this.liveId).then((res) => {
         this.audienceListInvitations = res;
       });
     }
@@ -53,11 +57,11 @@ export class SettingsComponent implements OnInit {
     this.liveService.toggleAudioAutoPlay(this.liveId);
   }
 
-  get translationExpanded(): boolean{
+  get translationExpanded(): boolean {
     return this.liveService.isTranslationExpanded(this.liveId);
   }
 
-  set translationExpanded(result: boolean){
+  set translationExpanded(result: boolean) {
     this.liveService.toggleTranslationExpanded(this.liveId);
   }
 
