@@ -122,8 +122,13 @@
                   (toggling)="translationExpanded = $event"></switch-btn>
     </div>
 
-    <div class="auto-play-switch bar" (click)="gotoCreateOrApply()">
+    <div class="create-bar bar" (click)="gotoCreateOrApply()">
       <span class="title">我要发起话题</span>
+      <i class="bi bi-right-arrow"></i>
+    </div>
+
+    <div class="info-center-bar bar" (click)="gotoInfoCenter()">
+      <span class="title">我的话题间</span>
       <i class="bi bi-right-arrow"></i>
     </div>
 

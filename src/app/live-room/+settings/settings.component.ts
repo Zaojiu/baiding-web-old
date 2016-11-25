@@ -86,7 +86,11 @@ export class SettingsComponent implements OnInit {
   }
 
   gotoInvitation(token: string) {
-    this.router.navigate(([`/lives/${this.liveId}/invitation`, {token: token}]));
+    this.router.navigate([`/lives/${this.liveId}/invitation`, {token: token}]);
+  }
+
+  gotoInfoCenter() {
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 
   closeWindow() {

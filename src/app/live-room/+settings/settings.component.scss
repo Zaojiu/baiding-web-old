@@ -276,6 +276,11 @@
     }
   }
 
+  .word-expand-switch, .info-center-bar {
+    margin-top: 0;
+    border-top: none;
+  }
+
   .end-btn {
     display: block;
     margin: 30px auto;
