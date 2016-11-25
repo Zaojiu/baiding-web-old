@@ -302,7 +302,12 @@ export class CommentComponent implements OnInit, OnDestroy {
 
         // 普通情况下： mark游标往前移动3条
         this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 3, ['-createdAt']).then((preFiveMessage) => {
-          query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          // 避免第一条comment崩溃检测
+          if (preFiveMessage.length === 0) {
+            query.marker = `$gte${comment.createdAt}`;
+          } else {
+            query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          }
           this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
         });
       }
