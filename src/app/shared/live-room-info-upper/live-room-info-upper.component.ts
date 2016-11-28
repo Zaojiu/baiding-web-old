@@ -15,6 +15,7 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
   @Input() liveInfo: LiveInfoModel;
   timeNow = UtilsService.now.toString();
   timer: any;
+  coverUrl: SafeUrl;
 
   constructor(private sanitizer: DomSanitizer) {
   }
@@ -23,6 +24,9 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
     this.timer = setInterval(()=> {
       this.timeNow = UtilsService.now.toString();
     }, 1000);
+
+    let coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
+    this.coverUrl = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
   }
 
   ngOnDestroy() {
@@ -42,10 +46,5 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
       default:
         return '未知状态';
     }
-  }
-
-  get coverUrl(): SafeUrl {
-    let coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
-    return this.sanitizer.bypassSecurityTrustUrl(coverUrl);
   }
 }
