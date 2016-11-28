@@ -8,8 +8,12 @@
   &.theme-white {
     color: rgb(255, 255, 255);
 
+    .audio-duration {
+      color: rgb(255, 255, 255);
+    }
+
     .play-btn {
-        border: solid 1px rgb(255, 255, 255);
+      border: solid 1px rgb(255, 255, 255);
     }
 
     /deep/ {
@@ -19,7 +23,7 @@
 
         .playing-btn-left, .playing-btn-right {
           .playing-btn-inner {
-            background-color: rgb(33, 150, 243)!important;
+            background-color: rgb(33, 150, 243) !important;
           }
         }
 
@@ -27,7 +31,7 @@
           background-color: rgb(33, 150, 243);
 
           .bi-pause {
-            color: rgb(255, 255, 255)!important;
+            color: rgb(255, 255, 255) !important;
           }
         }
       }
@@ -42,6 +46,7 @@
     font-size: 14px;
     flex-grow: 1;
     padding-left: 10px;
+    color: rgb(158, 161, 165);
   }
 
   .play-btn, .animation-playing-btn {
@@ -58,8 +63,8 @@
     border-radius: 50%;
     box-sizing: content-box;
 
-    &.no-border{
-      border-color:transparent;
+    &.no-border {
+      border-color: transparent;
     }
 
     .bi-play {
