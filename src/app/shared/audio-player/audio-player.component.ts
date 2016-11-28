@@ -1,9 +1,9 @@
 import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angular/core';
-import {LocalStorage} from "angular2-localstorage/WebStorage";
 
 import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
 import {PostMessageStatus} from "../api/message/message.enum";
+import {UtilsService} from "../utils/utils";
 
 @Component({
   selector: 'audio-player',
@@ -15,7 +15,6 @@ import {PostMessageStatus} from "../api/message/message.enum";
 export class AudioPlayerComponent implements OnInit, OnDestroy {
   @Input() message: MessageModel;
   @Input() isWhiteTheme: MessageModel;
-  @LocalStorage() public audioPlayed: Object = {};
   postStatus = PostMessageStatus;
 
   @Output() playEnded = new EventEmitter();
@@ -28,18 +27,24 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.played = this.audioPlayed[this.message.id] === true;
+    this.played = !!UtilsService.getStorage('audioPlayed')[this.message.id];
   }
 
   playOrStopVoice() {
     this._isPlaying() ? this.audioPlayerService.stop(this.message) : this.play();
   }
 
+  setPlayed(id: string) {
+    let audioPlayed = UtilsService.getStorage('audioPlayed');
+    audioPlayed[id] = true;
+    UtilsService.setStorage('audioPlayed', audioPlayed);
+  }
+
   play() {
 
     if (!this.played) {
       this.played = true;
-      this.audioPlayed[this.message.id] = true;
+      this.setPlayed(this.message.id);
     }
 
     this.audioPlayerService.userActivated = true;

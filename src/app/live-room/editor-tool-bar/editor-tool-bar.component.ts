@@ -53,7 +53,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   }
 
   ngOnInit() {
-    this.liveService.getTextWordsStashed().then(text => this.messageContent = text);
+    this.messageContent = this.liveService.getTextWordsStashed(this.liveId);
 
     this.form = this.fb.group({
       'images': new FormControl(this.images, [
@@ -72,7 +72,7 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
   switchMode(mode: EditMode) {
     if (mode !== EditMode.Text) {
       this.blurMessageInput();
-      this.liveService.setTextWordsStashed(this.messageContent);
+      this.liveService.setTextWordsStashed(this.messageContent, this.liveId);
     }
 
     this.mode = mode;

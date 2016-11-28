@@ -1,5 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {LocalStorage} from "angular2-localstorage/WebStorage";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   selector: 'beginner-guide',
@@ -12,11 +12,9 @@ export class BeginnerGuideComponent implements OnInit {
   @Input() showAdminGuide: boolean;
   @Input() showUserGuide: boolean;
   isAdminStep2: boolean;
-  @LocalStorage() public beginnerGuideShowed: Object = {};
-
 
   ngOnInit() {
-    if (this.getGuideAlreadyShown()) {
+    if (this.checkGuideAlreadyShown()) {
       this.hide();
     }
   }
@@ -33,16 +31,11 @@ export class BeginnerGuideComponent implements OnInit {
     this.showUserGuide = false;
   }
 
-
-  setGuideAlreadyShown() {
-    this.beginnerGuideShowed['guideAlreadyShown'] = true
-  }
-
-  getGuideAlreadyShown() {
-    let guideShowed = this.beginnerGuideShowed['guideAlreadyShown'];
+  checkGuideAlreadyShown(){
+    let guideShowed = !!UtilsService.getStorage('beginnerGuide')['isShowed'];
 
     if (!guideShowed) {
-      this.setGuideAlreadyShown();
+      UtilsService.setStorage('beginnerGuide', {isShowed: true});
     }
 
     return guideShowed;

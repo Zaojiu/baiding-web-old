@@ -36,7 +36,7 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnInit() {
-    this.liveService.getTextWordsStashed().then(text => this.commentContent = text);
+    this.commentContent = this.liveService.getTextWordsStashed(this.liveId);
 
     //监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
@@ -103,7 +103,7 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy, AfterViewIni
 
   switchMode(mode: EditMode) {
     if (mode !== EditMode.Text) {
-      this.liveService.setTextWordsStashed(this.commentContent);
+      this.liveService.setTextWordsStashed(this.commentContent, this.liveId);
       this.blurMessageInput();
     }
 
