@@ -22,6 +22,7 @@ export class ToolTipsComponent implements OnChanges {
   @Input() items: ToolTipsModel[];
   @Output() itemSelected = new EventEmitter<ToolTipsModel>();
   $el: any;
+  safeContent: {[key: string]: SafeHtml};
 
   constructor(private sanitizer: DomSanitizer, el: ElementRef) {
     this.$el = $(el.nativeElement);
@@ -29,10 +30,26 @@ export class ToolTipsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     let isOpenedChange = changes['isOpened'];
+    let items = changes['items'];
+
+    if (items && items.currentValue) {
+      let _items = items.currentValue;
+      let safeContent = {};
+
+      for (let item of _items) {
+        safeContent[item.id] = this.getTrustedContent(item.content);
+      }
+
+      this.safeContent = safeContent;
+    }
 
     if (isOpenedChange) {
+      let event = 'touchstart.tooltips';
+
+      if (!TouchEvent) event = 'mousedown.tooltips';
+
       if (isOpenedChange.currentValue === true) {
-        $('body').on('touchstart.tooltips', (e: Event) => {
+        $('body').on(event, (e: Event) => {
           // 点在tooltips外,关闭tooltips。点在tooltips中的,由调用者控制关闭。
           let hasParent = false;
 
@@ -47,10 +64,12 @@ export class ToolTipsComponent implements OnChanges {
 
           if (!hasParent) {
             this.close();
+            $('body').off(event);
+            e.stopPropagation();
           }
         });
       } else if (isOpenedChange.currentValue === false) {
-        $('body').off('touchstart.tooltips');
+        $('body').off(event);
       }
     }
   }

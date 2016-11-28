@@ -13,7 +13,7 @@
 
     <div class="form-group"
          [ngClass]="{'has-error': form.controls['username'].dirty && form.controls['username'].invalid}">
-      <label>用户名</label>
+      <label class="required">用户名</label>
       <input
         id="username"
         class="username"
@@ -33,7 +33,7 @@
     </div>
 
     <div class="form-group" [ngClass]="{'has-error': form.controls['email'].dirty && form.controls['email'].invalid}">
-      <label>电子邮箱</label>
+      <label class="required">电子邮箱</label>
       <input
         id="email"
         class="email"
@@ -44,13 +44,14 @@
       >
       <p class="helper" *ngIf="form.controls['email'].valid || !form.controls['email'].dirty">收到审核申请之后，我们将会通过邮件通知您</p>
       <div *ngIf="form.controls['email'].errors">
+        <p class="helper error" *ngIf="form.controls['email'].errors.required">请填写用户名</p>
         <p class="helper error" *ngIf="form.controls['email'].errors.pattern">电子邮箱格式错误</p>
       </div>
     </div>
 
     <div class="form-group"
          [ngClass]="{'has-error': form.controls['realName'].dirty && form.controls['realName'].invalid}">
-      <label>姓名</label>
+      <label class="required">姓名</label>
       <input
         id="realName"
         class="realName"
@@ -92,7 +93,7 @@
 
     <div class="form-group"
          [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
-      <label>手机号码</label>
+      <label class="required">手机号码</label>
       <input
         id="phoneNumber"
         class="phoneNumber"

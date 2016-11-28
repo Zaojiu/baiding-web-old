@@ -40,14 +40,13 @@ export class MessageComponent implements OnInit, OnDestroy {
   timer: any = -1;
   praised: boolean;
   isToolTipOpened: boolean;
-  messagePressTimer: any;
-  messagePressDuration = 0;
   messageType = MessageType;
   countdownTimer: any;
   isTranslationExpanded: boolean;
   tranlationExpandedSub: Subscription;
   tranlationMaxLength = 32;
   postStatus = PostMessageStatus;
+  toolTips: ToolTipsModel[];
 
   constructor(private messageService: MessageService, private messageApiService: MessageApiService,
               private router: Router, private liveService: LiveService,
@@ -55,7 +54,6 @@ export class MessageComponent implements OnInit, OnDestroy {
               private userInfoService: UserInfoService, private textPopupService: TextPopupService,
               private modalService: ModalService) {
   }
-
 
   ngOnInit() {
     if (this.message.type === MessageType.LiveRoomInfo) {
@@ -89,22 +87,6 @@ export class MessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  touchStart() {
-    this.messagePressTimer = setInterval(() => {
-      this.messagePressDuration++;
-
-      if (this.messagePressDuration > 5) {
-        this.openToolTips();
-        this.touchEnd();
-      }
-    }, 100);
-  }
-
-  touchEnd() {
-    if (this.messagePressTimer) clearInterval(this.messagePressTimer);
-    this.messagePressDuration = 0;
-  }
-
   audioPlayEndedHandler(msg: MessageModel) {
     this.audioPlayEnded.emit(msg);
   }
@@ -135,7 +117,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
     this.timer = setTimeout(() => {
       this.isLoading = true;
-      let praisesNum = this.praisesNum
+      let praisesNum = this.praisesNum;
       if (praisesNum > 10) {
         praisesNum = 10;
       }
@@ -182,7 +164,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     return this.liveInfo.status == LiveStatus.Ended;
   }
 
-  getToolTipsItems(): string[] {
+  resetToolTipsItems(): ToolTipsModel[] {
 
     let items = [];
     let t = this.message.type;
@@ -216,8 +198,8 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   openToolTips() {
-    let items = this.getToolTipsItems();
-    if (items.length === 0) return;
+    this.toolTips = this.resetToolTipsItems();
+    if (this.toolTips.length === 0) return;
 
     this.isToolTipOpened = true;
   }
@@ -247,6 +229,8 @@ export class MessageComponent implements OnInit, OnDestroy {
         this.textPopupService.popup(text);
       }
     }
+
+    this.toolTips = this.resetToolTipsItems();
   }
 
   private _toggleAudioAutoPlay() {

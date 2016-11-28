@@ -35,8 +35,8 @@
       </div>
     </div>
 
-    <div class="content-container" (touchstart)="touchStart()" (touchend)="touchEnd()"
-         (contextmenu)="$event.preventDefault()">
+    <div class="content-container"
+         (contextmenu)="$event.preventDefault()" (press)="openToolTips()">
       <div class="content-info">
         <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
         <span class="time">{{message.createdAt | fromNow}}</span>
@@ -94,7 +94,7 @@
       </div>
 
       <div class="tooltips-container">
-        <tooltips [(isOpened)]="isToolTipOpened" [items]="getToolTipsItems()" (itemSelected)="tooptipsSelected($event)"
+        <tooltips *ngIf="isToolTipOpened" [(isOpened)]="isToolTipOpened" [items]="toolTips" (itemSelected)="tooptipsSelected($event)"
                   (touchstart)="$event.stopPropagation()"></tooltips>
       </div>
     </div>
