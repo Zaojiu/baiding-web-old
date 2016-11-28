@@ -21,9 +21,9 @@ export class AutoBlurDirective implements OnChanges {
 
     if (isBlurred) {
       if (isBlurred.currentValue) {
-        $('body').off(`touchstart.blur${this.randomId} mouseup.blur${this.randomId}`);
+        $('body').off(`touchstart.blur${this.randomId} mousedown.blur${this.randomId}`);
       } else {
-        $('body').on(`touchstart.blur${this.randomId}  mouseup.blur${this.randomId}`, (e: Event) => {
+        $('body').on(`touchstart.blur${this.randomId}  mousedown.blur${this.randomId}`, (e: Event) => {
           let hasParent = false;
 
           if ($(e.target).is(this.$el)) {

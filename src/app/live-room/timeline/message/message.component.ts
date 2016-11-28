@@ -48,6 +48,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   tranlationExpandedSub: Subscription;
   tranlationMaxLength = 32;
   postStatus = PostMessageStatus;
+  toolTips: ToolTipsModel[];
 
   constructor(private messageService: MessageService, private messageApiService: MessageApiService,
               private router: Router, private liveService: LiveService,
@@ -94,6 +95,7 @@ export class MessageComponent implements OnInit, OnDestroy {
       this.messagePressDuration++;
 
       if (this.messagePressDuration > 5) {
+        this.toolTips = this.resetToolTipsItems();
         this.openToolTips();
         this.touchEnd();
       }
@@ -182,7 +184,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     return this.liveInfo.status == LiveStatus.Ended;
   }
 
-  getToolTipsItems(): string[] {
+  resetToolTipsItems(): ToolTipsModel[] {
 
     let items = [];
     let t = this.message.type;
@@ -216,7 +218,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   openToolTips() {
-    let items = this.getToolTipsItems();
+    let items = this.resetToolTipsItems();
     if (items.length === 0) return;
 
     this.isToolTipOpened = true;

@@ -4,6 +4,6 @@
     [ngClass]="{'is-closed': !item.enable}"
     *ngFor="let item of items"
     (click)="selectItem(item)"
-    [innerHTML]="getTrustedContent(item.content)"
+    [innerHTML]="safeContent[item.id]"
   ></div>
 </div>
