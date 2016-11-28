@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy}      from '@angular/core';
+import {Component}      from '@angular/core';
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {Router} from "@angular/router";
 
@@ -18,6 +18,5 @@ export class NotFoundComponent {
         this.router.navigate([`/info-center`]);
       }
     );
-
   }
 }
