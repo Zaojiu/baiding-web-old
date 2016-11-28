@@ -40,8 +40,6 @@ export class MessageComponent implements OnInit, OnDestroy {
   timer: any = -1;
   praised: boolean;
   isToolTipOpened: boolean;
-  messagePressTimer: any;
-  messagePressDuration = 0;
   messageType = MessageType;
   countdownTimer: any;
   isTranslationExpanded: boolean;
