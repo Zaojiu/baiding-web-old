@@ -11,6 +11,14 @@
     color: rgb(75, 75, 75);
     margin-bottom: 10px;
     line-height: 1em;
+
+    &.required {
+      &:after {
+        content: "*";
+        color: rgb(233, 66, 63);
+        padding-left: 5px;
+      }
+    }
   }
 
   input[type="text"], input[type="password"], input[type="datetime-local"], textarea {

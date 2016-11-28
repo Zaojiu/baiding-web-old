@@ -51,6 +51,7 @@ export class ApplyComponent implements OnInit {
 
     let fg = {
       'email': new FormControl(this.email, [
+        Validators.required,
         Validators.pattern(RegexpConst.email),
       ]),
       'realName': new FormControl(this.realName, [
