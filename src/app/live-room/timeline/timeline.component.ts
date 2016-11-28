@@ -326,7 +326,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         }
       } else if (e.position == ScrollerPosition.OnBottom) {
         let lastMessage = this.findLastAvailableMessage(this.messages);
-        
+
         if (!lastMessage) {
           this.scroller.hideFootLoading();
           return;
@@ -426,7 +426,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   findFirstAvailableMessage(messages: MessageModel[]): MessageModel {
     for (let message of messages) {
-      if (message.type !== MessageType.LiveStart && message.type !== MessageType.LiveEnd &&
+      if (message.type !== MessageType.LiveEnd &&
         message.type !== MessageType.LiveRoomInfo) {
         return message;
       }
