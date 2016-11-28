@@ -1,36 +1,36 @@
 .notfound-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
 
-  .notfound-container {
-    margin: auto;
-    display: flex;
-    flex-direction: column;
+  .bi {
+    font-size: 115px;
+  }
 
-    .bi {
-      font-size: 115px;
-    }
+  .slogan {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 17px;
+    color: rgb(75, 75, 75);
+    white-space: nowrap;
+  }
 
-    .dogslogan {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 17px;
-      color: rgb(75, 75, 75);
-      line-height: 34px;
-    }
-
-    .back-btn {
-      margin: 40px auto auto auto;
-      width: 200px;
-      text-align: center;
-      line-height: 50px;
-      color: rgb(255, 255, 255);
-      font-size: 17px;
-      background-color: rgb(33, 150, 243);
-      border-radius: 25px;
-    }
+  .back-btn {
+    margin-top: 40px;
+    width: 200px;
+    text-align: center;
+    line-height: 50px;
+    color: rgb(255, 255, 255);
+    font-size: 17px;
+    background-color: rgb(33, 150, 243);
+    border-radius: 25px;
   }
 }
 

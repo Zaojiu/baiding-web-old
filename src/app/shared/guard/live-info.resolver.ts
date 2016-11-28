@@ -3,9 +3,10 @@ import {Resolve, Router} from '@angular/router';
 import {ActivatedRouteSnapshot} from '@angular/router';
 
 import {LiveService} from '../api/live/live.service';
+import {LiveInfoModel} from "../api/live/live.model";
 
 @Injectable()
-export class LiveInfoResolver implements Resolve<any>{
+export class LiveInfoResolver implements Resolve<LiveInfoModel>{
   constructor(private liveService: LiveService, private router: Router) {
   }
 

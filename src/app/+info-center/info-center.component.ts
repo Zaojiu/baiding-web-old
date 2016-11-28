@@ -34,8 +34,8 @@ export class InfoCenterComponent {
   covers: {[liveId: string]: SafeUrl} = {};
 
   ngOnInit() {
-    this.uid = +this.route.snapshot.params['uid'];
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
+    this.uid = +this.route.snapshot.params['uid'] || this.currentUserInfo.uid;
 
     this.liveService.listLiveInfo(this.uid, '', 1000, ['-createdAt']).then((livesList) => {
       this.livesList = livesList;
