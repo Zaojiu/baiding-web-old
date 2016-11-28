@@ -44,8 +44,12 @@ export class ToolTipsComponent implements OnChanges {
     }
 
     if (isOpenedChange) {
+      let event = 'touchstart.tooltips';
+
+      if (!TouchEvent) event = 'mousedown.tooltips';
+
       if (isOpenedChange.currentValue === true) {
-        $('body').on('touchstart.tooltips mousedown.tooltips', (e: Event) => {
+        $('body').on(event, (e: Event) => {
           // 点在tooltips外,关闭tooltips。点在tooltips中的,由调用者控制关闭。
           let hasParent = false;
 
@@ -60,10 +64,12 @@ export class ToolTipsComponent implements OnChanges {
 
           if (!hasParent) {
             this.close();
+            $('body').off(event);
+            e.stopPropagation();
           }
         });
       } else if (isOpenedChange.currentValue === false) {
-        $('body').off('touchstart.tooltips mousedown.tooltips');
+        $('body').off(event);
       }
     }
   }

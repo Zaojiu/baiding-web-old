@@ -57,7 +57,6 @@ export class MessageComponent implements OnInit, OnDestroy {
               private modalService: ModalService) {
   }
 
-
   ngOnInit() {
     if (this.message.type === MessageType.LiveRoomInfo) {
       if (!this.liveInfo.isStarted()) {
@@ -90,23 +89,6 @@ export class MessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  touchStart() {
-    this.messagePressTimer = setInterval(() => {
-      this.messagePressDuration++;
-
-      if (this.messagePressDuration > 5) {
-        this.toolTips = this.resetToolTipsItems();
-        this.openToolTips();
-        this.touchEnd();
-      }
-    }, 100);
-  }
-
-  touchEnd() {
-    if (this.messagePressTimer) clearInterval(this.messagePressTimer);
-    this.messagePressDuration = 0;
-  }
-
   audioPlayEndedHandler(msg: MessageModel) {
     this.audioPlayEnded.emit(msg);
   }
@@ -137,7 +119,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
     this.timer = setTimeout(() => {
       this.isLoading = true;
-      let praisesNum = this.praisesNum
+      let praisesNum = this.praisesNum;
       if (praisesNum > 10) {
         praisesNum = 10;
       }
@@ -218,8 +200,8 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   openToolTips() {
-    let items = this.resetToolTipsItems();
-    if (items.length === 0) return;
+    this.toolTips = this.resetToolTipsItems();
+    if (this.toolTips.length === 0) return;
 
     this.isToolTipOpened = true;
   }
@@ -249,6 +231,8 @@ export class MessageComponent implements OnInit, OnDestroy {
         this.textPopupService.popup(text);
       }
     }
+
+    this.toolTips = this.resetToolTipsItems();
   }
 
   private _toggleAudioAutoPlay() {

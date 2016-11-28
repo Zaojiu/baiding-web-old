@@ -20,10 +20,14 @@ export class AutoBlurDirective implements OnChanges {
     let isBlurred = changes['isBlurred'];
 
     if (isBlurred) {
+      let event = `touchstart.blur${this.randomId}`;
+
+      if (!TouchEvent) event = `mousedown.blur${this.randomId}`;
+
       if (isBlurred.currentValue) {
-        $('body').off(`touchstart.blur${this.randomId} mousedown.blur${this.randomId}`);
+        $('body').off(event);
       } else {
-        $('body').on(`touchstart.blur${this.randomId}  mousedown.blur${this.randomId}`, (e: Event) => {
+        $('body').on(event, (e: Event) => {
           let hasParent = false;
 
           if ($(e.target).is(this.$el)) {
@@ -37,6 +41,7 @@ export class AutoBlurDirective implements OnChanges {
 
           if (!hasParent) {
             this.blurred.emit();
+            $('body').off(event);
           }
         });
       }

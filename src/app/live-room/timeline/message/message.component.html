@@ -35,8 +35,8 @@
       </div>
     </div>
 
-    <div class="content-container" (touchstart)="touchStart()" (touchend)="touchEnd()"
-         (contextmenu)="$event.preventDefault()" (mousedown)="touchStart()" (mouseup)="touchEnd()">
+    <div class="content-container"
+         (contextmenu)="$event.preventDefault()" (press)="openToolTips()">
       <div class="content-info">
         <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
         <span class="time">{{message.createdAt | fromNow}}</span>
