@@ -8,6 +8,8 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 })
 
 export class TopBarSwitchBtnComponent implements OnInit {
+  @Input() isCommentOpened: boolean;
+  @Input() onlineCount: number;
   @Input() isOpened: boolean;
   @Input() btnText: string;
   @Output() toggling = new EventEmitter<boolean>();
