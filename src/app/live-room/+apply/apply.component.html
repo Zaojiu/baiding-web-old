@@ -67,8 +67,8 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label>机构名称</label>
+    <div class="form-group" [ngClass]="{'has-error': form.controls['company'].dirty && form.controls['company'].invalid}">
+      <label class="required">机构名称</label>
       <input
         id="company"
         class="company"
@@ -77,10 +77,13 @@
         formControlName="company"
         [(ngModel)]="company"
       >
+      <div *ngIf="form.controls['company'].errors">
+        <p class="helper error" *ngIf="form.controls['company'].errors.required">请填写机构名称</p>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>职位</label>
+    <div class="form-group" [ngClass]="{'has-error': form.controls['title'].dirty && form.controls['title'].invalid}">
+      <label class="required">职位</label>
       <input
         id="title"
         class="title"
@@ -89,6 +92,9 @@
         formControlName="title"
         [(ngModel)]="title"
       >
+      <div *ngIf="form.controls['title'].errors">
+        <p class="helper error" *ngIf="form.controls['title'].errors.required">请填写职位</p>
+      </div>
     </div>
 
     <div class="form-group"

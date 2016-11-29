@@ -58,8 +58,12 @@ export class ApplyComponent implements OnInit {
         Validators.required,
         Validators.maxLength(10),
       ]),
-      'company': new FormControl(this.company, []),
-      'title': new FormControl(this.title, []),
+      'company': new FormControl(this.company, [
+        Validators.required,
+      ]),
+      'title': new FormControl(this.title, [
+        Validators.required,
+      ]),
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
         Validators.pattern(RegexpConst.mobile),
