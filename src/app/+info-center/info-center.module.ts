@@ -10,6 +10,7 @@ import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-
 import {PipeModule} from "../shared/pipe/pipe.module";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
+import {CountDownModule} from "../shared/countdown/countdown.module";
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import {InviteApiService} from "../shared/api/invite/invite.api";
     LiveRoomTopBarModule,
     LiveRoomInfoUpperModule,
     LoadingModule,
+    CountDownModule,
   ],
   declarations: [
     InfoCenterComponent,

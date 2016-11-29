@@ -21,11 +21,8 @@
 
         <div class="title-wrapper" (click)="gotoLiveRoom(liveInfo.id)">
           <div class="title">{{liveInfo.subject}}</div>
-          <div class="indicator notstarted" *ngIf="liveInfo.isCreated()">未开始</div>
-          <div class="indicator living" *ngIf="liveInfo.isStarted()">
-            直播中
-          </div>
-          <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">未开始</div>
+          <div class="indicator living" *ngIf="liveInfo.isStarted()">直播中</div>
+          <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">已结束</div>
         </div>
 
         <div class="talent">
@@ -35,11 +32,11 @@
             <div class="time">
               {{liveRoomStatusHumanize(liveInfo.status)}}
               <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
-          {{liveInfo.closedAt | timeFormater:'YYYY.MM.DD HH:mm'}}
+           {{liveInfo.startedAt | timeTo:liveInfo.closedAt | durationFormater:5}}:{{liveInfo.startedAt | timeTo:liveInfo.closedAt | durationFormater:6}}
       </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isCreated()">
-        {{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:5}}:{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:6}}
+      {{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD HH:mm'}}
       </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
@@ -53,6 +50,7 @@
       </div>
 
       <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
+        <count-down [liveInfo]="liveInfo" *ngIf="liveInfo.isCreated()"></count-down>
         <img [src]="covers[liveInfo.id]" alt="">
       </div>
 
