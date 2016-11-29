@@ -99,8 +99,9 @@ export class SettingsComponent implements OnInit {
   closeLive() {
     this.modalService.popup('确定结束直播吗?', '取消', '确定').then((result)=> {
       if (!result) return;
-      this.liveService.closeLive(this.liveId);
-      this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => this.liveInfo = liveInfo);
+      this.liveService.closeLive(this.liveId).then(() => {
+        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => this.liveInfo = liveInfo);
+      });
     });
   }
 }
