@@ -1,11 +1,11 @@
 import {Input, Component, OnInit} from '@angular/core';
-import {Router, NavigationStart} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {UserInfoCardService} from './user-info-card.service';
 import {LiveInfoModel} from "../../shared/api/live/live.model";
 import { UserPublicInfoModel} from "../../shared/api/user-info/user-info.model";
-import {UserSex} from "../../shared/api/user-info/user-info.model";
+import {Router} from "@angular/router";
+
 @Component({
   selector: 'user-info-card',
   templateUrl: 'user-info-card.component.html',
@@ -18,7 +18,7 @@ export class UserInfoCardComponent implements OnInit {
   msgUser: UserPublicInfoModel;
   msgUserSub: Subscription;
 
-  constructor(private editorCardService: UserInfoCardService) {
+  constructor(private editorCardService: UserInfoCardService, private router: Router) {
   }
 
   ngOnInit() {
@@ -27,5 +27,9 @@ export class UserInfoCardComponent implements OnInit {
         this.msgUser = user;
       }
     );
+  }
+
+  gotoInfoCenter() {
+    this.router.navigate([`/info-center/${this.msgUser.uid}`]);
   }
 }

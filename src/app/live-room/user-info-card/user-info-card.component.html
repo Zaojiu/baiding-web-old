@@ -1,7 +1,7 @@
 <div class="editor-card-container" (click)="isPopup = false" [ngClass]="{opened: isPopup}">
 
   <div class="editor-info-wrapper" *ngIf="msgUser">
-    <img class="talent-avatar" [src]="msgUser.avatar" alt="">
+    <img class="talent-avatar" [src]="msgUser.avatar" (click)="gotoInfoCenter()" alt="">
     <div class="talent-info">{{msgUser.nick}}</div>
 
     <div class="word-container">
@@ -18,6 +18,6 @@
         <div class="content">性别</div>
       </div>
     </div>
-
   </div>
+
 </div>

@@ -324,10 +324,4 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.unreadCount = 0;
     this.isOnBottom = true;
   }
-
-  getUserPublicInfoAndPopUpCard(userUid: number) {
-    this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
-      this.editorCardService.popup(userPublicInfo);
-    });
-  }
 }

@@ -234,7 +234,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   gotoInfoCenter(userInfo: UserInfoModel) {
-    this.router.navigate([`/info-center/` + userInfo.uid, {uid: userInfo.uid}]);
+    this.router.navigate([`/info-center/${userInfo.uid}`]);
   }
 
   parseContent(content: string): SafeHtml {
@@ -250,9 +250,9 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.isTranslationExpanded = !this.isTranslationExpanded;
   }
 
-  getUserPublicInfoAndPopUpCard(userUid: number) {
-    this.userInfoService.getUserPublicInfo(userUid).then((userPublicInfo)=> {
-      this.editorCardService.popup(userPublicInfo);
+  getUserPublicInfoAndPopUpCard(uid: number) {
+    this.userInfoService.getUserPublicInfo(uid).then((publicInfo)=> {
+      this.editorCardService.popup(publicInfo);
     });
   }
 
