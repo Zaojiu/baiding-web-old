@@ -31,17 +31,17 @@
             <div class="nick">{{liveInfo.admin.nick}}</div>
             <div class="time">
               {{liveRoomStatusHumanize(liveInfo.status)}}
-              <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
-           {{liveInfo.startedAt | timeTo:liveInfo.closedAt | durationFormater:5}}:{{liveInfo.startedAt | timeTo:liveInfo.closedAt | durationFormater:6}}
-      </span>
-
               <span class="countdown-day-item-day" *ngIf="liveInfo.isCreated()">
       {{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD HH:mm'}}
-      </span>
+             </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
-        {{liveInfo.startedAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:6}}
-      </span>
+        {{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:6}}
+              </span>
+
+              <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
+           {{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:6}}
+              </span>
             </div>
           </div>
         </div>
