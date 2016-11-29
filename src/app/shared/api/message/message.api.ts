@@ -111,6 +111,11 @@ export class MessageApiService {
       return message;
     }
 
+    if (data.type === 'start') {
+      message.type = MessageType.LiveStart;
+      return message;
+    }
+
     message.hadPraised = data.myPraisedId !== '';
     message.praisedAmount = data.praised;
     message.praisedAnimations = [];
