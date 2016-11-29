@@ -65,40 +65,40 @@ describe('DurationFormaterPipe test', () => {
     timeToPipe = new TimeToPipe();
   });
   it('invalid duration should return 00', () => {
-    expect(durationPipe.transform(-403, 1)).toEqual('00');
+    expect(durationPipe.transform(-403, 1)).toEqual('0');
   });
 
   // format DD:HH:MM:SS
   it('left days', () => {
     let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-02 14:22');
-    expect(durationPipe.transform(value, 0)).toEqual('01');
+    expect(durationPipe.transform(value, 1)).toEqual('01');
   });
 
   it('left hours', () => {
     let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-02 14:22');
-    expect(durationPipe.transform(value, 1)).toEqual('02');
+    expect(durationPipe.transform(value, 2)).toEqual('02');
   });
   it('left mins', () => {
     let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-02 14:22');
-    expect(durationPipe.transform(value, 2)).toEqual('22');
+    expect(durationPipe.transform(value, 3)).toEqual('22');
   });
   it('left seconds', () => {
     let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-02 14:22');
-    expect(durationPipe.transform(value, 3)).toEqual('00');
+    expect(durationPipe.transform(value, 4)).toEqual('00');
   });
 
   // format HH:MM:SS
   it('left hours', () => {
     let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-02 14:22');
-    expect(durationPipe.transform(value, 4)).toEqual('26');
+    expect(durationPipe.transform(value, 5)).toEqual('26');
   });
   it('left mins', () => {
     let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-02 14:22');
-    expect(durationPipe.transform(value, 5)).toEqual('22');
+    expect(durationPipe.transform(value, 6)).toEqual('22');
   });
   it('left seconds', () => {
     let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-02 14:22');
-    expect(durationPipe.transform(value, 6)).toEqual('00');
+    expect(durationPipe.transform(value, 7)).toEqual('00');
   });
 });
 
