@@ -35,16 +35,4 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
     }
   }
 
-  get liveRoomStatusHumanize(): string {
-    switch (this.liveInfo.status) {
-      case LiveStatus.Created:
-        return '倒计时';
-      case LiveStatus.Started:
-        return '直播中';
-      case LiveStatus.Ended:
-        return '直播结束';
-      default:
-        return '未知状态';
-    }
-  }
 }

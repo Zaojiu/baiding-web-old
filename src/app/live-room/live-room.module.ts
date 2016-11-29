@@ -40,7 +40,11 @@ import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 import {EmptyModule} from "../shared/empty/empty.module";
+<<<<<<< acf9546096b4ac43aa2545eff299f3b39ae71003
 import {UtilsService} from "../shared/utils/utils";
+=======
+<<<<<<< 9c1960fbe76ac6af4bd57d65f3fea0d796dbce43
+>>>>>>> 抽取封面倒计时组件
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 
 export class MessageHammerConfig extends HammerGestureConfig  {
@@ -50,6 +54,9 @@ buildHammer(element: HTMLElement): HammerInstance {
     return mc;
   }
 }
+=======
+import {CountDownModule} from "../shared/countdown/countdown.module";
+>>>>>>> 抽取封面倒计时组件
 
 @NgModule({
   imports: [
@@ -69,6 +76,7 @@ buildHammer(element: HTMLElement): HammerInstance {
     FileSelectorModule,
     ScrollerModule,
     LiveRoomInfoUpperModule,
+    CountDownModule,
     EmptyModule,
   ],
   declarations: [

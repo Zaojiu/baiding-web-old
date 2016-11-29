@@ -39,11 +39,11 @@
       </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isCreated()">
-        {{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:4}}:{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:5}}
+        {{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:5}}:{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:6}}
       </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
-        {{liveInfo.startedAt | timeTo:timeNow | durationFormater:4}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:5}}
+        {{liveInfo.startedAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:6}}
       </span>
             </div>
           </div>
