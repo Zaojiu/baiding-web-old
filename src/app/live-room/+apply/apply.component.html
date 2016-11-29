@@ -44,7 +44,7 @@
       >
       <p class="helper" *ngIf="form.controls['email'].valid || !form.controls['email'].dirty">收到审核申请之后，我们将会通过邮件通知您</p>
       <div *ngIf="form.controls['email'].errors">
-        <p class="helper error" *ngIf="form.controls['email'].errors.required">请填写用户名</p>
+        <p class="helper error" *ngIf="form.controls['email'].errors.required">请填写电子邮箱</p>
         <p class="helper error" *ngIf="form.controls['email'].errors.pattern">电子邮箱格式错误</p>
       </div>
     </div>
