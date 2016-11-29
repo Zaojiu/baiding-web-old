@@ -32,7 +32,7 @@
             <div class="time">
               {{liveRoomStatusHumanize(liveInfo.status)}}
               <span class="countdown-day-item-day" *ngIf="liveInfo.isCreated()">
-      {{liveInfo.expectStartAt | timeFormater:'YYYY.MM.DD HH:mm'}}
+      {{liveInfo.expectStartAt | timeFormater:'YYYY年MM月DD日HH:mm'}}
              </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
