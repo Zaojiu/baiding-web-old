@@ -36,7 +36,7 @@
              </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
-        {{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:6}}
+        {{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:6}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:7}}
               </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
