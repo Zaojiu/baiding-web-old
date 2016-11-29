@@ -43,4 +43,8 @@ export class UtilsService {
     let defaultDic: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     return _.sampleSize<string>((dic||defaultDic).split(''), size).join('');
   }
+
+  static get hasTouchEvent(): boolean {
+    return ('ontouchstart' in window);
+  }
 }

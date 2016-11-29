@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {ReactiveFormsModule, FormsModule}   from '@angular/forms';
 
 import {ROUTES} from './live-room.route';
@@ -40,6 +40,15 @@ import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 import {EmptyModule} from "../shared/empty/empty.module";
+import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
+
+export class MessageHammerConfig extends HammerGestureConfig  {
+  buildHammer(element: HTMLElement): HammerInstance {
+    let mc = new Hammer(element, {domEvents: true});
+    mc.get('press').set({ time: 500 });
+    return mc;
+  }
+}
 
 @NgModule({
   imports: [
@@ -87,7 +96,8 @@ import {EmptyModule} from "../shared/empty/empty.module";
     UploadApiService,
     MessageService,
     AudioPlayerService,
-    UserInfoCardService
+    UserInfoCardService,
+    { provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig }
   ]
 })
 

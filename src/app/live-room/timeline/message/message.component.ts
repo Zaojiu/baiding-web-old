@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy, ElementRef} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {MessageModel, ReplyMessageModel} from '../../../shared/api/message/message.model';
@@ -11,7 +11,7 @@ import {UserAnimEmoji} from '../../../shared/praised-animation/praised-animation
 import {AudioPlayerComponent} from '../../../shared/audio-player/audio-player.component'
 import {ToolTipsModel} from "../../../shared/tooltips/tooltips.model";
 import {LiveStatus} from "../../../shared/api/live/live.enums";
-import {SafeHtml, DomSanitizer, SafeStyle} from "@angular/platform-browser";
+import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 import {Subscription} from "rxjs";
 import {UserInfoCardService} from "../../user-info-card/user-info-card.service";

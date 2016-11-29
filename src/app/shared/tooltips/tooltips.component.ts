@@ -3,6 +3,7 @@ import {
 }      from '@angular/core';
 import {ToolTipsModel} from "./tooltips.model";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {UtilsService} from "../utils/utils";
 
 declare var $: any;
 
@@ -46,7 +47,7 @@ export class ToolTipsComponent implements OnChanges {
     if (isOpenedChange) {
       let event = 'touchstart.tooltips';
 
-      if (!TouchEvent) event = 'mousedown.tooltips';
+      if (!UtilsService.hasTouchEvent) event = 'mousedown.tooltips';
 
       if (isOpenedChange.currentValue === true) {
         $('body').on(event, (e: Event) => {
