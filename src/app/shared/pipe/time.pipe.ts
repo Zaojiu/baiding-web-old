@@ -18,7 +18,7 @@ export class DurationFormaterPipe implements PipeTransform {
       return num;
     };
 
-    if (durationSecond <= 0) return '00';
+    if (durationSecond <= 0) return '';
 
     // 适用格式 天：小时：分：秒
     let d = Math.floor(durationSecond / (24 * 60 * 60));
