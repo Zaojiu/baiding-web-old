@@ -119,6 +119,8 @@ export class MessageApiService {
     message.hadPraised = data.myPraisedId !== '';
     message.praisedAmount = data.praised;
     message.praisedAnimations = [];
+
+    data.latestPraisedUids = data.latestPraisedUids || [];
     for (let uid of data.latestPraisedUids) {
       let user = users[uid];
       message.praisedAvatars = message.praisedAvatars || [];
