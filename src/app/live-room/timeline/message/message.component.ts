@@ -169,24 +169,10 @@ export class MessageComponent implements OnInit, OnDestroy {
     let items = [];
     let t = this.message.type;
 
-    if (t === MessageType.Audio) {
-      let checked = this.liveService.isAudioAutoPlay(this.liveId) ? 'bi-check-round' : 'bi-circle';
-      let autoPlay = new ToolTipsModel('audio-auto-play',
-        `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">自动播放</span>`, true);
-      items.push(autoPlay);
-    }
-
     if (this.canReply()) {
       let enable = !this.isClosed();
       let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>', enable);
       items.push(reply);
-    }
-
-    if (t === MessageType.Audio) {
-      let checked = !this.liveService.isTranslationExpanded(this.liveId) ? 'bi-check-round' : 'bi-circle';
-      let translationExpand = new ToolTipsModel('translation-expand',
-        `<i class="bi ${checked}"></i><span class="audio-auto-play-checked">翻译折叠</span>`, true);
-      items.push(translationExpand);
     }
 
     if (t === MessageType.Audio || t === MessageType.Text || t === MessageType.Nice) {

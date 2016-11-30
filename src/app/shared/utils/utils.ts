@@ -5,6 +5,14 @@ interface Window {
 declare var window: Window;
 
 export class UtilsService {
+  static setStorage(key: string, value: Object) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  static getStorage(key: string): any {
+    return JSON.parse(localStorage.getItem(key)) || {};
+  }
+
   static get isInWechat(): boolean {
     return /micromessenger/i.test(window.navigator.userAgent);
   }
@@ -41,7 +49,7 @@ export class UtilsService {
 
   static randomId(size = 10, dic?: string): string {
     let defaultDic: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return _.sampleSize<string>((dic||defaultDic).split(''), size).join('');
+    return _.sampleSize<string>((dic || defaultDic).split(''), size).join('');
   }
 
   static get hasTouchEvent(): boolean {

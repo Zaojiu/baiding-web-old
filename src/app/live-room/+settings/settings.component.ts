@@ -35,7 +35,6 @@ export class SettingsComponent implements OnInit {
 
     this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
       this.liveInfo = liveInfo;
-      console.log(this.liveInfo);
     });
 
     if (this.isAdmin) {

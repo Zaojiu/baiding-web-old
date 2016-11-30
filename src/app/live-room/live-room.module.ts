@@ -40,10 +40,11 @@ import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 import {EmptyModule} from "../shared/empty/empty.module";
+import {UtilsService} from "../shared/utils/utils";
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 
 export class MessageHammerConfig extends HammerGestureConfig  {
-  buildHammer(element: HTMLElement): HammerInstance {
+buildHammer(element: HTMLElement): HammerInstance {
     let mc = new Hammer(element, {domEvents: true});
     mc.get('press').set({ time: 500 });
     return mc;
@@ -97,6 +98,7 @@ export class MessageHammerConfig extends HammerGestureConfig  {
     MessageService,
     AudioPlayerService,
     UserInfoCardService,
+    UtilsService,
     { provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig }
   ]
 })

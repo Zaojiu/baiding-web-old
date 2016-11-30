@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {LocalStorage} from "angular2-localstorage/WebStorage";
-
 import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
@@ -11,17 +9,14 @@ import {LiveStatus} from './live.enums';
 import {UserInfoService} from '../user-info/user-info.service';
 import {Subject} from "rxjs";
 import {environment} from "../../../../environments/environment";
+import {UtilsService} from "../../utils/utils";
 
 @Injectable()
 export class LiveService {
   tranlationExpandedSource = new Subject<boolean>();
   $tranlationExpanded = this.tranlationExpandedSource.asObservable();
 
-  @LocalStorage() public audioAutoPlayDisabled: Object = {};
-  @LocalStorage() public wordExpandedDisabled: Object = {};
-  @LocalStorage() public textStashed: Object = {};
-
-  constructor(private http: Http, private store: StoreService, private userInfoService: UserInfoService) {
+  constructor(private http: Http, private store: StoreService, private userInfoService: UserInfoService, private utilsService: UtilsService) {
   }
 
   isEditor(liveId: string, uid?: number): boolean {
@@ -55,16 +50,14 @@ export class LiveService {
     return _uid === liveInfo.admin.uid;
   }
 
-  setTextWordsStashed(text: string) {
-    this.userInfoService.getUserInfo().then(userInfo => {
-      this.textStashed[userInfo.uid] = text;
-    });
+  setTextWordsStashed(text: string, liveId: string) {
+    let textStashed = UtilsService.getStorage('textStashed');
+    textStashed[liveId] = text;
+    UtilsService.setStorage('textStashed', textStashed);
   };
 
-  getTextWordsStashed(): Promise<string> {
-    return this.userInfoService.getUserInfo().then(userInfo => {
-      return this.textStashed[userInfo.uid] || '';
-    });
+  getTextWordsStashed(liveId: string): string {
+    return UtilsService.getStorage('textStashed')[liveId] || '';
   }
 
   setLiveRoomAlreadyVisited() {
@@ -290,22 +283,25 @@ export class LiveService {
   }
 
   toggleAudioAutoPlay(liveId: string) {
-    this.audioAutoPlayDisabled[liveId] = !this.audioAutoPlayDisabled[liveId];
+    let audioAutoPlay = UtilsService.getStorage('audioAutoPlay');
+    audioAutoPlay[liveId] = !audioAutoPlay[liveId];
+    UtilsService.setStorage('audioAutoPlay', audioAutoPlay);
   }
 
   isAudioAutoPlay(liveId: string): boolean {
-    return !this.audioAutoPlayDisabled[liveId];
+    return !!UtilsService.getStorage('audioAutoPlay')[liveId];
   }
 
   toggleTranslationExpanded(liveId: string) {
-    let expanded = !this.wordExpandedDisabled[liveId];
-    this.wordExpandedDisabled[liveId] = expanded;
-    this.tranlationExpandedSource.next(expanded);
+    let expanded = UtilsService.getStorage('tranlastion');
+    expanded[liveId] = !expanded[liveId];
+    UtilsService.setStorage('tranlastion', expanded);
 
+    this.tranlationExpandedSource.next(expanded[liveId]);
   }
 
   isTranslationExpanded(liveId: string): boolean {
-    return !this.wordExpandedDisabled[liveId];
+    return !!UtilsService.getStorage('tranlastion')[liveId];
   }
 
   confirmShare(id: string): Promise<void> {

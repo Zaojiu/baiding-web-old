@@ -2,8 +2,6 @@ import {NgModule} from '@angular/core';
 import {BrowserModule, Title} from '@angular/platform-browser';
 import {HttpModule, BrowserXhr} from '@angular/http';
 
-import {LocalStorageService} from "angular2-localstorage/LocalStorageEmitter";
-
 import {Angulartics2Module, Angulartics2GoogleAnalytics} from 'angulartics2';
 
 import {AppComponent} from './app.component';
@@ -101,7 +99,6 @@ import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
     SharePopupService,
     ModalService,
     TextPopupService,
-    LocalStorageService,
     LiveService,
     OperationTipsService,
     UserInfoResolver,
