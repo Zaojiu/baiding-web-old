@@ -98,15 +98,12 @@ export class InfoCenterComponent {
     this.shareService.share();
   }
 
-  goInvitation(liveId: string, pageUserId: string) {
-    this.router.navigate([`/lives/${liveId}/vip-info`, {fromInfoCenter: 'fromInfoCenter', pageUserId: pageUserId}]);
+  goInvitation(liveId: string) {
+    this.router.navigate([`/lives/${liveId}/vip-info`, {fromInfoCenter: true}]);
   }
 
-  goEditLiveRoom(liveId: string, pageUserId: string) {
-    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {
-      fromInfoCenter: 'fromInfoCenter',
-      pageUserId: pageUserId,
-    }]);
+  goEditLiveRoom(liveId: string) {
+    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {fromInfoCenter: true}]);
   }
 
   gotoCreateOrApply() {
