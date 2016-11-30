@@ -15,6 +15,9 @@ const route: Routes = [
     canActivate: [AuthGuard, CreateGuard],
     canDeactivate: [QuitEditGuard],
     component: CreateComponent,
+    data: {
+      title: '创建话题间'
+    }
   }
 ];
 

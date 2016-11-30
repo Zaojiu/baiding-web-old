@@ -12,6 +12,9 @@ const route: Routes = [
       userInfo: UserInfoResolver,
       liveInfo: LiveInfoResolver,
     },
+    data: {
+      title: '邀请嘉宾'
+    }
   }
 ]
 
