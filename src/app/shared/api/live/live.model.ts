@@ -73,3 +73,4 @@ export class UploadCoverTokenModel {
     this.token = token;
   }
 }
+
