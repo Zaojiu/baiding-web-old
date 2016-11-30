@@ -29,15 +29,11 @@ export class BeginnerGuideComponent implements OnInit {
     this.showAdminGuide = false;
     this.isAdminStep2 = false;
     this.showUserGuide = false;
+    UtilsService.setStorage('beginnerGuide', {isShowed: true});
   }
 
-  checkGuideAlreadyShown(){
+  checkGuideAlreadyShown() {
     let guideShowed = !!UtilsService.getStorage('beginnerGuide')['isShowed'];
-
-    if (!guideShowed) {
-      UtilsService.setStorage('beginnerGuide', {isShowed: true});
-    }
-
     return guideShowed;
   }
 }
