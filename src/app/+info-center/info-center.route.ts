@@ -13,6 +13,9 @@ const route: Routes = [
     resolve: {
       userInfo: UserInfoResolver,
     },
+    data: {
+      title: '编辑个人信息'
+    }
   },
   {
     path: ':uid',
@@ -21,6 +24,9 @@ const route: Routes = [
     resolve: {
       userInfo: UserInfoResolver,
     },
+    data: {
+      title: '个人话题间列表'
+    }
   },
   {
     path: '',
@@ -29,7 +35,10 @@ const route: Routes = [
     resolve: {
       userInfo: UserInfoResolver,
     },
-  },
+    data: {
+      title: '个人话题间列表'
+    }
+  }
 ];
 
 export const ROUTES: ModuleWithProviders = RouterModule.forChild(route);

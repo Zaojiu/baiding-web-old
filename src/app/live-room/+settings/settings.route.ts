@@ -15,6 +15,9 @@ const route: Routes = [
       liveInfo: LiveInfoResolver,
       userInfo: UserInfoResolver,
     },
+    data: {
+      title: '话题间设置'
+    },
     component: SettingsComponent,
   },
   {
@@ -23,6 +26,9 @@ const route: Routes = [
       liveInfo: LiveInfoResolver,
       userInfo: UserInfoResolver,
     },
+    data: {
+      title: '话题间信息'
+    }
   },
   {
     path: 'edit-info', component: EditInfoComponent,
@@ -32,6 +38,9 @@ const route: Routes = [
       liveInfo: LiveInfoResolver,
       userInfo: UserInfoResolver,
     },
+    data: {
+      title: '编辑话题间信息'
+    }
   },
 ];
 
