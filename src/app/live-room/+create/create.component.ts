@@ -31,12 +31,14 @@ export class CreateComponent implements OnInit, DoCheck {
   submitted = false;
   isSubmitting = false;
   userInfo: UserInfoModel;
+  liveId: string;
 
   constructor(private router: Router, private route: ActivatedRoute, private sanitizer: DomSanitizer, private fb: FormBuilder,
               private liveService: LiveService, private uploadService: UploadApiService) {
   }
 
   ngOnInit() {
+    this.liveId = this.route.snapshot.params['liveId'];
     this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/liveroombanner-blur.jpg');
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.time = moment().add(moment.duration(1, 'h')).format('YYYY-MM-DDTHH:mm');
