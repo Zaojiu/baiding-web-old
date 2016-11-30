@@ -21,11 +21,8 @@
 
         <div class="title-wrapper" (click)="gotoLiveRoom(liveInfo.id)">
           <div class="title">{{liveInfo.subject}}</div>
-          <div class="indicator notstarted" *ngIf="liveInfo.isCreated()">未开始</div>
-          <div class="indicator living" *ngIf="liveInfo.isStarted()">
-            直播中
-          </div>
-          <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">未开始</div>
+          <div class="indicator living" *ngIf="liveInfo.isStarted()">直播中</div>
+          <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">已结束</div>
         </div>
 
         <div class="talent">
@@ -34,17 +31,17 @@
             <div class="nick">{{liveInfo.admin.nick}}</div>
             <div class="time">
               {{liveRoomStatusHumanize(liveInfo.status)}}
-              <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
-          {{liveInfo.closedAt | timeFormater:'YYYY.MM.DD HH:mm'}}
-      </span>
-
               <span class="countdown-day-item-day" *ngIf="liveInfo.isCreated()">
-        {{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:0}}:{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:1}}:{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:2}}:{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:3}}
-      </span>
+      {{liveInfo.expectStartAt | timeFormater:'YYYY年MM月DD日HH:mm'}}
+             </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
-        {{liveInfo.startedAt | timeTo:timeNow | durationFormater:0}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:1}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.startedAt | timeTo:timeNow | durationFormater:3}}
-      </span>
+        {{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:6}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:7}}
+              </span>
+
+              <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
+           {{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:6}}
+              </span>
             </div>
           </div>
         </div>
@@ -53,6 +50,7 @@
       </div>
 
       <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
+        <count-down [liveInfo]="liveInfo"></count-down>
         <img [src]="covers[liveInfo.id]" alt="">
       </div>
 
@@ -109,7 +107,7 @@
         <div class="invite"
              *ngIf="liveInfo.isCreated() && currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
              (click)="goInvitation(liveInfo.id)">
-          <i class="bi bi-envelop"></i>
+          <i class="bi bi-invite"></i>
           邀请
         </div>
         <div class="edit"

@@ -29,41 +29,40 @@
   .info-status-wrapper {
     display: flex;
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 22px;
+    right: 7px;
 
-    &.is-countdown {
-      background: rgba(42, 42, 42, 1);
-    }
-    &.is-started {
-      background: rgba(235, 66, 63, 1);
-    }
-    &.is-closed {
-      background: rgba(75, 75, 75, 1);
-    }
-
-    .live-room-info-status {
-      margin-left: 6px;
-      margin-right: 4px;
-      margin-top: auto;
-      margin-bottom: auto;
-      height: 18px;
-      text-align: center;
+    .indicator {
+      width: 59px;
+      height: 20px;
+      margin-right: 15px;
+      border-radius: 4px;
       line-height: 20px;
-      color: rgba(255, 255, 255, 1);
-      font-size: 14px;
+      text-align: center;
+      flex-shrink: 0;
 
-    }
-    .live-room-info-status-timer {
-      margin-right: 6px;
-      flex-grow: 1;
-      flex-shrink: 1;
+      &.notstarted {
+        background-color: rgb(216, 216, 216);
+        font-size: 12px;
+        color: rgb(75, 75, 75);
+      }
 
-      .countdown-day-item-day {
-        font-size: 14px;
-        line-height: 12px;
+      &.living {
+        display: flex;
+        background-color: rgb(243, 33, 33);
+        font-size: 12px;
         color: rgb(255, 255, 255);
-        line-height: 12px;
+
+        &:before {
+          content: "";
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: rgb(255, 255, 255);
+          margin-left: 8px;
+          margin-right: 4px;
+          margin-top: 7px;
+        }
       }
     }
   }
@@ -81,10 +80,16 @@
     }
   }
 
+  .upper-countdown {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 100%;
+  }
+
   .article {
-    margin-top: 33px;
+    margin: 20px auto;
     position: relative;
-    margin-bottom: 33px;
     overflow: hidden;
 
     .talent {
@@ -113,7 +118,7 @@
     }
 
     .title {
-      margin: 23px 20px 20px;
+      margin: 15px 20px 10px;
       text-align: justify;
       font-size: 20px;
       color: rgba(75, 75, 75, 1);

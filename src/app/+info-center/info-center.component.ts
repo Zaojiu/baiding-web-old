@@ -11,6 +11,7 @@ import {InvitationModel} from "../shared/api/invite/invite.model";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
+import {TimeToPipe} from '../../app/shared/pipe/time.pipe';
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -116,11 +117,11 @@ export class InfoCenterComponent {
   liveRoomStatusHumanize(liveStatus: number): string {
     switch (liveStatus) {
       case LiveStatus.Created:
-        return '倒计时';
+        return '开始时间';
       case LiveStatus.Started:
-        return '直播中';
+        return '已进行';
       case LiveStatus.Ended:
-        return '直播结束';
+        return '直播时长';
       default:
         return '未知状态';
     }

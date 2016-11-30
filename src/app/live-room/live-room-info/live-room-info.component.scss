@@ -36,15 +36,6 @@
   .live-room-info-component {
     display: block;
     position: relative;
-
-    &:after {
-      position: absolute;
-      left: 50%;
-      content: "";
-      margin-left: -17px;
-      width: 33.5px;
-      border-top: 1px solid rgb(158, 161, 165);
-    }
   }
 
   .button-wrapper {
@@ -59,7 +50,7 @@
       line-height: 17px;
       height: 50px;
       width: 200px;
-      margin: 50px auto 56px;
+      margin: 20px auto;
     }
   }
 }

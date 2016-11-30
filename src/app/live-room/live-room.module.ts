@@ -41,6 +41,7 @@ import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 import {EmptyModule} from "../shared/empty/empty.module";
 import {UtilsService} from "../shared/utils/utils";
+import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 
 export class MessageHammerConfig extends HammerGestureConfig  {
@@ -69,6 +70,7 @@ buildHammer(element: HTMLElement): HammerInstance {
     FileSelectorModule,
     ScrollerModule,
     LiveRoomInfoUpperModule,
+    CountDownModule,
     EmptyModule,
   ],
   declarations: [
