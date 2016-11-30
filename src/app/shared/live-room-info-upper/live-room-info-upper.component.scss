@@ -88,9 +88,8 @@
   }
 
   .article {
-    margin-top: 33px;
+    margin: 20px auto;
     position: relative;
-    margin-bottom: 33px;
     overflow: hidden;
 
     .talent {
@@ -119,7 +118,7 @@
     }
 
     .title {
-      margin: 23px 20px 20px;
+      margin: 15px 20px 10px;
       text-align: justify;
       font-size: 20px;
       color: rgba(75, 75, 75, 1);
