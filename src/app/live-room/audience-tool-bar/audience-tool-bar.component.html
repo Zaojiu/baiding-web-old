@@ -18,6 +18,7 @@
         #commentInput
         name="commentContent"
         type="text"
+        (focus)="switchMode(modeEnums.Text)"
         placeholder="发表评论"
         [(ngModel)]="commentContent"
       >
