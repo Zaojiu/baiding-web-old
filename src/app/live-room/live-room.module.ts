@@ -40,19 +40,16 @@ import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
 import {EmptyModule} from "../shared/empty/empty.module";
-<<<<<<< 7314fccee30cb04e9169ba7611d6ed13410804d7
+import {UtilsService} from "../shared/utils/utils";
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 
 export class MessageHammerConfig extends HammerGestureConfig  {
-  buildHammer(element: HTMLElement): HammerInstance {
+buildHammer(element: HTMLElement): HammerInstance {
     let mc = new Hammer(element, {domEvents: true});
     mc.get('press').set({ time: 500 });
     return mc;
   }
 }
-=======
-import {UtilsService} from "../shared/utils/utils";
->>>>>>> fix beginner guide & rm angular2-localstorage & etc
 
 @NgModule({
   imports: [
@@ -101,11 +98,8 @@ import {UtilsService} from "../shared/utils/utils";
     MessageService,
     AudioPlayerService,
     UserInfoCardService,
-<<<<<<< 7314fccee30cb04e9169ba7611d6ed13410804d7
-    { provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig }
-=======
     UtilsService,
->>>>>>> fix beginner guide & rm angular2-localstorage & etc
+    { provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig }
   ]
 })
 
