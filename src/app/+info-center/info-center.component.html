@@ -106,13 +106,13 @@
 
         <div class="invite"
              *ngIf="liveInfo.isCreated() && currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
-             (click)="goInvitation(liveInfo.id)">
+             (click)="goInvitation(liveInfo.id,pageUserInfo.uid)">
           <i class="bi bi-invite"></i>
           邀请
         </div>
         <div class="edit"
              *ngIf="liveInfo.isCreated() && currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
-             (click)="goEditLiveRoom(liveInfo.id)">
+             (click)="goEditLiveRoom(liveInfo.id,pageUserInfo.uid)">
           <i class="bi bi-edit-btn"></i>
           编辑
         </div>
