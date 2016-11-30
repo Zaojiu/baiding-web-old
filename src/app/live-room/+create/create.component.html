@@ -2,8 +2,42 @@
   <live-room-top-bar class="top-bar" [userInfo]="userInfo"></live-room-top-bar>
 
   <div class="main-form">
+    <div class="form-group" *ngIf="isInApp"
+         [ngClass]="{'has-error': form.controls['type'].dirty && form.controls['type'].invalid}">
+      <label>类型</label>
+      <p class="helper">点击切换选择话题间类型</p>
+
+      <div class="radio-group">
+        <div class="radio">
+          <input
+            name="type"
+            type="radio"
+            formControlName="type"
+            value="text"
+            [(ngModel)]="type"
+          >
+          <div class="label">文字</div>
+        </div>
+        <div class="radio">
+          <input
+            name="type"
+            type="radio"
+            formControlName="type"
+            value="video"
+            [(ngModel)]="type"
+          >
+          <div class="label">视频</div>
+        </div>
+      </div>
+
+      <div *ngIf="form.controls['type'].errors">
+        <p class="helper error" *ngIf="form.controls['type'].errors.required">请选择话题间类型</p>
+      </div>
+
+    </div>
+
     <div class="form-group" [ngClass]="{'has-error': form.controls['time'].dirty && form.controls['time'].invalid}">
-      <label>预计开始时间</label>
+      <label>时间</label>
       <input
         id="time"
         class="time"
