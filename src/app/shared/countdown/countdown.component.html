@@ -1,16 +1,3 @@
-<div class="info-status-wrapper"
-     [ngClass]="{ 'is-started':liveInfo.isStarted(), 'is-closed':liveInfo.isClosed()}" *ngIf="!liveInfo.isCreated()">
-
-  <div class="live-room-info-status">
-    {{liveRoomStatusHumanize}}
-  </div>
-
-  <div class="live-room-info-status-timer">
-    <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()"></span>
-  </div>
-</div>
-
-
 <div class="info-status-wrapper-countdown" *ngIf="liveInfo.isCreated()">
   <div class="item">
     <div class="time">
@@ -43,5 +30,4 @@
     </div>
     <div class="word">Secs</div>
   </div>
-
 </div>
