@@ -10,7 +10,6 @@ import {InvitationModel} from "../shared/api/invite/invite.model";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
-import {TimeToPipe} from '../../app/shared/pipe/time.pipe';
 
 @Component({
   templateUrl: './info-center.component.html',
