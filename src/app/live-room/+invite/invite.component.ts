@@ -32,6 +32,8 @@ export class InviteComponent implements OnInit {
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
+    if (this.route.snapshot.params['from'] === 'app') this.backTo = decodeURIComponent(this.route.snapshot.params['backTo']);
+
     if (this.token) {
       this.wechatShare(location.href);
 
@@ -46,7 +48,11 @@ export class InviteComponent implements OnInit {
   acceptInvitation() {
     this.inviteApiService.acceptInvitation(this.liveId, this.token).then(
       () => {
-        this.liveService.getLiveInfo(this.liveId, true).then(() => this.backToLive());
+        if (this.backTo) {
+          location.href = this.backTo;
+        } else {
+          this.liveService.getLiveInfo(this.liveId, true).then(() => this.backToLive());
+        }
       }
     );
   }
