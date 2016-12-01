@@ -1,5 +1,5 @@
 <form [formGroup]="form" name="editInfo" (submit)="submit()" class="create-room">
-  <live-room-top-bar class="top-bar" [userInfo]="userInfo"></live-room-top-bar>
+  <live-room-top-bar class="top-bar" [liveId]="fromLiveId" [userInfo]="userInfo"></live-room-top-bar>
 
   <div class="main-form">
     <div class="form-group" *ngIf="isInApp"

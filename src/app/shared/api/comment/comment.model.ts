@@ -23,4 +23,5 @@ export class CommentModel {
   createdAt: string;
   toUsers: UserInfoModel[] = [];
   toUids: number[] = [];
+  isAtMe = false;
 }

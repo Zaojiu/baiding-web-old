@@ -18,6 +18,7 @@ export class CommentApiService {
 
   parseComment(data: any, users: any): CommentModel {
     let comment = new CommentModel()
+    let currentUserInfo = this.userInfoService.getUserInfoCache();
 
     if (!data) return comment;
 
@@ -33,6 +34,9 @@ export class CommentApiService {
     if (data.toUids && data.toUids.length) {
       for (let uid of data.toUids) {
         comment.toUsers.push((users[uid] as UserInfoModel));
+        if (uid === currentUserInfo.uid) {
+          comment.isAtMe = true;
+        }
       }
     }
 

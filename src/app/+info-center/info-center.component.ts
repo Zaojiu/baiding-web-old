@@ -75,7 +75,7 @@ export class InfoCenterComponent {
       this.pageUserInfo = pageUserInfo;
     });
 
-    this.timer = setInterval(()=> {
+    this.timer = setInterval(() => {
       this.timeNow = UtilsService.now.toString();
     }, 1000);
   }
@@ -99,11 +99,11 @@ export class InfoCenterComponent {
   }
 
   goInvitation(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/vip-info`]);
+    this.router.navigate([`/lives/${liveId}/vip-info`, {fromInfoCenter: true}]);
   }
 
   goEditLiveRoom(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/settings/edit-info`]);
+    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {fromInfoCenter: true}]);
   }
 
   gotoCreateOrApply() {

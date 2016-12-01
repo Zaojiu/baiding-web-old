@@ -1,60 +1,61 @@
-.admin-step1-container, .admin-step2-container, .user-step1-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  min-height: 100%;
-  z-index: 4;
-  background-color: rgba(255, 255, 255, 0.7);
-  opacity: 0;
-  transition: opacity .2s;
-  display: none;
-
-  &.activate {
-    display: block;
-    opacity: 1;
-  }
-
-  .header {
+.page-wrapper {
+  .admin-step1-container, .admin-step2-container, .user-step1-container {
     position: absolute;
+    left: 0;
+    right: 0;
     top: 0;
-    left: 0;
-    right: 0;
-    max-width: 100%;
-    z-index: 5;
+    min-height: 100%;
+    z-index: 4;
+    background-color: rgba(255, 255, 255, 0.7);
+    opacity: 0;
+    transition: opacity .2s;
+    display: none;
 
-    .header-img {
-      max-width: 100%
-    }
-  }
-
-  .content {
-    position: absolute;
-    overflow: hidden;
-
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    .content-img {
-      max-width: 100%
-    }
-  }
-
-  .bottom {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    max-width: 100%;
-    z-index: 5;
-
-    .bottom-img {
+    &.activate {
       display: block;
-      max-width: 100%
+      opacity: 1;
+    }
+
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      max-width: 100%;
+      z-index: 5;
+
+      .header-img {
+        max-width: 100%
+      }
+    }
+
+    .content {
+      position: absolute;
+      overflow: hidden;
+
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      .content-img {
+        max-width: 100%
+      }
+    }
+
+    .bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-width: 100%;
+      z-index: 5;
+
+      .bottom-img {
+        display: block;
+        max-width: 100%
+      }
     }
   }
-
 }
 

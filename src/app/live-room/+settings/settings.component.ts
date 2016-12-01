@@ -78,7 +78,7 @@ export class SettingsComponent implements OnInit {
 
   gotoCreateOrApply() {
     if (this.userInfo.canPublish) {
-      this.router.navigate([`/lives/create`]);
+      this.router.navigate([`/lives/create`, {liveId: this.liveId}]);
     } else {
       this.router.navigate([`/lives/apply`, {from: encodeURIComponent(`/lives/${this.liveId}`)}]);
     }
@@ -97,7 +97,7 @@ export class SettingsComponent implements OnInit {
   }
 
   closeLive() {
-    this.modalService.popup('确定结束直播吗?', '取消', '确定').then((result)=> {
+    this.modalService.popup('确定结束直播吗?', '取消', '确定').then((result) => {
       if (!result) return;
       this.liveService.closeLive(this.liveId).then(() => {
         this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => this.liveInfo = liveInfo);
