@@ -1,4 +1,4 @@
-<div class="info-status-wrapper-countdown" *ngIf="countDownStatus && display">
+<div class="info-status-wrapper-countdown" *ngIf="countDownStatus && display && daysArr">
   <div class="item">
     <div class="time">
       <div class="digital" *ngFor="let day of daysArr">{{day}}</div>
