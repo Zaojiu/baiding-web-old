@@ -78,7 +78,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
       ]));
     }
 
-    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/liveroombanner-blur.jpg');
+    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/default-cover.jpg');
   }
 
   ngDoCheck() {

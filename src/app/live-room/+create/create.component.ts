@@ -39,7 +39,7 @@ export class CreateComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     this.fromLiveId = this.route.snapshot.params['liveId'];
-    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/liveroombanner-blur.jpg');
+    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/default-cover.jpg');
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.time = moment().add(moment.duration(1, 'h')).format('YYYY-MM-DDTHH:mm');
 
