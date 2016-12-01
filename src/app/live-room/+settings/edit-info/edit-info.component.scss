@@ -103,9 +103,9 @@
       &:after {
         content: '';
         position: absolute;
-        height: 27px;
         right: 0px;
         top: 7px;
+        bottom: 7px;
         border-right: solid 1px rgb(233, 223, 233);
       }
     }
