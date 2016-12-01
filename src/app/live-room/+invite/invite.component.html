@@ -10,16 +10,19 @@
   </div>
 
   <div class="operation-area" *ngIf="token&& isTokenExist && !isTokenUsed && liveInfo.admin.uid === userInfo.uid">
-    <p>点击右上角 <i class="bi bi-more2"></i> 通过分享链接 <i class="bi bi-share2"></i> 来邀请嘉宾</p>
-    <p>一条链接只能邀请一个用户</p>
+    <p class="share-tips">点击右上角 <i class="bi bi-more2"></i> 通过分享链接 <i class="bi bi-share2"></i> 来邀请嘉宾</p>
+    <p class="share-tips">一条链接只能邀请一个用户</p>
+    <a class="btn-goto-live" (click)="backToLive()">返回</a>
   </div>
 
   <div class="operation-area" *ngIf="token && isTokenExist && isTokenUsed && liveInfo.admin.uid === userInfo.uid">
-    <p>邀请函已被使用</p>
+    <a class="btn-goto-live" (click)="backToLive()">进入直播</a>
+    <p class="used-tips">邀请函已被使用</p>
   </div>
 
   <div class="operation-area" *ngIf="!token || !isTokenExist">
-    <p>无效邀请函</p>
+    <a class="btn-goto-live" (click)="backToLive()">进入直播</a>
+    <p class="invaild-tips">无效邀请函</p>
   </div>
 
   <div class="operation-area" *ngIf="liveInfo.admin.uid !== userInfo.uid && token && isTokenExist && !isTokenUsed">
