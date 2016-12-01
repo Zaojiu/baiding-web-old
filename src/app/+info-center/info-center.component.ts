@@ -66,7 +66,7 @@ export class InfoCenterComponent {
           });
         }
 
-        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
+        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
       }
     });

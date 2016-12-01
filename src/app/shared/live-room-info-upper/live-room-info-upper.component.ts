@@ -25,7 +25,7 @@ export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
       this.timeNow = UtilsService.now.toString();
     }, 1000);
 
-    let coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
+    let coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
     this.coverUrl = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
   }
 
