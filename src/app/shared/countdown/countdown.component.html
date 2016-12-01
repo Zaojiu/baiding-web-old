@@ -1,31 +1,31 @@
 <div class="info-status-wrapper-countdown" *ngIf="liveInfo.isCreated() && display">
   <div class="item">
     <div class="time">
-      <div class="_time" *ngFor="let day of daysArr">{{day}}</div>
+      <div class="digital" *ngFor="let day of daysArr">{{day}}</div>
     </div>
     <div class="word">Days</div>
   </div>
 
   <div class="item">
     <div class="time">
-      <div class="_time">{{hrs_1}}</div>
-      <div class="_time">{{hrs_2}}</div>
+      <div class="digital">{{hrs1}}</div>
+      <div class="digital">{{hrs2}}</div>
     </div>
     <div class="word">Hours</div>
   </div>
 
   <div class="item">
     <div class="time">
-      <div class="_time">{{mins_1}}</div>
-      <div class="_time">{{mins_2}}</div>
+      <div class="digital">{{mins1}}</div>
+      <div class="digital">{{mins2}}</div>
     </div>
     <div class="word">Mins</div>
   </div>
 
   <div class="item">
     <div class="time">
-      <div class="_time">{{secs_1}}</div>
-      <div class="_time">{{secs_2}}</div>
+      <div class="digital">{{secs1}}</div>
+      <div class="digital">{{secs2}}</div>
     </div>
     <div class="word">Secs</div>
   </div>

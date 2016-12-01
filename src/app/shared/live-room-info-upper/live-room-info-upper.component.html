@@ -1,5 +1,6 @@
 <div class="live-room-info-upper">
   <div class="live-cover">
+    <count-down [liveInfo]="liveInfo"></count-down>
     <img [src]="coverUrl" alt="">
   </div>
 
@@ -7,8 +8,6 @@
     <div class="indicator living" *ngIf="liveInfo.isStarted()">直播中</div>
     <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">已结束</div>
   </div>
-
-  <count-down class="upper-countdown" [liveInfo]="liveInfo"></count-down>
 
   <div class="article">
 

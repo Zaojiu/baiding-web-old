@@ -15,12 +15,12 @@ export class CountDownComponent implements OnInit,OnDestroy {
   timeNow = UtilsService.now.toString();
   timer: any;
   daysArr: any;
-  hrs_1: string;
-  hrs_2: string;
-  mins_1: string;
-  mins_2: string;
-  secs_1: string;
-  secs_2: string;
+  hrs1: string;
+  hrs2: string;
+  mins1: string;
+  mins2: string;
+  secs1: string;
+  secs2: string;
   display = true;
 
   ngOnInit() {
@@ -48,12 +48,12 @@ export class CountDownComponent implements OnInit,OnDestroy {
       if (+mins < 10) mins = '0' + mins;
       if (+secs < 10) secs = '0 ' + secs;
 
-      this.hrs_1 = hrs.substr(0, 1);
-      this.hrs_2 = hrs.substr(1, 2);
-      this.mins_1 = mins.substr(0, 1);
-      this.mins_2 = mins.substr(1, 2)
-      this.secs_1 = secs.substr(0, 1);
-      this.secs_2 = secs.substr(1, 2);
+      this.hrs1 = hrs.substr(0, 1);
+      this.hrs2 = hrs.substr(1, 2);
+      this.mins1 = mins.substr(0, 1);
+      this.mins2 = mins.substr(1, 2)
+      this.secs1 = secs.substr(0, 1);
+      this.secs2 = secs.substr(1, 2);
 
     }, 1000);
   }

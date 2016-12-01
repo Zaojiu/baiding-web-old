@@ -30,12 +30,11 @@
     display: flex;
     position: absolute;
     top: 22px;
-    right: 7px;
+    left: 22px;
 
     .indicator {
       width: 59px;
       height: 20px;
-      margin-right: 15px;
       border-radius: 4px;
       line-height: 20px;
       text-align: center;
@@ -78,13 +77,13 @@
       height: 180px;
       width: 100%;
     }
-  }
 
-  .upper-countdown {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 100%;
+    .upper-countdown {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 100%;
+    }
   }
 
   .article {
