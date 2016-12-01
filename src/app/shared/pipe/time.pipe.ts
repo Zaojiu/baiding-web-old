@@ -31,16 +31,6 @@ export class DurationFormaterPipe implements PipeTransform {
     if (index === 3) return fixDigest(m.toString());
     if (index === 4) return fixDigest(s.toString());
 
-    // 如果想获取单独每位字符
-    if (index === 10) return fixDigest(d.toString()).substr(0, 1);
-    if (index === 11) return fixDigest(d.toString()).substr(1, 2);
-    if (index === 20) return fixDigest(h.toString()).substr(0, 1);
-    if (index === 21) return fixDigest(h.toString()).substr(1, 2);
-    if (index === 30) return fixDigest(m.toString()).substr(0, 1);
-    if (index === 31) return fixDigest(m.toString()).substr(1, 2);
-    if (index === 40) return fixDigest(s.toString()).substr(0, 1);
-    if (index === 41) return fixDigest(s.toString()).substr(1, 2);
-
     // 适用格式 小时：分：秒
     let _h = Math.floor(durationSecond / (60 * 60));
     let _m = Math.floor(durationSecond % (60 * 60) / 60);

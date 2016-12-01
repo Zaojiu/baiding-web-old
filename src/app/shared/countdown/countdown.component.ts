@@ -11,13 +11,25 @@ import {UtilsService} from '../../shared/utils/utils';
 
 export class CountDownComponent implements OnInit,OnDestroy {
   liveId: string;
-  @Input() liveInfo: LiveInfoModel;
-  timeNow = UtilsService.now.toString();
+  @Input() expectStartAt: string;
+  @Input() countDownStatus: boolean;
   timer: any;
+  daysArr: any;
+  hrs1: string;
+  hrs2: string;
+  mins1: string;
+  mins2: string;
+  secs1: string;
+  secs2: string;
+  display = true;
 
   ngOnInit() {
+    let timeNow: number = UtilsService.now;
+    this.countDownTime(timeNow);
+
     this.timer = setInterval(() => {
-      this.timeNow = UtilsService.now.toString();
+      timeNow++;
+      this.countDownTime(timeNow);
     }, 1000);
   }
 
@@ -27,16 +39,34 @@ export class CountDownComponent implements OnInit,OnDestroy {
     }
   }
 
-  get liveRoomStatusHumanize(): string {
-    switch (this.liveInfo.status) {
-      case LiveStatus.Created:
-        return '倒计时';
-      case LiveStatus.Started:
-        return '直播中';
-      case LiveStatus.Ended:
-        return '已结束';
-      default:
-        return '未知状态';
+  countDownTime(timeNow: number) {
+    let endTimeParsed = moment.unix(+moment(this.expectStartAt) / 1000);
+    let durationSec = Math.round(endTimeParsed.diff(moment.unix(timeNow)) / 1000);
+
+    if (durationSec < 0) {
+      this.display = false;
+      clearInterval(this.timer);
     }
+
+    let oneDaySecs = 24 * 60 * 60;
+    let days = Math.floor(durationSec / (oneDaySecs)).toString();
+    let hrs = Math.floor(durationSec % (oneDaySecs) / (60 * 60)).toString();
+    let mins = Math.floor(durationSec % (oneDaySecs) % (60 * 60) / 60).toString();
+    let secs = Math.floor(durationSec % (oneDaySecs) % (60 * 60) % 60).toString();
+
+    this.daysArr = days.split('');
+    if (this.daysArr.length === 1) this.daysArr.unshift(0);
+
+    if (+hrs < 10) hrs = '0' + hrs;
+    if (+mins < 10) mins = '0' + mins;
+    if (+secs < 10) secs = '0 ' + secs;
+
+    this.hrs1 = hrs.substr(0, 1);
+    this.hrs2 = hrs.substr(1, 2);
+    this.mins1 = mins.substr(0, 1);
+    this.mins2 = mins.substr(1, 2)
+    this.secs1 = secs.substr(0, 1);
+    this.secs2 = secs.substr(1, 2);
   }
+
 }

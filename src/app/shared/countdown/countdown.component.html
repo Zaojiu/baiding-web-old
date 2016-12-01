@@ -1,32 +1,31 @@
-<div class="info-status-wrapper-countdown" *ngIf="liveInfo.isCreated()">
+<div class="info-status-wrapper-countdown" *ngIf="countDownStatus && display && daysArr">
   <div class="item">
     <div class="time">
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:10}}</div>
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:11}}</div>
+      <div class="digital" *ngFor="let day of daysArr">{{day}}</div>
     </div>
     <div class="word">Days</div>
   </div>
 
   <div class="item">
     <div class="time">
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:20}}</div>
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:21}}</div>
+      <div class="digital">{{hrs1}}</div>
+      <div class="digital">{{hrs2}}</div>
     </div>
     <div class="word">Hours</div>
   </div>
 
   <div class="item">
     <div class="time">
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:30}}</div>
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:31}}</div>
+      <div class="digital">{{mins1}}</div>
+      <div class="digital">{{mins2}}</div>
     </div>
     <div class="word">Mins</div>
   </div>
 
   <div class="item">
     <div class="time">
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:40}}</div>
-      <div class="_time">{{timeNow | timeTo:liveInfo.expectStartAt | durationFormater:41}}</div>
+      <div class="digital">{{secs1}}</div>
+      <div class="digital">{{secs2}}</div>
     </div>
     <div class="word">Secs</div>
   </div>
