@@ -34,7 +34,7 @@ export class CountDownComponent implements OnInit,OnDestroy {
 
       if (durationSec < 0) {
         this.display = false;
-        return;
+        clearInterval(this.timer);
       }
 
       let oneDaySecs = 24 * 60 * 60;
