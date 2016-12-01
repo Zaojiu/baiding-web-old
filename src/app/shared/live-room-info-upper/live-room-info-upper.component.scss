@@ -87,13 +87,12 @@
   }
 
   .article {
-    margin: 20px auto;
+    margin: 20px 12px 20px 12px;
     position: relative;
     overflow: hidden;
 
     .talent {
       display: flex;
-      margin-left: 23px;
       height: 24px;
       font-size: 14px;
       color: rgb(158, 161, 165);
@@ -117,7 +116,7 @@
     }
 
     .title {
-      margin: 15px 20px 10px;
+      margin: 10px auto 10px;
       text-align: justify;
       font-size: 20px;
       color: rgba(75, 75, 75, 1);
@@ -127,8 +126,6 @@
     }
 
     .words {
-      margin: 10px 23px 5px;
-      word-break: break-all;
       font-size: 16px;
       color: rgba(75, 75, 75, 1);
       letter-spacing: 0px;

@@ -1,17 +1,15 @@
 <div class="live-room-info">
-  <div class="live-room-info-header">
-    <div class="online-people">
+  <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
+  <div class="people-container">
+    <div class="title">
       <i class="bi bi-people"></i>
       {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
     </div>
-    <a class="close-button" (click)="close()">
-      <i class="bi bi-close"></i>
-    </a>
-  </div>
-
-  <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
-
-  <div class="button-wrapper" (click)="toBeginnerGuide()">
-    <button class="enter-room">进入房间</button>
+    <div class="people-count">
+      <img class="avatar" alt="" *ngFor="let audience of liveInfo.editors" [src]="audience.avatar">
+      <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
+    </div>
   </div>
 </div>
+
+<button class="enter-room" (click)="toBeginnerGuide()">进入房间</button>
