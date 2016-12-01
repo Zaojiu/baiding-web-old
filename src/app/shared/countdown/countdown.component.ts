@@ -11,8 +11,8 @@ import {UtilsService} from '../../shared/utils/utils';
 
 export class CountDownComponent implements OnInit,OnDestroy {
   liveId: string;
-  @Input() liveInfo: LiveInfoModel;
-  timeNow = UtilsService.now.toString();
+  @Input() expectStartAt: string;
+  @Input() countDownStatus: boolean;
   timer: any;
   daysArr: any;
   hrs1: string;
@@ -24,8 +24,9 @@ export class CountDownComponent implements OnInit,OnDestroy {
   display = true;
 
   ngOnInit() {
-    let endTime = this.liveInfo.expectStartAt;
+    let endTime = this.expectStartAt;
     let timeNow: number = UtilsService.now;
+
     this.timer = setInterval(() => {
       timeNow++;
       let endTimeParsed = moment.unix(+moment(endTime) / 1000);
@@ -36,14 +37,15 @@ export class CountDownComponent implements OnInit,OnDestroy {
         return;
       }
 
-      let days = Math.floor(durationSec / (24 * 60 * 60)).toString();
-      let hrs = Math.floor(durationSec % (24 * 60 * 60) / (60 * 60)).toString();
-      let mins = Math.floor(durationSec % (24 * 60 * 60) % (60 * 60) / 60).toString();
-      let secs = Math.floor(durationSec % (24 * 60 * 60) % (60 * 60) % 60).toString();
-
+      let oneDaySecs = 24 * 60 * 60;
+      let days = Math.floor(durationSec / (oneDaySecs)).toString();
+      let hrs = Math.floor(durationSec % (oneDaySecs) / (60 * 60)).toString();
+      let mins = Math.floor(durationSec % (oneDaySecs) % (60 * 60) / 60).toString();
+      let secs = Math.floor(durationSec % (oneDaySecs) % (60 * 60) % 60).toString();
 
       this.daysArr = days.split('');
       if (this.daysArr.length === 1) this.daysArr.unshift(0);
+
       if (+hrs < 10) hrs = '0' + hrs;
       if (+mins < 10) mins = '0' + mins;
       if (+secs < 10) secs = '0 ' + secs;

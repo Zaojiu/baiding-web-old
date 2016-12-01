@@ -1,6 +1,6 @@
 <div class="live-room-info-upper">
   <div class="live-cover">
-    <count-down [liveInfo]="liveInfo"></count-down>
+    <count-down [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
     <img [src]="coverUrl" alt="">
   </div>
 

@@ -50,7 +50,7 @@
       </div>
 
       <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
-        <count-down [liveInfo]="liveInfo"></count-down>
+        <count-down [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
         <img [src]="covers[liveInfo.id]" alt="">
       </div>
 
