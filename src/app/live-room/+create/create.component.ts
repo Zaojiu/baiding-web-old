@@ -7,6 +7,7 @@ import {UploadApiService} from "../../shared/api/upload/upload.api";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {futureValidator} from "../../shared/form/future.validator";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './create.component.html',
@@ -22,6 +23,7 @@ export class CreateComponent implements OnInit, DoCheck {
   maxSizeMB = 8;
   maxTitleLength = 20;
   maxDescLength = 600;
+  type = 'text';
   time = '';
   title = '';
   desc = '';
@@ -40,6 +42,9 @@ export class CreateComponent implements OnInit, DoCheck {
     this.time = moment().add(moment.duration(1, 'h')).format('YYYY-MM-DDTHH:mm');
 
     this.form = this.fb.group({
+      'type': new FormControl(this.type, [
+        Validators.required,
+      ]),
       'time': new FormControl(this.time, [
         Validators.required,
         Validators.pattern('\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}'),
@@ -99,14 +104,14 @@ export class CreateComponent implements OnInit, DoCheck {
 
     this.isSubmitting = true;
 
-    this.liveService.createLive(this.title, '', this.desc, expectStartAt.toISOString()).then(liveId => {
+    this.liveService.createLive(this.title, '', this.desc, expectStartAt.toISOString(), this.type).then(liveId => {
       if (this.coverFiles && this.coverFiles.length) {
         return this.liveService.getCoverUploadToken(liveId).then((data) => {
           return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
         }).then((imageKey) => {
           return this.updateLiveInfo(liveId, imageKey);
         });
-      }else {
+      } else {
         return Promise.resolve(liveId);
       }
     }).then((liveId) => {
@@ -133,5 +138,9 @@ export class CreateComponent implements OnInit, DoCheck {
 
   canDeactivate() {
     return !this.form.dirty || this.submitted;
+  }
+
+  get isInApp(): boolean {
+    return UtilsService.isInApp;
   }
 }

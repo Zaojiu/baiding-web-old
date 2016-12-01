@@ -44,6 +44,53 @@
     min-height: 229px;
   }
 
+  .radio-group {
+    display: flex;
+
+    .radio {
+      flex-grow: 1;
+
+      .label {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .radio {
+    position: relative;
+    margin-right: 11px;
+    display: inline-block;
+
+    .label {
+      background-color: rgb(199, 199, 199);
+      padding: 12px 68px;
+      color: rgb(75, 75, 75);
+      line-height: 1em;
+      border-radius: 4px;
+    }
+
+    input[type=radio]:checked + .label, input[type=checkbox]:checked + .label {
+      background-color: rgb(33, 150, 243);
+      color: rgb(255, 255, 255);
+    }
+
+    input[type=radio], input[type=checkbox] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      left: 0;
+      top: 0;
+      margin: 0;
+    }
+  }
+
   .helper {
     color: rgb(158, 161, 165);
     font-size: 12px;

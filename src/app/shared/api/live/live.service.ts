@@ -153,7 +153,7 @@ export class LiveService {
     // .catch();
   }
 
-  createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind = 'text'): Promise<string> {
+  createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
     let data: { [key: string]: string } = {
       subject: subject,
       desc: desc,
