@@ -25,7 +25,8 @@
             <p class="name">{{comment.user.nick}}</p>
             <span class="time">{{comment.createdAt | fromNow}}</span>
           </div>
-          <div class="content" [innerHtml]="parseContent(comment.content)"></div>
+          <div class="content" [ngClass]="{highlight: comment.isAtMe}"
+               [innerHtml]="parseContent(comment.content)"></div>
         </div>
         <div class="operation-container" *ngIf="liveInfo && userInfo">
           <div *ngIf="userInfo.uid == liveInfo.admin.uid">
