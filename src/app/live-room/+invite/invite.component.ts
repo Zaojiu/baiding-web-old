@@ -34,7 +34,7 @@ export class InviteComponent implements OnInit {
     if (this.token) {
       this.wechatShare(location.href);
 
-      this.inviteApiService.checkInviteToken(this.token).then(isTokenUsed => {
+      this.inviteApiService.getInviteToken(this.token).then(isTokenUsed => {
         this.isTokenExist = true;
         this.isTokenUsed = isTokenUsed;
       });
