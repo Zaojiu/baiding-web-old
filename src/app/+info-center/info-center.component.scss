@@ -103,6 +103,12 @@
         display: flex;
         margin: 15px;
 
+        .count-down {
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+
         img {
           object-fit: cover;
           height: 180px;

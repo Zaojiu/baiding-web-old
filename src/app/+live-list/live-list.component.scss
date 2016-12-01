@@ -2,144 +2,228 @@
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
   bottom: 0;
+  right: 0;
   background-color: rgb(255, 255, 255);
-  display: flex;
-  flex-direction: column;
+  overflow: auto;
 
-  .main-list {
-    flex-grow: 1;
-    overflow: auto;
+  .live-info-block {
+    padding: 0 12px 12px;
+    border-bottom: solid 1px rgba(211, 211, 211, .5);
 
-    .live-info-block {
-      padding: 12px;
-      border-bottom: solid 1px rgba(211, 211, 211, .5);
-
+    &.entered {
       .admin-info {
-        display: flex;
-        align-items: center;
-        overflow: hidden;
+        .count-down {
+          opacity: 1;
 
-        .avatar {
-          flex-shrink: 0;
-          width: 26px;
-          height: 26px;
-          border-radius: 50%;
-          border: solid 1px rgb(250, 250, 250);
-        }
-
-        .nick {
-          flex-grow: 1;
-          color: rgb(75, 75, 75);
-          font-size: 14px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          margin-left: 6px;
-          line-height: 1em;
-        }
-
-        .live-status {
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          padding: 5px 10px;
-          border-radius: 4px;
-          line-height: 1em;
-
-          &.ended {
-            background-color: rgb(102, 102, 102);
-            font-size: 12px;
-            color: rgb(255, 255, 255);
-          }
-
-          &.living {
-            background-color: rgb(243, 33, 33);
-            font-size: 12px;
-            color: rgb(255, 255, 255);
-
-            &:before {
-              content: "";
-              width: 6px;
-              height: 6px;
-              border-radius: 50%;
-              background-color: rgb(255, 255, 255);
-              margin-right: 4px;
+          /deep/ {
+            .info-status-wrapper-countdown {
+              background-color: transparent;
             }
           }
         }
       }
 
-      .live-title {
-        color: rgb(75, 75, 75);
-        font-weight: 600;
-        font-size: 17px;
-        line-height: 1em;
-        margin-top: 10px;
-        margin-bottom: 5px;
-        word-break: break-all;
+      .cover-container {
+        .count-down {
+          opacity: 0;
+        }
+      }
+    }
+
+    .admin-info {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      background-color: rgba(255, 255, 255, .9);
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+
+      .avatar {
+        flex-shrink: 0;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: solid 1px rgb(250, 250, 250);
       }
 
-      .live-info {
-        display: flex;
-        line-height: 1em;
-        color: rgb(158, 161, 165);
+      .nick {
+        flex-grow: 1;
+        color: rgb(75, 75, 75);
         font-size: 14px;
-        margin-bottom: 10px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-left: 6px;
+        line-height: 1em;
+      }
 
-        .onlines-count {
-          position: relative;
-          margin-left: 5px;
-          padding-left: 5px;
+      .live-status {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 4px;
+        line-height: 1em;
+
+        &.ended {
+          background-color: rgb(102, 102, 102);
+          font-size: 12px;
+          color: rgb(255, 255, 255);
+        }
+
+        &.living {
+          background-color: rgb(243, 33, 33);
+          font-size: 12px;
+          color: rgb(255, 255, 255);
 
           &:before {
-            position: absolute;
             content: "";
-            left: 0;
-            top: 50%;
-            transform: translateX(-50%) translateY(-55%);
-            height: 80%;
-            width: 1px;
-            background-color: rgb(158, 161, 165);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgb(255, 255, 255);
+            margin-right: 4px;
           }
         }
       }
 
-      .cover-container {
+      .count-down {
+        height: 26px;
         position: relative;
-        margin-bottom: 10px;
+        top: -7px;
+        opacity: 0;
 
-        .cover {
-          display: block;
-          object-fit: cover;
-          width: 100%;
+        // mobile waypoint countdown fallback
+        @media (max-width: 768px) {
+          transition: opacity 1s;
         }
       }
+    }
 
-      .desc {
-        font-size: 14px;
-        color: rgb(158, 161, 165);
-        line-height: 1.28em;
+    // pc position: sticky not support fallback
+    @supports not (position: sticky) {
+      @media (min-width: 768px) {
+        position: relative;
+
+        &:before {
+          content: "";
+          display: block;
+          height: 50px;
+        }
+
+        .admin-info {
+          position: absolute;
+          left: 0px;
+          right: 0px;
+          padding: 12px;
+        }
+
+        &.entered {
+          .admin-info {
+            position: fixed;
+            left: calc((100% - 768px) / 2);
+            right: calc((100% - 768px) / 2 + 15px);
+            z-index: 2;
+          }
+        }
+
       }
+    }
+
+    .live-title {
+      color: rgb(75, 75, 75);
+      font-weight: 600;
+      font-size: 17px;
+      line-height: 1em;
+      margin-bottom: 5px;
+      word-break: break-all;
+    }
+
+    .live-info {
+      display: flex;
+      line-height: 1em;
+      color: rgb(158, 161, 165);
+      font-size: 14px;
+      margin-bottom: 10px;
+
+      .onlines-count {
+        position: relative;
+        margin-left: 5px;
+        padding-left: 5px;
+
+        &:before {
+          position: absolute;
+          content: "";
+          left: 0;
+          top: 50%;
+          transform: translateX(-50%) translateY(-55%);
+          height: 80%;
+          width: 1px;
+          background-color: rgb(158, 161, 165);
+        }
+      }
+    }
+
+    .cover-container {
+      position: relative;
+      margin-bottom: 10px;
+
+      .cover {
+        display: block;
+        object-fit: cover;
+        width: 100%;
+      }
+
+      .count-down {
+        position: absolute;
+        right: 0;
+        top: 0;
+        opacity: 1;
+
+        // mobile waypoint countdown fallback
+        @media (max-width: 768px) {
+          transition: opacity 1s;
+        }
+      }
+    }
+
+    .desc {
+      font-size: 14px;
+      color: rgb(158, 161, 165);
+      line-height: 1.28em;
     }
   }
 
-  .create-btn {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    height: 60px;
-    width: 60px;
-    box-shadow: 0 0 8px rgb(110, 180, 236);
-    border-radius: 50%;
-    background-color: rgb(33, 150, 243);
+  .bottom {
     display: flex;
+    height: 62px;
 
-    .bi {
-      font-size: 20px;
-      color: rgb(255, 255, 255);
+    .word {
       margin: auto;
+      font-size: 16px;
+      color: #9EA1A5;
     }
+  }
+}
+
+.create-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  height: 60px;
+  width: 60px;
+  box-shadow: 0 0 8px rgb(110, 180, 236);
+  border-radius: 50%;
+  background-color: rgb(33, 150, 243);
+  display: flex;
+
+  .bi {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    margin: auto;
   }
 }
 

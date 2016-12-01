@@ -31,16 +31,17 @@
             <div class="nick">{{liveInfo.admin.nick}}</div>
             <div class="time">
               {{liveRoomStatusHumanize(liveInfo.status)}}
+
               <span class="countdown-day-item-day" *ngIf="liveInfo.isCreated()">
-      {{liveInfo.expectStartAt | timeFormater:'YYYY年MM月DD日HH:mm'}}
-             </span>
+                {{liveInfo.expectStartAt | timeFormater:'YYYY年MM月DD日HH:mm'}}
+              </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
-        {{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:6}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:7}}
+                {{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:6}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:7}}
               </span>
 
               <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
-           {{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:6}}
+                {{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:6}}
               </span>
             </div>
           </div>
@@ -50,13 +51,11 @@
       </div>
 
       <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
-        <count-down [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
+        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
         <img [src]="covers[liveInfo.id]" alt="">
       </div>
 
-      <div
-        class="invited-people"
-      >
+      <div class="invited-people">
         <span class="title">受邀嘉宾</span>
 
         <div class="vip-container">
@@ -98,9 +97,7 @@
         <div class="people-count" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
           <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
           <span class="total-users">
-            {{liveInfo.totalUsers >
-            999 ? '999+' :
-            liveInfo.totalUsers}}人观看
+            {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
           </span>
         </div>
 
