@@ -5,13 +5,11 @@ import {LiveInfoModel} from "../shared/api/live/live.model";
 import {LiveStatus} from '../shared/api/live/live.enums';
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {UserInfoModel, UserPublicInfoModel} from "../shared/api/user-info/user-info.model";
-import {SharePopupService} from "../shared/share-popup/share-popup.service";
 import {UtilsService} from "../shared/utils/utils";
 import {InvitationModel} from "../shared/api/invite/invite.model";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
-import {TimeToPipe} from '../../app/shared/pipe/time.pipe';
 
 @Component({
   templateUrl: './info-center.component.html',

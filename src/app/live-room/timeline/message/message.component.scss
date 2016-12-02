@@ -382,7 +382,8 @@
 .message-type-join {
   text-align: center;
   margin-bottom: 20px;
-  > div {
+
+  .vip-joined-tip {
     background-color: #F6F6F7;
     display: inline-block;
     color: #9EA1A5;
@@ -391,6 +392,7 @@
     line-height: 24px;
     border-radius: 4px;
     height: 32px;
+
     .avatar-sm {
       width: 24px;
       height: 24px;

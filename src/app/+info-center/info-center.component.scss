@@ -38,7 +38,7 @@
     }
   }
 
-  .main-form {
+  .main-list {
     overflow: auto;
 
     .self-intro {
@@ -102,6 +102,12 @@
         position: relative;
         display: flex;
         margin: 15px;
+
+        .count-down {
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
 
         img {
           object-fit: cover;

@@ -1,10 +1,7 @@
 .info-status-wrapper-countdown {
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: inline-flex;
   padding: 5px 5px 2px;
-  background-color: rgb(234, 234, 234);
+  background-color: rgba(239, 239, 239, .9);
 
   .item {
     position: relative;

@@ -20,6 +20,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
   @Input() dataContainerSelector: string;
   @Input() loadCount = 10;
   @Input() maxDataCount = 50;
+  @Input() needUnload = true;
   isHeadLoadingShown = false;
   isFootLoadingShown = false;
   private dataCache: any[];
@@ -81,7 +82,8 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
   checkDataOverflow() {
     // 如果已经超过数据最大值, 那么卸载底部数据。
-    if (this.data && this.data.length > this.maxDataCount) {
+
+    if (this.data && this.data.length > this.maxDataCount && this.needUnload) {
       this.autoUnload();
     }
   }
@@ -319,7 +321,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
         this.enterHead = true;
         this.isHeadLoadingShown = true;
 
-        let loadCount = this.loadHead();
+        let loadCount = this.needUnload ? this.loadHead() : 0;
 
         // 如果加载不到顶部的更多缓存数据, 那么通知外部到顶。
         if (loadCount === 0) this.scroller.emit(scrollEvent);
@@ -335,7 +337,7 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
           this.scrollToBottom();
         }, 0);
 
-        let loadCount = this.loadFoot();
+        let loadCount = this.needUnload ? this.loadFoot() : 0;
 
         // 如果加载不到顶部的更多缓存数据, 那么通知外部到底。
         if (loadCount === 0) this.scroller.emit(scrollEvent);
