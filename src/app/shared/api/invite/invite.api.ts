@@ -1,7 +1,7 @@
 import {Injectable}     from '@angular/core';
 import {Http, Response, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {InvitationModel} from './invite.model';
+import {InvitationModel, InvitationSummaryModel} from './invite.model';
 import {PostInvitationModel} from './invite.model';
 import {environment} from "../../../../environments/environment";
 
@@ -29,12 +29,12 @@ export class InviteApiService {
       });
   }
 
-  checkInviteToken(token: string): Promise<boolean> {
+  getInviteToken(token: string): Promise<InvitationSummaryModel> {
     const url = `${environment.config.host.io}/api/live/streams/invite_token?token=${token}`;
     return this.http.get(url).toPromise()
       .then(response => {
-        let data = response.json()
-        return data.used;
+        let data = response.json();
+        return new InvitationSummaryModel(data.name, data.desc, data.used);
       });
   }
 

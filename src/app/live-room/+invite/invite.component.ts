@@ -20,6 +20,7 @@ export class InviteComponent implements OnInit {
   userInfo: UserInfoModel;
   isTokenExist = false;
   isTokenUsed: boolean;
+  name = '';
 
   constructor(private liveService: LiveService, private route: ActivatedRoute,
               private router: Router, private inviteApiService: InviteApiService, private shareService: ShareBridge) {
@@ -34,9 +35,10 @@ export class InviteComponent implements OnInit {
     if (this.token) {
       this.wechatShare(location.href);
 
-      this.inviteApiService.checkInviteToken(this.token).then(isTokenUsed => {
+      this.inviteApiService.getInviteToken(this.token).then(invitation => {
         this.isTokenExist = true;
-        this.isTokenUsed = isTokenUsed;
+        this.isTokenUsed = invitation.used;
+        this.name = invitation.name;
       });
     }
   }
