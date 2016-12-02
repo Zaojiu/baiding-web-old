@@ -19,6 +19,7 @@
   bottom: 67px;
   background-color: rgb(255, 255, 255);
   transition: all .25s ease;
+
   .bi {
     margin: auto;
   }
@@ -47,6 +48,8 @@
   border-radius: 50%;
   background-color: rgb(33, 150, 243);
   display: flex;
+  overflow: hidden;
+
   #nav-icon {
     width: 22px;
     height: 15px;
