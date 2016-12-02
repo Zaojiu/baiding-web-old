@@ -35,7 +35,7 @@ export class InviteComponent implements OnInit {
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
-    if (UtilsService.isInApp) this.router.navigate([this.router.url, {from: 'app'}]);
+    if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token, from: 'app'}]);
 
     if (this.token) {
       this.setShareInfo();

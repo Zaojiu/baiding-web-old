@@ -7,27 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <script type="text/javascript">
-      var search = location.search.replace('?', '');
-      var queryArr = search.split('&');
 
-      if (!(/micromessenger/i.test(window.navigator.userAgent))) {
-        // 微信外浏览器打开跳转app: http://www.baidinglive.com/download.html?gotoApp=zaojiuliveapp://lives?id=123456
-
-        for (let query of queryArr) {
-          var kv = query.split('=');
-          var key = kv[0];
-          var val = kv.length === 2 ? kv[1] : '';
-          if (key === 'gotoApp' && val) location.href = decodeURIComponent(val);
-
-  //      setTimeout(function () {
-  //        // TODO: go to app store
-  //      }, 2000);
-        }
-      } else {
-        window.isInWechat = true;
-      }
-    </script>
     <style>
       body, html {
         padding: 0;
@@ -76,7 +56,7 @@
 
       .goto-appstore .zaojiu-logo {
         position: absolute;
-        bottom: calc(70px + 7vh + (93vh - 70px) * 0.1);
+        top: calc(69.75vh - 52.5px);
         left: 50%;
         width: 24vh;
         height: 10vh;
@@ -207,10 +187,26 @@
     </div>
 
     <script type="text/javascript">
-      if (window.isInWechat) {
-        document.querySelector('.broswer-open-tips').style.display = 'flex';
-      } else {
+      var search = location.search.replace('?', '');
+      var queryArr = search.split('&');
+
+      if (!(/micromessenger/i.test(window.navigator.userAgent))) {
+        // 微信外浏览器打开跳转app: http://www.baidinglive.com/download.html?gotoApp=zaojiuliveapp://lives?id=123456
+
+        for (let query of queryArr) {
+          var kv = query.split('=');
+          var key = kv[0];
+          var val = kv.length === 2 ? kv[1] : '';
+          if (key === 'gotoApp' && val) location.href = decodeURIComponent(val);
+
+          //      setTimeout(function () {
+          //        // TODO: go to app store
+          //      }, 2000);
+        }
+
         document.querySelector('.broswer-open-tips').style.display = 'none';
+      } else {
+        document.querySelector('.broswer-open-tips').style.display = 'flex';
       }
     </script>
   </body>
