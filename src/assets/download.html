@@ -18,7 +18,7 @@
           var kv = query.split('=');
           var key = kv[0];
           var val = kv.length === 2 ? kv[1] : '';
-          if (key === 'gotoApp' && val) location.href = val;
+          if (key === 'gotoApp' && val) location.href = decodeURIComponent(val);
 
   //      setTimeout(function () {
   //        // TODO: go to app store
