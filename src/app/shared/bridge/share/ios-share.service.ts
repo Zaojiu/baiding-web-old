@@ -17,11 +17,23 @@ export class IosShareService implements ShareBridge {
   }
 
   setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string) {
-    this.title = title;
-    this.desc = desc;
-    this.cover = cover;
-    this.link = link;
-    this.liveId = liveId;
+    return new Promise((resolve, reject) => {
+      if (this.iosBridgeService.hasInit) {
+        this.iosBridgeService.bridge.callHandler('setShareInfo', {title: this.title, desc: this.desc, cover: this.cover, link: this.link}, (result) => {
+          resolve(result);
+        }, (err) => {
+          reject(err);
+        });
+      } else {
+        this.iosBridgeService.init().then(() => {
+          this.iosBridgeService.bridge.callHandler('setShareInfo', {title: this.title, desc: this.desc, cover: this.cover, link: this.link}, (result) => {
+            resolve(result);
+          }, (err) => {
+            reject(err);
+          });
+        });
+      }
+    });
   }
 
   share(): Promise<void> {

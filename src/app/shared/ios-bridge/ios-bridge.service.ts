@@ -9,6 +9,11 @@ export class IosBridgeService {
 
   constructor() {}
 
+  gotoLive(liveId: string) {
+    let gotoApp = encodeURIComponent(`zaojiuliveapp://lives?id=${liveId}`);
+    location.href = `/download.html?gotoApp=${gotoApp}`
+  }
+
   init(): Promise<void> {
     if (this.hasInit) return Promise.resolve();
 
