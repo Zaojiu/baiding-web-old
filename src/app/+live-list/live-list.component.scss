@@ -243,10 +243,11 @@
   }
 }
 
-.loading {
+.loading, .no-record-tips {
   position: absolute;
   top: 50%;
   left: 50%;
+  font-size: 16px;
+  color: #9EA1A5;
   transform: translateX(-50%) translateY(-50%);
 }
-
