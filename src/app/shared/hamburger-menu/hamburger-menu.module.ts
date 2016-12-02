@@ -1,19 +1,19 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 
-import {EmptyComponent} from "./empty.component";
+import {HamburgerMenuComponent} from "./hamburger-menu.component";
 
 @NgModule({
   imports: [
     CommonModule,
   ],
   declarations: [
-    EmptyComponent,
+    HamburgerMenuComponent,
   ],
   exports: [
-    EmptyComponent
+    HamburgerMenuComponent,
   ],
 })
 
-export class EmptyModule {
+export class HamburgerMenuModule {
 }

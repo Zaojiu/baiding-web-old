@@ -1,0 +1,118 @@
+.mask {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, .15);
+}
+
+.create-room, .invite-people {
+  position: absolute;
+  z-index: 5;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  display: flex;
+  right: 12px;
+  bottom: 67px;
+  background-color: rgb(255, 255, 255);
+  transition: all .25s ease;
+  .bi {
+    margin: auto;
+  }
+}
+
+.invite-people {
+  &.active {
+    transform: translateX(-86px) translateY(-13px) rotate(360deg);
+  }
+}
+
+.create-room {
+  &.active {
+    transform: translateX(-19px) translateY(-85px) rotate(360deg);
+  }
+}
+
+/*hamburger animation*/
+.hamburger-menu {
+  position: absolute;
+  z-index: 5;
+  right: 12px;
+  bottom: 67px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: rgb(33, 150, 243);
+  display: flex;
+  #nav-icon {
+    width: 22px;
+    height: 15px;
+    border-radius: 50%;
+    position: relative;
+    margin: 20px auto;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+    cursor: pointer;
+  }
+
+  #nav-icon span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: rgb(255, 255, 255);
+    border-radius: 1px;
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .25s ease-in-out;
+    -moz-transition: .25s ease-in-out;
+    -o-transition: .25s ease-in-out;
+    transition: .25s ease-in-out;
+  }
+
+  #nav-icon span:nth-child(1) {
+    top: 0px;
+  }
+
+  #nav-icon span:nth-child(2) {
+    top: 8px;
+  }
+
+  #nav-icon span:nth-child(3) {
+    top: 16px;
+  }
+
+  #nav-icon.open span:nth-child(1) {
+    top: 8px;
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+  }
+
+  #nav-icon.open span:nth-child(2) {
+    opacity: 0;
+    left: -60px;
+  }
+
+  #nav-icon.open span:nth-child(3) {
+    top: 8px;
+    -webkit-transform: rotate(-135deg);
+    -moz-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+}

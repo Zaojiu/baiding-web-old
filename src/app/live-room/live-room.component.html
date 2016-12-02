@@ -28,6 +28,8 @@
     <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
   </div>
 
+  <hamburger-menu [liveId]="liveInfo.id" [userInfo]="userInfo"></hamburger-menu>
+
   <user-info-card></user-info-card>
 
   <audience-tool-bar
