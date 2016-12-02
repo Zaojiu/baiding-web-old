@@ -29,9 +29,7 @@ export class HamburgerMenuComponent {
     }
   }
 
-  invitePeople() {
-    if (this.userInfo.canPublish) {
-      this.router.navigate([`/lives/${this.liveId}/vip-info`]);
-    }
+  gotoMyRoomList() {
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 }

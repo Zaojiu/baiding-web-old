@@ -18,6 +18,7 @@
   right: 12px;
   bottom: 67px;
   background-color: rgb(255, 255, 255);
+  opacity: 0;
   transition: all .25s ease;
 
   .bi {
@@ -26,14 +27,50 @@
 }
 
 .invite-people {
+  .bi {
+    font-size: 26px;
+    color: rgb(75, 75, 75);
+  }
+
   &.active {
-    transform: translateX(-86px) translateY(-13px) rotate(360deg);
+    transform: translateX(-98px) translateY(-13px) rotate(360deg);
+    opacity: 1;
+    &:after {
+      position: absolute;
+      top: 66px;
+      right: -8px;
+      content: '我的列表';
+      text-align: center;
+      font-size: 12px;
+      width: 80px;
+      height: 20px;
+      border-radius: 10px;
+      background-color: rgb(255, 255, 255);
+    }
   }
 }
 
 .create-room {
+  .bi {
+    font-size: 20px;
+    color: rgb(75, 75, 75);
+  }
+
   &.active {
-    transform: translateX(-19px) translateY(-85px) rotate(360deg);
+    transform: translateX(-19px) translateY(-131px) rotate(360deg);
+    opacity: 1;
+    &:after {
+      position: absolute;
+      top: 66px;
+      right: -8px;
+      content: '创建话题间';
+      text-align: center;
+      font-size: 12px;
+      width: 80px;
+      height: 20px;
+      background-color: rgb(255, 255, 255);
+      border-radius: 10px;
+    }
   }
 }
 
