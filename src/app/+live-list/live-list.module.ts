@@ -6,6 +6,7 @@ import {LiveListComponent} from "./live-list.component";
 import {PipeModule} from "../shared/pipe/pipe.module";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {CountDownModule} from "../shared/countdown/countdown.module";
+import {ScrollerModule} from "../shared/scroller/scroller.module";
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import {CountDownModule} from "../shared/countdown/countdown.module";
     PipeModule,
     LoadingModule,
     CountDownModule,
+    ScrollerModule,
   ],
   declarations: [
     LiveListComponent,

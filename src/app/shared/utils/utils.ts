@@ -25,6 +25,10 @@ export class UtilsService {
     return /zaojiuliveapp/i.test(window.navigator.userAgent);
   }
 
+  static get isOnScreen(): boolean {
+    return matchMedia && matchMedia('(min-width: 768px)').matches;
+  }
+
   static get now(): number {
     return Math.floor((new Date()).getTime() / 1000);
   }

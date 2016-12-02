@@ -1,4 +1,5 @@
-<div class="live-list scrollable" *ngIf="livesList">
+<div class="live-list scrollable" (scroller)="onScroll($event)" [data]="livesList"
+     [dataContainerSelector]="'.main-list'" [needUnload]="false">
   <div class="main-list">
     <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoom(liveInfo.id)">
       <div class="admin-info" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
@@ -7,7 +8,7 @@
 
         <span class="live-status living" *ngIf="liveInfo.isStarted()">直播中</span>
         <span class="live-status ended" *ngIf="liveInfo.isClosed()">已结束</span>
-        <count-down class="count-down" [liveInfo]="liveInfo" *ngIf="liveInfo.isCreated()"></count-down>
+        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
       </div>
 
       <div class="live-title">{{liveInfo.subject}}</div>
@@ -18,17 +19,20 @@
       </div>
 
       <div class="cover-container">
-        <count-down class="count-down" [liveInfo]="liveInfo"></count-down>
+        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
         <img class="cover" [src]="covers[liveInfo.id]" alt="直播封面">
       </div>
 
       <div class="desc">{{liveInfo.desc}}</div>
     </div>
 
-    <div class="bottom">
+    <div class="bottom" *ngIf="isOnLatest">
       <div class="word">已显示全部内容</div>
     </div>
   </div>
+
+  <bd-loading *ngIf="!isOnLatest" class="loading-foot"
+              [ngClass]="{show: scroller.isFootLoadingShown, hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
 
 <div class="create-btn" (click)="gotoCreateOrApply()">

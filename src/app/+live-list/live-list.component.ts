@@ -1,10 +1,13 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {LiveService} from "../shared/api/live/live.service";
 import {LiveInfoModel} from "../shared/api/live/live.model";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {UtilsService} from "../shared/utils/utils";
+import {ScrollerEventModel} from "../shared/scroller/scroller.model";
+import {ScrollerPosition} from "../shared/scroller/scroller.enums";
+import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 
 declare var $: any;
 declare var Waypoint: any;
@@ -20,51 +23,16 @@ export class LiveListComponent implements OnInit, OnDestroy {
               private sanitizer: DomSanitizer) {
   }
 
-  livesList: LiveInfoModel[];
+  livesList: LiveInfoModel[] = [];
   covers: {[liveId: string]: SafeUrl} = {};
   liveTime: {[liveId: string]: string} = {};
-  waypoints: any[] = [];
+  isOnLatest: boolean;
+  @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
+  private waypoints: any[] = [];
+  private loadSize = 20;
 
   ngOnInit() {
-    this.liveService.listLiveInfo(15421165063, '', 1000, ['-createdAt']).then((livesList) => {
-      this.livesList = livesList;
-
-      for (let liveInfo of this.livesList) {
-        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/liveroombanner-blur.jpg';
-        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
-
-        if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
-          let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
-          let dayStr = '';
-
-          switch (leftDays) {
-            case 0:
-              dayStr = '今天';
-              break;
-            case 1:
-              dayStr = '明天';
-              break;
-            case 2:
-              dayStr = '后天';
-              break;
-          }
-
-          this.liveTime[liveInfo.id] = `${dayStr} ${moment(liveInfo.expectStartAt).format('HH:mm:ss')}`;
-        } else {
-          this.liveTime[liveInfo.id] = moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss');
-        }
-      }
-
-      if (UtilsService.isIPhone || (CSS && CSS.supports && !CSS.supports('position', 'sticky') && !UtilsService.isInWechat && !UtilsService.isInApp)) {
-        setTimeout(() => {
-          System.import('waypoints/lib/noframework.waypoints.js').then(() => {
-            return System.import('waypoints/lib/shortcuts/inview.min.js');
-          }).then(() => {
-            this.initWaypoint();
-          });
-        }, 10);
-      }
-    });
+    this.getNextMessages('', this.loadSize);
   }
 
   ngOnDestroy() {
@@ -95,11 +63,9 @@ export class LiveListComponent implements OnInit, OnDestroy {
             if (direction === 'up') $this.removeClass('entered');
           },
           exit: (direction) => {
-            console.log(direction, '>>');
             if (direction === 'down') $this.addClass('entered');
           },
           exited: (direction) => {
-            console.log(direction, '>>');
             if (direction === 'down') $this.removeClass('entered');
           }
         })
@@ -123,5 +89,68 @@ export class LiveListComponent implements OnInit, OnDestroy {
 
   gotoInfoCenter(uid: number) {
     this.router.navigate(([`/info-center/${uid}`]));
+  }
+
+  getNextMessages(markerId: string, size: number): Promise<LiveInfoModel[]> {
+    return this.liveService.listRecommendLiveInfo(markerId, size + 1).then((livesList) => {
+      if (livesList.length < size + 1) {
+        this.isOnLatest = true;
+      } else {
+        livesList.pop();
+      }
+
+      this.scroller.appendData(livesList);
+
+      for (let liveInfo of this.livesList) {
+        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
+        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
+
+        if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
+          let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
+          let dayStr = '';
+
+          switch (leftDays) {
+            case 0:
+              dayStr = '今天';
+              break;
+            case 1:
+              dayStr = '明天';
+              break;
+            case 2:
+              dayStr = '后天';
+              break;
+          }
+
+          this.liveTime[liveInfo.id] = `${dayStr} ${moment(liveInfo.expectStartAt).format('HH:mm:ss')}`;
+        } else {
+          this.liveTime[liveInfo.id] = moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss');
+        }
+      }
+
+      let isOnPcWithoutSticky = CSS && CSS.supports && !CSS.supports('position', 'sticky') && UtilsService.isOnScreen;
+
+      if (UtilsService.isIPhone || isOnPcWithoutSticky) {
+        setTimeout(() => {
+          System.import('waypoints/lib/noframework.waypoints.js').then(() => {
+            return System.import('waypoints/lib/shortcuts/inview.min.js');
+          }).then(() => {
+            this.initWaypoint();
+          });
+        }, 10);
+      }
+
+      return livesList;
+    });
+  }
+
+  onScroll(e: ScrollerEventModel) {
+    if (e.position == ScrollerPosition.OnBottom) {
+      if (this.livesList.length !== 0 && !this.isOnLatest) {
+        let lastId = this.livesList[this.livesList.length - 1].id;
+        this.getNextMessages(lastId, this.loadSize).finally(() => {
+          this.scroller.hideFootLoading();
+        });
+      }
+    }
   }
 }

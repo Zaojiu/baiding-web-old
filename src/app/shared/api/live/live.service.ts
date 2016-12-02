@@ -224,10 +224,37 @@ export class LiveService {
       let usersData = data.include.users;
       let liveInfoList: LiveInfoModel[] = [];
 
-      for (let liveInfo of streamData) {
-        let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
-        liveInfoList.push(liveInfoParsed);
+      if (streamData) {
+        for (let liveInfo of streamData) {
+          let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
+          liveInfoList.push(liveInfoParsed);
+        }
       }
+
+      return liveInfoList;
+    });
+  }
+
+  listRecommendLiveInfo(markerId: string, size = 20): Promise<LiveInfoModel[]> {
+    let query = {
+      lastId: markerId,
+      size: size,
+    };
+    const url = `${environment.config.host.io}/api/live/streams/recommend?${$.param(query)}`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+
+      let streamData = data.result;
+      let usersData = data.include.users;
+      let liveInfoList: LiveInfoModel[] = [];
+
+      if (streamData) {
+        for (let liveInfo of streamData) {
+          let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
+          liveInfoList.push(liveInfoParsed);
+        }
+      }
+
       return liveInfoList;
     });
   }

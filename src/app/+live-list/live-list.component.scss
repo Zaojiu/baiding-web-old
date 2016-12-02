@@ -197,6 +197,21 @@
     }
   }
 
+  .loading-foot {
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+
+    &.show {
+      opacity: 1;
+    }
+
+    &.hide {
+      transition: 1s ease all;
+      opacity: 0;
+    }
+  }
+
   .bottom {
     display: flex;
     height: 62px;
@@ -215,6 +230,7 @@
   bottom: 20px;
   height: 60px;
   width: 60px;
+  z-index: 2;
   box-shadow: 0 0 8px rgb(110, 180, 236);
   border-radius: 50%;
   background-color: rgb(33, 150, 243);
