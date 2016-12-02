@@ -11,16 +11,16 @@
   .top-bar {
     flex-shrink: 0;
   }
-  .main-list {
-    flex-grow: 1;
-    overflow: auto;
-    padding-bottom: 131px;
-  }
+
   .button-wrapper {
     flex-shrink: 0;
   }
 
-  .main-list {
+  .main-form {
+    flex-grow: 1;
+    overflow: auto;
+    padding-bottom: 131px;
+
     .vip-name-wrapper {
       margin: 12px 12px auto 12px;
 

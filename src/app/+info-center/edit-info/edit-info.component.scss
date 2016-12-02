@@ -12,17 +12,15 @@
     flex-shrink: 0;
   }
 
-  .main-list {
-    flex-grow: 1;
-    overflow: auto;
-    padding-bottom: 15px;
-  }
-
   .operation-area {
     flex-shrink: 0;
   }
 
-  .main-list {
+  .main-form {
+    flex-grow: 1;
+    overflow: auto;
+    padding-bottom: 15px;
+
     .avatar-wrapper {
       display: flex;
 
