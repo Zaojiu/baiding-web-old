@@ -9,7 +9,7 @@
   .invitation {
     position: relative;
     writing-mode: vertical-lr;
-    padding: 40px 30px;
+    padding: 26px 40px;
     font-size: 18px;
     height: 325px;
     width: 100%;
@@ -23,7 +23,7 @@
 
     .live-title {
       overflow: hidden;
-      font-weight: normal;
+      font-weight: 600;
       white-space: nowrap;
       text-overflow: ellipsis;
       height: 100%;
@@ -57,13 +57,11 @@
   }
 
   .operation-area {
-    padding: 30px;
     font-size: 14px;
 
     .bi-more2 {
       font-size: 12px;
       transform: scale(0.333);
-      transform-origin: left;
       width: 20px;
       height: 4px;
       margin: 0 5px;
@@ -74,10 +72,22 @@
       margin: 0 5px;
     }
 
+    .share-tips {
+      margin: 25px 40px 0;
+      color: rgb(75, 75, 75);
+    }
+
+    .used-tips, .invaild-tips {
+      margin-top: 20px;
+      margin-bottom: 68px;
+      color: rgb(158, 161, 165);
+      text-align: center;
+    }
+
     .btn-accept-invitation, .btn-goto-live {
       display: block;
       margin: 35px auto 0;
-      width: 140px;
+      width: 200px;
       height: 50px;
       line-height: 50px;
       background-color: rgb(33, 150, 243);
@@ -85,6 +95,14 @@
       text-align: center;
       color: rgb(255, 255, 255);
       font-size: 17px;
+
+      &:first-child {
+        margin-top: 68px;
+      }
+
+      &:last-child {
+        margin-bottom: 68px;
+      }
     }
   }
 }
