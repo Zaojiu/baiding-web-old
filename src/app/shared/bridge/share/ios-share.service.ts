@@ -11,12 +11,18 @@ export class IosShareService implements ShareBridge {
   desc: string;
   cover: string;
   link: string;
-  liveId?: string;
+  liveId: string;
 
   constructor(private iosBridgeService: IosBridgeService, private liveService: LiveService) {
   }
 
-  setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string) {
+  setShareInfo(title: string, desc: string, cover: string, link: string, liveId = '') {
+    this.title = title;
+    this.desc = desc;
+    this.cover = cover;
+    this.link = link;
+    this.liveId = liveId;
+
     return new Promise((resolve, reject) => {
       if (this.iosBridgeService.hasInit) {
         this.iosBridgeService.bridge.callHandler('setShareInfo', {title: this.title, desc: this.desc, cover: this.cover, link: this.link}, (result) => {
@@ -40,7 +46,7 @@ export class IosShareService implements ShareBridge {
     return new Promise((resolve, reject) => {
       if (this.iosBridgeService.hasInit) {
         this.iosBridgeService.bridge.callHandler('share', {title: this.title, desc: this.desc, cover: this.cover, link: this.link}, (result) => {
-          this.liveService.confirmShare(this.liveId);
+          if (this.liveId) this.liveService.confirmShare(this.liveId);
           resolve(result);
         }, (err) => {
           reject(err);
@@ -48,7 +54,7 @@ export class IosShareService implements ShareBridge {
       } else {
         this.iosBridgeService.init().then(() => {
           this.iosBridgeService.bridge.callHandler('share', {title: this.title, desc: this.desc, cover: this.cover, link: this.link}, (result) => {
-            this.liveService.confirmShare(this.liveId);
+            if (this.liveId) this.liveService.confirmShare(this.liveId);
             resolve(result);
           }, (err) => {
             reject(err);
