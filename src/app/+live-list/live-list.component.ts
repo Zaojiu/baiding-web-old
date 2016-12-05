@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../shared/api/live/live.service";
 import {LiveInfoModel} from "../shared/api/live/live.model";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
@@ -10,6 +10,7 @@ import {ScrollerPosition} from "../shared/scroller/scroller.enums";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {LiveStatus} from "../shared/api/live/live.enums";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
+import {UserInfoModel} from "../shared/api/user-info/user-info.model";
 
 declare var $: any;
 declare var Waypoint: any;
@@ -20,8 +21,7 @@ declare var Waypoint: any;
 })
 
 export class LiveListComponent implements OnInit, OnDestroy {
-  constructor(private router: Router,
-              private liveService: LiveService, private userInfoService: UserInfoService,
+  constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
   }
 
@@ -34,9 +34,13 @@ export class LiveListComponent implements OnInit, OnDestroy {
   private loadSize = 20;
   timeNow = UtilsService.now.toString();
   timer: any;
+  userInfo: UserInfoModel;
+  from = '/';
 
   ngOnInit() {
     this.getNextMessages('', this.loadSize);
+
+    this.userInfo = this.route.snapshot.data['userInfo'];
 
     this.timer = setInterval(() => {
       this.timeNow = UtilsService.now.toString();
@@ -80,16 +84,6 @@ export class LiveListComponent implements OnInit, OnDestroy {
           }
         })
       );
-    });
-  }
-
-  gotoCreateOrApply() {
-    this.userInfoService.getUserInfo().then(userInfo => {
-      if (userInfo.canPublish) {
-        this.router.navigate([`/lives/create`]);
-      } else {
-        this.router.navigate([`/lives/apply`]);
-      }
     });
   }
 

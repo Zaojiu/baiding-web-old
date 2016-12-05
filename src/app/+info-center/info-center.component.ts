@@ -33,6 +33,7 @@ export class InfoCenterComponent {
   invitees: {[liveId: string]: InvitationModel[]} = {};
   covers: {[liveId: string]: SafeUrl} = {};
   liveTime: {[liveId: string]: string} = {};
+  from = encodeURIComponent('/info-center');
 
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
@@ -129,18 +130,18 @@ export class InfoCenterComponent {
   }
 
   goInvitation(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/vip-info`, {fromInfoCenter: true}]);
+    this.router.navigate([`/lives/${liveId}/vip-info`, {from: this.from}]);
   }
 
   goEditLiveRoom(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {fromInfoCenter: true}]);
+    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {from: this.from}]);
   }
 
   gotoCreateOrApply() {
     if (this.currentUserInfo.canPublish) {
-      this.router.navigate([`/lives/create`]);
+      this.router.navigate([`/lives/create`, {from: this.from}]);
     } else {
-      this.router.navigate([`/lives/apply`]);
+      this.router.navigate([`/lives/apply`, {from: this.from}]);
     }
   }
 

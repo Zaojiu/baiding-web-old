@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 export class HamburgerMenuComponent {
   activeStatus = false;
   @Input() liveId: string;
+  @Input() from: string;
   @Input() userInfo: UserInfoModel;
 
   constructor(private router: Router) {
@@ -18,18 +19,18 @@ export class HamburgerMenuComponent {
 
   switch() {
     return this.activeStatus = !this.activeStatus;
-
   }
 
   createRoom() {
+    let from = this.liveId ? {from: encodeURIComponent(`/lives/${this.liveId}`)} : this.from ? {from: this.from} : null;
     if (this.userInfo.canPublish) {
-      this.router.navigate([`/lives/create`, {liveId: this.liveId}]);
+      this.router.navigate([`/lives/create`, from]);
     } else {
-      this.router.navigate([`/lives/apply`, {from: encodeURIComponent(`/lives/${this.liveId}`)}]);
+      this.router.navigate([`/lives/apply`, from]);
     }
   }
 
   gotoMyRoomList() {
-    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
+    this.router.navigate([`/info-center`]);
   }
 }

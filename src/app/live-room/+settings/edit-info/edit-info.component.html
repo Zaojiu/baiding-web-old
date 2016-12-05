@@ -1,5 +1,5 @@
 <form [formGroup]="form" name="editInfo" (submit)="submit()" class="edit-info">
-  <live-room-top-bar class="top-bar" [liveId]="liveId" [userInfo]="userInfo"></live-room-top-bar>
+  <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
 
   <div class="main-form">
     <div class="form-group" *ngIf="liveInfo.isCreated()" [ngClass]="{'has-error': form.controls['time'].dirty && form.controls['time'].invalid}">

@@ -1,16 +1,10 @@
-import {Component, OnInit, DoCheck} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {LiveService} from "../../shared/api/live/live.service";
-import {UploadApiService} from "../../shared/api/upload/upload.api";
-import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
-import {futureValidator} from "../../shared/form/future.validator";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RegexpConst} from "../../shared/utils/regexp";
 import {ApplyApiService} from "../../shared/api/apply/apply.service";
 import {ApplicationModel, ApplicationStatus} from "../../shared/api/apply/apply.model";
-import {userInfo} from "os";
 import {apiValidator} from "../../shared/form/api.validator";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
@@ -115,7 +109,7 @@ export class ApplyComponent implements OnInit {
 
   back() {
     if (this.from) {
-      this.router.navigate([this.from]);
+      this.router.navigateByUrl(this.from);
     } else {
       this.router.navigate([`/info-center/${this.userInfo.uid}`]);
     }
