@@ -74,8 +74,8 @@
 
     img {
       object-fit: cover;
-      height: 180px;
-      width: 100%;
+      height: calc((100vw - 24px) * 0.51);
+      width: calc(100vw - 24px);
     }
 
     .count-down {
