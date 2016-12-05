@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {LiveInfoModel} from "../../../shared/api/live/live.model";
 import {LiveService} from "../../../shared/api/live/live.service";
 import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
+import {LiveStatus} from "../../../shared/api/live/live.enums";
 
 @Component({
   templateUrl: './view-info.component.html',
@@ -21,6 +22,10 @@ export class ViewInfoComponent implements OnInit {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+
+    if(this.liveInfo.status === LiveStatus.Started){
+      this.router.navigate([`/info-center`]);
+    }
   }
 
   get isAdmin() {
