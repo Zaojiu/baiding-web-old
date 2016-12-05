@@ -20,12 +20,12 @@
   </div>
 
   <div class="operation-area" *ngIf="token && isTokenExist && isTokenUsed">
-    <a class="btn-goto-live" (click)="backToLive()">进入直播</a>
+    <a class="btn-goto-live" (click)="backToLive()">进入话题间</a>
     <p class="used-tips">邀请函已被使用</p>
   </div>
 
   <div class="operation-area" *ngIf="!token || !isTokenExist">
-    <a class="btn-goto-live" (click)="backToLive()">进入直播</a>
+    <a class="btn-goto-live" (click)="backToLive()">进入话题间</a>
     <p class="invaild-tips">无效邀请函</p>
   </div>
 

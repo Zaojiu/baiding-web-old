@@ -145,6 +145,19 @@ export class InfoCenterComponent {
     }
   }
 
+  liveRoomStatusHumanize(liveStatus: number): string {
+    switch (liveStatus) {
+      case LiveStatus.Created:
+        return '开始时间';
+      case LiveStatus.Started:
+        return '已进行';
+      case LiveStatus.Ended:
+        return '话题进行时长';
+      default:
+        return '未知状态';
+    }
+  }
+
   gotoInvitation(liveId: string, invitee: InvitationModel) {
     if (invitee.token) this.router.navigate(([`/lives/${liveId}/invitation`, {token: invitee.token}]));
   }
