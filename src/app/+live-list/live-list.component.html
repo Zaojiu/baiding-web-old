@@ -5,20 +5,23 @@
       <div class="admin-info" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
         <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
         <span class="nick">{{liveInfo.admin.nick}}</span>
-
-        <span class="live-status living" *ngIf="liveInfo.isStarted()">直播中</span>
-        <span class="live-status ended" *ngIf="liveInfo.isClosed()">已结束</span>
-        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
       </div>
 
       <div class="live-title">{{liveInfo.subject}}</div>
 
       <div class="live-info">
-        <span class="time">{{liveTime[liveInfo.id]}}</span>
+        <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
+        <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
+        <span class="time" *ngIf="liveInfo.isStarted()">
+          已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
+        </span>
+
         <span class="onlines-count">{{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人</span>
       </div>
 
       <div class="cover-container">
+        <span class="live-status living" *ngIf="liveInfo.isStarted()">直播中</span>
+        <span class="live-status ended" *ngIf="liveInfo.isClosed()">已结束</span>
         <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
         <img class="cover" [src]="covers[liveInfo.id]" alt="直播封面">
       </div>

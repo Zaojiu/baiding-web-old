@@ -20,7 +20,6 @@ export class SettingsComponent implements OnInit {
   liveId: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
-  liveStatusEnums = LiveStatus;
   invitations: InvitationModel[];
   audienceListInvitations: AudienceInvitationModel[];
 

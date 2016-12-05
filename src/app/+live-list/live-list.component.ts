@@ -8,6 +8,8 @@ import {UtilsService} from "../shared/utils/utils";
 import {ScrollerEventModel} from "../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../shared/scroller/scroller.enums";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
+import {LiveStatus} from "../shared/api/live/live.enums";
+import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 
 declare var $: any;
 declare var Waypoint: any;
@@ -20,7 +22,7 @@ declare var Waypoint: any;
 export class LiveListComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private liveService: LiveService, private userInfoService: UserInfoService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
   }
 
   livesList: LiveInfoModel[] = [];
@@ -30,15 +32,23 @@ export class LiveListComponent implements OnInit, OnDestroy {
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   private waypoints: any[] = [];
   private loadSize = 20;
+  timeNow = UtilsService.now.toString();
+  timer: any;
 
   ngOnInit() {
     this.getNextMessages('', this.loadSize);
+
+    this.timer = setInterval(() => {
+      this.timeNow = UtilsService.now.toString();
+    }, 1000);
   }
 
   ngOnDestroy() {
     for (let waypoint of this.waypoints) {
       waypoint.destroy();
     }
+
+    clearInterval(this.timer);
   }
 
   initWaypoint() {
@@ -105,25 +115,34 @@ export class LiveListComponent implements OnInit, OnDestroy {
         let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
 
-        if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
-          let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
-          let dayStr = '';
+        if (liveInfo.status === LiveStatus.Created){
+          if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
+            let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
+            let dayStr = '';
 
-          switch (leftDays) {
-            case 0:
-              dayStr = '今天';
-              break;
-            case 1:
-              dayStr = '明天';
-              break;
-            case 2:
-              dayStr = '后天';
-              break;
+            switch (leftDays) {
+              case 0:
+                dayStr = '今天';
+                break;
+              case 1:
+                dayStr = '明天';
+                break;
+              case 2:
+                dayStr = '后天';
+                break;
+            }
+
+            this.liveTime[liveInfo.id] = `开始时间 ${dayStr} ${moment(liveInfo.expectStartAt).format('HH:mm:ss')}`;
+          } else {
+            this.liveTime[liveInfo.id] = `开始时间 ${moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss')}`;
           }
-
-          this.liveTime[liveInfo.id] = `${dayStr} ${moment(liveInfo.expectStartAt).format('HH:mm:ss')}`;
+        } else if (liveInfo.status === LiveStatus.Ended) {
+          let diffSec = moment(liveInfo.closedAt).diff(moment(liveInfo.expectStartAt)) / 1000;
+          let dayStr = this.durationPipe.transform(diffSec, 1);
+          if (dayStr !== '') dayStr += ':';
+          this.liveTime[liveInfo.id] = `直播时长 ${dayStr}${this.durationPipe.transform(diffSec, 2)}:${this.durationPipe.transform(diffSec, 3)}:${this.durationPipe.transform(diffSec, 4)}`;
         } else {
-          this.liveTime[liveInfo.id] = moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss');
+          this.liveTime[liveInfo.id] = '未知状态';
         }
       }
 
