@@ -34,7 +34,7 @@ const route: Routes = [
         },
         children: [
           {path: '', component: EmptyComponent},
-          {path: 'post', component: PostComponent, canDeactivate: [QuitEditGuard]},
+          {path: 'post', component: PostComponent,}
         ],
       },
       {path: 'push-comment', loadChildren: 'app/live-room/+push-comment/push-comment.module#PushCommentModule'},

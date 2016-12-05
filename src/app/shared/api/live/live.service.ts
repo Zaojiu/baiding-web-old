@@ -50,6 +50,16 @@ export class LiveService {
     return _uid === liveInfo.admin.uid;
   }
 
+  setPushCommentStashed(text: string, messageId: string) {
+    let postCommentStashed = UtilsService.getStorage('postcomment');
+    postCommentStashed[messageId] = text;
+    UtilsService.setStorage('postcomment', postCommentStashed);
+  };
+
+  getPushCommentStashed(messageId: string): string {
+    return UtilsService.getStorage('postcomment')[messageId] || '';
+  }
+
   setTextWordsStashed(text: string, liveId: string) {
     let textStashed = UtilsService.getStorage('textStashed');
     textStashed[liveId] = text;
