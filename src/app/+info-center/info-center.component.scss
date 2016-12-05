@@ -109,10 +109,20 @@
           top: 0;
         }
 
+        &:before {
+          content: '';
+          display: block;
+          width: 100%;
+          padding-top: 51.4%;
+        }
+
         img {
+          position: absolute;
+          top: 0;
+          left: 0;
           object-fit: cover;
-          height: calc((100vw - 30px) * 0.51);
-          width: calc(100vw - 30px);
+          height: 100%;
+          width: 100%;
         }
       }
 

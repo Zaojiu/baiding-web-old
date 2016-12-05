@@ -109,11 +109,20 @@
       position: relative;
       margin-bottom: 10px;
 
-      .cover {
+      &:before {
+        content: '';
         display: block;
+        width: 100%;
+        padding-top: 51.4%;
+      }
+
+      .cover {
+        position: absolute;
+        top: 0;
+        left: 0;
         object-fit: cover;
-        height: calc((100vw - 24px) * 0.51);
-        width: calc(100vw - 24px);
+        height: 100%;
+        width: 100%;
       }
 
       .live-status {
