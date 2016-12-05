@@ -50,7 +50,6 @@ export class PostComponent implements OnInit {
   }
 
   avatarClicked() {
-    this.content = this.content + '😄';
     this.liveService.setPushCommentStashed(this.content, this.commentId);
   }
 
