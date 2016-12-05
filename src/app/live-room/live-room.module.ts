@@ -43,11 +43,12 @@ import {EmptyModule} from "../shared/empty/empty.module";
 import {UtilsService} from "../shared/utils/utils";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
+import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 
-export class MessageHammerConfig extends HammerGestureConfig  {
-buildHammer(element: HTMLElement): HammerInstance {
+export class MessageHammerConfig extends HammerGestureConfig {
+  buildHammer(element: HTMLElement): HammerInstance {
     let mc = new Hammer(element, {domEvents: true});
-    mc.get('press').set({ time: 500 });
+    mc.get('press').set({time: 500});
     return mc;
   }
 }
@@ -72,6 +73,7 @@ buildHammer(element: HTMLElement): HammerInstance {
     LiveRoomInfoUpperModule,
     CountDownModule,
     EmptyModule,
+    HamburgerMenuModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -101,7 +103,7 @@ buildHammer(element: HTMLElement): HammerInstance {
     AudioPlayerService,
     UserInfoCardService,
     UtilsService,
-    { provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig }
+    {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig}
   ]
 })
 
