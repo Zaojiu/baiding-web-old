@@ -40,7 +40,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    if(this.liveInfo.isStarted()){
+    if (this.liveInfo && this.liveInfo.isStarted()) {
       this.router.navigate([`/info-center`]);
     }
 
