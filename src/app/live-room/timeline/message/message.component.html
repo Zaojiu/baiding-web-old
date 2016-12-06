@@ -130,8 +130,7 @@
       <div class="content-container">
         <div class="content">
           {{reply.user.nick}}回复{{message.user.nick}}
-          <div [ngClass]="{'word-wrap': message.type===0 || message.type===3}"
-               [innerHtml]="parseContent(reply.content)"></div>
+          <div class="word-wrap"[innerHtml]="parseContent(reply.content)"></div>
           <div class="post-status">
             <i class="bi bi-sun-flow loading-animation" *ngIf="reply.postStatus === postStatus.Pending"></i>
             <i class="bi bi-warning-round"
