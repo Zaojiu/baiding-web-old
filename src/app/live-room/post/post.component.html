@@ -12,26 +12,26 @@
   </div>
 
   <div class="input-container">
-    <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" autofocus></textarea>
+    <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" #postCommentContent autofocus></textarea>
   </div>
 
   <div class="bottom-bar scrollable">
-    <a class="face" (click)="content = content + '😄'">😄</a>
-    <a class="face" (click)="content = content + '😊'">😊</a>
-    <a class="face" (click)="content = content + '😍'">😍</a>
-    <a class="face" (click)="content = content + '😜'">😜</a>
-    <a class="face" (click)="content = content + '😂'">😂</a>
-    <a class="face" (click)="content = content + '😭'">😭</a>
-    <a class="face" (click)="content = content + '😅'">😅</a>
-    <a class="face" (click)="content = content + '😱'">😱</a>
-    <a class="face" (click)="content = content + '😆'">😆</a>
-    <a class="face" (click)="content = content + '😎'">😎</a>
-    <a class="face" (click)="content = content + '😴'">😴</a>
-    <a class="face" (click)="content = content + '😏'">😏</a>
-    <a class="face" (click)="content = content + '🙌'">🙌</a>
-    <a class="face" (click)="content = content + '👏'">👏</a>
-    <a class="face" (click)="content = content + '🎁'">🎁</a>
-    <a class="face" (click)="content = content + '🎉'">🎉</a>
+    <a class="face" (click)="content = content + '😄';avatarClicked()">😄</a>
+    <a class="face" (click)="content = content + '😊';avatarClicked()">😊</a>
+    <a class="face" (click)="content = content + '😍';avatarClicked()">😍</a>
+    <a class="face" (click)="content = content + '😜';avatarClicked()">😜</a>
+    <a class="face" (click)="content = content + '😂';avatarClicked()">😂</a>
+    <a class="face" (click)="content = content + '😭';avatarClicked()">😭</a>
+    <a class="face" (click)="content = content + '😅';avatarClicked()">😅</a>
+    <a class="face" (click)="content = content + '😱';avatarClicked()">😱</a>
+    <a class="face" (click)="content = content + '😆';avatarClicked()">😆</a>
+    <a class="face" (click)="content = content + '😎';avatarClicked()">😎</a>
+    <a class="face" (click)="content = content + '😴';avatarClicked()">😴</a>
+    <a class="face" (click)="content = content + '😏';avatarClicked()">😏</a>
+    <a class="face" (click)="content = content + '🙌';avatarClicked()">🙌</a>
+    <a class="face" (click)="content = content + '👏';avatarClicked()">👏</a>
+    <a class="face" (click)="content = content + '🎁';avatarClicked()">🎁</a>
+    <a class="face" (click)="content = content + '🎉';avatarClicked()">🎉</a>
   </div>
 
   <button class="post-btn">发送</button>

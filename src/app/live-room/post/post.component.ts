@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {CommentApiService} from "../../shared/api/comment/comment.service";
+import {LiveService} from "../../shared/api/live/live.service";
 
 @Component({
   templateUrl: './post.component.html',
@@ -18,15 +19,18 @@ export class PostComponent implements OnInit {
   commentId: string;
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
+  @ViewChild('postCommentContent') postCommentContent: ElementRef;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private messageApiService: MessageApiService, private postService: PostService) {
+              private messageApiService: MessageApiService, private postService: PostService, private liveService: LiveService) {
   }
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
     this.messageId = this.route.snapshot.params['message_id'];
     this.commentId = this.route.snapshot.params['comment_id'];
+
+    this.content = this.liveService.getPushCommentStashed(this.commentId);
 
     if (this.messageId) {
       this.postService.getMessage(this.id, this.messageId).then(additionalContent => {
@@ -39,6 +43,14 @@ export class PostComponent implements OnInit {
         this.additionalContent = additionalContent
       })
     }
+
+    $(this.postCommentContent.nativeElement).on('input', () => {
+      this.liveService.setPushCommentStashed(this.content, this.commentId);
+    });
+  }
+
+  avatarClicked() {
+    this.liveService.setPushCommentStashed(this.content, this.commentId);
   }
 
   backToMainScreen() {
