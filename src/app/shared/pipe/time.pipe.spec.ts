@@ -65,7 +65,7 @@ describe('DurationFormaterPipe test', () => {
     timeToPipe = new TimeToPipe();
   });
   it('invalid duration should return 00', () => {
-    expect(durationPipe.transform(-403, 1)).toEqual('0');
+    expect(durationPipe.transform(-403, 1)).toEqual('00');
   });
 
   // format DD:HH:MM:SS
