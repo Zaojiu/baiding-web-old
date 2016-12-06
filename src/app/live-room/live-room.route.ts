@@ -1,6 +1,5 @@
 import {Routes, RouterModule} from '@angular/router';
 import {LiveRoomComponent} from './live-room.component';
-import {PostComponent} from './+post/post.component';
 import {AuthGuard} from '../shared/guard/auth.guard';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
