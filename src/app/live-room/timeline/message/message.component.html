@@ -44,7 +44,7 @@
       </div>
 
       <div class="content" *ngIf="message.type === 0 || message.type === 3">
-        <div class="words" [ngClass]="{'word-wrap': message.type===0}" [innerHtml]="parseContent(message.content)"></div>
+        <div [ngClass]="{'word-wrap': message.type===0}" [innerHtml]="parseContent(message.content)"></div>
         <div class="post-status">
           <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
           <i class="bi bi-warning-round"
@@ -130,7 +130,7 @@
       <div class="content-container">
         <div class="content">
           {{reply.user.nick}}回复{{message.user.nick}}
-          <div [innerHtml]="parseContent(reply.content)"></div>
+          <div [ngClass]="{'word-wrap': message.type===0}" [innerHtml]="parseContent(reply.content)"></div>
           <div class="post-status">
             <i class="bi bi-sun-flow loading-animation" *ngIf="reply.postStatus === postStatus.Pending"></i>
             <i class="bi bi-warning-round"
