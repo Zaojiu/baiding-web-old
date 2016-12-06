@@ -40,13 +40,12 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    if (this.liveInfo && this.liveInfo.isStarted()) {
-      this.router.navigate([`/info-center`]);
-    }
 
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+
+    if (this.liveInfo.isStarted()) this.router.navigate([`/info-center`]);
 
     if (!this.liveService.isAdmin(this.liveId)) this.backToViewInfo();
 
