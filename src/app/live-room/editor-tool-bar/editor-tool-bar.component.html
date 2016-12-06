@@ -31,7 +31,8 @@
 
     <div class="record-btn-container"
          [ngClass]="{recording: recorder && recorder.status === recordEnums.Recording, activate: mode === modeEnums.Audio}"
-         (mousedown)="switchMode(modeEnums.Audio)" (touchstart)="switchMode(modeEnums.Audio)" (contextmenu)="$event.preventDefault()"
+         (mousedown)="switchMode(modeEnums.Audio)" (touchstart)="switchMode(modeEnums.Audio)"
+         (contextmenu)="$event.preventDefault()"
     >
       <i class="bi bi-mic"></i>
       <span class="record-duration">{{recordDuration}}</span>
@@ -47,14 +48,14 @@
   <recorder class="recorder" #recorder [ngClass]="{activate: mode === modeEnums.Audio}"
             (recordEnd)="recordEnd($event)"></recorder>
 
-  <div class="post-message-container-hidden-wrapper" [ngClass]="{activate: mode === modeEnums.Text || mode === modeEnums.At}">
-    <form class="post-message-container" #messageContainer [ngClass]="{activate: mode !== modeEnums.None}"
-          (ngSubmit)="postMessage(); switchMode(modeEnums.None);">
+  <div class="post-message-container-hidden-wrapper"
+       [ngClass]="{activate: mode === modeEnums.Text || mode === modeEnums.At}">
+    <form class="post-message-container" #messageContainer [ngClass]="{activate: mode !== modeEnums.None}">
       <div class="input-wrapper">
-        <input #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
-               (focus)="messageInputFocused()" [(ngModel)]="messageContent">
+        <textarea #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
+                  (focus)="messageInputFocused()" [(ngModel)]="messageContent"></textarea>
       </div>
-      <button class="sender">发送</button>
+      <button class="sender" (click)="postMessage();focusMessageInput();">发送</button>
       <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
         <i class="bi bi-at-people-keyboard"></i>
       </a>
