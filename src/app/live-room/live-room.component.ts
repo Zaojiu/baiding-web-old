@@ -11,6 +11,7 @@ import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from "../shared/bridge/share.interface";
+import {UtilsService} from "../shared/utils/utils";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -126,5 +127,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.praisedSub.unsubscribe();
 
     clearInterval(this.refreshInterval);
+  }
+
+  checkGuideAlreadyShown(): boolean {
+    let guideShowed = !!UtilsService.getStorage('beginnerGuide')['isShowed'];
+    return guideShowed;
   }
 }
