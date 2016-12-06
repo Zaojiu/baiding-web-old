@@ -15,6 +15,7 @@
             已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
           </span>
           <span class="live-status" *ngIf="liveInfo.isClosed()">已结束</span>
+
         </div>
 
         <i class="bi bi-right-arrow"></i>
@@ -132,9 +133,8 @@
       <i class="bi bi-right-arrow"></i>
     </div>
 
-    <a class="end-btn" *ngIf="liveInfo.isStarted() && isAdmin" (click)="closeLive()">结束直播</a>
-    <a class="end-btn" *ngIf="(!liveInfo.isStarted() && isAdmin) || !isAdmin"
-       (click)="closeWindow()">退出房间</a>
+    <a class="end-btn" *ngIf="liveInfo.isStarted() && isAdmin" (click)="closeLive()">结束话题间</a>
+    <a class="end-btn" *ngIf="(!liveInfo.isStarted() && isAdmin) || !isAdmin" (click)="closeWindow()">退出话题间</a>
   </div>
 
 </div>

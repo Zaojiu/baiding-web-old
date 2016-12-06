@@ -21,7 +21,7 @@
 
         <div class="title-wrapper" (click)="gotoLiveRoom(liveInfo.id)">
           <div class="title">{{liveInfo.subject}}</div>
-          <div class="indicator living" *ngIf="liveInfo.isStarted()">直播中</div>
+          <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
           <div class="indicator notstarted" *ngIf="liveInfo.isClosed()">已结束</div>
         </div>
 
