@@ -1,6 +1,6 @@
 .mask {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   top: 0;
   bottom: 0;
   left: 0;
@@ -10,13 +10,13 @@
 
 .create-room, .invite-people {
   position: absolute;
-  z-index: 4;
-  right: 12px;
-  bottom: 67px;
+  z-index: 5;
   height: 60px;
   width: 60px;
   border-radius: 50%;
   display: flex;
+  right: 12px;
+  bottom: 67px;
   background-color: rgb(255, 255, 255);
   opacity: 0;
   transition: all .25s ease;
