@@ -44,7 +44,8 @@
 
       <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
         <img [src]="covers[liveInfo.id]" alt="">
-        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
+        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                    [countDownStatus]="liveInfo.isCreated()"></count-down>
       </div>
 
       <div class="invited-people">
@@ -94,7 +95,7 @@
         </div>
 
         <div class="invite"
-             *ngIf="liveInfo.isCreated() && currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
+             *ngIf="currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
              (click)="goInvitation(liveInfo.id)">
           <i class="bi bi-invite"></i>
           邀请

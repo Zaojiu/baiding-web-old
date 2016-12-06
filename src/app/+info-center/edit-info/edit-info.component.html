@@ -1,4 +1,5 @@
-<form [formGroup]="form" name="editInfo" class="edit-info-container" *ngIf="userDetailInfo" (submit)="submit()">
+<form [formGroup]="form" name="editInfo" class="edit-info-container" *ngIf="userDetailInfo"
+      (submit)="submit()">
 
   <div class="main-form">
     <div class="avatar-wrapper">
@@ -7,7 +8,8 @@
 
     <div class="form-group">
       <label>我的名字</label>
-      <input class="input" name="nameContent" type="text" formControlName="nameContent" [(ngModel)]="nameContent" autofocus>
+      <input class="input" name="nameContent" type="text" formControlName="nameContent" [(ngModel)]="nameContent"
+             autofocus>
       <div *ngIf="form.controls['nameContent'].errors">
         <p class="helper error" *ngIf="form.controls['nameContent'].errors.required">请填写名字</p>
         <p class="helper error" *ngIf="form.controls['nameContent'].errors.maxlength">请确认名字字数小于16字</p>
