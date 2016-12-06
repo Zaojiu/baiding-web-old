@@ -5,9 +5,6 @@
       <div class="admin-info" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
         <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
         <span class="nick">{{liveInfo.admin.nick}}</span>
-        <span class="live-status living" *ngIf="liveInfo.isStarted()">进行中</span>
-        <span class="live-status ended" *ngIf="liveInfo.isClosed()">已结束</span>
-        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
       </div>
 
       <div class="live-title">{{liveInfo.subject}}</div>
@@ -41,7 +38,7 @@
               [ngClass]="{show: scroller.isFootLoadingShown, hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
 
-<hamburger-menu class="hamburger-menu" [userInfo]="userInfo" [from]="from"></hamburger-menu>
+<hamburger-menu [userInfo]="userInfo" [from]="from"></hamburger-menu>
 
 <bd-loading class="loading" *ngIf="!livesList"></bd-loading>
 
