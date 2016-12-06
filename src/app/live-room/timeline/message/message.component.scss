@@ -163,11 +163,9 @@
           color: rgb(242, 242, 242);
           border-top-color: rgba(255, 255, 255, .5);
 
-          >div{
-            &.word-wrap{
+            .word-wrap{
               white-space: pre;
             }
-          }
         }
 
         .audio-content {
@@ -253,11 +251,9 @@
       .content {
         background-color: rgb(224, 229, 234);
 
-        >div{
           &.word-wrap{
             white-space: pre;
           }
-        }
       }
 
       .audio-content {
