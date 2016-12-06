@@ -12,6 +12,7 @@ import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
+import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
     LiveRoomInfoUpperModule,
     LoadingModule,
     CountDownModule,
+    HamburgerMenuModule,
   ],
   declarations: [
     InfoCenterComponent,

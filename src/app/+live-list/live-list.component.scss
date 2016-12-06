@@ -233,3 +233,10 @@
   color: #9EA1A5;
   transform: translateX(-50%) translateY(-50%);
 }
+
+.hamburger-menu {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  bottom: 67px;
+}

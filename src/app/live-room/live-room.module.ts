@@ -8,7 +8,6 @@ import {CommentComponent} from './comment/comment.component';
 import {AudienceToolBarComponent} from './audience-tool-bar/audience-tool-bar.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {MessageComponent} from './timeline/message/message.component';
-import {PostComponent} from './post/post.component';
 import {PraisedAnimationDirective} from '../shared/praised-animation/praised-animation.directive';
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
@@ -82,7 +81,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     MessageComponent,
     EditorToolBarComponent,
     AudienceToolBarComponent,
-    PostComponent,
     PraisedAnimationDirective,
     PraisedAnimationComponent,
     LiveRoomInfoComponent,
