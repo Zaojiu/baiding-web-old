@@ -101,7 +101,7 @@
       .live-cover {
         position: relative;
         display: flex;
-        margin: 15px;
+        margin: 12px;
 
         .count-down {
           position: absolute;
@@ -152,13 +152,13 @@
 
       .article {
         position: relative;
-        margin-top: 15px;
+        margin-top: 12px;
 
         .talent {
           display: flex;
           margin-top: 10px;
-          margin-left: 15px;
-          margin-right: 15px;
+          margin-left: 12px;
+          margin-right: 12px;
           height: 28px;
           font-size: 14px;
           color: rgb(158, 161, 165);
@@ -200,7 +200,7 @@
           display: flex;
 
           .title {
-            margin: 0 29px 0 15px;
+            margin: 0 29px 0 12px;
             text-align: justify;
             color: rgb(75, 75, 75);
             letter-spacing: 0.58px;
@@ -214,7 +214,7 @@
           .indicator {
             width: 59px;
             height: 20px;
-            margin-right: 15px;
+            margin-right: 12px;
             border-radius: 4px;
             line-height: 20px;
             text-align: center;
@@ -247,7 +247,7 @@
         }
 
         .words {
-          margin: 15px;
+          margin: 12px;
           word-break: break-all;
           font-size: 14px;
           color: rgb(124, 124, 124);
@@ -263,7 +263,7 @@
       }
 
       .invited-people {
-        padding: 0 15px;
+        padding: 0 12px;
         border-bottom: solid 1px rgba(203, 203, 203, 0.5);
         display: flex;
         flex-wrap: wrap;
@@ -273,15 +273,15 @@
           font-size: 14px;
           color: rgb(75, 75, 75);
           line-height: 24px;
-          margin-right: 15px;
-          margin-bottom: 15px;
+          margin-right: 12px;
+          margin-bottom: 12px;
         }
 
         .vip-container {
           display: inline-flex;
           vertical-align: top;
-          margin-right: 15px;
-          margin-bottom: 15px;
+          margin-right: 12px;
+          margin-bottom: 12px;
 
           .accepted {
             display: inline-flex;
@@ -362,7 +362,7 @@
 
       .operation-area {
         display: flex;
-        margin: 15px;
+        margin: 12px;
 
         .people-count {
           flex-grow: 1;
@@ -428,8 +428,8 @@
 
   .hamburger-menu {
     position: absolute;
-    right: 20px;
-    bottom: 25px;
+    right: 12px;
+    bottom: 12px;
   }
 }
 
