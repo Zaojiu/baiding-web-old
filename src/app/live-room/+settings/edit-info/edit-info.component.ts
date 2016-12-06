@@ -9,7 +9,6 @@ import {LiveService} from "../../../shared/api/live/live.service";
 import {futureValidator} from "../../../shared/form/future.validator";
 import {UploadApiService} from "../../../shared/api/upload/upload.api";
 import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
-import {LiveStatus} from "../../../shared/api/live/live.enums";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -41,7 +40,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    if(this.liveInfo.status===LiveStatus.Started){
+    if(this.liveInfo.isStarted()){
       this.router.navigate([`/info-center`]);
     }
 
