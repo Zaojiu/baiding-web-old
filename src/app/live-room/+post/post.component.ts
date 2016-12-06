@@ -3,13 +3,11 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message/message.api";
-import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {LiveService} from "../../shared/api/live/live.service";
 
 @Component({
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  providers: [PostService, CommentApiService]
 })
 
 export class PostComponent implements OnInit {

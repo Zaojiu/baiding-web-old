@@ -44,7 +44,8 @@
 
       <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
         <img [src]="covers[liveInfo.id]" alt="">
-        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
+        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                    [countDownStatus]="liveInfo.isCreated()"></count-down>
       </div>
 
       <div class="invited-people">
@@ -114,9 +115,7 @@
     </div>
   </div>
 
-  <div class="create-btn" (click)="gotoCreateOrApply()">
-    <i class="bi bi-cross"></i>
-  </div>
+  <hamburger-menu class="hamburger-menu" [userInfo]="currentUserInfo"></hamburger-menu>
 </div>
 
 

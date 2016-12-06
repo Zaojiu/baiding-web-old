@@ -8,7 +8,6 @@ import {CommentComponent} from './comment/comment.component';
 import {AudienceToolBarComponent} from './audience-tool-bar/audience-tool-bar.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {MessageComponent} from './timeline/message/message.component';
-import {PostComponent} from './post/post.component';
 import {PraisedAnimationDirective} from '../shared/praised-animation/praised-animation.directive';
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
@@ -44,6 +43,7 @@ import {UtilsService} from "../shared/utils/utils";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
+import {PostModule} from "./+post/post.module";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -74,6 +74,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CountDownModule,
     EmptyModule,
     HamburgerMenuModule,
+    PostModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -82,7 +83,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     MessageComponent,
     EditorToolBarComponent,
     AudienceToolBarComponent,
-    PostComponent,
     PraisedAnimationDirective,
     PraisedAnimationComponent,
     LiveRoomInfoComponent,

@@ -1,6 +1,5 @@
 .mask {
-  position: absolute;
-  z-index: 4;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -10,16 +9,14 @@
 
 .create-room, .invite-people {
   position: absolute;
-  z-index: 5;
   height: 60px;
   width: 60px;
   border-radius: 50%;
   display: flex;
-  right: 12px;
-  bottom: 67px;
   background-color: rgb(255, 255, 255);
   opacity: 0;
   transition: all .25s ease;
+  pointer-events: none;
 
   .bi {
     margin: auto;
@@ -33,6 +30,7 @@
   }
 
   &.active {
+    pointer-events: auto;
     transform: translateX(-98px) translateY(-13px) rotate(360deg);
     opacity: 1;
     &:after {
@@ -58,6 +56,7 @@
   }
 
   &.active {
+    pointer-events: auto;
     transform: translateX(-19px) translateY(-131px) rotate(360deg);
     opacity: 1;
     &:after {
@@ -78,10 +77,6 @@
 
 /*hamburger animation*/
 .hamburger-menu {
-  position: absolute;
-  z-index: 5;
-  right: 12px;
-  bottom: 67px;
   height: 60px;
   width: 60px;
   border-radius: 50%;

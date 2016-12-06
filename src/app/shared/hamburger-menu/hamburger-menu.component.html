@@ -1,4 +1,4 @@
-<div class="mask" *ngIf="activeStatus"></div>
+<div class="mask" *ngIf="activeStatus" (click)="switch();$event.stopPropagation();"></div>
 
 <div class="create-room" (click)="createRoom()" [ngClass]="{active: activeStatus}">
   <i class="bi bi-add"></i>
