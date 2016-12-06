@@ -30,18 +30,10 @@
           <div class="timenick-wrapper">
             <div class="nick">{{liveInfo.admin.nick}}</div>
             <div class="time">
-              {{liveRoomStatusHumanize(liveInfo.status)}}
-
-              <span class="countdown-day-item-day" *ngIf="liveInfo.isCreated()">
-                {{liveInfo.expectStartAt | timeFormater:'YYYY年MM月DD日HH:mm'}}
-              </span>
-
-              <span class="countdown-day-item-day" *ngIf="liveInfo.isStarted()">
-                {{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:6}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:7}}
-              </span>
-
-              <span class="countdown-day-item-day" *ngIf="liveInfo.isClosed()">
-                {{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:5}}:{{liveInfo.expectStartAt | timeTo:liveInfo.closedAt | durationFormater:6}}
+              <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
+              <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
+              <span class="time" *ngIf="liveInfo.isStarted()">
+                已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
               </span>
             </div>
           </div>
@@ -51,8 +43,8 @@
       </div>
 
       <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
-        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
         <img [src]="covers[liveInfo.id]" alt="">
+        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
       </div>
 
       <div class="invited-people">

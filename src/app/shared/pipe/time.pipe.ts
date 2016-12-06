@@ -18,7 +18,7 @@ export class DurationFormaterPipe implements PipeTransform {
       return num;
     };
 
-    if (durationSecond <= 0) return '0';
+    if (durationSecond <= 0) return '00';
 
     // 适用格式 天：小时：分：秒
     let d = Math.floor(durationSecond / (24 * 60 * 60));
@@ -26,7 +26,7 @@ export class DurationFormaterPipe implements PipeTransform {
     let m = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) / 60);
     let s = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) % 60);
 
-    if (index === 1) return fixDigest(d.toString());
+    if (index === 1) return d ? fixDigest(d.toString()) : '';
     if (index === 2) return fixDigest(h.toString());
     if (index === 3) return fixDigest(m.toString());
     if (index === 4) return fixDigest(s.toString());

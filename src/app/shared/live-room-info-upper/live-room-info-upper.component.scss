@@ -72,9 +72,19 @@
     margin: 12px;
     margin-bottom: 7px;
 
+    &:before {
+      content: '';
+      display: block;
+      width: 100%;
+      padding-top: 51.4%;
+    }
+
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
       object-fit: cover;
-      height: 180px;
+      height: 100%;
       width: 100%;
     }
 

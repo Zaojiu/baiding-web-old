@@ -10,6 +10,7 @@ import {InvitationModel} from "../shared/api/invite/invite.model";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
+import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -20,7 +21,7 @@ export class InfoCenterComponent {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private userInfoService: UserInfoService,
               private shareService: ShareBridge, private inviteApiService: InviteApiService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
   }
 
   timeNow = UtilsService.now.toString();
@@ -31,6 +32,8 @@ export class InfoCenterComponent {
   uid: number;
   invitees: {[liveId: string]: InvitationModel[]} = {};
   covers: {[liveId: string]: SafeUrl} = {};
+  liveTime: {[liveId: string]: string} = {};
+  from = encodeURIComponent('/info-center');
 
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
@@ -62,6 +65,36 @@ export class InfoCenterComponent {
             }
             this.invitees[liveInfo.id] = invitees;
           });
+        }
+
+        if (liveInfo.status === LiveStatus.Created){
+          if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
+            let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
+            let dayStr = '';
+
+            switch (leftDays) {
+              case 0:
+                dayStr = '今天';
+                break;
+              case 1:
+                dayStr = '明天';
+                break;
+              case 2:
+                dayStr = '后天';
+                break;
+            }
+
+            this.liveTime[liveInfo.id] = `开始时间 ${dayStr} ${moment(liveInfo.expectStartAt).format('HH:mm:ss')}`;
+          } else {
+            this.liveTime[liveInfo.id] = `开始时间 ${moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss')}`;
+          }
+        } else if (liveInfo.status === LiveStatus.Ended) {
+          let diffSec = moment(liveInfo.closedAt).diff(moment(liveInfo.expectStartAt)) / 1000;
+          let dayStr = this.durationPipe.transform(diffSec, 1);
+          if (dayStr !== '') dayStr += ':';
+          this.liveTime[liveInfo.id] = `直播时长 ${dayStr}${this.durationPipe.transform(diffSec, 2)}:${this.durationPipe.transform(diffSec, 3)}:${this.durationPipe.transform(diffSec, 4)}`;
+        } else {
+          this.liveTime[liveInfo.id] = '未知状态';
         }
 
         let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
@@ -97,31 +130,18 @@ export class InfoCenterComponent {
   }
 
   goInvitation(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/vip-info`, {fromInfoCenter: true}]);
+    this.router.navigate([`/lives/${liveId}/vip-info`, {from: this.from}]);
   }
 
   goEditLiveRoom(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {fromInfoCenter: true}]);
+    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {from: this.from}]);
   }
 
   gotoCreateOrApply() {
     if (this.currentUserInfo.canPublish) {
-      this.router.navigate([`/lives/create`]);
+      this.router.navigate([`/lives/create`, {from: this.from}]);
     } else {
-      this.router.navigate([`/lives/apply`]);
-    }
-  }
-
-  liveRoomStatusHumanize(liveStatus: number): string {
-    switch (liveStatus) {
-      case LiveStatus.Created:
-        return '开始时间';
-      case LiveStatus.Started:
-        return '已进行';
-      case LiveStatus.Ended:
-        return '直播时长';
-      default:
-        return '未知状态';
+      this.router.navigate([`/lives/apply`, {from: this.from}]);
     }
   }
 

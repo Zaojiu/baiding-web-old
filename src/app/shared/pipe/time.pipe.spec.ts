@@ -64,8 +64,14 @@ describe('DurationFormaterPipe test', () => {
     durationPipe = new DurationFormaterPipe();
     timeToPipe = new TimeToPipe();
   });
+
   it('invalid duration should return 00', () => {
-    expect(durationPipe.transform(-403, 1)).toEqual('0');
+    expect(durationPipe.transform(-403, 1)).toEqual('00');
+  });
+
+  it('empty string when left zero day', () => {
+    let value = timeToPipe.transform('2016-10-01 12:00', '2016-10-01 14:22');
+    expect(durationPipe.transform(value, 1)).toEqual('');
   });
 
   // format DD:HH:MM:SS
