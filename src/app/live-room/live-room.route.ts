@@ -32,9 +32,6 @@ const route: Routes = [
           liveInfo: LiveInfoResolver,
           userInfo: UserInfoResolver,
         },
-        children: [
-          {path: '', component: EmptyComponent},
-        ],
       },
       {path: 'push-comment', loadChildren: 'app/live-room/+push-comment/push-comment.module#PushCommentModule'},
       {path: 'post', loadChildren:'app/live-room/+post/post.module#PostModule'},

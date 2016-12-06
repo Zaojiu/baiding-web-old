@@ -43,7 +43,6 @@ import {UtilsService} from "../shared/utils/utils";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
-import {PostModule} from "./+post/post.module";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -74,7 +73,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CountDownModule,
     EmptyModule,
     HamburgerMenuModule,
-    PostModule,
   ],
   declarations: [
     LiveRoomComponent,
