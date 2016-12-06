@@ -55,7 +55,7 @@
         <textarea #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
                   (focus)="messageInputFocused()" [(ngModel)]="messageContent"></textarea>
       </div>
-      <button class="sender" (click)="postMessage(); switchMode(modeEnums.None);">发送</button>
+      <button class="sender" (click)="postMessage()">发送</button>
       <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
         <i class="bi bi-at-people-keyboard"></i>
       </a>
