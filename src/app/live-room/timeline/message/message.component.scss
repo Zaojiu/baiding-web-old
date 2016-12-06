@@ -246,6 +246,13 @@
 
       .content {
         background-color: rgb(224, 229, 234);
+
+        .words{
+
+          &.word-wrap{
+            white-space: pre;
+          }
+        }
       }
 
       .audio-content {
