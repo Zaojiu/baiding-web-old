@@ -14,7 +14,7 @@ export class AutofocusFirstInvalidInputDirective implements OnInit {
   }
 
   ngOnInit() {
-    $(this.el).on('submit', function () {
+    $(this.el).on('submit', () => {
       $(this.el).find('input.ng-invalid:first').first().focus();
     });
   }
