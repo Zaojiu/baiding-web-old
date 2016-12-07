@@ -32,7 +32,7 @@
 
       .nick {
         flex-grow: 1;
-        color: rgb(75, 75, 75);
+        color: $color-dark-gray;
         font-size: 14px;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -72,7 +72,7 @@
     }
 
     .live-title {
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       font-weight: 600;
       font-size: 17px;
       line-height: 1.3em;

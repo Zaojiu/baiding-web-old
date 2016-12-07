@@ -4,7 +4,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  color: rgb(75, 75, 75);
+  color: $color-dark-gray;
   overflow: auto;
 
   .invitation {
@@ -122,7 +122,7 @@
 
     .share-tips {
       margin: 13px 40px 0;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
 
       &:first-child {
         margin-top: 23px;

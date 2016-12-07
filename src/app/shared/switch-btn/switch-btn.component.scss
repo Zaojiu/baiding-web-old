@@ -5,7 +5,7 @@
   width: 37px;
   height: 22px;
   border-radius: 19px;
-  background-color: rgb(75, 75, 75);
+  background-color: $color-dark-gray;
 
   &.opened {
     background-color: $color-brand;
@@ -43,7 +43,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       font-size: 12px;
       line-height: 1em;
     }

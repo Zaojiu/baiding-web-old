@@ -26,7 +26,7 @@
 .invite-people {
   .bi {
     font-size: 26px;
-    color: rgb(75, 75, 75);
+    color: $color-dark-gray;
   }
 
   &.active {
@@ -52,7 +52,7 @@
 .create-room {
   .bi {
     font-size: 20px;
-    color: rgb(75, 75, 75);
+    color: $color-dark-gray;
   }
 
   &.active {

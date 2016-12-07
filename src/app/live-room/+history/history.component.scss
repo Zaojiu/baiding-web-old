@@ -29,7 +29,7 @@
 
         h1 {
           flex-grow: 1;
-          color: rgb(75, 75, 75);
+          color: $color-dark-gray;
           font-weight: normal;
           font-size: 24px;
           margin: 0;
@@ -53,7 +53,7 @@
         .name {
           display: inline-block;
           font-size: 14px;
-          color: rgb(75, 75, 75);
+          color: $color-dark-gray;
           margin-right: 10px;
           vertical-align: middle;
         }
@@ -84,7 +84,7 @@
 
       .message, .message-reply {
         font-size: 16px;
-        color: rgb(75, 75, 75);
+        color: $color-dark-gray;
         line-height: 24px;
         word-break: break-all;
 
@@ -142,7 +142,7 @@
           top: 11px;
           height: 1px;
           width: 10px;
-          background-color: rgb(75, 75, 75);
+          background-color: $color-dark-gray;
         }
       }
     }
@@ -165,7 +165,7 @@
 
       .source-title {
         font-weight: normal;
-        color: rgb(75, 75, 75);
+        color: $color-dark-gray;
         font-size: 20px;
         margin-bottom: 20px;
         margin-top: 0;
@@ -200,7 +200,7 @@
           overflow: hidden;
 
           .live-title {
-            color: rgb(75, 75, 75);
+            color: $color-dark-gray;
             font-size: 17px;
             margin-bottom: 10px;
             margin-top: 0;

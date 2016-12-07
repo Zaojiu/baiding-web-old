@@ -25,7 +25,7 @@
       float: right;
       font-size: 18px;
       padding: 20px;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
     }
   }
 
@@ -46,7 +46,7 @@
     .main {
       flex-grow: 1;
       font-size: 14px;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
 
       .name {
         margin-bottom: 5px;
@@ -68,11 +68,11 @@
       resize: none;
       box-sizing: border-box;
       outline: none;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       padding: 0;
 
       &::-webkit-input-placeholder {
-        color: rgb(75, 75, 75);
+        color: $color-dark-gray;
       }
     }
   }
