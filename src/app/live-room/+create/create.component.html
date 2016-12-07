@@ -73,7 +73,7 @@
           [(ngModel)]="coverFiles"
         >
       </div>
-      <p class="helper" *ngIf="form.controls['cover'].valid || !form.controls['cover'].dirty"><span class="highlight">点击图片</span>即可上传更换封面。封面尺寸: 350*180, 格式: jpg、png、gif、bmp, 并小于8M。</p>
+      <p class="helper" *ngIf="form.controls['cover'].valid || !form.controls['cover'].dirty"><span class="highlight">点击图片</span>即可上传封面。封面尺寸: 350*180, 格式: jpg、png、gif、bmp, 并小于8M。</p>
       <div *ngIf="form.controls['cover'].errors">
         <p class="helper error" *ngIf="form.controls['cover'].errors.size">封面图大小须小于8M</p>
         <p class="helper error" *ngIf="form.controls['cover'].errors.accept">封面图格式须符合jpg、png、gif、bmp</p>
