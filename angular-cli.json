@@ -19,6 +19,7 @@
       "styles": [
         "styles.scss"
       ],
+      "styleVariables": "css/_variables.scss",
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
         "../node_modules/lodash/lodash.js",

@@ -11,13 +11,13 @@
 
   .back-to-home {
     font-size: 17px;
-    color: rgb(33, 150, 243);
+    color: $color-brand;
     flex-grow: 1;
   }
 
   .chat-info {
     font-size: 12px;
-    color: rgb(158, 161, 165);
+    color: $color-gray;
 
     .bi {
       font-size: 18px;

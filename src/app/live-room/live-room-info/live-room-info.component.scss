@@ -16,7 +16,7 @@
   .people-container {
     margin: auto 12px;
     .title {
-      color: rgb(158, 161, 165);
+      color: $color-gray;
       display: flex;
       align-items: center;
       font-size: 16px;
@@ -47,8 +47,8 @@
   z-index: 5;
   bottom: 0;
   font-size: 17px;
-  color: rgba(255, 255, 255, 1);
-  background: rgba(3, 228, 210, 1);
+  color: $color-w;
+  background: $color-brand;
   letter-spacing: 0px;
   line-height: 17px;
   height: 50px;

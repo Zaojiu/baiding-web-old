@@ -4,7 +4,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgb(255, 255, 255);
+  background-color: $color-w;
   overflow: auto;
 
   .live-info-block {
@@ -83,7 +83,7 @@
     .live-info {
       display: flex;
       line-height: 1em;
-      color: rgb(158, 161, 165);
+      color: $color-gray;
       font-size: 14px;
       margin-bottom: 10px;
 
@@ -100,7 +100,7 @@
           transform: translateX(-50%) translateY(-55%);
           height: 80%;
           width: 1px;
-          background-color: rgb(158, 161, 165);
+          background-color: $color-gray;
         }
       }
     }
@@ -139,20 +139,20 @@
         &.ended {
           background-color: rgb(102, 102, 102);
           font-size: 12px;
-          color: rgb(255, 255, 255);
+          color: $color-w;
         }
 
         &.living {
           background-color: rgb(243, 33, 33);
           font-size: 12px;
-          color: rgb(255, 255, 255);
+          color: $color-w;
 
           &:before {
             content: "";
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: rgb(255, 255, 255);
+            background-color: $color-w;
             margin-right: 4px;
           }
         }
@@ -168,7 +168,7 @@
 
     .desc {
       font-size: 14px;
-      color: rgb(158, 161, 165);
+      color: $color-gray;
       line-height: 1.28em;
       white-space: pre-line;
       text-overflow: ellipsis;

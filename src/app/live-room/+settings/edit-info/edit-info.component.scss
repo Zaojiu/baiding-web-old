@@ -54,7 +54,7 @@
       top: 50%;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
-      color: rgb(158, 161, 165);
+      color: $color-gray;
     }
   }
 
@@ -88,7 +88,7 @@
 
 .operation-area {
   display: flex;
-  background-color: rgb(33, 150, 243);
+  background-color: $color-brand;
 
   .btn {
     width: 50%;
@@ -96,7 +96,7 @@
     height: 44px;
     line-height: 44px;
     font-size: 16px;
-    color: rgb(255, 255, 255);
+    color: $color-w;
 
     &:first-child {
       position: relative;

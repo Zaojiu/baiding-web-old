@@ -13,7 +13,7 @@
   width: 60px;
   border-radius: 50%;
   display: flex;
-  background-color: rgb(255, 255, 255);
+  background-color: $color-w;
   opacity: 0;
   transition: all .25s ease;
   pointer-events: none;
@@ -44,7 +44,7 @@
       width: 80px;
       height: 20px;
       border-radius: 10px;
-      background-color: rgb(255, 255, 255);
+      background-color: $color-w;
     }
   }
 }
@@ -69,7 +69,7 @@
       line-height: 20px;
       width: 80px;
       height: 20px;
-      background-color: rgb(255, 255, 255);
+      background-color: $color-w;
       border-radius: 10px;
     }
   }
@@ -80,7 +80,7 @@
   height: 60px;
   width: 60px;
   border-radius: 50%;
-  background-color: rgb(33, 150, 243);
+  background-color: $color-brand;
   display: flex;
   overflow: hidden;
 
@@ -106,7 +106,7 @@
     position: absolute;
     height: 2px;
     width: 100%;
-    background: rgb(255, 255, 255);
+    background: $color-w;
     border-radius: 1px;
     opacity: 1;
     left: 0;
