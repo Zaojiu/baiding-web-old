@@ -1,12 +1,21 @@
 <div class="invite-container">
   <div class="invitation">
-    <p class="title">邀请函</p>
-    <p>{{name}}您好：</p>
-    <p>很荣幸邀请您成为</p>
-    <p class="live-title">{{liveInfo.subject}}</p>
-    <p>的嘉宾</p>
-    <div class="sign"><img class="avatar" [src]="liveInfo.admin.avatar"><span
-      class="name">{{liveInfo.admin.nick}}</span></div>
+    <div class="title dash-border">
+      邀请函
+      <small>INVITATION</small>
+    </div>
+
+    <div class="content">
+      <p><span class="vip-name">{{name}}</span>您好：</p>
+      <p>很荣幸邀请您成为<span class="live-title">{{liveInfo.subject}}</span>的嘉宾</p>
+    </div>
+
+    <div class="sign">
+      <span class="name">{{liveInfo.admin.nick}}</span>
+      <img class="avatar" [src]="liveInfo.admin.avatar">
+    </div>
+
+    <i class="bi bi-stamp" *ngIf="token && isTokenExist && liveInfo.admin.uid !== userInfo.uid"></i>
   </div>
 
   <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid === userInfo.uid">
@@ -15,7 +24,7 @@
     <a class="btn-goto-live" (click)="backToLive()">返回</a>
   </div>
 
-  <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid ">
+  <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid">
     <a class="btn-accept-invitation" (click)="acceptInvitation()">接受邀请</a>
   </div>
 
