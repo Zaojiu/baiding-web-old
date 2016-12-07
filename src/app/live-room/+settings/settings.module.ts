@@ -12,6 +12,7 @@ import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {FormModule} from "../../shared/form/form.module";
 import {ViewInfoComponent} from "./view-info/view-info.component";
 import {LiveRoomInfoUpperModule} from "../../shared/live-room-info-upper/live-room-info-upper.module";
+import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import {LiveRoomInfoUpperModule} from "../../shared/live-room-info-upper/live-ro
     ReactiveFormsModule,
     FormModule,
     LiveRoomInfoUpperModule,
+    AutofocusFirstInvalidInputModule,
   ],
   declarations: [
     SettingsComponent,
