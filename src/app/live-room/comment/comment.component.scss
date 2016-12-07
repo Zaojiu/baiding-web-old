@@ -3,7 +3,7 @@
     margin: 6px 0 0 auto;
     width: 172px;
     height: 28px;
-    color: rgb(255, 255, 255);
+    color: $color-w;
     font-size: 14px;
     background-color: rgba(80, 80, 80, .7);
     border-radius: 4px;
@@ -79,7 +79,7 @@
           height: 24px;
           border-radius: 50%;
           box-sizing: border-box;
-          border: solid 1px rgb(255, 255, 255);
+          border: solid 1px $color-w;
           margin-left: 5px;
           flex-shrink: 0;
         }

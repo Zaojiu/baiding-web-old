@@ -36,7 +36,7 @@
       }
 
       font-size: 16px;
-      color: rgb(158, 161, 165);
+      color: $color-gray;
     }
   }
 
@@ -51,12 +51,12 @@
       height: 50px;
       line-height: 50px;
       border-radius: 25px;
-      background-color: rgb(33, 150, 243);
-      color: rgb(255, 255, 255);
+      background-color: $color-brand;
+      color: $color-w;
       font-size: 17px;
 
       &.disabled {
-        background-color: rgb(141, 199, 246);
+        background-color: color-brand-transparent(.5);
       }
     }
   }
@@ -77,7 +77,7 @@
     }
 
     font-size: 16px;
-    color: rgb(158, 161, 165);
+    color: $color-gray;
     line-height: 1.37em;
 
 

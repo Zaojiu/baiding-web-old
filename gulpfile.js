@@ -10,7 +10,8 @@ gulp.task('src', function () {
     autoprefixer(),
   ];
   let tsProcessor = $.lazypipe().pipe($.replace, '.scss', '.css');
-  let cssProcessor = $.lazypipe().pipe($.sass).pipe($.postcss, processors);
+  let cssProcessor = $.lazypipe().pipe($.insert.prepend, '@import "./src/css/_variables.scss";')
+    .pipe($.sass).pipe($.postcss, processors);
 
   gulp.src('./src/**/*')
     .pipe($.if('*.scss', cssProcessor()))

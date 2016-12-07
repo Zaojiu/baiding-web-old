@@ -10,7 +10,7 @@
  */
 $spinkit-spinner-margin: 0 auto !default;
 $spinkit-size: 17px !default;
-$spinkit-spinner-color: rgb(33, 150, 243) !default;
+$spinkit-spinner-color: $color-brand !default;
 
 .sk-three-bounce {
   $animationDuration: 1.4s;

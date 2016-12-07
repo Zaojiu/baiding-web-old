@@ -1,13 +1,13 @@
 .image-viewer-popup {
   display: none;
   position: absolute;
-  background-color: rgba(0, 0, 0, 1);
+  background-color: $color-b;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
   z-index: 4;
-  color: rgb(255, 255, 255);
+  color: $color-w;
   font-size: 20px;
   overflow: hidden;
 
@@ -34,7 +34,7 @@
 
     .delete-btn {
       margin: auto;
-      color: rgba(255, 255, 255, 1);
+      color: $color-w;
     }
   }
 

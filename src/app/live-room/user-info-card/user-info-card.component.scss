@@ -7,7 +7,7 @@
   right: 0;
   bottom: 0;
   z-index: 3;
-  color: rgb(255, 255, 255);
+  color: $color-w;
   text-align: right;
   font-size: 20px;
 
@@ -19,7 +19,7 @@
     position: absolute;
     bottom: 0px;
     height: 110px;
-    background: rgb(255, 255, 255);
+    background: $color-w;
     width: 100%;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
@@ -35,7 +35,7 @@
 
     .talent-info {
       font-size: 14px;
-      color: rgb(158, 161, 165);
+      color: $color-gray;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -47,7 +47,7 @@
 
     .word-container {
       display: flex;
-      color: rgb(0, 0, 0);
+      color: $color-b;
       margin-top: 60px;
       margin-right: 10px;
 
@@ -67,7 +67,7 @@
 
         .content {
           font-size: 12px;
-          color: rgb(158, 161, 165);
+          color: $color-gray;
           line-height: 1em;
           margin-top: 6px;
         }

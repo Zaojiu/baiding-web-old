@@ -13,7 +13,7 @@
   }
 
   .wechat-share {
-    color: rgb(255, 255, 255);
+    color: $color-w;
     text-align: right;
     font-size: 20px;
 
@@ -31,7 +31,7 @@
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background-color: rgb(255, 255, 255);
+    background-color: $color-w;
     padding: 50px;
     color: rgb(75, 75, 75);
     border-radius: 4px;
@@ -58,7 +58,7 @@
     .bi-zaojiu-slogan {
       display: block;
       font-size: 25px;
-      color: rgb(158, 161, 165);
+      color: $color-gray;
     }
   }
 }

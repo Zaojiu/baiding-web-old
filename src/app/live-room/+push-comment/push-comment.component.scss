@@ -132,7 +132,7 @@
 
           .time {
             padding-left: 5px;
-            color: rgb(158, 161, 165);
+            color: $color-gray;
             font-size: 12px;
           }
         }
@@ -155,14 +155,14 @@
           font-size: 14px;
 
           &.is-closed {
-            color: rgba(33, 150, 243, .5);
+            color: color-brand-transparent(.5);
             pointer-events: none;
           }
           &.pushed {
-            color: rgba(33, 150, 243, .5);
+            color: color-brand-transparent(.5);
           }
           &.pushed-audience {
-            color: rgb(158, 161, 165);
+            color: $color-gray;
           }
         }
       }
@@ -181,7 +181,7 @@
       display: inline-block;
       font-size: 12px;
       margin-left: 20px;
-      color: rgb(158, 161, 165);
+      color: $color-gray;
 
       .bi {
         font-size: 18px;
@@ -193,7 +193,7 @@
       /* 筛选: */
       float: right;
       font-size: 14px;
-      color: rgb(33, 150, 243);
+      color: $color-brand;
       line-height: 49px;
       margin-right: 17px;
     }
