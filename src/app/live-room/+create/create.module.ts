@@ -9,6 +9,7 @@ import {FormModule} from "../../shared/form/form.module";
 import {CreateComponent} from "./create.component";
 import {CreateGuard} from "../../shared/guard/create.guard";
 import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
+import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first
     ReactiveFormsModule,
     AutofocusFirstInvalidInputModule,
     FormModule,
+    AutoresizeModule,
   ],
   declarations: [
     CreateComponent

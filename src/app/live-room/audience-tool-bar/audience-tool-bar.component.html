@@ -21,6 +21,7 @@
         (focus)="switchMode(modeEnums.Text)"
         placeholder="发表评论"
         [(ngModel)]="commentContent"
+        display-when-focus
       >
       <div class="fake-comment-input"
            (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.None">发表评论

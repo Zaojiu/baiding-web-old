@@ -13,6 +13,7 @@ import {FormModule} from "../../shared/form/form.module";
 import {ViewInfoComponent} from "./view-info/view-info.component";
 import {LiveRoomInfoUpperModule} from "../../shared/live-room-info-upper/live-room-info-upper.module";
 import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
+import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first
     FormModule,
     LiveRoomInfoUpperModule,
     AutofocusFirstInvalidInputModule,
+    AutoresizeModule,
   ],
   declarations: [
     SettingsComponent,

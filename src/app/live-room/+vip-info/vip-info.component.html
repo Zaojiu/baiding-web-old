@@ -1,27 +1,46 @@
-<div class="loading" *ngIf="isLoading"></div>
-
-<form class="vip-info-container" *ngIf="!isLoading" (ngSubmit)="submit()">
+<form [formGroup]="form" class="vip-info-container" (ngSubmit)="submit()" autofocus-first-invalid-input>
   <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
 
   <div class="main-form">
-    <div class="vip-name-wrapper ">
-      <div class="name">嘉宾名字</div>
-      <div class="input-container">
-        <input class="input" name="nameContent" [(ngModel)]="nameContent" autofocus>
+    <div class="form-group" [ngClass]="{'has-error': form.controls['nick'].dirty && form.controls['nick'].invalid}">
+      <div class="input-group">
+        <input
+          id="nick"
+          class="nick"
+          name="nick"
+          type="text"
+          formControlName="nick"
+          [(ngModel)]="nick"
+        >
+        <label class="required">嘉宾名字</label>
+      </div>
+      <div *ngIf="form.controls['nick'].errors">
+        <p class="helper error" *ngIf="form.controls['nick'].errors.required">请填写嘉宾名字</p>
       </div>
     </div>
 
-    <div class="vip-intro-wrapper ">
-      <div class="intro">嘉宾介绍</div>
-      <span class="intro-word">简介字数100字以内，可不填写</span>
-      <div class="input-container">
-    <textarea class="input" name="introContent" [(ngModel)]="introContent"
-              autofocus></textarea>
+    <div class="form-group" [ngClass]="{'has-error': form.controls['intro'].dirty && form.controls['intro'].invalid}">
+      <div class="input-group">
+        <textarea
+          id="intro"
+          class="intro"
+          name="intro"
+          formControlName="intro"
+          [(ngModel)]="intro"
+          rows="1"
+          autoresize
+        ></textarea>
+        <label>嘉宾介绍</label>
+      </div>
+      <p class="helper" *ngIf="form.controls['intro'].valid || !form.controls['intro'].dirty">嘉宾介绍字数100字以内，可不填写</p>
+      <div *ngIf="form.controls['intro'].errors">
+        <p class="helper error" *ngIf="form.controls['intro'].errors.maxlength">请确认嘉宾介绍字数小于100字</p>
       </div>
     </div>
   </div>
 
-  <div class="button-wrapper">
-    <button class="generate-invitation">生成邀请函</button>
+  <div class="operation-area">
+    <button class="btn" *ngIf="!isSubmitting">生成邀请函</button>
+    <span class="btn disabled" *ngIf="isSubmitting">邀请函生成中...</span>
   </div>
 </form>

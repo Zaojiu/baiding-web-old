@@ -19,7 +19,7 @@
 
     .edit-btn {
       display: inline-flex;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       font-size: 22px;
       flex-grow: 0;
       margin-left: 14px;
@@ -31,7 +31,7 @@
 
     .share-btn {
       display: inline-flex;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       font-size: 22px;
       flex-grow: 0;
       margin-right: 14px;
@@ -80,6 +80,13 @@
         font-size: 14px;
         color: #9EA1A5;
         line-height: 20px;
+        white-space: pre-wrap;
+        overflow : hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+
       }
     }
 
@@ -146,7 +153,7 @@
           margin-right: 23px;
           flex-grow: 1;
           flex-shrink: 1;
-          color: rgba(75, 75, 75, 1);
+          color: $color-dark-gray;
         }
       }
 
@@ -202,7 +209,7 @@
           .title {
             margin: 0 29px 0 12px;
             text-align: justify;
-            color: rgb(75, 75, 75);
+            color: $color-dark-gray;
             letter-spacing: 0.58px;
             word-break: break-all;
             font-size: 18px;
@@ -223,7 +230,7 @@
             &.notstarted {
               background-color: rgb(216, 216, 216);
               font-size: 12px;
-              color: rgb(75, 75, 75);
+              color: $color-dark-gray;
             }
 
             &.living {
@@ -271,7 +278,7 @@
 
         .title {
           font-size: 14px;
-          color: rgb(75, 75, 75);
+          color: $color-dark-gray;
           line-height: 24px;
           margin-right: 12px;
           margin-bottom: 12px;
@@ -322,7 +329,7 @@
             .nick {
               margin-left: 5px;
               font-size: 14px;
-              color: rgb(75, 75, 75);
+              color: $color-dark-gray;
             }
           }
 
@@ -383,14 +390,14 @@
 
           .total-users {
             font-size: 14px;
-            color: rgb(75, 75, 75);
+            color: $color-dark-gray;
             margin-left: 5px;
           }
         }
 
         .invite, .edit {
           font-size: 12px;
-          color: rgb(75, 75, 75);
+          color: $color-dark-gray;
           display: inline-flex;
           align-items: center;
 

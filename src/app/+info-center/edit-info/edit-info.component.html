@@ -6,20 +6,38 @@
       <img class="avatar" [src]="userDetailInfo.avatar" alt="嘉宾头像">
     </div>
 
-    <div class="form-group">
-      <label>我的名字</label>
-      <input class="input" name="nameContent" type="text" formControlName="nameContent" [(ngModel)]="nameContent"
-             autofocus>
+    <div class="form-group" [ngClass]="{'has-error': form.controls['nameContent'].dirty && form.controls['nameContent'].invalid}">
+      <div class="input-group">
+        <input
+          class="input"
+          name="nameContent"
+          type="text"
+          formControlName="nameContent"
+          [(ngModel)]="nameContent"
+          autofocus
+        >
+        <label class="required">我的名字</label>
+      </div>
       <div *ngIf="form.controls['nameContent'].errors">
         <p class="helper error" *ngIf="form.controls['nameContent'].errors.required">请填写名字</p>
         <p class="helper error" *ngIf="form.controls['nameContent'].errors.maxlength">请确认名字字数小于16字</p>
       </div>
     </div>
 
-    <div class="form-group">
-      <label>关于我</label>
-      <p class="helper">简介字数150字以内，可不填写</p>
-      <textarea class="input" name="introContent" formControlName="introContent" [(ngModel)]="introContent"></textarea>
+    <div class="form-group" [ngClass]="{'has-error': form.controls['introContent'].dirty && form.controls['introContent'].invalid}">
+      <div class="input-group">
+        <textarea
+          class="input"
+          name="introContent"
+          formControlName="introContent"
+          [(ngModel)]="introContent"
+          rows="1"
+          autoresize
+        ></textarea>
+        <label>关于我</label>
+      </div>
+      <p class="helper" *ngIf="form.controls['introContent'].valid || !form.controls['introContent'].dirty">
+        简介字数150字以内，可不填写</p>
       <div *ngIf="form.controls['introContent'].errors">
         <p class="helper error" *ngIf="form.controls['introContent'].errors.maxlength">请确认介绍字数小于150字</p>
       </div>
