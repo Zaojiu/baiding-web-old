@@ -13,6 +13,8 @@ import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
+import {AutofocusFirstInvalidInputModule} from "../shared/first-invalid/first-invalid.module";
+import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 
 @NgModule({
   imports: [
@@ -26,6 +28,8 @@ import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.modul
     LoadingModule,
     CountDownModule,
     HamburgerMenuModule,
+    AutofocusFirstInvalidInputModule,
+    AutoresizeModule,
   ],
   declarations: [
     InfoCenterComponent,

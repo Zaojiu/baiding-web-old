@@ -4,7 +4,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  color: rgb(75, 75, 75);
+  color: $color-dark-gray;
   display: flex;
   flex-direction: column;
 
@@ -37,15 +37,20 @@
 
   .operation-area {
     display: flex;
-    background-color: $color-brand;
 
     .btn {
-      width: 50%;
+      width: 40%;
       text-align: center;
-      height: 45px;
-      line-height: 45px;
-      font-size: 16px;
+      height: 49px;
+      line-height: 49px;
+      font-size: 17px;
       color: $color-w;
+      background-color: rgb(153, 156, 156);
+
+      &:last-child {
+        width: 60%;
+        background-color: $color-brand;
+      }
     }
   }
 }

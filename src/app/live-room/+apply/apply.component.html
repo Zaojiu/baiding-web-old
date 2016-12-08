@@ -5,7 +5,8 @@
     <bd-loading></bd-loading>
   </div>
 
-  <form class="main-form" [formGroup]="form" name="apply" (submit)="submit()" *ngIf="!loading && !application">
+  <form class="main-form" *ngIf="!loading && !application" [formGroup]="form" name="apply" (submit)="submit()"
+        autofocus-first-invalid-input>
     <div class="form-head">
       <div class="title">填写申请信息</div>
       感谢你关注造就，请详细填写以下信息。我们会有专人审核，请耐心等待。
@@ -13,15 +14,17 @@
 
     <div class="form-group"
          [ngClass]="{'has-error': form.controls['username'].dirty && form.controls['username'].invalid}">
-      <label class="required">用户名</label>
-      <input
-        id="username"
-        class="username"
-        name="username"
-        type="text"
-        formControlName="username"
-        [(ngModel)]="username"
-      >
+      <div class="input-group">
+        <input
+          id="username"
+          class="username"
+          name="username"
+          type="text"
+          formControlName="username"
+          [(ngModel)]="username"
+        >
+        <label class="required">用户名</label>
+      </div>
       <p class="helper" *ngIf="form.controls['username'].valid || !form.controls['username'].dirty">
         用户名长度5-20个字符，以字母开头，可包含字母、数字、横线。创建以后不可修改。
       </p>
@@ -33,15 +36,18 @@
     </div>
 
     <div class="form-group" [ngClass]="{'has-error': form.controls['email'].dirty && form.controls['email'].invalid}">
-      <label class="required">电子邮箱</label>
-      <input
-        id="email"
-        class="email"
-        name="email"
-        type="text"
-        formControlName="email"
-        [(ngModel)]="email"
-      >
+      <div class="input-group">
+        <input
+          id="email"
+          class="email"
+          name="email"
+          type="text"
+          formControlName="email"
+          [(ngModel)]="email"
+        >
+        <label class="required">电子邮箱</label>
+      </div>
+
       <p class="helper" *ngIf="form.controls['email'].valid || !form.controls['email'].dirty">收到审核申请之后，我们将会通过邮件通知您</p>
       <div *ngIf="form.controls['email'].errors">
         <p class="helper error" *ngIf="form.controls['email'].errors.required">请填写电子邮箱</p>
@@ -51,15 +57,17 @@
 
     <div class="form-group"
          [ngClass]="{'has-error': form.controls['realName'].dirty && form.controls['realName'].invalid}">
-      <label class="required">姓名</label>
-      <input
-        id="realName"
-        class="realName"
-        name="realName"
-        type="text"
-        formControlName="realName"
-        [(ngModel)]="realName"
-      >
+      <div class="input-group">
+        <input
+          id="realName"
+          class="realName"
+          name="realName"
+          type="text"
+          formControlName="realName"
+          [(ngModel)]="realName"
+        >
+        <label class="required">姓名</label>
+      </div>
       <p class="helper" *ngIf="form.controls['realName'].valid || !form.controls['realName'].dirty">请填写您的真实姓名</p>
       <div *ngIf="form.controls['realName'].errors">
         <p class="helper error" *ngIf="form.controls['realName'].errors.required">请填写姓名</p>
@@ -67,31 +75,36 @@
       </div>
     </div>
 
-    <div class="form-group" [ngClass]="{'has-error': form.controls['company'].dirty && form.controls['company'].invalid}">
-      <label class="required">机构名称</label>
-      <input
-        id="company"
-        class="company"
-        name="company"
-        type="text"
-        formControlName="company"
-        [(ngModel)]="company"
-      >
+    <div class="form-group"
+         [ngClass]="{'has-error': form.controls['company'].dirty && form.controls['company'].invalid}">
+      <div class="input-group">
+        <input
+          id="company"
+          class="company"
+          name="company"
+          type="text"
+          formControlName="company"
+          [(ngModel)]="company"
+        >
+        <label class="required">机构名称</label>
+      </div>
       <div *ngIf="form.controls['company'].errors">
         <p class="helper error" *ngIf="form.controls['company'].errors.required">请填写机构名称</p>
       </div>
     </div>
 
     <div class="form-group" [ngClass]="{'has-error': form.controls['title'].dirty && form.controls['title'].invalid}">
-      <label class="required">职位</label>
-      <input
-        id="title"
-        class="title"
-        name="title"
-        type="text"
-        formControlName="title"
-        [(ngModel)]="title"
-      >
+      <div class="input-group">
+        <input
+          id="title"
+          class="title"
+          name="title"
+          type="text"
+          formControlName="title"
+          [(ngModel)]="title"
+        >
+        <label class="required">职位</label>
+      </div>
       <div *ngIf="form.controls['title'].errors">
         <p class="helper error" *ngIf="form.controls['title'].errors.required">请填写职位</p>
       </div>
@@ -99,15 +112,17 @@
 
     <div class="form-group"
          [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
-      <label class="required">手机号码</label>
-      <input
-        id="phoneNumber"
-        class="phoneNumber"
-        name="phoneNumber"
-        type="text"
-        formControlName="phoneNumber"
-        [(ngModel)]="phoneNumber"
-      >
+      <div class="input-group">
+        <input
+          id="phoneNumber"
+          class="phoneNumber"
+          name="phoneNumber"
+          type="tel"
+          formControlName="phoneNumber"
+          [(ngModel)]="phoneNumber"
+        >
+        <label class="required">手机号码</label>
+      </div>
       <div *ngIf="form.controls['phoneNumber'].errors">
         <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.required">请填写手机号码</p>
         <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.pattern">手机号码格式错误</p>

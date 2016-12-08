@@ -8,6 +8,8 @@ import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top
 import {FormModule} from "../../shared/form/form.module";
 import {CreateComponent} from "./create.component";
 import {CreateGuard} from "../../shared/guard/create.guard";
+import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
+import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 
 @NgModule({
   imports: [
@@ -16,7 +18,9 @@ import {CreateGuard} from "../../shared/guard/create.guard";
     FileSelectorModule,
     LiveRoomTopBarModule,
     ReactiveFormsModule,
+    AutofocusFirstInvalidInputModule,
     FormModule,
+    AutoresizeModule,
   ],
   declarations: [
     CreateComponent

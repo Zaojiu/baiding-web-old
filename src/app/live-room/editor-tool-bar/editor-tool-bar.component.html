@@ -52,8 +52,18 @@
        [ngClass]="{activate: mode === modeEnums.Text || mode === modeEnums.At}">
     <form class="post-message-container" #messageContainer [ngClass]="{activate: mode !== modeEnums.None}">
       <div class="input-wrapper">
-        <textarea #messageInput class="message-input" name="messageContent" type="text" rows="1" placeholder="发言"
-                  (focus)="messageInputFocused()" [(ngModel)]="messageContent"></textarea>
+        <textarea
+          #messageInput
+          class="message-input"
+          name="messageContent"
+          type="text"
+          rows="1"
+          placeholder="发言"
+          (focus)="messageInputFocused()"
+          [(ngModel)]="messageContent"
+          autoresize
+          display-when-focus
+        ></textarea>
       </div>
       <button class="sender" (click)="postMessage();focusMessageInput();">发送</button>
       <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">

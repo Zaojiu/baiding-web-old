@@ -22,7 +22,7 @@
       margin-right: 23px;
       flex-grow: 1;
       flex-shrink: 1;
-      color: rgba(75, 75, 75, 1);
+      color: $color-dark-gray;
     }
   }
 
@@ -43,7 +43,7 @@
       &.notstarted {
         background-color: rgb(216, 216, 216);
         font-size: 12px;
-        color: rgb(75, 75, 75);
+        color: $color-dark-gray;
       }
 
       &.living {
@@ -128,7 +128,7 @@
       margin: 10px auto 10px;
       text-align: justify;
       font-size: 20px;
-      color: rgba(75, 75, 75, 1);
+      color: $color-dark-gray;
       letter-spacing: 0.58px;
       line-height: 28px;
       word-break: break-all;
@@ -136,7 +136,7 @@
 
     .words {
       font-size: 16px;
-      color: rgba(75, 75, 75, 1);
+      color: $color-dark-gray;
       letter-spacing: 0px;
       line-height: 24px;
       word-break: break-all;

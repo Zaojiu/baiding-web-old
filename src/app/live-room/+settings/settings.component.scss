@@ -89,7 +89,7 @@
 
     .title {
       font-size: 16px;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       flex-grow: 1;
     }
 
@@ -118,7 +118,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
-          color: rgb(75, 75, 75);
+          color: $color-dark-gray;
           margin-right: 10px;
         }
 
@@ -184,7 +184,7 @@
           }
 
           .nick {
-            color: rgb(75, 75, 75);
+            color: $color-dark-gray;
             font-size: 14px;
             word-break: break-all;
             margin: 0;

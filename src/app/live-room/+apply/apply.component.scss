@@ -30,7 +30,7 @@
       margin: 20px 15px;
 
       .title {
-        color: rgb(75, 75, 75);
+        color: $color-dark-gray;
         font-size: 17px;
         margin-bottom: 10px;
       }
@@ -66,7 +66,7 @@
 
     .title {
       text-align: center;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       margin-bottom: 20px;
 
       .bi-paper-checked, .bi-paper-submitted {

@@ -125,7 +125,7 @@
         .content-info {
           .name {
             display: inline-block;
-            color: rgb(75, 75, 75);
+            color: $color-dark-gray;
             font-size: 14px;
             margin: 0;
           }
@@ -138,7 +138,7 @@
         }
 
         .content {
-          color: rgb(75, 75, 75);
+          color: $color-dark-gray;
           font-size: 14px;
           word-break: break-all;
 

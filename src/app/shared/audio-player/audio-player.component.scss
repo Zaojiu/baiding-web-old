@@ -1,7 +1,7 @@
 .audio-player-container {
   position: relative;
   font-size: 16px;
-  color: rgb(75, 75, 75);
+  color: $color-dark-gray;
   display: flex;
   align-items: center;
 
@@ -59,7 +59,7 @@
     justify-content: center;
     height: 26px;
     width: 26px;
-    border: solid 1px rgb(75, 75, 75);
+    border: solid 1px $color-dark-gray;
     border-radius: 50%;
     box-sizing: content-box;
 

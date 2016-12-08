@@ -1,8 +1,7 @@
 import {
-  Component, Input, ViewChild, ElementRef, AfterViewInit,
+  Component, Input, ViewChild, ElementRef,
   DoCheck, OnDestroy, OnInit
 } from "@angular/core";
-import * as autosize from "autosize";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {EditMode} from "./editor-tool-bar.enums";
@@ -30,12 +29,11 @@ declare var $: any;
   styleUrls: ['./editor-tool-bar.component.scss'],
 })
 
-export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy, OnInit {
+export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @ViewChild('recorder') recorder: RecorderComponent;
   @ViewChild('messageInput') messageInput: ElementRef;
-  @ViewChild('messageContainer') messageContainer: ElementRef;
   modeEnums = EditMode;
   recordEnums = RecordStatus;
   mode = EditMode.None;
@@ -95,13 +93,6 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
     });
   }
 
-  ngAfterViewInit() {
-    autosize(this.messageInput.nativeElement);
-    $(this.messageInput.nativeElement).on('focus', () => {
-      UtilsService.resetWindowScroll();
-    });
-  }
-
   ngDoCheck() {
     if (this.form.controls['images'].valid && this.images && this.images.length) {
       this.postImage();
@@ -120,7 +111,6 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
 
   ngOnDestroy() {
     this.receviedAvatarTouchedSub.unsubscribe();
-    $(this.messageInput.nativeElement).off('focus');
   }
 
   get isClose() {
@@ -150,23 +140,12 @@ export class EditorToolBarComponent implements AfterViewInit, DoCheck, OnDestroy
       this.messageApiService.postTextMessage(this.liveId, this.messageContent);
       this.isMessageSubmitting = false;
       this.messageContent = '';
-      setTimeout(() => {
-        this.resizeMessageInput()
-      }, 0);
     } else {
-      return this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
+      this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
         this.isMessageSubmitting = false;
         this.messageContent = '';
-        setTimeout(() => {
-          this.resizeMessageInput()
-        }, 0);
       });
     }
-  }
-
-  resizeMessageInput() {
-    const evt = new Event('autosize:update');
-    this.messageInput.nativeElement.dispatchEvent(evt);
   }
 
   focusMessageInput() {

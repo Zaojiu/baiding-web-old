@@ -19,7 +19,7 @@ declare var $: any;
   styleUrls: ['./audience-tool-bar.component.scss'],
 })
 
-export class AudienceToolBarComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AudienceToolBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
@@ -50,14 +50,6 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy, AfterViewIni
     if (this.receviedAvatarTouchedSub) {
       this.receviedAvatarTouchedSub.unsubscribe();
     }
-
-    $(this.commentInput.nativeElement).off('focus');
-  }
-
-  ngAfterViewInit() {
-    $(this.commentInput.nativeElement).on('focus', () => {
-      UtilsService.resetWindowScroll();
-    });
   }
 
   parseAtUser(): UserInfoModel[] {

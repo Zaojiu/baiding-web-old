@@ -18,6 +18,6 @@ export class PcShareService implements ShareBridge {
   setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string) {}
 
   share() {
-    this.sharePopupService.popup((<any>window).localtion.href);
+    this.sharePopupService.popup((<any>window).location.href);
   }
 }

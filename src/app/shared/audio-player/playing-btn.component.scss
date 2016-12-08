@@ -2,10 +2,10 @@
   position: relative;
   height: 26px;
   width: 26px;
-  border: solid 1px rgb(75, 75, 75);
+  border: solid 1px $color-dark-gray;
   border-radius: 50%;
   box-sizing: content-box;
-  background-color: rgb(75, 75, 75);
+  background-color: $color-dark-gray;
   display: flex;
 
   &.playing {
@@ -62,7 +62,7 @@
 
     .bi-pause {
       font-size: 12px;
-      color: rgb(75, 75, 75);
+      color: $color-dark-gray;
       transform: scale(0.66);
     }
   }
