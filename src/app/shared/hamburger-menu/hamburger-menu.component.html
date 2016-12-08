@@ -1,19 +1,19 @@
 <div class="mask" *ngIf="activeStatus" (click)="switch();$event.stopPropagation();"></div>
 
-<div class="create-room" (click)="createRoom()" [ngClass]="{active: activeStatus}">
-  <i class="bi bi-add"></i>
-</div>
+<div class="hamburger">
+  <div class="create-room" (click)="createRoom()" [ngClass]="{active: activeStatus}">
+    <i class="bi bi-add"></i>
+  </div>
 
-<div class="invite-people" (click)="gotoMyRoomList()" [ngClass]="{active: activeStatus}">
-  <i class="bi bi-people3"></i>
-</div>
+  <div class="invite-people" (click)="gotoMyRoomList()" [ngClass]="{active: activeStatus}">
+    <i class="bi bi-people3"></i>
+  </div>
 
-<div class="hamburger-menu" (click)="switch(); $event.stopPropagation();">
-  <div id="nav-icon" [ngClass]="{open: activeStatus}">
-    <span></span>
-    <span></span>
-    <span></span>
+  <div class="hamburger-menu" (click)="switch(); $event.stopPropagation();">
+    <div id="nav-icon" [ngClass]="{open: activeStatus}">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
 </div>
-
-
