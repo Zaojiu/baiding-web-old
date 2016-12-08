@@ -11,7 +11,6 @@
     background-color: $color-brand;
 
     .toggler {
-      transform: translateX(calc(77px - 100% - 2px));
 
       .toggler-inner {
         color: $color-brand;
@@ -32,14 +31,14 @@
 
     &.is-closed {
       position: absolute;
-      right: 0;
+      left: 0;
       top: 0;
       width: 80%;
       height: 100%;
     }
 
     .people-count {
-      margin: auto;
+      margin: auto auto auto -2px;
       pointer-events: none;
       font-size: 12px;
       color: white;
@@ -48,7 +47,12 @@
       -ms-transform: scale(0.8);
       -o-transform: scale(0.8);
       transform: scale(0.8);
-    }
+
+      .bi{
+        font-size: 19px;
+        margin-right: 3px;
+      }
+   }
   }
 
   .toggler {
@@ -59,6 +63,7 @@
     background-color: $color-w;
     border-radius: 50%;
     transition: transform .2s;
+    transform: translateX(calc(77px - 100% - 2px));
 
     &:before {
       display: block;
