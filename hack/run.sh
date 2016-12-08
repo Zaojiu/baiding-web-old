@@ -14,14 +14,18 @@ function docker_killrm(){
 }
 
 function docker_start(){
-    # state=`docker inspect -f "{{.State.Status}},{{.State.Running}}" baiding-web`
-    # [ "${state}" == "running,true" ] && return
     docker_killrm
     docker run -d -i --name baiding-web -p 9000:9000 \
         -v baiding-web-node-modules:/root/zaojiu/baiding-web/node_modules \
         -v `pwd`:/root/zaojiu/baiding-web \
         ${image} bash
     [ "${https_proxy}" != "" ] && docker_exec npm config set https-proxy ${https_proxy}
+}
+
+function docker_start2(){
+    state=`docker inspect -f "{{.State.Status}},{{.State.Running}}" baiding-web`
+    [ "${state}" == "running,true" ] && return
+    docker_start
 }
 
 function docker_exec(){
@@ -36,12 +40,14 @@ function update_if_pkg_change(){
     is_hash_changed
     [ "$?" != "1" ] && echo "package.json not changed" && return
     echo "package.json has changed"
+    docker_exec npm cache clean
     docker_exec npm i || { exit 1; }
     docker_exec npm update || { exit 1; }
     pkg_hash_cache_update
 }
 
 function update_force(){
+    docker_exec npm cache clean
     docker_exec npm i || { exit 1; }
     docker_exec npm update || { exit 1; }
     pkg_hash_cache_update
@@ -92,7 +98,7 @@ for target in $@; do
             docker rmi ${image}
             ;;
         bootstrap.shell)
-            docker_start
+            docker_start2
             docker_exect bash
             ;;
         bootstrap.kill)
@@ -102,6 +108,10 @@ for target in $@; do
             docker_start
             docker_exec npm run build.prod
             ;;
+        build.test-prod.docker)
+            docker_start
+            docker_exec npm run build.test-prod
+            ;;
         serve.dev.docker)
             docker_start
             docker_exec npm run serve.dev
@@ -109,6 +119,10 @@ for target in $@; do
         serve.prod.docker)
             docker_start
             docker_exec npm run serve.prod
+            ;;
+        serve.test-prod.docker)
+            docker_start
+            docker_exec npm run serve.test-prod
             ;;
         test.docker)
             docker_start
@@ -137,7 +151,6 @@ for target in $@; do
             ./node_modules/static-server/bin/static-server.js -p 9000 ./dist
             ;;
         serve.test-prod)
-            ./hack/run.sh build.test-prod || { exit 1; }
             ./node_modules/static-server/bin/static-server.js -p 9000 ./dist
             ;;
         test)
