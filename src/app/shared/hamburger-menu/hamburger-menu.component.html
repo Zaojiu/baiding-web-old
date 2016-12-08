@@ -1,6 +1,6 @@
 <div class="mask" *ngIf="activeStatus" (click)="switch();$event.stopPropagation();"></div>
 
-<div class="hamburger">
+<div class="hamburger" auto-opacity-down>
   <div class="create-room" (click)="createRoom()" [ngClass]="{active: activeStatus}">
     <i class="bi bi-add"></i>
   </div>
