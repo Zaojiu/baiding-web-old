@@ -86,7 +86,7 @@
           postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
         </div>
         <i class="bi bi-elliplis"
-           [ngClass]="{'editorColor':isEditor(message.user.uid),'audienceColor':isAudience(message.user.uid)}"
+           (click)="toggleTranslatioExpanded(message.audio.translateResult)"
            *ngIf="isTranslationExpanded && message.audio.translateResult"></i>
         <div class="post-status">
           <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>

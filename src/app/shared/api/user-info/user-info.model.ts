@@ -9,6 +9,7 @@ export class UserInfoModel {
   avatar: string;
   intro: string;
   permissions: PermissionModel;
+  isSubscribed: boolean;
 
   get canPublish(): boolean {
     return this.permissions.publish;

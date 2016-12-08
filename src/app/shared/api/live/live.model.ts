@@ -30,6 +30,7 @@ export class LiveInfoModel {
   createdAt: string;
   updatedAt: string;
   totalUsers: number; //  参与人数
+  booked: boolean;
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;
@@ -61,6 +62,14 @@ export class LiveInfoModel {
 
   isAudience(uid: number) {
     return !this.isAdmin(uid) && !this.isEditor(uid);
+  }
+
+  isTypeText() {
+    return this.kind === 'text';
+  }
+
+  isTypeVideo() {
+    return this.kind === 'video';
   }
 }
 

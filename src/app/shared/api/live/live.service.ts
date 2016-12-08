@@ -70,15 +70,6 @@ export class LiveService {
     return UtilsService.getStorage('textStashed')[liveId] || '';
   }
 
-  setLiveRoomAlreadyVisited() {
-    this.store.set('hasEntered', true);
-  };
-
-  getLiveRoomAlreadyVisited(): boolean {
-    let enterLiveRoom = this.store.get('hasEntered') || false;
-    return enterLiveRoom;
-  }
-
   parseLiveInfo(stream: any, users: any, currentStreamUser?: any): LiveInfoModel {
 
     let liveInfo = new LiveInfoModel;
@@ -131,6 +122,7 @@ export class LiveService {
     liveInfo.shared = stream.shared;
     liveInfo.lcConvId = stream.lcConvId;
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
+    liveInfo.booked = currentStreamUser && currentStreamUser.booked;
 
     liveInfo.totalUsers = stream.totalUsers;
 
@@ -144,12 +136,16 @@ export class LiveService {
     return lives[id] as LiveInfoModel;
   }
 
-  getLiveInfo(id: string, needRefresh?: boolean): Promise<LiveInfoModel> {
+  getLiveInfo(id: string, needRefresh?: boolean, join = false): Promise<LiveInfoModel> {
     let lives = this.store.get('lives') || {};
     let liveInfoCache = lives[id];
     if (liveInfoCache && !needRefresh) return Promise.resolve(liveInfoCache);
 
-    const url = `${environment.config.host.io}/api/live/streams/${id}`;
+    let query = {
+      join: join,
+    };
+
+    const url = `${environment.config.host.io}/api/live/streams/${id}?${$.param(query)}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
@@ -245,6 +241,30 @@ export class LiveService {
     });
   }
 
+  listBookedLiveInfo(markerId = '', size = 20) {
+    let query = {
+      lastId: markerId,
+      size: size,
+    };
+    const url = `${environment.config.host.io}/api/live/streams/booked?${$.param(query)}`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+
+      let streamData = data.result;
+      let usersData = data.include.users;
+      let liveInfoList: LiveInfoModel[] = [];
+
+      if (streamData) {
+        for (let liveInfo of streamData) {
+          let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
+          liveInfoList.push(liveInfoParsed);
+        }
+      }
+
+      return liveInfoList;
+    });
+  }
+
   listRecommendLiveInfo(markerId: string, size = 20): Promise<LiveInfoModel[]> {
     let query = {
       lastId: markerId,
@@ -298,6 +318,19 @@ export class LiveService {
     return info;
   }
 
+  postLiveNotification(liveId: string): Promise<void> {
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/book`;
+    return this.http.post(url, null).toPromise().then((res) => {
+      return;
+    });
+  }
+
+  deleteLiveNotification(liveId: string): Promise<void> {
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/book`;
+    return this.http.delete(url).toPromise().then((res) => {
+      return;
+    });
+  }
 
   banComment(id: string, uid: number): Promise<void> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users/${uid}/silence`;

@@ -1,7 +1,7 @@
 <div class="live-list scrollable" (scroller)="onScroll($event)" [data]="livesList"
      [dataContainerSelector]="'.main-list'" [needUnload]="false">
   <div class="main-list">
-    <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoom(liveInfo.id)">
+    <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoomInfo(liveInfo.id)">
       <div class="admin-info" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
         <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
         <span class="nick">{{liveInfo.admin.nick}}</span>

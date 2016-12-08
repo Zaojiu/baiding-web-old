@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers, Response} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
@@ -26,6 +26,7 @@ export class UserInfoService {
     info.uid = data.uid;
     info.permissions = new PermissionModel;
     info.permissions.publish = data.permissions ? data.permissions.publish : false;
+    info.isSubscribed = data.isSubscribed ? data.isSubscribed : false;
 
     return info;
 

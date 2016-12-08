@@ -96,7 +96,7 @@
   }
 
   .article {
-    margin: 20px 12px 20px 12px;
+    margin: 15px 12px 20px 12px;
     position: relative;
     overflow: hidden;
 
@@ -138,7 +138,7 @@
       font-size: 16px;
       color: $color-dark-gray;
       letter-spacing: 0px;
-      line-height: 24px;
+      line-height: 1.5em;
       word-break: break-all;
       white-space: pre-wrap;
     }

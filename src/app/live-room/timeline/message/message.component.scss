@@ -135,6 +135,10 @@
       border-radius: 10px;
       word-break: break-all;
 
+      .word-wrap{
+        white-space: pre-wrap;
+      }
+
       .post-status {
         position: absolute;
         right: -38px;
@@ -162,10 +166,6 @@
           background-color: $color-brand;
           color: rgb(242, 242, 242);
           border-top-color: rgba(255, 255, 255, .5);
-
-            .word-wrap{
-              white-space: pre-wrap;
-            }
         }
 
         .audio-content {
@@ -250,10 +250,6 @@
 
       .content {
         background-color: rgb(224, 229, 234);
-
-          &.word-wrap{
-            white-space: pre-wrap;
-          }
       }
 
       .audio-content {
@@ -277,8 +273,8 @@
           &:before {
             position: absolute;
             top: 0;
-            left: 0px;
-            right: 0px;
+            left: 0;
+            right: 0;
             height: 0;
             content: "";
             border-top: solid 1px rgba(75, 75, 75, .5);
@@ -295,14 +291,6 @@
           margin-top: 3px;
           font-size: 12px;
           transform: scale(.5);
-        }
-
-        &.editorColor {
-          color: $color-w;
-        }
-
-        &.audienceColor {
-          color: $color-dark-gray;
         }
       }
 
@@ -394,7 +382,7 @@
   .vip-joined-tip {
     background-color: #F6F6F7;
     display: inline-block;
-    color: #9EA1A5;
+    color: $color-gray;
     font-size: 14px;
     padding: 4px 8px;
     line-height: 24px;
@@ -415,7 +403,7 @@
 .live-started {
   text-align: center;
   .live-started-tip {
-    background: #9EA1A5;
+    background: $color-gray;
     color: $color-w;
     border-radius: 4px;
     padding: 7px 36px;
@@ -433,7 +421,7 @@
 
   .live-ended-tip {
     background: #F6F6F7;
-    color: #9EA1A5;
+    color: $color-gray;
     border-radius: 4px;
     padding: 7px 63px;
     font-size: 14px;

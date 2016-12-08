@@ -1,9 +1,7 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
-<live-room-info [liveInfo]="liveInfo"  *ngIf="liveInfo && showInfo" [(isShow)]="showInfo" (showBeginnerGuide)="toShowBeginnerGuide($event)"> </live-room-info>
-
-<beginner-guide [showAdminGuide]="true" *ngIf="isEditor() && !showInfo"></beginner-guide>
-<beginner-guide [showUserGuide]="true" *ngIf="isAudience() && !showInfo"></beginner-guide>
+<beginner-guide [showAdminGuide]="true" *ngIf="isEditor()"></beginner-guide>
+<beginner-guide [showUserGuide]="true" *ngIf="isAudience()"></beginner-guide>
 
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <top-bar
