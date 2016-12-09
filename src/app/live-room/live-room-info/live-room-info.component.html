@@ -1,15 +1,39 @@
 <div class="live-room-info">
-  <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
-  <div class="people-container">
-    <div class="title">
-      <i class="bi bi-people"></i>
-      {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
+  <div class="content">
+    <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
+
+    <div class="people-container">
+      <div class="title">
+        <i class="bi bi-people"></i>
+        {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
+      </div>
+
+      <div class="people-count">
+        <img class="avatar" alt="" *ngFor="let audience of liveInfo.editors" [src]="audience.avatar">
+        <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
+      </div>
     </div>
-    <div class="people-count">
-      <img class="avatar" alt="" *ngFor="let audience of liveInfo.editors" [src]="audience.avatar">
-      <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
-    </div>
+  </div>
+
+  <div class="operation-area">
+    <a class="btn notification" *ngIf="!liveInfo.booked" (click)="setNotification()"><i class="bi bi-clock"></i>开播提醒</a>
+    <a class="btn notification turn-on" *ngIf="liveInfo.booked" (click)="deleteNotification()"><i class="bi bi-clock"></i>已经开通</a>
+    <a class="btn enter-room" (click)="gotoLive()">进入房间</a>
   </div>
 </div>
 
-<button class="enter-room" (click)="toBeginnerGuide()">进入房间</button>
+<div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
+  <div class="content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <div class="close" (click)="closeQrcode()"></div>
+      <div class="live-title">{{liveInfo.subject}}</div>
+      <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
+      <p class="tips">直播还未开始</p>
+    </div>
+    <div class="qrcode">
+      <img class="qrcode-image" [src]="qrcode" alt="二维码">
+      <p>长按二维码关注服务号</p>
+      <p>开播会通知你</p>
+    </div>
+  </div>
+</div>

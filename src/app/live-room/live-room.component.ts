@@ -22,22 +22,16 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   id: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
-  showInfo: boolean;
   isChildrenActived: boolean;
   routerSubscription: Subscription;
   isCommentOpened: boolean = true;
   urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
   refreshInterval: any;
-  isBeginnerGuideShow: boolean;
   praisedSub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private titleService: TitleService,
               private shareBridge: ShareBridge, private userInfoService: UserInfoService) {
-  }
-
-  toShowBeginnerGuide(result: boolean) {
-    this.isBeginnerGuideShow = result;
   }
 
   isEditor() {
@@ -49,7 +43,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   getShareUri(): string {
-    let uriTree = this.router.createUrlTree([`/lives/${this.id}`, {source: 'share'}]);
+    let uriTree = this.router.createUrlTree([`/lives/${this.id}/info`]);
     let hash = this.router.serializeUrl(uriTree);
     let uri = location.href.replace(location.hash, `#${hash}`);
     return uri;
@@ -80,15 +74,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
 
-    if (!this.liveService.getLiveRoomAlreadyVisited()) {
-      let fromShare = this.route.snapshot.params['source'] === 'share';
-      this.showInfo = fromShare;
-      if (!fromShare) {
-        this.isBeginnerGuideShow = true;
-        this.liveService.setLiveRoomAlreadyVisited();
-      }
-    }
-
     // 监控router变化，如果route换了，那么设置 isChildrenActived
     // 此属性会控制父底栏是否显示，以免子弹出层的底栏和父窗口底栏同时显示，导致跑版
     this.isChildrenActived = this.urlRegex.test(this.router.url);
@@ -103,6 +88,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.resetLiveRoom();
     this.userInfo = this.userInfoService.getUserInfoCache();
+    this.liveService.getLiveInfo(this.id, true, true); // 刷新liveInfo, 加入直播。
 
     this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);

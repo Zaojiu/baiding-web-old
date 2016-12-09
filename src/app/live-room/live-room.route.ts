@@ -2,9 +2,8 @@ import {Routes, RouterModule} from '@angular/router';
 import {LiveRoomComponent} from './live-room.component';
 import {AuthGuard} from '../shared/guard/auth.guard';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
-import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
-import {EmptyComponent} from '../shared/empty/empty.component';
 import {UserInfoResolver} from '../shared/guard/user-info.resolver';
+import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
 
 const route: Routes = [
   {
@@ -26,7 +25,16 @@ const route: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: '', component: LiveRoomComponent,
+        path: '',
+        component: LiveRoomComponent,
+        resolve: {
+          liveInfo: LiveInfoResolver,
+          userInfo: UserInfoResolver,
+        },
+      },
+      {
+        path: 'info',
+        component: LiveRoomInfoComponent,
         resolve: {
           liveInfo: LiveInfoResolver,
           userInfo: UserInfoResolver,

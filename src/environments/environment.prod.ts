@@ -7,6 +7,7 @@ export const appConfig = {
   host: host,
   lcAppId: '_REPL_LEADCLOUD_ID_',
   lcAppKey: '_REPL_LEADCLOUD_APP_KEY_',
+  wechatLink: '_REPL_WECHAT_LINK_',
 };
 
 export const environment = {

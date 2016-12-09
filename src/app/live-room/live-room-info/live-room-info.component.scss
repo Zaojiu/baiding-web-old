@@ -4,53 +4,179 @@
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 4;
-  background-color: rgba(255, 255, 255, 0.7);
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
 
-  .live-room-info-component {
-    display: block;
-    position: relative;
-  }
+  .content {
+    flex-grow: 1;
+    overflow: auto;
 
-  .people-container {
-    margin: auto 12px;
-    .title {
-      color: $color-gray;
-      display: flex;
-      align-items: center;
-      font-size: 16px;
-      line-height: 1em;
-
-      .bi {
-        margin-right: 5px;
-        margin-left: 5px;
-      }
+    .live-room-info-component {
+      display: block;
+      position: relative;
     }
 
-    .people-count {
-      display: flex;
-      flex-wrap: wrap;
-      .avatar {
-        margin-top: 10px;
-        height: 24px;
-        width: 24px;
-        border-radius: 50%;
-        margin-left: 5px;
+    .people-container {
+      margin: auto 12px;
+
+      .title {
+        color: $color-gray;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        line-height: 1em;
+
+        .bi {
+          margin-right: 5px;
+          margin-left: 5px;
+        }
+      }
+
+      .people-count {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 10px 0 12px;
+
+        .avatar {
+          height: 24px;
+          width: 24px;
+          border-radius: 50%;
+          margin-left: 5px;
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .operation-area {
+    flex-shrink: 0;
+    display: flex;
+
+    .btn {
+      width: 40%;
+      text-align: center;
+      height: 49px;
+      line-height: 49px;
+      font-size: 17px;
+      color: $color-w;
+      background-color: rgb(37, 37, 37);
+
+      &:last-child {
+        width: 60%;
+        background-color: $color-brand;
+      }
+
+      &.turn-on {
+        color: $color-brand;
+      }
+
+      &.notification {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .bi-clock {
+          margin-right: 5px;
+          font-size: 20px;
+        }
       }
     }
   }
 }
 
-.enter-room {
+.qrcode-background {
   position: absolute;
-  z-index: 5;
+  left: 0;
+  right: 0;
+  top: 0;
   bottom: 0;
-  font-size: 17px;
-  color: $color-w;
-  background: $color-brand;
-  letter-spacing: 0px;
-  line-height: 17px;
-  height: 50px;
-  width: 100%;
+  background-color: rgba(0, 0, 0, .3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    border-radius: 4px;
+    width: 260px;
+    overflow: hidden;
+    background-color: $color-w;
+
+    .header {
+      position: relative;
+      overflow: hidden;
+      background-color: $color-brand;
+      text-align: center;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+
+      .close {
+        position: absolute;
+        background-color: rgba(255, 255, 255, .5);
+        width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        right: -39px;
+        top: -39px;
+
+        &:before, &:after {
+          content: "";
+          position: absolute;
+          height: 22px;
+          width: 1px;
+          background-color: rgb(255, 255, 255);
+          top: 44px;
+          left: 24px;
+        }
+
+        &:before {
+          transform: rotate(45deg);
+        }
+
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
+
+      .live-title {
+        margin: 40px 20px 20px;
+        color: $color-w;
+        word-break: break-all;
+        font-size: 18px;
+      }
+
+      .count-down {
+        /deep/ {
+          .info-status-wrapper-countdown {
+            background-color: transparent;
+          }
+        }
+      }
+
+      .tips {
+        color: $color-w;
+        margin: 10px auto 20px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .qrcode {
+    text-align: center;
+
+    .qrcode-image {
+      margin-top: 10px;
+    }
+
+    p {
+      color: $color-gray;
+      line-height: 1.5em;
+
+      &:last-child {
+        margin-bottom: 40px;
+      }
+    }
+  }
 }

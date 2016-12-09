@@ -2,7 +2,6 @@ import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../shared/api/live/live.service";
 import {LiveInfoModel} from "../shared/api/live/live.model";
-import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {UtilsService} from "../shared/utils/utils";
 import {ScrollerEventModel} from "../shared/scroller/scroller.model";
@@ -87,8 +86,8 @@ export class LiveListComponent implements OnInit, OnDestroy {
     });
   }
 
-  gotoLiveRoom(liveId: string) {
-    this.router.navigate(([`/lives/${liveId}`]));
+  gotoLiveRoomInfo(liveId: string) {
+    this.router.navigate(([`/lives/${liveId}/info`]));
   }
 
   gotoInfoCenter(uid: number) {

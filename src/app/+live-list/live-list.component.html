@@ -1,13 +1,17 @@
 <div class="live-list scrollable" (scroller)="onScroll($event)" [data]="livesList"
      [dataContainerSelector]="'.main-list'" [needUnload]="false">
   <div class="main-list">
-    <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoom(liveInfo.id)">
+    <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoomInfo(liveInfo.id)">
       <div class="admin-info" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
         <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
         <span class="nick">{{liveInfo.admin.nick}}</span>
       </div>
 
-      <div class="live-title">{{liveInfo.subject}}</div>
+      <div class="live-title-wrapper">
+        <div class="live-title">{{liveInfo.subject}}</div>
+        <span class="live-type text" *ngIf="liveInfo.isTypeText()"><i class="bi bi-paper2"></i>文字</span>
+        <span class="live-type video" *ngIf="liveInfo.isTypeVideo()"><i class="bi bi-video"></i>视频</span>
+      </div>
 
       <div class="live-info">
         <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
