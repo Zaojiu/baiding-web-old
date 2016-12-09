@@ -1,4 +1,4 @@
-<div class="mask" *ngIf="activeStatus" (click)="switch();$event.stopPropagation();"></div>
+<div class="mask" *ngIf="activeStatus" (click)="switch();hideHamburger();$event.stopPropagation();"></div>
 
 <div class="hamburger" auto-opacity-down>
   <div class="create-room" (click)="createRoom()" [ngClass]="{active: activeStatus}">
