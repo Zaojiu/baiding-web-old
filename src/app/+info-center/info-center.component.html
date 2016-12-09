@@ -1,6 +1,8 @@
 <div class="info-center" *ngIf="pageUserInfo && currentUserInfo && !isLoading">
   <div class="self-intro">
-    <div class="background"><div class="background-image" [style.background-image]="avatarBackground"></div></div>
+    <div class="background">
+      <div class="background-image" [style.background-image]="avatarBackground"></div>
+    </div>
 
     <div class="top-bar">
       <i class="bi bi-gear edit-btn" *ngIf="isSelf" (click)="goToEdit()"></i>
@@ -25,71 +27,74 @@
     <div class="tab-content" [ngClass]="{'tab-one-activated': tabIndex === 0, 'tab-two-activated': tabIndex === 1}">
       <div class="main-list" [ngClass]="{'activate': tabIndex === 0}">
         <div class="live-room-info-upper" *ngFor="let liveInfo of livesList">
-          <div class="live-title-wrapper" (click)="gotoLiveRoom(liveInfo.id)">
-            <div class="live-title">{{liveInfo.subject}}</div>
-            <span class="live-type text" *ngIf="liveInfo.isTypeText()"><i class="bi bi-paper2"></i>文字</span>
-            <span class="live-type video" *ngIf="liveInfo.isTypeVideo()"><i class="bi bi-video"></i>视频</span>
-          </div>
+          <div (click)="gotoLiveRoom(liveInfo.id)">
+            <div class="live-title-wrapper">
+              <div class="live-title">{{liveInfo.subject}}</div>
+              <span class="live-type text" *ngIf="liveInfo.isTypeText()"><i class="bi bi-paper2"></i>文字</span>
+              <span class="live-type video" *ngIf="liveInfo.isTypeVideo()"><i class="bi bi-video"></i>视频</span>
+            </div>
 
-          <div class="admin-info">
-            <img class="admin-avatar" [src]="liveInfo.admin.avatar" alt="">
-            <div class="nick-wrapper">
-              <div class="nick">{{liveInfo.admin.nick}}</div>
-              <div class="time">
-                <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
-                <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
-                <span class="time" *ngIf="liveInfo.isStarted()">
+            <div class="admin-info">
+              <img class="admin-avatar" [src]="liveInfo.admin.avatar" alt="主持人头像"
+                   (click)="gotoInfoCenter(liveInfo.admin.uid); $event.stopPropagation();">
+              <div class="nick-wrapper">
+                <div class="nick">{{liveInfo.admin.nick}}</div>
+                <div class="time">
+                  <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
+                  <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
+                  <span class="time" *ngIf="liveInfo.isStarted()">
               已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
             </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="live-desc">{{liveInfo.desc}}</div>
-
-          <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
-            <img [src]="covers[liveInfo.id]" alt="">
-            <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-            <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
-            <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
-                        [countDownStatus]="liveInfo.isCreated()"></count-down>
-            <i class="bi bi-stamp" *ngIf="liveInfo.isEditor(pageUserInfo.uid)"></i>
-          </div>
-
-          <div class="invited-people">
-            <span class="vip-label">嘉宾</span>
-
-            <div class="vip-container">
-              <div class="accepted">
-                <div class="avatar-wrapper">
-                  <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
-                  <div class="tick"><i class="bi bi-tick"></i></div>
                 </div>
-
-                <span class="nick">{{liveInfo.admin.nick}}</span>
               </div>
             </div>
 
-            <div class="vip-container" *ngFor="let vip of liveInfo.editors">
-              <div class="accepted">
-                <div class="avatar-wrapper">
-                  <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
-                  <div class="tick"><i class="bi bi-tick"></i></div>
-                </div>
+            <div class="live-desc">{{liveInfo.desc}}</div>
 
-                <span class="nick">{{vip.nick}}</span>
-              </div>
+            <div class="live-cover">
+              <img [src]="covers[liveInfo.id]" alt="">
+              <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
+              <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
+              <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                          [countDownStatus]="liveInfo.isCreated()"></count-down>
+              <i class="bi bi-stamp" *ngIf="liveInfo.isEditor(pageUserInfo.uid)"></i>
             </div>
 
-            <div class="vip-container" *ngFor="let invitee of (invitees[liveInfo.id] || [])">
-              <div class="invited" (click)="gotoInvitation(liveInfo.id, invitee)">
-                <div class="avatar-wrapper">
-                  <div class="invite-people-bg">
-                    <i class="bi bi-people2"></i>
+            <div class="invited-people">
+              <span class="vip-label">嘉宾</span>
+
+              <div class="vip-container">
+                <div class="accepted">
+                  <div class="avatar-wrapper">
+                    <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+                    <div class="tick"><i class="bi bi-tick"></i></div>
                   </div>
-                </div>
 
-                <span class="nick">{{invitee.name || '无名'}}</span>
+                  <span class="nick">{{liveInfo.admin.nick}}</span>
+                </div>
+              </div>
+
+              <div class="vip-container" *ngFor="let vip of liveInfo.editors">
+                <div class="accepted">
+                  <div class="avatar-wrapper">
+                    <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
+                    <div class="tick"><i class="bi bi-tick"></i></div>
+                  </div>
+
+                  <span class="nick">{{vip.nick}}</span>
+                </div>
+              </div>
+
+              <div class="vip-container" *ngFor="let invitee of (invitees[liveInfo.id] || [])">
+                <div class="invited" (click)="gotoInvitation(liveInfo.id, invitee);$event.stopPropagation();">
+                  <div class="avatar-wrapper">
+                    <div class="invite-people-bg">
+                      <i class="bi bi-people2"></i>
+                    </div>
+                  </div>
+
+                  <span class="nick">{{invitee.name || '无名'}}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -124,72 +129,77 @@
 
       <div class="main-list" [ngClass]="{'activate': tabIndex === 1}">
         <div class="live-room-info-upper" *ngFor="let liveInfo of livesListWatched">
-          <div class="live-title-wrapper" (click)="gotoLiveRoom(liveInfo.id)">
-            <div class="live-title">{{liveInfo.subject}}</div>
-            <span class="live-type text" *ngIf="liveInfo.isTypeText()"><i class="bi bi-paper2"></i>文字</span>
-            <span class="live-type video" *ngIf="liveInfo.isTypeVideo()"><i class="bi bi-video"></i>视频</span>
-          </div>
+          <div (click)="gotoLiveRoom(liveInfo.id)">
 
-          <div class="admin-info">
-            <img class="admin-avatar" [src]="liveInfo.admin.avatar" alt="">
-            <div class="nick-wrapper">
-              <div class="nick">{{liveInfo.admin.nick}}</div>
-              <div class="time">
-                <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
-                <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
-                <span class="time" *ngIf="liveInfo.isStarted()">
-              已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
-            </span>
-              </div>
+            <div class="live-title-wrapper">
+              <div class="live-title">{{liveInfo.subject}}</div>
+              <span class="live-type text" *ngIf="liveInfo.isTypeText()"><i class="bi bi-paper2"></i>文字</span>
+              <span class="live-type video" *ngIf="liveInfo.isTypeVideo()"><i class="bi bi-video"></i>视频</span>
             </div>
-          </div>
 
-          <div class="live-desc">{{liveInfo.desc}}</div>
-
-          <div class="live-cover" (click)="gotoLiveRoom(liveInfo.id)">
-            <img [src]="covers[liveInfo.id]" alt="">
-            <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-            <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
-            <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
-                        [countDownStatus]="liveInfo.isCreated()"></count-down>
-          </div>
-
-          <div class="invited-people">
-            <span class="vip-label">嘉宾</span>
-
-            <div class="vip-container">
-              <div class="accepted">
-                <div class="avatar-wrapper">
-                  <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
-                  <div class="tick"><i class="bi bi-tick"></i></div>
+            <div class="admin-info">
+              <img class="admin-avatar" [src]="liveInfo.admin.avatar" alt="主持人头像"
+                   (click)="gotoInfoCenter(liveInfo.admin.uid); $event.stopPropagation();">
+              <div class="nick-wrapper">
+                <div class="nick">{{liveInfo.admin.nick}}</div>
+                <div class="time">
+                  <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
+                  <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
+                  <span class="time" *ngIf="liveInfo.isStarted()">
+                已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
+              </span>
                 </div>
-
-                <span class="nick">{{liveInfo.admin.nick}}</span>
               </div>
             </div>
 
-            <div class="vip-container" *ngFor="let vip of liveInfo.editors">
-              <div class="accepted">
-                <div class="avatar-wrapper">
-                  <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
-                  <div class="tick"><i class="bi bi-tick"></i></div>
-                </div>
+            <div class="live-desc">{{liveInfo.desc}}</div>
 
-                <span class="nick">{{vip.nick}}</span>
-              </div>
+            <div class="live-cover">
+              <img [src]="covers[liveInfo.id]" alt="">
+              <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
+              <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
+              <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                          [countDownStatus]="liveInfo.isCreated()"></count-down>
             </div>
 
-            <div class="vip-container" *ngFor="let invitee of (invitees[liveInfo.id] || [])">
-              <div class="invited" (click)="gotoInvitation(liveInfo.id, invitee)">
-                <div class="avatar-wrapper">
-                  <div class="invite-people-bg">
-                    <i class="bi bi-people2"></i>
+            <div class="invited-people">
+              <span class="vip-label">嘉宾</span>
+
+              <div class="vip-container">
+                <div class="accepted">
+                  <div class="avatar-wrapper">
+                    <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+                    <div class="tick"><i class="bi bi-tick"></i></div>
                   </div>
-                </div>
 
-                <span class="nick">{{invitee.name || '无名'}}</span>
+                  <span class="nick">{{liveInfo.admin.nick}}</span>
+                </div>
+              </div>
+
+              <div class="vip-container" *ngFor="let vip of liveInfo.editors">
+                <div class="accepted">
+                  <div class="avatar-wrapper">
+                    <img class="avatar" [src]="vip.avatar" alt="嘉宾头像">
+                    <div class="tick"><i class="bi bi-tick"></i></div>
+                  </div>
+
+                  <span class="nick">{{vip.nick}}</span>
+                </div>
+              </div>
+
+              <div class="vip-container" *ngFor="let invitee of (invitees[liveInfo.id] || [])">
+                <div class="invited" (click)="gotoInvitation(liveInfo.id, invitee); $event.stopPropagation();">
+                  <div class="avatar-wrapper">
+                    <div class="invite-people-bg">
+                      <i class="bi bi-people2"></i>
+                    </div>
+                  </div>
+
+                  <span class="nick">{{invitee.name || '无名'}}</span>
+                </div>
               </div>
             </div>
+
           </div>
 
           <div class="operation-area">

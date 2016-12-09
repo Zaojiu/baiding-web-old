@@ -31,10 +31,10 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   livesList: LiveInfoModel[] = [];
   livesListWatched: LiveInfoModel[] = [];
   uid: number;
+  from: string;
   invitees: {[liveId: string]: InvitationModel[]} = {};
   covers: {[liveId: string]: SafeUrl} = {};
   liveTime: {[liveId: string]: string} = {};
-  from = encodeURIComponent('/info-center');
   avatarBackground: SafeStyle;
   tabIndex = 0;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
@@ -42,8 +42,11 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
-    this.uid = +this.route.snapshot.params['uid'] || this.currentUserInfo.uid;
+    // 防止分享出去的链接不正确, 再做一次跳转到带uid的地址。
+    if (!this.route.snapshot.params['uid']) this.router.navigate([`/info-center/${this.currentUserInfo.uid}`]);
 
+    this.uid = +this.route.snapshot.params['uid'];
+    this.from = encodeURIComponent(`/info-center/${this.uid}`);
     this.listMyLive();
 
     if (this.isSelf) this.listMyWatchLive();
@@ -214,6 +217,12 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
   goEditLiveRoom(liveId: string) {
     this.router.navigate([`/lives/${liveId}/settings/edit-info`, {from: this.from}]);
+  }
+
+  gotoInfoCenter(uid: number) {
+    if (this.pageUserInfo.uid === uid) return;
+
+    this.router.navigate([`/info-center/${uid}`]);
   }
 
   gotoInvitation(liveId: string, invitee: InvitationModel) {
