@@ -29,7 +29,7 @@ describe('TimeFormaterPipe test', () => {
     timeFormaterPipe = new TimeFormaterPipe();
     expect(timeFormaterPipe.transform(value, arg)).toEqual('无效时间');
   });
-})
+});
 
 describe('TimeToPipe test', () => {
   let timeToPipe: TimeToPipe;
@@ -57,7 +57,6 @@ describe('DurationFormaterPipe test', () => {
   let now = 0;
   let timeToPipe: TimeToPipe;
   let durationPipe: DurationFormaterPipe;
-
 
   beforeEach(() => {
     now = UtilsService.now;
@@ -121,4 +120,4 @@ describe('fromNow test', () => {
     expect(typeof pipeNow === 'string').toBeTruthy();
   }));
 
-})
+});
