@@ -13,7 +13,10 @@
 </div>
 
 <div class="live-ended" *ngIf="message.type === messageType.LiveEnd">
-  <div class="live-ended-tip">话题结束</div>
+  <div class="live-ended-tip">
+    <p>话题结束</p>
+    <p>{{liveInfo.closedAt | timeFormater: 'YYYY年MM月DD日 HH:mm'}}</p>
+  </div>
 
   <!--<div class="ended-review">-->
   <!--<i class="bi bi-paper"></i>-->
