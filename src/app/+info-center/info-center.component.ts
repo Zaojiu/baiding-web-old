@@ -43,7 +43,10 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
     // 防止分享出去的链接不正确, 再做一次跳转到带uid的地址。
-    if (!this.route.snapshot.params['uid']) this.router.navigate([`/info-center/${this.currentUserInfo.uid}`]);
+    if (!this.route.snapshot.params['uid']) {
+      this.router.navigate([`/info-center/${this.currentUserInfo.uid}`]);
+      return;
+    }
 
     this.uid = +this.route.snapshot.params['uid'];
     this.from = encodeURIComponent(`/info-center/${this.uid}`);
