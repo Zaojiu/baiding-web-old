@@ -139,7 +139,7 @@ for target in $@; do
             ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0 -e test-prod -prod --aot
             ;;
         test)
-            ./node_modules/.bin/ng test --log-level=debug
+            ./node_modules/.bin/ng test --log-level=debug --single-run
             ;;
         clean)
             rm -rf tmp dist

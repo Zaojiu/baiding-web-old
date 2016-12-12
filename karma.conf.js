@@ -7,11 +7,10 @@ module.exports = function (config) {
     frameworks: ['jasmine', 'angular-cli'],
     plugins: [
       require('karma-jasmine'),
-      require('karma-chrome-launcher'),
+      // require('karma-chrome-launcher'),
       require('karma-remap-istanbul'),
       require('angular-cli/plugins/karma'),
       require('karma-phantomjs-launcher'),
-      require('karma-ng-html2js-preprocessor'),
       require('karma-spec-reporter'),
     ],
     files: [
@@ -19,6 +18,9 @@ module.exports = function (config) {
     ],
     preprocessors: {
       './src/test.ts': ['angular-cli']
+    },
+    mime: {
+      'text/x-typescript': ['ts','tsx']
     },
     remapIstanbulReporter: {
       reports: {
