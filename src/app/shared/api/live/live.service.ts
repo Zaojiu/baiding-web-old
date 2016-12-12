@@ -74,7 +74,7 @@ export class LiveService {
     return liveInfo;
   }
 
-  getLiveInfo(id: string, needRefresh?: boolean): Promise<LiveInfoModel> {
+  getLiveInfo(id: string, needRefresh?: boolean, join = false): Promise<LiveInfoModel> {
     let lives = StoreService.get('lives') || {};
     let liveInfoCache = lives[id];
     if (liveInfoCache && !needRefresh) return Promise.resolve(liveInfoCache);

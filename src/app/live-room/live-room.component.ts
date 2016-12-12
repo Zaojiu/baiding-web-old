@@ -33,10 +33,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
               private shareBridge: ShareBridge, private liveRoomService: LiveRoomService) {
   }
 
-  toShowBeginnerGuide(result: boolean) {
-    this.isBeginnerGuideShow = result;
-  }
-
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`/lives/${this.id}/info`]);
     let hash = this.router.serializeUrl(uriTree);
@@ -64,12 +60,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-
-    if (!this.liveRoomService.getLiveRoomAlreadyVisited()) {
-      this.isBeginnerGuideShow = true;
-      this.liveRoomService.setLiveRoomAlreadyVisited();
-    }
-
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.resetLiveRoom();
