@@ -10,10 +10,13 @@
     "bootstrap.shell": "./hack/run.sh bootstrap.shell",
     "bootstrap.kill": "./hack/run.sh bootstrap.kill",
     "build.prod.docker": "./hack/run.sh build.prod.docker",
+    "build.test-prod.docker": "./hack/run.sh build.test-prod.docker",
     "serve.dev.docker": "./hack/run.sh serve.dev.docker",
     "serve.prod.docker": "./hack/run.sh serve.prod.docker",
+    "serve.test-prod.docker": "./hack/run.sh serve.test-prod.docker",
     "test.docker": "./hack/run.sh test.docker",
     "build.prod": "./hack/run.sh build.prod",
+    "build.test-prod": "./hack/run.sh build.test-prod",
     "serve.dev": "./hack/run.sh serve.dev",
     "serve.prod": "./hack/run.sh serve.prod",
     "serve.test-prod": "./hack/run.sh serve.test-prod",
@@ -27,12 +30,14 @@
   "dependencies": {
     "@angular/common": "2.2.3",
     "@angular/compiler": "2.2.3",
+    "@angular/compiler-cli": "2.2.3",
+    "@angular/platform-server": "2.2.3",
     "@angular/core": "2.2.3",
     "@angular/forms": "2.2.3",
     "@angular/http": "2.2.3",
     "@angular/platform-browser": "2.2.3",
     "@angular/platform-browser-dynamic": "2.2.3",
-    "@angular/router": "3.0.2",
+    "@angular/router": "3.2.3",
     "angular2-websocket": "^0.8.1",
     "angulartics2": "git://github.com/slene/angulartics2.git#9ae8535fda2369fe70ac5c376c721cc14919af28",
     "autosize": "^3.0.17",
@@ -82,7 +87,7 @@
     "karma-remap-istanbul": "^0.2.1",
     "karma-spec-reporter": "0.0.26",
     "lazypipe": "^1.0.1",
-    "phantomjs-prebuilt": "~2.1.7",
+    "phantomjs-prebuilt": "2.1.13",
     "protractor": "4.0.9",
     "static-server": "2.0.3",
     "ts-node": "1.2.1",
@@ -91,6 +96,6 @@
     "typings": "^2.0.0"
   },
   "optionalDependencies": {
-    "phantomjs": "~2.1.7"
+    "phantomjs": "2.1.1"
   }
 }
