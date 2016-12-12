@@ -29,7 +29,6 @@ import {LiveRoomService} from "../live-room.service";
 })
 
 
-
 export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
   @Input() liveInfo: LiveInfoModel;
@@ -428,8 +427,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   findFirstAvailableMessage(messages: MessageModel[]): MessageModel {
     for (let message of messages) {
-      if (message.type !== MessageType.LiveEnd &&
-        message.type !== MessageType.LiveRoomInfo) {
+      if (
+        message.type === MessageType.Text ||
+        message.type === MessageType.Image ||
+        message.type === MessageType.Audio ||
+        message.type === MessageType.Nice
+      ) {
         return message;
       }
     }
