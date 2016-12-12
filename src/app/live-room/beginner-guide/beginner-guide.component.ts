@@ -16,6 +16,8 @@ export class BeginnerGuideComponent implements OnInit {
   ngOnInit() {
     if (this.checkGuideAlreadyShown()) {
       this.hide();
+    } else {
+      UtilsService.setStorage('beginnerGuide', {isShowed: true});
     }
   }
 
@@ -29,7 +31,6 @@ export class BeginnerGuideComponent implements OnInit {
     this.showAdminGuide = false;
     this.isAdminStep2 = false;
     this.showUserGuide = false;
-    UtilsService.setStorage('beginnerGuide', {isShowed: true});
   }
 
   checkGuideAlreadyShown() {

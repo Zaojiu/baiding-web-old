@@ -6,8 +6,8 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 import {FormGroup, Validators, FormControl, FormBuilder} from "@angular/forms";
 
 @Component({
-  templateUrl: 'vip-info.component.html',
-  styleUrls: ['vip-info.component.scss'],
+  templateUrl: './vip-info.component.html',
+  styleUrls: ['./vip-info.component.scss'],
   providers: [InviteApiService]
 })
 

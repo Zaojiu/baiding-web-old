@@ -9,6 +9,7 @@ import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {InvitationModel, AudienceInvitationModel} from '../../shared/api/invite/invite.model';
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {WechatConfigService} from "../../shared/wechat/wechat.service";
+import {LiveRoomService} from "../live-room.service";
 
 @Component({
   templateUrl: './settings.component.html',
@@ -25,16 +26,13 @@ export class SettingsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService, private wechatService: WechatConfigService,
-              private modalService: ModalService, private inviteApiService: InviteApiService) {
+              private modalService: ModalService, private inviteApiService: InviteApiService, private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
     this.userInfo = this.route.snapshot.data['userInfo'];
-
-    this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
-      this.liveInfo = liveInfo;
-    });
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
 
     if (this.isAdmin) {
       this.inviteApiService.listInvitations(this.liveId).then((res) => {
@@ -48,23 +46,23 @@ export class SettingsComponent implements OnInit {
   }
 
   get audioAutoPlay() {
-    return this.liveService.isAudioAutoPlay(this.liveId);
+    return this.liveRoomService.isAudioAutoPlay(this.liveId);
   }
 
   set audioAutoPlay(result: boolean) {
-    this.liveService.toggleAudioAutoPlay(this.liveId);
+    this.liveRoomService.toggleAudioAutoPlay(this.liveId);
   }
 
   get translationExpanded(): boolean {
-    return this.liveService.isTranslationExpanded(this.liveId);
+    return this.liveRoomService.isTranslationExpanded(this.liveId);
   }
 
   set translationExpanded(result: boolean) {
-    this.liveService.toggleTranslationExpanded(this.liveId);
+    this.liveRoomService.toggleTranslationExpanded(this.liveId);
   }
 
   get isAdmin() {
-    return this.liveService.isAdmin(this.liveId);
+    return this.liveInfo.isAdmin(this.userInfo.uid);
   }
 
   gotoInvitationInfo() {

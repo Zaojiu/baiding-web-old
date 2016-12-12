@@ -3,7 +3,7 @@ import { Angulartics2, Angulartics2GoogleAnalytics } from 'angulartics2';
 
 @Component({
   selector: 'bd-app',
-  templateUrl: 'app.component.html',
+  templateUrl: './app.component.html',
 })
 
 export class AppComponent {

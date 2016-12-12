@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 
 import { UserInfoService } from '../api/user-info/user-info.service';
 import { UserAnimEmoji } from './praised-animation.model';
@@ -25,7 +25,7 @@ export class PraisedAnimationComponent implements OnInit {
     this.isMine = this.userAnim.user.uid === userInfo.uid;
   }
 
-  getXAxisOffset() {
+  getXAxisOffset(): SafeStyle {
     return this.sanitizer.bypassSecurityTrustStyle(this.randomXAxisOffset + 'px');
   }
 }

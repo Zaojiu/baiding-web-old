@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {ROUTES} from './vip-info.route';
+import {VipInfoRoutingModule} from './vip-info.route';
 import {VipInfoComponent} from './vip-info.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top-bar.module";
@@ -11,7 +11,7 @@ import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 @NgModule({
   imports: [
     CommonModule,
-    ROUTES,
+    VipInfoRoutingModule,
     LiveRoomTopBarModule,
     ReactiveFormsModule,
     AutofocusFirstInvalidInputModule,

@@ -23,10 +23,6 @@ export class ViewInfoComponent implements OnInit {
     this.userInfo = this.route.snapshot.data['userInfo'];
   }
 
-  get isAdmin() {
-    return this.liveService.isAdmin(this.liveId);
-  }
-
   gotoEdit() {
     this.router.navigate([`/lives/${this.liveId}/settings/edit-info`]);
   }

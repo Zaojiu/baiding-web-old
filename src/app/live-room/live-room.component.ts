@@ -12,6 +12,7 @@ import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from "../shared/bridge/share.interface";
 import {UtilsService} from "../shared/utils/utils";
+import {LiveRoomService} from "./live-room.service";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -22,24 +23,14 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   id: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
-  isChildrenActived: boolean;
-  routerSubscription: Subscription;
+  showInfo: boolean;
   isCommentOpened: boolean = true;
-  urlRegex = new RegExp('^\/lives\/.*?\/(push-comment|post|history|invitation)$');
   refreshInterval: any;
   praisedSub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private titleService: TitleService,
-              private shareBridge: ShareBridge, private userInfoService: UserInfoService) {
-  }
-
-  isEditor() {
-    return this.liveService.isEditor(this.id);
-  }
-
-  isAudience() {
-    return this.liveService.isAudience(this.id);
+              private shareBridge: ShareBridge, private liveRoomService: LiveRoomService) {
   }
 
   getShareUri(): string {
@@ -67,28 +58,11 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
   }
 
-  timelineGotoLatest() {
-    this.timelineService.gotoLastMessage();
-  }
-
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
-
-    // 监控router变化，如果route换了，那么设置 isChildrenActived
-    // 此属性会控制父底栏是否显示，以免子弹出层的底栏和父窗口底栏同时显示，导致跑版
-    this.isChildrenActived = this.urlRegex.test(this.router.url);
-    this.routerSubscription = this.router.events.subscribe(
-      event => {
-        if (event instanceof NavigationStart) {
-          this.isChildrenActived = this.urlRegex.test(event.url);
-        }
-      }
-    );
-
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
     this.resetLiveRoom();
-    this.userInfo = this.userInfoService.getUserInfoCache();
-    this.liveService.getLiveInfo(this.id, true, true); // 刷新liveInfo, 加入直播。
 
     this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);
@@ -109,7 +83,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
     this.praisedSub.unsubscribe();
 
     clearInterval(this.refreshInterval);

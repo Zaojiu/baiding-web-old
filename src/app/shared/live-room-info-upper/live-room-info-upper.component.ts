@@ -1,13 +1,12 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {LiveStatus} from '../../shared/api/live/live.enums';
 import {UtilsService} from '../../shared/utils/utils';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'live-room-info-upper',
-  templateUrl: 'live-room-info-upper.component.html',
-  styleUrls: ['live-room-info-upper.component.scss'],
+  templateUrl: './live-room-info-upper.component.html',
+  styleUrls: ['./live-room-info-upper.component.scss'],
 })
 
 export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {

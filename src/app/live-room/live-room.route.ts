@@ -1,4 +1,6 @@
+import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
+
 import {LiveRoomComponent} from './live-room.component';
 import {AuthGuard} from '../shared/guard/auth.guard';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
@@ -41,14 +43,22 @@ const route: Routes = [
         },
       },
       {path: 'push-comment', loadChildren: 'app/live-room/+push-comment/push-comment.module#PushCommentModule'},
-      {path: 'post', loadChildren:'app/live-room/+post/post.module#PostModule'},
+      {path: 'post', loadChildren: 'app/live-room/+post/post.module#PostModule'},
       {path: 'history', loadChildren: 'app/live-room/+history/history.module#HistoryModule'},
       {path: 'vip-info', loadChildren: 'app/live-room/+vip-info/vip-info.module#VipInfoModule'},
-      {path: 'invitation', loadChildren: 'app/live-room/+invite/invite.module#InviteModule' },
+      {path: 'invitation', loadChildren: 'app/live-room/+invite/invite.module#InviteModule'},
       {path: 'share/:message_id', loadChildren: 'app/live-room/+share/share.module#ShareModule'},
       {path: 'settings', loadChildren: 'app/live-room/+settings/settings.module#SettingsModule'},
     ]
   }
-]
+];
 
-export const ROUTES = RouterModule.forChild(route);
+const ROUTES = RouterModule.forChild(route);
+
+@NgModule({
+  imports: [ROUTES],
+  exports: [RouterModule]
+})
+export class LiveRoomRoutingModule {
+}
+

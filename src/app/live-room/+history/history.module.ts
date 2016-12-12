@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 
-import { ROUTES } from './history.route';
+import { HistoryRoutingModule } from './history.route';
 import { HistoryComponent } from "./history.component";
 import { PipeModule } from "../../shared/pipe/pipe.module";
 import { AudioPlayerModule } from "../../shared/audio-player/audio-player.module";
@@ -15,7 +15,7 @@ import { LoadingModule } from "../../shared/bd-loading/bd-loading.module";
     AudioPlayerModule,
     ImageViewerModule,
     LoadingModule,
-    ROUTES,
+    HistoryRoutingModule,
   ],
   declarations: [
     HistoryComponent,

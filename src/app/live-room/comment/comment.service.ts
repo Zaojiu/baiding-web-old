@@ -1,6 +1,7 @@
 import { Injectable }     from '@angular/core';
 import { Subject }        from 'rxjs/Subject';
 import { Subscription }   from 'rxjs/Subscription';
+import {Observable} from "rxjs/Observable";
 
 import { CommentModel }      from '../../shared/api/comment/comment.model';
 import { MqService } from '../../shared/mq/mq.service';
@@ -8,10 +9,10 @@ import { MqService } from '../../shared/mq/mq.service';
 @Injectable()
 export class CommentService {
   private receivedCommentSource = new Subject<CommentModel>();
-  private receivedComment$ = this.receivedCommentSource.asObservable();
+  private receivedComment$: Observable<CommentModel> = this.receivedCommentSource.asObservable();
   private receivedCommentSub: Subscription;
   private actionSource = new Subject<boolean>();
-  action$ = this.actionSource.asObservable();
+  action$: Observable<boolean> = this.actionSource.asObservable();
 
   constructor() {}
 

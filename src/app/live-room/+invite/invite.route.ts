@@ -1,4 +1,4 @@
-import {ModuleWithProviders} from "@angular/core";
+import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 
 import {InviteComponent} from './invite.component';
@@ -16,6 +16,12 @@ const route: Routes = [
       title: '邀请嘉宾'
     }
   }
-]
+];
 
-export const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
+const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
+
+@NgModule({
+  imports: [ ROUTES ],
+  exports: [ RouterModule ]
+})
+export class InviteRoutingModule {}

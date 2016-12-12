@@ -3,8 +3,8 @@ import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {Router} from "@angular/router";
 
 @Component({
-  templateUrl: 'notfound.component.html',
-  styleUrls: ['notfound.component.scss'],
+  templateUrl: './notfound.component.html',
+  styleUrls: ['./notfound.component.scss'],
 })
 
 export class NotFoundComponent {

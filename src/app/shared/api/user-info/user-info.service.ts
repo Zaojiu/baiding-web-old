@@ -5,17 +5,16 @@ import 'rxjs/add/operator/toPromise';
 import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
-import {Router} from "@angular/router";
 
 
 @Injectable()
 export class UserInfoService {
 
-  constructor(private http: Http, private router: Router, private store: StoreService) {
+  constructor(private http: Http) {
   }
 
   getUserInfoCache(): UserInfoModel {
-    return this.store.get('userinfo') as UserInfoModel;
+    return StoreService.get('userinfo') as UserInfoModel;
   }
 
   parseUserInfo(data: any): UserInfoModel {
@@ -33,7 +32,7 @@ export class UserInfoService {
   }
 
   getUserInfo(needRefresh?: boolean): Promise<UserInfoModel> {
-    let userInfoCache = this.store.get('userinfo') as UserInfoModel;
+    let userInfoCache = StoreService.get('userinfo') as UserInfoModel;
     if (userInfoCache && !needRefresh) {
       return Promise.resolve(userInfoCache);
     }
@@ -42,7 +41,7 @@ export class UserInfoService {
       .then(res => {
         let data = res.json();
         let userInfo = this.parseUserInfo(data);
-        this.store.set('userinfo', userInfo);
+        StoreService.set('userinfo', userInfo);
         (<any>window).ga('set', 'userId', userInfo.uid); // 登录用户增加ga的userId追踪
         return userInfo;
       });

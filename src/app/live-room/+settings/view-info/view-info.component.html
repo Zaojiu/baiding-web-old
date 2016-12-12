@@ -5,7 +5,7 @@
     <live-room-info-upper [liveInfo]="liveInfo"></live-room-info-upper>
   </div>
 
-  <div class="operation-area" *ngIf="isAdmin && liveInfo.isCreated()">
+  <div class="operation-area" *ngIf="liveInfo.isAdmin(userInfo.uid) && liveInfo.isCreated()">
     <a class="btn" (click)="gotoEdit()">编辑</a>
   </div>
 </div>

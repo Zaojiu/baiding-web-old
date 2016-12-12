@@ -3,8 +3,8 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'topbar-switch-btn',
-  templateUrl: 'topbar-switch-btn.component.html',
-  styleUrls: ['topbar-switch-btn.component.scss'],
+  templateUrl: './topbar-switch-btn.component.html',
+  styleUrls: ['./topbar-switch-btn.component.scss'],
 })
 
 export class TopBarSwitchBtnComponent implements OnInit {

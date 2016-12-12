@@ -1,4 +1,4 @@
-import {ModuleWithProviders} from "@angular/core";
+import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 import {InfoCenterComponent} from "./info-center.component";
 import {EditInfoComponent} from "./edit-info/edit-info.component";
@@ -41,4 +41,10 @@ const route: Routes = [
   }
 ];
 
-export const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
+const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
+
+@NgModule({
+  imports: [ ROUTES ],
+  exports: [ RouterModule ]
+})
+export class InfoCenterRoutingModule {}

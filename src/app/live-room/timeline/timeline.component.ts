@@ -20,6 +20,7 @@ import {AudioPlayerService} from '../../shared/audio-player/audio-player.service
 
 import {MessageComponent} from './message/message.component';
 import {HackMessages} from "./hack-messages";
+import {LiveRoomService} from "../live-room.service";
 
 @Component({
   selector: 'timeline',
@@ -46,7 +47,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
-              private liveService: LiveService, private messageApiService: MessageApiService, private  audioPlayerService: AudioPlayerService) {
+              private liveService: LiveService, private messageApiService: MessageApiService,
+              private  audioPlayerService: AudioPlayerService, private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {
@@ -103,7 +105,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   audioPlayEnded(msg: MessageModel) {
-    if (!this.liveService.isAudioAutoPlay(this.liveInfo.id)) {
+    if (!this.liveRoomService.isAudioAutoPlay(this.liveInfo.id)) {
       return;
     }
 
