@@ -15,7 +15,11 @@ import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {AutofocusFirstInvalidInputModule} from "../shared/first-invalid/first-invalid.module";
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
+<<<<<<< 85bf1ce8b4db991e405b586802de33ae663de3d8
 import {FormModule} from "../shared/form/form.module";
+=======
+import {DraggableModule} from "../shared/draggable/draggable.module";
+>>>>>>> support info-center and enhance hamburger-menu subscription UX
 
 @NgModule({
   imports: [
@@ -32,6 +36,7 @@ import {FormModule} from "../shared/form/form.module";
     HamburgerMenuModule,
     AutofocusFirstInvalidInputModule,
     AutoresizeModule,
+    DraggableModule,
   ],
   declarations: [
     InfoCenterComponent,

@@ -1,9 +1,7 @@
 import {Component, Input, OnInit, ViewChildren, QueryList, OnDestroy} from '@angular/core';
 import {UserInfoModel} from '../api/user-info/user-info.model';
 import {Router} from '@angular/router';
-import {Subscription} from "rxjs";
 import {TimelineService} from "../../live-room/timeline/timeline.service";
-import {FadeDirective} from "../animation/fade/fade.directive";
 import {AutoOpacityDownDirective} from "../animation/auto-opacity-down/auto-opacity-down.directive";
 
 @Component({
@@ -12,46 +10,31 @@ import {AutoOpacityDownDirective} from "../animation/auto-opacity-down/auto-opac
   styleUrls: ['./hamburger-menu.component.scss'],
 })
 
-export class HamburgerMenuComponent implements OnInit,OnDestroy {
+export class HamburgerMenuComponent implements OnInit {
   activeStatus = false;
   @Input() liveId: string;
   @Input() from: string;
   @Input() userInfo: UserInfoModel;
   @ViewChildren(AutoOpacityDownDirective) hamburgerMenu: QueryList<AutoOpacityDownDirective>;
-  timelineScrollSub: Subscription;
 
   constructor(private router: Router, private timelineService: TimelineService) {
   }
 
   ngOnInit() {
     setTimeout(() => {
-      if (this.hamburgerMenu) this.hideHamburger();
-    }, 8000);
-
-    this.timelineScrollSub = this.timelineService.scroll$.subscribe((e) => {
-      this.showHamburger()
-    })
-  }
-
-  ngOnDestroy() {
-    this.timelineScrollSub.unsubscribe();
+      if (this.hamburgerMenu) this.hamburgerMenu.first.opacityDown();
+    }, 1000);
   }
 
   switch() {
-    this.hamburgerMenu.first.opacityUp();
+    if (!this.activeStatus) {
+      this.hamburgerMenu.first.opacityUp();
+    }
+    else {
+      this.hamburgerMenu.first.opacityDown();
+    }
+
     return this.activeStatus = !this.activeStatus;
-  }
-
-  showHamburger() {
-    this.hamburgerMenu.first.opacityUp();
-
-    setTimeout(() => {
-      if (this.hamburgerMenu) this.hideHamburger();
-    }, 6000);
-  }
-
-  hideHamburger() {
-    this.hamburgerMenu.first.opacityDown();
   }
 
   createRoom() {
