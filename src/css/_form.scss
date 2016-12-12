@@ -9,15 +9,15 @@
     position: relative;
     padding-top: 14px;
 
-    input[type="text"][ng-reflect-model] + label,
+    input[type="text"].ng-has-value + label,
     input[type="text"]:focus + label,
-    input[type="password"][ng-reflect-model] + label,
+    input[type="password"].ng-has-value + label,
     input[type="password"]:focus + label,
-    input[type="datetime-local"][ng-reflect-model] + label,
+    input[type="datetime-local"].ng-has-value + label,
     input[type="datetime-local"]:focus + label,
-    input[type="tel"][ng-reflect-model] + label,
+    input[type="tel"].ng-has-value + label,
     input[type="tel"]:focus + label,
-    textarea[ng-reflect-model] + label,
+    textarea.ng-has-value + label,
     textarea:focus + label {
       transform: translateY(0px);
       font-size: 14px;

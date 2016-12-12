@@ -15,6 +15,7 @@ import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {AutofocusFirstInvalidInputModule} from "../shared/first-invalid/first-invalid.module";
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
+import {FormModule} from "../shared/form/form.module";
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
+    FormModule,
     PipeModule,
     LiveRoomTopBarModule,
     LiveRoomInfoUpperModule,
