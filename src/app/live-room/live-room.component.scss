@@ -85,16 +85,4 @@
     right: 12px;
     bottom: 67px;
   }
-
-  .sample {
-    position: fixed;
-    z-index: 5;
-    top: 0;
-    left: 0;
-    height: 100px;
-    width: 100px;
-    background-color: red;
-    -webkit-user-drag: element;
-  }
-
 }

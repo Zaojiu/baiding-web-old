@@ -11,9 +11,6 @@ import {UtilsService} from "../utils/utils";
     '(touchstart)': 'touchStart($event)',
     '(touchmove)': 'touchMove($event)',
     '(touchend)': 'touchEnd($event)',
-    '(mousedown)': 'mouseDown($event)',
-    '(mousemove)': 'mouseMove($event)',
-    '(mouseup)': 'mouseUp($event)',
   }
 })
 export class Draggable implements OnDestroy, OnInit {
@@ -32,44 +29,62 @@ export class Draggable implements OnDestroy, OnInit {
     }
   }
 
-  public ngOnInit(): void {
-    console.log('into drag')
-    this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'true');
+  ngOnInit(): void {
     this.touchMODE = !!UtilsService.hasTouchEvent;
+    let offsetX = UtilsService.getStorage('draggableLeft');
+    let offsetY = UtilsService.getStorage('draggableTop');
+
+    // if pc,set element draggable
+    this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'true');
+
+    // restore position
+    if (offsetX) {
+      this.renderer.setElementStyle(this.el.nativeElement, 'left', offsetX + 'px');
+    }
+
+    if (offsetY) {
+      this.renderer.setElementStyle(this.el.nativeElement, 'top', offsetY + 'px');
+    }
   }
 
+  // PC events
   onDragStart(event: MouseEvent) {
-    console.log('dragstart')
-    this.Δx = event.x - this.el.nativeElement.offsetLeft;
-    this.Δy = event.y - this.el.nativeElement.offsetTop;
+    if (!this.touchMODE) {
+      this.Δx = event.x - this.el.nativeElement.offsetLeft;
+      this.Δy = event.y - this.el.nativeElement.offsetTop;
+    }
   }
 
   onDrag(event: MouseEvent) {
-    console.log('ondrag')
-    this.doTranslation(event.x, event.y);
+    if (!this.touchMODE) {
+      this.doTranslation(event.x, event.y);
+    }
   }
 
   onDragEnd(event: MouseEvent) {
-    console.log('dragend')
+    if (!this.touchMODE) {
+      this.Δx = 0;
+      this.Δy = 0;
+      UtilsService.setStorage('draggableTop', this.el.nativeElement.offsetTop);
+      UtilsService.setStorage('draggableLeft', this.el.nativeElement.offsetLeft);
+    }
+  }
+
+  // Mobile events
+  touchStart(event: TouchEvent) {
+    this.Δx = event.touches[0].clientX - this.el.nativeElement.offsetLeft;
+    this.Δy = event.touches[0].clientY - this.el.nativeElement.offsetTop;
+  }
+
+  touchMove(event: TouchEvent) {
+    this.doTranslation(event.touches[0].clientX, event.touches[0].clientY);
+  }
+
+  touchEnd(event: TouchEvent) {
     this.Δx = 0;
     this.Δy = 0;
-  }
-
-  mouseDown(event: MouseEvent) {
-    console.log('touchstart')
-    this.Δx = event.x - this.el.nativeElement.offsetLeft;
-    this.Δy = event.y - this.el.nativeElement.offsetTop;
-  }
-
-  mouseMove(event: MouseEvent) {
-    console.log('touchmove')
-    this.doTranslation(event.x, event.y);
-  }
-
-  mouseUp(event: MouseEvent) {
-    console.log('touchend')
-    this.Δx = 0;
-    this.Δy = 0;
+    UtilsService.setStorage('draggableTop', this.el.nativeElement.offsetTop);
+    UtilsService.setStorage('draggableLeft', this.el.nativeElement.offsetLeft);
   }
 
   doTranslation(x: number, y: number) {
@@ -78,21 +93,9 @@ export class Draggable implements OnDestroy, OnInit {
     this.renderer.setElementStyle(this.el.nativeElement, 'left', (x - this.Δx) + 'px');
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'false');
   }
 
 }
 
-// import { NgModule } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-//
-//
-// const DRAGGABLE_DIRECTIVES: any[] = [Draggable];
-//
-// @NgModule({
-//   imports: [CommonModule],
-//   exports: DRAGGABLE_DIRECTIVES,
-//   declarations: DRAGGABLE_DIRECTIVES
-// })
-// export class DraggableModule { }

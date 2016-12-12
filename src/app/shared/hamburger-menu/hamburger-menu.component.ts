@@ -66,8 +66,4 @@ export class HamburgerMenuComponent implements OnInit,OnDestroy {
   gotoMyRoomList() {
     this.router.navigate([`/info-center`]);
   }
-
-  pressToDrag(e: any) {
-    console.log(e, 'helo')
-  }
 }
