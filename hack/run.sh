@@ -2,11 +2,6 @@
 WEB_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd ${WEB_DIR}/..
 
-function clean(){
-    rm -rf tmp
-    [ -f angular-cli.tmp.json ] && mv angular-cli.tmp.json angular-cli.json || true
-}
-
 image=registry.cn-hangzhou.aliyuncs.com/baiding/web-bootstrap
 
 function docker_killrm(){
@@ -129,29 +124,19 @@ for target in $@; do
             docker_exec npm run test
             ;;
         build.prod)
-            rm -rf dist
-            clean
-            ./node_modules/gulp/bin/gulp.js || { clean; exit 1; }
-            ./node_modules/.bin/ngc -p tmp || { clean; exit 1; }
-            ./node_modules/.bin/ng build --prod || { clean; exit 1; }
-            clean
+            ./node_modules/.bin/ng build -e prod -prod --aot
             ;;
         build.test-prod)
-            rm -rf dist
-            clean
-            ./node_modules/gulp/bin/gulp.js || { clean; exit 1; }
-            ./node_modules/.bin/ngc -p tmp || { clean; exit 1; }
-            ./node_modules/.bin/ng build -e test-prod || { clean; exit 1; }
-            clean
+            ./node_modules/.bin/ng build -e test-prod -prod --aot
             ;;
         serve.dev)
-            ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0
+            ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0 -e dev --hmr
             ;;
         serve.prod)
-            ./node_modules/static-server/bin/static-server.js -p 9000 ./dist
+            ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0 -e prod -prod --aot
             ;;
         serve.test-prod)
-            ./node_modules/static-server/bin/static-server.js -p 9000 ./dist
+            ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0 -e test-prod -prod --aot
             ;;
         test)
             ./node_modules/.bin/ng test --log-level=debug

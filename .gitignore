@@ -37,3 +37,5 @@ Thumbs.db
 # config
 /src/environments/environment.dev.ts
 /src/environments/environment.test-prod.ts
+/angular-cli.dev.json
+/angular-cli.prod.json
