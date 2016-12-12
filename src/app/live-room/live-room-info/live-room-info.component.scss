@@ -56,7 +56,6 @@
     display: flex;
 
     .btn {
-      width: 40%;
       text-align: center;
       height: 49px;
       line-height: 49px;
@@ -64,8 +63,8 @@
       color: $color-w;
       background-color: rgb(37, 37, 37);
 
-      &:last-child {
-        width: 60%;
+      &.enter-room {
+        flex-grow: 1;
         background-color: $color-brand;
       }
 
@@ -77,6 +76,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-basis: 40%;
+        width: 40%;
 
         .bi-clock {
           margin-right: 5px;

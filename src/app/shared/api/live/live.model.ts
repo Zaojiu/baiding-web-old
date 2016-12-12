@@ -48,17 +48,21 @@ export class LiveInfoModel {
     return this.admin.uid === uid;
   }
 
-  isEditor(uid: number): boolean {
-    let isEditor = this.isAdmin(uid);
+  isVip(uid: number): boolean {
+    let isVip = false;
 
     for (let editor of this.editors) {
       if (editor.uid === uid) {
-        isEditor = true;
+        isVip = true;
         break;
       }
     }
 
-    return isEditor;
+    return isVip;
+  }
+
+  isEditor(uid: number): boolean {
+    return this.isAdmin(uid) || this.isVip(uid);
   }
 
   isAudience(uid: number) {

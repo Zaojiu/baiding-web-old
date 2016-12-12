@@ -57,7 +57,7 @@
               <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
               <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
                           [countDownStatus]="liveInfo.isCreated()"></count-down>
-              <i class="bi bi-stamp" *ngIf="liveInfo.isEditor(pageUserInfo.uid)"></i>
+              <i class="bi bi-stamp" *ngIf="liveInfo.isVip(pageUserInfo.uid)"></i>
             </div>
 
             <div class="invited-people">
@@ -99,22 +99,25 @@
             </div>
           </div>
 
-          <div class="operation-area">
-            <div class="people-count" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
+          <div
+            class="operation-area"
+            *ngIf="(liveInfo.audienceList && liveInfo.audienceList.length > 0) || liveInfo.isAdmin(currentUserInfo.uid)"
+          >
+            <div class="people-count" *ngIf="liveInfo.audienceList && liveInfo.audienceList.length > 0">
               <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
               <span class="total-users">
-            {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
-          </span>
+                {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
+              </span>
             </div>
 
-            <div class="invite"
-                 *ngIf="currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
+            <div class="btn"
+                 *ngIf="liveInfo.isAdmin(currentUserInfo.uid)"
                  (click)="goInvitation(liveInfo.id)">
               <i class="bi bi-invite"></i>
               邀请
             </div>
-            <div class="edit"
-                 *ngIf="liveInfo.isCreated() && currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
+            <div class="btn"
+                 *ngIf="liveInfo.isCreated() && liveInfo.isAdmin(currentUserInfo.uid)"
                  (click)="goEditLiveRoom(liveInfo.id)">
               <i class="bi bi-edit-btn"></i>
               编辑
@@ -202,25 +205,12 @@
 
           </div>
 
-          <div class="operation-area">
-            <div class="people-count" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
+          <div class="operation-area" *ngIf="liveInfo && liveInfo.audienceList && liveInfo.audienceList.length > 0">
+            <div class="people-count">
               <img class="avatar" alt="" *ngFor="let audience of liveInfo.audienceList" [src]="audience.avatar">
               <span class="total-users">
-            {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
-          </span>
-            </div>
-
-            <div class="invite"
-                 *ngIf="currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
-                 (click)="goInvitation(liveInfo.id)">
-              <i class="bi bi-invite"></i>
-              邀请
-            </div>
-            <div class="edit"
-                 *ngIf="liveInfo.isCreated() && currentUserInfo && liveInfo && liveInfo.admin && currentUserInfo.uid === liveInfo.admin.uid"
-                 (click)="goEditLiveRoom(liveInfo.id)">
-              <i class="bi bi-edit-btn"></i>
-              编辑
+                {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
+              </span>
             </div>
           </div>
 
