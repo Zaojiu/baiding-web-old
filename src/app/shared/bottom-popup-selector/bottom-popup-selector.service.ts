@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Subject }    from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
+import {Subject}    from 'rxjs/Subject';
 import {BottomPopupSelectorModel, BottomPopupSelectorItemModel}    from './bottom-popup-selector.model';
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class BottomPopupSelectorService {
   // Observable string sources
   private popupSource = new Subject<BottomPopupSelectorModel>();
-  private closeSource = new Subject<string>();
   private itemSelectedSource = new Subject<BottomPopupSelectorItemModel>();
+  private closeSource = new Subject<string>();
   // Observable string streams
-  needPopup$ = this.popupSource.asObservable();
-  itemSelected$ = this.itemSelectedSource.asObservable();
-  needClose$ = this.closeSource.asObservable();
+  needPopup$: Observable<BottomPopupSelectorModel> = this.popupSource.asObservable();
+  itemSelected$: Observable<BottomPopupSelectorItemModel> = this.itemSelectedSource.asObservable();
+  needClose$: Observable<string> = this.closeSource.asObservable();
   isClosed = true;
   // Service message commands
   popup(model: BottomPopupSelectorModel) {

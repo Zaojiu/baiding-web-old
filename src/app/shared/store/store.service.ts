@@ -1,18 +1,13 @@
-import { Injectable } from '@angular/core';
-
-@Injectable()
 export class StoreService {
-  private memoryStore: any;
+  static memoryStore = {};
 
-  constructor () {
-    this.memoryStore = {};
-  }
+  constructor () {}
 
-  set(key: string, value: any) {
+  static set(key: string, value: any) {
     this.memoryStore[key] = value;
   }
 
-  get(key: string): any {
+  static get(key: string): any {
     return this.memoryStore[key];
   }
 }

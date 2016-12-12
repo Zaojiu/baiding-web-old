@@ -9,8 +9,8 @@ export class UserInfoResolver implements Resolve<UserInfoModel>{
   constructor(private userInfoService: UserInfoService) {
   }
 
-  resolve() {
-    return this.userInfoService.getUserInfo().then((res)=> {
+  resolve(): Promise<UserInfoModel> {
+    return this.userInfoService.getUserInfo(true).then((res)=> {
       return res
     });
   }

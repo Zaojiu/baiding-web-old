@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from '@angular/forms';
 
-import {ROUTES} from './post.route';
+import {PostRoutingModule} from './post.route';
 import {PostComponent} from './post.component';
 import {PipeModule} from "../../shared/pipe/pipe.module";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
@@ -13,7 +13,7 @@ import {PostService} from "./post.service";
 
 @NgModule({
   imports: [
-    ROUTES,
+    PostRoutingModule,
     CommonModule,
     FormsModule,
     PipeModule,

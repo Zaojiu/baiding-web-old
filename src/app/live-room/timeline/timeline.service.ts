@@ -1,6 +1,7 @@
 import {Injectable}     from '@angular/core';
 import {Subject}        from 'rxjs/Subject';
 import {Subscription}   from 'rxjs/Subscription';
+import {Observable} from "rxjs/Observable";
 
 import {MessageModel, ReplyMessageModel} from '../../shared/api/message/message.model';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
@@ -19,13 +20,13 @@ export class TimelineService {
   private scrollSource = new Subject<ScrollerEventModel>();
 
   // Observable string streams
-  private receivedMessage$ = this.receivedMessageSource.asObservable();
-  private deleteMessage$ = this.deleteMessageSource.asObservable();
-  receivedReply$ = this.receivedReplySource.asObservable();
-  timeline$ = this.timelineSource.asObservable();
-  private receivedPraises$ = this.praisesSource.asObservable();
-  event$ = this.eventSource.asObservable();
-  scroll$ = this.scrollSource.asObservable();
+  private receivedMessage$: Observable<MessageModel> = this.receivedMessageSource.asObservable();
+  private deleteMessage$: Observable<MessageModel> = this.deleteMessageSource.asObservable();
+  receivedReply$: Observable<ReplyMessageModel> = this.receivedReplySource.asObservable();
+  timeline$: Observable<boolean> = this.timelineSource.asObservable();
+  private receivedPraises$: Observable<UserInfoModel> = this.praisesSource.asObservable();
+  event$: Observable<MqEvent> = this.eventSource.asObservable();
+  scroll$: Observable<ScrollerEventModel> = this.scrollSource.asObservable();
 
   private receviedMessageSub: Subscription;
   private deleteMessageSub: Subscription;

@@ -8,8 +8,8 @@ import {Router} from "@angular/router";
 
 @Component({
   selector: 'user-info-card',
-  templateUrl: 'user-info-card.component.html',
-  styleUrls: ['user-info-card.component.scss']
+  templateUrl: './user-info-card.component.html',
+  styleUrls: ['./user-info-card.component.scss']
 })
 
 export class UserInfoCardComponent implements OnInit {

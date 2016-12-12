@@ -20,6 +20,7 @@ import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
 import {LiveService} from "../../shared/api/live/live.service";
 import {ImageBridge} from "../../shared/bridge/image.interface";
+import {LiveRoomService} from "../live-room.service";
 
 declare var $: any;
 
@@ -47,11 +48,12 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
-              private messageService: MessageService, private liveService: LiveService, private imageService: ImageBridge) {
+              private messageService: MessageService, private liveService: LiveService,
+              private imageService: ImageBridge, private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {
-    this.messageContent = this.liveService.getTextWordsStashed(this.liveId);
+    this.messageContent = this.liveRoomService.getTextWordsStashed(this.liveId);
 
     this.form = this.fb.group({
       'images': new FormControl(this.images, [
@@ -70,7 +72,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   switchMode(mode: EditMode) {
     if (mode !== EditMode.Text) {
       this.blurMessageInput();
-      this.liveService.setTextWordsStashed(this.messageContent, this.liveId);
+      this.liveRoomService.setTextWordsStashed(this.messageContent, this.liveId);
     }
 
     this.mode = mode;

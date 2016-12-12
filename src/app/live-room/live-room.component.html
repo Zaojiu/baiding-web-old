@@ -1,7 +1,7 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
-<beginner-guide [showAdminGuide]="true" *ngIf="isEditor()"></beginner-guide>
-<beginner-guide [showUserGuide]="true" *ngIf="isAudience()"></beginner-guide>
+<beginner-guide [showAdminGuide]="true" *ngIf="liveInfo.isEditor(userInfo.uid)"></beginner-guide>
+<beginner-guide [showUserGuide]="true" *ngIf="liveInfo.isAudience(userInfo.uid)"></beginner-guide>
 
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <top-bar
@@ -32,7 +32,7 @@
   <user-info-card></user-info-card>
 
   <audience-tool-bar
-    *ngIf="!isChildrenActived && isAudience()"
+    *ngIf="liveInfo.isAudience(userInfo.uid)"
     class="audience-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"
@@ -40,7 +40,7 @@
   ></audience-tool-bar>
 
   <editor-tool-bar
-    *ngIf="!isChildrenActived && isEditor()"
+    *ngIf="liveInfo.isEditor(userInfo.uid)"
     class="editor-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"

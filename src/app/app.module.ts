@@ -5,7 +5,7 @@ import {HttpModule, BrowserXhr} from '@angular/http';
 import {Angulartics2Module, Angulartics2GoogleAnalytics} from 'angulartics2';
 
 import {AppComponent} from './app.component';
-import {ROUTES} from './app.routes';
+import {AppRoutingModule} from './app.routes';
 
 // import模块
 import {LiveRoomModule} from './live-room/live-room.module';
@@ -50,16 +50,16 @@ import {PcAudioService} from "./shared/bridge/audio/pc-audio.service";
 import {PcShareService} from "./shared/bridge/share/pc-share.service";
 import {ImageBridge} from "./shared/bridge/image.interface";
 import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
+import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
-    ROUTES,
-    Angulartics2Module.forRoot(),
-
     LiveRoomModule,
-    ImageViewerModule
+    AppRoutingModule,
+    Angulartics2Module.forRoot(),
+    ImageViewerModule,
   ],
   declarations: [
     AppComponent,
@@ -89,6 +89,8 @@ import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
     { provide: ShareBridge, useFactory: shareServiceFactory, deps: [WechatShareService, IosShareService, PcShareService] },
     { provide: ImageBridge, useFactory: imageServiceFactory, deps: [WechatImageService] },
     Title,
+    UserInfoResolver,
+    LiveInfoResolver,
     AuthGuard,
     AdminGuard,
     UserInfoService,
@@ -101,7 +103,6 @@ import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
     TextPopupService,
     LiveService,
     OperationTipsService,
-    UserInfoResolver,
     Angulartics2GoogleAnalytics,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],

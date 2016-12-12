@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject}    from 'rxjs/Subject';
+import {Observable} from "rxjs/Observable";
 
 import {ModalContext}    from './modal.model';
 
@@ -8,8 +9,8 @@ export class ModalService {
   private popupSource = new Subject<ModalContext>();
   private closeSource = new Subject<string>();
 
-  needPopup$ = this.popupSource.asObservable();
-  needClose$ = this.closeSource.asObservable();
+  needPopup$: Observable<ModalContext> = this.popupSource.asObservable();
+  needClose$: Observable<string> = this.closeSource.asObservable();
   isOpened = true;
 
   popup(content: string, cancelText = '取消', confirmText = '确定', hasCancelBtn = true): Promise<boolean> {

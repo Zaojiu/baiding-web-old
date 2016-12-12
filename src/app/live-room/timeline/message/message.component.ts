@@ -19,6 +19,7 @@ import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 import {TextPopupService} from "../../../shared/text-popup/text-popup.service";
 import {ModalService} from "../../../shared/modal/modal.service";
 import {MessageApiService} from "../../../shared/api/message/message.api";
+import {LiveRoomService} from "../../live-room.service";
 
 @Component({
   selector: 'message',
@@ -52,7 +53,7 @@ export class MessageComponent implements OnInit, OnDestroy {
               private router: Router, private liveService: LiveService,
               private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
               private userInfoService: UserInfoService, private textPopupService: TextPopupService,
-              private modalService: ModalService) {
+              private modalService: ModalService, private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {
@@ -64,10 +65,10 @@ export class MessageComponent implements OnInit, OnDestroy {
       }
     }
 
-    let tranlationExpand = !this.liveService.isTranslationExpanded(this.liveId);
+    let tranlationExpand = !this.liveRoomService.isTranslationExpanded(this.liveId);
     this.judgeTranlastionLength(tranlationExpand, this.tranlationMaxLength);
 
-    this.tranlationExpandedSub = this.liveService.$tranlationExpanded.subscribe((result) => {
+    this.tranlationExpandedSub = this.liveRoomService.$tranlationExpanded.subscribe((result) => {
       this.judgeTranlastionLength(result, this.tranlationMaxLength);
     });
   }
@@ -130,14 +131,6 @@ export class MessageComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  isEditor(uid ?: number) {
-    return this.liveService.isEditor(this.liveId, uid);
-  }
-
-  isAudience(uid ?: number) {
-    return this.liveService.isAudience(this.liveId, uid);
-  }
-
   setPraise() {
     this.confirmPraise();
   }
@@ -148,7 +141,7 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   canReply(): boolean {
     // 发送成功才能回复(特殊情况,例如推送,信息uid不是推送人), 不然id是前端随机id, 会有问题。
-    return this.message.user.uid !== this.userInfo.uid && !this.isAudience() &&
+    return this.message.user.uid !== this.userInfo.uid && !this.liveInfo.isAudience(this.userInfo.uid) &&
       this.message.postStatus === PostMessageStatus.PostSuccessful;
   }
 
@@ -220,15 +213,15 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   private _toggleAudioAutoPlay() {
-    this.liveService.toggleAudioAutoPlay(this.liveId);
+    this.liveRoomService.toggleAudioAutoPlay(this.liveId);
   }
 
   private _toggleTranslationExpand() {
-    this.liveService.toggleTranslationExpanded(this.liveId);
+    this.liveRoomService.toggleTranslationExpanded(this.liveId);
   }
 
   emitAvatarClick(userInfo: UserInfoModel) {
-    if (this.isEditor(userInfo.uid)) {
+    if (this.liveInfo.isEditor(userInfo.uid)) {
       this.messageService.emitAvatarUser(userInfo);
     }
   }

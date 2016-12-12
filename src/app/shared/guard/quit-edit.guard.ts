@@ -3,7 +3,7 @@ import {CanDeactivate} from '@angular/router';
 
 import {ModalService} from '../../shared/modal/modal.service';
 
-interface QuitEditGuardComponent {
+export interface QuitEditGuardComponent {
   canDeactivate(): boolean;
 }
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 
-import { ROUTES } from './share.route';
+import { ShareRoutingModule } from './share.route';
 import { ShareComponent } from './share.component';
 import { LoadingModule } from "../../shared/bd-loading/bd-loading.module";
 
@@ -10,7 +10,7 @@ import { LoadingModule } from "../../shared/bd-loading/bd-loading.module";
   imports: [
     CommonModule,
     LoadingModule,
-    ROUTES,
+    ShareRoutingModule,
   ],
   declarations: [
     ShareComponent,

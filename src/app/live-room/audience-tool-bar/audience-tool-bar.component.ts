@@ -10,6 +10,7 @@ import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.mo
 import {EditMode} from "./audience-tool-bar.enums";
 import {Router} from "@angular/router";
 import {UtilsService} from "../../shared/utils/utils";
+import {LiveRoomService} from "../live-room.service";
 
 declare var $: any;
 
@@ -32,11 +33,12 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   mode = EditMode.None;
 
   constructor(private liveService: LiveService, private commentApiService: CommentApiService,
-              private  messageService: MessageService, private router: Router) {
+              private  messageService: MessageService, private router: Router,
+              private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {
-    this.commentContent = this.liveService.getTextWordsStashed(this.liveId);
+    this.commentContent = this.liveRoomService.getTextWordsStashed(this.liveId);
 
     //监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
@@ -95,7 +97,7 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
 
   switchMode(mode: EditMode) {
     if (mode !== EditMode.Text) {
-      this.liveService.setTextWordsStashed(this.commentContent, this.liveId);
+      this.liveRoomService.setTextWordsStashed(this.commentContent, this.liveId);
       this.blurMessageInput();
     }
 

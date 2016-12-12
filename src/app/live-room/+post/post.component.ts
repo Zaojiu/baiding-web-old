@@ -4,6 +4,7 @@ import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {LiveService} from "../../shared/api/live/live.service";
+import {LiveRoomService} from "../live-room.service";
 
 @Component({
   templateUrl: './post.component.html',
@@ -20,7 +21,8 @@ export class PostComponent implements OnInit {
   @ViewChild('postCommentContent') postCommentContent: ElementRef;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private messageApiService: MessageApiService, private postService: PostService, private liveService: LiveService) {
+              private messageApiService: MessageApiService, private postService: PostService,
+              private liveService: LiveService, private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {
@@ -28,7 +30,7 @@ export class PostComponent implements OnInit {
     this.messageId = this.route.snapshot.params['message_id'];
     this.commentId = this.route.snapshot.params['comment_id'];
 
-    this.content = this.liveService.getPushCommentStashed(this.commentId);
+    this.content = this.liveRoomService.getPushCommentStashed(this.commentId);
 
     if (this.messageId) {
       this.postService.getMessage(this.id, this.messageId).then(additionalContent => {
@@ -43,12 +45,12 @@ export class PostComponent implements OnInit {
     }
 
     $(this.postCommentContent.nativeElement).on('input', () => {
-      this.liveService.setPushCommentStashed(this.content, this.commentId);
+      this.liveRoomService.setPushCommentStashed(this.content, this.commentId);
     });
   }
 
   avatarClicked() {
-    this.liveService.setPushCommentStashed(this.content, this.commentId);
+    this.liveRoomService.setPushCommentStashed(this.content, this.commentId);
   }
 
   backToMainScreen() {

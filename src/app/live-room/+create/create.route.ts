@@ -1,4 +1,4 @@
-import {ModuleWithProviders} from "@angular/core";
+import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 import {CreateComponent} from "./create.component";
@@ -17,4 +17,11 @@ const route: Routes = [
   }
 ];
 
-export const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
+const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
+
+@NgModule({
+  imports: [ ROUTES ],
+  exports: [ RouterModule ]
+})
+export class CreateRoutingModule {}
+

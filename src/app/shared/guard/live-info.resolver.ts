@@ -10,14 +10,15 @@ export class LiveInfoResolver implements Resolve<LiveInfoModel>{
   constructor(private liveService: LiveService, private router: Router) {
   }
 
-  resolve(route: ActivatedRouteSnapshot) {
+  resolve(route: ActivatedRouteSnapshot): Promise<LiveInfoModel> {
     let liveId = route.params['id'];
-    return this.liveService.getLiveInfo(liveId).then((res)=> {
+
+    return this.liveService.getLiveInfo(liveId, true).then((res)=> {
       return res
     }, ()=> {
       this.router.navigate(['/404']);
       return false
-    })
+    });
 
   }
 }

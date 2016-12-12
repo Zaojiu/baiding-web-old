@@ -6,68 +6,11 @@ import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus} from './live.enums';
-import {UserInfoService} from '../user-info/user-info.service';
-import {Subject} from "rxjs";
 import {environment} from "../../../../environments/environment";
-import {UtilsService} from "../../utils/utils";
 
 @Injectable()
 export class LiveService {
-  tranlationExpandedSource = new Subject<boolean>();
-  $tranlationExpanded = this.tranlationExpandedSource.asObservable();
-
-  constructor(private http: Http, private store: StoreService, private userInfoService: UserInfoService, private utilsService: UtilsService) {
-  }
-
-  isEditor(liveId: string, uid?: number): boolean {
-    let userInfo = this.userInfoService.getUserInfoCache();
-    let liveInfo = this.getLiveInfoCache(liveId);
-
-    if (!userInfo || !liveInfo || !liveInfo.admin) return false;
-
-    var isEditor = false;
-    let _uid = uid ? uid : userInfo.uid;
-
-    if (_uid === liveInfo.admin.uid) isEditor = true;
-    for (let editor of liveInfo.editors) {
-      if (_uid === editor.uid) isEditor = true;
-    }
-
-    return isEditor;
-  }
-
-  isAudience(liveId: string, uid?: number): boolean {
-    return !this.isEditor(liveId, uid);
-  }
-
-  isAdmin(liveId: string, uid?: number): boolean {
-    let userInfo = this.userInfoService.getUserInfoCache();
-    let liveInfo = this.getLiveInfoCache(liveId);
-    let _uid = uid ? uid : userInfo.uid;
-
-    if (!userInfo || !liveInfo || !liveInfo.admin) return false;
-
-    return _uid === liveInfo.admin.uid;
-  }
-
-  setPushCommentStashed(text: string, messageId: string) {
-    let postCommentStashed = UtilsService.getStorage('postcomment');
-    postCommentStashed[messageId] = text;
-    UtilsService.setStorage('postcomment', postCommentStashed);
-  };
-
-  getPushCommentStashed(messageId: string): string {
-    return UtilsService.getStorage('postcomment')[messageId] || '';
-  }
-
-  setTextWordsStashed(text: string, liveId: string) {
-    let textStashed = UtilsService.getStorage('textStashed');
-    textStashed[liveId] = text;
-    UtilsService.setStorage('textStashed', textStashed);
-  };
-
-  getTextWordsStashed(liveId: string): string {
-    return UtilsService.getStorage('textStashed')[liveId] || '';
+  constructor(private http: Http) {
   }
 
   parseLiveInfo(stream: any, users: any, currentStreamUser?: any): LiveInfoModel {
@@ -131,13 +74,8 @@ export class LiveService {
     return liveInfo;
   }
 
-  getLiveInfoCache(id: string): LiveInfoModel {
-    let lives = this.store.get('lives') || {};
-    return lives[id] as LiveInfoModel;
-  }
-
-  getLiveInfo(id: string, needRefresh?: boolean, join = false): Promise<LiveInfoModel> {
-    let lives = this.store.get('lives') || {};
+  getLiveInfo(id: string, needRefresh?: boolean): Promise<LiveInfoModel> {
+    let lives = StoreService.get('lives') || {};
     let liveInfoCache = lives[id];
     if (liveInfoCache && !needRefresh) return Promise.resolve(liveInfoCache);
 
@@ -150,7 +88,7 @@ export class LiveService {
       let data = res.json();
       let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
       lives[liveInfo.id] = liveInfo;
-      this.store.set('lives', lives);
+      StoreService.set('lives', lives);
 
       return liveInfo;
     }, () => {
@@ -350,28 +288,6 @@ export class LiveService {
 
       return model;
     });
-  }
-
-  toggleAudioAutoPlay(liveId: string) {
-    let audioAutoPlay = UtilsService.getStorage('audioAutoPlay');
-    audioAutoPlay[liveId] = !audioAutoPlay[liveId];
-    UtilsService.setStorage('audioAutoPlay', audioAutoPlay);
-  }
-
-  isAudioAutoPlay(liveId: string): boolean {
-    return !!UtilsService.getStorage('audioAutoPlay')[liveId];
-  }
-
-  toggleTranslationExpanded(liveId: string) {
-    let expanded = UtilsService.getStorage('tranlastion');
-    expanded[liveId] = !expanded[liveId];
-    UtilsService.setStorage('tranlastion', expanded);
-
-    this.tranlationExpandedSource.next(expanded[liveId]);
-  }
-
-  isTranslationExpanded(liveId: string): boolean {
-    return !!UtilsService.getStorage('tranlastion')[liveId];
   }
 
   confirmShare(id: string): Promise<void> {

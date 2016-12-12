@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 
-import {ROUTES} from './info-center.route';
+import {InfoCenterRoutingModule} from './info-center.route';
 import {InfoCenterComponent} from "./info-center.component";
 import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {LiveRoomTopBarModule} from "../shared/live-room-top-bar/live-room-top-bar.module";
@@ -18,7 +18,7 @@ import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 
 @NgModule({
   imports: [
-    ROUTES,
+    InfoCenterRoutingModule,
     ReactiveFormsModule,
     CommonModule,
     FormsModule,

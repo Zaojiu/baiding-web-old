@@ -49,7 +49,7 @@ export class LiveInfoModel {
   }
 
   isEditor(uid: number): boolean {
-    let isEditor = false;
+    let isEditor = this.isAdmin(uid);
 
     for (let editor of this.editors) {
       if (editor.uid === uid) {
@@ -57,11 +57,12 @@ export class LiveInfoModel {
         break;
       }
     }
+
     return isEditor;
   }
 
   isAudience(uid: number) {
-    return !this.isAdmin(uid) && !this.isEditor(uid);
+    return !this.isEditor(uid);
   }
 
   isTypeText() {

@@ -3,15 +3,11 @@ import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {Subscription}   from 'rxjs/Subscription';
 
 import {CommentApiService} from '../../shared/api/comment/comment.service'
-import {PushCommentService} from './push-comment.service'
 import {LiveService} from '../../shared/api/live/live.service';
-import {UserInfoService} from '../../shared/api/user-info/user-info.service';
 import {CommentModel} from '../../shared/api/comment/comment.model'
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {LiveStatus} from '../../shared/api/live/live.enums';
-import {MqEvent, EventType} from "../../shared/mq/mq.service";
-import {TimelineService} from '../../live-room/timeline/timeline.service';
 import {BottomPopupSelectorService} from '../../shared/bottom-popup-selector/bottom-popup-selector.service';
 import {
   BottomPopupSelectorModel,
@@ -47,9 +43,8 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
-              private operationTips: OperationTipsService, private userInfoService: UserInfoService,
-              private liveService: LiveService, private bottomPopupService: BottomPopupSelectorService,
-              private sanitizer: DomSanitizer) {
+              private operationTips: OperationTipsService, private liveService: LiveService,
+              private bottomPopupService: BottomPopupSelectorService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -233,7 +228,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   }
 
   banComment(uid: number) {
-    if (!this.liveService.isAdmin(this.liveId, this.userInfo.uid) || this.liveService.isEditor(this.liveId, uid)) return;
+    if (!this.liveInfo.isAdmin(this.userInfo.uid) || this.liveInfo.isEditor(uid)) return;
 
     if (this.bottomPopupService.isClosed) {
       const model = new BottomPopupSelectorModel();

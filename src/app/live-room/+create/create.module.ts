@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 
-import {ROUTES} from './create.route';
+import {CreateRoutingModule} from './create.route';
 import {FileSelectorModule} from "../../shared/file-selector/file-selector.module";
 import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top-bar.module";
 import {FormModule} from "../../shared/form/form.module";
@@ -13,7 +13,7 @@ import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 
 @NgModule({
   imports: [
-    ROUTES,
+    CreateRoutingModule,
     CommonModule,
     FileSelectorModule,
     LiveRoomTopBarModule,

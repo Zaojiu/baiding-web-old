@@ -1,12 +1,10 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {LiveStatus} from '../../shared/api/live/live.enums';
 import {UtilsService} from '../../shared/utils/utils';
 
 @Component({
   selector: 'count-down',
-  templateUrl: 'countdown.component.html',
-  styleUrls: ['countdown.component.scss'],
+  templateUrl: './countdown.component.html',
+  styleUrls: ['./countdown.component.scss'],
 })
 
 export class CountDownComponent implements OnInit,OnDestroy {
