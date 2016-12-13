@@ -276,7 +276,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       if (messages.length < limit + 1 && this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
         HackMessages.hackLiveEndMessage(this.liveInfo, messages);
       } else {
-        // messages.shift();
+        messages.shift();
       }
 
       this.scroller.appendData(messages);
