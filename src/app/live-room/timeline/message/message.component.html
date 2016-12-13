@@ -30,80 +30,114 @@
   *ngIf="message.type !== messageType.EditorJoin && message.type !== messageType.LiveStart &&
   message.type !== messageType.LiveEnd && message.type !== messageType.LiveRoomInfo"
 >
-  <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
-    <div class="avatar-container">
-      <div class="avatar-wrapper" (press)="emitAvatarClick(message.user)"
-           (click)="getUserPublicInfoAndPopUpCard(message.user.uid)"
-           (contextmenu)="$event.preventDefault()">
-        <img class="avatar" [src]="message.user.avatar">
-      </div>
-    </div>
-
-    <div class="content-container"
-         (contextmenu)="$event.preventDefault()" (press)="openToolTips()">
-      <div class="content-info">
-        <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
-        <span class="time">{{message.createdAt | fromNow}}</span>
-      </div>
-
-      <div class="content" *ngIf="message.type === 0 || message.type === 3">
-        <div class="word-wrap" [innerHtml]="parseContent(message.content)"></div>
-        <div class="post-status">
-          <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
-          <i class="bi bi-warning-round"
-             (click)="resendMessage(message)"
-             *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
-          ></i>
+  <div class="thumbs-up-row">
+    <div class="message-wrapper">
+      <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
+        <div class="avatar-container">
+          <div
+            class="avatar-wrapper"
+            (press)="emitAvatarClick(message.user)"
+            (click)="getUserPublicInfoAndPopUpCard(message.user.uid)"
+            (contextmenu)="$event.preventDefault()"
+          >
+            <img class="avatar" [src]="message.user.avatar">
+            <i class="bi bi-admin-mark" *ngIf="liveInfo.isAdmin(message.user.uid)"></i>
+            <i class="bi bi-vip-mark" *ngIf="liveInfo.isVip(message.user.uid)"></i>
+          </div>
         </div>
+
+        <div class="content-container">
+          <div class="content-info">
+            <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
+            <span class="time">{{message.createdAt | fromNow}}</span>
+          </div>
+
+          <div class="content text-content" *ngIf="message.type === 0 || message.type === 3">
+            <div class="word-wrap" [innerHtml]="parseContent(message.content)"></div>
+            <div class="post-status">
+              <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
+              <i class="bi bi-warning-round"
+                 (click)="resendMessage(message)"
+                 *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
+              ></i>
+            </div>
+          </div>
+
+          <div class="content image-content" *ngIf="message.type === 1">
+            <image-viewer-preview
+              [imageLinks]="[message.image]"
+              *ngIf="message.postStatus === postStatus.PostSuccessful"
+            ></image-viewer-preview>
+            <image-viewer-preview
+              [imageFiles]="[message.image.imageData]"
+              *ngIf="message.postStatus !== postStatus.PostSuccessful && !isInWechat"
+            ></image-viewer-preview>
+            <image-viewer-preview
+              [weixinLocalIds]="[message.image.localId]"
+              *ngIf="message.postStatus !== postStatus.PostSuccessful && isInWechat"
+            ></image-viewer-preview>
+            <div class="post-status">
+              <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
+              <i class="bi bi-warning-round"
+                 (click)="resendMessage(message)"
+                 *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
+              ></i>
+            </div>
+          </div>
+
+          <div class="content audio-content" *ngIf="message.type === 2">
+            <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
+                          [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
+            <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
+                 (click)="toggleTranslatioExpanded(message.audio.translateResult)">
+              <div class="translate-tips">以下由机器自动翻译</div>
+              {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus ===
+              postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
+            </div>
+            <i class="bi bi-elliplis"
+               (click)="toggleTranslatioExpanded(message.audio.translateResult)"
+               *ngIf="isTranslationExpanded && message.audio.translateResult"></i>
+            <div class="post-status">
+              <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
+              <i class="bi bi-warning-round"
+                 (click)="resendMessage(message)"
+                 *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
+              ></i>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="content image-content" *ngIf="message.type === 1">
-        <image-viewer-preview
-          [imageLinks]="[message.image]"
-          *ngIf="message.postStatus === postStatus.PostSuccessful"
-        ></image-viewer-preview>
-        <image-viewer-preview
-          [imageFiles]="[message.image.imageData]"
-          *ngIf="message.postStatus !== postStatus.PostSuccessful && !isInWechat"
-        ></image-viewer-preview>
-        <image-viewer-preview
-          [weixinLocalIds]="[message.image.localId]"
-          *ngIf="message.postStatus !== postStatus.PostSuccessful && isInWechat"
-        ></image-viewer-preview>
-        <div class="post-status">
-          <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
-          <i class="bi bi-warning-round"
-             (click)="resendMessage(message)"
-             *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
-          ></i>
+      <div class="message-reply-container">
+        <div class="message-reply" *ngFor="let reply of message.replies"
+             [ngClass]="{'mime': reply.user.uid == userInfo.uid}">
+          <div class="avatar-container">
+            <div
+              class="avatar-wrapper "
+              (click)="getUserPublicInfoAndPopUpCard(reply.user.uid)"
+              (press)="emitAvatarClick(reply.user)"
+              (contextmenu)="$event.preventDefault()"
+            >
+              <img class="avatar" [src]="reply.user.avatar">
+              <i class="bi bi-admin-mark" *ngIf="liveInfo.isAdmin(reply.user.uid)"></i>
+              <i class="bi bi-vip-mark" *ngIf="liveInfo.isVip(reply.user.uid)"></i>
+            </div>
+          </div>
+          <div class="content-container">
+            <div class="content">
+              {{reply.user.nick}}回复{{message.user.nick}}
+              <div class="word-wrap"[innerHtml]="parseContent(reply.content)"></div>
+              <div class="post-status">
+                <i class="bi bi-sun-flow loading-animation" *ngIf="reply.postStatus === postStatus.Pending"></i>
+                <i class="bi bi-warning-round"
+                   (click)="resendMessage(reply)"
+                   *ngIf="reply.postStatus !== postStatus.PostSuccessful && reply.postStatus !== postStatus.Pending"
+                ></i>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div class="content audio-content" *ngIf="message.type === 2">
-        <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
-                      [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
-        <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
-             (click)="toggleTranslatioExpanded(message.audio.translateResult)">
-          <div class="translate-tips">以下由机器自动翻译</div>
-          {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus ===
-          postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
-        </div>
-        <i class="bi bi-elliplis"
-           (click)="toggleTranslatioExpanded(message.audio.translateResult)"
-           *ngIf="isTranslationExpanded && message.audio.translateResult"></i>
-        <div class="post-status">
-          <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
-          <i class="bi bi-warning-round"
-             (click)="resendMessage(message)"
-             *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
-          ></i>
-        </div>
-      </div>
-
-      <div class="tooltips-container">
-        <tooltips *ngIf="isToolTipOpened" [(isOpened)]="isToolTipOpened" [items]="toolTips"
-                  (itemSelected)="tooptipsSelected($event)"
-                  (touchstart)="$event.stopPropagation()"></tooltips>
       </div>
     </div>
 
@@ -112,41 +146,16 @@
         <praised-animation *ngFor="let userAnim of message.praisedAnimations" [userAnim]="userAnim"></praised-animation>
       </div>
 
-      <div class="thumbs-up-inner" *ngIf="message.postStatus === postStatus.PostSuccessful">
-        <a class="thumbs-up-btn" (click)="setPraise()">
-          <i class="bi bi-thumbsup"></i>
-        </a>
-
-        <span class="thumbs-up-count" (click)="setPraise()">{{message.praisedAmount}}</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="message-reply-container">
-    <div class="message-reply" *ngFor="let reply of message.replies"
-         [ngClass]="{'mime': reply.user.uid == userInfo.uid}">
-      <div class="avatar-container">
-        <div class="avatar-wrapper " (click)="emitAvatarClick(reply.user)" (contextmenu)="$event.preventDefault()">
-          <img class="avatar" [src]="reply.user.avatar">
-        </div>
-      </div>
-      <div class="content-container">
-        <div class="content">
-          {{reply.user.nick}}回复{{message.user.nick}}
-          <div class="word-wrap"[innerHtml]="parseContent(reply.content)"></div>
-          <div class="post-status">
-            <i class="bi bi-sun-flow loading-animation" *ngIf="reply.postStatus === postStatus.Pending"></i>
-            <i class="bi bi-warning-round"
-               (click)="resendMessage(reply)"
-               *ngIf="reply.postStatus !== postStatus.PostSuccessful && reply.postStatus !== postStatus.Pending"
-            ></i>
-          </div>
-        </div>
-      </div>
+      <a class="thumbs-up-btn" (click)="setPraise()" *ngIf="message.postStatus === postStatus.PostSuccessful">
+        <i class="bi bi-thumbsup-fill"></i>
+      </a>
     </div>
   </div>
 
   <div class="operation-bar clearfix">
+    <span class="btn" *ngIf="canReply" (click)="gotoReply()"><i class="bi bi-bubble"></i>回复</span>
+    <!--<span class="btn" (click)="goToShare()"><i class="bi bi-share-fill"></i>分享</span>-->
+
     <div class="thumbs-up-users">
       <img class="avatar" *ngFor="let user of message.getPraisedAvatars(userInfo)" [src]="user.avatar">
     </div>
