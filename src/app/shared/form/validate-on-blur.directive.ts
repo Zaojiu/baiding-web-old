@@ -1,5 +1,5 @@
 import {Directive} from '@angular/core';
-import {FormControl, NgControl} from "@angular/forms";
+import {NgControl} from "@angular/forms";
 
 @Directive({
   selector: 'input[validate-onblur],textarea[validate-onblur]',
