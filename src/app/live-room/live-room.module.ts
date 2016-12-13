@@ -45,11 +45,8 @@ import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_ge
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {DisplayWhenFocusModule} from "../shared/display-when-focus/display-when-focus.module";
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
-<<<<<<< b0b027acc6cf3656721c9cb3518ef3f32bf039cb
 import {LiveRoomService} from "./live-room.service";
-=======
 import {DraggableModule} from "../shared/draggable/draggable.module";
->>>>>>> draggable
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {

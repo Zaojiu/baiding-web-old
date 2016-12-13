@@ -37,13 +37,15 @@ export class Draggable implements OnDestroy, OnInit {
     // if pc,set element draggable
     this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'true');
 
-    // restore position
-    if (offsetX) {
-      this.renderer.setElementStyle(this.el.nativeElement, 'left', offsetX + 'px');
-    }
+    if (window.innerHeight - 192 > offsetY && window.innerWidth - 172 > offsetX) {
+      // restore position
+      if (offsetX) {
+        this.renderer.setElementStyle(this.el.nativeElement, 'left', offsetX + 'px');
+      }
 
-    if (offsetY) {
-      this.renderer.setElementStyle(this.el.nativeElement, 'top', offsetY + 'px');
+      if (offsetY) {
+        this.renderer.setElementStyle(this.el.nativeElement, 'top', offsetY + 'px');
+      }
     }
   }
 

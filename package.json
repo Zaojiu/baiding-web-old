@@ -29,10 +29,7 @@
   "dependencies": {
     "@angular/common": "2.2.3",
     "@angular/compiler": "2.2.3",
-<<<<<<< b0b027acc6cf3656721c9cb3518ef3f32bf039cb
-=======
     "@angular/compiler-cli": "2.2.3",
->>>>>>> draggable
     "@angular/core": "2.2.3",
     "@angular/forms": "2.2.3",
     "@angular/http": "2.2.3",
