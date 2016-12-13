@@ -27,7 +27,7 @@ export class HamburgerMenuComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       if (this.hamburgerMenu) this.hamburgerMenu.first.opacityDown();
-    }, 1000);
+    }, 2000);
   }
 
   switch() {
@@ -61,6 +61,6 @@ export class HamburgerMenuComponent implements OnInit {
   dragEnd(){
     setTimeout(()=>{
       this.autoFade.opacityDown();
-    },1000)
+    },1500)
   }
 }
