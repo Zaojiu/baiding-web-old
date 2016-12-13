@@ -63,6 +63,6 @@ export class HamburgerMenuComponent implements OnInit {
   dragEnd() {
     setTimeout(() => {
       this.autoFade.opacityDown();
-    }, 8000)
+    }, 80000)
   }
 }

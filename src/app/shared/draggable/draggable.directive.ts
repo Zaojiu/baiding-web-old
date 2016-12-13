@@ -94,7 +94,7 @@ export class Draggable implements OnDestroy, OnInit {
 
   doTranslation(x: number, y: number) {
     if (!x || !y) return;
-    if (x - this.Δx < window.innerWidth && x - this.Δx > 60 && y - this.Δy < window.innerHeight && y - this.Δy > 60) {
+    if (x - this.Δx < window.innerWidth && x - this.Δx > 172 && y - this.Δy < window.innerHeight && y - this.Δy > 192) {
       this.renderer.setElementStyle(this.el.nativeElement, 'top', (y - this.Δy) + 'px');
       this.renderer.setElementStyle(this.el.nativeElement, 'left', (x - this.Δx) + 'px');
     }
