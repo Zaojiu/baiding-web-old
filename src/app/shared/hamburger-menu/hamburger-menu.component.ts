@@ -1,10 +1,6 @@
-import {
-  Component, Input, OnInit, ViewChildren, QueryList, OnDestroy, Output, EventEmitter,
-  ViewChild
-} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {UserInfoModel} from '../api/user-info/user-info.model';
 import {Router} from '@angular/router';
-import {TimelineService} from "../../live-room/timeline/timeline.service";
 import {AutoOpacityDownDirective} from "../animation/auto-opacity-down/auto-opacity-down.directive";
 
 @Component({
@@ -18,29 +14,25 @@ export class HamburgerMenuComponent implements OnInit {
   @Input() liveId: string;
   @Input() from: string;
   @Input() userInfo: UserInfoModel;
-  @ViewChildren(AutoOpacityDownDirective) hamburgerMenu: QueryList<AutoOpacityDownDirective>;
   @ViewChild(AutoOpacityDownDirective) autoFade: AutoOpacityDownDirective;
 
-  constructor(private router: Router, private timelineService: TimelineService) {
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     setTimeout(() => {
-      if (this.hamburgerMenu) this.hamburgerMenu.first.opacityDown();
+      if (this.autoFade) this.autoFade.opacityDown();
     }, 2000);
   }
 
   switch() {
     if (!this.activeStatus) {
-      this.hamburgerMenu.first.opacityUp();
+      this.autoFade.opacityUp();
     }
     else {
-      this.hamburgerMenu.first.opacityDown();
+      this.autoFade.opacityDown();
     }
 
-    setTimeout(() => {
-      this.activeStatus = !this.activeStatus;
-    }, 0)
+    return this.activeStatus = !this.activeStatus;
   }
 
   createRoom() {
@@ -61,8 +53,6 @@ export class HamburgerMenuComponent implements OnInit {
   }
 
   dragEnd() {
-    setTimeout(() => {
-      this.autoFade.opacityDown();
-    }, 8000)
+    this.autoFade.opacityDown();
   }
 }
