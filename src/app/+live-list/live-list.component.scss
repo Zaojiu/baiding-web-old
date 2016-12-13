@@ -18,9 +18,13 @@
       right: 0;
       z-index: 1;
       background-color: rgba(255, 255, 255, .9);
-      display: flex;
-      align-items: center;
       padding: 12px 0;
+      display: flex;
+
+      .admin-info-wrapper {
+        display: inline-flex;
+        align-items: center;
+      }
 
       .avatar {
         flex-shrink: 0;
@@ -31,7 +35,7 @@
       }
 
       .nick {
-        flex-grow: 1;
+        flex-shrink: 0;
         color: $color-dark-gray;
         font-size: 14px;
         text-overflow: ellipsis;

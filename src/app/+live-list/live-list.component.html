@@ -2,9 +2,11 @@
      [dataContainerSelector]="'.main-list'" [needUnload]="false">
   <div class="main-list">
     <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoomInfo(liveInfo.id)">
-      <div class="admin-info" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
-        <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
-        <span class="nick">{{liveInfo.admin.nick}}</span>
+      <div class="admin-info">
+        <div class="admin-info-wrapper" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
+          <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
+          <span class="nick">{{liveInfo.admin.nick}}</span>
+        </div>
       </div>
 
       <div class="live-title-wrapper">
