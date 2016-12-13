@@ -1,4 +1,7 @@
-import {Component, Input, OnInit, ViewChildren, QueryList, OnDestroy} from '@angular/core';
+import {
+  Component, Input, OnInit, ViewChildren, QueryList, OnDestroy, Output, EventEmitter,
+  ViewChild
+} from '@angular/core';
 import {UserInfoModel} from '../api/user-info/user-info.model';
 import {Router} from '@angular/router';
 import {TimelineService} from "../../live-room/timeline/timeline.service";
@@ -16,6 +19,7 @@ export class HamburgerMenuComponent implements OnInit {
   @Input() from: string;
   @Input() userInfo: UserInfoModel;
   @ViewChildren(AutoOpacityDownDirective) hamburgerMenu: QueryList<AutoOpacityDownDirective>;
+  @ViewChild(AutoOpacityDownDirective) autoFade: AutoOpacityDownDirective;
 
   constructor(private router: Router, private timelineService: TimelineService) {
   }
@@ -48,5 +52,15 @@ export class HamburgerMenuComponent implements OnInit {
 
   gotoMyRoomList() {
     this.router.navigate([`/info-center`]);
+  }
+
+  dragStart(){
+    this.autoFade.opacityUp();
+  }
+
+  dragEnd(){
+    setTimeout(()=>{
+      this.autoFade.opacityDown();
+    },1000)
   }
 }
