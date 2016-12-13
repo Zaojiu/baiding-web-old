@@ -37,7 +37,7 @@ export class Draggable implements OnDestroy, OnInit {
     // if pc,set element draggable
     this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'true');
 
-    if (window.innerHeight - 192 > offsetY && window.innerWidth - 172 > offsetX) {
+    if (window.innerHeight - 192 > offsetY && window.innerWidth - 172 > offsetX && offsetY > -130 && offsetX > -115) {
       // restore position
       if (offsetX) {
         this.renderer.setElementStyle(this.el.nativeElement, 'left', offsetX + 'px');
