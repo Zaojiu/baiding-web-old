@@ -16,6 +16,7 @@ import {FormGroup, FormBuilder, FormControl} from "@angular/forms";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {Subscription} from "rxjs";
 import {MessageService} from "../timeline/message/message.service";
+import {InputtingService} from "../timeline/message/inputting.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
 import {LiveService} from "../../shared/api/live/live.service";
@@ -48,7 +49,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
-              private messageService: MessageService, private liveService: LiveService,
+              private messageService: MessageService, private liveService: LiveService, private inputtingService: InputtingService,
               private imageService: ImageBridge, private liveRoomService: LiveRoomService) {
   }
 
@@ -62,7 +63,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
       ]),
     });
 
-    //监听点击用户头像事件
+    // 监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched) => {
       this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
       if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
@@ -139,7 +140,11 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     if (this.messageContent === '' || this.isMessageSubmitting) return;
 
     if (!this.isClose) {
-      this.messageApiService.postTextMessage(this.liveId, this.messageContent);
+      this.messageApiService.postTextMessage(this.liveId, this.messageContent)
+        .then(() => {
+        }).finally(()=> {
+        alert('finally');
+      });
       this.isMessageSubmitting = false;
       this.messageContent = '';
     } else {
@@ -160,6 +165,11 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
   messageInputFocused() {
     if (this.mode === EditMode.At) this.switchMode(EditMode.Text);
+  }
+
+  messageInputChanged() {
+    console.log('a');
+    this.inputtingService.collect({liveId: this.liveId, type: 'text'});
   }
 
   postImage() {

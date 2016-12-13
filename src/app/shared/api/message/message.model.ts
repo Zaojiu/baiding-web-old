@@ -125,3 +125,9 @@ export class UploadTokenModel {
     this.key = key;
   }
 }
+
+export class InputtingMessageModel {
+  id: string;
+  type: string;
+  user: UserInfoModel;
+}

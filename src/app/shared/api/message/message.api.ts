@@ -156,143 +156,149 @@ export class MessageApiService {
     return message;
   }
 
-  private postMessage() {
-    if (this.postQueue.length === 0 || this.posting) return;
+  private postMessage(): Promise<MessageModel> {
+    if (this.postQueue.length === 0 || this.posting) return null;
 
     this.posting = true;
 
-    let postMessage = this.postQueue.shift();
-    let postMessageCopy = _.clone(postMessage);
-    let originMessage = postMessage.originMessage;
-    let headers = new Headers({'Content-Type': 'application/json'});
-    const url = `${environment.config.host.io}/api/live/streams/${postMessageCopy.liveId}/messages`;
+    return new Promise((resolve, reject) => {
 
-    delete postMessageCopy.originMessage;
 
-    if (originMessage instanceof MessageModel && (originMessage as MessageModel).type === MessageType.Audio) {
-      // 处理音频信息
-      let _originMessage = originMessage as MessageModel;
-      let promise = null;
+      let postMessage = this.postQueue.shift();
+      let postMessageCopy = _.clone(postMessage);
+      let originMessage = postMessage.originMessage;
+      let headers = new Headers({'Content-Type': 'application/json'});
+      const url = `${environment.config.host.io}/api/live/streams/${postMessageCopy.liveId}/messages`;
 
-      if (UtilsService.isInWechat) {
-        promise = this.audioService.uploadVoice(_originMessage.audio.localId).then((serverId) => {
-          postMessage.audio.weixinId = serverId;
+      delete postMessageCopy.originMessage;
 
-          return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
+      if (originMessage instanceof MessageModel && (originMessage as MessageModel).type === MessageType.Audio) {
+        // 处理音频信息
+        let _originMessage = originMessage as MessageModel;
+        let promise = null;
+
+        if (UtilsService.isInWechat) {
+          promise = this.audioService.uploadVoice(_originMessage.audio.localId).then((serverId) => {
+            postMessage.audio.weixinId = serverId;
+
+            return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
+          }, (err) => {
+            _originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          });
+        } else if (UtilsService.isInApp) {
+          promise = this.getAudioUploadToken(postMessage.liveId).then((token) => {
+            postMessage.audio.qiniuKey = token.key;
+
+            return this.uploadService.uploadToQiniu(_originMessage.audio.audioData, token.key, token.token);
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          }).then(() => {
+            return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          });
+        } else {
+          let encodeAmr = null;
+
+          promise = this.audioService.encodeVoice(_originMessage.audio.audioData).then((encodeAmrBlob) => {
+            encodeAmr = encodeAmrBlob;
+            return this.getAudioUploadToken(postMessage.liveId);
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          }).then((token) => {
+            postMessage.audio.qiniuKey = token.key;
+
+            return this.uploadService.uploadToQiniu(encodeAmr, token.key, token.token);
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          }).then(() => {
+            return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          });
+        }
+
+        promise.then(res => {
+          let data = res.json();
+
+          _originMessage.id = data.id;
+          _originMessage.audio.link = data.audio.link;
+          _originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
+          _originMessage.audio.translateResult = data.audio.text;
+          _originMessage.postStatus = PostMessageStatus.PostSuccessful;
+          resolve(data);
         }, (err) => {
-          _originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
+          _originMessage.postStatus = PostMessageStatus.PostFailed;
+        }).finally(() => {
+          this.posting = false;
+          this.postMessage();
         });
-      } else if (UtilsService.isInApp) {
-        promise = this.getAudioUploadToken(postMessage.liveId).then((token) => {
-          postMessage.audio.qiniuKey = token.key;
+      } else if (originMessage instanceof MessageModel && (originMessage as MessageModel).type === MessageType.Image) {
+        // 处理图片信息
+        let _originMessage = originMessage as MessageModel;
 
-          return this.uploadService.uploadToQiniu(_originMessage.audio.audioData, token.key, token.token);
-        }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
-        }).then(() => {
-          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
-        }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
+        let promise = null;
+
+        if (UtilsService.isInWechat) {
+          promise = this.imageService.uploadImage(_originMessage.image.localId).then((serverId) => {
+            postMessageCopy.image.weixinId = serverId;
+            return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          });
+        } else {
+          promise = this.getImageUploadToken(postMessage.liveId).then((token) => {
+            return this.uploadService.uploadToQiniu(_originMessage.image.imageData, token.key, token.token);
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          }).then((key) => {
+            postMessageCopy.image.key = key;
+            return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
+          }, (err) => {
+            originMessage.postStatus = PostMessageStatus.UploadFailed;
+            return Promise.reject(err);
+          });
+        }
+
+        promise.then(res => {
+          let data = res.json();
+
+          originMessage.postStatus = PostMessageStatus.PostSuccessful;
+          originMessage.id = data.id;
+        }, () => {
+          originMessage.postStatus = PostMessageStatus.PostFailed;
+        }).finally(() => {
+          this.posting = false;
+          this.postMessage();
         });
       } else {
-        let encodeAmr = null;
+        // 处理普通信息
 
-        promise = this.audioService.encodeVoice(_originMessage.audio.audioData).then((encodeAmrBlob) => {
-          encodeAmr = encodeAmrBlob;
-          return this.getAudioUploadToken(postMessage.liveId);
-        }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
-        }).then((token) => {
-          postMessage.audio.qiniuKey = token.key;
+        return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise().then(res => {
+          let data = res.json();
 
-          return this.uploadService.uploadToQiniu(encodeAmr, token.key, token.token);
+          originMessage.postStatus = PostMessageStatus.PostSuccessful;
+          originMessage.id = data.id;
+          resolve(data);
         }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
-        }).then(() => {
-          return this.http.post(url, JSON.stringify(postMessage), {headers: headers}).toPromise();
-        }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
+          originMessage.postStatus = PostMessageStatus.PostFailed;
+        }).finally(() => {
+          this.posting = false;
+          this.postMessage();
         });
       }
-
-      promise.then(res => {
-        let data = res.json();
-
-        _originMessage.id = data.id;
-        _originMessage.audio.link = data.audio.link;
-        _originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
-        _originMessage.audio.translateResult = data.audio.text;
-        _originMessage.postStatus = PostMessageStatus.PostSuccessful;
-      }, (err) => {
-        _originMessage.postStatus = PostMessageStatus.PostFailed;
-      }).finally(() => {
-        this.posting = false;
-        this.postMessage();
-      });
-    } else if (originMessage instanceof MessageModel && (originMessage as MessageModel).type === MessageType.Image) {
-      // 处理图片信息
-      let _originMessage = originMessage as MessageModel;
-
-      let promise = null;
-
-      if (UtilsService.isInWechat) {
-        promise = this.imageService.uploadImage(_originMessage.image.localId).then((serverId) => {
-          postMessageCopy.image.weixinId = serverId;
-          return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
-        }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
-        });
-      } else {
-        promise = this.getImageUploadToken(postMessage.liveId).then((token) => {
-          return this.uploadService.uploadToQiniu(_originMessage.image.imageData, token.key, token.token);
-        }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
-        }).then((key) => {
-          postMessageCopy.image.key = key;
-          return this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise();
-        }, (err) => {
-          originMessage.postStatus = PostMessageStatus.UploadFailed;
-          return Promise.reject(err);
-        });
-      }
-
-      promise.then(res => {
-        let data = res.json();
-
-        originMessage.postStatus = PostMessageStatus.PostSuccessful;
-        originMessage.id = data.id;
-      }, () => {
-        originMessage.postStatus = PostMessageStatus.PostFailed;
-      }).finally(() => {
-        this.posting = false;
-        this.postMessage();
-      });
-    } else {
-      // 处理普通信息
-
-      this.http.post(url, JSON.stringify(postMessageCopy), {headers: headers}).toPromise().then(res => {
-        let data = res.json();
-
-        originMessage.postStatus = PostMessageStatus.PostSuccessful;
-        originMessage.id = data.id;
-      }, (err) => {
-        originMessage.postStatus = PostMessageStatus.PostFailed;
-      }).finally(() => {
-        this.posting = false;
-        this.postMessage();
-      });
-    }
+    });
   }
 
-  postTextMessage(liveId: string, content: string, replyParent = '') {
+  postTextMessage(liveId: string, content: string, replyParent = ''): Promise<MessageModel> {
     let postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'text';
@@ -332,7 +338,7 @@ export class MessageApiService {
     }
 
     this.postQueue.push(postMessage);
-    this.postMessage();
+    return this.postMessage();
   }
 
   postAudioMessage(liveId: string, localId: string, audioData: Blob, duration: number = 0) {
@@ -666,5 +672,11 @@ export class MessageApiService {
     return this.http.delete(url, null).toPromise().then(res => {
       return;
     });
+  }
+
+  postInputtingMessage(liveId: string, type: string) {
+    let url = `${environment.config.host.io}/api/live/streams/${liveId}/messages/inputting`;
+    let body = {type: type};
+    this.http.post(url, JSON.stringify(body)).toPromise();
   }
 }

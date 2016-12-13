@@ -8,6 +8,8 @@ import {CommentComponent} from './comment/comment.component';
 import {AudienceToolBarComponent} from './audience-tool-bar/audience-tool-bar.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {MessageComponent} from './timeline/message/message.component';
+import {InputtingComponent} from './timeline/message/inputting.component';
+import {InputtingService} from './timeline/message/inputting.service';
 import {PraisedAnimationDirective} from '../shared/praised-animation/praised-animation.directive';
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
@@ -86,6 +88,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CommentComponent,
     TimelineComponent,
     MessageComponent,
+    InputtingComponent,
     EditorToolBarComponent,
     AudienceToolBarComponent,
     PraisedAnimationDirective,
@@ -105,6 +108,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     QuitEditGuard,
     UploadApiService,
     MessageService,
+    InputtingService,
     AudioPlayerService,
     UserInfoCardService,
     UtilsService,

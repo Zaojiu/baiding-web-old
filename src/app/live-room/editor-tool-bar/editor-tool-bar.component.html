@@ -63,6 +63,7 @@
           [(ngModel)]="messageContent"
           autoresize
           display-when-focus
+          (input)="messageInputChanged()"
         ></textarea>
       </div>
       <button class="sender" (click)="postMessage();focusMessageInput();">发送</button>

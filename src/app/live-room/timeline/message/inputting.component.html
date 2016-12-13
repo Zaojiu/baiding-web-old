@@ -1,0 +1,24 @@
+<div class="timeline-message-container" *ngIf="message">
+  <div class="message">
+    <div class="avatar-container">
+      <div class="avatar-wrapper" (contextmenu)="$event.preventDefault()">
+        <img class="avatar" [src]="message.user.avatar">
+      </div>
+    </div>
+
+    <div class="content-container"
+         (contextmenu)="$event.preventDefault()">
+      <div class="content-info">
+        <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
+        <span class="time">正在输入...</span>
+      </div>
+
+      <div class="content">
+        <div class="word-wrap">
+          <bd-loading></bd-loading>
+        </div>
+      </div>
+    </div>
+    <div class="thumbs-up"> </div>
+  </div>
+</div>
