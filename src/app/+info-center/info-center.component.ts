@@ -233,7 +233,11 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   gotoLiveRoom(liveId: string) {
-    this.router.navigate(([`/lives/${liveId}`]));
+    if (this.pageUserInfo.uid === this.currentUserInfo.uid) {
+      this.router.navigate(([`/lives/${liveId}`]));
+    } else {
+      this.router.navigate(([`/lives/${liveId}/info`]));
+    }
   }
 
   switchIndex(index: number) {
