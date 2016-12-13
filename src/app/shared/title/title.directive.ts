@@ -27,7 +27,7 @@ export class TitleSetterDirective implements OnInit {
               private ngTitle: NgTitle,
               private router: Router) {
     this.el = el.nativeElement;
-    this.setTitle = UtilsService.isIPhone && UtilsService.isInWechat ? this.setWechatWebviewTitle : ngTitle.setTitle;
+    this.setTitle = UtilsService.isiOS && UtilsService.isInWechat ? this.setWechatWebviewTitle : ngTitle.setTitle;
   }
 
   ngOnInit() {

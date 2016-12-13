@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {MessageModel} from '../api/message/message.model';
 import {Http, ResponseContentType} from '@angular/http';
 import {AudioBridge} from "../bridge/audio.interface";
+import {UtilsService} from '../utils/utils'
 
 @Injectable()
 export class AudioPlayerService {
@@ -13,6 +14,7 @@ export class AudioPlayerService {
   private static gainNode: GainNode;
   private static playingSource: AudioBufferSourceNode;
   private static playingMessageId: string;
+  private static unlockedWebAudio = false;
 
   private loadingAudios: { [key: string]: boolean; } = {};
 
@@ -24,7 +26,22 @@ export class AudioPlayerService {
     AudioPlayerService.gainNode.gain.value = 1;
   }
 
+  // ref: https://paulbakaus.com/tutorials/html5/web-audio-on-ios/
+  unlockWebAudio() {
+    if (!UtilsService.isiOS || AudioPlayerService.unlockedWebAudio) {
+      return;
+    }
+    let buffer = AudioPlayerService.h5AudioContext.createBuffer(1, 1, 22050);
+    let source = AudioPlayerService.h5AudioContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(AudioPlayerService.h5AudioContext.destination);
+    source.start(0);
+    AudioPlayerService.unlockedWebAudio = true;
+  }
+
   play(msg: MessageModel): Observable<string> {
+
+    this.unlockWebAudio();
 
     return new Observable<string>(observer => {
 

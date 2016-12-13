@@ -141,7 +141,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
 
       let isOnPcWithoutSticky = CSS && CSS.supports && !CSS.supports('position', 'sticky') && UtilsService.isOnScreen;
 
-      if (UtilsService.isIPhone || isOnPcWithoutSticky) {
+      if (UtilsService.isiOS || isOnPcWithoutSticky) {
         setTimeout(() => {
           System.import('waypoints/lib/noframework.waypoints.js').then(() => {
             return System.import('waypoints/lib/shortcuts/inview.min.js');

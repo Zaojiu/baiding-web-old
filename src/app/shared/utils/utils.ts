@@ -17,8 +17,8 @@ export class UtilsService {
     return /micromessenger/i.test(window.navigator.userAgent);
   }
 
-  static  get isIPhone(): boolean {
-    return /iPhone/i.test(window.navigator.userAgent);
+  static  get isiOS(): boolean {
+    return /iPhone|iPad/i.test(window.navigator.userAgent);
   }
 
   static get isInApp(): boolean {
