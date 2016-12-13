@@ -3,13 +3,13 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {LiveStatus} from '../../shared/api/live/live.enums';
 import {ModalService} from '../../shared/modal/modal.service';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {InvitationModel, AudienceInvitationModel} from '../../shared/api/invite/invite.model';
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {WechatConfigService} from "../../shared/wechat/wechat.service";
 import {LiveRoomService} from "../live-room.service";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
 @Component({
   templateUrl: './settings.component.html',
@@ -26,7 +26,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService, private wechatService: WechatConfigService,
-              private modalService: ModalService, private inviteApiService: InviteApiService, private liveRoomService: LiveRoomService) {
+              private modalService: ModalService, private inviteApiService: InviteApiService,
+              private liveRoomService: LiveRoomService, private operationTips: OperationTipsService) {
   }
 
   ngOnInit() {
@@ -98,6 +99,7 @@ export class SettingsComponent implements OnInit {
       if (!result) return;
       this.liveService.closeLive(this.liveId).then(() => {
         this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => this.liveInfo = liveInfo);
+        this.operationTips.popup('话题已结束');
       });
     });
   }

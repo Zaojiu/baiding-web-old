@@ -29,7 +29,6 @@ import {LiveRoomService} from "../live-room.service";
 })
 
 
-
 export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
   @Input() liveInfo: LiveInfoModel;
@@ -215,14 +214,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.messageApiService.listMessages(this.id, '', 10).then(messages => {
+    return this.messageApiService.listMessages(this.id, '', 11).then(messages => {
       messages.reverse();
 
-      if (messages.length < 10) {
+      if (messages.length < 11) {
         HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
+      } else {
+        messages.shift();
       }
 
-      if (!this.messages.length || this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
+      if (this.liveInfo.isClosed()) {
         HackMessages.hackLiveEndMessage(this.liveInfo, messages);
       }
 
@@ -242,9 +243,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.messageApiService.listMessages(this.id, '', 10, ['createdAt']).then(messages => {
-      if (!this.messages.length || this.messages[0].type !== MessageType.LiveRoomInfo) {
-        HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
+    return this.messageApiService.listMessages(this.id, '', 11, ['createdAt']).then(messages => {
+      HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
+
+      if (messages.length < 11 && this.liveInfo.isClosed()) {
+        HackMessages.hackLiveEndMessage(this.liveInfo, messages);
+      }
+
+      if (messages.length >= 11) {
+        messages.pop();
       }
 
       this.scroller.resetData(messages);
@@ -263,11 +270,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+    return this.messageApiService.listMessages(this.id, marker, limit + 1, sorts).then(messages => {
       this.removeRepeat(messages);
 
-      if ((messages.length < limit || messages.length === 0) && this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
+      if (messages.length < limit + 1 && this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
         HackMessages.hackLiveEndMessage(this.liveInfo, messages);
+      } else {
+        messages.shift();
       }
 
       this.scroller.appendData(messages);
@@ -288,13 +297,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    return this.messageApiService.listMessages(this.id, marker, limit, sorts).then(messages => {
+    return this.messageApiService.listMessages(this.id, marker, limit + 1, sorts).then(messages => {
       this.removeRepeat(messages);
 
       messages.reverse();
 
-      if ((messages.length < limit || messages.length === 0) && this.messages[0].type !== MessageType.LiveRoomInfo) {
+      if (messages.length < limit + 1 && this.messages[0].type !== MessageType.LiveRoomInfo) {
         HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
+      } else {
+        messages.pop();
       }
 
       this.scroller.prependData(messages);
@@ -428,8 +439,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   findFirstAvailableMessage(messages: MessageModel[]): MessageModel {
     for (let message of messages) {
-      if (message.type !== MessageType.LiveEnd &&
-        message.type !== MessageType.LiveRoomInfo) {
+      if (
+        message.type === MessageType.Text ||
+        message.type === MessageType.Image ||
+        message.type === MessageType.Audio ||
+        message.type === MessageType.Nice
+      ) {
         return message;
       }
     }
