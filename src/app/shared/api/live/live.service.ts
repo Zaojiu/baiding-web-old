@@ -165,10 +165,10 @@ export class LiveService {
       let data = res.json();
 
       let streamData = data.result;
-      let usersData = data.include.users;
       let liveInfoList: LiveInfoModel[] = [];
 
       if (streamData) {
+        let usersData = data.include.users;
         for (let liveInfo of streamData) {
           let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
           liveInfoList.push(liveInfoParsed);
@@ -189,10 +189,10 @@ export class LiveService {
       let data = res.json();
 
       let streamData = data.result;
-      let usersData = data.include.users;
       let liveInfoList: LiveInfoModel[] = [];
 
       if (streamData) {
+        let usersData = data.include.users;
         for (let liveInfo of streamData) {
           let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
           liveInfoList.push(liveInfoParsed);
@@ -213,10 +213,10 @@ export class LiveService {
       let data = res.json();
 
       let streamData = data.result;
-      let usersData = data.include.users;
       let liveInfoList: LiveInfoModel[] = [];
 
       if (streamData) {
+        let usersData = data.include.users;
         for (let liveInfo of streamData) {
           let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
           liveInfoList.push(liveInfoParsed);
