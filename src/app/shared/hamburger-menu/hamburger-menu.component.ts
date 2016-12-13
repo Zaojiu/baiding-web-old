@@ -38,7 +38,9 @@ export class HamburgerMenuComponent implements OnInit {
       this.hamburgerMenu.first.opacityDown();
     }
 
-    return this.activeStatus = !this.activeStatus;
+    setTimeout(() => {
+      this.activeStatus = !this.activeStatus;
+    }, 0)
   }
 
   createRoom() {
@@ -54,13 +56,13 @@ export class HamburgerMenuComponent implements OnInit {
     this.router.navigate([`/info-center`]);
   }
 
-  dragStart(){
+  dragStart() {
     this.autoFade.opacityUp();
   }
 
-  dragEnd(){
-    setTimeout(()=>{
+  dragEnd() {
+    setTimeout(() => {
       this.autoFade.opacityDown();
-    },1500)
+    }, 8000)
   }
 }
