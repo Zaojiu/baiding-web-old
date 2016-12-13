@@ -1,7 +1,6 @@
 import {Directive, ElementRef, Renderer, OnDestroy, OnInit} from '@angular/core';
 import {UtilsService} from "../utils/utils";
 
-
 @Directive({
   selector: '[draggable]',
   host: {
@@ -37,7 +36,7 @@ export class Draggable implements OnDestroy, OnInit {
     // if pc,set element draggable
     this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'true');
 
-    if (window.innerHeight - 192 > offsetY && window.innerWidth - 172 > offsetX && offsetY > -130 && offsetX > -115) {
+    if (offsetX < window.innerWidth && offsetX > 60 && offsetY < window.innerHeight && offsetY > 60) {
       // restore position
       if (offsetX) {
         this.renderer.setElementStyle(this.el.nativeElement, 'left', offsetX + 'px');
@@ -46,6 +45,10 @@ export class Draggable implements OnDestroy, OnInit {
       if (offsetY) {
         this.renderer.setElementStyle(this.el.nativeElement, 'top', offsetY + 'px');
       }
+    } else {
+      // initial position
+      this.renderer.setElementStyle(this.el.nativeElement, 'left', window.innerWidth - 12 + 'px');
+      this.renderer.setElementStyle(this.el.nativeElement, 'top', window.innerHeight - 67 + 'px');
     }
   }
 
@@ -91,8 +94,10 @@ export class Draggable implements OnDestroy, OnInit {
 
   doTranslation(x: number, y: number) {
     if (!x || !y) return;
-    this.renderer.setElementStyle(this.el.nativeElement, 'top', (y - this.Δy) + 'px');
-    this.renderer.setElementStyle(this.el.nativeElement, 'left', (x - this.Δx) + 'px');
+    if (x - this.Δx < window.innerWidth && x - this.Δx > 60 && y - this.Δy < window.innerHeight && y - this.Δy > 60) {
+      this.renderer.setElementStyle(this.el.nativeElement, 'top', (y - this.Δy) + 'px');
+      this.renderer.setElementStyle(this.el.nativeElement, 'left', (x - this.Δx) + 'px');
+    }
   }
 
   ngOnDestroy(): void {
