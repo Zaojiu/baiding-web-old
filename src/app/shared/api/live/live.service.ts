@@ -69,7 +69,7 @@ export class LiveService {
 
     liveInfo.totalUsers = stream.totalUsers;
 
-    if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageView2/2/w/640/interlace/1/q/70&updatedAt=${liveInfo.updatedAt}`;
+    if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300/q/100/size-limit/350k!&updatedAt=${liveInfo.updatedAt}`;
 
     return liveInfo;
   }
@@ -98,7 +98,7 @@ export class LiveService {
   }
 
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
-    let data: { [key: string]: string } = {
+    let data: {[key: string]: string} = {
       subject: subject,
       desc: desc,
       coverUrl: coverUrl,
@@ -115,7 +115,7 @@ export class LiveService {
   }
 
   updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<void> {
-    let data: { [key: string]: string } = {
+    let data: {[key: string]: string} = {
       subject: title,
       desc: desc,
       expectStartAt: expectStartAt,
