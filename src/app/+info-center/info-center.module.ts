@@ -16,6 +16,7 @@ import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.modul
 import {AutofocusFirstInvalidInputModule} from "../shared/first-invalid/first-invalid.module";
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {FormModule} from "../shared/form/form.module";
+import {DraggableModule} from "../shared/draggable/draggable.module";
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import {FormModule} from "../shared/form/form.module";
     HamburgerMenuModule,
     AutofocusFirstInvalidInputModule,
     AutoresizeModule,
+    DraggableModule,
   ],
   declarations: [
     InfoCenterComponent,

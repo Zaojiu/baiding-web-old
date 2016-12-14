@@ -46,6 +46,7 @@ import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.modul
 import {DisplayWhenFocusModule} from "../shared/display-when-focus/display-when-focus.module";
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {LiveRoomService} from "./live-room.service";
+import {DraggableModule} from "../shared/draggable/draggable.module";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -78,6 +79,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     HamburgerMenuModule,
     DisplayWhenFocusModule,
     AutoresizeModule,
+    DraggableModule,
   ],
   declarations: [
     LiveRoomComponent,

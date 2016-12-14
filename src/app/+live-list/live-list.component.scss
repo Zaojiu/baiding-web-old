@@ -247,8 +247,6 @@
 }
 
 .hamburger-menu {
-  position: absolute;
+  position: fixed;
   z-index: 3;
-  right: 12px;
-  bottom: 12px;
 }

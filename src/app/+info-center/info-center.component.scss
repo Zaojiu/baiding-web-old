@@ -83,7 +83,7 @@
       line-height: 20px;
       text-align: center;
       white-space: pre-wrap;
-      overflow : hidden;
+      overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 5;
@@ -314,18 +314,18 @@
       }
 
       .live-desc {
-          margin: 12px;
-          word-break: break-all;
-          font-size: 14px;
-          color: rgb(124, 124, 124);
-          line-height: 1.428em;
-          white-space: pre-wrap;
-          overflow : hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-        }
+        margin: 12px;
+        word-break: break-all;
+        font-size: 14px;
+        color: rgb(124, 124, 124);
+        line-height: 1.428em;
+        white-space: pre-wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
 
       .invited-people {
         padding: 0 12px;
@@ -487,9 +487,8 @@
 }
 
 .hamburger-menu {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
+  position: fixed;
+  z-index: 1;
 }
 
 .loading {
