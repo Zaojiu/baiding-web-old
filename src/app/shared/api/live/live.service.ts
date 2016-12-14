@@ -69,7 +69,7 @@ export class LiveService {
 
     liveInfo.totalUsers = stream.totalUsers;
 
-    if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageView2/2/w/640/interlace/1/q/70&updatedAt=${liveInfo.updatedAt}`;
+    if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300/q/100/size-limit/350k!&updatedAt=${liveInfo.updatedAt}`;
 
     return liveInfo;
   }
