@@ -483,7 +483,8 @@
 }
 
 .hamburger-menu {
-  z-index: 5;
+  position: fixed;
+  z-index: 1;
 }
 
 .loading {

@@ -9,6 +9,7 @@ import {CountDownModule} from "../shared/countdown/countdown.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
+import {DraggableModule} from "../shared/draggable/draggable.module";
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.modul
     CountDownModule,
     ScrollerModule,
     HamburgerMenuModule,
+    DraggableModule,
   ],
   declarations: [
     LiveListComponent,

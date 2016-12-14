@@ -16,7 +16,7 @@ export class Draggable implements OnDestroy, OnInit {
   private Δx: number = 0;
   private Δy: number = 0;
   private mustBePosition: Array<string> = ['absolute', 'fixed', 'relative'];
-  touchMODE: boolean;
+  isTouchable: boolean;
 
   constructor(private el: ElementRef, private renderer: Renderer) {
     try {
@@ -29,7 +29,7 @@ export class Draggable implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.touchMODE = !!UtilsService.hasTouchEvent;
+    this.isTouchable = !!UtilsService.hasTouchEvent;
     let offsetX = UtilsService.getStorage('draggableLeft');
     let offsetY = UtilsService.getStorage('draggableTop');
 
@@ -54,20 +54,20 @@ export class Draggable implements OnDestroy, OnInit {
 
   // PC events
   onDragStart(event: MouseEvent) {
-    if (!this.touchMODE) {
+    if (!this.isTouchable) {
       this.Δx = event.x - this.el.nativeElement.offsetLeft;
       this.Δy = event.y - this.el.nativeElement.offsetTop;
     }
   }
 
   onDrag(event: MouseEvent) {
-    if (!this.touchMODE) {
+    if (!this.isTouchable) {
       this.doTranslation(event.x, event.y);
     }
   }
 
   onDragEnd(event: MouseEvent) {
-    if (!this.touchMODE) {
+    if (!this.isTouchable) {
       this.Δx = 0;
       this.Δy = 0;
       UtilsService.setStorage('draggableTop', this.el.nativeElement.offsetTop);

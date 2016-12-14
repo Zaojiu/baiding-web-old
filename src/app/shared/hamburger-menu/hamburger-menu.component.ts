@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, AfterViewInit, ViewChild} from '@angular/core';
 import {UserInfoModel} from '../api/user-info/user-info.model';
 import {Router} from '@angular/router';
 import {AutoOpacityDownDirective} from "../animation/auto-opacity-down/auto-opacity-down.directive";
@@ -9,8 +9,8 @@ import {AutoOpacityDownDirective} from "../animation/auto-opacity-down/auto-opac
   styleUrls: ['./hamburger-menu.component.scss'],
 })
 
-export class HamburgerMenuComponent implements OnInit {
-  activeStatus = false;
+export class HamburgerMenuComponent implements AfterViewInit {
+  isActivated = false;
   @Input() liveId: string;
   @Input() from: string;
   @Input() userInfo: UserInfoModel;
@@ -19,7 +19,7 @@ export class HamburgerMenuComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     setTimeout(() => {
       if (this.autoFade) this.autoFade.opacityDown();
     }, 2000);
@@ -28,7 +28,7 @@ export class HamburgerMenuComponent implements OnInit {
   switch() {
     if (this.timer) clearTimeout(this.timer);
 
-    if (!this.activeStatus) {
+    if (!this.isActivated) {
       this.autoFade.opacityUp()
     }
     else {
@@ -37,7 +37,7 @@ export class HamburgerMenuComponent implements OnInit {
       }, 3000)
     }
 
-    return this.activeStatus = !this.activeStatus;
+    return this.isActivated = !this.isActivated;
   }
 
   createRoom() {

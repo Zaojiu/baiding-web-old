@@ -224,7 +224,6 @@
   </div>
 </div>
 
-<hamburger-menu style="position: fixed" [draggable] class="hamburger-menu"
-                [userInfo]="currentUserInfo"></hamburger-menu>
+<hamburger-menu [draggable] class="hamburger-menu" [userInfo]="currentUserInfo"></hamburger-menu>
 
 <bd-loading class="loading" *ngIf="!pageUserInfo || !currentUserInfo || isLoading"></bd-loading>

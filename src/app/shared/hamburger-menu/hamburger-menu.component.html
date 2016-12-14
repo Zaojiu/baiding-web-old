@@ -1,17 +1,17 @@
-<div class="mask" *ngIf="activeStatus" (click)="switch();"></div>
+<div class="mask" *ngIf="isActivated" (click)="switch();"></div>
 
 <div class="hamburger" auto-opacity-down>
-  <div class="create-room" (click)="createRoom()" [ngClass]="{active: activeStatus}">
+  <div class="create-room" (click)="createRoom()" [ngClass]="{active: isActivated}">
     <i class="bi bi-add"></i>
   </div>
 
-  <div class="invite-people" (click)="gotoMyRoomList()" [ngClass]="{active: activeStatus}">
+  <div class="invite-people" (click)="gotoMyRoomList()" [ngClass]="{active: isActivated}">
     <i class="bi bi-people3"></i>
   </div>
 
   <div class="hamburger-menu" (click)="switch();$event.stopPropagation();" (touchstart)="dragStart()"
        (touchend)="dragEnd()" (dragstart)="dragStart()" (dragend)="dragEnd()">
-    <div id="nav-icon" [ngClass]="{open: activeStatus}">
+    <div id="nav-icon" [ngClass]="{open: isActivated}">
       <span></span>
       <span></span>
       <span></span>

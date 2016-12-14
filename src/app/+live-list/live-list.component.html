@@ -27,7 +27,8 @@
 
       <div class="cover-container">
         <img class="cover" [src]="covers[liveInfo.id]" alt="话题间封面">
-        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
+        <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                    [countDownStatus]="liveInfo.isCreated()"></count-down>
         <span class="live-status living" *ngIf="liveInfo.isStarted()">直播中</span>
         <span class="live-status ended" *ngIf="liveInfo.isClosed()">已结束</span>
       </div>
@@ -44,7 +45,7 @@
               [ngClass]="{show: scroller.isFootLoadingShown, hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
 
-<hamburger-menu class="hamburger-menu" [userInfo]="userInfo" [from]="from"></hamburger-menu>
+<hamburger-menu [draggable] class="hamburger-menu" [userInfo]="userInfo" [from]="from"></hamburger-menu>
 
 <bd-loading class="loading" *ngIf="!livesList"></bd-loading>
 
