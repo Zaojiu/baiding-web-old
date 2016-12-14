@@ -15,6 +15,7 @@ export class HamburgerMenuComponent implements OnInit {
   @Input() from: string;
   @Input() userInfo: UserInfoModel;
   @ViewChild(AutoOpacityDownDirective) autoFade: AutoOpacityDownDirective;
+  timer: any;
 
   constructor(private router: Router) {}
 
@@ -25,11 +26,15 @@ export class HamburgerMenuComponent implements OnInit {
   }
 
   switch() {
+    if (this.timer) clearTimeout(this.timer);
+
     if (!this.activeStatus) {
-      this.autoFade.opacityUp();
+      this.autoFade.opacityUp()
     }
     else {
-      this.autoFade.opacityDown();
+      this.timer = setTimeout(() => {
+        this.autoFade.opacityDown();
+      }, 3000)
     }
 
     return this.activeStatus = !this.activeStatus;
@@ -49,10 +54,13 @@ export class HamburgerMenuComponent implements OnInit {
   }
 
   dragStart() {
+    if (this.timer) clearTimeout(this.timer);
     this.autoFade.opacityUp();
   }
 
   dragEnd() {
-    this.autoFade.opacityDown();
+    this.timer = setTimeout(() => {
+      this.autoFade.opacityDown();
+    }, 3000)
   }
 }
