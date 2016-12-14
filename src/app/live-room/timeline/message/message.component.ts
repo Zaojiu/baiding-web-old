@@ -40,30 +40,23 @@ export class MessageComponent implements OnInit, OnDestroy {
   praisesNum: number = 0;
   timer: any = -1;
   praised: boolean;
-  isToolTipOpened: boolean;
   messageType = MessageType;
-  countdownTimer: any;
   isTranslationExpanded: boolean;
   tranlationExpandedSub: Subscription;
   tranlationMaxLength = 32;
   postStatus = PostMessageStatus;
-  toolTips: ToolTipsModel[];
+  canReply: boolean;
 
   constructor(private messageService: MessageService, private messageApiService: MessageApiService,
-              private router: Router, private liveService: LiveService,
-              private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
-              private userInfoService: UserInfoService, private textPopupService: TextPopupService,
-              private modalService: ModalService, private liveRoomService: LiveRoomService) {
+              private router: Router, private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
+              private userInfoService: UserInfoService, private modalService: ModalService,
+              private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {
-    if (this.message.type === MessageType.LiveRoomInfo) {
-      if (!this.liveInfo.isStarted()) {
-        this.countdownTimer = setInterval(() => {
-          this.liveInfo.expectStartAt = this.liveInfo.expectStartAt.indexOf('.00') === -1 ? `${this.liveInfo.expectStartAt}.00` : this.liveInfo.expectStartAt.replace('.00', '');
-        }, 60000);
-      }
-    }
+    this.canReply = this.message.user && this.message.user.uid !== this.userInfo.uid &&
+      this.liveInfo.isEditor(this.userInfo.uid) &&
+      this.message.postStatus === PostMessageStatus.PostSuccessful;
 
     let tranlationExpand = !this.liveRoomService.isTranslationExpanded(this.liveId);
     this.judgeTranlastionLength(tranlationExpand, this.tranlationMaxLength);
@@ -74,9 +67,6 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.countdownTimer) {
-      clearInterval(this.countdownTimer);
-    }
     this.tranlationExpandedSub.unsubscribe();
   }
 
@@ -93,7 +83,6 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   confirmPraise() {
-
     let userAnim = new UserAnimEmoji;
     userAnim.user = this.userInfo;
     this.message.praisedAnimations.push(userAnim);
@@ -139,85 +128,12 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.router.navigate([`/lives/${this.liveInfo.id}/post`, {'message_id': this.message.id}]);
   }
 
-  canReply(): boolean {
-    // 发送成功才能回复(特殊情况,例如推送,信息uid不是推送人), 不然id是前端随机id, 会有问题。
-    return this.message.user.uid !== this.userInfo.uid && !this.liveInfo.isAudience(this.userInfo.uid) &&
-      this.message.postStatus === PostMessageStatus.PostSuccessful;
-  }
-
   goToShare() {
     this.router.navigate([`/lives/${this.liveInfo.id}/share/${this.message.id}`]);
   }
 
   playAudio() {
     this.audioPlayer.play();
-  }
-
-  isClosed(): boolean {
-    return this.liveInfo.status == LiveStatus.Ended;
-  }
-
-  resetToolTipsItems(): ToolTipsModel[] {
-
-    let items = [];
-    let t = this.message.type;
-
-    if (this.canReply()) {
-      let enable = !this.isClosed();
-      let reply = new ToolTipsModel('reply', '<i class="bi bi-chat3"></i><span>回复</span>', enable);
-      items.push(reply);
-    }
-
-    if (t === MessageType.Audio || t === MessageType.Text || t === MessageType.Nice) {
-      let autoPlay = new ToolTipsModel('text-popup', `<span>复制</span>`, true);
-      items.push(autoPlay);
-    }
-
-    return items;
-  }
-
-  openToolTips() {
-    this.toolTips = this.resetToolTipsItems();
-    if (this.toolTips.length === 0) return;
-
-    this.isToolTipOpened = true;
-  }
-
-  closeToolTips() {
-    this.isToolTipOpened = false;
-  }
-
-  tooptipsSelected(item: ToolTipsModel) {
-    if (item.id === 'reply') {
-      this.closeToolTips();
-      return this.gotoReply();
-    } else if (item.id === 'audio-auto-play') {
-      this._toggleAudioAutoPlay();
-    } else if (item.id === 'translation-expand') {
-      this._toggleTranslationExpand();
-    } else if (item.id === 'text-popup') {
-      let text: string;
-      if (this.message.type === MessageType.Text) {
-        text = this.message.content;
-      } else if (this.message.type === MessageType.Audio) {
-        text = this.message.audio.translateResult;
-      } else if (this.message.type === MessageType.Nice) {
-        text = this.message.content;
-      }
-      if (text) {
-        this.textPopupService.popup(text);
-      }
-    }
-
-    this.toolTips = this.resetToolTipsItems();
-  }
-
-  private _toggleAudioAutoPlay() {
-    this.liveRoomService.toggleAudioAutoPlay(this.liveId);
-  }
-
-  private _toggleTranslationExpand() {
-    this.liveRoomService.toggleTranslationExpanded(this.liveId);
   }
 
   emitAvatarClick(userInfo: UserInfoModel) {
