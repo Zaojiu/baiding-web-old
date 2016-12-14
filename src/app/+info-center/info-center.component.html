@@ -101,9 +101,9 @@
 
           <div
             class="operation-area"
-            *ngIf="(liveInfo.latestUsers && liveInfo.latestUsers.length > 0) || liveInfo.isAdmin(currentUserInfo.uid)"
+            *ngIf="(liveInfo.latestUsers.length > 0) || liveInfo.isAdmin(currentUserInfo.uid)"
           >
-            <div class="people-count" *ngIf="liveInfo.latestUsers && liveInfo.latestUsers.length > 0">
+            <div class="people-count" *ngIf="liveInfo.latestUsers.length > 0">
               <img class="avatar" alt="" *ngFor="let audience of liveInfo.latestUsers" [src]="audience.avatar">
               <span class="total-users">
                 {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
@@ -205,7 +205,7 @@
 
           </div>
 
-          <div class="operation-area" *ngIf="liveInfo && liveInfo.latestUsers && liveInfo.latestUsers.length > 0">
+          <div class="operation-area" *ngIf="liveInfo && liveInfo.latestUsers.length > 0">
             <div class="people-count">
               <img class="avatar" alt="" *ngFor="let audience of liveInfo.latestUsers" [src]="audience.avatar">
               <span class="total-users">
