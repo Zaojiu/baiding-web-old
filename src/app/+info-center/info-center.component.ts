@@ -75,9 +75,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       this.livesList = livesList;
 
       for (let liveInfo of this.livesList) {
-        this.liveService.listLiveAudience(liveInfo.id).then((audienceList) => {
-          liveInfo.audienceList = audienceList;
-        });
 
         if (liveInfo.isAdmin(this.currentUserInfo.uid)) {
           this.inviteApiService.listInvitations(liveInfo.id).then((invitionWithToken) => {
@@ -142,9 +139,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       this.livesListWatched = liveListWatched;
 
       for (let liveInfo of this.livesListWatched) {
-        this.liveService.listLiveAudience(liveInfo.id).then((audienceList) => {
-          liveInfo.audienceList = audienceList;
-        });
 
         if (liveInfo.isAdmin(this.currentUserInfo.uid)) {
           this.inviteApiService.listInvitations(liveInfo.id).then((invitionWithToken) => {
