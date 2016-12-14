@@ -98,7 +98,7 @@ export class LiveService {
   }
 
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
-    let data: { [key: string]: string } = {
+    let data: {[key: string]: string} = {
       subject: subject,
       desc: desc,
       coverUrl: coverUrl,
@@ -115,7 +115,7 @@ export class LiveService {
   }
 
   updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<void> {
-    let data: { [key: string]: string } = {
+    let data: {[key: string]: string} = {
       subject: title,
       desc: desc,
       expectStartAt: expectStartAt,
