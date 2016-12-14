@@ -19,7 +19,6 @@ import {MessageService} from "../timeline/message/message.service";
 import {InputtingService} from "../timeline/message/inputting.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
-import {LiveService} from "../../shared/api/live/live.service";
 import {ImageBridge} from "../../shared/bridge/image.interface";
 import {LiveRoomService} from "../live-room.service";
 
@@ -38,7 +37,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   @ViewChild('messageInput') messageInput: ElementRef;
   modeEnums = EditMode;
   recordEnums = RecordStatus;
-  mode = EditMode.None;
+  mode = EditMode.Audio;
   messageContent = '';
   isMessageSubmitting = false;
   images: File[];
@@ -46,11 +45,12 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
   receviedAvatarTouchedSub: Subscription;
+  touchStartY: number;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
-              private messageService: MessageService, private liveService: LiveService, private inputtingService: InputtingService,
-              private imageService: ImageBridge, private liveRoomService: LiveRoomService) {
+              private messageService: MessageService, private imageService: ImageBridge,
+              private liveRoomService: LiveRoomService, private inputtingService: InputtingService) {
   }
 
   ngOnInit() {
@@ -117,19 +117,35 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   get isClose() {
-    let isClosed = this.liveInfo.status === LiveStatus.Ended;
-    if (isClosed && this.mode === EditMode.Audio) setTimeout(()=> {
-      this.mode = EditMode.None;
-    }, 0);
-    return isClosed;
+    return this.liveInfo.status === LiveStatus.Ended;
   }
 
-  get recordDuration() {
-    if (!this.recorder || !this.recorder.recordDuration) return '';
+  startRecord(e: Event) {
+    if ((e instanceof MouseEvent) && UtilsService.hasTouchEvent) return;
 
-    let duration = 60 - this.recorder.recordDuration / 10;
-    if (duration < 0) duration = 0;
-    return `${duration.toFixed(0)}s`;
+    if (this.mode === EditMode.Audio) {
+      if (this.recorder.status === RecordStatus.Waitting) this.recorder.startRecord();
+    } else {
+      this.switchMode(EditMode.Audio);
+    }
+
+    if (e instanceof TouchEvent) this.touchStartY = e.targetTouches[0].clientY;
+  }
+
+  stopRecord(e: Event) {
+    if ((e instanceof MouseEvent) && UtilsService.hasTouchEvent) return;
+
+    if (this.mode === EditMode.Audio) {
+      this.recorder.stopRecord();
+    }
+  }
+
+  panupCancel(e) {
+    if (this.touchStartY - e.targetTouches[0].clientY > 50) {
+      if (this.recorder.status === RecordStatus.Recording) this.recorder.status = RecordStatus.ReadyToCancel;
+    } else {
+      if (this.recorder.status === RecordStatus.ReadyToCancel) this.recorder.status = RecordStatus.Recording;
+    }
   }
 
   onrecording() {
@@ -172,7 +188,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     this.messageInput.nativeElement.blur();
   }
 
-  messageInputFocused() {
+  resetKeyboard() {
     if (this.mode === EditMode.At) this.switchMode(EditMode.Text);
   }
 
@@ -193,10 +209,6 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
       });
     }
     this.images = [];
-  }
-
-  postTips() {
-    this.modalService.popup('即将推出,敬请期待。', '', '知道了', false);
   }
 
   goSettings() {

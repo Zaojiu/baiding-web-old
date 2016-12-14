@@ -16,6 +16,7 @@ export class RecorderComponent {
   timer: any;
   recordDuration: number = 0;
   minRecordDuration = 10;
+  maxRecordDuration = 500;
   @Output() recordEnd = new EventEmitter<RecorderData>();
   @Output() recording = new EventEmitter<number>();
 
@@ -29,10 +30,13 @@ export class RecorderComponent {
 
     this.audioBridge.startRecord().then(() => {
       if (this.status !== RecordStatus.Preparing) {
-        this.audioBridge.cancelRecord().finally(() => {
+        setTimeout(() => {
           this.status = RecordStatus.Waitting;
-        });
+
+          this.audioBridge.cancelRecord();
+        }, 1000);
         return;
+        // this.audioBridge.cancelRecord();
       }
 
       this.status = RecordStatus.Recording;
@@ -40,6 +44,10 @@ export class RecorderComponent {
       this.timer = setInterval(() => {
         this.recordDuration++;
         this.recording.emit(this.recordDuration);
+
+        if (this.recordDuration >= this.maxRecordDuration) {
+          this.stopRecord();
+        }
       }, 100);
       this.autoComplete();
     }, (err) => {
@@ -54,7 +62,7 @@ export class RecorderComponent {
 
   autoComplete() {
     this.audioBridge.autoCompelete().then(result => {
-      let millisecond = 60 * 1000;
+      let millisecond = this.maxRecordDuration * 100;
       let recorderData: RecorderData;
 
       if (typeof(result) === 'string') {
@@ -72,19 +80,28 @@ export class RecorderComponent {
   }
 
   stopRecord() {
+    if (this.timer) clearInterval(this.timer);
+
     if (this.status === RecordStatus.Preparing) {
       // 防止误点, 录音未开始就调用结束。
       this.status = RecordStatus.TooShort;
-    } else if (this.status === RecordStatus.Recording) {
 
-      if (this.timer) clearInterval(this.timer);
+    } else if (this.status === RecordStatus.ReadyToCancel) {
+
+      this.cancelRecord();
+
+    } else if (this.status === RecordStatus.Recording) {
 
       if (this.recordDuration < this.minRecordDuration) {
         // 防止录音太短听不清。
         this.status = RecordStatus.TooShort;
-        this.audioBridge.cancelRecord().finally(() => {
-          setTimeout(() => this.status = RecordStatus.Waitting, 1000);
-        });
+
+        setTimeout(() => {
+          this.status = RecordStatus.Waitting;
+
+          this.audioBridge.cancelRecord();
+        }, 1000);
+
       } else {
 
         this.status = RecordStatus.Uploading;
@@ -108,21 +125,22 @@ export class RecorderComponent {
     }
   }
 
-  panup(e) {
-    if (e.distance > 50) {
-      this.cancelRecord();
-    }
-  }
-
   cancelRecord() {
     if (this.timer) clearInterval(this.timer);
 
-    if (this.status !== RecordStatus.Recording) return;
+    if (this.status !== RecordStatus.ReadyToCancel) return;
 
     this.status = RecordStatus.Canceled;
 
     this.audioBridge.cancelRecord().finally(() => {
-      setTimeout(() => this.status = RecordStatus.Waitting, 1000);
+      setTimeout(() => {
+        this.status = RecordStatus.Waitting;
+      }, 1000);
     });
+  }
+
+  get recordCountDown(): number {
+    let countdown = Math.round((this.maxRecordDuration - this.recordDuration) / 10);
+    return countdown > 0 ? countdown : 0;
   }
 }

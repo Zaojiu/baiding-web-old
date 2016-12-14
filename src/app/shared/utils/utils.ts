@@ -3,6 +3,7 @@ interface Window {
 }
 
 declare var window: Window;
+declare var DocumentTouch: any;
 
 export class UtilsService {
   static setStorage(key: string, value: Object) {
@@ -61,6 +62,6 @@ export class UtilsService {
   }
 
   static get hasTouchEvent(): boolean {
-    return ('ontouchstart' in window);
+    return (<any>window).DocumentTouch && document instanceof DocumentTouch;
   }
 }
