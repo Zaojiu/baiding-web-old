@@ -443,7 +443,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
         message.type === MessageType.Text ||
         message.type === MessageType.Image ||
         message.type === MessageType.Audio ||
-        message.type === MessageType.Nice
+        message.type === MessageType.Nice ||
+        message.type === MessageType.EditorJoin ||
+        message.type === MessageType.LiveStart
       ) {
         return message;
       }

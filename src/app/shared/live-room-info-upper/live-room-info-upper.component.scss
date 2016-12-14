@@ -40,10 +40,10 @@
       text-align: center;
       flex-shrink: 0;
 
-      &.notstarted {
-        background-color: rgb(216, 216, 216);
+      &.closed {
+        background-color: rgb(102, 102, 102);
         font-size: 12px;
-        color: $color-dark-gray;
+        color: $color-w;
       }
 
       &.living {
