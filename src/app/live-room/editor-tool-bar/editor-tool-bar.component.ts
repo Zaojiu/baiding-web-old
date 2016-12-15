@@ -132,19 +132,28 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     return `${duration.toFixed(0)}s`;
   }
 
+  onrecording() {
+    this.inputtingService.collect({liveId: this.liveId, type: 'audio'});
+  }
+
   recordEnd(recorderData: RecorderData) {
-    this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
+
+    let promise = this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
+    if (promise) {
+      let timer = setInterval(() => {
+        this.inputtingService.collect({liveId: this.liveId, type: 'audio'});
+      }, 1000);
+      promise.finally(() => {
+        timer && clearInterval(timer);
+      });
+    }
   }
 
   postMessage() {
     if (this.messageContent === '' || this.isMessageSubmitting) return;
 
     if (!this.isClose) {
-      this.messageApiService.postTextMessage(this.liveId, this.messageContent)
-        .then(() => {
-        }).finally(()=> {
-        alert('finally');
-      });
+      this.messageApiService.postTextMessage(this.liveId, this.messageContent);
       this.isMessageSubmitting = false;
       this.messageContent = '';
     } else {
@@ -168,14 +177,21 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   messageInputChanged() {
-    console.log('a');
     this.inputtingService.collect({liveId: this.liveId, type: 'text'});
   }
 
   postImage() {
     if (!this.images || !this.images.length) return;
 
-    this.messageApiService.postImageMessage(this.liveId, '', this.images[0]);
+    let promise = this.messageApiService.postImageMessage(this.liveId, '', this.images[0]);
+    if (promise) {
+      let timer = setInterval(() => {
+        this.inputtingService.collect({liveId: this.liveId, type: 'audio'});
+      }, 1000);
+      promise.finally(() => {
+        timer && clearInterval(timer);
+      });
+    }
     this.images = [];
   }
 

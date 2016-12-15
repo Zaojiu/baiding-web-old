@@ -20,6 +20,7 @@ import {AudioPlayerService} from '../../shared/audio-player/audio-player.service
 import {InputtingService} from './message/inputting.service';
 
 import {MessageComponent} from './message/message.component';
+import {InputtingComponent} from './message/inputting.component';
 import {HackMessages} from "./hack-messages";
 import {LiveRoomService} from "../live-room.service";
 
@@ -45,6 +46,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
   unreadCount = 0;
 
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
+  @ViewChild('inputtingComp') inputtingComp: InputtingComponent;
+
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
               private liveService: LiveService, private messageApiService: MessageApiService, private liveRoomService: LiveRoomService,
@@ -123,6 +126,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
         if (this.isOnBottom) {
+          this.inputtingComp.hide();
           let has = this.hasNoPlayedAudio();
           this.gotoLatestMessages().then(() => {
             setTimeout(() => {
@@ -328,6 +332,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }).finally(() => {
       this.isLoading = false;
     });
+  }
+
+  onShowInputting() {
+    this.isOnBottom && setTimeout(() => {
+      this.scroller.scrollToBottom();
+    }, 0);
   }
 
   onScroll(e: ScrollerEventModel) {

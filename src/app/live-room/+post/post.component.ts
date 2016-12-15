@@ -6,6 +6,8 @@ import {MessageApiService} from "../../shared/api/message/message.api";
 import {LiveService} from "../../shared/api/live/live.service";
 import {LiveRoomService} from "../live-room.service";
 
+import {InputtingService} from "../timeline/message/inputting.service";
+
 @Component({
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
@@ -20,7 +22,7 @@ export class PostComponent implements OnInit {
   isSubmited: boolean = false;
   @ViewChild('postCommentContent') postCommentContent: ElementRef;
 
-  constructor(private route: ActivatedRoute, private router: Router,
+  constructor(private route: ActivatedRoute, private router: Router, private inputtingService: InputtingService,
               private messageApiService: MessageApiService, private postService: PostService,
               private liveService: LiveService, private liveRoomService: LiveRoomService) {
   }
@@ -77,6 +79,10 @@ export class PostComponent implements OnInit {
       this.backToMainScreen();
 
     }
+  }
+
+  oninputting() {
+    this.inputtingService.collect({liveId: this.id, type: 'text'});
   }
 
   canDeactivate() {

@@ -45,7 +45,7 @@
        (contextmenu)="$event.preventDefault()"></i>
   </div>
 
-  <recorder class="recorder" #recorder [ngClass]="{activate: mode === modeEnums.Audio}"
+  <recorder class="recorder" #recorder [ngClass]="{activate: mode === modeEnums.Audio}" (recording)="onrecording()"
             (recordEnd)="recordEnd($event)"></recorder>
 
   <div class="post-message-container-hidden-wrapper"

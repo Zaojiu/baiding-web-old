@@ -12,7 +12,7 @@
   </div>
 
   <div class="input-container">
-    <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" #postCommentContent autofocus></textarea>
+    <textarea class="input" placeholder="发表你此刻的看法" name="content" [(ngModel)]="content" #postCommentContent autofocus (input)="oninputting()"></textarea>
   </div>
 
   <div class="bottom-bar scrollable">

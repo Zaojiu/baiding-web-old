@@ -14,7 +14,7 @@
              [liveInfo]="liveInfo"
              (audioPlayEnded)="audioPlayEnded(message)"
     ></message>
-    <inputting [liveInfo]="liveInfo"></inputting>
+    <inputting #inputtingComp [liveInfo]="liveInfo" [userInfo]="userInfo" (onshow)="onShowInputting()"></inputting>
   </div>
 
   <bd-loading class="loading-foot"

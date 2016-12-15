@@ -234,6 +234,7 @@ export class MessageApiService {
           _originMessage.postStatus = PostMessageStatus.PostSuccessful;
           resolve(data);
         }, (err) => {
+          reject(err);
           _originMessage.postStatus = PostMessageStatus.PostFailed;
         }).finally(() => {
           this.posting = false;
@@ -273,6 +274,7 @@ export class MessageApiService {
 
           originMessage.postStatus = PostMessageStatus.PostSuccessful;
           originMessage.id = data.id;
+          resolve(data);
         }, () => {
           originMessage.postStatus = PostMessageStatus.PostFailed;
         }).finally(() => {
@@ -341,7 +343,7 @@ export class MessageApiService {
     return this.postMessage();
   }
 
-  postAudioMessage(liveId: string, localId: string, audioData: Blob, duration: number = 0) {
+  postAudioMessage(liveId: string, localId: string, audioData: Blob, duration: number = 0): Promise<MessageModel> {
     if (!audioData && !localId) {
       throw new Error('no audio data or audio local id');
     }
@@ -372,7 +374,7 @@ export class MessageApiService {
 
     this.timelineService.pushMessage(message);
     this.postQueue.push(postMessage);
-    this.postMessage();
+    return this.postMessage();
   }
 
   postNiceMessage(liveId: string, content: string, originCommentId: string, originUserInfo: UserInfoModel, originContent: string) {
@@ -411,7 +413,7 @@ export class MessageApiService {
     this.postMessage();
   }
 
-  postImageMessage(liveId: string, localId: string, file: File) {
+  postImageMessage(liveId: string, localId: string, file: File): Promise<MessageModel> {
     let postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'image';
@@ -437,7 +439,7 @@ export class MessageApiService {
 
     this.timelineService.pushMessage(message);
     this.postQueue.push(postMessage);
-    this.postMessage();
+    return this.postMessage();
   }
 
   resendMessage(liveId: string, message: MessageModel|ReplyMessageModel) {
