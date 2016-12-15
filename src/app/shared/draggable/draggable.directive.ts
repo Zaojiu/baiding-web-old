@@ -4,14 +4,12 @@ import {UtilsService} from "../utils/utils";
 @Directive({
   selector: '[draggable]',
   host: {
-    /* disable move event,issue on Android */
-
-    // '(dragstart)': 'onDragStart($event)',
-    // '(dragend)': 'onDragEnd($event)',
-    // '(drag)': 'onDrag($event)',
-    // '(touchstart)': 'touchStart($event)',
-    // '(touchmove)': 'touchMove($event)',
-    // '(touchend)': 'touchEnd($event)',
+    '(dragstart)': 'onDragStart($event)',
+    '(dragend)': 'onDragEnd($event)',
+    '(drag)': 'onDrag($event)',
+    '(touchstart)': 'touchStart($event)',
+    '(touchmove)': 'touchMove($event)',
+    '(touchend)': 'touchEnd($event)',
   }
 })
 export class Draggable implements OnDestroy, OnInit {
