@@ -54,7 +54,7 @@ export class VipInfoComponent implements OnInit {
     this.inviteApiService.listInvitations(this.liveId).then((invitations) => {
       let invitationCount = invitations.length;
 
-      if (invitationCount > 5) {
+      if (invitationCount >= 5) {
         this.operationTipsService.popup('最多邀请五个嘉宾');
         return;
       }

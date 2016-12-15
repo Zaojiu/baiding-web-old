@@ -6,7 +6,6 @@ import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {EditMode} from "./editor-tool-bar.enums";
 import {RecorderComponent} from "./recorder/recorder.component";
-import {LiveStatus} from "../../shared/api/live/live.enums";
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {ModalService} from "../../shared/modal/modal.service";
 import {Router} from "@angular/router";
@@ -21,6 +20,9 @@ import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
 import {ImageBridge} from "../../shared/bridge/image.interface";
 import {LiveRoomService} from "../live-room.service";
+import {LiveService} from "../../shared/api/live/live.service";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {InviteApiService} from "../../shared/api/invite/invite.api";
 
 declare var $: any;
 
@@ -33,6 +35,7 @@ declare var $: any;
 export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
+  @Input() userInfo: UserInfoModel;
   @ViewChild('recorder') recorder: RecorderComponent;
   @ViewChild('messageInput') messageInput: ElementRef;
   modeEnums = EditMode;
@@ -46,11 +49,14 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   maxSizeMB = 8;
   receviedAvatarTouchedSub: Subscription;
   touchStartY: number;
+  isReachInvitationLimit: boolean;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
               private messageService: MessageService, private imageService: ImageBridge,
-              private liveRoomService: LiveRoomService, private inputtingService: InputtingService) {
+              private liveRoomService: LiveRoomService, private liveService: LiveService,
+              private operationTips: OperationTipsService, private inviteApiService: InviteApiService,
+              private inputtingService: InputtingService) {
   }
 
   ngOnInit() {
@@ -68,12 +74,15 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
       this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
       if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
     });
+
+    this.inviteApiService.listInvitations(this.liveId).then((invitations) => {
+      this.isReachInvitationLimit = invitations.length >= 5;
+    });
   }
 
   switchMode(mode: EditMode) {
     if (mode !== EditMode.Text) {
       this.blurMessageInput();
-      this.liveRoomService.setTextWordsStashed(this.messageContent, this.liveId);
     }
 
     this.mode = mode;
@@ -86,10 +95,14 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
   detectContentChange() {
     $(this.messageInput.nativeElement).on('input', () => {
+      this.liveRoomService.setTextWordsStashed(this.messageContent, this.liveId);
+
       if (this.messageContent === '') return;
+
       if ($.isNumeric(this.messageContent[this.messageContent.length - 1])) {
         this.messageContent = this.messageContent.replace(/(.*)@[\W\w]+?\(\d+?$/g, '$1');
       }
+
       if (this.messageContent[this.messageContent.length - 1] === '@') {
         this.switchMode(EditMode.Text);
       }
@@ -116,14 +129,10 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     this.receviedAvatarTouchedSub.unsubscribe();
   }
 
-  get isClose() {
-    return this.liveInfo.status === LiveStatus.Ended;
-  }
-
   startRecord(e: Event) {
     if ((e instanceof MouseEvent) && UtilsService.hasTouchEvent) return;
 
-    if (this.mode === EditMode.Audio) {
+    if (this.mode === EditMode.Audio && !this.liveInfo.isClosed()) {
       if (this.recorder.status === RecordStatus.Waitting) this.recorder.startRecord();
     } else {
       this.switchMode(EditMode.Audio);
@@ -168,14 +177,16 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   postMessage() {
     if (this.messageContent === '' || this.isMessageSubmitting) return;
 
-    if (!this.isClose) {
+    if (!this.liveInfo.isClosed()) {
       this.messageApiService.postTextMessage(this.liveId, this.messageContent);
       this.isMessageSubmitting = false;
       this.messageContent = '';
+      this.liveRoomService.setTextWordsStashed('', this.liveId);
     } else {
       this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
         this.isMessageSubmitting = false;
         this.messageContent = '';
+        this.liveRoomService.setTextWordsStashed('', this.liveId);
       });
     }
   }
@@ -211,10 +222,6 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     this.images = [];
   }
 
-  goSettings() {
-    this.router.navigate([`/lives/${this.liveId}/settings`]);
-  }
-
   changeCommentContent(editor: UserInfoModel) {
     if (this.messageContent.indexOf(editor.uid.toString()) !== -1) {
       this.messageContent = this.messageContent.replace(`@${editor.nick}(${editor.uid}) `, '');
@@ -233,15 +240,55 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     return this.messageContent.indexOf(uid.toString()) !== -1;
   }
 
-  get isInWechat(): boolean {
-    return UtilsService.isInWechat;
-  }
-
   selectImages() {
     this.imageService.chooseImages().then((localIds) => {
       for (let localId of localIds) {
         this.messageApiService.postImageMessage(this.liveId, (localId as string), null);
       }
     });
+  }
+
+  gotoInvitationInfo() {
+    if (this.isReachInvitationLimit) return this.operationTips.popup('最多邀请五个嘉宾');
+
+    this.router.navigate([`/lives/${this.liveId}/vip-info`]);
+  }
+
+  closeLive() {
+    this.modalService.popup('确定结束话题吗?', '取消', '确定').then((result) => {
+      if (!result) return;
+      this.liveService.closeLive(this.liveId).then(() => {
+        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => this.liveInfo = liveInfo);
+        this.operationTips.popup('话题已结束');
+      });
+    });
+  }
+
+  gotoRoomInfo() {
+    this.router.navigate([`/lives/${this.liveId}/info`]);
+  }
+
+  gotoEditInfo() {
+    this.router.navigate([`/lives/${this.liveId}/settings/edit-info`]);
+  }
+
+  get isAudioAutoPlay() {
+    return this.liveRoomService.isAudioAutoPlay(this.liveId);
+  }
+
+  set isAudioAutoPlay(result: boolean) {
+    this.liveRoomService.toggleAudioAutoPlay(this.liveId);
+  }
+
+  get isTranslationCollapse(): boolean {
+    return this.liveRoomService.isTranslationCollapse(this.liveId);
+  }
+
+  set isTranslationCollapse(result: boolean) {
+    this.liveRoomService.toggleTranslationCollapse(this.liveId);
+  }
+
+  get isInWechat(): boolean {
+    return UtilsService.isInWechat;
   }
 }

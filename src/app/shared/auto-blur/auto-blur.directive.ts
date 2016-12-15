@@ -1,5 +1,4 @@
 import {Directive, ElementRef, Output, EventEmitter, Input, OnChanges, SimpleChanges} from '@angular/core'
-import {UtilsService} from "../utils/utils";
 
 declare var $: any;
 
@@ -21,10 +20,8 @@ export class AutoBlurDirective implements OnChanges {
     let isBlurred = changes['isBlurred'];
 
     if (isBlurred) {
-      let event = `touchstart.blur${this.randomId}`;
+      let event = `click.blur${this.randomId}`;
 
-      if (!UtilsService.hasTouchEvent) event = `mousedown.blur${this.randomId}`;
-      
       if (isBlurred.currentValue) {
         $('body').off(event);
       } else {

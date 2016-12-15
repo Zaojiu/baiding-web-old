@@ -88,7 +88,7 @@
           <div class="content audio-content" *ngIf="message.type === 2">
             <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
                           [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
-            <div class="translate" [ngClass]="{'not-expanded': isTranslationExpanded}"
+            <div class="translate" [ngClass]="{'collapse': isTranslationCollapse}"
                  (click)="toggleTranslatioExpanded(message.audio.translateResult)">
               <div class="translate-tips">以下由机器自动翻译</div>
               {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus ===
@@ -96,7 +96,7 @@
             </div>
             <i class="bi bi-elliplis"
                (click)="toggleTranslatioExpanded(message.audio.translateResult)"
-               *ngIf="isTranslationExpanded && message.audio.translateResult"></i>
+               *ngIf="isTranslationCollapse && message.audio.translateResult"></i>
             <div class="post-status">
               <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
               <i class="bi bi-warning-round"

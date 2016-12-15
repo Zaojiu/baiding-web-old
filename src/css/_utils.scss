@@ -3,6 +3,12 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.invisible-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .hidden {
   display: none !important;
 }
