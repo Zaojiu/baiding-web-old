@@ -26,6 +26,7 @@ export class InputtingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    let timer = null;
     this.sub = this.inputtingService.actived$
       .throttleTime(5000)
       .filter(e => {
@@ -34,9 +35,10 @@ export class InputtingComponent implements OnInit, OnDestroy {
       .subscribe((m: InputtingMessageModel) => {
         this.message = m;
         this.onshow.emit();
-        setTimeout(() => {
+        timer && clearTimeout(timer);
+        timer = setTimeout(() => {
           this.message = null;
-        }, 5000);
+        }, 10000);
       });
   }
 

@@ -130,7 +130,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
           let has = this.hasNoPlayedAudio();
           this.gotoLatestMessages().then(() => {
             setTimeout(() => {
-              this.scroller.scrollToBottom();
               if (!has) {
                 this.autoPlayReceived();
               }
