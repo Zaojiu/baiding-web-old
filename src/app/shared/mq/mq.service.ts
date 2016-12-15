@@ -11,6 +11,7 @@ export enum EventType {
   LivePraise,
   LiveAudienceJoined,
   LiveCommentPushed,
+  LiveMessageInputting,
 }
 
 export class MqEvent {
@@ -138,7 +139,7 @@ export class MqService {
           this.detect();
           return
         }
-        MqService.pubing = false
+        MqService.pubing = false;
       })
     }
   }
@@ -148,12 +149,16 @@ export class MqService {
   }
 
   private onMessage(data: any) {
+    if (data._expired) {
+      return;
+    }
+
     let channel: string = data._channel;
     let source: Subject<any> = MqService.subs[channel];
     if (!source) {
-      return
+      return;
     }
-    source.next(data)
+    source.next(data);
   }
 }
 

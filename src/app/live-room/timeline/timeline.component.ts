@@ -4,7 +4,7 @@ import {
 import {Subscription}   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {MessageModel} from '../../shared/api/message/message.model';
+import {MessageModel, InputtingMessageModel} from '../../shared/api/message/message.model';
 import {MessageType} from '../../shared/api/message/message.enum';
 import {TimelineService} from './timeline.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
@@ -16,9 +16,11 @@ import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
-import {AudioPlayerService} from '../../shared/audio-player/audio-player.service'
+import {AudioPlayerService} from '../../shared/audio-player/audio-player.service';
+import {InputtingService} from './message/inputting.service';
 
 import {MessageComponent} from './message/message.component';
+import {InputtingComponent} from './message/inputting.component';
 import {HackMessages} from "./hack-messages";
 import {LiveRoomService} from "../live-room.service";
 
@@ -44,10 +46,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
   unreadCount = 0;
 
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
+  @ViewChild('inputtingComp') inputtingComp: InputtingComponent;
+
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
-              private liveService: LiveService, private messageApiService: MessageApiService,
-              private  audioPlayerService: AudioPlayerService, private liveRoomService: LiveRoomService) {
+              private liveService: LiveService, private messageApiService: MessageApiService, private liveRoomService: LiveRoomService,
+              private  audioPlayerService: AudioPlayerService, private inputtingService: InputtingService) {
   }
 
   ngOnInit() {
@@ -122,6 +126,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     switch (evt.event) {
       case EventType.LiveMsgUpdate:
         if (this.isOnBottom) {
+          this.inputtingComp.hide();
           let has = this.hasNoPlayedAudio();
           this.gotoLatestMessages().then(() => {
             setTimeout(() => {
@@ -138,8 +143,17 @@ export class TimelineComponent implements OnInit, OnDestroy {
         break;
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
-          this.liveInfo = result
+          this.liveInfo = result;
         });
+        break;
+      case EventType.LiveMessageInputting:
+        let i = new InputtingMessageModel();
+        i.type = evt.info.type;
+        i.user = new UserInfoModel();
+        i.user.avatar = evt.info.user.avatar;
+        i.user.nick = evt.info.user.nick;
+        i.user.uid = evt.info.user.uid;
+        this.inputtingService.push(i);
         break;
     }
   }
@@ -318,6 +332,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }).finally(() => {
       this.isLoading = false;
     });
+  }
+
+  onShowInputting() {
+    this.isOnBottom && setTimeout(() => {
+      this.scroller.scrollToBottom();
+    }, 0);
   }
 
   onScroll(e: ScrollerEventModel) {

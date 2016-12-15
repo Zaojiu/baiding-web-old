@@ -17,6 +17,7 @@ export class RecorderComponent {
   recordDuration: number = 0;
   minRecordDuration = 10;
   @Output() recordEnd = new EventEmitter<RecorderData>();
+  @Output() recording = new EventEmitter<number>();
 
   constructor(private audioBridge: AudioBridge, private operationTips: OperationTipsService) {
   }
@@ -38,6 +39,7 @@ export class RecorderComponent {
       this.recordDuration = 0;
       this.timer = setInterval(() => {
         this.recordDuration++;
+        this.recording.emit(this.recordDuration);
       }, 100);
       this.autoComplete();
     }, (err) => {
@@ -74,6 +76,7 @@ export class RecorderComponent {
       // 防止误点, 录音未开始就调用结束。
       this.status = RecordStatus.TooShort;
     } else if (this.status === RecordStatus.Recording) {
+
       if (this.timer) clearInterval(this.timer);
 
       if (this.recordDuration < this.minRecordDuration) {

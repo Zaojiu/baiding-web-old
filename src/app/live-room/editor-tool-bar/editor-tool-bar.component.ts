@@ -16,6 +16,7 @@ import {FormGroup, FormBuilder, FormControl} from "@angular/forms";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {Subscription} from "rxjs";
 import {MessageService} from "../timeline/message/message.service";
+import {InputtingService} from "../timeline/message/inputting.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
 import {LiveService} from "../../shared/api/live/live.service";
@@ -48,7 +49,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
-              private messageService: MessageService, private liveService: LiveService,
+              private messageService: MessageService, private liveService: LiveService, private inputtingService: InputtingService,
               private imageService: ImageBridge, private liveRoomService: LiveRoomService) {
   }
 
@@ -62,7 +63,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
       ]),
     });
 
-    //监听点击用户头像事件
+    // 监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched) => {
       this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
       if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
@@ -131,8 +132,21 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     return `${duration.toFixed(0)}s`;
   }
 
+  onrecording() {
+    this.inputtingService.collect({liveId: this.liveId, type: 'audio'});
+  }
+
   recordEnd(recorderData: RecorderData) {
-    this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
+
+    let promise = this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
+    if (promise) {
+      let timer = setInterval(() => {
+        this.inputtingService.collect({liveId: this.liveId, type: 'audio'});
+      }, 1000);
+      promise.finally(() => {
+        timer && clearInterval(timer);
+      });
+    }
   }
 
   postMessage() {
@@ -162,10 +176,22 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     if (this.mode === EditMode.At) this.switchMode(EditMode.Text);
   }
 
+  messageInputChanged() {
+    this.inputtingService.collect({liveId: this.liveId, type: 'text'});
+  }
+
   postImage() {
     if (!this.images || !this.images.length) return;
 
-    this.messageApiService.postImageMessage(this.liveId, '', this.images[0]);
+    let promise = this.messageApiService.postImageMessage(this.liveId, '', this.images[0]);
+    if (promise) {
+      let timer = setInterval(() => {
+        this.inputtingService.collect({liveId: this.liveId, type: 'image'});
+      }, 1000);
+      promise.finally(() => {
+        timer && clearInterval(timer);
+      });
+    }
     this.images = [];
   }
 
