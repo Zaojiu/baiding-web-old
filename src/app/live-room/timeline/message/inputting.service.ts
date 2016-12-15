@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
-import {Subject} from "rxjs";
+import {Subject, Observable} from "rxjs";
 import {MessageApiService} from "../../../shared/api/message/message.api";
 import {InputtingMessageModel} from "../../../shared/api/message/message.model";
 
 
-interface Inputter {
+export interface Inputter {
   liveId: string;
   type: string;
 }
@@ -15,7 +15,7 @@ interface Inputter {
 export class InputtingService {
 
   private activeSub = new Subject <InputtingMessageModel >();
-  actived$ = this.activeSub.asObservable();
+  actived$: Observable<InputtingMessageModel> = this.activeSub.asObservable();
 
   private collectSub = new Subject<Inputter>();
 
