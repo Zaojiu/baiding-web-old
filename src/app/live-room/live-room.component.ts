@@ -87,9 +87,4 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     clearInterval(this.refreshInterval);
   }
-
-  checkGuideAlreadyShown(): boolean {
-    let guideShowed = !!UtilsService.getStorage('beginnerGuide')['isShowed'];
-    return guideShowed;
-  }
 }
