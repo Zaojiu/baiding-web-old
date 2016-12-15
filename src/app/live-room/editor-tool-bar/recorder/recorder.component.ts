@@ -36,7 +36,6 @@ export class RecorderComponent {
           this.audioBridge.cancelRecord();
         }, 1000);
         return;
-        // this.audioBridge.cancelRecord();
       }
 
       this.status = RecordStatus.Recording;
