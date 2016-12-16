@@ -43,7 +43,7 @@ export class IosBridgeService {
       url: `${location.protocol}//${location.host}/#${urlHash}`,
       title: route.data['title'] || '造就直播',
     };
-    
+
     if (this.hasInit) {
       this.bridge.callHandler('pushH5State', query);
     } else {

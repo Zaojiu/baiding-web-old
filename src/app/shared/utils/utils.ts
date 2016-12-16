@@ -23,7 +23,7 @@ export class UtilsService {
   }
 
   static get isInApp(): boolean {
-    return true;
+    return /zaojiuliveapp/i.test(window.navigator.userAgent);
   }
 
   static get isOnScreen(): boolean {
