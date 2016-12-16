@@ -50,6 +50,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   receviedAvatarTouchedSub: Subscription;
   touchStartY: number;
   isReachInvitationLimit: boolean;
+  timer: any;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
@@ -165,11 +166,12 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
     let promise = this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
     if (promise) {
-      let timer = setInterval(() => {
+      this.timer = setInterval(() => {
         this.inputtingService.collect({liveId: this.liveId, type: 'audio'});
       }, 1000);
+
       promise.finally(() => {
-        timer && clearInterval(timer);
+        if (this.timer) clearInterval(this.timer);
       });
     }
   }
@@ -212,11 +214,12 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
     let promise = this.messageApiService.postImageMessage(this.liveId, '', this.images[0]);
     if (promise) {
-      let timer = setInterval(() => {
+      this.timer = setInterval(() => {
         this.inputtingService.collect({liveId: this.liveId, type: 'image'});
       }, 1000);
+
       promise.finally(() => {
-        timer && clearInterval(timer);
+        if (this.timer) clearInterval(this.timer);
       });
     }
     this.images = [];
