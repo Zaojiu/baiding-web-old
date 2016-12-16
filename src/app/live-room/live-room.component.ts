@@ -10,7 +10,6 @@ import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from "../shared/bridge/share.interface";
-import {UtilsService} from "../shared/utils/utils";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -60,6 +59,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+
     this.resetLiveRoom();
 
     this.refreshInterval = setInterval(() => {
@@ -81,7 +81,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.praisedSub.unsubscribe();
+    if (this.praisedSub) this.praisedSub.unsubscribe();
 
     clearInterval(this.refreshInterval);
   }

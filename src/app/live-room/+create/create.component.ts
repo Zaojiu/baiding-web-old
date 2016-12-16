@@ -113,14 +113,14 @@ export class CreateComponent implements OnInit, DoCheck {
       }
     }).then((liveId) => {
       this.submitted = true;
-      this.gotoInfoCenter();
+      this.gotoLiveInfo(liveId);
     }).finally(() => {
       this.isSubmitting = false;
     });
   }
 
-  gotoInfoCenter() {
-    this.router.navigate([`/info-center`]);
+  gotoLiveInfo(liveId) {
+    this.router.navigate([`/lives/${liveId}`]);
   }
 
   updateLiveInfo(liveId: string, coverKey?: string): Promise<string> {

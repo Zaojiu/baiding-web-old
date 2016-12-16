@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
-import {LiveStatus} from './live.enums';
+import {LiveStatus, LiveType} from './live.enums';
 import {environment} from "../../../../environments/environment";
 
 @Injectable()
@@ -21,7 +21,7 @@ export class LiveService {
     liveInfo.subject = stream.subject;
     liveInfo.desc = stream.desc;
     liveInfo.coverUrl = stream.coverUrl;
-    liveInfo.kind = stream.kind;
+    liveInfo.kind = stream.kind === 'video' ? LiveType.Video : LiveType.Text;
 
     liveInfo.owner = users[stream.owner] as UserInfoModel;
     liveInfo.admin = users[stream.admin] as UserInfoModel;

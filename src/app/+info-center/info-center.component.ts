@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute} from "@angular/router";
+import {Router, ActivatedRoute, UrlSegment} from "@angular/router";
 import {LiveService} from "../shared/api/live/live.service";
 import {LiveInfoModel} from "../shared/api/live/live.model";
 import {LiveStatus} from '../shared/api/live/live.enums';
@@ -44,7 +44,9 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
     // 防止分享出去的链接不正确, 再做一次跳转到带uid的地址。
     if (!this.route.snapshot.params['uid']) {
-      this.router.navigate([`/info-center/${this.currentUserInfo.uid}`]);
+      let urlTree = this.router.parseUrl(this.router.routerState.snapshot.url);
+      urlTree.root.children['primary'].segments.push(new UrlSegment(`${this.currentUserInfo.uid}`, {}));
+      this.router.navigateByUrl(urlTree);
       return;
     }
 

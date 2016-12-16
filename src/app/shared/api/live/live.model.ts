@@ -1,4 +1,4 @@
-import {LiveStatus} from './live.enums';
+import {LiveStatus, LiveType} from './live.enums';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
 
@@ -8,7 +8,7 @@ export class LiveInfoModel {
   desc: string;
   coverUrl: string;
   coverSmallUrl: string;
-  kind: string;
+  kind: LiveType;
   status: LiveStatus;
   isDraft: boolean;
   owner: UserInfoModel;
@@ -69,11 +69,11 @@ export class LiveInfoModel {
   }
 
   isTypeText() {
-    return this.kind === 'text';
+    return this.kind === LiveType.Text;
   }
 
   isTypeVideo() {
-    return this.kind === 'video';
+    return this.kind === LiveType.Video;
   }
 }
 

@@ -8,6 +8,7 @@ import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {UtilsService} from "../../shared/utils/utils";
+import {LiveType} from "../../shared/api/live/live.enums";
 
 @Component({
   templateUrl: './invite.component.html',
@@ -35,7 +36,7 @@ export class InviteComponent implements OnInit {
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
-    if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token, from: 'app'}]);
+    if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token}]);
 
     if (this.token) {
       this.setShareInfo();
@@ -50,11 +51,7 @@ export class InviteComponent implements OnInit {
 
   acceptInvitation() {
     this.inviteApiService.acceptInvitation(this.liveId, this.token).then(() => {
-      if (this.route.snapshot.params['from'] === 'app') {
-        this.iosBridge.gotoLive(this.liveId);
-      } else {
-        this.liveService.getLiveInfo(this.liveId, true).then(() => this.backToLive());
-      }
+      this.liveService.getLiveInfo(this.liveId, true).then(() => this.backToLive());
     });
   }
 

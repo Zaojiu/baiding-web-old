@@ -51,6 +51,7 @@ import {PcShareService} from "./shared/bridge/share/pc-share.service";
 import {ImageBridge} from "./shared/bridge/image.interface";
 import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
 import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
+import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 
 @NgModule({
   imports: [
@@ -93,6 +94,7 @@ import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
     LiveInfoResolver,
     AuthGuard,
     AdminGuard,
+    AppJumperGuard,
     UserInfoService,
     StoreService,
     ImageViewerService,

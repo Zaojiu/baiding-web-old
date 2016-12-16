@@ -29,6 +29,9 @@ const route: Routes = [
       {
         path: '',
         component: LiveRoomComponent,
+        data: {
+          title: '造就直播'
+        },
         resolve: {
           liveInfo: LiveInfoResolver,
           userInfo: UserInfoResolver,
