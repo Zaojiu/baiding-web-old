@@ -34,7 +34,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   livesListWatched: LiveInfoModel[] = [];
   uid: number;
   from: string;
-  invitees: {[liveId: string]: InvitationModel[]} = {};
   covers: {[liveId: string]: SafeUrl} = {};
   liveTime: {[liveId: string]: string} = {};
   avatarBackground: SafeStyle;
@@ -81,26 +80,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
       for (let liveInfo of this.livesList) {
 
-        if (liveInfo.isAdmin(this.currentUserInfo.uid)) {
-          this.inviteApiService.listInvitations(liveInfo.id).then((invitionWithToken) => {
-            let invitees = [];
-            // 过滤掉已经接受邀请的
-            for (let invitee of invitionWithToken) {
-              if (!invitee.userInfo) invitees.push(invitee);
-            }
-            this.invitees[liveInfo.id] = invitees;
-          });
-        } else {
-          this.inviteApiService.audienceListInvitations(liveInfo.id).then((invitionWithoutToken) => {
-            let invitees = [];
-            // 过滤掉已经接受邀请的
-            for (let invitee of invitionWithoutToken) {
-              if (!invitee.userInfo) invitees.push(invitee);
-            }
-            this.invitees[liveInfo.id] = invitees;
-          });
-        }
-
         if (liveInfo.status === LiveStatus.Created){
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
             let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
@@ -144,26 +123,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       this.livesListWatched = liveListWatched;
 
       for (let liveInfo of this.livesListWatched) {
-
-        if (liveInfo.isAdmin(this.currentUserInfo.uid)) {
-          this.inviteApiService.listInvitations(liveInfo.id).then((invitionWithToken) => {
-            let invitees = [];
-            // 过滤掉已经接受邀请的
-            for (let invitee of invitionWithToken) {
-              if (!invitee.userInfo) invitees.push(invitee);
-            }
-            this.invitees[liveInfo.id] = invitees;
-          });
-        } else {
-          this.inviteApiService.audienceListInvitations(liveInfo.id).then((invitionWithoutToken) => {
-            let invitees = [];
-            // 过滤掉已经接受邀请的
-            for (let invitee of invitionWithoutToken) {
-              if (!invitee.userInfo) invitees.push(invitee);
-            }
-            this.invitees[liveInfo.id] = invitees;
-          });
-        }
 
         if (liveInfo.status === LiveStatus.Created){
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
@@ -225,10 +184,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
     if (this.pageUserInfo.uid === uid) return;
 
     this.router.navigate([`/info-center/${uid}`]);
-  }
-
-  gotoInvitation(liveId: string, invitee: InvitationModel) {
-    if (invitee.token) this.router.navigate(([`/lives/${liveId}/invitation`, {token: invitee.token}]));
   }
 
   gotoLiveRoom(liveId: string) {

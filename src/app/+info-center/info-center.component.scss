@@ -390,38 +390,6 @@
               color: $color-dark-gray;
             }
           }
-
-          .invited {
-            display: inline-flex;
-            align-items: center;
-
-            .avatar-wrapper {
-              font-size: 0;
-
-              .invite-people-bg {
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                background: rgb(233, 233, 233);
-                border: solid 1px rgb(250, 250, 250);
-                color: $color-gray;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                .bi {
-                  font-size: 12px;
-                  transform: scale(.833);
-                }
-              }
-            }
-
-            .nick {
-              margin-left: 5px;
-              font-size: 14px;
-              color: $color-gray;
-            }
-          }
         }
       }
 

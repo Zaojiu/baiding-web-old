@@ -85,17 +85,6 @@
                 </div>
               </div>
 
-              <div class="vip-container" *ngFor="let invitee of (invitees[liveInfo.id] || [])">
-                <div class="invited" (click)="gotoInvitation(liveInfo.id, invitee);$event.stopPropagation();">
-                  <div class="avatar-wrapper">
-                    <div class="invite-people-bg">
-                      <i class="bi bi-people2"></i>
-                    </div>
-                  </div>
-
-                  <span class="nick">{{invitee.name || '无名'}}</span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -187,18 +176,6 @@
                   </div>
 
                   <span class="nick">{{vip.nick}}</span>
-                </div>
-              </div>
-
-              <div class="vip-container" *ngFor="let invitee of (invitees[liveInfo.id] || [])">
-                <div class="invited" (click)="gotoInvitation(liveInfo.id, invitee); $event.stopPropagation();">
-                  <div class="avatar-wrapper">
-                    <div class="invite-people-bg">
-                      <i class="bi bi-people2"></i>
-                    </div>
-                  </div>
-
-                  <span class="nick">{{invitee.name || '无名'}}</span>
                 </div>
               </div>
             </div>
