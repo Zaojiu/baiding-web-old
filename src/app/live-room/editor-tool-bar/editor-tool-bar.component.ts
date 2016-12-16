@@ -49,7 +49,6 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   maxSizeMB = 8;
   receviedAvatarTouchedSub: Subscription;
   touchStartY: number;
-  isReachInvitationLimit: boolean;
   timer: any;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
@@ -74,10 +73,6 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched) => {
       this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
       if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
-    });
-
-    this.inviteApiService.listInvitations(this.liveId).then((invitations) => {
-      this.isReachInvitationLimit = invitations.length >= 5;
     });
   }
 
@@ -252,8 +247,6 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   gotoInvitationInfo() {
-    if (this.isReachInvitationLimit) return this.operationTips.popup('最多邀请五个嘉宾');
-
     this.router.navigate([`/lives/${this.liveId}/vip-info`]);
   }
 
