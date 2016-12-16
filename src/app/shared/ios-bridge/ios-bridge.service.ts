@@ -44,15 +44,15 @@ export class IosBridgeService {
       title: route.data['title'] || '造就直播',
     };
 
-    window.open(query.url);
+    // window.open(query.url);
 
-    // if (this.hasInit) {
-    //   this.bridge.callHandler('pushH5State', query);
-    // } else {
-    //   this.init().then(() => {
-    //     this.bridge.callHandler('pushH5State', query);
-    //   });
-    // }
+    if (this.hasInit) {
+      this.bridge.callHandler('pushH5State', query);
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('pushH5State', query);
+      });
+    }
   }
 
   init(): Promise<void> {
