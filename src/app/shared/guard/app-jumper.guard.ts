@@ -20,8 +20,6 @@ export class AppJumperGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     let isAppPush = route.queryParams['appPushState'];
 
-    console.log('isAppPush', state.url);
-
     if (route.component === LiveRoomComponent) {
       let liveId = route.params['id'];
 
