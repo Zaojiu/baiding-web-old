@@ -17,6 +17,7 @@ import {AutofocusFirstInvalidInputModule} from "../shared/first-invalid/first-in
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {FormModule} from "../shared/form/form.module";
 import {DraggableModule} from "../shared/draggable/draggable.module";
+import {RouterStateSnapshot} from "@angular/router";
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import {DraggableModule} from "../shared/draggable/draggable.module";
   providers: [
     InviteApiService,
     DurationFormaterPipe,
+    RouterStateSnapshot,
   ]
 })
 

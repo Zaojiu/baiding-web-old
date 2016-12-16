@@ -61,7 +61,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.commentService.stopReceive(this.streamId);
-    this.actionSubscription.unsubscribe();
+    if (this.actionSubscription) this.actionSubscription.unsubscribe();
     clearInterval(this.commentPushQueueTimer);
   }
 
