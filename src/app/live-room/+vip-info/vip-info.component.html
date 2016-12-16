@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="vips-container block" *ngIf="!isAdmin">
+  <div class="vips-container block" *ngIf="liveInfo&&liveInfo.admin&&!isAdmin">
     <div class="title">
       已邀请嘉宾
     </div>
