@@ -1,82 +1,99 @@
-<div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
-  <div class="editor-tool-bar" [ngClass]="{'is-closed': isClose}">
-    <i
-      class="bi bi-comment post-message"
-      (click)="switchMode(modeEnums.Text); focusMessageInput() "
+<div [autoblur]="mode === modeEnums.Audio" (blurred)="switchMode(modeEnums.Audio)" (click)="$event.stopPropagation();">
+  <div class="editor-tool-bar">
+    <svg class="border-background" width="104" height="19" viewBox="0 0 104 19" xmlns="http://www.w3.org/2000/svg"><title>Combined-Shape</title><path d="M24.945 10.03C32.21 3.78 41.665 0 52 0c10.336 0 19.79 3.78 27.055 10.03 6.9 5.427 15.54 8.74 24.945 8.958L0 19c9.405-.23 18.046-3.543 24.945-8.97z"/></svg>
+    <svg class="border" width="104" height="19" viewBox="0 0 104 19" xmlns="http://www.w3.org/2000/svg"><title>Combined-Shape</title><path d="M24.945 10.03C32.21 3.78 41.665 0 52 0c10.336 0 19.79 3.78 27.055 10.03 6.9 5.427 15.54 8.74 24.945 8.958L0 19c9.405-.23 18.046-3.543 24.945-8.97z"/></svg>
+
+    <div
+      class="btn post-message"
+      (click)="switchMode(modeEnums.Text); focusMessageInput()"
       (contextmenu)="$event.preventDefault()"
       [ngClass]="{activate: mode === modeEnums.Text || mode === modeEnums.At}"
-    ></i>
-
-    <form
-      *ngIf="!isInWechat"
-      [formGroup]="form"
-      name="editInfo"
-      class="post-image"
-      (click)="switchMode(modeEnums.None)"
-      (contextmenu)="$event.preventDefault()"
     >
-      <label class="add-image" for="image-selector">
-        <input
-          class="fileSelector"
-          id="image-selector"
-          type="file"
-          formControlName="images"
-          [(ngModel)]="images"
-        >
-      </label>
-      <i class="bi bi-image"></i>
-    </form>
-
-    <i class="bi bi-image post-image" *ngIf="isInWechat" (click)="selectImages()"></i>
-
-    <div class="record-btn-container"
-         [ngClass]="{recording: recorder && recorder.status === recordEnums.Recording, activate: mode === modeEnums.Audio}"
-         (mousedown)="switchMode(modeEnums.Audio)" (touchstart)="switchMode(modeEnums.Audio)"
-         (contextmenu)="$event.preventDefault()"
-    >
-      <i class="bi bi-mic"></i>
-      <span class="record-duration">{{recordDuration}}</span>
+      <i
+        class="bi bi-comment"
+      ></i>
+      发言
     </div>
 
-    <i class="bi bi-tips post-tips" (click)="switchMode(modeEnums.None); postTips();"
-       (contextmenu)="$event.preventDefault()"></i>
+    <div
+      class="record-btn-container"
+      [ngClass]="{
+        activate: recorder && (recorder.status === recordEnums.Recording || recorder.status === recordEnums.ReadyToCancel),
+        disabled: mode !== modeEnums.Audio || liveInfo.isClosed()
+      }"
+      (touchstart)="startRecord($event)"
+      (touchend)="stopRecord($event)"
+      (mouseup)="recorder.status === recordEnums.Waitting ? startRecord($event) : stopRecord($event)"
+      (touchmove)="panupCancel($event)"
+      (contextmenu)="$event.preventDefault()"
+    >
+      <div class="record-btn">
+        <i class="bi bi-mic"></i>
+      </div>
+    </div>
 
-    <i class="bi bi-gear go-settings" (click)="switchMode(modeEnums.None); goSettings();"
-       (contextmenu)="$event.preventDefault()"></i>
+    <div
+      class="btn settings"
+      (click)="switchMode(modeEnums.Setting);"
+      (contextmenu)="$event.preventDefault()"
+      [ngClass]="{activate: mode === modeEnums.Setting}"
+    >
+      <i class="bi bi-gear"></i>
+      设置
+    </div>
   </div>
-
-  <recorder class="recorder" #recorder [ngClass]="{activate: mode === modeEnums.Audio}" (recording)="onrecording()"
-            (recordEnd)="recordEnd($event)"></recorder>
 
   <div class="post-message-container-hidden-wrapper"
        [ngClass]="{activate: mode === modeEnums.Text || mode === modeEnums.At}">
-    <form class="post-message-container" #messageContainer [ngClass]="{activate: mode !== modeEnums.None}">
-      <div class="input-wrapper">
+    <div class="post-message-container" #messageContainer>
+      <form
+        *ngIf="!isInWechat && !liveInfo.isClosed()"
+        [formGroup]="form"
+        name="editInfo"
+        class="post-image"
+        (contextmenu)="$event.preventDefault()"
+      >
+        <label class="add-image" for="image-selector">
+          <input
+            class="file-selector"
+            id="image-selector"
+            type="file"
+            formControlName="images"
+            [(ngModel)]="images"
+          >
+        </label>
+        <i class="bi bi-image-round"></i>
+      </form>
+
+      <i class="bi bi-image-round post-image" *ngIf="isInWechat && !liveInfo.isClosed()" (click)="selectImages()"></i>
+
+      <form class="input-wrapper">
         <textarea
           #messageInput
-          class="message-input"
+          class="message-input invisible-scrollbar"
           name="messageContent"
           type="text"
           rows="1"
-          placeholder="发言"
-          (focus)="messageInputFocused()"
+          placeholder="此时此刻你在想什么?"
+          (focus)="resetKeyboard()"
           [(ngModel)]="messageContent"
           autoresize
           display-when-focus
           (input)="messageInputChanged()"
         ></textarea>
-      </div>
-      <button class="sender" (click)="postMessage();focusMessageInput();">发送</button>
+        <button class="sender" (click)="postMessage();focusMessageInput();">发送</button>
+      </form>
+
       <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
         <i class="bi bi-at-people-keyboard"></i>
       </a>
       <a class="switcher" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text">
         <i class="bi bi-at-people"></i>
       </a>
-    </form>
+    </div>
   </div>
 
-  <div class="at-people-keyboard" [ngClass]="{activate: mode === modeEnums.At}">
+  <div class="at-people-keyboard invisible-scrollbar" [ngClass]="{activate: mode === modeEnums.At}">
     <div class="user-row" (click)="changeCommentContent(liveInfo.admin)">
       <img class="avatar" [src]="liveInfo.admin.avatar">
       <div class="name">{{liveInfo.admin.nick}}</div>
@@ -92,4 +109,53 @@
 
   </div>
 
+  <div class="setting-keyboard" [ngClass]="{activate: mode === modeEnums.Setting}">
+    <div class="btn invite" (click)="gotoInvitationInfo()">
+      <i class="bi bi-invite"></i>
+      邀请嘉宾
+    </div>
+
+    <div class="btn edit" *ngIf="liveInfo.isAdmin(userInfo.uid) && liveInfo.isCreated()" (click)="gotoEditInfo()">
+      <i class="bi bi-edit"></i>
+      编辑话题
+    </div>
+
+    <div class="btn view" *ngIf="!liveInfo.isAdmin(userInfo.uid) || !liveInfo.isCreated()" (click)="gotoRoomInfo()">
+      <i class="bi bi-tv"></i>
+      查看话题
+    </div>
+
+    <div class="btn translation">
+      <switch-btn
+        class="switch-btn"
+        [isOpened]="isTranslationCollapse"
+        [btnText]="''"
+        (toggling)="isTranslationCollapse = $event"
+      ></switch-btn>
+      文字折叠
+    </div>
+
+    <div class="btn voice">
+      <switch-btn
+        class="switch-btn"
+        [isOpened]="isAudioAutoPlay"
+        [btnText]="''"
+        (toggling)="isAudioAutoPlay = $event"
+      ></switch-btn>
+      语音连播
+    </div>
+
+    <div class="btn close" *ngIf="liveInfo.isStarted() && liveInfo.isAdmin(userInfo.uid)" (click)="closeLive()">
+      <i class="bi bi-power-off"></i>
+      结束直播
+    </div>
+
+    <div class="btn close disabled" *ngIf="liveInfo.isClosed() && liveInfo.isAdmin(userInfo.uid)">
+      <i class="bi bi-power-off"></i>
+      话题已结束
+    </div>
+  </div>
+
 </div>
+
+<recorder class="recorder" #recorder (recordEnd)="recordEnd($event)" (recording)="onrecording()"></recorder>

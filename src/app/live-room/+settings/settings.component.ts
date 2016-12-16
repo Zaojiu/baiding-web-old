@@ -55,11 +55,11 @@ export class SettingsComponent implements OnInit {
   }
 
   get translationExpanded(): boolean {
-    return this.liveRoomService.isTranslationExpanded(this.liveId);
+    return this.liveRoomService.isTranslationCollapse(this.liveId);
   }
 
   set translationExpanded(result: boolean) {
-    this.liveRoomService.toggleTranslationExpanded(this.liveId);
+    this.liveRoomService.toggleTranslationCollapse(this.liveId);
   }
 
   get isAdmin() {

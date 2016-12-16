@@ -47,7 +47,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
     if (this.liveInfo.isStarted()) this.router.navigate([`/info-center`]);
 
-    if (!this.liveInfo.isAdmin(this.userInfo.uid)) this.backToViewInfo();
+    if (!this.liveInfo.isAdmin(this.userInfo.uid)) this.backToLive();
 
     let expectStartAt = moment(this.liveInfo.expectStartAt);
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDTHH:mm');
@@ -107,8 +107,8 @@ export class EditInfoComponent implements OnInit, DoCheck {
     }
   }
 
-  backToViewInfo() {
-    this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
+  backToLive() {
+    this.router.navigate([`/lives/${this.liveId}`]);
   }
 
   submit() {

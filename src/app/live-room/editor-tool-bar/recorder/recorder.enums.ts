@@ -5,4 +5,5 @@ export enum RecordStatus {
   TooShort,
   Canceled,
   Uploading,
+  ReadyToCancel,
 }

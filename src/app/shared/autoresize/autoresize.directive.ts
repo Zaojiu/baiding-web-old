@@ -1,25 +1,32 @@
-import {Directive, ElementRef, AfterViewInit} from '@angular/core'
+import {Directive, ElementRef, AfterViewInit, OnInit, OnDestroy} from '@angular/core'
 import * as autosize from "autosize";
-
-declare var $:any;
+import {Subscription} from "rxjs";
+import {NgControl} from "@angular/forms";
 
 @Directive({
-  selector: '[autoresize]'
+  selector: '[autoresize][ngModel]'
 })
 
-export class AutoresizeDirective implements AfterViewInit {
+export class AutoresizeDirective implements AfterViewInit, OnInit, OnDestroy {
   private el: HTMLElement;
+  private valueChangeSub: Subscription;
 
-  constructor(el: ElementRef) {
+  constructor(private formControl: NgControl, el: ElementRef) {
     this.el = el.nativeElement
   }
 
-  ngAfterViewInit () {
-    autosize(this.el);
-
-    $(this.el).on('change', () => {
+  ngOnInit() {
+    this.valueChangeSub = this.formControl.control.valueChanges.subscribe(() => {
       setTimeout(() => this.resize(), 0);
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => autosize(this.el), 0);
+  }
+
+  ngOnDestroy() {
+    this.valueChangeSub.unsubscribe();
   }
 
   resize() {

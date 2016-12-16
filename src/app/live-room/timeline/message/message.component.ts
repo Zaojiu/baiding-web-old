@@ -41,8 +41,8 @@ export class MessageComponent implements OnInit, OnDestroy {
   timer: any = -1;
   praised: boolean;
   messageType = MessageType;
-  isTranslationExpanded: boolean;
-  tranlationExpandedSub: Subscription;
+  isTranslationCollapse: boolean;
+  tranlationCollapseSub: Subscription;
   tranlationMaxLength = 32;
   postStatus = PostMessageStatus;
   canReply: boolean;
@@ -56,25 +56,25 @@ export class MessageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.canReply = this.message.user && this.message.user.uid !== this.userInfo.uid &&
       this.liveInfo.isEditor(this.userInfo.uid) &&
-      this.message.postStatus === PostMessageStatus.PostSuccessful;
+      this.message.postStatus === PostMessageStatus.PostSuccessful && !this.liveInfo.isClosed();
 
-    let tranlationExpand = !this.liveRoomService.isTranslationExpanded(this.liveId);
-    this.judgeTranlastionLength(tranlationExpand, this.tranlationMaxLength);
+    let tranlationCollapse = this.liveRoomService.isTranslationCollapse(this.liveId);
+    this.judgeTranlastionLength(tranlationCollapse, this.tranlationMaxLength);
 
-    this.tranlationExpandedSub = this.liveRoomService.$tranlationExpanded.subscribe((result) => {
+    this.tranlationCollapseSub = this.liveRoomService.$tranlationCollapse.subscribe((result) => {
       this.judgeTranlastionLength(result, this.tranlationMaxLength);
     });
   }
 
   ngOnDestroy() {
-    this.tranlationExpandedSub.unsubscribe();
+    this.tranlationCollapseSub.unsubscribe();
   }
 
-  judgeTranlastionLength(tranlationExpand: boolean, tranlationLength: number) {
-    if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length <= tranlationLength) {
-      this.isTranslationExpanded = false;
+  judgeTranlastionLength(tranlationCollapse: boolean, tranlationLength: number) {
+    if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length >= tranlationLength) {
+      this.isTranslationCollapse = tranlationCollapse;
     } else {
-      this.isTranslationExpanded = tranlationExpand;
+      this.isTranslationCollapse = false;
     }
   }
 
@@ -156,7 +156,8 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   toggleTranslatioExpanded(msg) {
     if (msg.length <= this.tranlationMaxLength) return;
-    this.isTranslationExpanded = !this.isTranslationExpanded;
+
+    this.isTranslationCollapse = !this.isTranslationCollapse;
   }
 
   getUserPublicInfoAndPopUpCard(uid: number) {

@@ -1,191 +1,108 @@
 .record-background {
-  position: relative;
-  display: flex;
-  height: 213px;
-  background-color: $color-b;
-  align-items: center;
-  justify-content: center;
-  touch-callout: none;
-  user-select: none;
-
-  .record-container {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: $color-brand;
-    transform: translateX(-50%) translateY(-50%);
-    opacity: .5;
-    transition: opacity .5s;
-  }
-
-  .text, .bi-cancel, .bi-warning, .bi-up-arrow {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    color: $color-brand;
-    font-size: 14px;
-    transition: opacity .5s;
-    pointer-events: none;
-  }
-
-  .text {
-    opacity: 1;
-    white-space: nowrap;
-  }
-
-  .bi-cancel, .bi-warning, .bi-up-arrow {
-    font-size: 45px;
-    opacity: 0;
-  }
-
-  .bi-cancel {
-    margin-left: -2px;
-    margin-top: -2px;
-  }
-
-  .border {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: 113px;
-    width: 113px;
-    border-radius: 50%;
-    background-color: rgb(17, 75, 122);
-    transform: translateX(-50%) translateY(-50%) scale(.8);
-    transform-origin: center;
-    transition: transform .5s;
-  }
-
-  .border-inner {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: 87px;
-    width: 87px;
-    border-radius: 50%;
-    background-color: $color-b;
-    transform: translateX(-50%) translateY(-50%) scale(1);
-    transform-origin: center;
-    transition: transform .5s;
-  }
+  position: absolute;
+  height: 180px;
+  width: 270px;
+  left: 50%;
+  top: 50%;
+  margin-top: -90px;
+  margin-left: -135px;
+  background-color: rgba(80, 80, 80, .7);
+  transition: opacity .2s;
+  border-radius: 12px;
+  pointer-events: none;
 
   .tips {
     position: absolute;
-    top: 20px;
     left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 16px;
     color: $color-w;
-    opacity: 0;
-    transition: opacity .5s;
     white-space: nowrap;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity .5s;
+
+    &.recording-tips {
+      .record-count-down {
+        font-size: 60px;
+      }
+
+      .recording-icon-container {
+        position: relative;
+        margin-bottom: 15px;
+
+        .bi {
+          margin-bottom: 0;
+        }
+
+        .brand-color {
+          position: absolute;
+          height: 0;
+          width: 100%;
+          bottom: 0;
+          left: 0;
+          color: $color-brand;
+          overflow: hidden;
+          animation: recordPercentage 60s ease forwards;
+
+          &:before {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+          }
+        }
+      }
+    }
+
+    .bi {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+  }
+
+  &.waitting {
+    display: none;
   }
 
   &.preparing {
-    .border {
-      transform: translateX(-50%) translateY(-50%) scale(1);
-    }
-
-    .border-inner {
-      transform: translateX(-50%) translateY(-50%) scale(0.9);
-    }
-
     .preparing-tips {
       opacity: 1;
-    }
-
-    .record-container {
-      opacity: 1;
-    }
-
-    .text {
-      opacity: 0;
     }
   }
 
   &.recording {
-    .border {
-      transform: translateX(-50%) translateY(-50%) scale(1);
-    }
-
-    .border-inner {
-      transform: translateX(-50%) translateY(-50%) scale(0.93);
-    }
-
     .recording-tips {
       opacity: 1;
     }
+  }
 
-    .record-container {
+  &.ready-to-cancel {
+    .ready-to-cancel-tips {
       opacity: 1;
-    }
-
-    .text {
-      opacity: 0;
     }
   }
 
   &.canceled {
-    pointer-events: none;
-
     .canceled-tips {
       opacity: 1;
-    }
-
-    .record-container {
-      opacity: 0;
-    }
-
-    .bi-cancel {
-      opacity: 1;
-    }
-
-    .text {
-      opacity: 0;
     }
   }
 
   &.too-short {
-    pointer-events: none;
-
     .too-short-tips {
       opacity: 1;
     }
-
-    .record-container {
-      opacity: 0;
-    }
-
-    .bi-warning {
-      opacity: 1;
-    }
-
-    .text {
-      opacity: 0;
-    }
   }
+}
 
-  &.uploading {
-    pointer-events: none;
-
-    .uploading-tips {
-      opacity: 1;
-    }
-
-    .record-container {
-      opacity: 0;
-    }
-
-    .bi-up-arrow {
-      opacity: 1;
-    }
-
-    .text {
-      opacity: 0;
-    }
+@keyframes recordPercentage {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 60px;
   }
 }

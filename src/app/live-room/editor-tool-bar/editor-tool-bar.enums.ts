@@ -3,4 +3,5 @@ export enum EditMode {
   Text,
   Audio,
   At,
+  Setting,
 }

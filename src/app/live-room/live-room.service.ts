@@ -8,8 +8,8 @@ import {UtilsService} from "../shared/utils/utils";
 
 @Injectable()
 export class LiveRoomService {
-  tranlationExpandedSource = new Subject<boolean>();
-  $tranlationExpanded: Observable<boolean> = this.tranlationExpandedSource.asObservable();
+  tranlationCollapseSource = new Subject<boolean>();
+  $tranlationCollapse: Observable<boolean> = this.tranlationCollapseSource.asObservable();
 
   constructor() {
   }
@@ -53,15 +53,15 @@ export class LiveRoomService {
     return !!UtilsService.getStorage('audioAutoPlay')[liveId];
   }
 
-  toggleTranslationExpanded(liveId: string) {
-    let expanded = UtilsService.getStorage('tranlastion');
+  toggleTranslationCollapse(liveId: string) {
+    let expanded = UtilsService.getStorage('tranlastionCollapse');
     expanded[liveId] = !expanded[liveId];
-    UtilsService.setStorage('tranlastion', expanded);
+    UtilsService.setStorage('tranlastionCollapse', expanded);
 
-    this.tranlationExpandedSource.next(expanded[liveId]);
+    this.tranlationCollapseSource.next(expanded[liveId]);
   }
 
-  isTranslationExpanded(liveId: string): boolean {
-    return !!UtilsService.getStorage('tranlastion')[liveId];
+  isTranslationCollapse(liveId: string): boolean {
+    return !!UtilsService.getStorage('tranlastionCollapse')[liveId];
   }
 }

@@ -1,18 +1,16 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {TimelineService} from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {LiveInfoModel} from '../shared/api/live/live.model';
 import {TitleService} from '../shared/title/title.service';
-import {UserInfoService} from '../shared/api/user-info/user-info.service';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from "../shared/bridge/share.interface";
 import {UtilsService} from "../shared/utils/utils";
-import {LiveRoomService} from "./live-room.service";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -30,7 +28,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private titleService: TitleService,
-              private shareBridge: ShareBridge, private liveRoomService: LiveRoomService) {
+              private shareBridge: ShareBridge) {
   }
 
   getShareUri(): string {

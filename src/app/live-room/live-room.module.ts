@@ -49,6 +49,7 @@ import {DisplayWhenFocusModule} from "../shared/display-when-focus/display-when-
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {LiveRoomService} from "./live-room.service";
 import {DraggableModule} from "../shared/draggable/draggable.module";
+import {InviteApiService} from "../shared/api/invite/invite.api";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -113,6 +114,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     UserInfoCardService,
     UtilsService,
     LiveRoomService,
+    InviteApiService,
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig}
   ]
 })
