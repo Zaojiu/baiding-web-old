@@ -120,7 +120,7 @@ export class CreateComponent implements OnInit, DoCheck {
   }
 
   gotoLiveInfo(liveId) {
-    this.router.navigate([`/lives/${liveId}`]);
+    this.router.navigate([`/lives/${liveId}/info`]);
   }
 
   updateLiveInfo(liveId: string, coverKey?: string): Promise<string> {

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {LiveService} from "../api/live/live.service";
@@ -14,11 +14,15 @@ import {LiveType} from "../api/live/live.enums";
 export class AppJumperGuard implements CanActivate {
 
   constructor(private userInfoService: UserInfoService,
-              private liveService: LiveService, private iosBridge: IosBridgeService) {
+              private liveService: LiveService, private iosBridge: IosBridgeService,
+  private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    let isAppPush = route.queryParams['appPushState'];
+    let preRoute = this.router.routerState.root;
+    while (preRoute.firstChild) preRoute = preRoute.firstChild;
+    // 已经有过第一次导航(非新开), 并且下一个路由非同一个页面(同个component内的跳转不push, 避免重定向一次追加参数, 又会再次push)
+    let needPush = preRoute.component !== route.component && this.router.navigated;
 
     if (route.component === LiveRoomComponent) {
       let liveId = route.params['id'];
@@ -39,7 +43,7 @@ export class AppJumperGuard implements CanActivate {
         }
 
         // 文字直播间, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
-        if (UtilsService.isInApp && !isAppPush) {
+        if (UtilsService.isInApp && needPush) {
           this.iosBridge.pushH5State(route, state);
           return false;
         } else {
@@ -48,7 +52,7 @@ export class AppJumperGuard implements CanActivate {
       });
     } else {
       // 其他路由, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
-      if (UtilsService.isInApp && !isAppPush) {
+      if (UtilsService.isInApp && needPush) {
         this.iosBridge.pushH5State(route, state);
         return Promise.resolve(false);
       } else {
