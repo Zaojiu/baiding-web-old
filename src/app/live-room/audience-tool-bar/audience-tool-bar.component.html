@@ -1,4 +1,4 @@
-<div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)">
+<div [autoblur]="mode === modeEnums.None" (blurred)="switchMode(modeEnums.None)" (click)="$event.stopPropagation();">
   <div class="audience-tool-bar">
     <a class="bottom-bar-btn"
        [ngClass]="{'activate': mode === modeEnums.None}"

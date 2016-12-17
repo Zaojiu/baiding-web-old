@@ -12,6 +12,7 @@ import {DomSanitizer, SafeUrl, SafeStyle} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
+import {Location} from "@angular/common";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -22,7 +23,8 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private userInfoService: UserInfoService,
               private shareService: ShareBridge, private inviteApiService: InviteApiService,
-              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
+              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe,
+              private location: Location) {
   }
   timeNow = UtilsService.now.toString();
   timer: any;
@@ -46,10 +48,11 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
     if (!this.route.snapshot.params['uid']) {
       let urlTree = this.router.parseUrl(this.router.routerState.snapshot.url);
       urlTree.root.children['primary'].segments.push(new UrlSegment(`${this.currentUserInfo.uid}`, {}));
+      this.location.replaceState('');
       this.router.navigateByUrl(urlTree);
       return;
     }
-
+    
     this.uid = +this.route.snapshot.params['uid'];
     this.from = encodeURIComponent(`/info-center/${this.uid}`);
     this.listMyLive();
@@ -210,7 +213,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
     this.shareService.share();
   }
 
-  goInvitation(liveId: string) {
+  gotoVipInfo(liveId: string) {
     this.router.navigate([`/lives/${liveId}/vip-info`, {from: this.from}]);
   }
 

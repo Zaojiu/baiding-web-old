@@ -26,21 +26,8 @@ export class AutoBlurDirective implements OnChanges {
         $('body').off(event);
       } else {
         $('body').on(event, (e: Event) => {
-          let hasParent = false;
-
-          if ($(e.target).is(this.$el)) {
-            hasParent = true;
-          } else {
-            let $self = this.$el;
-            $(e.target).parents().each(function() {
-              if ($(this).is($self)) hasParent = true;
-            });
-          }
-
-          if (!hasParent) {
-            this.blurred.emit();
-            $('body').off(event);
-          }
+          this.blurred.emit();
+          $('body').off(event);
         });
       }
     }
