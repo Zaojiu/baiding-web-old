@@ -3,6 +3,7 @@ import {RecordStatus} from './recorder.enums';
 import {AudioBridge} from "../../../shared/bridge/audio.interface";
 import {RecorderData} from "./recorder.models";
 import {OperationTipsService} from "../../../shared/operation-tips/operation-tips.service";
+import {UtilsService} from "../../../shared/utils/utils";
 
 @Component({
   selector: 'recorder',
@@ -16,7 +17,7 @@ export class RecorderComponent {
   timer: any;
   recordDuration: number = 0;
   minRecordDuration = 10;
-  maxRecordDuration = 500;
+  maxRecordDuration = 600;
   @Output() recordEnd = new EventEmitter<RecorderData>();
   @Output() recording = new EventEmitter<number>();
 
@@ -43,11 +44,7 @@ export class RecorderComponent {
       this.timer = setInterval(() => {
         this.recordDuration++;
         this.recording.emit(this.recordDuration);
-
-        if (this.recordDuration >= this.maxRecordDuration) {
-          this.stopRecord();
-        }
-      }, 100);
+      }, (UtilsService.isInWechat ? UtilsService.isiOS ? 96 : 98 : 100));
       this.autoComplete();
     }, (err) => {
       if (err && err.name === 'PermissionDeniedError') {
