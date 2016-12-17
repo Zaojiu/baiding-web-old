@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {LiveType} from "../api/live/live.enums";
 import {UtilsService} from "../utils/utils";
 import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from "@angular/router";
-import {UserInfoModel} from "../api/user-info/user-info.model";
 
 declare var window: any;
 declare var $: any;
@@ -36,11 +35,8 @@ export class IosBridgeService {
   }
 
   pushH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let urlTree = this.router.parseUrl(state.url);
-    urlTree.queryParams['appPushState'] = 'true';
-    let urlHash = this.router.serializeUrl(urlTree);
     let query = {
-      url: `${location.protocol}//${location.host}/#${urlHash}`,
+      url: `${location.protocol}//${location.host}/#${state.url}`,
       title: route.data['title'] || '造就直播',
     };
 
