@@ -41,11 +41,10 @@ export class TitleSetterDirective implements OnInit {
   }
 
 
-  private  initOnRouteChange() {
+  private initOnRouteChange() {
     this.sub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(_ => {
-
         let data = [];
         let activeRoutes: ActivatedRoute[] = this.activated.children;
 

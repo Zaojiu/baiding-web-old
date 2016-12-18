@@ -6,7 +6,6 @@ import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 
-
 @Injectable()
 export class UserInfoService {
 

@@ -49,6 +49,9 @@ export class AppJumperGuard implements CanActivate {
         } else {
           return true;
         }
+      }, () => {
+        this.router.navigate(['/404']);
+        return false;
       });
     } else {
       // 其他路由, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
