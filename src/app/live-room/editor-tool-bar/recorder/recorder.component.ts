@@ -44,7 +44,7 @@ export class RecorderComponent {
       this.timer = setInterval(() => {
         this.recordDuration++;
         this.recording.emit(this.recordDuration);
-      }, (UtilsService.isInWechat ? UtilsService.isiOS ? 96 : 98 : 100));
+      }, (UtilsService.isiOS ? 96 : 98));
       this.autoComplete();
     }, (err) => {
       if (err && err.name === 'PermissionDeniedError') {
