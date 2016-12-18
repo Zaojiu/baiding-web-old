@@ -45,7 +45,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    if (this.liveInfo.isStarted()) this.router.navigate([`/info-center`]);
+    if (this.liveInfo.isStarted()) this.router.navigate([`/info-center/${this.userInfo.uid}`]);
 
     if (!this.liveInfo.isAdmin(this.userInfo.uid)) this.backToLive();
 

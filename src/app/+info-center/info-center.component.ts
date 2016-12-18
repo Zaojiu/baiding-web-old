@@ -1,9 +1,8 @@
 import {Component, ViewChild, OnInit, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute, UrlSegment} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../shared/api/live/live.service";
 import {LiveInfoModel} from "../shared/api/live/live.model";
 import {LiveStatus} from '../shared/api/live/live.enums';
-import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {UserInfoModel, UserPublicInfoModel} from "../shared/api/user-info/user-info.model";
 import {UtilsService} from "../shared/utils/utils";
 import {InvitationModel} from "../shared/api/invite/invite.model";
@@ -12,7 +11,6 @@ import {DomSanitizer, SafeUrl, SafeStyle} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
-import {Location} from "@angular/common";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -21,10 +19,9 @@ import {Location} from "@angular/common";
 
 export class InfoCenterComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
-              private liveService: LiveService, private userInfoService: UserInfoService,
-              private shareService: ShareBridge, private inviteApiService: InviteApiService,
-              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe,
-              private location: Location) {
+              private liveService: LiveService, private shareService: ShareBridge,
+              private inviteApiService: InviteApiService, private sanitizer: DomSanitizer,
+              private durationPipe: DurationFormaterPipe) {
   }
   timeNow = UtilsService.now.toString();
   timer: any;
@@ -44,25 +41,13 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
-    // 防止分享出去的链接不正确, 再做一次跳转到带uid的地址。
-    if (!this.route.snapshot.params['uid']) {
-      let urlTree = this.router.parseUrl(this.router.routerState.snapshot.url);
-      urlTree.root.children['primary'].segments.push(new UrlSegment(`${this.currentUserInfo.uid}`, {}));
-      this.location.replaceState('');
-      this.router.navigateByUrl(urlTree);
-      return;
-    }
-    
+    this.pageUserInfo = this.route.snapshot.data['pageUserInfo'];
+    this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${this.pageUserInfo.avatar})`);
     this.uid = +this.route.snapshot.params['uid'];
     this.from = encodeURIComponent(`/info-center/${this.uid}`);
+
     this.listMyLive();
-
     if (this.isSelf) this.listMyWatchLive();
-
-    this.userInfoService.getUserPublicInfo(this.uid).then((pageUserInfo) => {
-      this.pageUserInfo = pageUserInfo;
-      this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${pageUserInfo.avatar})`);
-    });
 
     this.timer = setInterval(() => {
       this.timeNow = UtilsService.now.toString();
@@ -70,9 +55,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
+    if (this.timer) clearInterval(this.timer);
   }
 
   listMyLive() {

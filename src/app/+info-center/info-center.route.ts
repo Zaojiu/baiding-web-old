@@ -4,6 +4,7 @@ import {InfoCenterComponent} from "./info-center.component";
 import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {AuthGuard} from "../shared/guard/auth.guard";
 import {UserInfoResolver} from "../shared/guard/user-info.resolver";
+import {PageUserInfoResolver} from "./page-user-info.resolver";
 
 const route: Routes = [
   {
@@ -23,22 +24,17 @@ const route: Routes = [
     canActivate: [AuthGuard],
     resolve: {
       userInfo: UserInfoResolver,
+      pageUserInfo: PageUserInfoResolver,
     },
     data: {
       title: '个人话题间列表'
     }
   },
   {
-    path: '',
-    component: InfoCenterComponent,
-    canActivate: [AuthGuard],
-    resolve: {
-      userInfo: UserInfoResolver,
-    },
-    data: {
-      title: '个人话题间列表'
-    }
-  }
+    path: '**',
+    redirectTo: '/404',
+    pathMatch: 'full',
+  },
 ];
 
 const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
