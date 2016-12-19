@@ -4,6 +4,10 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {FormGroup, Validators, FormControl, FormBuilder} from "@angular/forms";
+import {LiveInfoModel} from "../../shared/api/live/live.model";
+import {LiveService} from "../../shared/api/live/live.service";
+import {AudienceInvitationModel, InvitationModel} from "../../shared/api/invite/invite.model";
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 @Component({
   templateUrl: './vip-info.component.html',
@@ -19,6 +23,9 @@ export class VipInfoComponent implements OnInit {
   maxIntroLength = 100;
   form: FormGroup;
   isSubmitting = false;
+  userInfo: UserInfoModel;
+  liveInfo: LiveInfoModel;
+  invitations: InvitationModel[];
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
               private inviteApiService: InviteApiService, private operationTipsService: OperationTipsService) {
@@ -26,6 +33,12 @@ export class VipInfoComponent implements OnInit {
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
+
+    this.inviteApiService.listInvitations(this.liveId).then((res) => {
+      this.invitations = res;
+    });
 
     this.form = this.fb.group({
       'nick': new FormControl(this.nick, [
@@ -35,6 +48,10 @@ export class VipInfoComponent implements OnInit {
         Validators.maxLength(this.maxIntroLength),
       ]),
     });
+  }
+
+  gotoInvitation(token: string) {
+    this.router.navigate([`/lives/${this.liveId}/invitation`, {token: token}]);
   }
 
   submit() {
