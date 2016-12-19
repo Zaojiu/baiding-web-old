@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {ModalService} from '../modal/modal.service';
 import {ImgEvent} from './image-viewer.model';
 import {ImageViewerService} from './image-viewer.service';
+import {Router} from "@angular/router";
 
 declare var $: any;
 
@@ -19,12 +20,15 @@ export class ImageViewerComponent implements OnInit {
   isLoading: boolean;
   canDelete: boolean;
 
-  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService) {
-    this.el = el.nativeElement
+  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router) {
+    this.el = el.nativeElement;
+    router.events.subscribe((evt) => {
+      this.closePopup();
+    });
   }
 
   ngOnInit() {
-    this.imageViewerService.imagePopup$.subscribe((model)=> {
+    this.imageViewerService.imagePopup$.subscribe((model) => {
       if (!model.images && !model.links) return;
 
       this.isPopup = true;
@@ -89,7 +93,7 @@ export class ImageViewerComponent implements OnInit {
       } else {
         $image.css({'width': 'auto', 'height': `${screenHeight}px`});
       }
-    }else{
+    } else {
       $image.css({'width': `${imgNaturalWidth}px`, 'height': 'auto'});
       $image.css({'width': 'auto', 'height': `${imgNaturalHeight}px`});
     }
