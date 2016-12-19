@@ -19,24 +19,62 @@ export class AppJumperGuard implements CanActivate {
               private router: Router, private authService: AuthBridge) {
   }
 
-  private gotoLive(userInfo: UserInfoModel, liveInfo: LiveInfoModel, route: ActivatedRouteSnapshot, state: RouterStateSnapshot, needPush: boolean) {
-    if (
-      liveInfo.kind !== LiveType.Text &&
-      (liveInfo.isEditor(userInfo.uid) ||
-      liveInfo.isAudience(userInfo.uid)) // 之后有h5视频端之后, 去掉此项
-    ) {
-      let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
-      this.iosBridge.gotoLive(liveInfo.id, liveInfo.kind, role);
-      return false;
-    }
+  private gotoLive(liveId: string, route: ActivatedRouteSnapshot, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
+    return Promise.all<UserInfoModel, LiveInfoModel>([this.processUserInfo(state), this.processLiveInfo(liveId)]).then(result => {
+      let userInfo = result[0];
+      let liveInfo = result[1];
 
-    // 文字直播间, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
-    if (UtilsService.isInApp && needPush) {
-      this.iosBridge.pushH5State(route, state);
-      return false;
-    }
+      if (
+        liveInfo.kind !== LiveType.Text &&
+        (liveInfo.isEditor(userInfo.uid) ||
+        liveInfo.isAudience(userInfo.uid)) // 之后有h5视频端之后, 去掉此项
+      ) {
+        let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
+        this.iosBridge.gotoLive(liveInfo.id, liveInfo.kind, role);
+        return false;
+      }
 
-    return true;
+      // 文字直播间, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
+      if (UtilsService.isInApp && needPush) {
+        this.iosBridge.pushH5State(route, state);
+        return false;
+      }
+
+      return true;
+    }, () => {
+      return false;
+    });
+  }
+
+  private processLiveInfo(liveId: string): Promise<LiveInfoModel> {
+    let liveInfoCache = this.liveService.getLiveInfoCache(liveId);
+
+    if (liveInfoCache) {
+      return Promise.resolve(liveInfoCache);
+    } else {
+      return this.liveService.getLiveInfo(liveId).then(liveInfo => {
+        return liveInfo;
+      }, () => {
+        this.router.navigate(['/404']);
+        return null;
+      });
+    }
+  }
+
+  private processUserInfo(state: RouterStateSnapshot): Promise<UserInfoModel> {
+    let to = `${location.protocol}//${location.hostname}/#${state.url}`;
+    let userInfoCache = this.userInfoService.getUserInfoCache();
+
+    if (userInfoCache) {
+      return Promise.resolve(userInfoCache);
+    } else {
+      return this.userInfoService.getUserInfo().then(userInfo => {
+        return Promise.resolve(userInfo);
+      }, () => {
+        this.authService.auth(encodeURIComponent(to));
+        return null;
+      });
+    }
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
@@ -47,25 +85,7 @@ export class AppJumperGuard implements CanActivate {
 
     if (route.component === LiveRoomComponent) {
       let liveId = route.params['id'];
-      let to = `${location.protocol}//${location.hostname}/#${state.url}`;
-      let userInfoCache = this.userInfoService.getUserInfoCache();
-      let liveInfoCache = this.liveService.getLiveInfoCache(liveId);
-
-      if (!userInfoCache) {
-        this.authService.auth(encodeURIComponent(to));
-        return Promise.resolve(false);
-      }
-
-      if (liveInfoCache) {
-        return Promise.resolve(this.gotoLive(userInfoCache, liveInfoCache, route, state, needPush));
-      } else {
-        return this.liveService.getLiveInfo(liveId).then(liveInfo => {
-          return this.gotoLive(userInfoCache, liveInfo, route, state, needPush);
-        }, () => {
-          this.router.navigate(['/404']);
-          return false;
-        });
-      }
+      return this.gotoLive(liveId, route, state, needPush);
     } else {
       // 其他路由, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
       if (UtilsService.isInApp && needPush) {
