@@ -7,7 +7,6 @@ import {FormGroup, Validators, FormControl, FormBuilder} from "@angular/forms";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {LiveService} from "../../shared/api/live/live.service";
 import {AudienceInvitationModel, InvitationModel} from "../../shared/api/invite/invite.model";
-import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 @Component({
@@ -27,32 +26,18 @@ export class VipInfoComponent implements OnInit {
   userInfo: UserInfoModel;
   liveInfo: LiveInfoModel;
   invitations: InvitationModel[];
-  audienceListInvitations: AudienceInvitationModel[];
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
-              private inviteApiService: InviteApiService, private userInfoService: UserInfoService,
-              private liveService: LiveService, private operationTipsService: OperationTipsService) {
+              private inviteApiService: InviteApiService, private operationTipsService: OperationTipsService) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.snapshot.params['id'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
 
-    this.userInfoService.getUserInfo().then((userInfo) => {
-      this.userInfo = userInfo;
-
-      this.liveService.getLiveInfo(this.liveId).then((liveInfo) => {
-        this.liveInfo = liveInfo;
-
-        if (this.isAdmin) {
-          this.inviteApiService.listInvitations(this.liveId).then((res) => {
-            this.invitations = res;
-          });
-        } else {
-          this.inviteApiService.audienceListInvitations(this.liveId).then((res) => {
-            this.audienceListInvitations = res;
-          });
-        }
-      });
+    this.inviteApiService.listInvitations(this.liveId).then((res) => {
+      this.invitations = res;
     });
 
     this.form = this.fb.group({
@@ -63,10 +48,6 @@ export class VipInfoComponent implements OnInit {
         Validators.maxLength(this.maxIntroLength),
       ]),
     });
-  }
-
-  get isAdmin() {
-    return this.liveInfo.isAdmin(this.userInfo.uid);
   }
 
   gotoInvitation(token: string) {
@@ -97,7 +78,7 @@ export class VipInfoComponent implements OnInit {
 
       return this.inviteApiService.getInvited(this.liveId, this.nick, this.intro);
     }).then((model) => {
-      if(model) this.router.navigate(([`/lives/${this.liveId}/invitation`, {token: model.token}]));
+      this.router.navigate(([`/lives/${this.liveId}/invitation`, {token: model.token}]));
     }).finally(() => {
       this.isSubmitting = false;
     });

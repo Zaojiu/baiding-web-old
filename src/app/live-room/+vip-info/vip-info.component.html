@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="vip-info-container" (ngSubmit)="submit()" autofocus-first-invalid-input>
   <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
 
-  <div class="vips-container block" *ngIf="liveInfo && liveInfo.admin && isAdmin">
+  <div class="vips-container block" *ngIf="liveInfo">
     <div class="title">
       已邀请嘉宾
     </div>
@@ -36,43 +36,6 @@
       </div>
 
       <div class="invite" (click)="gotoInvitationInfo()" *ngIf="isAdmin"></div>
-    </div>
-  </div>
-
-  <div class="vips-container block" *ngIf="liveInfo&&liveInfo.admin&&!isAdmin">
-    <div class="title">
-      已邀请嘉宾
-    </div>
-    <div class="content">
-      <div class="avatar-container">
-        <div class="accepted">
-          <div class="accepted-wrapper">
-            <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
-            <div class="tick"><i class="bi bi-tick"></i></div>
-          </div>
-          <p class="nick">{{liveInfo.admin.nick}}</p>
-        </div>
-      </div>
-
-      <div class="avatar-container" *ngFor="let editor of audienceListInvitations">
-        <div class="accepted" *ngIf="editor.userInfo">
-          <div class="accepted-wrapper">
-            <img class="avatar" [src]="editor.userInfo.avatar" alt="嘉宾头像">
-            <div class="tick"><i class="bi bi-tick"></i></div>
-          </div>
-          <p class="nick">{{editor.userInfo.nick || '无名'}}</p>
-        </div>
-
-        <div class="invited" *ngIf="!editor.userInfo">
-          <div class="invited-wrapper">
-            <div class="invite-people-bg">
-              <i class="bi bi-people2"></i>
-            </div>
-          </div>
-          <p class="nick">{{editor.name || '无名'}}</p>
-        </div>
-      </div>
-
     </div>
   </div>
 
