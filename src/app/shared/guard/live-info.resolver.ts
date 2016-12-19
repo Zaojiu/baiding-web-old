@@ -12,9 +12,8 @@ export class LiveInfoResolver implements Resolve<LiveInfoModel> {
 
   resolve(route: ActivatedRouteSnapshot): Promise<LiveInfoModel> {
     let liveId = route.params['id'];
-    let isJoin = route.component === LiveRoomComponent;
 
-    return this.liveService.getLiveInfo(liveId, true, isJoin).then((res)=> {
+    return this.liveService.getLiveInfo(liveId).then((res)=> {
       return res
     }, () => {
       this.router.navigate(['/404']);

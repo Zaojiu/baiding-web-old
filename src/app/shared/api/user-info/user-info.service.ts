@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
@@ -72,7 +72,7 @@ export class UserInfoService {
 
   }
 
-  getUserDetailInfo(uid: number): Promise<UserDetailInfoModel> {
+  getUserDetailInfo(): Promise<UserDetailInfoModel> {
     return this.http.get(`${environment.config.host.io}/api/user/detail`).toPromise()
       .then(res => {
         let data = res.json();
@@ -93,14 +93,18 @@ export class UserInfoService {
     return userDetailInfo;
   }
 
-  postUserInfo(nameContent: string, introContent: string): Promise<void> {
-    let headers = new Headers({'Content-Type': 'application/json'});
+  postUserInfo(nick: string, intro: string): Promise<void> {
     const url = `${environment.config.host.io}/api/user/detail`;
-    let user = new UserInfoModel();
-    user.nick = nameContent;
-    user.intro = introContent;
-    return this.http.put(url, JSON.stringify(user), {headers: headers}).toPromise().then((res)=> {
-      return;
+    let data: {[key: string]: string} = {
+      nick: nick,
+      intro: intro,
+    };
+
+    return this.http.put(url, data).toPromise().then((res)=> {
+      // 更新用户信息, 避免缓存数据不一致。
+      return this.getUserInfo(true).then(() => {
+        return
+      });
     });
   }
 

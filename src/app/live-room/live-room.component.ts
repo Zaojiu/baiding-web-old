@@ -52,6 +52,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
+    this.liveService.getLiveInfo(this.id, true, true); // 发送加入话题间的请求。
+
     this.route.snapshot.data['title'] = this.liveInfo.subject;
     this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
 

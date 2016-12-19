@@ -32,7 +32,7 @@ export class EditInfoComponent implements OnInit {
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    this.userInfoService.getUserDetailInfo(this.userInfo.uid).then((user)=> {
+    this.userInfoService.getUserDetailInfo().then((user)=> {
       this.userDetailInfo = user;
       this.nameContent = this.userDetailInfo.nick;
       this.introContent = this.userDetailInfo.intro;

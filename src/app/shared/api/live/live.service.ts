@@ -13,6 +13,12 @@ export class LiveService {
   constructor(private http: Http) {
   }
 
+  private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
+    return this.getLiveInfo(liveId, true, false).then((liveInfo) => {
+      return liveInfo;
+    });
+  }
+
   parseLiveInfo(stream: any, users: any, currentStreamUser?: any): LiveInfoModel {
 
     let liveInfo = new LiveInfoModel;
@@ -77,7 +83,7 @@ export class LiveService {
   getLiveInfo(id: string, needRefresh?: boolean, join = false): Promise<LiveInfoModel> {
     let lives = StoreService.get('lives') || {};
     let liveInfoCache = lives[id];
-    if (liveInfoCache && !needRefresh) return Promise.resolve(liveInfoCache);
+    if (liveInfoCache && !needRefresh && !join) return Promise.resolve(liveInfoCache);
 
     let query = {
       join: join,
@@ -93,8 +99,12 @@ export class LiveService {
       return liveInfo;
     }, () => {
       return Promise.reject(liveInfoCache);
-    })
-    // .catch();
+    });
+  }
+
+  getLiveInfoCache(id: string): LiveInfoModel {
+    let lives = StoreService.get('lives') || {};
+    return lives[id];
   }
 
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
@@ -114,7 +124,7 @@ export class LiveService {
     });
   }
 
-  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<void> {
+  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<LiveInfoModel> {
     let data: {[key: string]: string} = {
       subject: title,
       desc: desc,
@@ -125,20 +135,18 @@ export class LiveService {
 
     const url = `${environment.config.host.io}/api/live/streams/${id}`;
     return this.http.put(url, data).toPromise().then(res => {
-      return;
+      return this.refreshLiveInfo(id);
     });
   }
 
-  closeLive(id: string): Promise<any> {
+  closeLive(id: string): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/close`;
     return this.http.put(url, null).toPromise().then(res => {
-      let data = res.json();
-
-      return data;
+      return this.refreshLiveInfo(id);
     });
   }
 
-  praiseLive(id: string, praised: boolean, emoji: string = '👍'): Promise<any> {
+  praiseLive(id: string, praised: boolean, emoji: string = '👍'): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/praises`;
 
     let data = {
@@ -148,9 +156,7 @@ export class LiveService {
     };
 
     return this.http.post(url, JSON.stringify(data)).toPromise().then(res => {
-      let data = res.json();
-
-      return data;
+      return this.refreshLiveInfo(id);
     });
   }
 
@@ -166,13 +172,16 @@ export class LiveService {
 
       let streamData = data.result;
       let liveInfoList: LiveInfoModel[] = [];
+      let lives = StoreService.get('lives') || {};
 
       if (streamData) {
         let usersData = data.include.users;
         for (let liveInfo of streamData) {
           let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
           liveInfoList.push(liveInfoParsed);
+          lives[liveInfoParsed.id] = liveInfoParsed;
         }
+        StoreService.set('lives', lives);
       }
 
       return liveInfoList;
@@ -256,17 +265,17 @@ export class LiveService {
     return info;
   }
 
-  postLiveNotification(liveId: string): Promise<void> {
+  bookLive(liveId: string): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/book`;
     return this.http.post(url, null).toPromise().then((res) => {
-      return;
+      return this.refreshLiveInfo(liveId);
     });
   }
 
-  deleteLiveNotification(liveId: string): Promise<void> {
+  unbookLive(liveId: string): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/book`;
     return this.http.delete(url).toPromise().then((res) => {
-      return;
+      return this.refreshLiveInfo(liveId);
     });
   }
 

@@ -16,8 +16,8 @@
   </div>
 
   <div class="operation-area">
-    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated()" (click)="setNotification()"><i class="bi bi-clock"></i>开播提醒</a>
-    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated()" (click)="deleteNotification()"><i class="bi bi-clock"></i>已经开通</a>
+    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated()" (click)="bookLive()"><i class="bi bi-clock"></i>开播提醒</a>
+    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated()" (click)="unbookLive()"><i class="bi bi-clock"></i>已经开通</a>
     <a class="btn enter-room" (click)="gotoLive()">进入房间</a>
   </div>
 </div>

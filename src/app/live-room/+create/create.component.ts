@@ -127,8 +127,6 @@ export class CreateComponent implements OnInit, DoCheck {
     let expectStartAt = moment(`${this.time}:00`).local();
 
     return this.liveService.updateLiveInfo(liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey).then(() => {
-      return this.liveService.getLiveInfo(liveId, true);
-    }).then(() => {
       return liveId;
     });
   }

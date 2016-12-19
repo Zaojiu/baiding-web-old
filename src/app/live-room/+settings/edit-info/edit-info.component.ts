@@ -156,8 +156,6 @@ export class EditInfoComponent implements OnInit, DoCheck {
     let expectStartAt = moment(`${this.time}:00`).local();
 
     this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey).then(() => {
-      return this.liveService.getLiveInfo(this.liveId, true);
-    }).then(() => {
       this.submitted = true;
       this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
     });

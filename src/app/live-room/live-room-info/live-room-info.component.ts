@@ -31,21 +31,17 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     if (this.timer) clearInterval(this.timer);
   }
 
-  setNotification() {
-    this.liveService.postLiveNotification(this.liveInfo.id).then(() => {
-      this.refresh();
+  bookLive() {
+    this.liveService.bookLive(this.liveInfo.id).then(liveInfo => {
+      this.liveInfo = liveInfo;
       if (!this.userInfo.isSubscribed) this.showQrcode();
     });
   }
 
-  deleteNotification() {
-    this.liveService.deleteLiveNotification(this.liveInfo.id).then(() => {
-      this.refresh();
+  unbookLive() {
+    this.liveService.unbookLive(this.liveInfo.id).then(liveInfo => {
+      this.liveInfo = liveInfo;
     });
-  }
-
-  refresh() {
-    this.liveService.getLiveInfo(this.liveInfo.id, true).then(liveInfo => this.liveInfo = liveInfo);
   }
 
   gotoLive() {
