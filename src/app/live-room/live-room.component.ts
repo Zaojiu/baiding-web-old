@@ -39,20 +39,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   getLiveInfo(needRefresh?: boolean) {
     this.liveService.getLiveInfo(this.id, needRefresh).then(liveInfo => {
-
       let oldInfo = this.liveInfo;
       this.liveInfo = liveInfo;
       if (oldInfo) {
         this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
       }
-
-      this.resetLiveRoom();
     });
-  }
-
-  resetLiveRoom() {
-    this.titleService.set(this.liveInfo.subject);
-    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
   }
 
   ngOnInit() {
@@ -60,7 +52,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    this.resetLiveRoom();
+    this.route.snapshot.data['title'] = this.liveInfo.subject;
+    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
 
     this.refreshInterval = setInterval(() => {
       this.getLiveInfo(true);
@@ -83,6 +76,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.praisedSub) this.praisedSub.unsubscribe();
 
-    clearInterval(this.refreshInterval);
+    if (this.refreshInterval) clearInterval(this.refreshInterval);
   }
 }

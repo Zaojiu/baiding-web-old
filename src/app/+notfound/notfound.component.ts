@@ -1,5 +1,4 @@
 import {Component}      from '@angular/core';
-import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -8,15 +7,10 @@ import {Router} from "@angular/router";
 })
 
 export class NotFoundComponent {
-  constructor(private router: Router, private userInfoService: UserInfoService) {
+  constructor(private router: Router) {
   }
 
   gotoInfoCenter() {
-    this.userInfoService.getUserInfo().then(userInfo => {
-        this.router.navigate([`/info-center/${userInfo.uid}`]);
-      }, () => {
-        this.router.navigate([`/info-center`]);
-      }
-    );
+    this.router.navigate([`/`]);
   }
 }

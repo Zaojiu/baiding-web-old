@@ -166,6 +166,7 @@
       border-radius: 4px;
       border: solid 1px rgb(219, 219, 219);
       flex-grow: 1;
+      padding-right: 58px;
 
       &:first-child {
         margin-left: 10px;
@@ -175,7 +176,7 @@
         display: block;
         width: 100%;
         max-height: 63px;
-        padding: 10px;
+        padding: 10px 0 10px 10px;
         line-height: 1.2em;
         resize: none;
         background-color: transparent;
@@ -186,11 +187,11 @@
         position: absolute;
         top: 50%;
         right: 0;
-        margin-top: -18px;
-        flex-shrink: 0;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
         padding: 0 12px;
-        height: 36px;
-        line-height: 36px;
+        height: 100%;
         font-size: 17px;
         color: $color-brand;
       }

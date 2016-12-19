@@ -9,13 +9,14 @@ import {LiveRoomComponent} from "../../live-room/live-room.component";
 import {UtilsService} from "../utils/utils";
 import {IosBridgeService} from "../ios-bridge/ios-bridge.service";
 import {LiveType} from "../api/live/live.enums";
+import {AuthBridge} from "../bridge/auth.interface";
 
 @Injectable()
 export class AppJumperGuard implements CanActivate {
 
   constructor(private userInfoService: UserInfoService,
               private liveService: LiveService, private iosBridge: IosBridgeService,
-  private router: Router) {
+              private router: Router, private authService: AuthBridge) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
@@ -26,17 +27,24 @@ export class AppJumperGuard implements CanActivate {
 
     if (route.component === LiveRoomComponent) {
       let liveId = route.params['id'];
+      let userInfo: UserInfoModel = null;
+      let to = `${location.protocol}//${location.hostname}/#${state.url}`;
 
-      return Promise.all<LiveInfoModel, UserInfoModel>([this.liveService.getLiveInfo(liveId), this.userInfoService.getUserInfo()]).then((result) => {
-        let liveInfo = result[0];
-        let userInfo = result[1];
+      return this.userInfoService.getUserInfo().then(_userInfo => {
+        userInfo = _userInfo;
+        return this.liveService.getLiveInfo(liveId);
+      }, () => {
+        this.authService.auth(encodeURIComponent(to));
+        return null;
+      }).then(liveInfo => {
+        if (!liveInfo) return false; // 防止上一条错误返回null
 
         // 视频直播间需要跳转app
         if (
           liveInfo.kind !== LiveType.Text &&
           (liveInfo.isEditor(userInfo.uid) ||
           liveInfo.isAudience(userInfo.uid)) // 之后有h5视频端之后, 去掉此项
-        ){
+        ) {
           let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
           this.iosBridge.gotoLive(liveInfo.id, liveInfo.kind, role);
           return false;
@@ -49,7 +57,11 @@ export class AppJumperGuard implements CanActivate {
         } else {
           return true;
         }
+      }, () => {
+        this.router.navigate(['/404']);
+        return false;
       });
+
     } else {
       // 其他路由, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
       if (UtilsService.isInApp && needPush) {

@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 import {MqEvent, EventType} from "../../shared/mq/mq.service";
 import {TimelineService} from '../../live-room/timeline/timeline.service';
+import {UserInfoService} from "../api/user-info/user-info.service";
 
 @Component({
   selector: 'live-room-top-bar',
@@ -15,7 +16,8 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
   unreadCount = 0;
   from: string;
 
-  constructor(private router: Router, private timelineService: TimelineService, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute,
+              private timelineService: TimelineService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
@@ -45,7 +47,9 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
     } else if (this.liveId) {
       this.router.navigate([`/lives/${this.liveId}`]);
     } else {
-      this.router.navigate([`/info-center`]);
+      this.userInfoService.getUserInfo().then(userInfo => {
+        this.router.navigate([`/info-center/${userInfo.uid}`]);
+      });
     }
   }
 }

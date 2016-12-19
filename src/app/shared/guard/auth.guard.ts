@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }, () => {
       this.authService.auth(encodeURIComponent(to));
+      return false;
     });
   }
 }
