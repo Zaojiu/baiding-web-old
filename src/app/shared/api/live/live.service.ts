@@ -13,6 +13,12 @@ export class LiveService {
   constructor(private http: Http) {
   }
 
+  private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
+    return this.getLiveInfo(liveId, true, false).then((liveInfo) => {
+      return liveInfo;
+    });
+  }
+
   parseLiveInfo(stream: any, users: any, currentStreamUser?: any): LiveInfoModel {
 
     let liveInfo = new LiveInfoModel;
@@ -118,7 +124,7 @@ export class LiveService {
     });
   }
 
-  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<void> {
+  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<LiveInfoModel> {
     let data: {[key: string]: string} = {
       subject: title,
       desc: desc,
@@ -129,20 +135,18 @@ export class LiveService {
 
     const url = `${environment.config.host.io}/api/live/streams/${id}`;
     return this.http.put(url, data).toPromise().then(res => {
-      return;
+      return this.refreshLiveInfo(id);
     });
   }
 
-  closeLive(id: string): Promise<any> {
+  closeLive(id: string): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/close`;
     return this.http.put(url, null).toPromise().then(res => {
-      let data = res.json();
-
-      return data;
+      return this.refreshLiveInfo(id);
     });
   }
 
-  praiseLive(id: string, praised: boolean, emoji: string = '👍'): Promise<any> {
+  praiseLive(id: string, praised: boolean, emoji: string = '👍'): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/praises`;
 
     let data = {
@@ -152,9 +156,7 @@ export class LiveService {
     };
 
     return this.http.post(url, JSON.stringify(data)).toPromise().then(res => {
-      let data = res.json();
-
-      return data;
+      return this.refreshLiveInfo(id);
     });
   }
 
@@ -263,17 +265,17 @@ export class LiveService {
     return info;
   }
 
-  postLiveNotification(liveId: string): Promise<void> {
+  bookLive(liveId: string): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/book`;
     return this.http.post(url, null).toPromise().then((res) => {
-      return;
+      return this.refreshLiveInfo(liveId);
     });
   }
 
-  deleteLiveNotification(liveId: string): Promise<void> {
+  unbookLive(liveId: string): Promise<LiveInfoModel> {
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/book`;
     return this.http.delete(url).toPromise().then((res) => {
-      return;
+      return this.refreshLiveInfo(liveId);
     });
   }
 
