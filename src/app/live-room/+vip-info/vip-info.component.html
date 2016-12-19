@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="vip-info-container" (ngSubmit)="submit()" autofocus-first-invalid-input>
   <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
 
-  <div class="vips-container block" *ngIf="liveInfo">
+  <div class="vips-container block">
     <div class="title">
       已邀请嘉宾
     </div>
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="invite" (click)="gotoInvitationInfo()" *ngIf="isAdmin"></div>
+      <div class="invite" (click)="gotoInvitationInfo()"></div>
     </div>
   </div>
 
