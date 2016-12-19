@@ -3,10 +3,10 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {PostService} from './post.service';
 import {AdditionalContentModel} from './post.model'
 import {MessageApiService} from "../../shared/api/message/message.api";
-import {LiveService} from "../../shared/api/live/live.service";
 import {LiveRoomService} from "../live-room.service";
 
 import {InputtingService} from "../timeline/message/inputting.service";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './post.component.html',
@@ -21,10 +21,11 @@ export class PostComponent implements OnInit {
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
   @ViewChild('postCommentContent') postCommentContent: ElementRef;
+  isInApp = UtilsService.isInApp;
 
   constructor(private route: ActivatedRoute, private router: Router, private inputtingService: InputtingService,
               private messageApiService: MessageApiService, private postService: PostService,
-              private liveService: LiveService, private liveRoomService: LiveRoomService) {
+              private liveRoomService: LiveRoomService) {
   }
 
   ngOnInit() {

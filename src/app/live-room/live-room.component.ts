@@ -5,7 +5,6 @@ import {Subscription} from 'rxjs/Subscription';
 import {TimelineService} from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {LiveInfoModel} from '../shared/api/live/live.model';
-import {TitleService} from '../shared/title/title.service';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
@@ -26,8 +25,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   praisedSub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-              private timelineService: TimelineService, private titleService: TitleService,
-              private shareBridge: ShareBridge) {
+              private timelineService: TimelineService, private shareBridge: ShareBridge) {
   }
 
   getShareUri(): string {

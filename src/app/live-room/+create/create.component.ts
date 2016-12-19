@@ -29,6 +29,7 @@ export class CreateComponent implements OnInit, DoCheck {
   oldFileName = '';
   submitted = false;
   isSubmitting = false;
+  isInApp = UtilsService.isInApp;
 
   constructor(private router: Router, private sanitizer: DomSanitizer, private fb: FormBuilder,
               private liveService: LiveService, private uploadService: UploadApiService) {
@@ -133,9 +134,5 @@ export class CreateComponent implements OnInit, DoCheck {
 
   canDeactivate() {
     return !this.form.dirty || this.submitted;
-  }
-
-  get isInApp(): boolean {
-    return UtilsService.isInApp;
   }
 }

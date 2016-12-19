@@ -41,6 +41,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
   hasInit: boolean;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
+  isInApp = UtilsService.isInApp;
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private operationTips: OperationTipsService, private liveService: LiveService,

@@ -5,9 +5,9 @@ import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {FormGroup, Validators, FormControl, FormBuilder} from "@angular/forms";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
-import {LiveService} from "../../shared/api/live/live.service";
-import {AudienceInvitationModel, InvitationModel} from "../../shared/api/invite/invite.model";
+import {InvitationModel} from "../../shared/api/invite/invite.model";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './vip-info.component.html',
@@ -26,6 +26,7 @@ export class VipInfoComponent implements OnInit {
   userInfo: UserInfoModel;
   liveInfo: LiveInfoModel;
   invitations: InvitationModel[];
+  isInApp = UtilsService.isInApp;
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
               private inviteApiService: InviteApiService, private operationTipsService: OperationTipsService) {

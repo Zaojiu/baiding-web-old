@@ -6,7 +6,7 @@
 
     <div class="top-bar">
       <i class="bi bi-gear edit-btn" *ngIf="isSelf" (click)="goToEdit()"></i>
-      <i class="bi bi-share share-btn" (click)="popupShare()"></i>
+      <i class="bi bi-share share-btn" (click)="popupShare()" *ngIf="!isInApp"></i>
     </div>
 
     <div class="img-wrapper">

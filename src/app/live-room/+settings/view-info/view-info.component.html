@@ -1,5 +1,5 @@
 <div class="view-info">
-  <live-room-top-bar class="top-bar" [liveId]="liveId"></live-room-top-bar>
+  <live-room-top-bar class="top-bar" [liveId]="liveId" *ngIf="!isInApp"></live-room-top-bar>
 
   <div class="info-container">
     <live-room-info-upper [liveInfo]="liveInfo"></live-room-info-upper>
