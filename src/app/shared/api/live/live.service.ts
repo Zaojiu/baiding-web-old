@@ -77,7 +77,7 @@ export class LiveService {
   getLiveInfo(id: string, needRefresh?: boolean, join = false): Promise<LiveInfoModel> {
     let lives = StoreService.get('lives') || {};
     let liveInfoCache = lives[id];
-    if (liveInfoCache && !needRefresh) return Promise.resolve(liveInfoCache);
+    if (liveInfoCache && !needRefresh && !join) return Promise.resolve(liveInfoCache);
 
     let query = {
       join: join,
@@ -93,8 +93,12 @@ export class LiveService {
       return liveInfo;
     }, () => {
       return Promise.reject(liveInfoCache);
-    })
-    // .catch();
+    });
+  }
+
+  getLiveInfoCache(id: string): LiveInfoModel {
+    let lives = StoreService.get('lives') || {};
+    return lives[id];
   }
 
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
@@ -166,13 +170,16 @@ export class LiveService {
 
       let streamData = data.result;
       let liveInfoList: LiveInfoModel[] = [];
+      let lives = StoreService.get('lives') || {};
 
       if (streamData) {
         let usersData = data.include.users;
         for (let liveInfo of streamData) {
           let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
           liveInfoList.push(liveInfoParsed);
+          lives[liveInfoParsed.id] = liveInfoParsed;
         }
+        StoreService.set('lives', lives);
       }
 
       return liveInfoList;
