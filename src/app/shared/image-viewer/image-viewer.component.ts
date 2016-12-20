@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {ModalService} from '../modal/modal.service';
 import {ImgEvent} from './image-viewer.model';
 import {ImageViewerService} from './image-viewer.service';
-import {Router, NavigationStart, NavigationEnd, CanActivate} from "@angular/router";
+import {Router} from "@angular/router";
 import 'rxjs/add/operator/filter';
 import {Location} from "@angular/common";
 
@@ -14,7 +14,7 @@ declare var $: any;
   styleUrls: ['./image-viewer.component.scss'],
 })
 
-export class ImageViewerComponent implements OnInit,CanActivate {
+export class ImageViewerComponent implements OnInit {
   private el: HTMLElement;
   imageSrc = '';
   isPopup: boolean;
@@ -25,27 +25,15 @@ export class ImageViewerComponent implements OnInit,CanActivate {
 
   constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router, private location: Location) {
     this.el = el.nativeElement;
-
-    router.events
-      .filter(event => event instanceof NavigationStart)
-      .subscribe((evt) => {
-        if (this.isPopup) {
-          console.log('close')
-          this.closePopup();
-          // this.router.navigate([this.router.url, {'showimage': true}]).then(() => {
-          //   console.log('helow w')
-          // });
-        }
-      });
-  }
-
-  canActivate() {
-    return !this.isPopup;
   }
 
   ngOnInit() {
     this.imageViewerService.imagePopup$.subscribe((model) => {
       if (!model.images && !model.links) return;
+
+      let urlTree = this.router.parseUrl(this.router.url);
+      urlTree.queryParams['showImage'] = 'true';
+      this.router.navigateByUrl(urlTree);
 
       this.isPopup = true;
       this.isLoading = true;
@@ -124,7 +112,7 @@ export class ImageViewerComponent implements OnInit,CanActivate {
         this.imageViewerService.delete();
         this.isPopup = false;
       }
-    })
+    });
   }
 
   pinch(e: HammerInput) {
