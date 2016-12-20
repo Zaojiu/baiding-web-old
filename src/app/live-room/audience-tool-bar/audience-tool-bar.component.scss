@@ -7,8 +7,6 @@
   background-color: rgb(250, 250, 250);
   line-height: 49px;
   white-space: nowrap;
-  touch-callout: none;
-  user-select: none;
 
   .comment-input-container {
     display: flex;
@@ -48,7 +46,7 @@
       padding: 0 12px;
       margin-top: 6px;
       margin-bottom: 6px;
-      font-size: 12px;
+      font-size: 14px;
     }
 
     .comment-input {
@@ -57,9 +55,9 @@
       flex-grow: 1;
       padding-left: 12px;
       transition: all 0.2s;
-      font-size: 12px;
+      font-size: 14px;
       min-width: 0;
-      height: 50px;
+      height: 49px;
       opacity: 0;
     }
 
