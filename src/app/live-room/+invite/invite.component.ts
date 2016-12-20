@@ -8,7 +8,6 @@ import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {UtilsService} from "../../shared/utils/utils";
-import {LiveType} from "../../shared/api/live/live.enums";
 
 @Component({
   templateUrl: './invite.component.html',
