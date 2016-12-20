@@ -8,7 +8,6 @@ import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {InvitationModel} from "../../shared/api/invite/invite.model";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {UtilsService} from "../../shared/utils/utils";
-import {LiveStatus} from "../../shared/api/live/live.enums";
 
 @Component({
   templateUrl: './vip-info.component.html',
