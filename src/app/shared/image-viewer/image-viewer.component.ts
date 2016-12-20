@@ -3,8 +3,6 @@ import {ModalService} from '../modal/modal.service';
 import {ImgEvent} from './image-viewer.model';
 import {ImageViewerService} from './image-viewer.service';
 import {Router} from "@angular/router";
-import 'rxjs/add/operator/filter';
-import {Location} from "@angular/common";
 
 declare var $: any;
 
@@ -23,7 +21,7 @@ export class ImageViewerComponent implements OnInit {
   canDelete: boolean;
   query: string;
 
-  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router, private location: Location) {
+  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router) {
     this.el = el.nativeElement;
   }
 
