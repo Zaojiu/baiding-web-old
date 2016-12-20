@@ -39,3 +39,4 @@ Thumbs.db
 /src/environments/environment.test-prod.ts
 /angular-cli.dev.json
 /angular-cli.prod.json
+hack/Dockerfile
