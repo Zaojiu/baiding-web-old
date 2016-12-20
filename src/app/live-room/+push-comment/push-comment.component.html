@@ -15,7 +15,7 @@
                 [ngClass]="{show: scroller.isHeadLoadingShown,hide:!scroller.isHeadLoadingShown}"></bd-loading>
 
     <div class="comment-container-inner">
-      <div class="comment-row" [ngClass]="{highlight: commentId == comment.id}"   *ngFor="let comment of comments"
+      <div class="comment-row" [ngClass]="{highlight: commentId == comment.id}" *ngFor="let comment of comments"
            (click)="banComment(comment.user.uid)">
         <div class="avatar-container">
           <img class="avatar" [src]="comment.user.avatar">
@@ -30,7 +30,7 @@
         </div>
         <div class="operation-container" *ngIf="liveInfo && userInfo">
           <div *ngIf="userInfo.uid == liveInfo.admin.uid">
-            <a class="operation-btn" (click)="pushComment(comment)" *ngIf="!comment.msgId"
+            <a class="operation-btn" (click)="pushComment(comment);$event.stopPropagation();" *ngIf="!comment.msgId"
                [ngClass]="{'is-closed': isClosed()}">推送</a>
             <span class="operation-btn pushed" *ngIf="comment.msgId">已推送</span>
           </div>
