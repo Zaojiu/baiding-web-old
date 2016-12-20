@@ -8,6 +8,7 @@ import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {InvitationModel} from "../../shared/api/invite/invite.model";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {UtilsService} from "../../shared/utils/utils";
+import {LiveStatus} from "../../shared/api/live/live.enums";
 
 @Component({
   templateUrl: './vip-info.component.html',
@@ -71,6 +72,11 @@ export class VipInfoComponent implements OnInit {
 
     this.inviteApiService.listInvitations(this.liveId).then((invitations) => {
       let invitationCount = invitations.length;
+
+      if (this.liveInfo.status === LiveStatus.Ended) {
+        this.operationTipsService.popup('直播已结束');
+        return;
+      }
 
       if (invitationCount >= 5) {
         this.operationTipsService.popup('最多邀请五个嘉宾');
