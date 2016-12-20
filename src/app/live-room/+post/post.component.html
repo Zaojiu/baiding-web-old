@@ -1,5 +1,5 @@
 <form class="post-container" (ngSubmit)="submit()">
-  <div class="top-bar">
+  <div class="top-bar" *ngIf="!isInApp">
     <a class="close-btn" (click)="commentId ? backToPushComment() : backToMainScreen()"><i class="bi bi-close"></i></a>
   </div>
 

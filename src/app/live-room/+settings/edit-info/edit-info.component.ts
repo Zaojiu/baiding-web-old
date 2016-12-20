@@ -9,6 +9,7 @@ import {LiveService} from "../../../shared/api/live/live.service";
 import {futureValidator} from "../../../shared/form/future.validator";
 import {UploadApiService} from "../../../shared/api/upload/upload.api";
 import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
+import {UtilsService} from "../../../shared/utils/utils";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -34,6 +35,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   desc = '';
   oldFileName = '';
   submitted = false;
+  isInApp = UtilsService.isInApp;
 
   constructor(private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
               private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService) {
@@ -136,7 +138,6 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   private urlPath(url: string): string {
-
     if (!url) {
       return '';
     }

@@ -5,8 +5,6 @@ import {LiveInfoModel} from "../shared/api/live/live.model";
 import {LiveStatus} from '../shared/api/live/live.enums';
 import {UserInfoModel, UserPublicInfoModel} from "../shared/api/user-info/user-info.model";
 import {UtilsService} from "../shared/utils/utils";
-import {InvitationModel} from "../shared/api/invite/invite.model";
-import {InviteApiService} from "../shared/api/invite/invite.api";
 import {DomSanitizer, SafeUrl, SafeStyle} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
@@ -20,8 +18,7 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 export class InfoCenterComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private shareService: ShareBridge,
-              private inviteApiService: InviteApiService, private sanitizer: DomSanitizer,
-              private durationPipe: DurationFormaterPipe) {
+              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
   }
   timeNow = UtilsService.now.toString();
   timer: any;
@@ -37,6 +34,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   tabIndex = 0;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   isLoading = true;
+  isInApp = UtilsService.isInApp;
 
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];

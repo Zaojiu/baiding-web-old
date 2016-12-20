@@ -14,5 +14,5 @@
 
   <topbar-switch-btn class="switch-btn" [isCommentOpened]="isCommentOpened" [onlineCount] ="onlineCount" [isOpened]="isCommentOpened" [btnText]="btnText" (toggling)="toggleComment($event)"></topbar-switch-btn>
 
-  <a class="share-btn"  (click)="fireShare()"><i class="bi bi-share"></i></a>
+  <a class="share-btn" (click)="fireShare()" *ngIf="!isInApp"><i class="bi bi-share"></i></a>
 </div>

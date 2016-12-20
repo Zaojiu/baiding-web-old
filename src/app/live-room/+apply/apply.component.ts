@@ -7,6 +7,7 @@ import {ApplyApiService} from "../../shared/api/apply/apply.service";
 import {ApplicationModel, ApplicationStatus} from "../../shared/api/apply/apply.model";
 import {apiValidator} from "../../shared/form/api.validator";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './apply.component.html',
@@ -28,6 +29,7 @@ export class ApplyComponent implements OnInit {
   applicationStatus = ApplicationStatus;
   loading = true;
   from = '';
+  isInApp = UtilsService.isInApp;
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
               private applyService: ApplyApiService, private userInfoService: UserInfoService) {

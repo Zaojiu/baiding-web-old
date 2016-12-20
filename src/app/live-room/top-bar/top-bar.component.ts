@@ -3,11 +3,11 @@ import {TimelineService} from "../timeline/timeline.service";
 import {Subscription} from "rxjs";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {FadeDirective} from "../../shared/animation/fade/fade.directive";
-import {Router, ActivatedRoute} from "@angular/router";
-import {LiveService} from "../../shared/api/live/live.service";
+import {Router} from "@angular/router";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
+import {UtilsService} from "../../shared/utils/utils";
 
 declare var $: any;
 
@@ -31,9 +31,10 @@ export class TopBarComponent implements OnInit, OnDestroy {
   timelineScrollSub: Subscription;
   originTop: number;
   distance = 200;
+  isInApp = UtilsService.isInApp;
 
   constructor(private shareBridge: ShareBridge, private timelineService: TimelineService,
-              private route: ActivatedRoute, private router: Router, private  liveService: LiveService) {
+              private router: Router) {
   }
 
   ngOnInit() {

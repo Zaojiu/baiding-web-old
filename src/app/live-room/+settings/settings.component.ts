@@ -10,6 +10,7 @@ import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {WechatConfigService} from "../../shared/wechat/wechat.service";
 import {LiveRoomService} from "../live-room.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './settings.component.html',
@@ -23,6 +24,7 @@ export class SettingsComponent implements OnInit {
   userInfo: UserInfoModel;
   invitations: InvitationModel[];
   audienceListInvitations: AudienceInvitationModel[];
+  isInApp = UtilsService.isInApp;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService, private wechatService: WechatConfigService,

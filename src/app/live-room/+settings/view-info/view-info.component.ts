@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {LiveInfoModel} from "../../../shared/api/live/live.model";
-import {LiveService} from "../../../shared/api/live/live.service";
 import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
+import {UtilsService} from "../../../shared/utils/utils";
 
 @Component({
   templateUrl: './view-info.component.html',
@@ -13,8 +13,9 @@ export class ViewInfoComponent implements OnInit {
   liveId: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
+  isInApp = UtilsService.isInApp;
 
-  constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService) {
+  constructor(private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
