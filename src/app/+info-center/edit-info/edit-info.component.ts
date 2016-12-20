@@ -5,9 +5,6 @@ import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {UserInfoModel, UserDetailInfoModel} from "../../shared/api/user-info/user-info.model";
-import {Headers, Http} from "@angular/http";
-import {environment} from "../../../environments/environment";
-import {Location} from '@angular/common';
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -26,7 +23,7 @@ export class EditInfoComponent implements OnInit {
   introContent = '';
 
   constructor(private router: Router, private route: ActivatedRoute,
-              private fb: FormBuilder, private userInfoService: UserInfoService, private _location: Location) {
+              private fb: FormBuilder, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
@@ -50,7 +47,7 @@ export class EditInfoComponent implements OnInit {
   }
 
   backToViewInfo() {
-    this._location.back();
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 
   submit() {
