@@ -288,14 +288,19 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
 
     // 首先判断comment是否位于倒数10条内
-    this.commentApiService.listComments(this.streamId, [], `$gte${comment.createdAt}`, 10, [`createAt`]).then((lastTenComment)=> {
+    this.commentApiService.listComments(this.streamId, [], `$gte${comment.createdAt}`, 10, [`createAt`]).then((lastTenComment) => {
 
       // 如果comment小于8条（目前7条差不多占满一屏幕）
       if (lastTenComment.length < 8) {
 
         // mark游标往前移动 8-lastTenComment.length条
         this.commentApiService.listComments(this.streamId, [], `$lt${comment.createdAt}`, 8 - lastTenComment.length, ['-createdAt']).then((preFiveMessage) => {
-          query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          // 避免第一条comment崩溃检测
+          if (preFiveMessage.length === 0) {
+            query.marker = `$gte${comment.createdAt}`;
+          } else {
+            query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
+          }
           this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
         });
       } else {
