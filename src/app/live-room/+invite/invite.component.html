@@ -30,6 +30,7 @@
 
   <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid">
     <a class="btn-accept-invitation" *ngIf="liveInfo.isClosed()" (click)="backToLive()">进入话题间</a>
+    <p class="used-tips">直播已结束</p>
   </div>
 
   <div class="operation-area" *ngIf="token && isTokenExist && isTokenUsed">
