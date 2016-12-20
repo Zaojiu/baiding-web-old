@@ -110,7 +110,7 @@
   </div>
 
   <div class="setting-keyboard" [ngClass]="{activate: mode === modeEnums.Setting}">
-    <div class="btn invite" (click)="gotoInvitationInfo()">
+    <div class="btn invite" (click)="gotoInvitationInfo()" *ngIf="liveInfo.isAdmin(userInfo.uid) && !liveInfo.isClosed()">
       <i class="bi bi-invite"></i>
       邀请嘉宾
     </div>
@@ -120,7 +120,7 @@
       编辑话题
     </div>
 
-    <div class="btn view" *ngIf="!liveInfo.isAdmin(userInfo.uid) || !liveInfo.isCreated()" (click)="gotoRoomInfo()">
+    <div class="btn view" *ngIf="!(liveInfo.isAdmin(userInfo.uid) && liveInfo.isCreated())" (click)="gotoRoomInfo()">
       <i class="bi bi-tv"></i>
       查看话题
     </div>
