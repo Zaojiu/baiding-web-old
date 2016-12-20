@@ -53,8 +53,9 @@ import {InviteApiService} from "../shared/api/invite/invite.api";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
-    let mc = new Hammer(element, {domEvents: true});
+    let mc = new Hammer(element);
     mc.get('press').set({time: 500});
+    mc.add(new Hammer.Pinch());
     return mc;
   }
 }
