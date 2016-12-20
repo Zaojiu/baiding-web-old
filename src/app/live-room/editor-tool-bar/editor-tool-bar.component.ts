@@ -206,16 +206,22 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   postImage() {
     if (!this.images || !this.images.length) return;
 
-    let promise = this.messageApiService.postImageMessage(this.liveId, '', this.images[0]);
-    if (promise) {
+    let promises = [];
+
+    for (let image of this.images) {
+      promises.push(this.messageApiService.postImageMessage(this.liveId, '', image));
+    }
+
+    if (promises.length) {
       this.timer = setInterval(() => {
         this.inputtingService.collect({liveId: this.liveId, type: 'image'});
       }, 1000);
 
-      promise.finally(() => {
+      Promise.all(promises).finally(() => {
         if (this.timer) clearInterval(this.timer);
       });
     }
+
     this.images = [];
   }
 
