@@ -8,7 +8,6 @@ import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {UtilsService} from "../../shared/utils/utils";
-import {LiveType, LiveStatus} from "../../shared/api/live/live.enums";
 
 @Component({
   templateUrl: './invite.component.html',
@@ -24,7 +23,6 @@ export class InviteComponent implements OnInit {
   isTokenExist = false;
   isTokenUsed: boolean;
   name = '';
-  liveEnded: number;
 
   constructor(private liveService: LiveService, private route: ActivatedRoute,
               private router: Router, private inviteApiService: InviteApiService,
@@ -36,7 +34,6 @@ export class InviteComponent implements OnInit {
     this.token = this.route.snapshot.params['token'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.liveEnded = LiveStatus.Ended;
 
     if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token}]);
 
