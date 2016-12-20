@@ -35,8 +35,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     return uri;
   }
 
-  getLiveInfo(needRefresh?: boolean) {
-    this.liveService.getLiveInfo(this.id, needRefresh).then(liveInfo => {
+  refreshLiveInfo() {
+    this.liveService.getLiveInfo(this.id, true).then(liveInfo => {
       let oldInfo = this.liveInfo;
       this.liveInfo = liveInfo;
       if (oldInfo) {
@@ -56,8 +56,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
 
     this.refreshInterval = setInterval(() => {
-      this.getLiveInfo(true);
-    }, 10 * 1000);
+      this.refreshLiveInfo();
+    }, 30 * 1000);
 
     this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
       if (evt.event != EventType.LivePraise) {

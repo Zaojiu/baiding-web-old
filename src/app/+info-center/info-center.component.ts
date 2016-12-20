@@ -9,6 +9,8 @@ import {DomSanitizer, SafeUrl, SafeStyle} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
+import {Subscription} from "rxjs";
+import {UserInfoService} from "../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -18,15 +20,16 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 export class InfoCenterComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private shareService: ShareBridge,
-              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
+              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe,
+              private userInfoService: UserInfoService) {
   }
+
   timeNow = UtilsService.now.toString();
   timer: any;
   pageUserInfo: UserPublicInfoModel;
   currentUserInfo: UserInfoModel;
   livesList: LiveInfoModel[] = [];
   livesListWatched: LiveInfoModel[] = [];
-  uid: number;
   from: string;
   covers: {[liveId: string]: SafeUrl} = {};
   liveTime: {[liveId: string]: string} = {};
@@ -35,16 +38,17 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   isLoading = true;
   isInApp = UtilsService.isInApp;
+  uid: number;
+  uidParamSub: Subscription;
 
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
-    this.pageUserInfo = this.route.snapshot.data['pageUserInfo'];
-    this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${this.pageUserInfo.avatar})`);
-    this.uid = +this.route.snapshot.params['uid'];
-    this.from = encodeURIComponent(`/info-center/${this.uid}`);
 
-    this.listMyLive();
-    if (this.isSelf) this.listMyWatchLive();
+    this.uidParamSub = this.route.params.subscribe((params) => {
+      this.uid = +params['uid'];
+      if (!this.uid) this.router.navigate([`/404`]);
+      this.initData(this.uid);
+    });
 
     this.timer = setInterval(() => {
       this.timeNow = UtilsService.now.toString();
@@ -53,15 +57,38 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.timer) clearInterval(this.timer);
+    if (this.uidParamSub) this.uidParamSub.unsubscribe();
   }
 
-  listMyLive() {
-    this.liveService.listLiveInfo(this.uid, '', 1000, ['-createdAt']).then((livesList) => {
+  initData(uid: number) {
+    this.isLoading = true;
+
+    Promise.all([this.getPageUserInfo(uid), this.listMyLive(this.uid)]).finally(() => {
+      this.isLoading = false;
+    });
+
+    if (this.isSelf) this.listMyWatchLive();
+  }
+
+  getPageUserInfo(uid: number): Promise<void> {
+    return this.userInfoService.getUserPublicInfo(uid).then(publicUserInfo => {
+      this.pageUserInfo = publicUserInfo;
+      this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${publicUserInfo.avatar})`);
+      this.from = encodeURIComponent(`/info-center/${uid}`);
+      return;
+    }, () => {
+      this.router.navigate([`/404`]);
+      return;
+    });
+  }
+
+  listMyLive(uid: number): Promise<void> {
+    return this.liveService.listLiveInfo(uid, '', 1000, ['-createdAt']).then((livesList) => {
       this.livesList = livesList;
 
       for (let liveInfo of this.livesList) {
 
-        if (liveInfo.status === LiveStatus.Created){
+        if (liveInfo.status === LiveStatus.Created) {
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
             let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
             let dayStr = '';
@@ -94,18 +121,18 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
         let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
       }
-    }).finally(() => {
-      this.isLoading = false;
+
+      return;
     });
   }
 
-  listMyWatchLive() {
-    this.liveService.listBookedLiveInfo().then(liveListWatched => {
+  listMyWatchLive(): Promise<void> {
+    return this.liveService.listBookedLiveInfo().then(liveListWatched => {
       this.livesListWatched = liveListWatched;
 
       for (let liveInfo of this.livesListWatched) {
 
-        if (liveInfo.status === LiveStatus.Created){
+        if (liveInfo.status === LiveStatus.Created) {
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
             let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
             let dayStr = '';
@@ -138,6 +165,8 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
         let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
       }
+
+      return;
     });
   }
 

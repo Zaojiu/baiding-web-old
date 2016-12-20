@@ -280,7 +280,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   getNextMessages(marker: string, limit: number, sorts: string[]): Promise<void> {
-    if (this.isLoading) return Promise.reject('');
+    if (this.isLoading) return Promise.resolve();
 
     this.isLoading = true;
 
@@ -307,7 +307,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   getPrevMessages(marker: string, limit: number, sorts: string[]): Promise<void> {
-    if (this.isLoading) return Promise.reject('');
+    if (this.isLoading) return Promise.resolve();
 
     this.isLoading = true;
 
@@ -345,18 +345,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
       if (e.position == ScrollerPosition.OnTop) {
         let firstMessage = this.findFirstAvailableMessage(this.messages);
 
-        if (!firstMessage) {
+        if (!firstMessage || this.isOnOldest) {
           this.scroller.hideHeadLoading();
           return;
         }
 
-        if (!this.isOnOldest) {
-          this.getPrevMessages(`$lt${firstMessage.createdAt}`, 10, ['-createdAt']).finally(() => {
-            this.scroller.hideHeadLoading();
-          });
-        } else {
+        this.getPrevMessages(`$lt${firstMessage.createdAt}`, 10, ['-createdAt']).finally(() => {
           this.scroller.hideHeadLoading();
-        }
+        });
       } else if (e.position == ScrollerPosition.OnBottom) {
         let lastMessage = this.findLastAvailableMessage(this.messages);
 
