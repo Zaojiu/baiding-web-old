@@ -10,6 +10,7 @@ import {futureValidator} from "../../../shared/form/future.validator";
 import {UploadApiService} from "../../../shared/api/upload/upload.api";
 import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
 import {UtilsService} from "../../../shared/utils/utils";
+import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -36,20 +37,23 @@ export class EditInfoComponent implements OnInit, DoCheck {
   oldFileName = '';
   submitted = false;
   isInApp = UtilsService.isInApp;
+  from: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
-              private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService) {
+              private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService,
+              private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
-
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
     if (this.liveInfo.isStarted()) this.router.navigate([`/info-center/${this.userInfo.uid}`]);
 
-    if (!this.liveInfo.isAdmin(this.userInfo.uid)) this.backToLive();
+    if (!this.liveInfo.isAdmin(this.userInfo.uid)) this.back();
+
+    this.from = this.route.snapshot.params['from'] ? decodeURIComponent(this.route.snapshot.params['from']) : '';
 
     let expectStartAt = moment(this.liveInfo.expectStartAt);
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDTHH:mm');
@@ -109,8 +113,16 @@ export class EditInfoComponent implements OnInit, DoCheck {
     }
   }
 
-  backToLive() {
-    this.router.navigate([`/lives/${this.liveId}`]);
+  back() {
+    if (this.from) {
+      this.router.navigateByUrl(this.from);
+    } else if (this.liveId) {
+      this.router.navigate([`/lives/${this.liveId}`]);
+    } else {
+      this.userInfoService.getUserInfo().then(userInfo => {
+        this.router.navigate([`/info-center/${userInfo.uid}`]);
+      });
+    }
   }
 
   submit() {
@@ -158,7 +170,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
     this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey).then(() => {
       this.submitted = true;
-      this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
+      this.router.navigate([`/lives/${this.liveId}/info`]);
     });
   }
 
