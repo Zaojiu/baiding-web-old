@@ -42,15 +42,20 @@ export class HamburgerMenuComponent implements AfterViewInit {
 
   createRoom() {
     let from = this.liveId ? {from: encodeURIComponent(`/lives/${this.liveId}`)} : this.from ? {from: this.from} : {from: encodeURIComponent(`/info-center/${this.userInfo.uid}`)};
+
     if (this.userInfo && this.userInfo.canPublish) {
       this.router.navigate([`/lives/create`, from]);
     } else {
       this.router.navigate([`/lives/apply`, from]);
     }
+
+    this.switch();
   }
 
   gotoInfoCenter() {
     this.router.navigate([`/info-center/${this.userInfo.uid}`]);
+
+    this.switch();
   }
 
   dragStart() {
