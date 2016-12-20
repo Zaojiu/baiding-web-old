@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {ModalService} from '../modal/modal.service';
 import {ImgEvent} from './image-viewer.model';
 import {ImageViewerService} from './image-viewer.service';
-import {Router, NavigationStart} from "@angular/router";
+import {Router, NavigationStart} from '@angular/router';
 
 declare var $: any;
 
@@ -19,6 +19,7 @@ export class ImageViewerComponent implements OnInit {
   imgEvent: ImgEvent;
   isLoading: boolean;
   canDelete: boolean;
+  timer: any;
 
   constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router) {
     this.el = el.nativeElement;
@@ -27,7 +28,9 @@ export class ImageViewerComponent implements OnInit {
       .filter(event => event instanceof NavigationStart)
       .subscribe((evt) => {
         if (this.isPopup) {
-          this.closeImage();
+          this.imageSrc = '';
+          this.isPopup = false;
+          this.imageViewerService.close();
         }
       });
   }
@@ -66,10 +69,6 @@ export class ImageViewerComponent implements OnInit {
 
       this.imgEvent = new ImgEvent();
     });
-
-    let pinchWrapper = new Hammer($(this.el).find('.image-viewer-popup')[0], {});
-    pinchWrapper.get('pinch').set({enable: true});
-    pinchWrapper.get('doubletap').set({enable: true});
   }
 
   closePopup() {
@@ -77,12 +76,6 @@ export class ImageViewerComponent implements OnInit {
     this.isPopup = false;
     this.imageViewerService.close();
     history.back();
-  }
-
-  closeImage() {
-    this.imageSrc = '';
-    this.isPopup = false;
-    this.imageViewerService.close();
   }
 
   imageLoaded() {
@@ -155,16 +148,25 @@ export class ImageViewerComponent implements OnInit {
     this.imgEvent.setOffSet(e.deltaX, e.deltaY);
   }
 
-  dbltap() {
-    let $image = $(this.el).find('.popup-pinch-img');
-    let imgNaturalWidth = $image[0].naturalWidth;
-    let imgNaturalHeight = $image[0].naturalHeight;
-    if (this.imgEvent.fixWidth || this.imgEvent.fixHeight) {
-      $image.css({'width': `${imgNaturalWidth}px`, 'height': `${imgNaturalHeight}px`});
-      this.imgEvent.fixWidth = 0;
-      this.imgEvent.fixHeight = 0;
-    } else {
-      this.imageFitScreen();
+  tap(e) {
+    if (e.tapCount === 1) {
+      this.timer = setTimeout(() => {
+        this.closePopup();
+      }, 300);
+    } else if (e.tapCount === 2) {
+      if (this.timer) clearTimeout(this.timer);
+
+      let $image = $(this.el).find('.popup-pinch-img');
+      let imgNaturalWidth = $image[0].naturalWidth;
+      let imgNaturalHeight = $image[0].naturalHeight;
+
+      if (this.imgEvent.fixWidth || this.imgEvent.fixHeight) {
+        $image.css({'width': `${imgNaturalWidth}px`, 'height': `${imgNaturalHeight}px`});
+        this.imgEvent.fixWidth = 0;
+        this.imgEvent.fixHeight = 0;
+      } else {
+        this.imageFitScreen();
+      }
     }
   }
 }
