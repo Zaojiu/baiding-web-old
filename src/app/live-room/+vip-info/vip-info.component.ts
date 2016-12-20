@@ -73,7 +73,7 @@ export class VipInfoComponent implements OnInit {
     this.inviteApiService.listInvitations(this.liveId).then((invitations) => {
       let invitationCount = invitations.length;
 
-      if (this.liveInfo.status === LiveStatus.Ended) {
+      if (this.liveInfo.isClosed()) {
         this.operationTipsService.popup('直播已结束');
         return;
       }
