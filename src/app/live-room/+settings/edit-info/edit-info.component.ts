@@ -42,7 +42,6 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
@@ -158,7 +157,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
     this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey).then(() => {
       this.submitted = true;
-      this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
+      this.router.navigate([`/lives/${this.liveId}/info`]);
     });
   }
 
