@@ -55,8 +55,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
               private messageService: MessageService, private imageService: ImageBridge,
               private liveRoomService: LiveRoomService, private liveService: LiveService,
-              private operationTips: OperationTipsService, private inviteApiService: InviteApiService,
-              private inputtingService: InputtingService) {
+              private operationTips: OperationTipsService, private inputtingService: InputtingService) {
   }
 
   ngOnInit() {
