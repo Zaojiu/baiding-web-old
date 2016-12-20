@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {ModalService} from '../modal/modal.service';
 import {ImgEvent} from './image-viewer.model';
 import {ImageViewerService} from './image-viewer.service';
-import {Router} from "@angular/router";
+import {Router, NavigationStart} from "@angular/router";
 
 declare var $: any;
 
@@ -19,10 +19,17 @@ export class ImageViewerComponent implements OnInit {
   imgEvent: ImgEvent;
   isLoading: boolean;
   canDelete: boolean;
-  query: string;
 
   constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router) {
     this.el = el.nativeElement;
+
+    router.events
+      .filter(event => event instanceof NavigationStart)
+      .subscribe((evt) => {
+        if (this.isPopup) {
+          this.closeImage();
+        }
+      });
   }
 
   ngOnInit() {
@@ -68,7 +75,13 @@ export class ImageViewerComponent implements OnInit {
   closePopup() {
     this.imageSrc = '';
     this.isPopup = false;
+    this.imageViewerService.close();
     history.back();
+  }
+
+  closeImage() {
+    this.imageSrc = '';
+    this.isPopup = false;
     this.imageViewerService.close();
   }
 
