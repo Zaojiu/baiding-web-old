@@ -25,7 +25,8 @@
   </div>
 
   <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid">
-    <a class="btn-accept-invitation" (click)="acceptInvitation()">接受邀请</a>
+    <a class="btn-accept-invitation" *ngIf="liveInfo.status === liveEnded" (click)="backToLive()">进入话题间</a>
+    <a class="btn-accept-invitation" *ngIf="liveInfo.status !== liveEnded" (click)="acceptInvitation()">接受邀请</a>
   </div>
 
   <div class="operation-area" *ngIf="token && isTokenExist && isTokenUsed">
