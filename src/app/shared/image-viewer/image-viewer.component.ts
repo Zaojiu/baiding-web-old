@@ -68,6 +68,7 @@ export class ImageViewerComponent implements OnInit {
   closePopup() {
     this.imageSrc = '';
     this.isPopup = false;
+    history.back();
     this.imageViewerService.close();
   }
 
