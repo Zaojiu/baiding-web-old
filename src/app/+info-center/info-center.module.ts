@@ -17,7 +17,6 @@ import {AutofocusFirstInvalidInputModule} from "../shared/first-invalid/first-in
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {FormModule} from "../shared/form/form.module";
 import {DraggableModule} from "../shared/draggable/draggable.module";
-import {PageUserInfoResolver} from "./page-user-info.resolver";
 
 @NgModule({
   imports: [
@@ -43,7 +42,6 @@ import {PageUserInfoResolver} from "./page-user-info.resolver";
   providers: [
     InviteApiService,
     DurationFormaterPipe,
-    PageUserInfoResolver,
   ]
 })
 

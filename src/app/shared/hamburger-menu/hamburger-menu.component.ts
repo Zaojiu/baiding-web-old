@@ -49,7 +49,7 @@ export class HamburgerMenuComponent implements AfterViewInit {
     }
   }
 
-  gotoMyRoomList() {
+  gotoInfoCenter() {
     this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 
