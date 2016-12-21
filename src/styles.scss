@@ -80,12 +80,15 @@ a {
 }
 
 @media screen and (min-width: 768px) {
-  html,body {
-    background-color: rgb(238, 238, 238);
+  html, body {
     width: 768px;
     height: 100%;
     margin: 0 auto;
     position: relative;
+  }
+
+  html {
+    background-color: $color-dark-gray;
   }
 
   body {

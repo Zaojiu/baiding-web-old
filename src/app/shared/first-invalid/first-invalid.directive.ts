@@ -1,22 +1,21 @@
-import { Directive, ElementRef, OnInit } from '@angular/core'
+import { Directive, ElementRef } from '@angular/core'
 
 declare var $:any;
 
 @Directive({
-  selector: '[autofocus-first-invalid-input]'
+  selector: 'form[autofocus-first-invalid-input]',
+  host: {'(submit)': 'findFirstInvalidField()'},
 })
 
-export class AutofocusFirstInvalidInputDirective implements OnInit {
-  private el: HTMLElement;
+export class AutofocusFirstInvalidInputDirective {
+  private $el: any;
 
   constructor(el: ElementRef) {
-    this.el = el.nativeElement;
+    this.$el = $(el.nativeElement);
   }
 
-  ngOnInit() {
-    $(this.el).on('submit', () => {
-      $(this.el).find('input.ng-invalid:first').first().focus();
-    });
+  findFirstInvalidField() {
+    this.$el.find('input.ng-invalid:first').first().focus();
   }
 }
 

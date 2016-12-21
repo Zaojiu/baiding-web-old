@@ -1,26 +1,15 @@
-import {Directive, ElementRef, AfterViewInit, OnDestroy} from '@angular/core'
+import {Directive} from '@angular/core'
 import {UtilsService} from "../utils/utils";
 
-declare var $: any;
-
 @Directive({
-  selector: '[display-when-focus]'
+  selector: 'input[display-when-focus], textarea[display-when-focus]',
+  host: {'(focus)': 'onFocus()'},
 })
 
-export class DisplayWhenFocusDirective implements AfterViewInit, OnDestroy {
-  private el: HTMLElement;
+export class DisplayWhenFocusDirective {
+  constructor() {}
 
-  constructor(el: ElementRef) {
-    this.el = el.nativeElement
-  }
-
-  ngAfterViewInit() {
-    $(this.el).on('focus', () => {
-      UtilsService.resetWindowScroll();
-    });
-  }
-
-  ngOnDestroy() {
-    $(this.el).off('focus');
+  onFocus() {
+    UtilsService.resetWindowScroll();
   }
 }

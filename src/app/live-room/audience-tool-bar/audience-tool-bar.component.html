@@ -13,25 +13,27 @@
       [ngClass]="{'activate': mode !== modeEnums.None}"
       (ngSubmit)="postComment(); focusMessageInput();"
     >
-      <input
-        class="comment-input"
-        #commentInput
-        name="commentContent"
-        type="text"
-        (focus)="switchMode(modeEnums.Text)"
-        placeholder="发表评论"
-        [(ngModel)]="commentContent"
-        display-when-focus
-      >
-      <div class="fake-comment-input"
-           (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.None">发表评论
+      <div class="comment-input-wrapper">
+        <input
+          class="comment-input"
+          #commentInput
+          name="commentContent"
+          type="text"
+          (focus)="switchMode(modeEnums.Text)"
+          placeholder="发表评论"
+          [(ngModel)]="commentContent"
+          display-when-focus
+        >
+
+        <div class="fake-comment-input" (click)="switchMode(modeEnums.Text)">发表评论</div>
+
+        <button class="sender"><i class="bi bi-up-arrow3"></i></button>
       </div>
 
-      <button class="sender">发送</button>
-      <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
+      <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At || mode === modeEnums.None">
         <i class="bi bi-at-people-keyboard"></i>
       </a>
-      <a class="switcher" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text">
+      <a class="switcher" (click)="switchMode(modeEnums.At)" *ngIf="mode === modeEnums.Text || mode === modeEnums.None">
         <i class="bi bi-at-people"></i>
       </a>
     </form>
