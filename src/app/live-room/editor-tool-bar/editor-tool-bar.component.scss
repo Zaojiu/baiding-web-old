@@ -122,7 +122,6 @@
   .post-message-container {
     display: flex;
     align-items: center;
-    max-height: 63px + 13px * 2;
     overflow: hidden;
     background-color: rgb(240, 240, 241);
     border-top: solid 1px rgb(212, 212, 212);
@@ -159,41 +158,52 @@
       }
     }
 
-    .input-wrapper {
+    .input-container {
       position: relative;
       margin: 10px 0;
       background-color: rgb(255, 255, 255);
-      border-radius: 4px;
+      border-radius: 16px;
       border: solid 1px rgb(219, 219, 219);
       flex-grow: 1;
-      padding-right: 58px;
+      padding-right: 32px;
 
       &:first-child {
         margin-left: 10px;
       }
 
+      .input-wrapper {
+        margin: 9px 0 7px 8px;
+      }
+
       .message-input {
         display: block;
         width: 100%;
-        max-height: 63px;
-        padding: 10px 0 10px 10px;
+        max-height: 49px;
         line-height: 1.2em;
         resize: none;
         background-color: transparent;
+        color: $color-dark-gray;
         font-size: 14px;
+        word-break: break-all;
       }
 
       .sender {
         position: absolute;
-        top: 50%;
         right: 0;
-        transform: translateY(-50%);
-        display: flex;
-        align-items: center;
-        padding: 0 12px;
-        height: 100%;
-        font-size: 17px;
-        color: $color-brand;
+        bottom: 0;
+        padding: 3px;
+
+        .bi {
+          width: 26px;
+          height: 26px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: $color-brand;
+          color: $color-w;
+          border-radius: 50%;
+          font-size: 12px;
+        }
       }
     }
 

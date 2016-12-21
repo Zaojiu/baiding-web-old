@@ -9,7 +9,6 @@ import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {EditMode} from "./audience-tool-bar.enums";
 import {Router} from "@angular/router";
-import {UtilsService} from "../../shared/utils/utils";
 import {LiveRoomService} from "../live-room.service";
 
 declare var $: any;

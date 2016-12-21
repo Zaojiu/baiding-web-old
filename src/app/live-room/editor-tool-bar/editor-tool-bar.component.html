@@ -68,21 +68,26 @@
 
       <i class="bi bi-image-round post-image" *ngIf="isInWechat && !liveInfo.isClosed()" (click)="selectImages()"></i>
 
-      <form class="input-wrapper">
-        <textarea
-          #messageInput
-          class="message-input invisible-scrollbar"
-          name="messageContent"
-          type="text"
-          rows="1"
-          placeholder="此时此刻你在想什么?"
-          (focus)="resetKeyboard()"
-          [(ngModel)]="messageContent"
-          autoresize
-          display-when-focus
-          (input)="messageInputChanged()"
-        ></textarea>
-        <button class="sender" (click)="postMessage();focusMessageInput();">发送</button>
+      <form class="input-container">
+        <div class="input-wrapper">
+          <textarea
+            #messageInput
+            class="message-input invisible-scrollbar"
+            name="messageContent"
+            type="text"
+            rows="1"
+            placeholder="此时此刻你在想什么?"
+            (focus)="resetKeyboard()"
+            [(ngModel)]="messageContent"
+            autoresize
+            display-when-focus
+            (input)="messageInputChanged()"
+          ></textarea>
+        </div>
+
+        <button class="sender" (click)="postMessage();focusMessageInput();">
+          <i class="bi bi-up-arrow3"></i>
+        </button>
       </form>
 
       <a class="switcher" (click)="switchMode(modeEnums.Text)" *ngIf="mode === modeEnums.At">
