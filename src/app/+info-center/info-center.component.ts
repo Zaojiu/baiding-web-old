@@ -7,7 +7,7 @@ import {UserInfoModel, UserPublicInfoModel} from "../shared/api/user-info/user-i
 import {UtilsService} from "../shared/utils/utils";
 import {DomSanitizer, SafeUrl, SafeStyle} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
-import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
+import {TimeToFormatedPipe} from "../shared/pipe/time.pipe";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {Subscription} from "rxjs";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
@@ -20,8 +20,8 @@ import {UserInfoService} from "../shared/api/user-info/user-info.service";
 export class InfoCenterComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private shareService: ShareBridge,
-              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe,
-              private userInfoService: UserInfoService) {
+              private sanitizer: DomSanitizer, private userInfoService: UserInfoService,
+              private timeToformatedPipe: TimeToFormatedPipe) {
   }
 
   timeNow = UtilsService.now.toString();
@@ -110,10 +110,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
             this.liveTime[liveInfo.id] = `开始时间 ${moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss')}`;
           }
         } else if (liveInfo.status === LiveStatus.Ended) {
-          let diffSec = moment(liveInfo.closedAt).diff(moment(liveInfo.expectStartAt)) / 1000;
-          let dayStr = this.durationPipe.transform(diffSec, 1);
-          if (dayStr !== '') dayStr += ':';
-          this.liveTime[liveInfo.id] = `直播时长 ${dayStr}${this.durationPipe.transform(diffSec, 2)}:${this.durationPipe.transform(diffSec, 3)}:${this.durationPipe.transform(diffSec, 4)}`;
+          this.liveTime[liveInfo.id] = `直播时长 ${this.timeToformatedPipe.transform(liveInfo.expectStartAt, liveInfo.closedAt)}`;
         } else {
           this.liveTime[liveInfo.id] = '未知状态';
         }
@@ -154,10 +151,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
             this.liveTime[liveInfo.id] = `开始时间 ${moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss')}`;
           }
         } else if (liveInfo.status === LiveStatus.Ended) {
-          let diffSec = moment(liveInfo.closedAt).diff(moment(liveInfo.expectStartAt)) / 1000;
-          let dayStr = this.durationPipe.transform(diffSec, 1);
-          if (dayStr !== '') dayStr += ':';
-          this.liveTime[liveInfo.id] = `直播时长 ${dayStr}${this.durationPipe.transform(diffSec, 2)}:${this.durationPipe.transform(diffSec, 3)}:${this.durationPipe.transform(diffSec, 4)}`;
+          this.liveTime[liveInfo.id] = `直播时长 ${this.timeToformatedPipe.transform(liveInfo.expectStartAt, liveInfo.closedAt)}`;
         } else {
           this.liveTime[liveInfo.id] = '未知状态';
         }

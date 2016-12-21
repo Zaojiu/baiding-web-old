@@ -11,11 +11,8 @@
         <div class="content-wrapper">
           <div class="live-title">{{liveInfo.subject}}</div>
           <span class="live-status" *ngIf="liveInfo.isCreated()">未开始</span>
-          <span class="live-status" *ngIf="liveInfo.isStarted()">
-            已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
-          </span>
+          <span class="live-status" *ngIf="liveInfo.isStarted()">已进行{{liveInfo.expectStartAt | timeToFormated:timeNow}}</span>
           <span class="live-status" *ngIf="liveInfo.isClosed()">已结束</span>
-
         </div>
 
         <i class="bi bi-right-arrow"></i>
