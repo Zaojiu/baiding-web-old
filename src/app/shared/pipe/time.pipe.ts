@@ -67,3 +67,40 @@ export class FromNowPipe implements PipeTransform {
     return moment(+time / 1e6).fromNow();
   }
 }
+
+// 直播进行时长
+@Pipe({name: 'timeToFormated'})
+export class TimeToFormatedPipe implements PipeTransform {
+  transform(fromTime: string, endTime: string): string {
+    var fromTimeParsed = moment.unix(+fromTime);
+    if (!fromTimeParsed.isValid()) fromTimeParsed = moment(fromTime);
+    if (!fromTimeParsed.isValid()) return '0';
+
+    var endTimeParsed = moment.unix(+endTime);
+    if (!endTimeParsed.isValid()) endTimeParsed = moment(endTime);
+    if (!endTimeParsed.isValid()) return '0';
+
+    let sec = Math.round(endTimeParsed.diff(fromTimeParsed) / 1000);
+    let momentSec = moment.duration(sec, 'seconds');
+
+    let ddhhmmss = momentSec.days().toString() + '天' + momentSec.hours().toString() + '小时' + momentSec.minutes().toString() + '分' + momentSec.seconds().toString() + '秒'
+
+    // hhmmss
+    if (momentSec.days() === 0 && momentSec.hours() !== 0) {
+      let hhmmss = momentSec.hours().toString() + '小时' + momentSec.minutes().toString() + '分' + momentSec.seconds().toString() + '秒';
+      return hhmmss;
+    }
+    // mmss
+    if (momentSec.days() === 0 && momentSec.hours() === 0 && momentSec.minutes() !== 0) {
+      let mmss = momentSec.minutes().toString() + '分' + momentSec.seconds().toString() + '秒';
+      return mmss;
+    }
+    // ss
+    if (momentSec.days() === 0 && momentSec.hours() === 0 && momentSec.minutes() === 0 && momentSec.seconds() !== 0) {
+      let ss = momentSec.seconds().toString() + '秒';
+      return ss;
+    }
+
+    return ddhhmmss;
+  }
+}

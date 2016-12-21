@@ -42,8 +42,8 @@
                 <div class="time">
                   <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
                   <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
-                  <span class="time" *ngIf="liveInfo.isStarted()">已进行<span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}天</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}小时{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}分{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}秒
-                  </span>
+                  <span class="time"
+                        *ngIf="liveInfo.isStarted()">已进行{{liveInfo.expectStartAt | timeToFormated:timeNow}}</span>
                 </div>
               </div>
             </div>
@@ -136,8 +136,8 @@
                 <div class="time">
                   <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
                   <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
-                  <span class="time" *ngIf="liveInfo.isStarted()">已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}天</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}小时{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}分{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}秒
-                  </span>
+                  <span class="time"
+                        *ngIf="liveInfo.isStarted()">已进行{{liveInfo.expectStartAt | timeToFormated:timeNow}}</span>
                 </div>
               </div>
             </div>

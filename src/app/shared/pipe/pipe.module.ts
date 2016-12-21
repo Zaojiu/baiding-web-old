@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RolePipe} from "./role.pipe";
-import {TimeFormaterPipe, DurationFormaterPipe, FromNowPipe, TimeToPipe} from "./time.pipe";
+import {TimeToFormatedPipe, TimeFormaterPipe, DurationFormaterPipe, FromNowPipe, TimeToPipe} from "./time.pipe";
 
 @NgModule({
   declarations: [
@@ -9,6 +9,7 @@ import {TimeFormaterPipe, DurationFormaterPipe, FromNowPipe, TimeToPipe} from ".
     DurationFormaterPipe,
     TimeToPipe,
     FromNowPipe,
+    TimeToFormatedPipe,
   ],
   exports: [
     RolePipe,
@@ -16,6 +17,7 @@ import {TimeFormaterPipe, DurationFormaterPipe, FromNowPipe, TimeToPipe} from ".
     DurationFormaterPipe,
     TimeToPipe,
     FromNowPipe,
+    TimeToFormatedPipe,
   ]
 })
 
