@@ -83,16 +83,16 @@ export class TimeToFormatedPipe implements PipeTransform {
     let sec = Math.round(endTimeParsed.diff(fromTimeParsed) / 1000);
     let momentSec = moment.duration(sec, 'seconds');
 
-    let ddhhmmss = momentSec.days().toString() + '天' + momentSec.hours().toString() + '小时' + momentSec.minutes().toString() + '分' + momentSec.seconds().toString() + '秒'
+    let ddhhmmss = momentSec.days().toString() + '天' + momentSec.hours().toString() + '小时';
 
     // hhmmss
     if (momentSec.days() === 0 && momentSec.hours() !== 0) {
-      let hhmmss = momentSec.hours().toString() + '小时' + momentSec.minutes().toString() + '分' + momentSec.seconds().toString() + '秒';
+      let hhmmss = momentSec.hours().toString() + '小时' + momentSec.minutes().toString() + '分钟';
       return hhmmss;
     }
     // mmss
     if (momentSec.days() === 0 && momentSec.hours() === 0 && momentSec.minutes() !== 0) {
-      let mmss = momentSec.minutes().toString() + '分' + momentSec.seconds().toString() + '秒';
+      let mmss = momentSec.minutes().toString() + '分钟';
       return mmss;
     }
     // ss
