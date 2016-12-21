@@ -74,16 +74,14 @@ export class TimeToFormatedPipe implements PipeTransform {
   transform(fromTime: string, endTime: string): string {
     var fromTimeParsed = moment.unix(+fromTime);
     if (!fromTimeParsed.isValid()) fromTimeParsed = moment(fromTime);
-    if (!fromTimeParsed.isValid()) return '0';
+    if (!fromTimeParsed.isValid()) return '无效时间';
 
     var endTimeParsed = moment.unix(+endTime);
     if (!endTimeParsed.isValid()) endTimeParsed = moment(endTime);
-    if (!endTimeParsed.isValid()) return '0';
+    if (!endTimeParsed.isValid()) return '无效时间';
 
     let sec = Math.round(endTimeParsed.diff(fromTimeParsed) / 1000);
     let momentSec = moment.duration(sec, 'seconds');
-
-    let ddhhmmss = momentSec.days().toString() + '天' + momentSec.hours().toString() + '小时';
 
     // hhmmss
     if (momentSec.days() === 0 && momentSec.hours() !== 0) {
@@ -101,6 +99,7 @@ export class TimeToFormatedPipe implements PipeTransform {
       return ss;
     }
 
+    let ddhhmmss = momentSec.days().toString() + '天' + momentSec.hours().toString() + '小时';
     return ddhhmmss;
   }
 }
