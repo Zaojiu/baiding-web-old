@@ -22,7 +22,7 @@ export class WechatShareService implements ShareBridge {
 
   private _setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string) {
     if (desc.length > 19) desc = `${desc.slice(0, 18)}...`;
-    desc = `${desc}#造就话题间#`;
+    desc = `${desc}`;
 
     this.title = title;
     this.desc = desc;

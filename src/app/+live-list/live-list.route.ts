@@ -8,6 +8,9 @@ const route: Routes = [
   {
     path: '',
     component: LiveListComponent,
+    data: {
+      title: '造就Now'
+    },
     resolve: {
       userInfo: UserInfoResolver,
     },
