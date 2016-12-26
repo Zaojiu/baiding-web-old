@@ -77,8 +77,8 @@ export class VipInfoComponent implements OnInit {
         return;
       }
 
-      if (invitationCount >= 10) {
-        this.operationTipsService.popup('最多邀请十个嘉宾');
+      if (invitationCount >= 30) {
+        this.operationTipsService.popup('最多邀请三十个嘉宾');
         return;
       }
 
