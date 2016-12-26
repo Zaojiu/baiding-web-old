@@ -87,7 +87,7 @@ export class MessageApiService {
       message.audio = new AudioMessageModel();
       message.audio.localId = '';
       message.audio.serverId = data.audio.weixinId;
-      message.audio.translateResult = data.audio.text;
+      message.audio.translateResult = data.content || data.audio.text;
       message.audio.link = data.audio.link;
       message.audio.duration = data.audio.duration;
     }
@@ -230,7 +230,7 @@ export class MessageApiService {
           _originMessage.id = data.id;
           _originMessage.audio.link = data.audio.link;
           _originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
-          _originMessage.audio.translateResult = data.audio.text;
+          _originMessage.audio.translateResult = data.content || data.audio.text;
           _originMessage.postStatus = PostMessageStatus.PostSuccessful;
           resolve(data);
         }, (err) => {
@@ -509,7 +509,7 @@ export class MessageApiService {
 
         originMessage.id = data.id;
         originMessage.audio.duration = data.audio.duration; // 从服务端校准数据
-        originMessage.audio.translateResult = data.audio.text;
+        originMessage.audio.translateResult = data.content || data.audio.text;
         originMessage.postStatus = PostMessageStatus.PostSuccessful;
         this.timelineService.deleteMessage(originMessage);
         this.timelineService.pushMessage(originMessage);
