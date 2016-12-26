@@ -53,7 +53,7 @@
           </div>
 
           <div class="content text-content" *ngIf="message.type === 0 || message.type === 3">
-            <div class="word-wrap" [innerHtml]="parseContent(message.content)"></div>
+            <div class="word-wrap">{{messageParsed}}</div>
             <div class="post-status">
               <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
               <i class="bi bi-warning-round"
