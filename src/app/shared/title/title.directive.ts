@@ -4,8 +4,8 @@ import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {Title as NgTitle}     from '@angular/platform-browser';
 
 import {TitleService} from './title.service';
-
 import {UtilsService} from '../utils/utils';
+import {ShareBridge} from '../bridge/share.interface';
 
 
 declare var $: any;
@@ -25,7 +25,7 @@ export class TitleSetterDirective implements OnInit {
               private titleService: TitleService,
               private activated: ActivatedRoute,
               private ngTitle: NgTitle,
-              private router: Router) {
+              private router: Router, private shareBridge: ShareBridge) {
     this.el = el.nativeElement;
     this.setTitle = UtilsService.isiOS && UtilsService.isInWechat ? this.setWechatWebviewTitle : ngTitle.setTitle;
   }
@@ -59,6 +59,7 @@ export class TitleSetterDirective implements OnInit {
 
         if (data.length) {
           this.titleService.set(data.join('-'));
+          this.shareBridge.setShareInfo(data.join('-'), '小人物也有大声音', `${location.protocol}//${location.host}/assets/img/zaojiu-logo.jpg`, `${location.protocol}//${location.host}/#${this.router.url}`);
         }
       });
 

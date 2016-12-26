@@ -30,7 +30,7 @@ const route: Routes = [
         path: '',
         component: LiveRoomComponent,
         data: {
-          title: '造就直播'
+          title: '造就Now'
         },
         resolve: {
           liveInfo: LiveInfoResolver,
