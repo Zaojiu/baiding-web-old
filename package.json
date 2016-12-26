@@ -61,7 +61,7 @@
     "@types/jasmine": "^2.2.30",
     "@types/jquery": "^2.0.33",
     "@types/node": "^6.0.42",
-    "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git#e70d5b0ecce93d30980cdfa189e91d9155386d87",
+    "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git#0b6c2b558087f8831ba045562770c41971553444",
     "codelyzer": "~0.0.26",
     "jasmine-core": "2.4.1",
     "jasmine-spec-reporter": "2.5.0",
