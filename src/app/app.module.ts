@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule, Title} from '@angular/platform-browser';
-import {HttpModule, BrowserXhr} from '@angular/http';
+import {HttpModule, BrowserXhr, XHRBackend, Http, RequestOptions} from '@angular/http';
 
 import {Angulartics2Module, Angulartics2GoogleAnalytics} from 'angulartics2';
 
@@ -51,6 +51,7 @@ import {ImageBridge} from "./shared/bridge/image.interface";
 import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
 import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
 import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
+import {CustomHttp} from "./shared/customhttp.service";
 
 @NgModule({
   imports: [
@@ -83,10 +84,23 @@ import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
     PcAudioService,
     PcShareService,
     PcAuthService,
-    { provide: AudioBridge, useFactory: audioServiceFactory, deps: [WechatAudioService, IosAudioService, PcAudioService] },
-    { provide: AuthBridge, useFactory: authServiceFactory, deps: [WechatAuthService, IosAuthService, PcAuthService] },
-    { provide: ShareBridge, useFactory: shareServiceFactory, deps: [WechatShareService, IosShareService, PcShareService] },
-    { provide: ImageBridge, useFactory: imageServiceFactory, deps: [WechatImageService] },
+    {
+      provide: AudioBridge,
+      useFactory: audioServiceFactory,
+      deps: [WechatAudioService, IosAudioService, PcAudioService]
+    },
+    {provide: AuthBridge, useFactory: authServiceFactory, deps: [WechatAuthService, IosAuthService, PcAuthService]},
+    {
+      provide: ShareBridge,
+      useFactory: shareServiceFactory,
+      deps: [WechatShareService, IosShareService, PcShareService]
+    },
+    {provide: ImageBridge, useFactory: imageServiceFactory, deps: [WechatImageService]},
+    {
+      provide: Http,
+      useClass: CustomHttp,
+      deps: [XHRBackend, RequestOptions, OperationTipsService]
+    },
     Title,
     UserInfoResolver,
     LiveInfoResolver,
