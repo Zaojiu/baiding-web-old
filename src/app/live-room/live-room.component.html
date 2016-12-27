@@ -1,9 +1,9 @@
 <bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
 
-<beginner-guide
-  [showAdminGuide]="liveInfo.isEditor(userInfo.uid)"
-  [showUserGuide]="liveInfo.isAudience(userInfo.uid)"
-></beginner-guide>
+<!--<beginner-guide-->
+  <!--[showAdminGuide]="liveInfo.isEditor(userInfo.uid)"-->
+  <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
+<!--&gt;</beginner-guide>-->
 
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <top-bar
