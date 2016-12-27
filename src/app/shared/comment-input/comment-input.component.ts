@@ -31,7 +31,10 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   ngAfterViewInit() {
-    $(this.commentInput.nativeElement).on('input', () => this.detectContentChange());
+    $(this.commentInput.nativeElement).on('input', () => {
+      this.detectContentChange();
+      this.liveRoomService.setTextWordsStashed(this.commentContent, this.liveId);
+    });
   }
 
   ngOnDestroy() {
