@@ -46,6 +46,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   tranlationMaxLength = 32;
   postStatus = PostMessageStatus;
   canReply: boolean;
+  messageParsed: string;
 
   constructor(private messageService: MessageService, private messageApiService: MessageApiService,
               private router: Router, private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
@@ -54,6 +55,9 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // static msg content to prevent selection problem
+    if (this.message.content) this.messageParsed = UtilsService.parseAt(this.message.content);
+
     this.canReply = this.message.user && this.message.user.uid !== this.userInfo.uid &&
       this.liveInfo.isEditor(this.userInfo.uid) &&
       this.message.postStatus === PostMessageStatus.PostSuccessful && !this.liveInfo.isClosed();
@@ -161,7 +165,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   getUserPublicInfoAndPopUpCard(uid: number) {
-    this.userInfoService.getUserPublicInfo(uid).then((publicInfo)=> {
+    this.userInfoService.getUserPublicInfo(uid).then((publicInfo) => {
       this.editorCardService.popup(publicInfo);
     });
   }
