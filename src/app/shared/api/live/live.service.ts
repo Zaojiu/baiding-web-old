@@ -77,6 +77,10 @@ export class LiveService {
 
     if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${liveInfo.updatedAt}`;
 
+    let lives = StoreService.get('lives') || {};
+    lives[liveInfo.id] = liveInfo;
+    StoreService.set('lives', lives);
+
     return liveInfo;
   }
 
@@ -93,8 +97,6 @@ export class LiveService {
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
-      lives[liveInfo.id] = liveInfo;
-      StoreService.set('lives', lives);
 
       return liveInfo;
     }, () => {
@@ -172,16 +174,13 @@ export class LiveService {
 
       let streamData = data.result;
       let liveInfoList: LiveInfoModel[] = [];
-      let lives = StoreService.get('lives') || {};
 
       if (streamData) {
         let usersData = data.include.users;
         for (let liveInfo of streamData) {
           let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
           liveInfoList.push(liveInfoParsed);
-          lives[liveInfoParsed.id] = liveInfoParsed;
         }
-        StoreService.set('lives', lives);
       }
 
       return liveInfoList;
