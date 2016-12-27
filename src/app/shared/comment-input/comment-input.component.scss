@@ -1,0 +1,88 @@
+.comment-input-container {
+  position: relative;
+  height: 100%;
+  display: flex;
+
+  &.activate {
+    .comment-input-wrapper {
+      .comment-input {
+        margin-left: 8px;
+      }
+
+      .sender {
+        pointer-events: all;
+        opacity: 1;
+      }
+    }
+
+    .switcher {
+      width: 46px;
+      opacity: 1;
+    }
+  }
+
+  .comment-input-wrapper {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+
+    .comment-input {
+      display: block;
+      width: 100%;
+      background-color: rgb(255, 255, 255);
+      border: solid 1px rgb(219, 219, 219);
+      border-radius: 19px;
+      font-size: 14px;
+      color: $color-dark-gray;
+      line-height: normal; // prevent abnormal line-height of ios
+      margin: 8px 0;
+      padding-left: 8px;
+      padding-right: 32px;
+      min-width: 0;
+
+      &::placeholder {
+        color: $color-gray;
+        opacity: 1;
+      }
+    }
+
+    .sender {
+      pointer-events: none;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      bottom: 9px;
+      padding: 3px;
+      transition: opacity .2s;
+
+      .bi {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color-brand;
+        color: $color-w;
+        border-radius: 50%;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    opacity: 0;
+    font-size: 0;
+    overflow: hidden;
+    line-height: 49px;
+    color: $color-dark-gray;
+    transition: all .2s;
+
+    .bi {
+      font-size: 22px;
+    }
+  }
+}

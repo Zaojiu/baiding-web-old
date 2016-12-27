@@ -50,6 +50,8 @@ import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {LiveRoomService} from "./live-room.service";
 import {DraggableModule} from "../shared/draggable/draggable.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
+import {CommentInputModule} from "../shared/comment-input/comment-input.module";
+import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -84,6 +86,8 @@ export class MessageHammerConfig extends HammerGestureConfig {
     DisplayWhenFocusModule,
     AutoresizeModule,
     DraggableModule,
+    CommentInputModule,
+    AtKeyBoardModule,
   ],
   declarations: [
     LiveRoomComponent,

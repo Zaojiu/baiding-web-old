@@ -1,0 +1,14 @@
+<div class="at-people-keyboard">
+  <div class="user-row" (click)="atSomeone(liveInfo.admin)">
+    <img class="avatar" [src]="liveInfo.admin.avatar">
+    <div class="name">{{liveInfo.admin.nick}}</div>
+    <div class="tick" [ngClass]="{'selected': isSelected(liveInfo.admin.uid)}"><i class="bi bi-tick"
+    ></i></div>
+  </div>
+
+  <div class="user-row" *ngFor="let vip of liveInfo.editors" (click)="atSomeone(vip)">
+    <img class="avatar" [src]="vip.avatar">
+    <div class="name">{{vip.nick}}</div>
+    <div class="tick" [ngClass]="{'selected': isSelected(vip.uid)}"><i class="bi bi-tick"></i></div>
+  </div>
+</div>
