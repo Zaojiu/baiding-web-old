@@ -1,0 +1,16 @@
+<div class="audio-player-container" (click)="playOrStopVoice()">
+  <!--未播放状态-->
+  <div class="play-btn" *ngIf="!isPlaying">
+    <i class="bi bi-play-fill"></i>
+  </div>
+
+  <!--音频加载中-->
+  <i class="bi bi-sun-flow loading-animation" *ngIf="isPlaying&&!isLoaded"></i>
+
+  <!--加载完成并播放-->
+  <playing-btn *ngIf="isPlaying&&isLoaded" class="animation-playing-btn" [audioDuration]="message.audio.duration / 1000"></playing-btn>
+
+  <span class="audio-duration">{{audioDuration}}秒</span>
+
+  <span class="dot" *ngIf="!isPlayed"></span>
+</div>

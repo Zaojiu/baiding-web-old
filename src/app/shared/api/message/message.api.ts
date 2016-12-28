@@ -152,6 +152,7 @@ export class MessageApiService {
     }
 
     message.createdAt = data.createdAt;
+    message.createdAtParsed = moment(+message.createdAt / 1e6);
 
     return message;
   }
@@ -618,6 +619,17 @@ export class MessageApiService {
     });
   }
 
+  filterMessage(messages: MessageModel[]): MessageModel[] {
+    for (let index in messages) {
+      let message = messages[index];
+      if (!message.isText() && !message.isAudio() && !message.isImage() && !message.isNice()) {
+        messages.splice(+index, 1);
+      }
+    }
+
+    return messages;
+  }
+
   rerangeHistoryMessage(messages: MessageModel[]): MessageModel[] {
     let rerangedMessages: MessageModel[] = [];
 
@@ -651,6 +663,7 @@ export class MessageApiService {
         }
       }
 
+      messages = this.filterMessage(messages);
       messages = this.rerangeHistoryMessage(messages);
 
       return messages;

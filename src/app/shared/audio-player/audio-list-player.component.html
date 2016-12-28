@@ -1,0 +1,43 @@
+<div
+  class="audio-list-player"
+  (touchmove)="moveCursor($event)"
+  (touchend)="resetAudioCursor()"
+  (mousemove)="moveCursor($event)"
+  (mouseup)="resetAudioCursor()"
+>
+  <div class="cover-wrapper">
+    <img class="cover" [src]="coverUrl" alt="话题间封面">
+    <i class="bi bi-play-fill" *ngIf="playingIndex === -1" (click)="playOrStopVoice()"></i>
+    <i class="bi bi-sun-flow loading-animation" *ngIf="playingIndex !== -1 && !isLoaded"></i>
+    <i class="bi bi-pause" *ngIf="playingIndex !== -1 && isLoaded" (click)="playOrStopVoice()"></i>
+  </div>
+
+  <div #progressBarWrapper class="progress-bar-wrapper">
+    <div
+      #progressBar
+      class="progress-bar"
+      [style.width]="(progressBarWidth !== -1 ? progressBarWidth * 100 : currentDuration / totalDuration * 100) + '%'"
+    >
+      <span
+        class="cursor"
+        (touchstart)="setCursorOrigin($event)"
+        (mousedown)="setCursorOrigin($event)"
+      ></span>
+    </div>
+  </div>
+
+  <span class="duration">
+    {{isEnded ? totalDuration.format('mm:ss', { trim: false }) : currentDuration.format('mm:ss', { trim: false })}}
+  </span>
+
+  <div class="playback-rate" (click)="isPlaybackRatePopup = !isPlaybackRatePopup">
+    {{playbackRate}}X<i class="bi bi-down-arrow-fill"></i>
+  </div>
+
+  <ul class="playback-rate-selector" [ngClass]="{'is-popup': isPlaybackRatePopup}" (click)="isPlaybackRatePopup = !isPlaybackRatePopup">
+    <li [ngClass]="{'activate': playbackRate === 1}" (click)="playbackRate = 1">1X</li>
+    <li [ngClass]="{'activate': playbackRate === 1.25}"  (click)="playbackRate = 1.25">1.25X</li>
+    <li [ngClass]="{'activate': playbackRate === 1.5}"  (click)="playbackRate = 1.5">1.5X</li>
+  </ul>
+</div>
+

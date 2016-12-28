@@ -51,7 +51,7 @@ import {ImageBridge} from "./shared/bridge/image.interface";
 import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
 import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
 import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
-import {CustomHttp} from "./shared/customhttp.service";
+import {CustomHttp} from "./shared/api/custom-http.service";
 
 @NgModule({
   imports: [

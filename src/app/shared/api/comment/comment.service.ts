@@ -30,6 +30,7 @@ export class CommentApiService {
     comment.toUsers = [];
     comment.toUids = data.toUids || [];
     comment.createdAt = data.createdAt;
+    comment.createdAtParsed = moment(+comment.createdAt / 1e6);
 
     if (data.toUids && data.toUids.length) {
       for (let uid of data.toUids) {
@@ -55,6 +56,7 @@ export class CommentApiService {
     comment.msgId = data.msgId;
     comment.content = data.content;
     comment.createdAt = data.createdAt;
+    comment.createdAtParsed = moment(+comment.createdAt / 1e6);
 
     return comment
   }

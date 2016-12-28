@@ -7,9 +7,8 @@ import {AudioBridge} from "../bridge/audio.interface";
 
 @Injectable()
 export class AudioPlayerService {
-
   private static playingMessageId: string;
-  private static audioEl = null;
+  private static audioEl: HTMLAudioElement = null;
 
   userActivated = false;
 
@@ -19,36 +18,25 @@ export class AudioPlayerService {
     }
   }
 
-  play(msg: MessageModel): Observable<string> {
-
+  play(msg: MessageModel, offset = 0, rate = 1): Observable<string> {
     return new Observable<string>(observer => {
-
       if (msg.audio.localId) {
         observer.next('loaded');
-        this.audioService.playVoice(msg.audio.localId).then(localId => {
+        this.audioService.playVoice(msg.audio.localId).then(() => {
           observer.complete();
         });
         return;
-      } else if (msg.audio.audioData) {
-        this.playLocalBlobAudio(msg, observer);
-        return;
       }
 
+      let link = msg.audio.link;
+      if (msg.audio.audioData) link = URL.createObjectURL(msg.audio.audioData);
+
       AudioPlayerService.playingMessageId = msg.id;
-      this.playRemoteURLAudio(msg.audio.link, observer);
+      this.playRemoteURLAudio(link, observer, offset, rate);
     });
   }
 
-  playLocalBlobAudio(msg: MessageModel, observer: any) {
-
-    let url = URL.createObjectURL(msg.audio.audioData);
-
-    AudioPlayerService.playingMessageId = msg.id;
-    this.playRemoteURLAudio(url, observer);
-  }
-
-  playRemoteURLAudio(link: string, observer: any) {
-
+  playRemoteURLAudio(link: string, observer: any, offset = 0, rate = 1) {
     AudioPlayerService.audioEl.onplaying = () => {
       observer.next('loaded');
     };
@@ -59,10 +47,11 @@ export class AudioPlayerService {
     };
     AudioPlayerService.audioEl.src = link;
     AudioPlayerService.audioEl.play();
+    AudioPlayerService.audioEl.currentTime = offset;
+    AudioPlayerService.audioEl.playbackRate = rate;
   }
 
   isPlaying(msg: MessageModel): boolean {
-
     if (msg.audio.localId) {
       return msg.audio.localId === this.audioService.playingVoiceId;
     }
@@ -91,4 +80,24 @@ export class AudioPlayerService {
     return !!AudioPlayerService.playingMessageId;
   }
 
+  get currentTime(): number {
+    return AudioPlayerService.audioEl.currentTime;
+  }
+
+  preloadAudio(msg: MessageModel) {
+    if (msg.audio.localId || msg.audio.audioData) return;
+
+    let audioEl = document.createElement('audio');
+    audioEl.preload = 'auto';
+    audioEl.src = msg.audio.link;
+    audioEl.onloadeddata = () => audioEl.remove();
+  }
+
+  get playbackRate(): number {
+    return AudioPlayerService.audioEl.playbackRate;
+  }
+
+  set playbackRate(rate: number) {
+    AudioPlayerService.audioEl.playbackRate = rate;
+  }
 }

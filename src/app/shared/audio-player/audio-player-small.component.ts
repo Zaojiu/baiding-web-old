@@ -2,25 +2,19 @@ import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angula
 
 import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
-import {PostMessageStatus} from "../api/message/message.enum";
 import {UtilsService} from "../utils/utils";
 
 @Component({
-  selector: 'audio-player',
-  templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss'],
+  selector: 'audio-player-small',
+  templateUrl: './audio-player-small.component.html',
+  styleUrls: ['./audio-player-small.component.scss'],
 })
 
-export class AudioPlayerComponent implements OnInit, OnDestroy {
+export class AudioPlayerSmallComponent implements OnInit, OnDestroy {
   @Input() message: MessageModel;
-  @Input() isWhiteTheme: MessageModel;
-  postStatus = PostMessageStatus;
-
   @Output() playEnded = new EventEmitter();
-
   played: boolean;
-
-  isLoaded = false;
+  isLoaded = true;
 
   constructor(private audioPlayerService: AudioPlayerService) {
   }
@@ -40,11 +34,12 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   }
 
   play() {
-
     if (!this.played) {
       this.played = true;
       this.setPlayed(this.message.id);
     }
+
+    this.isLoaded = false;
 
     this.audioPlayerService.userActivated = true;
     this.audioPlayerService.play(this.message).subscribe(value => {

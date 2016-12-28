@@ -7,6 +7,7 @@ import {CommentApiService} from "../api/comment/comment.service";
 import {LiveRoomService} from "../../live-room/live-room.service";
 import {LiveInfoModel} from "../api/live/live.model";
 import {UserInfoModel} from "../api/user-info/user-info.model";
+import {CommentModel} from "../api/comment/comment.model";
 
 declare var $: any;
 
@@ -23,6 +24,7 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
   @Output() modeChange = new EventEmitter<EditMode>();
   @Input() commentContent: string;
   @Output() commentContentChange = new EventEmitter<string>();
+  @Output() postSuccessful = new EventEmitter<CommentModel>();
   @ViewChild('commentInput') commentInput: ElementRef;
   isPosting: boolean;
   modeEnums = EditMode;
@@ -112,9 +114,10 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
 
     this.isPosting = true;
 
-    this.commentApiService.postComment(this.liveId, this.commentContent, this.parseAtUser()).then(() => {
+    this.commentApiService.postComment(this.liveId, this.commentContent, this.parseAtUser()).then(comment => {
       this.changeCommentContent('');
       this.liveRoomService.setTextWordsStashed('', this.liveId);
+      this.postSuccessful.emit(comment);
     }).finally(() => {
       this.isPosting = false;
     });
@@ -126,7 +129,6 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
     }
 
     if (this.commentContent[this.commentContent.length - 1] === '@') {
-      console.log('change to at mode')
       this.changeMode(EditMode.At);
     }
   }
