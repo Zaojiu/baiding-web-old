@@ -10,10 +10,11 @@
 
   .comment-input {
     flex-grow: 1;
-    transition: width 0.2s;
+    transition: all 0.2s;
 
     &.activate {
       width: 100%;
+      margin-left: 8px;
     }
   }
 

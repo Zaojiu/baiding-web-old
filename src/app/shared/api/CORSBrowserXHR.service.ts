@@ -1,4 +1,4 @@
-import { NgModule, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BrowserXhr } from '@angular/http';
 
 @Injectable()

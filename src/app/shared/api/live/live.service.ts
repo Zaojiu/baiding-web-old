@@ -99,8 +99,6 @@ export class LiveService {
       let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
 
       return liveInfo;
-    }, () => {
-      return Promise.reject(liveInfoCache);
     });
   }
 

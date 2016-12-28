@@ -15,7 +15,7 @@ export class PcAudioService implements AudioBridge {
 
   constructor() {
   }
-  
+
   private init(): Promise<void> {
     if (!(<any>window).navigator.mediaDevices) {
       (<any>window).navigator.mediaDevices = {};
@@ -49,7 +49,7 @@ export class PcAudioService implements AudioBridge {
           this.rtcRecorder = recordrtc(stream, {
             type: 'audio',
             mimeType: 'audio/ogg',
-            audioBitsPerSecond: 128000,
+            bufferSize: 8192,
           });
           this.hasInit = true;
           resolve();
