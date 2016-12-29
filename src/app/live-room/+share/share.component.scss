@@ -1,5 +1,23 @@
+.tips {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  height: 30px;
+  text-align: center;
+  background: rgba(0, 0, 0, .8);
+  font-size: 14px;
+  color: rgb(158, 161, 165);
+  letter-spacing: 0px;
+  line-height: 30px;
+  vertical-align: middle;
+}
+
 .share-container {
   position: absolute;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   left: 0;
   right: 0;
   top: 0;
@@ -10,10 +28,10 @@
   justify-content: center;
   align-items: center;
 
-  .share-img{
-    margin: 88px 0;
+  .share-img {
+    margin: auto 0;
     width: 100%;
-    &.is-loading{
+    &.is-loading {
       display: none;
     }
   }

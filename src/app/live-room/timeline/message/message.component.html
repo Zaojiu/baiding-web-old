@@ -127,7 +127,7 @@
           <div class="content-container">
             <div class="content">
               {{reply.user.nick}}回复{{message.user.nick}}
-              <div class="word-wrap"[innerHtml]="parseContent(reply.content)"></div>
+              <div class="word-wrap" [innerHtml]="parseContent(reply.content)"></div>
               <div class="post-status">
                 <i class="bi bi-sun-flow loading-animation" *ngIf="reply.postStatus === postStatus.Pending"></i>
                 <i class="bi bi-warning-round"
@@ -154,7 +154,8 @@
 
   <div class="operation-bar clearfix">
     <span class="btn" *ngIf="canReply" (click)="gotoReply()"><i class="bi bi-bubble"></i>回复</span>
-    <!--<span class="btn" (click)="goToShare()"><i class="bi bi-share-fill"></i>分享</span>-->
+    <span class="btn" *ngIf="message.type === messageType.Text || message.type === messageType.Image"
+          (click)="goToShare()"><i class="bi bi-share-fill"></i>分享</span>
 
     <div class="thumbs-up-users">
       <img class="avatar" *ngFor="let user of message.getPraisedAvatars(userInfo)" [src]="user.avatar">
