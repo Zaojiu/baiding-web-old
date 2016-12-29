@@ -9,7 +9,6 @@ export class CustomHttp extends Http {
     super(backend, defaultOptions);
   }
 
-
   request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
     return this.intercept(super.request(url, options));
   }
@@ -32,12 +31,11 @@ export class CustomHttp extends Http {
 
   intercept(observable: Observable<Response>): Observable<Response> {
     return observable.catch((err, source) => {
-
       switch (err.status) {
         case 400:
           this.operationTipsService.popup('提交数据错误');
           break;
-        case 401:
+        case 404:
           this.operationTipsService.popup('资源不存在');
           break;
         case 403 :
@@ -60,8 +58,9 @@ export class CustomHttp extends Http {
             this.operationTipsService.popup('服务器内部错误，请重试');
             break;
         }
-        return Observable.throw(err);
       }
+
+      return Observable.throw(err);
     });
   }
 }
