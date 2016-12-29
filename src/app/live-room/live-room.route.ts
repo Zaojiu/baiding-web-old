@@ -33,7 +33,8 @@ const route: Routes = [
         path: '',
         component: LiveRoomComponent,
         data: {
-          title: '造就Now'
+          title: '造就Now',
+          userDefineShare: true
         },
         resolve: {
           liveInfo: LiveInfoResolver,

@@ -4,11 +4,12 @@ import {Subscription} from 'rxjs/Subscription';
 
 import {TimelineService} from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
+import {ShareApiService} from '../shared/api/share/share.api';
 import {LiveInfoModel} from '../shared/api/live/live.model';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
-import {ShareBridge} from "../shared/bridge/share.interface";
+import {ShareBridge} from '../shared/bridge/share.interface';
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -25,13 +26,17 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   praisedSub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-              private timelineService: TimelineService, private shareBridge: ShareBridge) {
+              private timelineService: TimelineService, private shareBridge: ShareBridge, private shareService: ShareApiService) {
+
   }
 
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`lives/${this.id}/info`]);
     let hash = this.router.serializeUrl(uriTree);
     let uri = `${location.protocol}//${location.hostname}${hash}`;
+
+    let shareParams = this.shareService.makeShared('streams', this.liveInfo.id);
+    uri += `?${shareParams}`;
     return uri;
   }
 
@@ -53,7 +58,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveService.getLiveInfo(this.id, true, true); // 发送加入话题间的请求。
 
     this.route.snapshot.data['title'] = this.liveInfo.subject;
-    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri(), this.id);
+    let shareUrl = this.getShareUri();
+    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, shareUrl, this.id);
 
     this.refreshInterval = setInterval(() => {
       this.refreshLiveInfo();
@@ -71,6 +77,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       userAnim.user = new UserInfoModel;
       this.liveInfo.praisedAnimations.push(userAnim);
     });
+
+    this.shareService.accessSharedByRoute(this.route);
   }
 
   ngOnDestroy() {

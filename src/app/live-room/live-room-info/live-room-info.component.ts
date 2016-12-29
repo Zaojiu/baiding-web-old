@@ -3,6 +3,7 @@ import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../../shared/api/live/live.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+import {ShareApiService} from '../../shared/api/share/share.api';
 import {environment} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
@@ -20,12 +21,14 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   timer: any;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-              private userInfoService: UserInfoService, private operationTipsService: OperationTipsService) {
+              private userInfoService: UserInfoService, private shareService: ShareApiService, private operationTipsService: OperationTipsService) {
   }
 
   ngOnInit() {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+
+    this.shareService.accessSharedByRoute(this.route);
   }
 
   ngOnDestroy() {
