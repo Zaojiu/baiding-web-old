@@ -41,7 +41,6 @@
     "core-js": "^2.4.1",
     "fastclick": "^1.0.6",
     "hammerjs": "^2.0.8",
-    "inobounce": "^0.1.4",
     "jquery": "^3.1.1",
     "leancloud-push": "git://github.com/slene/js-push-sdk.git#cbd62974525255c2cf1e809142a43b304bb02caa",
     "lodash": "^4.15.0",
