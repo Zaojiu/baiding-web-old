@@ -6,13 +6,14 @@
   padding: 10px;
   color: $color-w;
   background: rgba(76, 76, 76, 0.90);
-  max-width: 80%;
+  max-width: 90vw;
   font-size: 14px;
   pointer-events: none;
   opacity: 0;
   transform: translateX(-50%);
   transition: opacity .5s;
-  line-height: 1em;
+  line-height: 1.5em;
+  text-align: center;
 
   &.is-opened {
     opacity: 1;
