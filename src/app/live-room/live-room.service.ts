@@ -64,4 +64,14 @@ export class LiveRoomService {
   isTranslationCollapse(liveId: string): boolean {
     return !!UtilsService.getStorage('tranlastionCollapse')[liveId];
   }
+
+  setHistoryTipsShown(liveId: string) {
+    let historyTips = UtilsService.getStorage('historyTips');
+    historyTips[liveId] = true;
+    UtilsService.setStorage('historyTips', historyTips);
+  };
+
+  getHistoryTipsShown(liveId: string): boolean {
+    return !!UtilsService.getStorage('historyTips')[liveId];
+  }
 }

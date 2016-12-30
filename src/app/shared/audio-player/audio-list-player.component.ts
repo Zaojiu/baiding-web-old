@@ -1,9 +1,10 @@
-import {Component, Input, OnDestroy, OnInit, DoCheck, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild, ElementRef} from '@angular/core';
 
 import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
-import {AudioListPlayerPosition} from "./audio-list-player.model";
-import {SafeUrl} from "@angular/platform-browser";
+import {AudioListPlayerPosition, AudioListPlayerEventType} from "./audio-list-player.model";
+import {UtilsService} from "../utils/utils";
+import {Subscription} from "rxjs";
 
 declare var $: any;
 
@@ -13,9 +14,10 @@ declare var $: any;
   styleUrls: ['./audio-list-player.component.scss'],
 })
 
-export class AudioListPlayerComponent implements DoCheck, OnDestroy {
+export class AudioListPlayerComponent implements OnInit, OnDestroy {
   @Input() messages: MessageModel[] = [];
-  @Input() coverUrl: SafeUrl;
+  @Input() coverUrl: string;
+  @Input() avatarUrl: string;
   lastPosition: AudioListPlayerPosition;
   totalDuration = moment.duration(0);
   currentDuration = moment.duration(0);
@@ -27,56 +29,88 @@ export class AudioListPlayerComponent implements DoCheck, OnDestroy {
   progressBarWidth = -1;
   progressBarWrapperWidth = 0;
   isEnded = true;
+  globalAudioSub: Subscription;
   private cursorOrigin = -1;
   private progressBarOriginWidth = 0;
-  private isCursorReseting = false;
   private _playbackRate = 1;
 
   constructor(private audioPlayerService: AudioPlayerService) {
   }
 
-  ngDoCheck() {
+  ngOnInit() {
+    this.globalAudioSub = this.audioPlayerService.globalAudio$.subscribe(e => {
+      if (e.type === AudioListPlayerEventType.Play) {
+        this.isLoaded = true;
+        this.setCurrentDuration(e.data.offset);
+        this.prefetch(e.data.message);
+        this.progressBarWidth = -1;
+
+        if (!this.currentDurationTimer) {
+          this.isEnded = false;
+          this.setPlaybackTimer();
+        }
+      }
+
+      if (e.type === AudioListPlayerEventType.Loading) {
+        this.isLoaded = false;
+      }
+
+      if (e.type === AudioListPlayerEventType.End || e.type === AudioListPlayerEventType.Pause || e.type === AudioListPlayerEventType.Abort) {
+        clearInterval(this.currentDurationTimer);
+        this.currentDurationTimer = null;
+        this.lastPosition = e.data;
+      }
+
+      if (e.type === AudioListPlayerEventType.End) {
+        this.playNext(e.data.message);
+      }
+    });
+
     this.setTotalDuration();
   }
 
-  playOrStopVoice(fouce = false) {
+  ngOnDestroy() {
+    if (this.playingIndex !== -1) this.audioPlayerService.stop(this.messages[this.playingIndex]);
+    if (this.currentDurationTimer) clearInterval(this.currentDurationTimer);
+    if (this.globalAudioSub) this.globalAudioSub.unsubscribe();
+  }
+
+  playVoice(force = false) {
     if (!this.messages.length) return;
 
-    let playingIndex = this.playingIndex;
-    if (playingIndex === -1 || fouce) {
-      if (this.lastPosition && !fouce) {
-        this.play(this.lastPosition.message, this.lastPosition.offset);
-      } else {
+    if (this.playingIndex === -1 || force) {
+      if (!this.lastPosition || force) {
         this.play(this.messages[0]);
+      } else {
+        this.play(this.lastPosition.message, this.lastPosition.offset);
       }
-
-      this.isEnded = false;
-      this.setCurrentDuration();
-      this.setPlaybackTimer();
-    } else {
-      this.lastPosition = new AudioListPlayerPosition(this.messages[this.playingIndex], this.audioPlayerService.currentTime);
-      this.audioPlayerService.stop(this.messages[this.playingIndex]);
     }
   }
 
-  play(msg: MessageModel, offset = 0): Promise<void> {
-    this.isLoaded = false;
+  stopVoice() {
+    if (!this.messages.length) return;
+
+    let playingIndex = this.playingIndex;
+    if (playingIndex !== -1) {
+      let message = this.messages[this.playingIndex];
+      this.audioPlayerService.stop(message);
+    }
+  }
+
+  playOrStopVoice() {
+    if (!this.messages.length) return;
+
+    if (this.playingIndex === -1) {
+      this.playVoice();
+    } else {
+      this.stopVoice();
+    }
+  }
+
+  private play(msg: MessageModel, offset = 0) {
     this.audioPlayerService.userActivated = true;
 
-    return new Promise((resolve, reject) => {
-      this.audioPlayerService.play(msg, offset, this._playbackRate).subscribe(value => {
-        if (value === 'loaded') {
-          resolve();
-          this.isLoaded = true;
-        }
-      }, () => {
-        reject();
-      }, () => {
-        if (!this.isCursorReseting) this.playNext(msg);
-      });
-    });
-
-
+    this.audioPlayerService.play(msg, offset).subscribe();
   }
 
   private playNext(currentMsg: MessageModel) {
@@ -84,16 +118,17 @@ export class AudioListPlayerComponent implements DoCheck, OnDestroy {
       if (this.messages[i] === currentMsg) {
         if (+i + 1 < this.messages.length) {
           this.play(this.messages[+i + 1]);
+          return;
         }
-        return;
       }
     }
 
-    this.setCurrentDuration();
+    this.currentDuration = moment.duration(0);
+    this.lastPosition = null;
     this.isEnded = true;
   }
 
-  setTotalDuration() {
+  private setTotalDuration() {
     let duration = 0;
 
     for (let message of this.messages) {
@@ -103,27 +138,35 @@ export class AudioListPlayerComponent implements DoCheck, OnDestroy {
     this.totalDuration = moment.duration(duration);
   }
 
-  setCurrentDuration() {
-    if (this.playingIndex === -1) {
-      this.currentDuration = moment.duration(0);
-      return;
-    }
-
+  private setCurrentDuration(offset?: number) {
     let duration = 0;
 
-    for (let i = 0; i < this.playingIndex; i++) duration += this.messages[i].audio.duration;
+    for (let i = 0; i < this.playingIndex; i++) {
+      duration += this.messages[i].audio.duration;
+    }
 
-    duration += this.audioPlayerService.currentTime * 1000;
+    duration += offset ? offset * 1000 : this.audioPlayerService.currentTime * 1000;
 
     this.currentDuration = moment.duration(duration);
   }
 
-  setPlaybackTimer() {
+  private setPlaybackTimer() {
     if (this.currentDurationTimer) clearInterval(this.currentDurationTimer);
 
     this.currentDurationTimer = setInterval(() => {
-      if (this.playingIndex !== -1) this.setCurrentDuration();
+      this.setCurrentDuration();
     }, 1000 / this._playbackRate);
+  }
+
+  private prefetch(currentMsg: MessageModel) {
+    for (let i in this.messages) {
+      if (this.messages[i] === currentMsg) {
+        if (+i + 1 < this.messages.length) {
+          this.audioPlayerService.preloadAudio(this.messages[+i + 1]);
+        }
+        break;
+      }
+    }
   }
 
   setCursorOrigin(e) {
@@ -173,26 +216,20 @@ export class AudioListPlayerComponent implements DoCheck, OnDestroy {
 
     let offset = Math.round((message.audio.duration - (duration - currentDuration)) / 1000);
 
-    this.isCursorReseting = true;
     this.cursorOrigin = -1;
-    this.play(message, offset).finally(() => {
-      this.isCursorReseting = false;
-      this.setCurrentDuration();
-      this.progressBarWidth = -1;
-    });
+    this.play(message, offset);
   }
 
-  get playingIndex(): number {
+  get playingIndex() {
     for (let i in this.messages) {
       if (this.audioPlayerService.isPlaying(this.messages[i])) return +i;
     }
-
-    return -1
+    return -1;
   }
 
   set playbackRate(rate: number) {
     this._playbackRate = rate;
-    this.setPlaybackTimer();
+    if (!this.isEnded) this.setPlaybackTimer();
     this.audioPlayerService.playbackRate = rate;
   }
 
@@ -200,9 +237,8 @@ export class AudioListPlayerComponent implements DoCheck, OnDestroy {
     return this._playbackRate;
   }
 
-  ngOnDestroy() {
-    if (this.playingIndex !== -1) this.audioPlayerService.stop(this.messages[this.playingIndex]);
-    if (this.currentDurationTimer) clearInterval(this.currentDurationTimer);
+  get isAndroid(): boolean {
+    return UtilsService.isAndroid;
   }
 }
 

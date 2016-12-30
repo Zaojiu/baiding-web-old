@@ -12,9 +12,7 @@
       </div>
     </div>
 
-    <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
-
-    <div class="no-history" *ngIf="!isLoading && !messages.length">暂无历史记录</div>
+    <div class="no-history" *ngIf="!messages.length">暂无历史记录</div>
 
     <div class="message-wrapper" *ngFor="let message of messages">
       <div class="message">
@@ -30,35 +28,42 @@
         </div>
 
         <div class="content">
-          <span
-            class="text"
-            [ngClass]="{
-              'high-light-lv1': message.praisedAmount > 0 && message.praisedAmount <= 100,
-              'high-light-lv2': message.praisedAmount > 100 && message.praisedAmount <= 300,
-              'high-light-lv3': message.praisedAmount > 300
-            }"
-            *ngIf="message.type === 0 || message.type === 3"
-          >{{message.content}}</span>
+          <div class="text-wrapper" *ngIf="message.type === 0 || message.type === 3">
+            <span
+              class="text"
+              [ngClass]="{
+                'high-light-lv1': message.praisedAmount > 0 && message.praisedAmount <= 100,
+                'high-light-lv2': message.praisedAmount > 100 && message.praisedAmount <= 300,
+                'high-light-lv3': message.praisedAmount > 300
+              }"
+            >{{message.content}}</span>
+            <span class="edit-btn" *ngIf="userInfo && liveInfo.isAdmin(userInfo.uid)" (click)="editMessage(message)"><i class="bi bi-edit"></i>编辑</span>
+          </div>
 
-          <span
-            class="text"
-            [ngClass]="{
-              'high-light-lv1': message.praisedAmount > 0 && message.praisedAmount <= 100,
-              'high-light-lv2': message.praisedAmount > 100 && message.praisedAmount <= 300,
-              'high-light-lv3': message.praisedAmount > 300
-            }"
-            *ngIf="message.type === 2"
-          >{{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}</span>
+          <div class="text-wrapper" *ngIf="message.type === 2">
+            <span
+              class="text"
+              [ngClass]="{
+                'high-light-lv1': message.praisedAmount > 0 && message.praisedAmount <= 100,
+                'high-light-lv2': message.praisedAmount > 100 && message.praisedAmount <= 300,
+                'high-light-lv3': message.praisedAmount > 300
+              }"
+            >{{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}</span>
+            <span class="edit-btn" *ngIf="userInfo && liveInfo.isAdmin(userInfo.uid)" (click)="editMessage(message)"><i class="bi bi-edit"></i>编辑</span>
+          </div>
 
-          <div class="image" *ngIf="message.type === 1">
-            <img [src]="message.image.smallLink" [alt]="message.content">
+          <div class="image" *ngIf="message.type === 1"  (click)="userInfo && liveInfo.isAdmin(userInfo.uid) ? editMessage(message) : void(0)">
+            <div class="image-wrapper">
+              <img [src]="message.image.smallLink" [alt]="message.content">
+              <span class="edit-btn" *ngIf="userInfo && liveInfo.isAdmin(userInfo.uid)"><i class="bi bi-edit"></i>编辑</span>
+            </div>
             <div class="desc" *ngIf="message.content">{{message.content}}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <a [routerLink]="['/lives', liveInfo.id]" class="history-source">
+    <a [routerLink]="['/lives', liveId]" class="history-source">
       更多精彩尽在话题直播间
       <span class="replay">
         <i class="bi bi-replay"></i>
@@ -68,8 +73,6 @@
 
     <div class="comments">
       <h1>最新评论</h1>
-
-      <div class="no-comment-tips" *ngIf="!isCommentLoading && !comments.length">暂无评论</div>
 
       <div class="comment" *ngFor="let comment of comments">
         <img class="avatar" [src]="comment.user.avatar" alt="头像">
@@ -116,7 +119,7 @@
       <div
         class="btn"
         [ngClass]="{'activate':  mode === modeEnums.None, 'highlight': isPlayerShown, 'disabled': !audioMessages.length}"
-        (click)="audioListPlayer.playOrStopVoice(true); isPlayerShown = !isPlayerShown"
+        (click)="playList()"
       >
         <i class="bi bi-wave2"></i>
         收听
@@ -125,7 +128,7 @@
       <div
         class="btn"
         [ngClass]="{'activate':  mode === modeEnums.None, 'highlight': liveInfo.hadPraised}"
-        (click)="setPraised()"
+        (click)="!userInfo ? goSignin() : setPraised()"
       >
         <i class="bi bi-thumbsup"></i>
         点赞
@@ -154,5 +157,8 @@
     [coverUrl]="coverUrl"
     *ngIf="audioMessages.length"
   ></audio-list-player>
+
 </div>
+
+<router-outlet></router-outlet>
 

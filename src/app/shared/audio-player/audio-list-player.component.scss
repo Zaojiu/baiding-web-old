@@ -16,6 +16,16 @@
       height: 100%;
       width: 100%;
       object-fit: cover;
+      filter: brightness(.8);
+    }
+
+    .avatar {
+      display: block;
+      width: 40px;
+      height: 40px;
+      margin: 5px auto;
+      border-radius: 50%;
+      filter: brightness(.8);
     }
 
     .bi {
@@ -53,6 +63,7 @@
         transform: translateX(50%) translateY(-50%);
         width: 49px;
         height: 49px;
+        cursor: pointer;
 
         &:before {
           content: '';
@@ -84,6 +95,11 @@
   .duration {
     font-size: 14px;
     color: $color-w;
+    width: 40px;
+
+    &:last-child {
+      margin-right: 12px;
+    }
   }
 
   .playback-rate {
@@ -108,6 +124,7 @@
     overflow: hidden;
     background-color: rgba(92, 92, 92, .85);
     transition: height .2s;
+    z-index: 1;
 
     &.is-popup {
       height: 140px;

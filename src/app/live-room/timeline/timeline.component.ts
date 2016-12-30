@@ -44,6 +44,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   isOnBottom: boolean;
   isLoading: boolean;
   unreadCount = 0;
+  historyTipsShown = false;
 
   @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
   @ViewChild('inputtingComp') inputtingComp: InputtingComponent;
@@ -51,7 +52,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
               private liveService: LiveService, private messageApiService: MessageApiService, private liveRoomService: LiveRoomService,
-              private  audioPlayerService: AudioPlayerService, private inputtingService: InputtingService) {
+              private audioPlayerService: AudioPlayerService, private inputtingService: InputtingService) {
   }
 
   ngOnInit() {
@@ -70,6 +71,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         this.scroller.scrollToBottom();
       }, 0);
     });
+
+    this.checkHistoryTips();
   }
 
   ngOnDestroy() {
@@ -144,6 +147,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       case EventType.LiveClosed:
         this.liveService.getLiveInfo(this.id, true).then((result) => {
           this.liveInfo = result;
+          this.checkHistoryTips();
         });
         break;
       case EventType.LiveMessageInputting:
@@ -472,5 +476,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
     let _messages = _.clone(messages);
     _messages.reverse();
     return this.findFirstAvailableMessage(_messages);
+  }
+
+  gotoHistory() {
+    this.router.navigate([`/lives/${this.id}/history`]);
+  }
+
+  checkHistoryTips() {
+    this.historyTipsShown = this.liveRoomService.getHistoryTipsShown(this.id);
+    if (!this.historyTipsShown && this.liveInfo.isClosed()) {
+      this.liveRoomService.setHistoryTipsShown(this.id);
+    }
   }
 }

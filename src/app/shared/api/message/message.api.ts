@@ -16,13 +16,16 @@ import {UtilsService} from "../../utils/utils";
 import {AudioBridge} from "../../bridge/audio.interface";
 import {UserInfoModel} from "../user-info/user-info.model";
 import {ImageBridge} from "../../bridge/image.interface";
+import {StoreService} from "../../store/store.service";
+import {LiveService} from "../live/live.service";
 
 declare var $: any;
 
 @Injectable()
 export class MessageApiService {
   constructor(private http: Http, private userInfoService: UserInfoService, private timelineService: TimelineService,
-              private uploadService: UploadApiService, private audioService: AudioBridge, private imageService: ImageBridge) {
+              private uploadService: UploadApiService, private audioService: AudioBridge,
+              private imageService: ImageBridge, private liveService: LiveService) {
   }
 
   postQueue: PostMessageModel[] = [];
@@ -649,8 +652,15 @@ export class MessageApiService {
     return rerangedMessages;
   }
 
-  history(liveId: string): Promise<MessageModel[]> {
-    let url = `${environment.config.host.io}/api/live/streams/${liveId}/all_messages`;
+  history(liveId: string, needRefresh = false): Promise<MessageModel[]> {
+    if (!needRefresh) {
+      let historyMessage = StoreService.get('historyMessage');
+      if (historyMessage && historyMessage[liveId]) {
+        return Promise.resolve(historyMessage[liveId]);
+      }
+    }
+
+    let url = `${environment.config.host.io}/api/live/posts/${liveId}/messages`;
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
@@ -665,6 +675,16 @@ export class MessageApiService {
 
       messages = this.filterMessage(messages);
       messages = this.rerangeHistoryMessage(messages);
+
+      let historyMessage = StoreService.get('historyMessage') || {};
+      historyMessage[liveId] = messages;
+      StoreService.set('historyMessage', historyMessage);
+
+      if (data.include.liveInfo) {
+        let historyLiveInfo = StoreService.get('historyLiveInfo') || {};
+        historyLiveInfo[liveId] = this.liveService.parseLiveInfo(data.include.liveInfo, data.include.users);
+        StoreService.set('historyLiveInfo', historyLiveInfo);
+      }
 
       return messages;
     });
@@ -693,5 +713,39 @@ export class MessageApiService {
     let url = `${environment.config.host.io}/api/live/streams/${liveId}/messages/inputting`;
     let body = {type: type};
     this.http.post(url, JSON.stringify(body)).toPromise();
+  }
+
+  deleteHistoryMessage(liveId: string, messageId: string): Promise<void> {
+    let url = `${environment.config.host.io}/api/live/posts/${liveId}/messages/${messageId}`;
+
+    return this.http.delete(url, null).toPromise().then(res => {
+      return;
+    });
+  }
+
+  editHistoryMessage(liveId: string, messageId: string, content: string, weixinId?: string, imagesKey?: string): Promise<void> {
+    let url = `${environment.config.host.io}/api/live/posts/${liveId}/messages/${messageId}`;
+    let data = {
+      content: content,
+    };
+
+    if (weixinId || imagesKey) {
+      data['image'] = {
+        weixinId: weixinId,
+        imagesKey: imagesKey,
+      };
+    }
+
+    return this.http.put(url, data).toPromise().then(res => {
+      return;
+    });
+  }
+
+  getHistoryMessageUpToken(liveId: string, messageId: string): Promise<UploadTokenModel> {
+    let url = `${environment.config.host.io}/api/live/posts/${liveId}/messages/${messageId}/image/uptoken`;
+    return this.http.post(url, null).toPromise().then(res => {
+      let data = res.json();
+      return new UploadTokenModel(data.token, data.key);
+    });
   }
 }

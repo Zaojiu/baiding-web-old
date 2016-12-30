@@ -11,6 +11,14 @@ import {AutoBlurModule} from "../../shared/auto-blur/auto-blur.module";
 import {HammerGestureConfig, HAMMER_GESTURE_CONFIG} from "@angular/platform-browser";
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 import {AudioPlayerModule} from "../../shared/audio-player/audio-player.module";
+import {MessageEditorComponent} from "./message-editor/message-editor.component";
+import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
+import {DisplayWhenFocusModule} from "../../shared/display-when-focus/display-when-focus.module";
+import {HistoryMessageResolver} from "./history.resolver";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormModule} from "../../shared/form/form.module";
+import {HistoryService} from "./history.service";
+import {FileSelectorModule} from "../../shared/file-selector/file-selector.module";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -30,11 +38,20 @@ export class MessageHammerConfig extends HammerGestureConfig {
     AtKeyBoardModule,
     AutoBlurModule,
     AudioPlayerModule,
+    AutoresizeModule,
+    DisplayWhenFocusModule,
+    FormsModule,
+    FormModule,
+    ReactiveFormsModule,
+    FileSelectorModule,
   ],
   declarations: [
     HistoryComponent,
+    MessageEditorComponent,
   ],
   providers: [
+    HistoryService,
+    HistoryMessageResolver,
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig},
   ]
 })

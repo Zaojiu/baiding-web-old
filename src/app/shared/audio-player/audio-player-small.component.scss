@@ -21,7 +21,7 @@
     color: $color-gray;
   }
 
-  .play-btn {
+  .play-btn, .pause-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -30,44 +30,21 @@
     border-radius: 50%;
     background-color: $color-brand;
 
-    .bi-play-fill {
-      margin-left: 1px;
+    .bi-play-fill, .bi-pause {
       color: $color-w;
       font-size: 12px;
-      transform: scale(.66);
+      transform: scale(.6);
     }
   }
 
-  .animation-playing-btn {
-    transform: scale(.65);
-    transform-origin: top left;
-    width: 18px;
-    height: 18px;
-
-    /deep/ {
-      .playing-btn {
-        border: solid 1px $color-brand;
-        background-color: $color-w;
-
-        .playing-btn-left, .playing-btn-right {
-          .playing-btn-inner {
-            background-color: $color-brand;
-          }
-        }
-
-        .btn-center {
-          background-color: $color-brand;
-          width: 20px;
-          height: 20px;
-          left: 3px;
-          top: 3px;
-
-          .bi-pause {
-            font-size: 13px;
-            color: $color-w;
-          }
-        }
-      }
-    }
+  .dot {
+    width: 5px;
+    height: 5px;
+    background: #ff0000;
+    border-radius: 50%;
+    margin: 0 11px 0 0;
+    position: absolute;
+    top: 7px;
+    right: -20px;
   }
 }

@@ -303,4 +303,10 @@ export class LiveService {
       return;
     });
   }
+
+  getHistoryLiveInfo(id: string): LiveInfoModel {
+    let historyLiveInfo = StoreService.get('historyLiveInfo');
+    if (historyLiveInfo && historyLiveInfo[id]) return historyLiveInfo[id];
+    return null
+  }
 }

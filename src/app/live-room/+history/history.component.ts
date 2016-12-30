@@ -1,4 +1,4 @@
-import {Component, ViewChildren, QueryList, ViewChild}      from '@angular/core';
+import {Component, ViewChildren, QueryList, ViewChild, OnInit, OnDestroy}      from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {LiveService} from '../../shared/api/live/live.service';
@@ -7,7 +7,7 @@ import {MessageModel} from '../../shared/api/message/message.model';
 import {MessageApiService} from "../../shared/api/message/message.api";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {ShareBridge} from "../../shared/bridge/share.interface";
-import {SafeUrl, DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {UtilsService} from "../../shared/utils/utils";
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {CommentModel} from "../../shared/api/comment/comment.model";
@@ -18,21 +18,22 @@ import {LiveRoomService} from "../live-room.service";
 import {AudioPlayerSmallComponent} from "../../shared/audio-player/audio-player-small.component";
 import {AudioPlayerService} from "../../shared/audio-player/audio-player.service";
 import {AudioListPlayerComponent} from "../../shared/audio-player/audio-list-player.component";
+import {Subscription} from "rxjs";
+import {HistoryService} from "./history.service";
 
 @Component({
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss'],
 })
 
-export class HistoryComponent {
+export class HistoryComponent implements OnInit, OnDestroy {
   liveId: string;
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   messages: MessageModel[] = [];
   audioMessages: MessageModel[] = [];
   comments: CommentModel[] = [];
-  coverUrl: SafeUrl;
-  isLoading = true;
+  coverUrl: string;
   commentsPerQuery = 11;
   isCommentLoading = true;
   hasNextComment = false;
@@ -44,34 +45,45 @@ export class HistoryComponent {
   isPlayerShown = false;
   @ViewChildren('audioPlayerSmall') audioPlayerSmall: QueryList<AudioPlayerSmallComponent>;
   @ViewChild('audioListPlayer') audioListPlayer: AudioListPlayerComponent;
+  refreshSub: Subscription;
 
-  constructor(private liveService: LiveService, private route: ActivatedRoute, private router: Router,
-              private messageApiService: MessageApiService, private shareBridge: ShareBridge,
+  constructor(private liveService: LiveService, private route: ActivatedRoute,
+              private router: Router, private shareBridge: ShareBridge,
               private sanitizer: DomSanitizer, private commentApiService: CommentApiService,
               private operationService: OperationTipsService, private authBridge: AuthBridge,
-              private liveRoomService: LiveRoomService, private audioPlayerService: AudioPlayerService) {
+              private liveRoomService: LiveRoomService, private audioPlayerService: AudioPlayerService,
+              private historyService: HistoryService, private messageApiService: MessageApiService) {
   }
 
   ngOnInit() {
     this.liveId = this.route.snapshot.params['id'];
-    this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
-
-    let coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
-    this.coverUrl = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
-
+    this.messages = this.route.snapshot.data['messages'];
     this.isAutoPlayNext = this.liveRoomService.isAudioAutoPlay(this.liveId);
-
-    this.messageApiService.history(this.liveId).then(messages => {
-      this.messages = messages;
-      this.audioMessages = messages.filter((message) => message.isAudio());
-    }, () => {
-      this.backToMainScreen();
-    }).finally(() => {
-      this.isLoading = false;
-    });
-
+    this.audioMessages = this.messages.filter((message) => message.isAudio());
+    this.liveInfo = this.liveService.getHistoryLiveInfo(this.liveId);
+    this.coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
     this.listNextComments();
+
+    this.route.snapshot.data['title'] = this.liveInfo.subject;
+    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri());
+
+    this.refreshSub = this.historyService.messageRefresh$.subscribe(() => {
+      this.messageApiService.history(this.liveId, true).then(messages => {
+        this.messages = messages;
+      })
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.refreshSub) this.refreshSub.unsubscribe();
+  }
+
+  getShareUri(): string {
+    let uriTree = this.router.createUrlTree([`/lives/${this.liveId}/history`]);
+    let hash = this.router.serializeUrl(uriTree);
+    let uri = location.href.replace(location.hash, `#${hash}`);
+    return uri;
   }
 
   listNextComments(lastComment?: CommentModel) {
@@ -146,11 +158,25 @@ export class HistoryComponent {
     }
 
     if (currentIndex !== -1 && currentIndex + 1 < components.length) {
-      components[currentIndex+1].play();
+      components[currentIndex + 1].play();
     }
 
     if (currentIndex !== -1 && currentIndex + 2 < components.length) {
-      this.audioPlayerService.preloadAudio(components[currentIndex+2].message);
+      this.audioPlayerService.preloadAudio(components[currentIndex + 2].message);
     }
+  }
+
+  editMessage(message: MessageModel) {
+    this.router.navigate([`/lives/${this.liveId}/history/${message.id}/edit`]);
+  }
+
+  playList() {
+    if (this.isPlayerShown) {
+      this.audioListPlayer.stopVoice();
+    } else {
+      this.audioListPlayer.playVoice(true);
+    }
+
+    this.isPlayerShown = !this.isPlayerShown;
   }
 }

@@ -27,6 +27,15 @@
     flex-grow: 1;
     overflow: auto;
 
+    .no-history {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50vh;
+      font-size: 16px;
+      color: $color-dark-gray;
+    }
+
     .live-cover {
       position: relative;
 
@@ -71,7 +80,6 @@
 
         .admin {
           display: inline-flex;
-          flex-shrink: 0;
           overflow: hidden;
           color: $color-dark-gray;
           font-size: 14px;
@@ -120,23 +128,46 @@
         .content {
           font-size: 0;
 
-          .text {
-            font-size: 16px;
-            line-height: 1.75em;
+          .edit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             color: $color-dark-gray;
-            word-break: break-all;
-            white-space: pre-wrap;
+            line-height: 1em;
+            font-size: 12px;
 
-            &.high-light-lv1 {
-              background-color: rgba(249, 190, 64, .1);
+            .bi-edit {
+              font-size: 18px;
+              margin-right: 6px;
+            }
+          }
+
+          .text-wrapper{
+            .text {
+              font-size: 16px;
+              color: $color-dark-gray;
+              line-height: 1.75em;
+              word-break: break-all;
+              white-space: pre-wrap;
+
+              &.high-light-lv1 {
+                background-color: rgba(249, 190, 64, .1);
+              }
+
+              &.high-light-lv2 {
+                background-color: rgba(249, 190, 64, .2);
+              }
+
+              &.high-light-lv2 {
+                background-color: rgba(249, 190, 64, .3);
+              }
             }
 
-            &.high-light-lv2 {
-              background-color: rgba(249, 190, 64, .2);
-            }
-
-            &.high-light-lv2 {
-              background-color: rgba(249, 190, 64, .3);
+            .edit-btn {
+              position: relative;
+              left: 6px;
+              top: 4px;
+              width: 48px;
             }
           }
 
@@ -144,10 +175,24 @@
             text-align: center;
             font-size: 0;
 
-            img {
-              max-height: 80vh;
-              max-width: calc(100vw - 20px * 2 - 9vw);
-              object-fit: contain;
+            .image-wrapper {
+              position: relative;
+              display: inline-block;
+
+              img {
+                max-height: 200vh;
+                max-width: calc(100% - 20px * 2 - 9vw);
+                object-fit: contain;
+              }
+
+              .edit-btn {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 6px 0;
+                background-color: change_color($color-w, $alpha: .6);
+              }
             }
 
             .desc {
@@ -300,7 +345,7 @@
       padding: 0 8px;
 
       .comment-input {
-        display: block;
+        height: 49px;
         flex-grow: 1;
         transition: all 0.2s;
         background-color: rgb(248, 248, 248);
