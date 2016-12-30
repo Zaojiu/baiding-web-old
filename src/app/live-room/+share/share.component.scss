@@ -3,10 +3,10 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 4;
+  z-index: 3;
   height: 30px;
   text-align: center;
-  background: rgba(0, 0, 0, .8);
+  background: rgba(0, 0, 0, 1);
   font-size: 14px;
   color: rgb(158, 161, 165);
   line-height: 30px;
@@ -16,7 +16,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 0;
+  top: 30px;
   background-color: $color-b;
   z-index: 3;
   min-height: 100%;
@@ -27,8 +27,11 @@
   .share-img {
     margin: auto 0;
     width: 100%;
+    opacity: 1;
+    transition: opacity 1s ease;
     &.is-loading {
-      display: none;
+      width: 0;
+      opacity: 0;
     }
   }
 }
