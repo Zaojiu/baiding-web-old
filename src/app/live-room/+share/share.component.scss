@@ -27,8 +27,11 @@
   .share-img {
     margin: auto 0;
     width: 100%;
+    opacity: 1;
+    transition: opacity 1s ease;
     &.is-loading {
-      display: none;
+      width: 0;
+      opacity: 0;
     }
   }
 }
