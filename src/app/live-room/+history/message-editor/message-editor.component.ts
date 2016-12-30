@@ -49,7 +49,6 @@ export class MessageEditorComponent implements OnInit, DoCheck {
     });
 
     if (this.message.isImage()) this.imageSrc = this.message.image.smallLink;
-    console.log(this.message);
   }
 
   ngDoCheck() {
