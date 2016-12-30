@@ -27,7 +27,6 @@
         "../node_modules/hammerjs/hammer.js",
         "../node_modules/moment/moment.js",
         "../node_modules/moment/locale/zh-cn.js",
-        "../node_modules/inobounce/inobounce.js",
         "../node_modules/fastclick/lib/fastclick.js",
         "../node_modules/weixin-js-sdk/index.original.js"
       ],
