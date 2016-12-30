@@ -12,6 +12,8 @@ export class UserInfoResolver implements Resolve<UserInfoModel>{
   resolve(): Promise<UserInfoModel> {
     return this.userInfoService.getUserInfo().then((res)=> {
       return res
+    }, () => {
+      return null;
     });
   }
 }
