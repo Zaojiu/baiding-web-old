@@ -20,7 +20,23 @@ export class UtilsService {
     return JSON.parse(localStorage.getItem(key)) || {};
   }
 
-  static isOnScreen(): boolean {
+  static get isInWechat(): boolean {
+    return /micromessenger/i.test(window.navigator.userAgent);
+  }
+
+  static get isiOS(): boolean {
+    return /iPhone|iPad/i.test(window.navigator.userAgent);
+  }
+
+  static get isAndroid(): boolean {
+    return /Android/i.test(window.navigator.userAgent);
+  }
+
+  static get isInApp(): boolean {
+    return /zaojiuliveapp/i.test(window.navigator.userAgent);
+  }
+
+  static get isOnScreen(): boolean {
     return matchMedia && matchMedia('(min-width: 768px)').matches;
   }
 
