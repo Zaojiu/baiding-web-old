@@ -20,7 +20,9 @@
           <img
             [src]="message.user.avatar"
             alt="头像"
-            (press)="avatarPressed(message.user); $event.preventDefault();"
+            (press)="avatarPressed(message.user);"
+            (tap)="showUserInfoCard(message.user.uid)"
+            (click)="$event.stopPropagation()"
             (contextmenu)="$event.preventDefault()"
           >
           <span class="nick">{{message.user.nick}} / {{message.user | role: liveInfo}}</span>
@@ -157,7 +159,6 @@
     [coverUrl]="coverUrl"
     *ngIf="audioMessages.length"
   ></audio-list-player>
-
 </div>
 
 <router-outlet></router-outlet>

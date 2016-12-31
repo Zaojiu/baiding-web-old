@@ -50,7 +50,6 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
 
       if (modeParsed === EditMode.Text) {
         this.focusMessageInput();
-        this.detectContentChange();
       } else {
         this.blurMessageInput();
       }

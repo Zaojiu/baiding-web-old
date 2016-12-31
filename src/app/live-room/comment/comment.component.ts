@@ -14,7 +14,7 @@ import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../timeline/timeline.service';
 import {UtilsService} from "../../shared/utils/utils";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
-import {UserInfoCardService} from "../user-info-card/user-info-card.service";
+import {UserInfoCardService} from "../../shared/user-info-card/user-info-card.service";
 
 @Component({
   selector: 'comments',

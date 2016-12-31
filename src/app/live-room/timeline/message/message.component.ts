@@ -14,7 +14,7 @@ import {LiveStatus} from "../../../shared/api/live/live.enums";
 import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
 import {UtilsService} from "../../../shared/utils/utils";
 import {Subscription} from "rxjs";
-import {UserInfoCardService} from "../../user-info-card/user-info-card.service";
+import {UserInfoCardService} from "../../../shared/user-info-card/user-info-card.service";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 import {TextPopupService} from "../../../shared/text-popup/text-popup.service";
 import {ModalService} from "../../../shared/modal/modal.service";
@@ -49,8 +49,8 @@ export class MessageComponent implements OnInit, OnDestroy {
   messageParsed: string;
 
   constructor(private messageService: MessageService, private messageApiService: MessageApiService,
-              private router: Router, private sanitizer: DomSanitizer, private editorCardService: UserInfoCardService,
-              private userInfoService: UserInfoService, private modalService: ModalService,
+              private router: Router, private sanitizer: DomSanitizer, private userInfoCardService: UserInfoCardService,
+              private modalService: ModalService,
               private liveRoomService: LiveRoomService) {
   }
 
@@ -140,7 +140,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.audioPlayer.play();
   }
 
-  emitAvatarClick(userInfo: UserInfoModel) {
+  emitAvatarClick(userInfo: UserInfoModel, e) {
     if (this.liveInfo.isEditor(userInfo.uid)) {
       this.messageService.emitAvatarUser(userInfo);
     }
@@ -160,10 +160,8 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.isTranslationCollapse = !this.isTranslationCollapse;
   }
 
-  getUserPublicInfoAndPopUpCard(uid: number) {
-    this.userInfoService.getUserPublicInfo(uid).then((publicInfo) => {
-      this.editorCardService.popup(publicInfo);
-    });
+  showUserInfoCard(uid: number) {
+    this.userInfoCardService.popup(uid);
   }
 
   resendMessage(message: MessageModel|ReplyMessageModel) {

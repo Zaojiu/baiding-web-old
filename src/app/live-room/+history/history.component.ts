@@ -20,6 +20,7 @@ import {AudioPlayerService} from "../../shared/audio-player/audio-player.service
 import {AudioListPlayerComponent} from "../../shared/audio-player/audio-list-player.component";
 import {Subscription} from "rxjs";
 import {HistoryService} from "./history.service";
+import {UserInfoCardService} from "../../shared/user-info-card/user-info-card.service";
 
 @Component({
   templateUrl: './history.component.html',
@@ -52,7 +53,8 @@ export class HistoryComponent implements OnInit, OnDestroy {
               private sanitizer: DomSanitizer, private commentApiService: CommentApiService,
               private operationService: OperationTipsService, private authBridge: AuthBridge,
               private liveRoomService: LiveRoomService, private audioPlayerService: AudioPlayerService,
-              private historyService: HistoryService, private messageApiService: MessageApiService) {
+              private historyService: HistoryService, private messageApiService: MessageApiService,
+              private userInfoCardService: UserInfoCardService) {
   }
 
   ngOnInit() {
@@ -112,10 +114,6 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   parseContent(content: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
-  }
-
-  backToMainScreen() {
-    this.router.navigate(['/lives/' + this.liveId]);
   }
 
   setPraised() {
@@ -178,5 +176,9 @@ export class HistoryComponent implements OnInit, OnDestroy {
     }
 
     this.isPlayerShown = !this.isPlayerShown;
+  }
+
+  showUserInfoCard(uid: number) {
+    this.userInfoCardService.popup(uid);
   }
 }

@@ -47,10 +47,16 @@ export class UserInfoService {
 
 
   getUserPublicInfo(uid: number): Promise<UserPublicInfoModel> {
+    let publicUserInfo = StoreService.get('publicUserInfo') || {};
+    if (publicUserInfo[uid]) return Promise.resolve(publicUserInfo[uid]);
+
     return this.http.get(`${environment.config.host.io}/api/user/${uid}`).toPromise()
       .then(res => {
         let data = res.json();
-        return this.parseUserPublicInfo(data);
+        let info = this.parseUserPublicInfo(data);
+        publicUserInfo[uid] = info;
+        StoreService.set('publicUserInfo', publicUserInfo);
+        return info;
       });
   }
 

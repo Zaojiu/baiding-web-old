@@ -29,8 +29,6 @@
     <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
   </div>
 
-  <user-info-card></user-info-card>
-
   <audience-tool-bar
     *ngIf="liveInfo.isAudience(userInfo.uid)"
     class="audience-tool-bar"
