@@ -49,6 +49,8 @@ export class MessageEditorComponent implements OnInit, DoCheck {
     });
 
     if (this.message.isImage()) this.imageSrc = this.message.image.smallLink;
+
+    if (this.message.isText() || this.message.isNice()) this.message.content = UtilsService.parseAt(this.message.content);
   }
 
   ngDoCheck() {

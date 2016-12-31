@@ -38,7 +38,7 @@
                 'high-light-lv2': message.praisedAmount > 100 && message.praisedAmount <= 300,
                 'high-light-lv3': message.praisedAmount > 300
               }"
-            >{{message.content}}</span>
+            >{{contentParsed[message.id]}}</span>
             <span class="edit-btn" *ngIf="userInfo && liveInfo.isAdmin(userInfo.uid)" (click)="editMessage(message)"><i class="bi bi-edit"></i>编辑</span>
           </div>
 

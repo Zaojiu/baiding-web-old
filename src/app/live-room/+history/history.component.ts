@@ -47,6 +47,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   @ViewChildren('audioPlayerSmall') audioPlayerSmall: QueryList<AudioPlayerSmallComponent>;
   @ViewChild('audioListPlayer') audioListPlayer: AudioListPlayerComponent;
   refreshSub: Subscription;
+  contentParsed: {[key: string]: string} = {};
 
   constructor(private liveService: LiveService, private route: ActivatedRoute,
               private router: Router, private shareBridge: ShareBridge,
@@ -66,6 +67,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
     this.liveInfo = this.liveService.getHistoryLiveInfo(this.liveId);
     this.coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
     this.listNextComments();
+
+    this.messages.map((msg) => {
+      if (msg.isText() || msg.isNice()) this.contentParsed[msg.id] = UtilsService.parseAt(msg.content);
+    });
 
     this.route.snapshot.data['title'] = this.liveInfo.subject;
     this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri());
