@@ -11,6 +11,7 @@ export class UtilsService {
   static isInApp = /zaojiuliveapp/i.test(window.navigator.userAgent);
   static isInBaidingApp = /baidingapp\.com/i.test(location.hostname);
   static isTouchable = (<any>window).DocumentTouch && document instanceof DocumentTouch;
+  static isAndroid = /Android/i.test(window.navigator.userAgent);
 
   static setStorage(key: string, value: Object) {
     localStorage.setItem(key, JSON.stringify(value));
