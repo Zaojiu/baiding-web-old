@@ -36,7 +36,7 @@ export class IosBridgeService {
 
   pushH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let query = {
-      url: `${location.protocol}//${location.host}/#${state.url}`,
+      url: `${location.protocol}//${location.host}/${state.url}`,
       title: route.data['title'] || '造就Now',
     };
 

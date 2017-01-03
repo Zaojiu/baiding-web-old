@@ -59,7 +59,7 @@ export class TitleSetterDirective implements OnInit {
 
         if (data.length) {
           this.titleService.set(data.join('-'));
-          this.shareBridge.setShareInfo(data.join('-'), '小人物也有大声音', `${location.protocol}//${location.host}/assets/img/zaojiu-logo.jpg`, `${location.protocol}//${location.host}/#${this.router.url}`);
+          this.shareBridge.setShareInfo(data.join('-'), '小人物也有大声音', `${location.protocol}//${location.host}/assets/img/zaojiu-logo.jpg`, `${location.protocol}//${location.host}/${this.router.url}`);
         }
       });
 

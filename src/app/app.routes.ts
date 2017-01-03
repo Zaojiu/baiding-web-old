@@ -8,12 +8,13 @@ const appRoutes: Routes = [
   {path: '**', redirectTo: '/404', pathMatch: 'full'},
 ];
 
-const ROUTES = RouterModule.forRoot(appRoutes, {useHash: true});
+const ROUTES = RouterModule.forRoot(appRoutes, {useHash: false});
 
 @NgModule({
   imports: [ROUTES],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule {
 }
 

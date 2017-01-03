@@ -62,7 +62,7 @@ export class AppJumperGuard implements CanActivate {
   }
 
   private processUserInfo(state: RouterStateSnapshot): Promise<UserInfoModel> {
-    let to = `${location.protocol}//${location.hostname}/#${state.url}`;
+    let to = `${location.protocol}//${location.hostname}${state.url}`;
     let userInfoCache = this.userInfoService.getUserInfoCache();
 
     if (userInfoCache) {
