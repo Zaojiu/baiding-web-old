@@ -121,10 +121,6 @@ export class HistoryComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
   }
 
-  backToMainScreen() {
-    this.router.navigate([`lives/${this.liveId}`]);
-  }
-
   setPraised() {
     if (this.liveInfo.hadPraised) return;
 

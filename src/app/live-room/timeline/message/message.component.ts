@@ -154,10 +154,6 @@ export class MessageComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
   }
 
-  gotoHistory() {
-    this.router.navigate([`lives/${this.liveId}/history`]);
-  }
-
   toggleTranslatioExpanded(msg) {
     if (msg.length <= this.tranlationMaxLength) return;
 
