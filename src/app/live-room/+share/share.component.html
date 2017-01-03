@@ -1,6 +1,6 @@
 <div class="tips">长按图片，保存到本地相册，再分享到朋友圈</div>
 
-<div class="share-container" (contextmenu)="$event.preventDefault()">
+<div class="share-container">
   <img class="share-img" [ngClass]="{'is-loading': isLoading}" [src]="imageUrl" (load)="isLoading = false" alt="">
   <bd-loading *ngIf="isLoading"></bd-loading>
 </div>
