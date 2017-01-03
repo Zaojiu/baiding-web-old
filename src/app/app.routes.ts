@@ -14,6 +14,7 @@ const ROUTES = RouterModule.forRoot(appRoutes, {useHash: false});
   imports: [ROUTES],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule {
 }
 
