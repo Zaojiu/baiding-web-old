@@ -55,7 +55,7 @@ export class AppJumperGuard implements CanActivate {
       return this.liveService.getLiveInfo(liveId).then(liveInfo => {
         return liveInfo;
       }, () => {
-        this.router.navigate(['/404']);
+        this.router.navigate([`404`]);
         return null;
       });
     }

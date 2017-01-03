@@ -45,10 +45,10 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
     if (this.from) {
       this.router.navigateByUrl(this.from);
     } else if (this.liveId) {
-      this.router.navigate([`/lives/${this.liveId}`]);
+      this.router.navigate([`lives/${this.liveId}`]);
     } else {
       this.userInfoService.getUserInfo().then(userInfo => {
-        this.router.navigate([`/info-center/${userInfo.uid}`]);
+        this.router.navigate([`info-center/${userInfo.uid}`]);
       });
     }
   }

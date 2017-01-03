@@ -30,7 +30,7 @@ export class LiveInfoResolver implements Resolve<LiveInfoModel> {
     return this.liveService.getLiveInfo(liveId).then((res)=> {
       return res
     }, () => {
-      this.router.navigate(['/404']);
+      this.router.navigate([`404`]);
       return false;
     });
   }

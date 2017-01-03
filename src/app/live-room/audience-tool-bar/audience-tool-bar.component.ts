@@ -59,6 +59,6 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   }
 
   goSettings() {
-    this.router.navigate([`/lives/${this.liveId}/settings`]);
+    this.router.navigate([`lives/${this.liveId}/settings`]);
   }
 }

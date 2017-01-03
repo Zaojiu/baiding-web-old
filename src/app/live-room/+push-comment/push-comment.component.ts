@@ -182,7 +182,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   }
 
   pushComment(comment: CommentModel) {
-    this.router.navigate([`/lives/${this.liveId}/post`, {'comment_id': comment.id}]);
+    this.router.navigate([`lives/${this.liveId}/post`, {'comment_id': comment.id}]);
   }
 
   parseContent(content: string): SafeHtml {

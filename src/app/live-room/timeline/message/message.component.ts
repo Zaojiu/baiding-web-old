@@ -129,11 +129,11 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   gotoReply() {
-    this.router.navigate([`/lives/${this.liveInfo.id}/post`, {'message_id': this.message.id}]);
+    this.router.navigate([`lives/${this.liveInfo.id}/post`, {'message_id': this.message.id}]);
   }
 
   goToShare() {
-    this.router.navigate([`/lives/${this.liveInfo.id}/share/${this.message.id}`]);
+    this.router.navigate([`lives/${this.liveInfo.id}/share/${this.message.id}`]);
   }
 
   playAudio() {
@@ -147,11 +147,15 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   gotoInfoCenter(userInfo: UserInfoModel) {
-    this.router.navigate([`/info-center/${userInfo.uid}`]);
+    this.router.navigate([`info-center/${userInfo.uid}`]);
   }
 
   parseContent(content: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(UtilsService.parseAt(content));
+  }
+
+  gotoHistory() {
+    this.router.navigate([`lives/${this.liveId}/history`]);
   }
 
   toggleTranslatioExpanded(msg) {

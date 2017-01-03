@@ -87,11 +87,11 @@ export class LiveListComponent implements OnInit, OnDestroy {
   }
 
   gotoLiveRoomInfo(liveId: string) {
-    this.router.navigate(([`/lives/${liveId}/info`]));
+    this.router.navigate(([`lives/${liveId}/info`]));
   }
 
   gotoInfoCenter(uid: number) {
-    this.router.navigate(([`/info-center/${uid}`]));
+    this.router.navigate(([`info-center/${uid}`]));
   }
 
   getNextMessages(markerId: string, size: number): Promise<LiveInfoModel[]> {

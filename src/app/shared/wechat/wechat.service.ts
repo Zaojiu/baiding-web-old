@@ -4,6 +4,8 @@ import 'rxjs/add/operator/toPromise';
 
 import {WechatConfigModel} from './wechat.model';
 import {environment} from "../../../environments/environment";
+import {OperationTipsService} from "../operation-tips/operation-tips.service";
+import {UtilsService} from "../utils/utils";
 
 declare var wx: any;
 
@@ -14,7 +16,7 @@ export class WechatConfigService {
   autoCompleteRejecter: (reason: string) => void;
   hasInit: boolean;
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private operationService: OperationTipsService) {}
 
   private getConfig(): Promise<WechatConfigModel> {
     return this.http.post(`${environment.config.host.io}/api/wechat/signature/config`, null).toPromise()
@@ -56,19 +58,22 @@ export class WechatConfigService {
   init(): Promise<void> {
     if (this.hasInit) return Promise.resolve();
 
-    var hasRetry: boolean;
+    let hasConfig = false;
+
+    wx.error(reason => {
+      console.log('wx err:', reason);
+
+      if (hasConfig) {
+        this.operationService.popup('微信初始化失败,请刷新页面');
+        return;
+      }
+
+      hasConfig = true;
+
+      this.configWechat();
+    });
 
     return new Promise<void>((resolve, reject) => {
-      wx.error(reason => {
-        console.log('wx err:', reason);
-
-        if (hasRetry) return reject(reason); // TODO：全局错误处理
-
-        this.configWechat();
-
-        hasRetry = true;
-      });
-
       wx.ready(() => {
         this.hasInit = true;
 

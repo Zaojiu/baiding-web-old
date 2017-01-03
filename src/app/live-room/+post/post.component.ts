@@ -57,11 +57,11 @@ export class PostComponent implements OnInit {
   }
 
   backToMainScreen() {
-    this.router.navigate(['/lives/' + this.id])
+    this.router.navigate([`lives/${this.id}`])
   }
 
   backToPushComment() {
-    this.router.navigate([`/lives/${this.id}/push-comment`]);
+    this.router.navigate([`lives/${this.id}/push-comment`]);
   }
 
   submit() {
