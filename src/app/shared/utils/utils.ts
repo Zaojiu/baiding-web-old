@@ -6,6 +6,12 @@ declare var window: Window;
 declare var DocumentTouch: any;
 
 export class UtilsService {
+  static isInWechat = /micromessenger/i.test(window.navigator.userAgent);
+  static isiOS = /iPhone|iPad/i.test(window.navigator.userAgent);
+  static isInApp = /zaojiuliveapp/i.test(window.navigator.userAgent);
+  static isInBaidingApp = /baidingapp\.com/i.test(location.hostname);
+  static isTouchable = (<any>window).DocumentTouch && document instanceof DocumentTouch;
+
   static setStorage(key: string, value: Object) {
     localStorage.setItem(key, JSON.stringify(value));
   }
@@ -14,19 +20,7 @@ export class UtilsService {
     return JSON.parse(localStorage.getItem(key)) || {};
   }
 
-  static get isInWechat(): boolean {
-    return /micromessenger/i.test(window.navigator.userAgent);
-  }
-
-  static  get isiOS(): boolean {
-    return /iPhone|iPad/i.test(window.navigator.userAgent);
-  }
-
-  static get isInApp(): boolean {
-    return /zaojiuliveapp/i.test(window.navigator.userAgent);
-  }
-
-  static get isOnScreen(): boolean {
+  static isOnScreen(): boolean {
     return matchMedia && matchMedia('(min-width: 768px)').matches;
   }
 
@@ -59,9 +53,5 @@ export class UtilsService {
   static randomId(size = 10, dic?: string): string {
     let defaultDic: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     return _.sampleSize<string>((dic || defaultDic).split(''), size).join('');
-  }
-
-  static get hasTouchEvent(): boolean {
-    return (<any>window).DocumentTouch && document instanceof DocumentTouch;
   }
 }

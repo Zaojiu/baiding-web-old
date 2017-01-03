@@ -125,7 +125,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   startRecord(e: Event) {
-    if ((e instanceof MouseEvent) && UtilsService.hasTouchEvent) return;
+    if ((e instanceof MouseEvent) && UtilsService.isTouchable) return;
 
     if (this.mode === EditMode.Audio && !this.liveInfo.isClosed()) {
       if (this.recorder.status === RecordStatus.Waitting) this.recorder.startRecord();
@@ -137,7 +137,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   stopRecord(e: Event) {
-    if ((e instanceof MouseEvent) && UtilsService.hasTouchEvent) return;
+    if ((e instanceof MouseEvent) && UtilsService.isTouchable) return;
 
     if (this.mode === EditMode.Audio) {
       this.recorder.stopRecord();

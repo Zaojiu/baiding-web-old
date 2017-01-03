@@ -30,6 +30,7 @@ export class CreateComponent implements OnInit, DoCheck {
   submitted = false;
   isSubmitting = false;
   isInApp = UtilsService.isInApp;
+  isInBaidingApp = UtilsService.isInBaidingApp;
 
   constructor(private router: Router, private sanitizer: DomSanitizer, private fb: FormBuilder,
               private liveService: LiveService, private uploadService: UploadApiService) {

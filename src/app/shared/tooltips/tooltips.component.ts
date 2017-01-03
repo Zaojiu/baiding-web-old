@@ -47,7 +47,7 @@ export class ToolTipsComponent implements OnChanges {
     if (isOpenedChange) {
       let event = 'touchstart.tooltips';
 
-      if (!UtilsService.hasTouchEvent) event = 'mousedown.tooltips';
+      if (!UtilsService.isTouchable) event = 'mousedown.tooltips';
 
       if (isOpenedChange.currentValue === true) {
         $('body').on(event, (e: Event) => {
