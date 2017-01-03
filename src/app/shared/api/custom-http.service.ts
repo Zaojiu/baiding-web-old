@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs";
-import {OperationTipsService} from "./operation-tips/operation-tips.service";
+import {OperationTipsService} from "../operation-tips/operation-tips.service";
 
 @Injectable()
 export class CustomHttp extends Http {
@@ -35,11 +35,11 @@ export class CustomHttp extends Http {
         case 400:
           this.operationTipsService.popup('提交数据错误');
           break;
-        case 404:
-          this.operationTipsService.popup('资源不存在');
-          break;
         case 403 :
           this.operationTipsService.popup('无访问权限');
+          break;
+        case 404:
+          this.operationTipsService.popup('资源不存在');
           break;
         case 408:
           this.operationTipsService.popup('请求超时，请重试');

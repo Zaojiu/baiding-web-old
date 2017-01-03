@@ -92,11 +92,6 @@
     height: 18px;
   }
 
-  textarea {
-    display: block;
-    resize: none;
-  }
-
   .radio-group {
     display: flex;
 
@@ -189,4 +184,9 @@
       display: block;
     }
   }
+}
+
+textarea {
+  display: block;
+  resize: none;
 }

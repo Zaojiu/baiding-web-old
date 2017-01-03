@@ -26,6 +26,7 @@
         "../node_modules/leancloud-push/src/AV.push.js",
         "../node_modules/hammerjs/hammer.js",
         "../node_modules/moment/moment.js",
+        "../node_modules/moment-duration-format/lib/moment-duration-format.js",
         "../node_modules/moment/locale/zh-cn.js",
         "../node_modules/fastclick/lib/fastclick.js",
         "../node_modules/weixin-js-sdk/index.original.js"

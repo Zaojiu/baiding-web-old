@@ -9,7 +9,6 @@ import {UtilsService} from "../utils/utils";
   selector: 'audio-player',
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
-  providers: [AudioPlayerService]
 })
 
 export class AudioPlayerComponent implements OnInit, OnDestroy {

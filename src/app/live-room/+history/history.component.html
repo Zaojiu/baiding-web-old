@@ -1,64 +1,165 @@
-<div class="history-container" *ngIf="liveInfo">
-  <div class="messages-container scrollable">
-    <div class="top-bar">
-      <div class="history-title">
-        <h1>{{liveInfo.subject}}</h1>
-      </div>
-      <div class="history-info">
-        <img class="avatar" [src]="liveInfo.admin.avatar">
-        <span class="name">{{liveInfo.admin.nick}}</span>
-        <span class="time">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</span>
+<div class="history-container">
+  <article>
+    <div class="live-cover">
+      <img [src]="coverUrl" alt="封面图">
+    </div>
+
+    <div class="live-info">
+      <h1>{{liveInfo.subject}}</h1>
+      <div class="admin-and-time">
+        <span class="admin"><span class="nick">{{liveInfo.admin.nick}}</span>主持</span>
+        话题结束于 {{liveInfo.closedAt | timeFormater:'YYYY年MM月DD日 HH:mm:ss'}}
       </div>
     </div>
 
-    <bd-loading class="loading" *ngIf="!messages.length"></bd-loading>
+    <div class="no-history" *ngIf="!messages.length">暂无历史记录</div>
 
     <div class="message-wrapper" *ngFor="let message of messages">
       <div class="message">
-        <span class="name">
-          <span *ngIf="message.type === 3 && message.replies.length">{{message.replies[0].user.nick}}推送</span>
-          {{message.user.nick}}：
-        </span>
-        <span class="content" *ngIf="message.type === 0 || message.type === 3">{{message.content}}</span>
-        <div class="content image-content" *ngIf="message.type === 1">
-          <image-viewer-preview [imageLinks]="[message.image]"></image-viewer-preview>
+        <div class="user-info">
+          <img
+            [src]="message.user.avatar"
+            alt="头像"
+            (press)="avatarPressed(message.user);"
+            (tap)="showUserInfoCard(message.user.uid)"
+            (click)="$event.stopPropagation()"
+            (contextmenu)="$event.preventDefault()"
+          >
+          <span class="nick">{{message.user.nick}} / {{message.user | role: liveInfo}}</span>
+          <audio-player-small #audioPlayerSmall class="audio-player" *ngIf="message.type === 2" [message]="message" (playEnded)="audioPlayEnded(message)"></audio-player-small>
         </div>
-        <div class="content audio-content" *ngIf="message.type === 2">
-          <audio-player class="audio-player" [message]="message"></audio-player>
-          <div class="translate-tips">以下由机器自动翻译</div>
-          <div class="translate">{{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}</div>
+
+        <div class="content">
+          <div class="text-wrapper" *ngIf="message.type === 0 || message.type === 3">
+            <span
+              class="text"
+              [ngClass]="{
+                'high-light-lv1': message.praisedAmount > 0 && message.praisedAmount <= 100,
+                'high-light-lv2': message.praisedAmount > 100 && message.praisedAmount <= 300,
+                'high-light-lv3': message.praisedAmount > 300
+              }"
+            >{{contentParsed[message.id]}}</span>
+            <span class="edit-btn" *ngIf="userInfo && liveInfo.isAdmin(userInfo.uid)" (click)="editMessage(message)"><i class="bi bi-edit"></i>编辑</span>
+          </div>
+
+          <div class="text-wrapper" *ngIf="message.type === 2">
+            <span
+              class="text"
+              [ngClass]="{
+                'high-light-lv1': message.praisedAmount > 0 && message.praisedAmount <= 100,
+                'high-light-lv2': message.praisedAmount > 100 && message.praisedAmount <= 300,
+                'high-light-lv3': message.praisedAmount > 300
+              }"
+            >{{message.audio.translateResult !== '' ? message.audio.translateResult : '暂无翻译内容'}}</span>
+            <span class="edit-btn" *ngIf="userInfo && liveInfo.isAdmin(userInfo.uid)" (click)="editMessage(message)"><i class="bi bi-edit"></i>编辑</span>
+          </div>
+
+          <div class="image" *ngIf="message.type === 1"  (click)="userInfo && liveInfo.isAdmin(userInfo.uid) ? editMessage(message) : void(0)">
+            <div class="image-wrapper">
+              <img [src]="message.image.smallLink" [alt]="message.content">
+              <span class="edit-btn" *ngIf="userInfo && liveInfo.isAdmin(userInfo.uid)"><i class="bi bi-edit"></i>编辑</span>
+            </div>
+            <div class="desc" *ngIf="message.content">{{message.content}}</div>
+          </div>
         </div>
-      </div>
-      <div class="message-reply" *ngFor="let reply of message.replies">
-        <span class="name">{{reply.user.nick}}回复{{message.user.nick}}：</span>
-        <span class="content">{{reply.content}}</span>
       </div>
     </div>
 
-    <div class="history-source">
-      <h1 class="source-title">文章来源</h1>
-      <div class="source-block" (click)="backToMainScreen()">
-        <div class="live-cover">
-          <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
-        </div>
-        <div class="live-info">
-          <h2 class="live-title">{{liveInfo.subject}}</h2>
-          <div class="live-closed-at">{{liveInfo.closedAt | timeFormater: 'YYYY-MM-DD'}}</div>
+    <a [routerLink]="['/lives', liveId]" class="history-source">
+      更多精彩尽在话题直播间
+      <span class="replay">
+        <i class="bi bi-replay"></i>
+        查看直播回放
+      </span>
+    </a>
+
+    <div class="comments">
+      <h1>最新评论</h1>
+
+      <div class="comment" *ngFor="let comment of comments">
+        <img class="avatar" [src]="comment.user.avatar" alt="头像">
+        <div class="comment-content">
+          <div class="name">
+            <span class="nick">{{comment.user.nick}}</span>
+            <time>{{comment.createdAtParsed.fromNow()}}</time>
+          </div>
+
+          <div
+            class="content"
+            [ngClass]="{highlight: comment.isAtMe}"
+            [innerHtml]="parsedCommentContent[comment.id]"
+          ></div>
         </div>
       </div>
+
+      <div class="more" *ngIf="hasNextComment || isCommentLoading">
+        <bd-loading class="comment-loading" *ngIf="isCommentLoading"></bd-loading>
+        <div class="click-for-more" *ngIf="!isCommentLoading" (click)="listNextComments(comments[comments.length-1])">
+          <i class="bi bi-elliplis"></i>加载更多
+        </div>
+      </div>
+
+      <div class="no-more-comments" *ngIf="!isCommentLoading && !hasNextComment">没有更多评论啦</div>
     </div>
+  </article>
+
+  <div class="bottom-bar-container" [autoblur]="mode === modeEnums.None" (blurred)="mode = modeEnums.None" (click)="$event.stopPropagation();">
+    <div class="bottom-bar">
+      <comment-input
+        *ngIf="userInfo"
+        class="comment-input"
+        [ngClass]="{'activate': mode === modeEnums.Text || mode === modeEnums.At}"
+        [liveId]="liveId"
+        [liveInfo]="liveInfo"
+        [(mode)]="mode"
+        [(commentContent)]="commentContent"
+        (postSuccessful)="postSuccessful($event)"
+      ></comment-input>
+
+      <div class="signin-tips" *ngIf="!userInfo" (click)="goSignin()">登录即可评论参与互动</div>
+
+      <div
+        class="btn"
+        [ngClass]="{'activate':  mode === modeEnums.None, 'highlight': isPlayerShown, 'disabled': !audioMessages.length}"
+        (click)="playList()"
+      >
+        <i class="bi bi-wave2"></i>
+        收听
+      </div>
+
+      <div
+        class="btn"
+        [ngClass]="{'activate':  mode === modeEnums.None, 'highlight': liveInfo.hadPraised}"
+        (click)="!userInfo ? goSignin() : setPraised()"
+      >
+        <i class="bi bi-thumbsup"></i>
+        点赞
+      </div>
+
+      <div class="btn" [ngClass]="{'activate':  mode === modeEnums.None}" (click)="fireShare()">
+        <i class="bi bi-share"></i>
+        分享
+      </div>
+    </div>
+
+    <at-keyboard
+      *ngIf="userInfo"
+      class="at-keyboard"
+      [ngClass]="{activate: mode === modeEnums.At}"
+      [liveInfo]="liveInfo"
+      [(inputContent)]="commentContent"
+    ></at-keyboard>
   </div>
 
-  <div class="bottom-bar">
-    <div class="live-info" *ngIf="liveInfo">
-      <i class="bi bi-chat4"></i>
-      {{liveInfo.commented}}
-    </div>
-
-    <div class="operation-area">
-      <i class="bi bi-share" (click)="fireShare()"></i>
-      <i class="bi bi-thumbsup" [ngClass]="{'has-praised': liveInfo.hadPraised}" (click)="setPraised()"></i>
-    </div>
-  </div>
+  <audio-list-player
+    class="audio-list-player"
+    #audioListPlayer
+    [ngClass]="{'activate': isPlayerShown}"
+    [messages]="audioMessages"
+    [coverUrl]="coverUrl"
+    *ngIf="audioMessages.length"
+  ></audio-list-player>
 </div>
+
+<router-outlet></router-outlet>
 

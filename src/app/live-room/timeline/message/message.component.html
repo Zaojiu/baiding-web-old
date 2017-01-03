@@ -37,7 +37,8 @@
           <div
             class="avatar-wrapper"
             (press)="emitAvatarClick(message.user)"
-            (click)="getUserPublicInfoAndPopUpCard(message.user.uid)"
+            (tap)="showUserInfoCard(message.user.uid)"
+            (click)="$event.stopPropagation()"
             (contextmenu)="$event.preventDefault()"
           >
             <img class="avatar" [src]="message.user.avatar">
@@ -115,8 +116,9 @@
           <div class="avatar-container">
             <div
               class="avatar-wrapper "
-              (click)="getUserPublicInfoAndPopUpCard(reply.user.uid)"
               (press)="emitAvatarClick(reply.user)"
+              (tap)="showUserInfoCard(reply.user.uid)"
+              (click)="$event.stopPropagation()"
               (contextmenu)="$event.preventDefault()"
             >
               <img class="avatar" [src]="reply.user.avatar">

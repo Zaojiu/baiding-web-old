@@ -1,0 +1,41 @@
+<div class="edit-message">
+  <div class="top-bar">
+    <button class="back" (click)="back()">返回</button>
+    <button class="delete" (click)="delete()">删除</button>
+    <button class="save" (click)="save()">保存</button>
+  </div>
+
+  <audio-list-player class="audio-player" [messages]="[message]" [avatarUrl]="message.user.avatar" *ngIf="message.isAudio()"></audio-list-player>
+
+  <form class="input-container" [formGroup]="form" name="form">
+    <div class="image-wrapper" *ngIf="message.isImage()">
+      <img class="image" *ngIf="imageSrc" [src]="imageSrc" alt="封面图">
+      <div class="edit-btn">
+        <span class="edit-btn"><i class="bi bi-edit"></i>编辑</span>
+      </div>
+
+      <input
+        *ngIf="!isInWechat"
+        class="file-selector"
+        id="image-selector"
+        type="file"
+        [(ngModel)]="images"
+        formControlName="images"
+      >
+
+      <div class="file-selector" *ngIf="isInWechat" (click)="selectImages()"></div>
+    </div>
+
+    <textarea
+      #messageInput
+      class="content-input invisible-scrollbar"
+      [ngClass]="{'image-desc': message.isImage()}"
+      rows="1"
+      placeholder="{{message.isImage() ? '点击为图片添加文字描述' : message.isAudio() ? '点击修改机器自动翻译' : '点击修改发言记录'}}"
+      formControlName="content"
+      [(ngModel)]="message.content"
+      autoresize
+      display-when-focus
+    ></textarea>
+  </form>
+</div>

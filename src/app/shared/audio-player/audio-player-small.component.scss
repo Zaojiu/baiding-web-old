@@ -1,0 +1,51 @@
+.audio-player-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 18px;
+
+  .audio-duration {
+    width: 31px;
+    text-align: right;
+    flex-shrink: 0;
+    font-size: 12px;
+    padding-left: 5px;
+    color: $color-gray;
+  }
+
+  .play-btn, .animation-playing-btn, .bi-sun-flow {
+    flex-shrink: 0;
+  }
+
+  .bi-sun-flow {
+    font-size: 14px;
+    color: $color-gray;
+  }
+
+  .play-btn, .pause-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background-color: $color-brand;
+
+    .bi-play-fill, .bi-pause {
+      color: $color-w;
+      font-size: 12px;
+      transform: scale(.6);
+    }
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    background: #ff0000;
+    border-radius: 50%;
+    margin: 0 11px 0 0;
+    position: absolute;
+    top: 7px;
+    right: -20px;
+  }
+}

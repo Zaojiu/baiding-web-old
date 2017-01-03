@@ -43,7 +43,24 @@ export class MessageModel {
   praisedAvatars: UserInfoModel[] = [];
   replies: ReplyMessageModel[] = [];
   createdAt: string;
+  createdAtParsed: Moment;
   postStatus = PostMessageStatus.PostSuccessful;
+
+  isText() {
+    return this.type === MessageType.Text;
+  }
+
+  isAudio () {
+    return this.type === MessageType.Audio;
+  }
+
+  isImage() {
+    return this.type === MessageType.Image;
+  }
+
+  isNice() {
+    return this.type === MessageType.Nice;
+  }
 
   getPraisedAvatars(currentUser: UserInfoModel) {
     let avatars = this.praisedAvatars.filter((item, index) => item.uid != currentUser.uid);

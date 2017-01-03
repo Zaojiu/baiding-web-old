@@ -22,7 +22,6 @@ import {ImageBridge} from "../../shared/bridge/image.interface";
 import {LiveRoomService} from "../live-room.service";
 import {LiveService} from "../../shared/api/live/live.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
-import {InviteApiService} from "../../shared/api/invite/invite.api";
 
 declare var $: any;
 

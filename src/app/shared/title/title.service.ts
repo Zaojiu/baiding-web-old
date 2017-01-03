@@ -8,8 +8,7 @@ export class TitleService {
 
   title$: Observable<string> = this.titleSource.asObservable();
 
-  constructor() {
-  }
+  constructor() {}
 
   set(value: string) {
     this.titleSource.next(value);

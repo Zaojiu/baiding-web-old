@@ -1,5 +1,5 @@
 export enum EditMode {
-  None = 0,
+  None = 1,
   Text,
   At,
 }

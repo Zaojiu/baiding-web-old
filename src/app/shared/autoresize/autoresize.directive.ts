@@ -4,7 +4,7 @@ import {Subscription} from "rxjs";
 import {NgControl} from "@angular/forms";
 
 @Directive({
-  selector: '[autoresize][ngModel]'
+  selector: '[autoresize][ngModel], [autoresize][formControlName]'
 })
 
 export class AutoresizeDirective implements AfterViewInit, OnInit, OnDestroy {

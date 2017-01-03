@@ -1,17 +1,13 @@
-import {Component, Input, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
+import {Router} from "@angular/router";
 
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {LiveService} from '../../shared/api/live/live.service';
 import {MessageService} from '../timeline/message/message.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
-import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
-import {EditMode} from "./audience-tool-bar.enums";
-import {Router} from "@angular/router";
-import {LiveRoomService} from "../live-room.service";
-
-declare var $: any;
+import {EditMode} from "../../shared/comment-input/comment-input.enums";
 
 @Component({
   selector: 'audience-tool-bar',
@@ -24,108 +20,25 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
   commentContent = '';
-  isOnCommentRequest: boolean;
-  isLoading: boolean;
-  private receviedAvatarTouchedSub: Subscription;
-  @ViewChild('commentInput') commentInput: ElementRef;
   modeEnums = EditMode;
   mode = EditMode.None;
+  isPraisePosting: boolean;
+  private receviedAvatarTouchedSub: Subscription;
 
-  constructor(private liveService: LiveService, private commentApiService: CommentApiService,
-              private  messageService: MessageService, private router: Router,
-              private liveRoomService: LiveRoomService) {
+  constructor(private liveService: LiveService,
+              private  messageService: MessageService, private router: Router) {
   }
 
   ngOnInit() {
-    this.commentContent = this.liveRoomService.getTextWordsStashed(this.liveId);
-
     //监听点击用户头像事件
     this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
       this.commentContent = `@${userTouched.nick}(${userTouched.uid}) `;
       this.mode = EditMode.Text;
-      this.switchMode(this.mode);
     });
   }
 
   ngOnDestroy() {
-    if (this.receviedAvatarTouchedSub) {
-      this.receviedAvatarTouchedSub.unsubscribe();
-    }
-  }
-
-  parseAtUser(): UserInfoModel[] {
-    var atRegexp = /(@.+?)\((.+?)\)/g;
-    let atUids: number[] = [];
-    let toUsers: UserInfoModel[] = [];
-
-    while (true) {
-      var atTextArr = atRegexp.exec(this.commentContent);
-      if (!atTextArr || atTextArr.length != 3 || !atRegexp.lastIndex) {
-        break
-      }
-      atUids.push(+atTextArr[2]);
-    }
-
-    for (let uid of atUids) {
-      if (uid === this.liveInfo.admin.uid) {
-        toUsers.push(this.liveInfo.admin);
-
-      }
-    }
-    for (let user of this.liveInfo.editors) {
-      for (let uid of atUids) {
-        if (uid === user.uid) {
-          toUsers.push(user);
-        }
-      }
-    }
-    return toUsers;
-  }
-
-  postComment() {
-    if (this.commentContent === '') return;
-    if (this.isOnCommentRequest) return;
-
-    this.isOnCommentRequest = true;
-
-    this.commentApiService.postComment(this.liveId, this.commentContent, this.parseAtUser()).then(() => {
-      this.isOnCommentRequest = false;
-      this.commentContent = '';
-    });
-  }
-
-  switchMode(mode: EditMode) {
-    if (mode !== EditMode.Text) {
-      this.liveRoomService.setTextWordsStashed(this.commentContent, this.liveId);
-      this.blurMessageInput();
-    }
-
-    this.mode = mode;
-
-    if (this.mode === EditMode.Text) {
-      this.focusMessageInput();
-      this.detectContentChange();
-    }
-  }
-
-  detectContentChange() {
-    $(this.commentInput.nativeElement).on('input', () => {
-      if (this.commentContent === '') return;
-      if ($.isNumeric(this.commentContent[this.commentContent.length - 1])) {
-        this.commentContent = this.commentContent.replace(/(.*)@[\W\w]+?\(\d+?$/g, '$1');
-      }
-      if (this.commentContent[this.commentContent.length - 1] === '@') {
-        this.switchMode(EditMode.At);
-      }
-    });
-  }
-
-  focusMessageInput() {
-    this.commentInput.nativeElement.focus();
-  }
-
-  blurMessageInput() {
-    this.commentInput.nativeElement.blur();
+    if (this.receviedAvatarTouchedSub) this.receviedAvatarTouchedSub.unsubscribe();
   }
 
   confirmPraise(emoji: string) {
@@ -134,34 +47,18 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
     userAnim.emoji = emoji;
     this.liveInfo.praisedAnimations.push(userAnim);
 
-    if (this.isLoading) return;
+    if (this.isPraisePosting) return;
 
-    this.isLoading = true;
-    this.liveService.praiseLive(this.liveInfo.id, this.liveInfo.hadPraised, emoji).then(() => this.isLoading = false);
-
+    this.isPraisePosting = true;
     this.liveInfo.hadPraised = true;
     this.liveInfo.praised += 1;
+
+    this.liveService.praiseLive(this.liveInfo.id, this.liveInfo.hadPraised, emoji).finally(() => {
+      this.isPraisePosting = false;
+    });
   }
 
   goSettings() {
     this.router.navigate([`/lives/${this.liveId}/settings`]);
-  }
-
-  changeCommentContent(editor: UserInfoModel) {
-    if (this.commentContent.indexOf(editor.uid.toString()) !== -1) {
-      this.commentContent = this.commentContent.replace(`@${editor.nick}(${editor.uid}) `, '');
-    } else {
-      if (this.commentContent === '') {
-        this.commentContent += `@${editor.nick}(${editor.uid}) `;
-      } else if (this.commentContent[this.commentContent.length - 1] === '@') {
-        this.commentContent += `${editor.nick}(${editor.uid}) `;
-      } else {
-        this.commentContent += `@${editor.nick}(${editor.uid}) `;
-      }
-    }
-  }
-
-  selected(uid: number): boolean {
-    return this.commentContent.indexOf(uid.toString()) !== -1;
   }
 }

@@ -11,10 +11,10 @@ export class WechatImageService implements ImageBridge {
   constructor(private wechatConfigService: WechatConfigService) {
   }
 
-  private _chooseImages(): Promise<string[]> {
+  private _chooseImages(count: number): Promise<string[]> {
     return new Promise((resolve, reject) => {
       wx.chooseImage({
-        count: 9, // 默认9
+        count: count, // 默认9
         sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: (res) => {
@@ -29,12 +29,12 @@ export class WechatImageService implements ImageBridge {
 
   }
 
-  chooseImages(): Promise<string[]> {
+  chooseImages(count = 9): Promise<string[]> {
     if (this.wechatConfigService.hasInit) {
-      return this._chooseImages();
+      return this._chooseImages(count);
     } else {
       return this.wechatConfigService.init().then(() => {
-        return this._chooseImages();
+        return this._chooseImages(count);
       });
     }
   }

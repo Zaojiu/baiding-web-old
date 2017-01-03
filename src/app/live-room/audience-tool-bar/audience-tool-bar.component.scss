@@ -8,115 +8,14 @@
   line-height: 49px;
   white-space: nowrap;
 
-  .comment-input-container {
-    position: relative;
-    display: flex;
+  .comment-input {
     flex-grow: 1;
-    transition: width 0.2s;
+    height: 49px;
+    transition: all 0.2s;
 
     &.activate {
       width: 100%;
-
-      .comment-input-wrapper {
-        margin-left: 8px;
-        padding-right: 32px;
-        padding-left: 7px;
-
-        .comment-input {
-          opacity: 1;
-        }
-
-        .fake-comment-input {
-          display: none;
-        }
-
-        .sender {
-          pointer-events: all;
-          opacity: 1;
-        }
-      }
-
-      .switcher {
-        width: 46px;
-        opacity: 1;
-      }
-    }
-
-    .comment-input-wrapper {
-      position: relative;
-      margin: 8px 0;
-      background-color: rgb(255, 255, 255);
-      border-radius: 19px;
-      border: solid 1px rgb(219, 219, 219);
-      flex-grow: 1;
-      transition: margin-left 0.2s;
-      display: flex;
-
-      .fake-comment-input {
-        position: absolute;
-        top: calc(50% + 1px);
-        left: 7px;
-        transform: translateY(-50%);
-        color: $color-gray;
-        font-size: 14px;
-        line-height: 1em;
-      }
-
-      .comment-input {
-        display: block;
-        width: 100%;
-        background-color: transparent;
-        font-size: 14px;
-        color: $color-dark-gray;
-        line-height: normal;
-        padding: 8px 0;
-        min-width: 0;
-        opacity: 0;
-
-        &::placeholder {
-          color: $color-gray;
-          opacity: 1;
-        }
-      }
-
-      .sender {
-        pointer-events: none;
-        opacity: 0;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        padding: 3px;
-        transition: opacity .2s;
-
-        .bi {
-          width: 25px;
-          height: 25px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: $color-brand;
-          color: $color-w;
-          border-radius: 50%;
-          font-size: 12px;
-        }
-      }
-    }
-
-    .switcher {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 0;
-      opacity: 0;
-      overflow: hidden;
-      font-size: 0;
-      line-height: 49px;
-      color: $color-dark-gray;
-      transition: all .2s;
-
-      .bi {
-        font-size: 22px;
-      }
+      margin-left: 8px;
     }
   }
 
@@ -143,67 +42,12 @@
   }
 }
 
-.at-people-keyboard {
+.at-keyboard {
+  display: block;
   height: 0;
   overflow: hidden;
-  transition: height .5s;
-  background: rgba(228, 228, 228, 1.0);
-
-  &::-webkit-scrollbar, &::-webkit-scrollbar-track {
-    display: none;
-  }
 
   &.activate {
     height: 252px;
-    overflow: auto;
-  }
-
-  .user-row {
-    display: flex;
-    height: 84px;
-    border-bottom: solid 1px rgb(198, 198, 198);
-    align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
-
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-
-    .name {
-      color: $color-dark-gray;
-      font-size: 16px;
-      margin-left: 10px;
-      flex-grow: 1;
-    }
-
-    .tick {
-      display: flex;
-      height: 18px;
-      width: 18px;
-      border-radius: 50%;
-      border: solid 2px $color-brand;
-      background-color: transparent;
-      transition: background-color .5s;
-
-      .bi {
-        opacity: 0;
-        font-size: 12px;
-        color: $color-w;
-        transition: all .5s;
-        transform: scale(.666) translateX(-1px) translateY(1px);
-        transform-origin: center center;
-      }
-
-      &.selected {
-        background-color: $color-brand;
-
-        .bi {
-          opacity: 1;
-        }
-      }
-    }
   }
 }

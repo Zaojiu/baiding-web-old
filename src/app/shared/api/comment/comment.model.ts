@@ -21,6 +21,7 @@ export class CommentModel {
   eventData: any = null;
   msgId: string;
   createdAt: string;
+  createdAtParsed: Moment;
   toUsers: UserInfoModel[] = [];
   toUids: number[] = [];
   isAtMe = false;

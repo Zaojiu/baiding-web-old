@@ -25,15 +25,6 @@
         height: 35px;
         margin: 0 auto;
 
-        &:after {
-          position: absolute;
-          height: 100%;
-          width: 100%;
-          top: 0;
-          left: 0;
-          content: '';
-        }
-
         .avatar {
           display: block;
           width: 35px;

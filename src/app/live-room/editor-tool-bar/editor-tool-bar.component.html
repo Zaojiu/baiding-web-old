@@ -74,7 +74,6 @@
             #messageInput
             class="message-input invisible-scrollbar"
             name="messageContent"
-            type="text"
             rows="1"
             placeholder="此时此刻你在想什么?"
             (focus)="resetKeyboard()"
@@ -99,21 +98,12 @@
     </div>
   </div>
 
-  <div class="at-people-keyboard invisible-scrollbar" [ngClass]="{activate: mode === modeEnums.At}">
-    <div class="user-row" (click)="changeCommentContent(liveInfo.admin)">
-      <img class="avatar" [src]="liveInfo.admin.avatar">
-      <div class="name">{{liveInfo.admin.nick}}</div>
-      <div class="tick" [ngClass]="{'selected': selected(liveInfo.admin.uid)}"><i class="bi bi-tick"
-      ></i></div>
-    </div>
-
-    <div class="user-row" *ngFor="let vip of liveInfo.editors" (click)="changeCommentContent(vip)">
-      <img class="avatar" [src]="vip.avatar">
-      <div class="name">{{vip.nick}}</div>
-      <div class="tick" [ngClass]="{'selected': selected(vip.uid)}"><i class="bi bi-tick"></i></div>
-    </div>
-
-  </div>
+  <at-keyboard
+    class="at-keyboard"
+    [ngClass]="{activate: mode === modeEnums.At}"
+    [liveInfo]="liveInfo"
+    [(inputContent)]="messageContent"
+  ></at-keyboard>
 
   <div class="setting-keyboard" [ngClass]="{activate: mode === modeEnums.Setting}">
     <div class="btn invite" (click)="gotoInvitationInfo()" *ngIf="liveInfo.isAdmin(userInfo.uid) && !liveInfo.isClosed()">

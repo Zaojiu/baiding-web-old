@@ -99,8 +99,6 @@ export class LiveService {
       let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
 
       return liveInfo;
-    }, () => {
-      return Promise.reject(liveInfoCache);
     });
   }
 
@@ -304,5 +302,11 @@ export class LiveService {
     return this.http.post(url, null).toPromise().then(res => {
       return;
     });
+  }
+
+  getHistoryLiveInfo(id: string): LiveInfoModel {
+    let historyLiveInfo = StoreService.get('historyLiveInfo');
+    if (historyLiveInfo && historyLiveInfo[id]) return historyLiveInfo[id];
+    return null
   }
 }

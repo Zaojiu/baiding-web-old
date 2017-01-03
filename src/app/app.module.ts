@@ -51,7 +51,9 @@ import {ImageBridge} from "./shared/bridge/image.interface";
 import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
 import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
 import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
-import {CustomHttp} from "./shared/customhttp.service";
+import {CustomHttp} from "./shared/api/custom-http.service";
+import {UserInfoCardModule} from "./shared/user-info-card/user-info-card.module";
+import {UserInfoCardService} from "./shared/user-info-card/user-info-card.service";
 
 @NgModule({
   imports: [
@@ -61,6 +63,7 @@ import {CustomHttp} from "./shared/customhttp.service";
     AppRoutingModule,
     Angulartics2Module.forRoot(),
     ImageViewerModule,
+    UserInfoCardModule,
   ],
   declarations: [
     AppComponent,
@@ -117,6 +120,7 @@ import {CustomHttp} from "./shared/customhttp.service";
     TextPopupService,
     LiveService,
     OperationTipsService,
+    UserInfoCardService,
     Angulartics2GoogleAnalytics,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],

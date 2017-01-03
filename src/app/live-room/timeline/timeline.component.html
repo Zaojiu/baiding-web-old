@@ -21,4 +21,11 @@
               [ngClass]="{show: scroller.isFootLoadingShown,hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
 
+<div class="history" *ngIf="liveInfo.isClosed()" (click)="gotoHistory()">
+  <span class="tips" *ngIf="!historyTipsShown">点击查看历史记录</span>
+  <div class="entry">
+    <i class="bi bi-paper-history"></i>
+  </div>
+</div>
+
 <hamburger-menu class="hamburger-menu" [liveId]="liveInfo.id" [userInfo]="userInfo"></hamburger-menu>
