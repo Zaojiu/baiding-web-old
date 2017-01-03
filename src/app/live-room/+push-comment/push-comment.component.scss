@@ -1,14 +1,6 @@
 .push-comment-container {
   display: flex;
   flex-direction: column;
-  padding-top: 50px;
-
-  .top-bar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-  }
 
   .loading {
     position: absolute;
