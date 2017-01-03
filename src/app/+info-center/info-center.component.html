@@ -99,7 +99,7 @@
             </div>
 
             <div class="btn"
-                 *ngIf="liveInfo.isAdmin(currentUserInfo.uid) && isSelf"
+                 *ngIf="!liveInfo.isClosed() && liveInfo.isAdmin(currentUserInfo.uid) && isSelf"
                  (click)="gotoVipInfo(liveInfo.id)">
               <i class="bi bi-invite"></i>
               邀请
