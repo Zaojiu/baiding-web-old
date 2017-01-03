@@ -2,7 +2,7 @@
   <live-room-top-bar class="top-bar" *ngIf="!isInApp"></live-room-top-bar>
 
   <div class="main-form">
-    <div class="form-group" *ngIf="isInApp"
+    <div class="form-group" *ngIf="isInApp && !isInBaidingApp"
          [ngClass]="{'has-error': form.controls['type'].dirty && form.controls['type'].invalid}">
       <label class="required">类型</label>
 

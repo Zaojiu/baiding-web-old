@@ -29,7 +29,7 @@ export class Draggable implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.isTouchable = !!UtilsService.hasTouchEvent;
+    this.isTouchable = !!UtilsService.isTouchable;
     let offsetX = UtilsService.getStorage('draggableLeft');
     let offsetY = UtilsService.getStorage('draggableTop');
 
