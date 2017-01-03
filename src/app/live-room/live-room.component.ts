@@ -31,7 +31,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`/lives/${this.id}/info`]);
     let hash = this.router.serializeUrl(uriTree);
-    let uri = location.href.replace(location.hash, `#${hash}`);
+    let uri = `${location.protocol}//${location.hostname}${hash}`;
     return uri;
   }
 
