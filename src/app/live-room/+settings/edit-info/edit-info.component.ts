@@ -35,6 +35,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   title = '';
   desc = '';
   oldFileName = '';
+  isSubmitting = false;
   submitted = false;
   isInApp = UtilsService.isInApp;
   from: string;
@@ -137,6 +138,8 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   postLiveInfo() {
+    this.isSubmitting = true;
+
     if (this.coverFiles && this.coverFiles.length) {
       this.liveService.getCoverUploadToken(this.liveId).then((data) => {
         return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
@@ -169,8 +172,12 @@ export class EditInfoComponent implements OnInit, DoCheck {
     let expectStartAt = moment(`${this.time}:00`).local();
 
     this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey).then(() => {
-      this.submitted = true;
-      this.router.navigate([`lives/${this.liveId}/info`]);
+      setTimeout(() => { // prevent delay while cdn syncing source image
+        this.submitted = true;
+        this.router.navigate([`lives/${this.liveId}/info`]);
+      }, this.coverKey ? 2000 : 0);
+    }).finally(() => {
+      setTimeout(() => this.isSubmitting = false, this.coverKey ? 2000 : 0);
     });
   }
 

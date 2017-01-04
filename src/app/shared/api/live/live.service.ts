@@ -26,7 +26,7 @@ export class LiveService {
     liveInfo.id = stream.id;
     liveInfo.subject = stream.subject;
     liveInfo.desc = stream.desc;
-    liveInfo.coverUrl = stream.coverUrl;
+    liveInfo.coverUrl = `${stream.coverUrl}?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
     liveInfo.kind = stream.kind === 'video' ? LiveType.Video : LiveType.Text;
 
     liveInfo.owner = users[stream.owner] as UserInfoModel;
@@ -75,7 +75,7 @@ export class LiveService {
 
     liveInfo.totalUsers = stream.totalUsers;
 
-    if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${liveInfo.updatedAt}`;
+    if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
 
     let lives = StoreService.get('lives') || {};
     lives[liveInfo.id] = liveInfo;
