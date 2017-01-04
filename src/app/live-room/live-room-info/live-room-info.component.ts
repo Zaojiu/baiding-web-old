@@ -46,7 +46,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   bookLive() {
     this.liveService.bookLive(this.liveInfo.id).then(liveInfo => {
       this.liveInfo = liveInfo;
-      if (!this.userInfo.isSubscribed) {
+      if (!this.userInfo.isSubscribed && !this.inApp) {
         this.operationTipsService.popup('请扫描二维码进行订阅');
         this.showQrcode();
       } else {
