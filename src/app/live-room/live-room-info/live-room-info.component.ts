@@ -89,26 +89,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   copyToClipboard(text: string) {
-    return new Promise((resolve, reject) => {
-      if (this.iosBridgeService.hasInit) {
-        this.iosBridgeService.bridge.callHandler('copyText', {
-          title: text,
-        }, (result) => {
-          this.operationTipsService.popup('复制成功');
-        }, (err) => {
-          reject(err);
-        });
-      } else {
-        this.iosBridgeService.init().then(() => {
-          this.iosBridgeService.bridge.callHandler('copyText', {
-            title: text,
-          }, (result) => {
-            this.operationTipsService.popup('复制成功')
-          }, (err) => {
-            reject(err);
-          });
-        });
-      }
+    this.iosBridgeService.copyText(text).then(() => {
+      this.closeQrcode()
     });
   }
 }
