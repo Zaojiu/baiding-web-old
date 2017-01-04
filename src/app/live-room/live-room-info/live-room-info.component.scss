@@ -180,4 +180,34 @@
       }
     }
   }
+
+  .noqrcode {
+    text-align: center;
+    padding: 40px 40px 80px;
+
+    p {
+      color: $color-gray;
+      font-size: 12px;
+      line-height: 16px;
+
+      &:nth-child(2) {
+        margin-bottom: 20px;
+      }
+    }
+
+    .copyzaojiu {
+      position: absolute;
+      text-align: center;
+      width: 200px;
+      height: 50px;
+      border-radius: 50px;
+      margin: auto;
+      background-color: rgb(49, 181, 165);
+      color: $color-w;
+      font-size: 17px;
+      line-height: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 }

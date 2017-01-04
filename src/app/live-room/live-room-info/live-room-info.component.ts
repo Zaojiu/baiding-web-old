@@ -7,6 +7,7 @@ import {ShareApiService} from '../../shared/api/share/share.api';
 import {environment} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -19,6 +20,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   isQrcodeShown = false;
   qrcode: string;
   timer: any;
+  inApp = UtilsService.isInApp;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private shareService: ShareApiService, private operationTipsService: OperationTipsService) {
@@ -76,5 +78,10 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   closeQrcode() {
     this.isQrcodeShown = false;
     clearInterval(this.timer);
+  }
+
+  copyToClipboard(text) {
+    // TODO need ios copy interface
+    window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
   }
 }
