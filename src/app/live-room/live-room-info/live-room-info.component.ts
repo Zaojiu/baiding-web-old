@@ -8,6 +8,7 @@ import {environment} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {UtilsService} from "../../shared/utils/utils";
+import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -23,7 +24,12 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   inApp = UtilsService.isInApp;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
+<<<<<<< HEAD
               private userInfoService: UserInfoService, private shareService: ShareApiService, private operationTipsService: OperationTipsService) {
+=======
+              private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
+              private iosBridgeService: IosBridgeService) {
+>>>>>>> BD-491  app内复制xingshu100
   }
 
   ngOnInit() {
@@ -80,8 +86,31 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
   }
 
-  copyToClipboard(text) {
-    // TODO need ios copy interface
-    window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+  copyToClipboard(text: string) {
+    return new Promise((resolve, reject) => {
+      if (this.iosBridgeService.hasInit) {
+        this.iosBridgeService.bridge.callHandler('copyText', {
+          title: text,
+        }, (result) => {
+          resolve(result => {
+            this.operationTipsService.popup('复制成功')
+          });
+        }, (err) => {
+          reject(err);
+        });
+      } else {
+        this.iosBridgeService.init().then(() => {
+          this.iosBridgeService.bridge.callHandler('copyText', {
+            title: text,
+          }, (result) => {
+            resolve(result => {
+              this.operationTipsService.popup('复制成功')
+            });
+          }, (err) => {
+            reject(err);
+          });
+        });
+      }
+    });
   }
 }
