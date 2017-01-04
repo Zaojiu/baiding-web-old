@@ -4,28 +4,33 @@ import 'rxjs/add/operator/toPromise';
 
 import {WechatConfigModel} from './wechat.model';
 import {environment} from "../../../environments/environment";
-import {OperationTipsService} from "../operation-tips/operation-tips.service";
-import {UtilsService} from "../utils/utils";
 
 declare var wx: any;
 
 @Injectable()
 export class WechatConfigService {
+  private cachedConfig = null;
   onVoicePlayEnd: () => void;
   autoCompleteResolver: (localId: string) => void;
   autoCompleteRejecter: (reason: string) => void;
-  hasInit: boolean;
 
-  constructor(private http: Http, private operationService: OperationTipsService) {}
+  constructor(private http: Http) {
+  }
 
   private getConfig(): Promise<WechatConfigModel> {
     return this.http.post(`${environment.config.host.io}/api/wechat/signature/config`, null).toPromise()
       .then(res => {
         return res.json() as WechatConfigModel;
-      })
+      });
   }
 
-  private configWechat() {
+  private configWechat(needRefresh = false) {
+    if (this.cachedConfig && !needRefresh) {
+      console.log('cache wechat config: ', this.cachedConfig);
+      wx.config(this.cachedConfig);
+      return;
+    }
+
     this.getConfig().then(config => {
       config.jsApiList = [
         'startRecord',
@@ -49,34 +54,23 @@ export class WechatConfigService {
 
       config.debug = false;
 
-      console.log('wechat config: ', config);
+      console.log('new wechat config: ', config);
 
       wx.config(config);
+      this.cachedConfig = config;
     });
   }
 
   init(): Promise<void> {
-    if (this.hasInit) return Promise.resolve();
-
-    let hasConfig = false;
-
-    wx.error(reason => {
-      console.log('wx err:', reason);
-
-      if (hasConfig) {
-        this.operationService.popup('微信初始化失败,请刷新页面');
-        return;
-      }
-
-      hasConfig = true;
-
-      this.configWechat();
-    });
+    console.log('wechat init');
 
     return new Promise<void>((resolve, reject) => {
-      wx.ready(() => {
-        this.hasInit = true;
+      wx.error(reason => {
+        console.log('wx err:', reason);
+        this.configWechat(true);
+      });
 
+      wx.ready(() => {
         console.log('wechat ready');
 
         wx.onVoiceRecordEnd({
@@ -99,6 +93,7 @@ export class WechatConfigService {
         resolve();
       });
 
+      console.log('config wechat at init');
       this.configWechat();
     });
   }
