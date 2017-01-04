@@ -5,6 +5,7 @@ import {LiveService} from "../../shared/api/live/live.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {environment} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -19,7 +20,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   timer: any;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-              private userInfoService: UserInfoService) {
+              private userInfoService: UserInfoService, private operationTipsService: OperationTipsService) {
   }
 
   ngOnInit() {
@@ -34,13 +35,19 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   bookLive() {
     this.liveService.bookLive(this.liveInfo.id).then(liveInfo => {
       this.liveInfo = liveInfo;
-      if (!this.userInfo.isSubscribed) this.showQrcode();
+      if (!this.userInfo.isSubscribed) {
+        this.operationTipsService.popup('请扫描二维码进行订阅');
+        this.showQrcode();
+      } else {
+        this.operationTipsService.popup('订阅成功');
+      }
     });
   }
 
   unbookLive() {
     this.liveService.unbookLive(this.liveInfo.id).then(liveInfo => {
       this.liveInfo = liveInfo;
+      this.operationTipsService.popup('您已取消订阅');
     });
   }
 
