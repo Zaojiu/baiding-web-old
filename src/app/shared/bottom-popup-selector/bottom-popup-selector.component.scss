@@ -41,7 +41,7 @@
       position: relative;
 
       &.is-closed {
-        color: color-brand-transparent(.5);
+        color: change_color($color-brand, $alpha: .5);
         pointer-events: none;
       }
       &:last-child {

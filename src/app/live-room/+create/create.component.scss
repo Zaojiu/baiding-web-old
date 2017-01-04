@@ -102,7 +102,7 @@
     font-size: 17px;
 
     &.disabled {
-      background-color: color-brand-transparent(.5);
+      background-color: change_color($color-brand, $alpha: .5);
     }
   }
 

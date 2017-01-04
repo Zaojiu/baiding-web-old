@@ -148,11 +148,11 @@
           padding: 10px;
 
           &.is-closed {
-            color: color-brand-transparent(.5);
+            color: change_color($color-brand, $alpha: .5);
             pointer-events: none;
           }
           &.pushed {
-            color: color-brand-transparent(.5);
+            color: change_color($color-brand, $alpha: .5);
           }
           &.pushed-audience {
             color: $color-gray;
