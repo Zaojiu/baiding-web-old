@@ -48,18 +48,26 @@ export class TitleSetterDirective implements OnInit {
         let data = [];
         let activeRoutes: ActivatedRoute[] = this.activated.children;
 
+        let userDefineShare = false;
         activeRoutes.forEach((route: ActivatedRoute) => {
           let activeRoute: ActivatedRoute = route;
           while (activeRoute.firstChild) {
             activeRoute = activeRoute.firstChild;
           }
           let d = activeRoute.snapshot.data;
-          d && d['title'] && data.push([d['title']]);
+          if (d) {
+            d['title'] && data.push([d['title']]);
+            userDefineShare = !!d['userDefineShare'];
+          }
         });
 
         if (data.length) {
           this.titleService.set(data.join('-'));
-          this.shareBridge.setShareInfo(data.join('-'), '小人物也有大声音', `${location.protocol}//${location.host}/assets/img/zaojiu-logo.jpg`, `${location.protocol}//${location.host}/${this.router.url}`);
+          if (!userDefineShare) {
+            this.shareBridge.setShareInfo(data.join('-'), '小人物也有大声音',
+              `${location.protocol}//${location.host}/assets/img/zaojiu-logo.jpg`,
+              `${location.protocol}//${location.host}/${this.router.url}`);
+          }
         }
       });
 

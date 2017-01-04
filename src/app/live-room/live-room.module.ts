@@ -17,6 +17,7 @@ import {TimelineService} from './timeline/timeline.service';
 import {UserInfoCardService} from '../shared/user-info-card/user-info-card.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message/message.api";
+import {ShareApiService} from "../shared/api/share/share.api";
 import {QuitEditGuard} from '../shared/guard/quit-edit.guard';
 import {PipeModule} from "../shared/pipe/pipe.module";
 import {UploadApiService} from "../shared/api/upload/upload.api";
@@ -108,6 +109,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     TimelineService,
     CommentService,
     MessageApiService,
+    ShareApiService,
     CommentApiService,
     LiveInfoResolver,
     QuitEditGuard,
