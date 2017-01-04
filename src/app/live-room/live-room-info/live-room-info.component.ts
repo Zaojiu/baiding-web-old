@@ -49,7 +49,9 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
       if (!this.userInfo.isSubscribed && !this.inApp) {
         this.operationTipsService.popup('请扫描二维码进行订阅');
         this.showQrcode();
-      } else {
+      } else if (!this.userInfo.isSubscribed && this.inApp) {
+        this.showQrcode()
+      } else if (this.userInfo.isSubscribed) {
         this.operationTipsService.popup('订阅成功');
       }
     });
@@ -92,9 +94,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
         this.iosBridgeService.bridge.callHandler('copyText', {
           title: text,
         }, (result) => {
-          resolve(result => {
-            this.operationTipsService.popup('复制成功')
-          });
+          this.operationTipsService.popup('复制成功');
         }, (err) => {
           reject(err);
         });
@@ -103,9 +103,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
           this.iosBridgeService.bridge.callHandler('copyText', {
             title: text,
           }, (result) => {
-            resolve(result => {
-              this.operationTipsService.popup('复制成功')
-            });
+            this.operationTipsService.popup('复制成功')
           }, (err) => {
             reject(err);
           });
