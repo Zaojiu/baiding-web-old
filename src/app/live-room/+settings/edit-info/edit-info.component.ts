@@ -49,7 +49,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    if (this.liveInfo.isStarted()) this.router.navigate([`/info-center/${this.userInfo.uid}`]);
+    if (this.liveInfo.isStarted()) this.router.navigate([`info-center/${this.userInfo.uid}`]);
 
     if (!this.liveInfo.isAdmin(this.userInfo.uid)) this.back();
 
@@ -117,10 +117,10 @@ export class EditInfoComponent implements OnInit, DoCheck {
     if (this.from) {
       this.router.navigateByUrl(this.from);
     } else if (this.liveId) {
-      this.router.navigate([`/lives/${this.liveId}`]);
+      this.router.navigate([`lives/${this.liveId}`]);
     } else {
       this.userInfoService.getUserInfo().then(userInfo => {
-        this.router.navigate([`/info-center/${userInfo.uid}`]);
+        this.router.navigate([`info-center/${userInfo.uid}`]);
       });
     }
   }
@@ -170,7 +170,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
     this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey).then(() => {
       this.submitted = true;
-      this.router.navigate([`/lives/${this.liveId}/info`]);
+      this.router.navigate([`lives/${this.liveId}/info`]);
     });
   }
 

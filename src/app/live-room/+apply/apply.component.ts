@@ -113,12 +113,12 @@ export class ApplyComponent implements OnInit {
     if (this.from) {
       this.router.navigateByUrl(this.from);
     } else {
-      this.router.navigate([`/info-center/${this.userInfo.uid}`]);
+      this.router.navigate([`info-center/${this.userInfo.uid}`]);
     }
   }
 
   gotoCreate() {
-    this.router.navigate([`/lives/create`]);
+    this.router.navigate([`lives/create`]);
   }
 
   canDeactivate() {

@@ -46,7 +46,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
     this.uidParamSub = this.route.params.subscribe((params) => {
       this.uid = +params['uid'];
-      if (!this.uid) this.router.navigate([`/404`]);
+      if (!this.uid) this.router.navigate([`404`]);
       this.initData(this.uid);
     });
 
@@ -74,10 +74,10 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
     return this.userInfoService.getUserPublicInfo(uid).then(publicUserInfo => {
       this.pageUserInfo = publicUserInfo;
       this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${publicUserInfo.avatar})`);
-      this.from = encodeURIComponent(`/info-center/${uid}`);
+      this.from = encodeURIComponent(`info-center/${uid}`);
       return;
     }, () => {
-      this.router.navigate([`/404`]);
+      this.router.navigate([`404`]);
       return;
     });
   }
@@ -169,7 +169,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   goToEdit() {
-    this.router.navigate([`/info-center/edit-info`]);
+    this.router.navigate([`info-center/edit-info`]);
   }
 
   popupShare() {
@@ -177,24 +177,24 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   gotoVipInfo(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/vip-info`, {from: this.from}]);
+    this.router.navigate([`lives/${liveId}/vip-info`, {from: this.from}]);
   }
 
   goEditLiveRoom(liveId: string) {
-    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {from: this.from}]);
+    this.router.navigate([`lives/${liveId}/settings/edit-info`, {from: this.from}]);
   }
 
   gotoInfoCenter(uid: number) {
     if (this.pageUserInfo.uid === uid) return;
 
-    this.router.navigate([`/info-center/${uid}`]);
+    this.router.navigate([`info-center/${uid}`]);
   }
 
   gotoLiveRoom(liveId: string) {
     if (this.pageUserInfo.uid === this.currentUserInfo.uid) {
-      this.router.navigate(([`/lives/${liveId}`]));
+      this.router.navigate(([`lives/${liveId}`]));
     } else {
-      this.router.navigate(([`/lives/${liveId}/info`]));
+      this.router.navigate(([`lives/${liveId}/info`]));
     }
   }
 

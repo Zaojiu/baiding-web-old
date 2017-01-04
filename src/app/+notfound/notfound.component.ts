@@ -11,6 +11,6 @@ export class NotFoundComponent {
   }
 
   gotoInfoCenter() {
-    this.router.navigate([`/`]);
+    this.router.navigate([``]);
   }
 }

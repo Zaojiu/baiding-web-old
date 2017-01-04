@@ -35,7 +35,7 @@ export class InviteComponent implements OnInit {
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
-    if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token}]);
+    if (UtilsService.isInApp) this.router.navigate([`lives/${this.liveId}/invitation`, {token: this.token}]);
 
     if (this.token) {
       this.setShareInfo();
@@ -55,11 +55,11 @@ export class InviteComponent implements OnInit {
   }
 
   backToLive() {
-    this.router.navigate([`/lives/${this.liveId}`]);
+    this.router.navigate([`lives/${this.liveId}`]);
   }
 
   createTokenUrl(token: string) {
-    return this.router.serializeUrl(this.router.createUrlTree([`/lives/${this.liveId}/invitation`, {token: token}]))
+    return this.router.serializeUrl(this.router.createUrlTree([`lives/${this.liveId}/invitation`, {token: token}]))
   }
 
   setShareInfo() {

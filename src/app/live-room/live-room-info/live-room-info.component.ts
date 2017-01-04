@@ -45,7 +45,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   gotoLive() {
-    this.router.navigate([`/lives/${this.liveInfo.id}`]);
+    this.router.navigate([`lives/${this.liveInfo.id}`]);
   }
 
   showQrcode() {
