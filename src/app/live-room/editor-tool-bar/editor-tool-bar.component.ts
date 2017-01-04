@@ -177,6 +177,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
       this.isMessageSubmitting = false;
       this.messageContent = '';
       this.liveRoomService.setTextWordsStashed('', this.liveId);
+      this.operationTips.popup('发送成功');
     } else {
       this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
         this.isMessageSubmitting = false;
