@@ -105,11 +105,7 @@ export class CreateComponent implements OnInit, DoCheck {
 
     this.liveService.createLive(this.title, '', this.desc, expectStartAt.toISOString(), this.type).then(liveId => {
       if (this.coverFiles && this.coverFiles.length) {
-        return this.liveService.getCoverUploadToken(liveId).then((data) => {
-          return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
-        }).then((imageKey) => {
-          return this.updateLiveInfo(liveId, imageKey);
-        });
+        return this.updateCover(liveId);
       } else {
         return Promise.resolve(liveId);
       }
@@ -125,10 +121,13 @@ export class CreateComponent implements OnInit, DoCheck {
     this.router.navigate([`lives/${liveId}/info`]);
   }
 
-  updateLiveInfo(liveId: string, coverKey?: string): Promise<string> {
-    let expectStartAt = moment(`${this.time}:00`).local();
-
-    return this.liveService.updateLiveInfo(liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey).then(() => {
+  updateCover(liveId: string): Promise<string> {
+    return this.liveService.getCoverUploadToken(liveId).then(data => {
+      return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
+    }).then(imageKey => {
+      let expectStartAt = moment(`${this.time}:00`).local();
+      return this.liveService.updateLiveInfo(liveId, this.title, this.desc, expectStartAt.toISOString(), imageKey);
+    }).then(() => {
       return liveId;
     });
   }
