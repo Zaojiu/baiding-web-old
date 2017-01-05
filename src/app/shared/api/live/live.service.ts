@@ -124,7 +124,7 @@ export class LiveService {
     });
   }
 
-  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string): Promise<LiveInfoModel> {
+  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string, coverWeixinId?: string): Promise<LiveInfoModel> {
     let data: {[key: string]: string} = {
       subject: title,
       desc: desc,
@@ -132,6 +132,7 @@ export class LiveService {
     };
 
     if (coverKey) data['coverKey'] = coverKey;
+    if (coverWeixinId) data['coverWeixinId'] = coverWeixinId;
 
     const url = `${environment.config.host.io}/api/live/streams/${id}`;
     return this.http.put(url, data).toPromise().then(res => {

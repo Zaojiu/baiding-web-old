@@ -7,6 +7,7 @@ import {UploadApiService} from "../../shared/api/upload/upload.api";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {futureValidator} from "../../shared/form/future.validator";
 import {UtilsService} from "../../shared/utils/utils";
+import {ImageBridge} from "../../shared/bridge/image.interface";
 
 @Component({
   templateUrl: './create.component.html',
@@ -16,7 +17,8 @@ import {UtilsService} from "../../shared/utils/utils";
 export class CreateComponent implements OnInit, DoCheck {
   form: FormGroup;
   coverFiles: File[];
-  coverSrc: SafeUrl;
+  coverSrc: SafeUrl | string;
+  wxLocalId: string;
   defaultCoverSrc: SafeUrl;
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
@@ -31,9 +33,11 @@ export class CreateComponent implements OnInit, DoCheck {
   isSubmitting = false;
   isInApp = UtilsService.isInApp;
   isInBaidingApp = UtilsService.isInBaidingApp;
+  isInWechat = UtilsService.isInWechat;
 
   constructor(private router: Router, private sanitizer: DomSanitizer, private fb: FormBuilder,
-              private liveService: LiveService, private uploadService: UploadApiService) {
+              private liveService: LiveService, private uploadService: UploadApiService,
+              private imageBridge: ImageBridge) {
   }
 
   ngOnInit() {
@@ -87,6 +91,13 @@ export class CreateComponent implements OnInit, DoCheck {
     }
   }
 
+  selectImages() {
+    this.imageBridge.chooseImages(1).then((localIds) => {
+      this.wxLocalId = localIds[0] as string;
+      this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(localIds[0] as string);
+    });
+  }
+
   submit() {
     Object.keys(this.form.controls).forEach((key) => {
       this.form.controls[key].markAsDirty();
@@ -104,7 +115,7 @@ export class CreateComponent implements OnInit, DoCheck {
     this.isSubmitting = true;
 
     this.liveService.createLive(this.title, '', this.desc, expectStartAt.toISOString(), this.type).then(liveId => {
-      if (this.coverFiles && this.coverFiles.length) {
+      if (this.wxLocalId || (this.coverFiles && this.coverFiles.length)) {
         return this.updateCover(liveId);
       } else {
         return Promise.resolve(liveId);
@@ -122,12 +133,22 @@ export class CreateComponent implements OnInit, DoCheck {
   }
 
   updateCover(liveId: string): Promise<string> {
-    return this.liveService.getCoverUploadToken(liveId).then(data => {
-      return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
-    }).then(imageKey => {
-      let expectStartAt = moment(`${this.time}:00`).local();
-      return this.liveService.updateLiveInfo(liveId, this.title, this.desc, expectStartAt.toISOString(), imageKey);
-    }).then(() => {
+    let promise = null;
+    let expectStartAt = moment(`${this.time}:00`).local();
+
+    if (this.wxLocalId) {
+      promise = this.imageBridge.uploadImage(this.wxLocalId).then(serverId => {
+        return this.liveService.updateLiveInfo(liveId, this.title, this.desc, expectStartAt.toISOString(), '', serverId);
+      });
+    } else {
+      promise = this.liveService.getCoverUploadToken(liveId).then(data => {
+        return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
+      }).then(imageKey => {
+        return this.liveService.updateLiveInfo(liveId, this.title, this.desc, expectStartAt.toISOString(), imageKey);
+      });
+    }
+
+    return promise.then(() => {
       return liveId;
     });
   }

@@ -28,9 +28,10 @@ export class MessageEditorComponent implements OnInit, DoCheck {
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
   submitted = false;
+  isInWechat =  UtilsService.isInWechat;
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
-              private imageService: ImageBridge, private modalService: ModalService,
+              private imageBridge: ImageBridge, private modalService: ModalService,
               private sanitizer: DomSanitizer, private messageApiService: MessageApiService,
               private historyService: HistoryService, private uploadService: UploadApiService) {
   }
@@ -89,7 +90,7 @@ export class MessageEditorComponent implements OnInit, DoCheck {
   }
 
   selectImages() {
-    this.imageService.chooseImages(1).then((localIds) => {
+    this.imageBridge.chooseImages(1).then((localIds) => {
       this.wxLocalId = localIds[0] as string;
       this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(localIds[0] as string);
     });
@@ -116,7 +117,7 @@ export class MessageEditorComponent implements OnInit, DoCheck {
         return this.messageApiService.editHistoryMessage(this.liveId, this.message.id, this.message.content, '', imageKey);
       });
     } else if (this.isInWechat && this.wxLocalId) {
-      promise = this.imageService.uploadImage(this.wxLocalId).then((serverId) => {
+      promise = this.imageBridge.uploadImage(this.wxLocalId).then((serverId) => {
         return this.messageApiService.editHistoryMessage(this.liveId, this.message.id, this.message.content, serverId);
       });
     } else {
@@ -128,10 +129,6 @@ export class MessageEditorComponent implements OnInit, DoCheck {
       this.historyService.refresh();
       this.router.navigate([`/lives/${this.liveId}/history`]);
     });
-  }
-
-  get isInWechat(): boolean {
-    return UtilsService.isInWechat;
   }
 
   back() {
