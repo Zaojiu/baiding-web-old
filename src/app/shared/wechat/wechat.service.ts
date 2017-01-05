@@ -5,27 +5,38 @@ import 'rxjs/add/operator/toPromise';
 import {WechatConfigModel} from './wechat.model';
 import {environment} from "../../../environments/environment";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
-import {UtilsService} from "../utils/utils";
+import {Router, RoutesRecognized} from "@angular/router";
 
 declare var wx: any;
 
 @Injectable()
 export class WechatConfigService {
+  private cachedConfig = null;
+  private needResign = true;
   onVoicePlayEnd: () => void;
   autoCompleteResolver: (localId: string) => void;
   autoCompleteRejecter: (reason: string) => void;
-  hasInit: boolean;
 
-  constructor(private http: Http, private operationService: OperationTipsService) {}
+  constructor(private http: Http, private tipsService: OperationTipsService, private router: Router) {
+    this.router.events.filter(e => e instanceof RoutesRecognized).subscribe(() => {
+      this.needResign = true;
+    });
+  }
 
   private getConfig(): Promise<WechatConfigModel> {
     return this.http.post(`${environment.config.host.io}/api/wechat/signature/config`, null).toPromise()
       .then(res => {
         return res.json() as WechatConfigModel;
-      })
+      });
   }
 
-  private configWechat() {
+  private configWechat(needRefresh = false) {
+    if (this.cachedConfig && !needRefresh) {
+      console.log('cache wechat config: ', this.cachedConfig);
+      wx.config(this.cachedConfig);
+      return;
+    }
+
     this.getConfig().then(config => {
       config.jsApiList = [
         'startRecord',
@@ -49,34 +60,31 @@ export class WechatConfigService {
 
       config.debug = false;
 
-      console.log('wechat config: ', config);
+      console.log('new wechat config: ', config);
 
       wx.config(config);
+      this.cachedConfig = config;
     });
   }
 
   init(): Promise<void> {
-    if (this.hasInit) return Promise.resolve();
+    console.log('wechat init');
 
-    let hasConfig = false;
-
-    wx.error(reason => {
-      console.log('wx err:', reason);
-
-      if (hasConfig) {
-        this.operationService.popup('微信初始化失败,请刷新页面');
-        return;
-      }
-
-      hasConfig = true;
-
-      this.configWechat();
-    });
+    if (!this.needResign) return Promise.resolve();
 
     return new Promise<void>((resolve, reject) => {
-      wx.ready(() => {
-        this.hasInit = true;
+      wx.error(reason => {
+        console.log('wx err:', reason);
 
+        if (reason.errMsg === 'config:invalid signature') {
+          this.configWechat(true);
+        } else {
+          this.tipsService.popup('微信初始化失败, 请刷新页面');
+          throw new Error(reason);
+        }
+      });
+
+      wx.ready(() => {
         console.log('wechat ready');
 
         wx.onVoiceRecordEnd({
@@ -99,7 +107,9 @@ export class WechatConfigService {
         resolve();
       });
 
-      this.configWechat();
+      console.log('config wechat at init');
+      this.configWechat(true);
+      this.needResign = false;
     });
   }
 

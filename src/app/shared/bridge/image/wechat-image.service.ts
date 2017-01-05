@@ -30,13 +30,9 @@ export class WechatImageService implements ImageBridge {
   }
 
   chooseImages(count = 9): Promise<string[]> {
-    if (this.wechatConfigService.hasInit) {
+    return this.wechatConfigService.init().then(() => {
       return this._chooseImages(count);
-    } else {
-      return this.wechatConfigService.init().then(() => {
-        return this._chooseImages(count);
-      });
-    }
+    });
   }
 
   uploadImage(localId: string): Promise<string> {

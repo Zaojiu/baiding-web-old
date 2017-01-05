@@ -19,7 +19,7 @@ export class WechatAudioService implements AudioBridge {
           resolve();
         },
         fail: (err) => {
-          console.log('wechat audio start failed');
+          console.log('wechat audio start failed', err);
           reject(err);
         }
       })
@@ -27,30 +27,18 @@ export class WechatAudioService implements AudioBridge {
   }
 
   startRecord(): Promise<void> {
-    if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.init().then(() => {
-        return this._startRecord();
-      });
-    } else {
+    return this.wechatConfigService.init().then(() => {
       return this._startRecord();
-    }
+    });
   }
 
   autoCompelete(): Promise<string> {
-    if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.init().then(() => {
-        return new Promise((resolve, reject) => {
-          this.wechatConfigService.autoCompleteResolver = resolve;
-          this.wechatConfigService.autoCompleteRejecter = reject;
-        });
-      });
-    } else {
+    return this.wechatConfigService.init().then(() => {
       return new Promise((resolve, reject) => {
         this.wechatConfigService.autoCompleteResolver = resolve;
         this.wechatConfigService.autoCompleteRejecter = reject;
       });
-    }
-
+    });
   }
 
   private _stopRecord(): Promise<string> {
@@ -70,13 +58,7 @@ export class WechatAudioService implements AudioBridge {
   }
 
   stopRecord(): Promise<string> {
-    if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.init().then(() => {
-        return this._stopRecord();
-      });
-    } else {
-      return this._stopRecord();
-    }
+    return this._stopRecord();
   }
 
   private _cancelRecord(): Promise<void> {
@@ -95,13 +77,7 @@ export class WechatAudioService implements AudioBridge {
   }
 
   cancelRecord(): Promise<void> {
-    if (!this.wechatConfigService.hasInit) {
-      return this.wechatConfigService.init().then(() => {
-        return this._cancelRecord();
-      });
-    } else {
-      return this._cancelRecord();
-    }
+    return this._cancelRecord();
   }
 
   playVoice(id: string): Promise<string> {
