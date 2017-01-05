@@ -84,6 +84,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
   }
 
+
   copyToClipboard(text: string) {
     this.iosBridgeService.copyText(text).then(() => {
       this.operationTipsService.popup('复制成功');
