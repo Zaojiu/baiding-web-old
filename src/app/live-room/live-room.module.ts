@@ -14,7 +14,6 @@ import {PraisedAnimationDirective} from '../shared/praised-animation/praised-ani
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {TimelineService} from './timeline/timeline.service';
-import {UserInfoCardService} from '../shared/user-info-card/user-info-card.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message/message.api";
 import {ShareApiService} from "../shared/api/share/share.api";
@@ -34,7 +33,6 @@ import {AnimationModule} from "../shared/animation/animation.module";
 import {MessageService} from "./timeline/message/message.service";
 import {AutoBlurModule} from "../shared/auto-blur/auto-blur.module";
 import {EditorToolBarComponent} from "./editor-tool-bar/editor-tool-bar.component";
-import {UserInfoCardComponent} from "../shared/user-info-card/user-info-card.component";
 import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
 import {CommentApiService} from "../shared/api/comment/comment.service";
 import {FileSelectorModule} from "../shared/file-selector/file-selector.module";

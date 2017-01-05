@@ -28,11 +28,24 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
+    this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;
+    this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
+    this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
+    this.route.snapshot.data['shareLink'] = this.getShareUri();
+
     this.shareService.accessSharedByRoute(this.route);
   }
 
   ngOnDestroy() {
     if (this.timer) clearInterval(this.timer);
+  }
+
+  getShareUri(): string {
+    let shareQuery = this.shareService.makeShareQuery('streams', this.liveInfo.id);
+    let uriTree = this.router.createUrlTree([`lives/${this.liveInfo.id}/info`], {queryParams: shareQuery});
+    let path = this.router.serializeUrl(uriTree);
+    return `${location.protocol}//${location.hostname}${path}`;
   }
 
   bookLive() {

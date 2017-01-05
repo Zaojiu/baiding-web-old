@@ -46,9 +46,8 @@ export class ShareApiService {
   }
 
   // TODO, remove mock hash
-  makeShared(rt, rid: string): string {
-
-    let uid = this.userInfoService.getUserInfoCache().uid
+  makeShareQuery(rt, rid: string): URLSearchParams {
+    let uid = this.userInfoService.getUserInfoCache().uid;
     let t = Math.ceil(new Date().getTime() / 1000);
 
     let parmas = new URLSearchParams();
@@ -58,6 +57,7 @@ export class ShareApiService {
     parmas.set('rid', rid);
     parmas.set('t', t + '');
     parmas.set('h', 'hash');
-    return parmas.toString();
+
+    return parmas;
   }
 }

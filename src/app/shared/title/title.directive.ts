@@ -23,7 +23,7 @@ export class TitleSetterDirective implements OnInit {
 
   constructor(el: ElementRef,
               private titleService: TitleService,
-              private activated: ActivatedRoute,
+              private route: ActivatedRoute,
               private ngTitle: NgTitle,
               private router: Router, private shareBridge: ShareBridge) {
     this.el = el.nativeElement;
@@ -40,41 +40,44 @@ export class TitleSetterDirective implements OnInit {
     this.initOnRouteChange();
   }
 
-
   private initOnRouteChange() {
-    this.sub = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe(_ => {
-        let data = [];
-        let activeRoutes: ActivatedRoute[] = this.activated.children;
+    this.sub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(_ => {
+      let title = '造就Now';
+      let titleArr = [];
+      let activeRoutes: ActivatedRoute[] = this.route.children;
+      let isAsyncTitle = this.route.snapshot.data && this.route.snapshot.data['isAsyncTitle'];
 
-        let userDefineShare = false;
-        activeRoutes.forEach((route: ActivatedRoute) => {
-          let activeRoute: ActivatedRoute = route;
-          while (activeRoute.firstChild) {
-            activeRoute = activeRoute.firstChild;
-          }
-          let d = activeRoute.snapshot.data;
-          if (d) {
-            d['title'] && data.push([d['title']]);
-            userDefineShare = !!d['userDefineShare'];
-          }
-        });
 
-        if (data.length) {
-          this.titleService.set(data.join('-'));
-          if (!userDefineShare) {
-            this.shareBridge.setShareInfo(data.join('-'), '小人物也有大声音',
-              `${location.protocol}//${location.host}/assets/img/zaojiu-logo.jpg`,
-              `${location.protocol}//${location.host}/${this.router.url}`);
-          }
+      activeRoutes.forEach((route: ActivatedRoute) => {
+        let activeRoute: ActivatedRoute = route;
+        while (activeRoute.firstChild) {
+          activeRoute = activeRoute.firstChild;
         }
+        let d = activeRoute.snapshot.data;
+        if (d && d['title']) titleArr.push([d['title']]);
       });
 
+      console.log(titleArr);
+
+      if (titleArr.length) title = titleArr.join('-');
+
+      this.titleService.set(title);
+      this.setDefaultShareInfo();
+    });
+  }
+
+  private setDefaultShareInfo() {
+    let routeData = this.route.snapshot.data;
+    let shareTitle = routeData && routeData['shareTitle'] ? routeData['shareTitle'] : '造就Now';
+    let shareDesc = routeData && routeData['shareDesc'] ? routeData['shareDesc'] : '小人物也有大声音。每个想法都值得赞赏。';
+    let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${location.protocol}//${location.hostname}assets/img/zaojiu-logo.jpg`;
+    let shareLink = routeData && routeData['shareLink'] ? routeData['shareLink'] : `${location.protocol}//${location.hostname}`; // 默认分享首页地址
+    let isAsyncShareInfo = routeData && routeData['isAsyncShareInfo'];
+
+    if (!isAsyncShareInfo) this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareLink);
   }
 
   private setWechatWebviewTitle(newTitle: string) {
-
     document.title = newTitle;
     let i = document.createElement('iframe');
     i.src = '/favicon.ico';
