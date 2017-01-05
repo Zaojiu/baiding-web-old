@@ -57,7 +57,7 @@ export class IosBridgeService {
         this.bridge.callHandler('copyText', {
           title: text,
         }, (result) => {
-          this.operationTipsService.popup('复制成功');
+          resolve(result);
         }, (err) => {
           reject(err);
         });
@@ -66,7 +66,7 @@ export class IosBridgeService {
           this.bridge.callHandler('copyText', {
             title: text,
           }, (result) => {
-            this.operationTipsService.popup('复制成功')
+            resolve(result);
           }, (err) => {
             reject(err);
           });

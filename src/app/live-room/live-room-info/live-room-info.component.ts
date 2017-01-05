@@ -24,12 +24,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   inApp = UtilsService.isInApp;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-<<<<<<< HEAD
-              private userInfoService: UserInfoService, private shareService: ShareApiService, private operationTipsService: OperationTipsService) {
-=======
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
-              private iosBridgeService: IosBridgeService) {
->>>>>>> BD-491  app内复制xingshu100
+              private iosBridgeService: IosBridgeService, private shareService: ShareApiService) {
   }
 
   ngOnInit() {
@@ -90,7 +86,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   copyToClipboard(text: string) {
     this.iosBridgeService.copyText(text).then(() => {
-      this.closeQrcode()
+      this.operationTipsService.popup('复制成功');
+      this.closeQrcode();
     });
   }
 }
