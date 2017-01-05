@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {LiveType} from "../api/live/live.enums";
 import {UtilsService} from "../utils/utils";
-import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from "@angular/router";
-import {OperationTipsService} from "../operation-tips/operation-tips.service";
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
 
 declare var window: any;
 declare var $: any;
@@ -12,7 +11,7 @@ export class IosBridgeService {
   bridge: any;
   hasInit: boolean;
 
-  constructor(private router: Router, private operationTipsService: OperationTipsService) {
+  constructor() {
   }
 
   gotoLive(liveId: string, liveType: LiveType, role: string) {
