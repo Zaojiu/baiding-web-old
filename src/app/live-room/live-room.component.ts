@@ -10,6 +10,7 @@ import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from '../shared/bridge/share.interface';
+import {MessageApiService} from "../shared/api/message/message.api";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -26,18 +27,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   praisedSub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
-              private timelineService: TimelineService, private shareBridge: ShareBridge, private shareService: ShareApiService) {
-
-  }
-
-  getShareUri(): string {
-    let uriTree = this.router.createUrlTree([`lives/${this.id}/info`]);
-    let hash = this.router.serializeUrl(uriTree);
-    let uri = `${location.protocol}//${location.hostname}${hash}`;
-
-    let shareParams = this.shareService.makeShared('streams', this.liveInfo.id);
-    uri += `?${shareParams}`;
-    return uri;
+              private timelineService: TimelineService, private shareBridge: ShareBridge,
+              private shareService: ShareApiService, private messageApiService: MessageApiService) {
   }
 
   refreshLiveInfo() {
@@ -50,20 +41,46 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     });
   }
 
+  setShareInfo() {
+    this.getLatestTextMessage().then(latestText => {
+      let shareTitle = `${this.userInfo.nick}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
+      let shareDesc = latestText;
+      let shareCover = this.liveInfo.coverThumbnailUrl;
+      let shareUrl = this.getShareUri();
+      this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
+    });
+  }
+
+  getLatestTextMessage(marker = ''): Promise<string> {
+    return this.messageApiService.listMessages(this.id, marker, 21).then(messages => {
+      for (let message of messages) {
+        if (message.isText() || message.isNice()) return message.content;
+        if (message.isAudio() && message.audio.translateResult) return message.audio.translateResult;
+      }
+
+      if (messages.length < 21) return '小人物也有大声音。每个想法都值得赞赏。';
+
+      return this.getLatestTextMessage(messages[messages.length - 1].id);
+    });
+  }
+
+  getShareUri(): string {
+    let shareQuery = this.shareService.makeShareQuery('streams', this.liveInfo.id);
+    let uriTree = this.router.createUrlTree([`lives/${this.id}/info`], {queryParams: shareQuery});
+    let path = this.router.serializeUrl(uriTree);
+    return `${location.protocol}//${location.hostname}${path}`;
+  }
+
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
+    this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.liveService.getLiveInfo(this.id, true, true); // 发送加入话题间的请求。
-
-    this.route.snapshot.data['title'] = this.liveInfo.subject;
-    let shareUrl = this.getShareUri();
-    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, shareUrl, this.id);
-
-    this.refreshInterval = setInterval(() => {
-      this.refreshLiveInfo();
-    }, 30 * 1000);
+    this.setShareInfo(); // 设置分享参数等。
+    this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
+    this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
     this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
       if (evt.event != EventType.LivePraise) {
@@ -77,8 +94,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       userAnim.user = new UserInfoModel;
       this.liveInfo.praisedAnimations.push(userAnim);
     });
-
-    this.shareService.accessSharedByRoute(this.route);
   }
 
   ngOnDestroy() {

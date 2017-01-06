@@ -10,6 +10,7 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {LiveStatus} from "../shared/api/live/live.enums";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {UserInfoModel} from "../shared/api/user-info/user-info.model";
+import {ShareBridge} from "../shared/bridge/share.interface";
 
 declare var $: any;
 declare var Waypoint: any;
@@ -21,16 +22,16 @@ declare var Waypoint: any;
 
 export class LiveListComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
+              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe,
+              private shareBridge: ShareBridge) {
   }
-
+  private waypoints: any[] = [];
+  private loadSize = 20;
+  @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   livesList: LiveInfoModel[] = [];
   covers: {[liveId: string]: SafeUrl} = {};
   liveTime: {[liveId: string]: string} = {};
   isOnLatest: boolean;
-  @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
-  private waypoints: any[] = [];
-  private loadSize = 20;
   timeNow = UtilsService.now.toString();
   timer: any;
   userInfo: UserInfoModel;
@@ -41,7 +42,9 @@ export class LiveListComponent implements OnInit, OnDestroy {
 
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    this.timer = setInterval(() => {
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}正在使用造就，发现更多经验分享`;
+
+      this.timer = setInterval(() => {
       this.timeNow = UtilsService.now.toString();
     }, 1000);
   }
@@ -108,7 +111,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
         let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
 
-        if (liveInfo.status === LiveStatus.Created){
+        if (liveInfo.status === LiveStatus.Created) {
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
             let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
             let dayStr = '';

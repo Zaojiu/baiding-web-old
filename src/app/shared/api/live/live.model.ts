@@ -8,6 +8,7 @@ export class LiveInfoModel {
   desc: string;
   coverUrl: string;
   coverSmallUrl: string;
+  coverThumbnailUrl: string;
   kind: LiveType;
   status: LiveStatus;
   isDraft: boolean;

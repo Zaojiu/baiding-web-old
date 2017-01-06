@@ -44,6 +44,11 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
 
+    this.route.snapshot.data['title'] = `${this.currentUserInfo.nick}的造就`; // 设置页面标题
+    this.route.snapshot.data['shareTitle'] = `${this.currentUserInfo.nick}等你加入我的话题讨论`;
+    this.route.snapshot.data['shareCover'] = this.currentUserInfo.avatar;
+    this.route.snapshot.data['shareLink'] = this.getShareUri();
+
     this.uidParamSub = this.route.params.subscribe((params) => {
       this.uid = +params['uid'];
       if (!this.uid) this.router.navigate([`404`]);
@@ -58,6 +63,12 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.timer) clearInterval(this.timer);
     if (this.uidParamSub) this.uidParamSub.unsubscribe();
+  }
+
+  getShareUri(): string {
+    let uriTree = this.router.createUrlTree([`info-center/${this.currentUserInfo.uid}`]);
+    let path = this.router.serializeUrl(uriTree);
+    return `${location.protocol}//${location.hostname}${path}`;
   }
 
   initData(uid: number) {

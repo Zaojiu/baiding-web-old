@@ -76,6 +76,7 @@ export class LiveService {
     liveInfo.totalUsers = stream.totalUsers;
 
     if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    if (stream.coverUrl) liveInfo.coverThumbnailUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x/gravity/Center/crop/60x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
 
     let lives = StoreService.get('lives') || {};
     lives[liveInfo.id] = liveInfo;

@@ -33,8 +33,7 @@ const route: Routes = [
         path: '',
         component: LiveRoomComponent,
         data: {
-          title: '造就Now',
-          userDefineShare: true
+          isAsyncShareInfo: true,
         },
         resolve: {
           liveInfo: LiveInfoResolver,

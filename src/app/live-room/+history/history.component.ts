@@ -73,7 +73,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
     });
 
     this.route.snapshot.data['title'] = this.liveInfo.subject;
-    this.shareBridge.setShareInfo(this.liveInfo.subject, this.liveInfo.desc, this.liveInfo.coverSmallUrl, this.getShareUri());
+    this.route.snapshot.data['shareTitle'] = this.liveInfo.subject;
+    this.route.snapshot.data['shareDesc'] = this.getLatestText();
+    this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
+    this.route.snapshot.data['shareLink'] = this.getShareUri();
 
     this.refreshSub = this.historyService.messageRefresh$.subscribe(() => {
       this.messageApiService.history(this.liveId, true).then(messages => {
@@ -86,11 +89,19 @@ export class HistoryComponent implements OnInit, OnDestroy {
     if (this.refreshSub) this.refreshSub.unsubscribe();
   }
 
+  getLatestText(): string {
+    for (let message of this.messages) {
+      if (message.isText() || message.isNice()) return message.content;
+      if (message.isAudio() && message.audio.translateResult) return message.audio.translateResult;
+    }
+
+    return '';
+  }
+
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`/lives/${this.liveId}/history`]);
-    let hash = this.router.serializeUrl(uriTree);
-    let uri = location.href.replace(location.hash, `#${hash}`);
-    return uri;
+    let path = this.router.serializeUrl(uriTree);
+    return `${location.protocol}//${location.hostname}${path}`;
   }
 
   listNextComments(lastComment?: CommentModel) {

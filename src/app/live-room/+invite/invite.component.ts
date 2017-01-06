@@ -5,8 +5,6 @@ import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
-import {ShareBridge} from "../../shared/bridge/share.interface";
-import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
@@ -25,8 +23,7 @@ export class InviteComponent implements OnInit {
   name = '';
 
   constructor(private liveService: LiveService, private route: ActivatedRoute,
-              private router: Router, private inviteApiService: InviteApiService,
-              private shareService: ShareBridge, private iosBridge: IosBridgeService) {
+              private router: Router, private inviteApiService: InviteApiService) {
   }
 
   ngOnInit() {
@@ -34,8 +31,9 @@ export class InviteComponent implements OnInit {
     this.token = this.route.snapshot.params['token'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.route.snapshot.data['title'] = `${this.liveInfo.subject}的邀请函`;
 
-    if (UtilsService.isInApp) this.router.navigate([`lives/${this.liveId}/invitation`, {token: this.token}]);
+    if (UtilsService.isInApp) this.router.navigate([`lives/${this.liveId}/invitation`, {token: this.token}]); // still needed?
 
     if (this.token) {
       this.setShareInfo();
@@ -58,11 +56,18 @@ export class InviteComponent implements OnInit {
     this.router.navigate([`lives/${this.liveId}`]);
   }
 
-  createTokenUrl(token: string) {
-    return this.router.serializeUrl(this.router.createUrlTree([`lives/${this.liveId}/invitation`, {token: token}]))
+  getShareUri(): string {
+    let uriTree = this.router.createUrlTree([`lives/${this.liveId}/invitation`, {token: this.token}]);
+    let path = this.router.serializeUrl(uriTree);
+    return `${location.protocol}//${location.hostname}${path}`;
   }
 
   setShareInfo() {
-    this.shareService.setShareInfo(`${this.liveInfo.subject}邀请函`, this.liveInfo.desc, this.liveInfo.coverSmallUrl, location.href)
+    let diffSec = moment.unix(+moment(this.liveInfo.expectStartAt) / 1000).diff(moment.unix(UtilsService.now));
+    let durationStr = moment.duration(diffSec).humanize();
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你加入#${this.liveInfo.subject}# `;
+    this.route.snapshot.data['shareDesc'] = diffSec > 0 ? `${durationStr}后开始直播。${this.liveInfo.desc}` : `直播进行中。${this.liveInfo.desc}`;
+    this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
+    this.route.snapshot.data['shareLink'] = this.getShareUri();
   }
 }
