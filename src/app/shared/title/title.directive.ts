@@ -56,9 +56,7 @@ export class TitleSetterDirective implements OnInit {
         let d = activeRoute.snapshot.data;
         if (d && d['title']) titleArr.push([d['title']]);
       });
-
-      console.log(titleArr);
-
+      
       if (titleArr.length) title = titleArr.join('-');
 
       this.titleService.set(title);
