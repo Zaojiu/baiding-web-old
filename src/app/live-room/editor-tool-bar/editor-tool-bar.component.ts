@@ -177,12 +177,12 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
       this.isMessageSubmitting = false;
       this.messageContent = '';
       this.liveRoomService.setTextWordsStashed('', this.liveId);
-      this.operationTips.popup('发送成功');
     } else {
       this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
         this.isMessageSubmitting = false;
         this.messageContent = '';
         this.liveRoomService.setTextWordsStashed('', this.liveId);
+        this.operationTips.popup('发送成功');
       });
     }
   }
@@ -223,24 +223,6 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     }
 
     this.images = [];
-  }
-
-  changeCommentContent(editor: UserInfoModel) {
-    if (this.messageContent.indexOf(editor.uid.toString()) !== -1) {
-      this.messageContent = this.messageContent.replace(`@${editor.nick}(${editor.uid}) `, '');
-    } else {
-      if (this.messageContent === '') {
-        this.messageContent += `@${editor.nick}(${editor.uid}) `;
-      } else if (this.messageContent[this.messageContent.length - 1] === '@') {
-        this.messageContent += `${editor.nick}(${editor.uid}) `;
-      } else {
-        this.messageContent += `@${editor.nick}(${editor.uid}) `;
-      }
-    }
-  }
-
-  selected(uid: number): boolean {
-    return this.messageContent.indexOf(uid.toString()) !== -1;
   }
 
   selectImages() {

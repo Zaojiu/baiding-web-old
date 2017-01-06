@@ -8,6 +8,7 @@ import {MessageService} from '../timeline/message/message.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {EditMode} from "../../shared/comment-input/comment-input.enums";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
 @Component({
   selector: 'audience-tool-bar',
@@ -25,8 +26,8 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   isPraisePosting: boolean;
   private receviedAvatarTouchedSub: Subscription;
 
-  constructor(private liveService: LiveService,
-              private  messageService: MessageService, private router: Router) {
+  constructor(private liveService: LiveService, private messageService: MessageService,
+              private router: Router, private tipsService: OperationTipsService) {
   }
 
   ngOnInit() {
@@ -56,6 +57,10 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
     this.liveService.praiseLive(this.liveInfo.id, this.liveInfo.hadPraised, emoji).finally(() => {
       this.isPraisePosting = false;
     });
+  }
+
+  postSuccessful() {
+    this.tipsService.popup('评论成功');
   }
 
   goSettings() {
