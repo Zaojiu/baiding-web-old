@@ -42,6 +42,7 @@ export class CreateComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/default-cover.jpg');
+    this.coverSrc = this.defaultCoverSrc;
     this.time = moment().add(moment.duration(1, 'h')).format('YYYY-MM-DDTHH:mm');
 
     this.form = this.fb.group({
@@ -69,25 +70,27 @@ export class CreateComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    if (this.form.controls['cover'].valid && this.coverFiles) {
-      if (this.coverFiles.length) {
-        let file = this.coverFiles[0];
+    if (!this.isInWechat) {
+      if (this.form.controls['cover'].valid && this.coverFiles) {
+        if (this.coverFiles.length) {
+          let file = this.coverFiles[0];
 
-        if (this.oldFileName === file.name) return;
+          if (this.oldFileName === file.name) return;
 
-        let reader = new FileReader();
+          let reader = new FileReader();
 
-        reader.onload = (e) => {
-          this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
-          this.oldFileName = file.name;
-        };
+          reader.onload = (e) => {
+            this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
+            this.oldFileName = file.name;
+          };
 
-        reader.readAsDataURL(file);
+          reader.readAsDataURL(file);
+        } else {
+          this.coverSrc = this.defaultCoverSrc;
+        }
       } else {
         this.coverSrc = this.defaultCoverSrc;
       }
-    } else {
-      this.coverSrc = this.defaultCoverSrc;
     }
   }
 
@@ -95,6 +98,7 @@ export class CreateComponent implements OnInit, DoCheck {
     this.imageBridge.chooseImages(1).then((localIds) => {
       this.wxLocalId = localIds[0] as string;
       this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(localIds[0] as string);
+      console.log(this.wxLocalId, this.coverSrc);
     });
   }
 
