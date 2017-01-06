@@ -31,7 +31,7 @@ export class InviteComponent implements OnInit {
     this.token = this.route.snapshot.params['token'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.route.snapshot.params['title'] = `${this.liveInfo.subject}的邀请函`;
+    this.route.snapshot.data['title'] = `${this.liveInfo.subject}的邀请函`;
 
     if (UtilsService.isInApp) this.router.navigate([`lives/${this.liveId}/invitation`, {token: this.token}]); // still needed?
 
@@ -63,11 +63,11 @@ export class InviteComponent implements OnInit {
   }
 
   setShareInfo() {
-    let diffSec = moment.unix(+moment(this.liveInfo.expectStartAt) / 1000).diff(moment(UtilsService.now));
-    let durationStr = moment.duration(diffSec > 0 ? diffSec : 0).humanize();
-    this.route.snapshot.params['shareTitle'] = `${this.userInfo.nick}邀请你加入#${this.liveInfo.subject}# `;
-    this.route.snapshot.params['shareDesc'] = `${durationStr}开始直播。${this.liveInfo.desc}`;
-    this.route.snapshot.params['shareCover'] = this.liveInfo.coverThumbnailUrl;
-    this.route.snapshot.params['shareLink'] = this.getShareUri();
+    let diffSec = moment.unix(+moment(this.liveInfo.expectStartAt) / 1000).diff(moment.unix(UtilsService.now));
+    let durationStr = moment.duration(diffSec).humanize();
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你加入#${this.liveInfo.subject}# `;
+    this.route.snapshot.data['shareDesc'] = diffSec > 0 ? `${durationStr}后开始直播。${this.liveInfo.desc}` : `直播进行中。${this.liveInfo.desc}`;
+    this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
+    this.route.snapshot.data['shareLink'] = this.getShareUri();
   }
 }

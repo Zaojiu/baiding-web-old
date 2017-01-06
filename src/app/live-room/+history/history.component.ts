@@ -100,9 +100,8 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`/lives/${this.liveId}/history`]);
-    let hash = this.router.serializeUrl(uriTree);
-    let uri = location.href.replace(location.hash, `#${hash}`);
-    return uri;
+    let path = this.router.serializeUrl(uriTree);
+    return `${location.protocol}//${location.hostname}${path}`;
   }
 
   listNextComments(lastComment?: CommentModel) {

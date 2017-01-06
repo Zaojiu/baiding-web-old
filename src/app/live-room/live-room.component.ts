@@ -58,7 +58,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         if (message.isAudio() && message.audio.translateResult) return message.audio.translateResult;
       }
 
-      if (messages.length < 21) return '';
+      if (messages.length < 21) return '小人物也有大声音。每个想法都值得赞赏。';
 
       return this.getLatestTextMessage(messages[messages.length - 1].id);
     });

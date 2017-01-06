@@ -47,7 +47,6 @@ export class TitleSetterDirective implements OnInit {
       let activeRoutes: ActivatedRoute[] = this.route.children;
       let isAsyncTitle = this.route.snapshot.data && this.route.snapshot.data['isAsyncTitle'];
 
-
       activeRoutes.forEach((route: ActivatedRoute) => {
         let activeRoute: ActivatedRoute = route;
         while (activeRoute.firstChild) {
@@ -56,7 +55,7 @@ export class TitleSetterDirective implements OnInit {
         let d = activeRoute.snapshot.data;
         if (d && d['title']) titleArr.push([d['title']]);
       });
-      
+
       if (titleArr.length) title = titleArr.join('-');
 
       this.titleService.set(title);
@@ -65,7 +64,10 @@ export class TitleSetterDirective implements OnInit {
   }
 
   private setDefaultShareInfo() {
-    let routeData = this.route.snapshot.data;
+    let route = this.route.snapshot;
+    while (route.firstChild) route = route.firstChild;
+
+    let routeData = route.data;
     let shareTitle = routeData && routeData['shareTitle'] ? routeData['shareTitle'] : '造就Now';
     let shareDesc = routeData && routeData['shareDesc'] ? routeData['shareDesc'] : '小人物也有大声音。每个想法都值得赞赏。';
     let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${location.protocol}//${location.hostname}assets/img/zaojiu-logo.jpg`;
