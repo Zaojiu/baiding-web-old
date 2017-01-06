@@ -24,7 +24,7 @@
   </div>
 </div>
 
-<div class="qrcode-background" *ngIf="isQrcodeShown && !inApp" (click)="closeQrcode()">
+<div class="qrcode-background" [ngClass]="{'show': isQrcodeShown}" *ngIf="!inApp" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
@@ -42,7 +42,7 @@
 </div>
 
 
-<div class="qrcode-background" *ngIf="isQrcodeShown && inApp" (click)="closeQrcode()">
+<div class="qrcode-background" [ngClass]="{'show': isQrcodeShown}" *ngIf="inApp" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
