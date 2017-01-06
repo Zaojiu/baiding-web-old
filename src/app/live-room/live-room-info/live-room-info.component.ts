@@ -7,6 +7,8 @@ import {ShareApiService} from '../../shared/api/share/share.api';
 import {environment} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {UtilsService} from "../../shared/utils/utils";
+import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -19,9 +21,11 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   isQrcodeShown = false;
   qrcode: string;
   timer: any;
+  inApp = UtilsService.isInApp;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-              private userInfoService: UserInfoService, private shareService: ShareApiService, private operationTipsService: OperationTipsService) {
+              private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
+              private iosBridgeService: IosBridgeService, private shareService: ShareApiService) {
   }
 
   ngOnInit() {
@@ -38,10 +42,12 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   bookLive() {
     this.liveService.bookLive(this.liveInfo.id).then(liveInfo => {
       this.liveInfo = liveInfo;
-      if (!this.userInfo.isSubscribed) {
+      if (!this.userInfo.isSubscribed && !this.inApp) {
         this.operationTipsService.popup('请扫描二维码进行订阅');
         this.showQrcode();
-      } else {
+      } else if (!this.userInfo.isSubscribed && this.inApp) {
+        this.showQrcode()
+      } else if (this.userInfo.isSubscribed) {
         this.operationTipsService.popup('订阅成功');
       }
     });
@@ -76,5 +82,13 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   closeQrcode() {
     this.isQrcodeShown = false;
     clearInterval(this.timer);
+  }
+
+
+  copyToClipboard(text: string) {
+    this.iosBridgeService.copyText(text).then(() => {
+      this.operationTipsService.popup('复制成功');
+      this.closeQrcode();
+    });
   }
 }

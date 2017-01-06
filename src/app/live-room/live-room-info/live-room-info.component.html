@@ -16,24 +16,45 @@
   </div>
 
   <div class="operation-area">
-    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated()" (click)="bookLive()"><i class="bi bi-clock"></i>开播提醒</a>
-    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated()" (click)="unbookLive()"><i class="bi bi-clock"></i>已经开通</a>
+    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated()" (click)="bookLive()"><i
+      class="bi bi-clock"></i>开播提醒</a>
+    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated()" (click)="unbookLive()"><i
+      class="bi bi-clock"></i>已经开通</a>
     <a class="btn enter-room" (click)="gotoLive()">进入房间</a>
   </div>
 </div>
 
-<div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
+<div class="qrcode-background" *ngIf="isQrcodeShown && !inApp" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
       <div class="live-title">{{liveInfo.subject}}</div>
-      <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
+      <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                  [countDownStatus]="liveInfo.isCreated()"></count-down>
       <p class="tips">直播还未开始</p>
     </div>
     <div class="qrcode">
       <img class="qrcode-image" [src]="qrcode" alt="二维码">
       <p>长按二维码关注服务号</p>
       <p>开播会通知你</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="qrcode-background" *ngIf="isQrcodeShown && inApp" (click)="closeQrcode()">
+  <div class="content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <div class="close" (click)="closeQrcode()"></div>
+      <div class="live-title">{{liveInfo.subject}}</div>
+      <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                  [countDownStatus]="liveInfo.isCreated()"></count-down>
+      <p class="tips">直播还未开始</p>
+    </div>
+    <div class="noqrcode">
+      <p>复制微信公众号到微信中</p>
+      <p>直接粘贴搜索或手动输入ZaojiuTV</p>
+      <div class="copyzaojiu" (click)="copyToClipboard('ZaojiuTV')">复制微信公众号</div>
     </div>
   </div>
 </div>

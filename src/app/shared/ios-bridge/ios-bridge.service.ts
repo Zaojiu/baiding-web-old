@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {LiveType} from "../api/live/live.enums";
 import {UtilsService} from "../utils/utils";
-import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from "@angular/router";
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
 
 declare var window: any;
 declare var $: any;
@@ -11,7 +11,8 @@ export class IosBridgeService {
   bridge: any;
   hasInit: boolean;
 
-  constructor(private router: Router) {}
+  constructor() {
+  }
 
   gotoLive(liveId: string, liveType: LiveType, role: string) {
     let query = {
@@ -49,6 +50,30 @@ export class IosBridgeService {
     }
   }
 
+  copyText(text: string) {
+    return new Promise((resolve, reject) => {
+      if (this.hasInit) {
+        this.bridge.callHandler('copyText', {
+          title: text,
+        }, (result) => {
+          resolve(result);
+        }, (err) => {
+          reject(err);
+        });
+      } else {
+        this.init().then(() => {
+          this.bridge.callHandler('copyText', {
+            title: text,
+          }, (result) => {
+            resolve(result);
+          }, (err) => {
+            reject(err);
+          });
+        });
+      }
+    });
+  }
+
   init(): Promise<void> {
     if (this.hasInit) return Promise.resolve();
 
@@ -75,7 +100,9 @@ export class IosBridgeService {
       WVJBIframe.style.display = 'none';
       WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
       document.documentElement.appendChild(WVJBIframe);
-      setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0);
+      setTimeout(function () {
+        document.documentElement.removeChild(WVJBIframe)
+      }, 0);
     });
   }
 }
