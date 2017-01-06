@@ -26,61 +26,55 @@
   color: $color-dark-gray;
 }
 
-.cover-container {
+.image-wrapper {
+  flex-shrink: 0;
   position: relative;
+  font-size: 0;
 
-  .cover-wrapper {
-    position: relative;
+  &:before {
+    display: block;
+    content: "";
+    padding-top: 51.4%;
+  }
+
+  .image {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
-    background-color: rgb(245, 245, 245);
-    border: solid 1px rgb(205, 205, 205);
-    border-radius: 4px;
-    background-size: cover;
+    height: 100%;
+    object-fit: cover;
+    text-indent: -10000px;
+  }
 
-    &:before {
-      display: block;
-      content: "";
-      padding-top: 51.4%;
-    }
+  .edit-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-dark-gray;
+    line-height: 1em;
+    font-size: 12px;
+    background-color: change_color($color-w, $alpha: .6);
 
-    .cover-image {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      text-indent: -10000px
-    }
-
-    .no-cover-tips {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-50%);
-      color: $color-gray;
-    }
-
-    .upload-tips {
-      position: absolute;
-      width: 100%;
-      left: 0;
-      bottom: 0;
-      line-height: 1em;
-      color: $color-dark-gray;
-      background-color: rgba(255, 255, 255, .6);
-      padding: 8px 0;
-      text-align: center;
-      font-size: 14px;
+    .bi-edit {
+      font-size: 18px;
+      margin-right: 6px;
     }
   }
 
   .file-selector {
     position: absolute;
     top: 0;
+    left: 0;
     right: 0;
-    height: 100%;
+    bottom: 0;
     width: 100%;
+    height: 100%;
     opacity: 0;
   }
 }

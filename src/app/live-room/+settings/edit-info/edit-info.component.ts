@@ -11,6 +11,7 @@ import {UploadApiService} from "../../../shared/api/upload/upload.api";
 import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
 import {UtilsService} from "../../../shared/utils/utils";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
+import {ImageBridge} from "../../../shared/bridge/image.interface";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -26,6 +27,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   coverSrc: SafeUrl;
   originCoverSrc: SafeUrl;
   defaultCoverSrc: SafeUrl;
+  wxLocalId: string;
   coverKey: string;
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
@@ -39,10 +41,11 @@ export class EditInfoComponent implements OnInit, DoCheck {
   submitted = false;
   isInApp = UtilsService.isInApp;
   from: string;
+  isInWechat = UtilsService.isInWechat;
 
   constructor(private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
               private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService,
-              private userInfoService: UserInfoService) {
+              private userInfoService: UserInfoService, private imageBridge: ImageBridge) {
   }
 
   ngOnInit() {
@@ -60,7 +63,8 @@ export class EditInfoComponent implements OnInit, DoCheck {
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDTHH:mm');
 
     if (this.liveInfo.coverSmallUrl) this.originCoverSrc = this.sanitizer.bypassSecurityTrustUrl(this.liveInfo.coverSmallUrl);
-
+    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/default-cover.jpg');
+    this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
     this.title = this.liveInfo.subject;
     this.desc = this.liveInfo.desc;
     this.coverKey = this.urlPath(this.liveInfo.coverUrl);
@@ -88,29 +92,30 @@ export class EditInfoComponent implements OnInit, DoCheck {
       ]));
     }
 
-    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/default-cover.jpg');
   }
 
   ngDoCheck() {
-    if (this.form.controls['cover'].valid && this.coverFiles) {
-      if (this.coverFiles.length) {
-        let file = this.coverFiles[0];
+    if (!this.isInWechat) {
+      if (this.form.controls['cover'].valid && this.coverFiles) {
+        if (this.coverFiles.length) {
+          let file = this.coverFiles[0];
 
-        if (this.oldFileName === file.name) return;
+          if (this.oldFileName === file.name) return;
 
-        let reader = new FileReader();
+          let reader = new FileReader();
 
-        reader.onload = (e) => {
-          this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
-          this.oldFileName = file.name;
-        };
+          reader.onload = (e) => {
+            this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
+            this.oldFileName = file.name;
+          };
 
-        reader.readAsDataURL(file);
+          reader.readAsDataURL(file);
+        } else {
+          this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
+        }
       } else {
         this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
       }
-    } else {
-      this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
     }
   }
 
@@ -135,6 +140,13 @@ export class EditInfoComponent implements OnInit, DoCheck {
     if (this.form.invalid) return;
 
     this.postLiveInfo();
+  }
+
+  selectImages() {
+    this.imageBridge.chooseImages(1).then((localIds) => {
+      this.wxLocalId = localIds[0] as string;
+      this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(localIds[0] as string);
+    });
   }
 
   postLiveInfo() {
@@ -171,7 +183,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
   updateLiveInfo() {
     let expectStartAt = moment(`${this.time}:00`).local();
 
-    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey).then(() => {
+    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey, this.wxLocalId).then(() => {
       setTimeout(() => { // prevent delay while cdn syncing source image
         this.submitted = true;
         this.router.navigate([`lives/${this.liveId}/info`]);

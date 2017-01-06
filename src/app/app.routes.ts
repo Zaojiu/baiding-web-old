@@ -17,4 +17,3 @@ const ROUTES = RouterModule.forRoot(appRoutes, {useHash: false});
 
 export class AppRoutingModule {
 }
-

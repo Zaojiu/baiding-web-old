@@ -57,21 +57,22 @@
 
     <div class="form-group" [ngClass]="{'has-error': form.controls['cover'].dirty && form.controls['cover'].invalid}">
       <label>封面</label>
-      <div class="cover-container">
-        <div class="cover-wrapper">
-          <img class="cover-image" *ngIf="coverSrc" [src]="coverSrc" alt="封面图">
-          <span class="no-cover-tips" *ngIf="!coverSrc">暂无封面</span>
-          <div class="upload-tips">点击上传封面图片</div>
+      <div class="image-wrapper">
+        <img class="image" [src]="coverSrc" alt="封面图">
+        <div class="edit-btn">
+          <span class="edit-btn"><i class="bi bi-edit"></i>点击上传封面图片</span>
         </div>
+
         <input
+          *ngIf="!isInWechat"
           class="file-selector"
-          id="cover"
-          name="cover"
+          id="image-selector"
           type="file"
-          formControlName="cover"
-          (focus)="form.controls['cover'].setErrors(null)"
           [(ngModel)]="coverFiles"
+          formControlName="cover"
         >
+
+        <div class="file-selector" *ngIf="isInWechat" (click)="selectImages()"></div>
       </div>
       <p class="helper" *ngIf="form.controls['cover'].valid || !form.controls['cover'].dirty"><span class="highlight">点击图片</span>即可上传封面。封面尺寸: 350*180, 格式: jpg、png、gif、bmp, 并小于8M。</p>
       <div *ngIf="form.controls['cover'].errors">
