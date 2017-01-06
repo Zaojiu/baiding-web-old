@@ -98,6 +98,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  z-index: -1;
+  &.show {
+    z-index: auto;
+    opacity: 1;
+    transition: opacity 1.5s ease-in;
+  }
 
   .content {
     border-radius: 4px;
