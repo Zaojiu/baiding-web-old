@@ -80,7 +80,7 @@ export class TitleSetterDirective implements OnInit {
   private setWechatWebviewTitle(newTitle: string) {
     document.title = newTitle;
     let i = document.createElement('iframe');
-    i.src = '/favicon.ico';
+    i.src = '../../../assets/img/transparent-pixel-min.png';
     i.style.display = 'none';
     i.onload = function () {
       setTimeout(() => {
