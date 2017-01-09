@@ -63,6 +63,7 @@
           flex-grow: 1;
           white-space: nowrap;
           overflow: hidden;
+          overflow-x: auto; // fuck qq browser x5
           text-overflow: ellipsis;
           padding: 0px;
 
