@@ -74,7 +74,7 @@ export class IosBridgeService {
     });
   }
 
-  onClose(cb: () => void) {
+  onClose(cb: (ab) => void) {
     if (this.hasInit) {
       this.bridge.callHandler('onClose', cb);
     } else {
