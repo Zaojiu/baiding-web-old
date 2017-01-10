@@ -23,11 +23,12 @@ export class PreviewComponent implements OnDestroy {
   @Input() imageLinks: ImageMessageModel[];
   @Input() weixinLocalIds: string[];
   @Input() canDelete = false;
-  imageSrc: string|SafeUrl = '';
+  imageSrc: SafeUrl;
   isPopup: boolean;
 
   constructor(el: ElementRef, private imageViewerService: ImageViewerService, private sanitizer: DomSanitizer) {
-    this.el = el.nativeElement
+    this.el = el.nativeElement;
+    this.imageSrc = this.sanitizer.bypassSecurityTrustUrl('');
   }
 
   unsubcribe() {
@@ -49,7 +50,7 @@ export class PreviewComponent implements OnDestroy {
       let reader = new FileReader();
 
       reader.onload = (e) => {
-        this.imageSrc = e.target['result'];
+        this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
       };
 
       reader.readAsDataURL(file);
@@ -57,7 +58,7 @@ export class PreviewComponent implements OnDestroy {
 
     if (linkChange && linkChange.currentValue && linkChange.currentValue.length) {
       let link = linkChange.currentValue[0];
-      this.imageSrc = link.thumbLink;
+      this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(link.thumbLink);
     }
 
     if (weixinIdChange && weixinIdChange.currentValue && weixinIdChange.currentValue.length) {

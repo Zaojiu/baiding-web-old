@@ -278,6 +278,7 @@ export class MessageApiService {
 
           originMessage.postStatus = PostMessageStatus.PostSuccessful;
           originMessage.id = data.id;
+          (originMessage as MessageModel).image = data.image;
           resolve(data);
         }, () => {
           originMessage.postStatus = PostMessageStatus.PostFailed;
