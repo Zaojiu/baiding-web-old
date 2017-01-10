@@ -161,9 +161,8 @@ export class EditInfoComponent implements OnInit, DoCheck {
         this.updateLiveInfo('', serverId);
       });
     } else {
-      let coverKey = UtilsService.parseUrl(this.liveInfo.coverUrl).pathname;
-
-      console.log(UtilsService.parseUrl(this.liveInfo.coverUrl));
+      let pathname = UtilsService.parseUrl(this.liveInfo.coverUrl).pathname;
+      let coverKey = pathname.substr(1, pathname.length - 1);
 
       this.updateLiveInfo(coverKey);
     }
