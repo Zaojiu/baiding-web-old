@@ -39,7 +39,6 @@ export class MessageApiService {
       parentId: parentId
     };
 
-
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages?${$.param(query)}`;
 
     return this.http.get(url).toPromise().then(res => {

@@ -1,0 +1,90 @@
+<div class="main">
+
+  <div class="avatar-container">
+    <div
+      class="avatar-wrapper"
+      (press)="avatarTouched(message.user)"
+      (tap)="showUserInfoCard(message.user.uid)"
+      (click)="$event.stopPropagation()"
+      (contextmenu)="$event.preventDefault()"
+    >
+      <img class="avatar" [src]="message.user.avatar">
+      <i class="bi bi-admin-mark" *ngIf="liveInfo.isAdmin(message.user.uid)"></i>
+      <i class="bi bi-vip-mark" *ngIf="liveInfo.isVip(message.user.uid)"></i>
+    </div>
+  </div>
+
+  <div class="message-container">
+
+    <div class="message-info">
+      <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
+      <span class="time">{{message.createdAt | fromNow}}</span>
+    </div>
+
+    <div class="bubble">
+      <div class="text" *ngIf="message.isText() || message.isNice()">{{messageParsed}}</div>
+
+      <image-viewer-preview
+        [imageLinks]="[message.image]"
+        [imageFiles]="[message.image.imageData]"
+        [weixinLocalIds]="[message.image.localId]"
+        *ngIf="message.isImage()"
+      ></image-viewer-preview>
+
+      <audio-player
+        #audioPlayer
+        (playEnded)="audioPlayEndedHandler(message)"
+        [message]="message"
+        *ngIf="message.isAudio()"
+      ></audio-player>
+
+      <div
+        class="translate"
+        [ngClass]="{'collapse': isTranslationCollapse}"
+        (click)="toggleTranslationCollapse(message.audio.translateResult)"
+        *ngIf="message.isAudio()"
+      >
+        <div class="translate-tips">以下由机器自动翻译</div>
+        {{message.audio.translateResult !== '' ? message.audio.translateResult : message.isPostPending() ? '翻译中...' :
+        '暂无翻译内容'}}
+        <i
+          class="bi bi-elliplis"
+          *ngIf="isTranslationCollapse && message.audio.translateResult"
+        ></i>
+      </div>
+
+      <div class="post-status">
+        <i
+          class="bi bi-sun-flow loading-animation"
+          *ngIf="message.isPostPending()"
+        ></i>
+        <i
+          class="bi bi-warning-round"
+          (click)="resendMessage()"
+          *ngIf="!message.isPostSuccessful() && !message.isPostPending()"
+        ></i>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="thumbs-up" [ngClass]="{'had-thumbs-up': message.hadPraised}">
+    <div class="thumbs-up-animations" praisedAnimation>
+      <praised-animation *ngFor="let userAnim of message.praisedAnimations" [userAnim]="userAnim"></praised-animation>
+    </div>
+
+    <a class="thumbs-up-btn" (click)="confirmPraise()" *ngIf="message.isPostSuccessful()">
+      <i class="bi bi-thumbsup-fill"></i>
+    </a>
+  </div>
+
+</div>
+
+<div class="operation-bar clearfix">
+  <span class="btn" *ngIf="canReply" (click)="gotoReply()"><i class="bi bi-bubble"></i>回复</span>
+  <span class="btn" (click)="goToShare()"><i class="bi bi-share-fill"></i>分享</span>
+
+  <div class="thumbs-up-users">
+    <img class="avatar" *ngFor="let user of message.getPraisedAvatars(userInfo)" [src]="user.avatar">
+  </div>
+</div>

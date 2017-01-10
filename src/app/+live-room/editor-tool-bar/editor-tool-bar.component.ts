@@ -14,7 +14,6 @@ import {UtilsService} from "../../shared/utils/utils";
 import {FormGroup, FormBuilder, FormControl} from "@angular/forms";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {Subscription} from "rxjs";
-import {MessageService} from "../timeline/message/message.service";
 import {InputtingService} from "../timeline/message/inputting.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
@@ -22,6 +21,7 @@ import {ImageBridge} from "../../shared/bridge/image.interface";
 import {LiveRoomService} from "../live-room.service";
 import {LiveService} from "../../shared/api/live/live.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {TimelineService} from "../timeline/timeline.service";
 
 declare var $: any;
 
@@ -52,9 +52,9 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
-              private messageService: MessageService, private imageService: ImageBridge,
-              private liveRoomService: LiveRoomService, private liveService: LiveService,
-              private operationTips: OperationTipsService, private inputtingService: InputtingService) {
+              private imageService: ImageBridge, private liveRoomService: LiveRoomService,
+              private liveService: LiveService, private operationTips: OperationTipsService,
+              private inputtingService: InputtingService, private timelineService: TimelineService) {
   }
 
   ngOnInit() {
@@ -68,7 +68,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     });
 
     // 监听点击用户头像事件
-    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched) => {
+    this.receviedAvatarTouchedSub = this.timelineService.avatarTouched$.subscribe((userTouched) => {
       this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
       if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
     });

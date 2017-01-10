@@ -4,7 +4,7 @@
       <div class="avatar-wrapper" (contextmenu)="$event.preventDefault()">
         <img class="avatar" [src]="message.user.avatar">
         <i class="bi bi-admin-mark"
-           [ngClass]="{'bi-admin-mark':liveInfo.isAdmin(message.user.uid),'bi-vip-mark':liveInfo.isVip(message.user.uid)}"></i>
+           [ngClass]="{'bi-admin-mark':liveInfo.isAdmin(message.user.uid), 'bi-vip-mark':liveInfo.isVip(message.user.uid)}"></i>
       </div>
     </div>
 

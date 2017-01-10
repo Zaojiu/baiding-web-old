@@ -5,36 +5,45 @@ import {Observable} from "rxjs/Observable";
 
 import {MessageModel, ReplyMessageModel} from '../../shared/api/message/message.model';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
-import {MqService, MqEvent} from '../../shared/mq/mq.service';
+import {MqService, MqEvent, MqPraisedUser} from '../../shared/mq/mq.service';
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 
 @Injectable()
 export class TimelineService {
-  // Observable string sources
-  private receivedMessageSource = new Subject<MessageModel>();
-  private deleteMessageSource = new Subject<MessageModel>();
   private receivedReplySource = new Subject<ReplyMessageModel>();
-  private timelineSource = new Subject<boolean>();
-  private praisesSource = new Subject<UserInfoModel>();
-  private eventSource = new Subject<MqEvent>();
-  private scrollSource = new Subject<ScrollerEventModel>();
-
-  // Observable string streams
-  private receivedMessage$: Observable<MessageModel> = this.receivedMessageSource.asObservable();
-  private deleteMessage$: Observable<MessageModel> = this.deleteMessageSource.asObservable();
   receivedReply$: Observable<ReplyMessageModel> = this.receivedReplySource.asObservable();
-  timeline$: Observable<boolean> = this.timelineSource.asObservable();
-  private receivedPraises$: Observable<UserInfoModel> = this.praisesSource.asObservable();
-  event$: Observable<MqEvent> = this.eventSource.asObservable();
+
+  private scrollSource = new Subject<ScrollerEventModel>();
   scroll$: Observable<ScrollerEventModel> = this.scrollSource.asObservable();
 
-  private receviedMessageSub: Subscription;
-  private deleteMessageSub: Subscription;
-  private receviedPraisedUserSubscription: Subscription;
+  private eventSource = new Subject<MqEvent>();
   private receivedEventSub: Subscription;
+  event$: Observable<MqEvent> = this.eventSource.asObservable();
 
-  constructor() {
+  private timelineSource = new Subject<boolean>();
+  private timeline$: Observable<boolean> = this.timelineSource.asObservable();
+  private timelineSub: Subscription;
+
+  private receivedPraisesSource = new Subject<MqPraisedUser>();
+  private receivedPraises$: Observable<MqPraisedUser> = this.receivedPraisesSource.asObservable();
+  private receviedPraisesSub: Subscription;
+
+  private receivedMessageSource = new Subject<MessageModel>();
+  private receivedMessage$: Observable<MessageModel> = this.receivedMessageSource.asObservable();
+  private receviedMessageSub: Subscription;
+
+  private deleteMessageSource = new Subject<MessageModel>();
+  private deleteMessage$: Observable<MessageModel> = this.deleteMessageSource.asObservable();
+  private deleteMessageSub: Subscription;
+
+  private avatarTouchedSource = new Subject <UserInfoModel>();
+  avatarTouched$: Observable<UserInfoModel> = this.avatarTouchedSource.asObservable();
+
+  avatarTouched(userInfo: UserInfoModel) {
+    this.avatarTouchedSource.next(userInfo);
   }
+
+  constructor() {}
 
   gotoFirstMessage() {
     this.timelineSource.next(true);
@@ -52,38 +61,35 @@ export class TimelineService {
     this.deleteMessageSource.next(message);
   }
 
+  triggerScroll(e: ScrollerEventModel) {
+    this.scrollSource.next(e);
+  }
+
+  // TODO: duplicate in new replies logic
   pushReply(reply: ReplyMessageModel) {
     this.receivedReplySource.next(reply);
   }
 
   startReceive(id: string) {
     MqService.subscribeLiveEvents(id, this.eventSource);
-    MqService.subscribeLivePraises(id, this.praisesSource);
+    MqService.subscribeLivePraises(id, this.receivedPraisesSource);
   }
 
   stopReceive(id: string) {
     MqService.unsubscribeLiveEvents(id);
     MqService.unsubscribeLivePraises(id);
 
-    if (this.receivedEventSub) {
-      this.receivedEventSub.unsubscribe()
-    }
-
-    if (this.receviedPraisedUserSubscription) {
-      this.receviedPraisedUserSubscription.unsubscribe()
-    }
-
-    if (this.receviedMessageSub) {
-      this.receviedMessageSub.unsubscribe()
-    }
+    if (this.receivedEventSub) this.receivedEventSub.unsubscribe();
+    if (this.receviedPraisesSub) this.receviedPraisesSub.unsubscribe();
+    if (this.receviedMessageSub) this.receviedMessageSub.unsubscribe();
   }
 
   onReceivedEvents(f: any) {
     this.receivedEventSub = this.event$.subscribe(f)
   }
 
-  onReceivedPraises(f: any) {
-    this.receviedPraisedUserSubscription = this.receivedPraises$.subscribe(f)
+  onReceivedPraises(cb: (praisedUser: MqPraisedUser) => void) {
+    this.receviedPraisesSub = this.receivedPraises$.subscribe(cb);
   }
 
   // 自己发送的
@@ -96,7 +102,15 @@ export class TimelineService {
     this.deleteMessageSub = this.deleteMessage$.subscribe(f)
   }
 
-  onScroll(e: ScrollerEventModel) {
-    this.scrollSource.next(e);
+  onTimeLiveAction(cb: (gotoOldestOrLatest: boolean) => void) {
+    this.timelineSub = this.timeline$.subscribe(cb);
+  }
+
+  unsubscribeAll() {
+    if (this.deleteMessageSub) this.deleteMessageSub.unsubscribe();
+    if (this.receviedMessageSub) this.receviedMessageSub.unsubscribe();
+    if (this.receviedPraisesSub) this.receviedPraisesSub.unsubscribe();
+    if (this.receivedEventSub) this.receivedEventSub.unsubscribe();
+    if (this.timelineSub) this.timelineSub.unsubscribe();
   }
 }
