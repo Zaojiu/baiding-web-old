@@ -5,6 +5,26 @@ interface Window {
 declare var window: Window;
 declare var DocumentTouch: any;
 
+export class UrlModel {
+  protocol: string;
+  host: string;
+  hostname: string;
+  port: number;
+  pathname: string;
+  search: string;
+  hash: string;
+
+  constructor(protocol: string, host: string, hostname: string, port: number, pathname: string, search: string, hash: string) {
+    this.protocol = protocol;
+    this.host = host;
+    this.hostname = hostname;
+    this.port = port;
+    this.pathname = pathname;
+    this.search = search;
+    this.hash = hash;
+  }
+}
+
 export class UtilsService {
   static isInWechat = /micromessenger/i.test(window.navigator.userAgent);
   static isiOS = /iPhone|iPad/i.test(window.navigator.userAgent);
@@ -49,6 +69,12 @@ export class UtilsService {
     setTimeout(() => {
       document.body.scrollTop = document.body.scrollHeight;
     }, 400);
+  }
+
+  static parseUrl(url: string): UrlModel {
+    let aEle = document.createElement('a');
+    aEle.href = url;
+    return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, +aEle.port, aEle.pathname, aEle.search, aEle.hash);
   }
 
   static randomId(size = 10, dic?: string): string {

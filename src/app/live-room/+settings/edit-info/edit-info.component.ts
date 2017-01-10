@@ -28,7 +28,6 @@ export class EditInfoComponent implements OnInit, DoCheck {
   originCoverSrc: SafeUrl;
   defaultCoverSrc: SafeUrl;
   wxLocalId: string;
-  coverKey: string;
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
   maxSizeMB = 8;
   maxTitleLength = 20;
@@ -67,7 +66,6 @@ export class EditInfoComponent implements OnInit, DoCheck {
     this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
     this.title = this.liveInfo.subject;
     this.desc = this.liveInfo.desc;
-    this.coverKey = this.urlPath(this.liveInfo.coverUrl);
 
     this.form = this.fb.group({
       'cover': new FormControl(this.coverFiles, [
@@ -156,40 +154,31 @@ export class EditInfoComponent implements OnInit, DoCheck {
       this.liveService.getCoverUploadToken(this.liveId).then((data) => {
         return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
       }).then((imageKey) => {
-        this.coverKey = imageKey;
-        this.updateLiveInfo();
+        this.updateLiveInfo(imageKey);
+      });
+    } else if (this.wxLocalId) {
+      this.imageBridge.uploadImage(this.wxLocalId).then(serverId => {
+        this.updateLiveInfo('', serverId);
       });
     } else {
-      this.updateLiveInfo();
+      let coverKey = UtilsService.parseUrl(this.liveInfo.coverUrl).pathname;
+
+      console.log(UtilsService.parseUrl(this.liveInfo.coverUrl));
+
+      this.updateLiveInfo(coverKey);
     }
   }
 
-  private urlPath(url: string): string {
-    if (!url) {
-      return '';
-    }
-    let i = url.indexOf('//');
-    if (i <= 0) {
-      return '';
-    }
-
-    i = url.indexOf('/', i + 2);
-    if (i <= 0) {
-      return '';
-    }
-    return url.substr(i + 1);
-  }
-
-  updateLiveInfo() {
+  updateLiveInfo(coverKey: string, wxServerId = '') {
     let expectStartAt = moment(`${this.time}:00`).local();
 
-    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), this.coverKey, this.wxLocalId).then(() => {
+    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey, wxServerId).then(() => {
       setTimeout(() => { // prevent delay while cdn syncing source image
         this.submitted = true;
         this.router.navigate([`lives/${this.liveId}/info`]);
-      }, this.coverKey ? 2000 : 0);
+      }, coverKey || wxServerId ? 2000 : 0);
     }).finally(() => {
-      setTimeout(() => this.isSubmitting = false, this.coverKey ? 2000 : 0);
+      setTimeout(() => this.isSubmitting = false, coverKey || wxServerId ? 2000 : 0);
     });
   }
 
