@@ -3,6 +3,8 @@ import {ModalService} from '../modal/modal.service';
 import {ImgEvent} from './image-viewer.model';
 import {ImageViewerService} from './image-viewer.service';
 import {Router, NavigationStart} from '@angular/router';
+import {IosBridgeService} from "../ios-bridge/ios-bridge.service";
+import {UtilsService} from "../utils/utils";
 
 declare var $: any;
 
@@ -21,7 +23,7 @@ export class ImageViewerComponent implements OnInit {
   canDelete: boolean;
   timer: any;
 
-  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router) {
+  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router, private iosBridgeService: IosBridgeService) {
     this.el = el.nativeElement;
 
     router.events
@@ -31,6 +33,7 @@ export class ImageViewerComponent implements OnInit {
           this.imageSrc = '';
           this.isPopup = false;
           this.imageViewerService.close();
+          this.iosBridgeService.onClose(null);
         }
       });
   }
@@ -42,6 +45,10 @@ export class ImageViewerComponent implements OnInit {
       let urlTree = this.router.parseUrl(this.router.url);
       urlTree.queryParams['showImage'] = 'true';
       this.router.navigateByUrl(urlTree);
+
+      if (UtilsService.isInApp) {
+        this.iosBridgeService.onClose(() => this.closePopup());
+      }
 
       this.isPopup = true;
       this.isLoading = true;
@@ -72,9 +79,6 @@ export class ImageViewerComponent implements OnInit {
   }
 
   closePopup() {
-    this.imageSrc = '';
-    this.isPopup = false;
-    this.imageViewerService.close();
     history.back();
   }
 
