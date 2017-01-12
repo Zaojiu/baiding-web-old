@@ -74,12 +74,22 @@ export class IosBridgeService {
     });
   }
 
-  onClose(cb: (ab) => void) {
+  onClose(cb: () => void) {
     if (this.hasInit) {
       this.bridge.callHandler('onClose', cb);
     } else {
       this.init().then(() => {
         this.bridge.callHandler('onClose', cb);
+      });
+    }
+  }
+
+  offClose() {
+    if (this.hasInit) {
+      this.bridge.callHandler('onClose');
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('onClose');
       });
     }
   }

@@ -33,7 +33,7 @@ export class ImageViewerComponent implements OnInit {
           this.imageSrc = '';
           this.isPopup = false;
           this.imageViewerService.close();
-          this.iosBridgeService.onClose(null);
+          this.iosBridgeService.offClose();
         }
       });
   }
