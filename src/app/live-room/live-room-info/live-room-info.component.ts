@@ -9,6 +9,7 @@ import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {UtilsService} from "../../shared/utils/utils";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
+import {PaidStatus} from "./live-room-info.enums";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -21,6 +22,9 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   isQrcodeShown = false;
   qrcode: string;
   timer: any;
+  paidShown = false;
+  paidEnums = PaidStatus;
+  paidStatus = PaidStatus.None;
   inApp = UtilsService.isInApp;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
@@ -73,6 +77,12 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     });
   }
 
+  payLive() {
+    //TODO pay for ticket
+    this.paidShown = true;
+    this.paidStatus = this.paidEnums.Completed;
+  }
+
   gotoLive() {
     this.router.navigate([`lives/${this.liveInfo.id}`]);
   }
@@ -94,6 +104,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   closeQrcode() {
     this.isQrcodeShown = false;
+    this.paidShown = false;
     clearInterval(this.timer);
   }
 
