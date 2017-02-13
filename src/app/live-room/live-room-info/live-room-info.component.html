@@ -2,17 +2,17 @@
   <div class="content">
     <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
 
-    <div class="editors-container" *ngIf="liveInfo&&liveInfo.editors&&liveInfo.editors.length!==0">
+    <div class="editors-container" *ngIf="audienceListInvitations && audienceListInvitations.length!==0">
       <div class="introduce">嘉宾介绍</div>
       <div class="editors-wrapper">
-        <div class="editors" *ngFor="let editor of liveInfo.editors">
+        <div class="editors" *ngFor="let editor of audienceListInvitations">
           <div class="avatar-wrapper">
-            <img class="editor-avatar" [src]="editor.avatar">
+            <img class="editor-avatar" [src]="editor.avatar_url">
           </div>
           <div class="words-wrapper">
             <div class="words-align-center">
               <div class="editor-name">{{editor.nick}}</div>
-              <div class="editor-intro">{{editor.title}}</div>
+              <div class="editor-intro">{{editor.desc}}</div>
             </div>
           </div>
         </div>

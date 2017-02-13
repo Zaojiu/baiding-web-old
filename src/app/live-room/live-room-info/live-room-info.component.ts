@@ -10,6 +10,8 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 import {UtilsService} from "../../shared/utils/utils";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {PaidStatus} from "./live-room-info.enums";
+import {InviteApiService} from "../../shared/api/invite/invite.api";
+import {AudienceInvitationModel} from "../../shared/api/invite/invite.model";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -26,13 +28,17 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   paidEnums = PaidStatus;
   paidStatus = PaidStatus.None;
   inApp = UtilsService.isInApp;
+  liveId: string;
+  audienceListInvitations: AudienceInvitationModel[];
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
-              private iosBridgeService: IosBridgeService, private shareService: ShareApiService) {
+              private iosBridgeService: IosBridgeService, private shareService: ShareApiService,
+              private inviteApiService: InviteApiService) {
   }
 
   ngOnInit() {
+    this.liveId = this.route.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
@@ -43,6 +49,10 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.route.snapshot.data['shareLink'] = this.getShareUri();
 
     this.shareService.accessSharedByRoute(this.route);
+
+    this.inviteApiService.audienceListInvitations(this.liveId).then((res) => {
+      this.audienceListInvitations = res;
+    });
   }
 
   ngOnDestroy() {

@@ -1,7 +1,7 @@
 import {Injectable}     from '@angular/core';
 import {Http, Response, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {InvitationModel, InvitationSummaryModel} from './invite.model';
+import {InvitationModel, InvitationSummaryModel, AudienceInvitationModel} from './invite.model';
 import {PostInvitationModel} from './invite.model';
 import {environment} from "../../../../environments/environment";
 
@@ -41,7 +41,7 @@ export class InviteApiService {
   acceptInvitation(liveId: string, token: string): Promise<void> {
     let headers = new Headers({'Content-Type': 'application/json'});
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/accept_invite`;
-    return this.http.post(url, { "token" : token}, headers).toPromise()
+    return this.http.post(url, {"token": token}, headers).toPromise()
       .then(response => {
         return;
       });
@@ -53,7 +53,8 @@ export class InviteApiService {
     let url = `${environment.config.host.io}/api/live/streams/${liveId}/invites/by/admin?size=1000`;
 
     return this.http.get(url).toPromise()
-      .then(res=> {
+      .then(res => {
+        console.log(res, 'invitation')
         let data = res.json();
         let users = data.include.users;
 
@@ -81,16 +82,16 @@ export class InviteApiService {
     return invitation;
   }
 
-  audienceListInvitations(liveId: string): Promise<InvitationModel[]> {
+  audienceListInvitations(liveId: string): Promise<AudienceInvitationModel[]> {
 
     let url = `${environment.config.host.io}/api/live/streams/${liveId}/invites/by/audience?size=1000`;
 
     return this.http.get(url).toPromise()
-      .then(res=> {
+      .then(res => {
         let data = res.json();
         let users = data.include.users;
 
-        let invitations: InvitationModel[] = [];
+        let invitations: AudienceInvitationModel[] = [];
 
         if (data && data.result) {
           for (let invitationData of data.result) {
@@ -103,10 +104,12 @@ export class InviteApiService {
       });
   }
 
-  audienceParseInvitation(data: any, users: any[]): InvitationModel {
-    let invitation = new InvitationModel();
+  audienceParseInvitation(data: any, users: any[]): AudienceInvitationModel {
+    let invitation = new AudienceInvitationModel();
     invitation.id = data.id;
     invitation.name = data.name;
+    invitation.title = data.title;
+    invitation.avatar_url = data.avatar_url;
     invitation.desc = data.desc;
     invitation.userInfo = users[data.acceptedBy] || null;
 
