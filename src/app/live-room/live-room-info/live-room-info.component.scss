@@ -17,9 +17,10 @@
     }
 
     .people-container {
-      margin: auto 12px;
+      margin: 20px 12px auto;
 
       .title {
+        margin-right: 10px;
         color: $color-gray;
         display: flex;
         align-items: center;
@@ -49,6 +50,64 @@
         }
       }
     }
+
+    .editors-container {
+      padding: 20px 0px 20px 12px;
+      background: rgb(247, 247, 247);
+
+      .introduce {
+        font-size: 18px;
+        color: $color-dark-gray;
+        line-height: 18px;
+      }
+
+      .editors-wrapper {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+
+        .editors {
+          display: flex;
+          margin: 20px 10px auto 10px;
+
+          .avatar-wrapper {
+            display: flex;
+
+            .editor-avatar {
+              margin: auto;
+              height: 80px;
+              width: 80px;
+              border-radius: 80px;
+            }
+          }
+
+          .words-wrapper {
+            display: flex;
+
+            .words-align-center {
+              margin: auto;
+              margin-left: 10px;
+              word-wrap: break-word;
+              max-width: 200px;
+
+              .editor-name {
+                font-size: 16px;
+                color: $color-dark-gray;
+                line-height: 14px;
+              }
+
+              .editor-intro {
+                margin-top: 5px;
+                font-size: 14px;
+                color: $color-gray;
+                line-height: 18px;
+              }
+            }
+          }
+        }
+      }
+    }
+
   }
 
   .operation-area {

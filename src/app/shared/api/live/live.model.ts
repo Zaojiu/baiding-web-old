@@ -15,7 +15,7 @@ export class LiveInfoModel {
   isDraft: boolean;
   owner: UserInfoModel;
   admin: UserInfoModel;
-  editors: UserInfoModel[];
+  editors: UserInfoModel[]; //后端新增字段 avatar_url,title //TODO
   latestUsers: UserInfoModel[]; // 话题间观众
   praised: number;
   commented: number;

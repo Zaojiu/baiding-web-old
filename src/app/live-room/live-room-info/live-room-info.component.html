@@ -2,13 +2,29 @@
   <div class="content">
     <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
 
-    <div class="people-container">
-      <div class="title">
-        <i class="bi bi-people"></i>
-        {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
+    <div class="editors-container" *ngIf="liveInfo&&liveInfo.editors&&liveInfo.editors.length!==0">
+      <div class="introduce">嘉宾介绍</div>
+      <div class="editors-wrapper">
+        <div class="editors" *ngFor="let editor of liveInfo.editors">
+          <div class="avatar-wrapper">
+            <img class="editor-avatar" [src]="editor.avatar">
+          </div>
+          <div class="words-wrapper">
+            <div class="words-align-center">
+              <div class="editor-name">{{editor.nick}}</div>
+              <div class="editor-intro">{{editor.title}}</div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
 
+    <div class="people-container">
       <div class="people-count">
+        <div class="title">
+          <i class="bi bi-people"></i>
+          {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
+        </div>
         <img class="avatar" alt="" *ngFor="let audience of liveInfo.editors" [src]="audience.avatar">
         <img class="avatar" alt="" *ngFor="let audience of liveInfo.latestUsers" [src]="audience.avatar">
       </div>
