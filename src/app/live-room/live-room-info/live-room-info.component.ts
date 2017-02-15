@@ -24,7 +24,6 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   isQrcodeShown = false;
-  payQrcodeShown = false;
   qrcode: string;
   timer: any;
   paidShown = false;
@@ -45,6 +44,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.liveId = this.route.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+    if (this.liveInfo.paided) this.paidStatus = PaidStatus.Completed;
 
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;
@@ -94,6 +94,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   payLive() {
     this.payBridge.pay(this.liveId).then(result => {
       this.paidStatus = this.paidEnums.Completed;
+      this.liveService.getLiveInfo(this.liveId, true);
       this.paidShown = true;
     }, () => {
       this.paidStatus = this.paidEnums.Failure;
@@ -123,7 +124,6 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   closeQrcode() {
     this.isQrcodeShown = false;
     this.paidShown = false;
-    this.payQrcodeShown = false;
     clearInterval(this.timer);
   }
 

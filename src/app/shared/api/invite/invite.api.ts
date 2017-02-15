@@ -54,7 +54,6 @@ export class InviteApiService {
 
     return this.http.get(url).toPromise()
       .then(res => {
-        console.log(res, 'invitation')
         let data = res.json();
         let users = data.include.users;
 

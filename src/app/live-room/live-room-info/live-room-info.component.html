@@ -12,7 +12,7 @@
           <div class="words-wrapper">
             <div class="words-align-center">
               <div class="editor-name">{{editor.nick}}</div>
-              <div class="editor-intro">{{editor.desc}}</div>
+              <div class="editor-intro">{{editor.title}}</div>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
 
 
 <div class="qrcode-background" [ngClass]="{'show': paidShown}"
-     *ngIf="!inApp && !liveInfo.isClosed()&& paidStatus===paidEnums.Completed"
+     *ngIf="!inApp && liveInfo.isCreated()&& paidStatus===paidEnums.Completed"
      (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
@@ -138,7 +138,7 @@
 
 
 <div class="qrcode-background" [ngClass]="{'show': paidShown }"
-     *ngIf="liveInfo.isClosed() && paidStatus===paidEnums.Completed"
+     *ngIf="!liveInfo.isCreated() && paidStatus===paidEnums.Completed"
      (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
