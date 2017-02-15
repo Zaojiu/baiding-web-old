@@ -32,7 +32,13 @@ export class LiveInfoModel {
   updatedAt: string;
   totalUsers: number; //  参与人数
   booked: boolean;
+<<<<<<< HEAD
   streamStatus: LiveStreamStatus = LiveStreamStatus.None;
+=======
+  isNeedPay: boolean; // 是否收费，默认免费
+  totalFee: number; // 价格，单位“分”
+  paided: boolean; //付费情况
+>>>>>>> pay impl
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;

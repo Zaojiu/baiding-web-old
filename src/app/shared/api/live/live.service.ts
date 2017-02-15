@@ -79,12 +79,15 @@ export class LiveService {
     if (stream.status === 'closed') liveInfo.status = LiveStatus.Ended;
 
     liveInfo.praised = stream.praised;
+    liveInfo.isNeedPay = stream.isNeedPay;
+    liveInfo.totalFee = stream.totalFee;
     liveInfo.commented = stream.commented;
     liveInfo.niced = stream.niced;
     liveInfo.shared = stream.shared;
     liveInfo.lcConvId = stream.lcConvId;
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
     liveInfo.booked = currentStreamUser && currentStreamUser.booked;
+    liveInfo.paided = currentStreamUser && currentStreamUser.paided;
 
     liveInfo.totalUsers = stream.totalUsers;
 

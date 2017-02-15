@@ -12,6 +12,8 @@ import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {PaidStatus} from "./live-room-info.enums";
 import {InviteApiService} from "../../shared/api/invite/invite.api";
 import {AudienceInvitationModel} from "../../shared/api/invite/invite.model";
+import {PayBridge} from "../../shared/bridge/pay.interface";
+import {PayPopupService} from "../../shared/pay-popup/pay-popup.service";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -22,6 +24,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   liveInfo: LiveInfoModel;
   userInfo: UserInfoModel;
   isQrcodeShown = false;
+  payQrcodeShown = false;
   qrcode: string;
   timer: any;
   paidShown = false;
@@ -30,11 +33,12 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   inApp = UtilsService.isInApp;
   liveId: string;
   audienceListInvitations: AudienceInvitationModel[];
+  isInWechat = UtilsService.isInWechat;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
               private iosBridgeService: IosBridgeService, private shareService: ShareApiService,
-              private inviteApiService: InviteApiService) {
+              private inviteApiService: InviteApiService, private payBridge: PayBridge, private payPopupService: PayPopupService) {
   }
 
   ngOnInit() {
@@ -88,9 +92,13 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   payLive() {
-    //TODO pay for ticket
-    this.paidShown = true;
-    this.paidStatus = this.paidEnums.Completed;
+    this.payBridge.pay(this.liveId).then(result => {
+      this.paidStatus = this.paidEnums.Completed;
+      this.paidShown = true;
+    }, () => {
+      this.paidStatus = this.paidEnums.Failure;
+      this.paidShown = true;
+    });
   }
 
   gotoLive() {
@@ -115,6 +123,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   closeQrcode() {
     this.isQrcodeShown = false;
     this.paidShown = false;
+    this.payQrcodeShown = false;
     clearInterval(this.timer);
   }
 

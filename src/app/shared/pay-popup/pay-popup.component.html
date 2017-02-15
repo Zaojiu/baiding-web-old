@@ -1,0 +1,19 @@
+<!--pc扫码支付-->
+<div class="qrcode-background" [ngClass]="{'show': isPopup }"
+     (click)="isPopup = false">
+  <div class="content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <div class="close" (click)="isPopup = false"></div>
+      <div class="live-title">
+        <div class="paid-tick">
+          <i class="bi bi-paid"></i>
+        </div>
+        微信扫码进行支付
+      </div>
+    </div>
+    <div class="qrcode" [ngClass]="{'bd-loading': !qrcodeImage || !qrcodeGenerator}">
+      <bd-loading class="bd-loading" *ngIf="!qrcodeImage || !qrcodeGenerator"></bd-loading>
+      <img class="qrcode-image" *ngIf="qrcodeImage && qrcodeGenerator" [src]="qrcodeImage" alt="二维码">
+    </div>
+  </div>
+</div>
