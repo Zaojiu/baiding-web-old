@@ -11,6 +11,7 @@ import {TimeToFormatedPipe} from "../shared/pipe/time.pipe";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {Subscription} from "rxjs";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
+import {TitleService} from "../shared/title/title.service";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -21,7 +22,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private shareService: ShareBridge,
               private sanitizer: DomSanitizer, private userInfoService: UserInfoService,
-              private timeToformatedPipe: TimeToFormatedPipe) {
+              private timeToformatedPipe: TimeToFormatedPipe, private titleService: TitleService) {
   }
 
   timeNow = UtilsService.now.toString();
@@ -44,11 +45,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUserInfo = this.route.snapshot.data['userInfo'];
 
-    this.route.snapshot.data['title'] = `${this.currentUserInfo.nick}的造就`; // 设置页面标题
-    this.route.snapshot.data['shareTitle'] = `${this.currentUserInfo.nick}等你加入我的话题讨论`;
-    this.route.snapshot.data['shareCover'] = this.currentUserInfo.avatar;
-    this.route.snapshot.data['shareLink'] = this.getShareUri();
-
     this.uidParamSub = this.route.params.subscribe((params) => {
       this.uid = +params['uid'];
       if (!this.uid) this.router.navigate([`404`]);
@@ -66,7 +62,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   getShareUri(): string {
-    let uriTree = this.router.createUrlTree([`info-center/${this.currentUserInfo.uid}`]);
+    let uriTree = this.router.createUrlTree([`info-center/${this.pageUserInfo.uid}`]);
     let path = this.router.serializeUrl(uriTree);
     return `${location.protocol}//${location.hostname}${path}`;
   }
@@ -86,6 +82,13 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       this.pageUserInfo = publicUserInfo;
       this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${publicUserInfo.avatar})`);
       this.from = encodeURIComponent(`info-center/${uid}`);
+      this.titleService.set(`${this.pageUserInfo.nick}的造就`); // 设置页面标题
+      this.shareService.setShareInfo(
+        `${this.pageUserInfo.nick}等你加入我的话题讨论`,
+        '小人物也有大声音。每个想法都值得赞赏。',
+        this.pageUserInfo.avatar,
+        this.getShareUri()
+      );
       return;
     }, () => {
       this.router.navigate([`404`]);
