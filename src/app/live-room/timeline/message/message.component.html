@@ -1,4 +1,4 @@
-<live-room-info-upper class="live-room-info-component" *ngIf="message.type === messageType.LiveRoomInfo"
+<live-room-info-upper class="live-room-info-component" *ngIf="message.type === messageType.LiveRoomInfo && !liveInfo.isTypeVideo()"
                       [liveInfo]="liveInfo"></live-room-info-upper>
 
 <div class="live-started" *ngIf="message.type === messageType.LiveStart">

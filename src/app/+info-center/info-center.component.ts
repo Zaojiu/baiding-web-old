@@ -126,8 +126,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
           this.liveTime[liveInfo.id] = '未知状态';
         }
 
-        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
-        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
+        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(liveInfo.coverSmallUrl);
       }
 
       return;
@@ -167,8 +166,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
           this.liveTime[liveInfo.id] = '未知状态';
         }
 
-        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
-        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
+        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(liveInfo.coverSmallUrl);
       }
 
       return;

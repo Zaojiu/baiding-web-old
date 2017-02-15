@@ -8,4 +8,11 @@ export enum LiveStatus {
 export enum LiveType {
   Text = <any>'text',
   Video = <any>'video',
+  App = <any>'app',
+}
+
+export enum LiveStreamStatus {
+  None = <any>'',
+  Pushing = <any>'publish',
+  Done = <any>'publish_done',
 }

@@ -24,11 +24,7 @@ export class AppJumperGuard implements CanActivate {
       let userInfo = result[0];
       let liveInfo = result[1];
 
-      if (
-        liveInfo.kind !== LiveType.Text &&
-        (liveInfo.isEditor(userInfo.uid) ||
-        liveInfo.isAudience(userInfo.uid)) // 之后有h5视频端之后, 去掉此项
-      ) {
+      if (liveInfo.isTypeApp() && liveInfo.isEditor(userInfo.uid)) {
         let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
         this.iosBridge.gotoLive(liveInfo.id, liveInfo.kind, role);
         return false;

@@ -108,8 +108,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
       this.scroller.appendData(livesList);
 
       for (let liveInfo of this.livesList) {
-        let coverUrl = liveInfo.coverSmallUrl ? liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
-        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(coverUrl);
+        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(liveInfo.coverSmallUrl);
 
         if (liveInfo.status === LiveStatus.Created) {
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {

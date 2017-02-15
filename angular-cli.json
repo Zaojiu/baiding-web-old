@@ -17,7 +17,8 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "styles.scss"
+        "styles.scss",
+        "../node_modules/video.js/dist/video-js.min.css"
       ],
       "styleVariables": "css/_variables.scss",
       "scripts": [
@@ -29,6 +30,9 @@
         "../node_modules/moment-duration-format/lib/moment-duration-format.js",
         "../node_modules/moment/locale/zh-cn.js",
         "../node_modules/fastclick/lib/fastclick.js",
+        "../node_modules/video.js/dist/video.min.js",
+        "../node_modules/video.js/dist/lang/zh-CN.js",
+        "../node_modules/videojs-contrib-hls/dist/videojs-contrib-hls.min.js",
         "../node_modules/weixin-js-sdk/index.original.js"
       ],
       "environments": {

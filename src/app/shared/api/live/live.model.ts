@@ -1,6 +1,7 @@
-import {LiveStatus, LiveType} from './live.enums';
+import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
+import {VideoPlayerSrc} from "../../video-player/video-player.model";
 
 export class LiveInfoModel {
   id: string;
@@ -31,6 +32,7 @@ export class LiveInfoModel {
   updatedAt: string;
   totalUsers: number; //  参与人数
   booked: boolean;
+  streamStatus: LiveStreamStatus = LiveStreamStatus.None;
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;
@@ -65,16 +67,32 @@ export class LiveInfoModel {
     return this.isAdmin(uid) || this.isVip(uid);
   }
 
-  isAudience(uid: number) {
+  isAudience(uid: number): boolean {
     return !this.isEditor(uid);
   }
 
-  isTypeText() {
+  isTypeText(): boolean {
     return this.kind === LiveType.Text;
   }
 
-  isTypeVideo() {
+  isTypeVideo(): boolean {
     return this.kind === LiveType.Video;
+  }
+
+  isTypeApp(): boolean {
+    return this.kind === LiveType.App;
+  }
+
+  isStreamNone(): boolean {
+    return this.streamStatus === LiveStreamStatus.None;
+  }
+
+  isStreamPushing(): boolean {
+    return this.streamStatus === LiveStreamStatus.Pushing;
+  }
+
+  isStreamDone(): boolean {
+    return this.streamStatus === LiveStreamStatus.Done;
   }
 }
 
@@ -88,3 +106,7 @@ export class UploadCoverTokenModel {
   }
 }
 
+export class LiveStreamInfo {
+  streamSrc: VideoPlayerSrc[] = [];
+  playbackSrc: VideoPlayerSrc[] = [];
+}

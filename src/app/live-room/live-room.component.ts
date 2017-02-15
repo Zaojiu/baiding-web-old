@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {TimelineService} from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {ShareApiService} from '../shared/api/share/share.api';
-import {LiveInfoModel} from '../shared/api/live/live.model';
+import {LiveInfoModel, LiveStreamInfo} from '../shared/api/live/live.model';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
@@ -25,6 +25,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isCommentOpened: boolean = true;
   refreshInterval: any;
   praisedSub: Subscription;
+  streamInfo: LiveStreamInfo;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -75,6 +76,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+    this.streamInfo = this.route.snapshot.data['streamInfo'];
 
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.liveService.getLiveInfo(this.id, true, true); // 发送加入话题间的请求。

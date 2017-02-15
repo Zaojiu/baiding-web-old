@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
+import {LiveInfoModel, UploadCoverTokenModel, LiveStreamInfo} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
-import {LiveStatus, LiveType} from './live.enums';
+import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {environment} from "../../../../environments/environment";
+import {VideoPlayerSrc} from "../../video-player/video-player.model";
 
 @Injectable()
 export class LiveService {
@@ -20,14 +21,26 @@ export class LiveService {
   }
 
   parseLiveInfo(stream: any, users: any, currentStreamUser?: any): LiveInfoModel {
-
     let liveInfo = new LiveInfoModel;
 
     liveInfo.id = stream.id;
     liveInfo.subject = stream.subject;
     liveInfo.desc = stream.desc;
     liveInfo.coverUrl = `${stream.coverUrl}?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
-    liveInfo.kind = stream.kind === 'video' ? LiveType.Video : LiveType.Text;
+
+    switch (stream.kind) {
+      case 'text':
+        liveInfo.kind = LiveType.Text;
+        break;
+      case 'video':
+        liveInfo.kind = LiveType.Video;
+        break;
+      case 'app':
+        liveInfo.kind = LiveType.App;
+        break;
+      default:
+        liveInfo.kind = LiveType.Text;
+    }
 
     liveInfo.owner = users[stream.owner] as UserInfoModel;
     liveInfo.admin = users[stream.admin] as UserInfoModel;
@@ -75,8 +88,24 @@ export class LiveService {
 
     liveInfo.totalUsers = stream.totalUsers;
 
-    if (stream.coverUrl) liveInfo.coverSmallUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
-    if (stream.coverUrl) liveInfo.coverThumbnailUrl = `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x/gravity/Center/crop/60x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverSmallUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
+    liveInfo.coverThumbnailUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x/gravity/Center/crop/60x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
+
+    if (liveInfo.isTypeVideo()) {
+      switch (stream.publishStatus) {
+        case '':
+          liveInfo.streamStatus = LiveStreamStatus.None;
+          break;
+        case 'publish':
+          liveInfo.streamStatus = LiveStreamStatus.Pushing;
+          break;
+        case 'publish_done':
+          liveInfo.streamStatus = LiveStreamStatus.Done;
+          break;
+        default:
+          liveInfo.streamStatus = LiveStreamStatus.None;
+      }
+    }
 
     let lives = StoreService.get('lives') || {};
     lives[liveInfo.id] = liveInfo;
@@ -310,5 +339,59 @@ export class LiveService {
     let historyLiveInfo = StoreService.get('historyLiveInfo');
     if (historyLiveInfo && historyLiveInfo[id]) return historyLiveInfo[id];
     return null
+  }
+
+  processStreamInfo(liveInfo: LiveInfoModel): Promise<LiveStreamInfo> {
+    if (!liveInfo.isTypeVideo()) return Promise.resolve(null);
+
+    let hlsPromise = !liveInfo.isClosed() ? this.getStreamPullingAddr(liveInfo.id) : null;
+    // 直播已开始, 并且推过流
+    let playbackPromise = !liveInfo.isCreated() && liveInfo.isStreamDone() ? this.getPlaybackAddr(liveInfo.id) : null;
+
+    return Promise.all([hlsPromise, playbackPromise]).then(result => {
+      let streamInfo = result[0];
+      let playbackInfo = result[1];
+      return Object.assign({}, streamInfo, playbackInfo);
+    });
+ }
+
+  getStreamPullingAddr(id: string): Promise<LiveStreamInfo> {
+    const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/hls`;
+
+    return this.http.get(url).toPromise().then(res => {
+      let data = res.json();
+      let streamAddr = data ? data.hls : '';
+      let streamSrc = [new VideoPlayerSrc(streamAddr, 'application/x-mpegURL')];
+      let streamInfo = new LiveStreamInfo();
+
+      streamInfo.streamSrc = streamSrc;
+
+      return streamInfo;
+    });
+  }
+
+  getStreamPushingAddr(id: string): Promise<string[]> {
+    const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/publish`;
+
+    return this.http.get(url).toPromise().then(res => {
+      let data = res.json();
+      let pushAddr = data ? data.publish : '';
+
+      return [pushAddr];
+    });
+  }
+
+  getPlaybackAddr(id: string): Promise<LiveStreamInfo> {
+    const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/playback`;
+
+    return this.http.get(url).toPromise().then(res => {
+      let data = res.json();
+      let playbackAddr = data && data.m3u8 ? [new VideoPlayerSrc(data.m3u8, 'application/x-mpegURL')] : data.SD_mp4 ? [new VideoPlayerSrc(data.SD_mp4, 'video/mp4')] : [];
+      let streamInfo = new LiveStreamInfo();
+
+      streamInfo.playbackSrc = playbackAddr;
+
+      return streamInfo;
+    });
   }
 }

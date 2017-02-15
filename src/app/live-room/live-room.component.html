@@ -5,6 +5,8 @@
   <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
 <!--&gt;</beginner-guide>-->
 
+<video-player class="video-player" *ngIf="liveInfo && streamInfo" [liveInfo]="liveInfo" [streamInfo]="streamInfo"></video-player>
+
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <top-bar
     class="top-bar"
@@ -44,6 +46,4 @@
     [liveInfo]="liveInfo"
     [userInfo]="userInfo"
   ></editor-tool-bar>
-
 </div>
-

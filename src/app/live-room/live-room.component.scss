@@ -5,12 +5,24 @@
   transform: translateX(-50%) translateY(-50%);
 }
 
-.live-room-container {
+.video-player {
+  flex-shrink: 0;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   right: 0;
   bottom: 0;
+  background-color: $color-w;
+}
+
+.live-room-container {
+  position: relative;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -54,5 +66,4 @@
     overflow: hidden;
     pointer-events: none;
   }
-
 }
