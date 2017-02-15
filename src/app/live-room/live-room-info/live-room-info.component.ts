@@ -44,7 +44,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.liveId = this.route.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
-    if (this.liveInfo.paided) this.paidStatus = PaidStatus.Completed;
+    if (this.liveInfo.paid) this.paidStatus = PaidStatus.Completed;
 
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;

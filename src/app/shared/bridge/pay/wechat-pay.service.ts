@@ -22,22 +22,27 @@ export class WechatPayService implements PayBridge {
 
         history.pushState({}, '微信支付', environment.config.payAddress);
 
-        wx.chooseWXPay({
-          timestamp: wxPayReq.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-          nonceStr: wxPayReq.timeStamp, // 支付签名随机串，不长于 32 位
-          package: wxPayReq.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-          signType: wxPayReq.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-          paySign: wxPayReq.paySign, // 支付签名
-          success: (res) => {
-            if (res.err_msg == "get_brand_wcpay_request：ok" ) {
+        (<any>window).WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            "appId": wxPayReq.appId,     //公众号名称，由商户传入
+            "timeStamp": wxPayReq.timeStamp,         //时间戳，自1970年以来的秒数
+            "nonceStr": wxPayReq.nonceStr, //随机串
+            "package": wxPayReq.package,
+            "signType": wxPayReq.signType,         //微信签名方式：
+            "paySign": wxPayReq.paySign //微信签名
+          },
+          function (res) {
+            console.log(res);
+
+            if (res.err_msg == 'get_brand_wcpay_request:ok') {
               resolve('');
             } else {
               reject(res.err_msg);
             }
-          }
-        });
 
-        history.back();
+            history.back();
+          }
+        );
       });
     });
   }

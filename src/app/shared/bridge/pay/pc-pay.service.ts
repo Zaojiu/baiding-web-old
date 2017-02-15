@@ -24,7 +24,7 @@ export class PcPayService implements PayBridge {
       let count = 0;
       let timer = setInterval(() => {
         this.liveService.getLiveInfo(liveId, true).then(liveInfo => {
-          if (liveInfo.paided) {
+          if (liveInfo.paid) {
             clearInterval(timer);
             resolve('');
             return;

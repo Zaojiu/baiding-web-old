@@ -8,6 +8,7 @@ export const appConfig = {
   lcAppId: '_REPL_LEADCLOUD_ID_',
   lcAppKey: '_REPL_LEADCLOUD_APP_KEY_',
   wechatLink: '_REPL_WECHAT_LINK_',
+  payAddress: '_REPL_WECHAT_PAY_ADDRESS_',
 };
 
 export const environment = {

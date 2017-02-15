@@ -37,8 +37,12 @@ export class LiveInfoModel {
 =======
   isNeedPay: boolean; // 是否收费，默认免费
   totalFee: number; // 价格，单位“分”
+<<<<<<< HEAD
   paided: boolean; //付费情况
 >>>>>>> pay impl
+=======
+  paid: boolean; //付费情况
+>>>>>>> update pay
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;

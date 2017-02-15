@@ -87,7 +87,7 @@ export class LiveService {
     liveInfo.lcConvId = stream.lcConvId;
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
     liveInfo.booked = currentStreamUser && currentStreamUser.booked;
-    liveInfo.paided = currentStreamUser && currentStreamUser.paided;
+    liveInfo.paid = currentStreamUser && currentStreamUser.paid;
 
     liveInfo.totalUsers = stream.totalUsers;
 

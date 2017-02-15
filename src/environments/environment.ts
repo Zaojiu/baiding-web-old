@@ -13,7 +13,7 @@ export const appConfig = {
   lcAppId: 'UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz',
   lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
   wechatLink: 'http://weixin.qq.com/r/OkOrs7fEwOq-rfPQ9xYo',
-  payAddress: `${host.io}` + '/dev/pay',
+  payAddress: '/dev/wxpay/',
 };
 
 export const environment = {
