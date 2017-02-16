@@ -9,6 +9,11 @@ import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {UtilsService} from "../../shared/utils/utils";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
+import {PaidStatus} from "./live-room-info.enums";
+import {InviteApiService} from "../../shared/api/invite/invite.api";
+import {AudienceInvitationModel} from "../../shared/api/invite/invite.model";
+import {PayBridge} from "../../shared/bridge/pay.interface";
+import {PayPopupService} from "../../shared/pay-popup/pay-popup.service";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -21,16 +26,31 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   isQrcodeShown = false;
   qrcode: string;
   timer: any;
+  paidShown = false;
+  paidEnums = PaidStatus;
+  paidStatus = PaidStatus.None;
   inApp = UtilsService.isInApp;
+  liveId: string;
+  audienceListInvitations: AudienceInvitationModel[];
+  isInWechat = UtilsService.isInWechat;
+  lockPayClick = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
-              private iosBridgeService: IosBridgeService, private shareService: ShareApiService) {
+              private iosBridgeService: IosBridgeService, private shareService: ShareApiService,
+              private inviteApiService: InviteApiService, private payBridge: PayBridge, private payPopupService: PayPopupService) {
   }
 
   ngOnInit() {
+    this.liveId = this.route.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+    if (this.liveInfo.paid) this.paidStatus = PaidStatus.Completed;
+
+    let payResult = this.route.snapshot.params['payResult'];
+    if (payResult === 'success') {
+      this.paidShown = true;
+    }
 
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;
@@ -39,6 +59,10 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.route.snapshot.data['shareLink'] = this.getShareUri();
 
     this.shareService.accessSharedByRoute(this.route);
+
+    this.inviteApiService.audienceListInvitations(this.liveId).then((res) => {
+      this.audienceListInvitations = res;
+    });
   }
 
   ngOnDestroy() {
@@ -73,6 +97,28 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     });
   }
 
+  payLive() {
+    if (this.lockPayClick) return;
+
+    this.lockPayClick = true;
+
+    this.payBridge.pay(this.liveId).then(result => {
+      this.paidStatus = this.paidEnums.Completed;
+      this.liveService.getLiveInfo(this.liveId, true);
+      this.paidShown = true;
+    }, (reason) => {
+      if (reason === 'cancel') {
+        this.paidStatus = this.paidEnums.None;
+        this.paidShown = false;
+      } else {
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidShown = true;
+      }
+    }).finally(() => {
+      this.lockPayClick = false
+    });
+  }
+
   gotoLive() {
     this.router.navigate([`lives/${this.liveInfo.id}`]);
   }
@@ -94,6 +140,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   closeQrcode() {
     this.isQrcodeShown = false;
+    this.paidShown = false;
     clearInterval(this.timer);
   }
 

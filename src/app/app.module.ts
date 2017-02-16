@@ -15,6 +15,7 @@ import {ImageViewerModule} from "./shared/image-viewer/image-viewer.module";
 import {BottomPopupSelectorComponent} from './shared/bottom-popup-selector/bottom-popup-selector.component';
 import {BottomPopupSelectorService} from './shared/bottom-popup-selector/bottom-popup-selector.service';
 import {SharePopupComponent} from './shared/share-popup/share-popup.component';
+import {PayPopupComponent} from './shared/pay-popup/pay-popup.component';
 import {SharePopupService} from './shared/share-popup/share-popup.service';
 import {TextPopupService} from './shared/text-popup/text-popup.service';
 import {TextPopupComponent} from './shared/text-popup/text-popup.component';
@@ -34,16 +35,26 @@ import {AdminGuard} from "./shared/guard/admin.guard";
 import {UserInfoResolver} from "./shared/guard/user-info.resolver";
 import {WechatAudioService} from "./shared/bridge/audio/wechat-audio.service";
 import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
+import {WechatPayService} from "./shared/bridge/pay/wechat-pay.service";
 import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
 import {AudioBridge} from "./shared/bridge/audio.interface";
 import {AuthBridge} from "./shared/bridge/auth.interface";
+import {PayBridge} from "./shared/bridge/pay.interface";
 import {ShareBridge} from "./shared/bridge/share.interface";
 import {WechatConfigService} from "./shared/wechat/wechat.service";
 import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
+import {PcPayService} from "./shared/bridge/pay/pc-pay.service";
 import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
+import {IosPayService} from "./shared/bridge/pay/ios-pay.service";
 import {IosShareService} from "./shared/bridge/share/ios-share.service";
 import {IosBridgeService} from "./shared/ios-bridge/ios-bridge.service";
-import {audioServiceFactory, authServiceFactory, shareServiceFactory, imageServiceFactory} from "./app.factory";
+import {
+  audioServiceFactory,
+  authServiceFactory,
+  shareServiceFactory,
+  payServiceFactory,
+  imageServiceFactory
+} from "./app.factory";
 import {IosAudioService} from "./shared/bridge/audio/ios-audio.service";
 import {PcAudioService} from "./shared/bridge/audio/pc-audio.service";
 import {PcShareService} from "./shared/bridge/share/pc-share.service";
@@ -54,6 +65,8 @@ import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 import {CustomHttp} from "./shared/api/custom-http.service";
 import {UserInfoCardModule} from "./shared/user-info-card/user-info-card.module";
 import {UserInfoCardService} from "./shared/user-info-card/user-info-card.service";
+import {PayPopupService} from "./shared/pay-popup/pay-popup.service";
+import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
 
 @NgModule({
   imports: [
@@ -64,12 +77,14 @@ import {UserInfoCardService} from "./shared/user-info-card/user-info-card.servic
     Angulartics2Module.forRoot(),
     ImageViewerModule,
     UserInfoCardModule,
+    LoadingModule,
   ],
   declarations: [
     AppComponent,
     BottomPopupSelectorComponent,
     TitleSetterDirective,
     SharePopupComponent,
+    PayPopupComponent,
     TextPopupComponent,
     ModalComponent,
     OperationTipsComponent,
@@ -79,20 +94,24 @@ import {UserInfoCardService} from "./shared/user-info-card/user-info-card.servic
     WechatAudioService,
     WechatShareService,
     WechatAuthService,
+    WechatPayService,
     WechatImageService,
     IosBridgeService,
     IosAudioService,
     IosShareService,
+    IosPayService,
     IosAuthService,
     PcAudioService,
     PcShareService,
     PcAuthService,
+    PcPayService,
     {
       provide: AudioBridge,
       useFactory: audioServiceFactory,
       deps: [WechatAudioService, IosAudioService, PcAudioService]
     },
     {provide: AuthBridge, useFactory: authServiceFactory, deps: [WechatAuthService, IosAuthService, PcAuthService]},
+    {provide: PayBridge, useFactory: payServiceFactory, deps: [WechatPayService, IosPayService, PcPayService]},
     {
       provide: ShareBridge,
       useFactory: shareServiceFactory,
@@ -116,6 +135,7 @@ import {UserInfoCardService} from "./shared/user-info-card/user-info-card.servic
     TitleService,
     BottomPopupSelectorService,
     SharePopupService,
+    PayPopupService,
     ModalService,
     TextPopupService,
     LiveService,

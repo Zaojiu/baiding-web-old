@@ -7,6 +7,7 @@ import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {UserInfoResolver} from '../shared/guard/user-info.resolver';
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
 import {LiveStreamResolver} from "./live-stream.resolver";
+import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 
 const route: Routes = [
   {
@@ -24,7 +25,7 @@ const route: Routes = [
     }
   },
   {
-    path: 'lives/:id/history',loadChildren: 'app/live-room/+history/history.module#HistoryModule'
+    path: 'lives/:id/history', loadChildren: 'app/live-room/+history/history.module#HistoryModule'
   },
   {
     path: 'lives/:id',
@@ -32,6 +33,7 @@ const route: Routes = [
     children: [
       {
         path: '',
+        canActivate: [RoleAuthGuard],
         component: LiveRoomComponent,
         data: {
           isAsyncShareInfo: true,

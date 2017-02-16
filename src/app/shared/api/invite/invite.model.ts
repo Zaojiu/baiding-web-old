@@ -30,5 +30,7 @@ export class AudienceInvitationModel {
   id: string;
   name: string;
   desc: string;
+  title: string;
+  avatar_url: string;
   userInfo: UserInfoModel;
 }

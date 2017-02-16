@@ -60,6 +60,26 @@ export class CustomHttp extends Http {
         }
       }
 
+      if (err._body.code) {
+        switch (err._body.code) {
+          case 400001: {
+            this.operationTipsService.popup('请支付');
+          }
+          case 400002: {
+            this.operationTipsService.popup('无需支付');
+          }
+          case 400003: {
+            this.operationTipsService.popup('无法识别支付平台');
+          }
+          case 400101: {
+            this.operationTipsService.popup('订单已支付');
+          }
+          case 400102: {
+            this.operationTipsService.popup('订单已关闭');
+          }
+        }
+      }
+
       return Observable.throw(err);
     });
   }

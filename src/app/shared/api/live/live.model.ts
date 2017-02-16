@@ -15,7 +15,7 @@ export class LiveInfoModel {
   isDraft: boolean;
   owner: UserInfoModel;
   admin: UserInfoModel;
-  editors: UserInfoModel[];
+  editors: UserInfoModel[]; //后端新增字段 avatar_url,title //TODO
   latestUsers: UserInfoModel[]; // 话题间观众
   praised: number;
   commented: number;
@@ -33,6 +33,9 @@ export class LiveInfoModel {
   totalUsers: number; //  参与人数
   booked: boolean;
   streamStatus: LiveStreamStatus = LiveStreamStatus.None;
+  isNeedPay: boolean; // 是否收费，默认免费
+  totalFee: number; // 价格，单位“分”
+  paid: boolean; //付费情况
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;
