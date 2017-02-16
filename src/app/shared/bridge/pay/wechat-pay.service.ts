@@ -3,12 +3,15 @@ import {environment} from "../../../../environments/environment";
 import {PayBridge} from "../pay.interface";
 import {Headers, Http} from "@angular/http";
 import {WechatConfigService} from "../../wechat/wechat.service";
+import Util = jasmine.Util;
+import {UtilsService} from "../../utils/utils";
+import {Router} from "@angular/router";
 declare var wx: any;
 
 @Injectable()
 export class WechatPayService implements PayBridge {
 
-  constructor(private http: Http, private wechatConfigService: WechatConfigService) {
+  constructor(private http: Http, private wechatConfigService: WechatConfigService, private router: Router) {
   }
 
   private _pay(liveId: string): Promise<string> {
@@ -19,6 +22,15 @@ export class WechatPayService implements PayBridge {
       return new Promise((resolve, reject) => {
         let data = res.json();
         let wxPayReq = data.wxPay.request;
+
+        //hack uiwebview
+        if (UtilsService.isiOS) {
+          let url = `${location.protocol}//${location.hostname}${this.router.url}`;
+
+          location.href = `${environment.config.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
+
+          return '';
+        }
 
         history.pushState({}, '微信支付', environment.config.payAddress);
 
@@ -32,8 +44,6 @@ export class WechatPayService implements PayBridge {
             "paySign": wxPayReq.paySign //微信签名
           },
           function (res) {
-            console.log(res);
-
             if (res.err_msg == 'get_brand_wcpay_request:ok') {
               resolve('');
             } else {
