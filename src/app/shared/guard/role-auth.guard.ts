@@ -18,7 +18,7 @@ export class RoleAuthGuard implements CanActivate {
 
     return this.userInfoService.getUserInfo().then((userInfo) => {
       return this.liveService.getLiveInfo(liveId).then((liveInfo) => {
-        if (liveInfo.isAudience(userInfo.uid) && !liveInfo.paid) {
+        if (liveInfo.isAudience(userInfo.uid) && liveInfo.isNeedPay && !liveInfo.paid) {
           this.router.navigate([`${state.url}/info`]);
           return false;
         }
