@@ -33,6 +33,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   liveId: string;
   audienceListInvitations: AudienceInvitationModel[];
   isInWechat = UtilsService.isInWechat;
+  lockPayClick = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
@@ -97,14 +98,26 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   payLive() {
-    this.payBridge.pay(this.liveId).then(result => {
-      this.paidStatus = this.paidEnums.Completed;
-      this.liveService.getLiveInfo(this.liveId, true);
-      this.paidShown = true;
-    }, () => {
-      this.paidStatus = this.paidEnums.Failure;
-      this.paidShown = true;
-    });
+    //取消支付,2s置空锁
+    let lockerTimer = setInterval(() => {
+      this.lockPayClick = false;
+    }, 2000)
+
+    if (!this.lockPayClick) {
+      this.lockPayClick = true;
+
+      this.payBridge.pay(this.liveId).then(result => {
+        this.paidStatus = this.paidEnums.Completed;
+        this.liveService.getLiveInfo(this.liveId, true);
+        this.paidShown = true;
+        this.lockPayClick = false;
+      }, () => {
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidShown = true;
+        this.lockPayClick = false;
+      });
+    }
+
   }
 
   gotoLive() {

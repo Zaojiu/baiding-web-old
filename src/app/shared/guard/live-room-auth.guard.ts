@@ -16,16 +16,13 @@ export class RoleAuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let to = `${location.protocol}//${location.hostname}${state.url}`;
+    let liveId = route.parent.params['id'];
 
     return this.userInfoService.getUserInfo().then((userInfo) => {
-      if (route && route.params['id']) {
-        return this.liveService.getLiveInfo(route.params['id']).then((liveInfo) => {
-          this.liveInfo = liveInfo
-          return !this.liveInfo.isAudience(userInfo.uid)
-        })
-      } else {
-        return true
-      }
+      return this.liveService.getLiveInfo(liveId).then((liveInfo) => {
+        this.liveInfo = liveInfo;
+        return !this.liveInfo.isAudience(userInfo.uid);
+      })
     }, () => {
       this.authService.auth(encodeURIComponent(to));
       return false;
