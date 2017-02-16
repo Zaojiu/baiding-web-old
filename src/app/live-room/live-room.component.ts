@@ -64,26 +64,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         if (messages.length < 21) return this.liveInfo.desc;
 
         return this.getLatestTextMessage(messages[messages.length - 1].id);
-      }, (err) => {
-        switch (err._body.code) {
-          case 400001: {
-            this.modalService.popup('请支付');
-          }
-          case 400002: {
-            this.modalService.popup('无需支付');
-          }
-          case 400003: {
-            this.modalService.popup('无法识别支付平台');
-          }
-          case 400101: {
-            this.modalService.popup('订单已支付');
-          }
-          case 400102: {
-            this.modalService.popup('订单已关闭');
-          }
-        }
-
-        this.router.navigate([`lives/${this.id}/info`]);
       }
     );
   }

@@ -51,8 +51,12 @@ import {DraggableModule} from "../shared/draggable/draggable.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
+<<<<<<< HEAD
 import {VideoPlayerModule} from "../shared/video-player/video-player.module";
 import {LiveStreamResolver} from "./live-stream.resolver";
+=======
+import {RoleAuthGuard} from "../shared/guard/live-room-auth.guard";
+>>>>>>> RoleAuthGuard for live-room
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -115,6 +119,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     LiveInfoResolver,
     LiveStreamResolver,
     QuitEditGuard,
+    RoleAuthGuard,
     UploadApiService,
     MessageService,
     InputtingService,
