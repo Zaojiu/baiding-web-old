@@ -34,6 +34,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-overflow-scrolling: touch;
+  background-color: rgb(255, 255, 255);
 }
 
 input, textarea {
@@ -89,10 +90,6 @@ a {
 
   html {
     background-color: $color-dark-gray;
-  }
-
-  body {
-    background-color: rgb(255, 255, 255);
   }
 }
 
