@@ -1,9 +1,9 @@
 <!--pc扫码支付-->
 <div class="qrcode-background" [ngClass]="{'show': isPopup }"
-     (click)="isPopup = false">
+     (click)="close()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
-      <div class="close" (click)="isPopup = false"></div>
+      <div class="close" (click)="close()"></div>
       <div class="live-title">
         <div class="paid-tick">
           <i class="bi bi-paid"></i>

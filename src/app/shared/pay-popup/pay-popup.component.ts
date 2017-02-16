@@ -17,9 +17,9 @@ export class PayPopupComponent implements OnInit {
 
   ngOnInit() {
     // 此组件由于是全局组件，生命周期与app一样长，所以不需退订。
-    this.payPopupService.popup$.subscribe(() => {
+    this.payPopupService.switch$.subscribe((status) => {
       this.qrcodeImage = '';
-      this.isPopup = true;
+      this.isPopup = status;
     });
 
     this.payPopupService.setPayUrl$.subscribe(payUrl => {
@@ -34,5 +34,10 @@ export class PayPopupComponent implements OnInit {
 
       this.qrcodeImage = this.qrcodeGenerator(payUrl, {size: 150});
     });
+  }
+
+  close() {
+    this.isPopup = false;
+    this.payPopupService.onClose();
   }
 }

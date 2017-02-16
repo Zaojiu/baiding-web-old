@@ -4,16 +4,22 @@ import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class PayPopupService {
-  private popupSource = new Subject<string>();
-  popup$: Observable<string> = this.popupSource.asObservable();
+  private switchSource = new Subject<boolean>();
+  switch$: Observable<boolean> = this.switchSource.asObservable();
   private setPayUrlSource = new Subject<string>();
   setPayUrl$: Observable<string> = this.setPayUrlSource.asObservable();
+  private closeSource = new Subject<string>();
+  close$: Observable<string> = this.closeSource.asObservable();
 
-  popup() {
-    this.popupSource.next('');
+  switch(status = true) {
+    this.switchSource.next(status);
   }
 
   setPayUrl(payUrl: string) {
     this.setPayUrlSource.next(payUrl);
+  }
+
+  onClose() {
+    this.closeSource.next('');
   }
 }

@@ -7,10 +7,14 @@ import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {UserInfoResolver} from '../shared/guard/user-info.resolver';
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {LiveStreamResolver} from "./live-stream.resolver";
 =======
 import {RoleAuthGuard} from "../shared/guard/live-room-auth.guard";
 >>>>>>> RoleAuthGuard for live-room
+=======
+import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
+>>>>>>> update pay lock
 
 const route: Routes = [
   {

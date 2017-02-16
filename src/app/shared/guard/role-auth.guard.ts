@@ -4,11 +4,9 @@ import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Routes, Router
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {AuthBridge} from "../bridge/auth.interface";
 import {LiveService} from "../api/live/live.service";
-import {LiveInfoModel} from "../api/live/live.model";
 
 @Injectable()
 export class RoleAuthGuard implements CanActivate {
-  liveInfo: LiveInfoModel;
 
   constructor(private userInfoService: UserInfoService, private liveService: LiveService,
               private authService: AuthBridge, private router: Router) {
@@ -20,8 +18,7 @@ export class RoleAuthGuard implements CanActivate {
 
     return this.userInfoService.getUserInfo().then((userInfo) => {
       return this.liveService.getLiveInfo(liveId).then((liveInfo) => {
-        this.liveInfo = liveInfo;
-        return !this.liveInfo.isAudience(userInfo.uid);
+        return !liveInfo.isAudience(userInfo.uid);
       })
     }, () => {
       this.authService.auth(encodeURIComponent(to));

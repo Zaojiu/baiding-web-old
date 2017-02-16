@@ -98,26 +98,25 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   payLive() {
-    //取消支付,2s置空锁
-    let lockerTimer = setInterval(() => {
-      this.lockPayClick = false;
-    }, 2000)
+    if (this.lockPayClick) return;
 
-    if (!this.lockPayClick) {
-      this.lockPayClick = true;
+    this.lockPayClick = true;
 
-      this.payBridge.pay(this.liveId).then(result => {
-        this.paidStatus = this.paidEnums.Completed;
-        this.liveService.getLiveInfo(this.liveId, true);
-        this.paidShown = true;
-        this.lockPayClick = false;
-      }, () => {
+    this.payBridge.pay(this.liveId).then(result => {
+      this.paidStatus = this.paidEnums.Completed;
+      this.liveService.getLiveInfo(this.liveId, true);
+      this.paidShown = true;
+    }, (reason) => {
+      if (reason === 'cancel') {
+        this.paidStatus = this.paidEnums.None;
+        this.paidShown = false;
+      } else {
         this.paidStatus = this.paidEnums.Failure;
         this.paidShown = true;
-        this.lockPayClick = false;
-      });
-    }
-
+      }
+    }).finally(() => {
+      this.lockPayClick = false
+    });
   }
 
   gotoLive() {

@@ -4,10 +4,12 @@ import {PayBridge} from "../pay.interface";
 import {Headers, Http} from "@angular/http";
 import {PayPopupService} from "../../pay-popup/pay-popup.service";
 import {LiveService} from "../../api/live/live.service";
-import {clearInterval} from "timers";
+import {Subscription} from "rxjs";
 
 @Injectable()
 export class PcPayService implements PayBridge {
+  private payPopupSub: Subscription;
+
   constructor(private http: Http, private payPopupService: PayPopupService, private liveService: LiveService) {
   }
 
@@ -19,6 +21,10 @@ export class PcPayService implements PayBridge {
       this.http.post(payUrl, JSON.stringify({"platform": 2}), {headers: headers}).toPromise().then(res => {
         let data = res.json();
         this.payPopupService.setPayUrl(data.wxPay.codeUrl);
+        this.payPopupSub = this.payPopupService.close$.subscribe(() => {
+          reject('cancel');
+          this.payPopupSub.unsubscribe();
+        });
       });
 
       let count = 0;
@@ -27,24 +33,27 @@ export class PcPayService implements PayBridge {
           if (liveInfo.paid) {
             clearInterval(timer);
             resolve('');
+            this.payPopupService.switch(false);
             return;
           }
 
           if (count > 100) {
             clearInterval(timer);
+            reject();
+            if (this.payPopupSub) this.payPopupSub.unsubscribe();
             return;
           }
 
           count++;
         });
-      }, 3000);
+      }, 1500);
     });
 
   }
 
 
   pay(liveId: string): Promise<string> {
-    this.payPopupService.popup();
+    this.payPopupService.switch(true);
 
     return this._pay(liveId);
   }
