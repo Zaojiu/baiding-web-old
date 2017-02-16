@@ -36,9 +36,11 @@
       class="bi bi-clock"></i>开播提醒</a>
     <a class="btn notification turn-on" *ngIf="liveInfo.booked && !liveInfo.isClosed()" (click)="unbookLive()"><i
       class="bi bi-clock"></i>已经开通</a>
-    <a class="btn enter-room" *ngIf="liveInfo.isNeedPay && paidStatus!==paidEnums.Completed"
+    <a class="btn enter-room"
+       *ngIf="liveInfo.isNeedPay && paidStatus!==paidEnums.Completed && liveInfo.isAudience(userInfo.uid)"
        (click)="payLive()">支付:￥{{liveInfo.totalFee/100}}</a>
-    <a class="btn enter-room" *ngIf="!liveInfo.isNeedPay || paidStatus===paidEnums.Completed"
+    <a class="btn enter-room"
+       *ngIf="!liveInfo.isNeedPay || paidStatus===paidEnums.Completed || !liveInfo.isAudience(userInfo.uid)"
        (click)="gotoLive()">进入房间</a>
   </div>
 </div>

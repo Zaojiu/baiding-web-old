@@ -11,6 +11,7 @@ import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from '../shared/bridge/share.interface';
 import {MessageApiService} from "../shared/api/message/message.api";
+import {ModalService} from "../shared/modal/modal.service";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -29,7 +30,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
-              private shareService: ShareApiService, private messageApiService: MessageApiService) {
+              private shareService: ShareApiService, private messageApiService: MessageApiService,
+              private modalService: ModalService) {
   }
 
   refreshLiveInfo() {
@@ -54,15 +56,36 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   getLatestTextMessage(marker = ''): Promise<string> {
     return this.messageApiService.listMessages(this.id, marker, 21).then(messages => {
-      for (let message of messages) {
-        if (message.isText() || message.isNice()) return message.content;
-        if (message.isAudio() && message.audio.translateResult) return message.audio.translateResult;
+        for (let message of messages) {
+          if (message.isText() || message.isNice()) return message.content;
+          if (message.isAudio() && message.audio.translateResult) return message.audio.translateResult;
+        }
+
+        if (messages.length < 21) return this.liveInfo.desc;
+
+        return this.getLatestTextMessage(messages[messages.length - 1].id);
+      }, (err) => {
+        switch (err._body.code) {
+          case 400001: {
+            this.modalService.popup('请支付');
+          }
+          case 400002: {
+            this.modalService.popup('无需支付');
+          }
+          case 400003: {
+            this.modalService.popup('无法识别支付平台');
+          }
+          case 400101: {
+            this.modalService.popup('订单已支付');
+          }
+          case 400102: {
+            this.modalService.popup('订单已关闭');
+          }
+        }
+
+        this.router.navigate([`lives/${this.id}/info`]);
       }
-
-      if (messages.length < 21) return this.liveInfo.desc;
-
-      return this.getLatestTextMessage(messages[messages.length - 1].id);
-    });
+    );
   }
 
   getShareUri(): string {
