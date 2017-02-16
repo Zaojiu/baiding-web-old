@@ -25,7 +25,17 @@
             value="video"
             [(ngModel)]="type"
           >
-          <div class="label">视频</div>
+          <div class="label">源推流</div>
+        </div>
+        <div class="radio">
+          <input
+            name="type"
+            type="radio"
+            formControlName="type"
+            value="app"
+            [(ngModel)]="type"
+          >
+          <div class="label">APP推流</div>
         </div>
       </div>
 

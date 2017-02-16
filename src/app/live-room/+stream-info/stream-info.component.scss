@@ -1,0 +1,47 @@
+.stream-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  .top-bar, .operation-area {
+    flex-shrink: 0;
+  }
+
+  .form-group {
+    flex-grow: 1;
+  }
+
+  .loading {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+
+.stream-info-input {
+  word-break: break-all;
+}
+
+.operation-area {
+  padding: 60px 0;
+  text-align: center;
+
+  .btn {
+    display: block;
+    margin: auto;
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: $color-brand;
+    color: $color-w;
+    font-size: 17px;
+  }
+}

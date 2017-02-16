@@ -65,7 +65,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
     this.isAutoPlayNext = this.liveRoomService.isAudioAutoPlay(this.liveId);
     this.audioMessages = this.messages.filter((message) => message.isAudio());
     this.liveInfo = this.liveService.getHistoryLiveInfo(this.liveId);
-    this.coverUrl = this.liveInfo.coverSmallUrl ? this.liveInfo.coverSmallUrl : '/assets/img/default-cover.jpg';
+    this.coverUrl = this.liveInfo.coverSmallUrl;
     this.listNextComments();
 
     this.messages.map((msg) => {

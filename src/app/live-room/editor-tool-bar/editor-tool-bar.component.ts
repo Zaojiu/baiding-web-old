@@ -255,6 +255,10 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     this.router.navigate([`lives/${this.liveId}/settings/edit-info`]);
   }
 
+  gotoStreamInfo() {
+    this.router.navigate([`lives/${this.liveId}/stream-info`]);
+  }
+
   get isAudioAutoPlay() {
     return this.liveRoomService.isAudioAutoPlay(this.liveId);
   }

@@ -6,6 +6,7 @@ import {AuthGuard} from '../shared/guard/auth.guard';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {UserInfoResolver} from '../shared/guard/user-info.resolver';
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
+import {LiveStreamResolver} from "./live-stream.resolver";
 
 const route: Routes = [
   {
@@ -38,6 +39,7 @@ const route: Routes = [
         resolve: {
           liveInfo: LiveInfoResolver,
           userInfo: UserInfoResolver,
+          streamInfo: LiveStreamResolver,
         },
       },
       {
@@ -51,6 +53,7 @@ const route: Routes = [
       {path: 'push-comment', loadChildren: 'app/live-room/+push-comment/push-comment.module#PushCommentModule'},
       {path: 'post', loadChildren: 'app/live-room/+post/post.module#PostModule'},
       {path: 'vip-info', loadChildren: 'app/live-room/+vip-info/vip-info.module#VipInfoModule'},
+      {path: 'stream-info', loadChildren: 'app/live-room/+stream-info/stream-info.module#StreamInfoModule'},
       {path: 'invitation', loadChildren: 'app/live-room/+invite/invite.module#InviteModule'},
       {path: 'share/:message_id', loadChildren: 'app/live-room/+share/share.module#ShareModule'},
       {path: 'settings', loadChildren: 'app/live-room/+settings/settings.module#SettingsModule'},

@@ -51,6 +51,8 @@ import {DraggableModule} from "../shared/draggable/draggable.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
+import {VideoPlayerModule} from "../shared/video-player/video-player.module";
+import {LiveStreamResolver} from "./live-stream.resolver";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -87,6 +89,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     DraggableModule,
     CommentInputModule,
     AtKeyBoardModule,
+    VideoPlayerModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -110,6 +113,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     ShareApiService,
     CommentApiService,
     LiveInfoResolver,
+    LiveStreamResolver,
     QuitEditGuard,
     UploadApiService,
     MessageService,

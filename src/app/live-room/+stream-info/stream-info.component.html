@@ -1,0 +1,28 @@
+<form class="stream-info">
+  <live-room-top-bar class="top-bar" [liveId]="liveId" *ngIf="!isInApp"></live-room-top-bar>
+
+  <bd-loading class="loading" *ngIf="!pushStreamAddr"></bd-loading>
+
+  <div class="form-group" *ngIf="pushStreamAddr">
+    <div class="input-group">
+      <textarea
+        id="streamInfo{{i}}"
+        class="stream-info-input"
+        type="text"
+        name="streamInfo"
+        readonly
+        *ngFor="let item of pushStreamAddr; let i = index;"
+        [(ngModel)]="item.src"
+        autoresize
+        rows="1"
+      ></textarea>
+      <label>推流地址</label>
+    </div>
+  </div>
+
+  <div class="operation-area">
+    <button #copyBtn type="button" class="btn" data-clipboard-action="copy" data-clipboard-target="#streamInfo0">
+      复制推流地址
+    </button>
+  </div>
+</form>
