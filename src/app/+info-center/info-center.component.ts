@@ -102,6 +102,10 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
       for (let liveInfo of this.livesList) {
 
+        if (liveInfo.latestUsers.length > 5) {
+          liveInfo.latestUsers = liveInfo.latestUsers.slice(0, 5);
+        }
+
         if (liveInfo.status === LiveStatus.Created) {
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
             let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
@@ -141,6 +145,10 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       this.livesListWatched = liveListWatched;
 
       for (let liveInfo of this.livesListWatched) {
+
+        if (liveInfo.latestUsers.length > 5) {
+          liveInfo.latestUsers = liveInfo.latestUsers.slice(0, 5);
+        }
 
         if (liveInfo.status === LiveStatus.Created) {
           if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
