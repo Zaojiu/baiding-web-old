@@ -22,9 +22,9 @@ declare var Waypoint: any;
 
 export class LiveListComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe,
-              private shareBridge: ShareBridge) {
+              private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
   }
+
   private waypoints: any[] = [];
   private loadSize = 20;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
@@ -44,9 +44,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
 
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}正在使用造就，发现更多经验分享`;
 
-      this.timer = setInterval(() => {
-      this.timeNow = UtilsService.now.toString();
-    }, 1000);
+    this.timer = setInterval(() => this.timeNow = UtilsService.now.toString(), 1000);
   }
 
   ngOnDestroy() {

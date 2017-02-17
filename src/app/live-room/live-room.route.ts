@@ -6,7 +6,6 @@ import {AuthGuard} from '../shared/guard/auth.guard';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {UserInfoResolver} from '../shared/guard/user-info.resolver';
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
-import {LiveStreamResolver} from "./live-stream.resolver";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 
 const route: Routes = [
@@ -41,7 +40,6 @@ const route: Routes = [
         resolve: {
           liveInfo: LiveInfoResolver,
           userInfo: UserInfoResolver,
-          streamInfo: LiveStreamResolver,
         },
       },
       {

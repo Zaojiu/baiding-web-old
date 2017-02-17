@@ -52,7 +52,6 @@ import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
 import {VideoPlayerModule} from "../shared/video-player/video-player.module";
-import {LiveStreamResolver} from "./live-stream.resolver";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 
 export class MessageHammerConfig extends HammerGestureConfig {
@@ -114,7 +113,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     ShareApiService,
     CommentApiService,
     LiveInfoResolver,
-    LiveStreamResolver,
     QuitEditGuard,
     RoleAuthGuard,
     UploadApiService,

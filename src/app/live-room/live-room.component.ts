@@ -30,8 +30,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
-              private shareService: ShareApiService, private messageApiService: MessageApiService,
-              private modalService: ModalService) {
+              private shareService: ShareApiService, private messageApiService: MessageApiService) {
   }
 
   refreshLiveInfo() {
@@ -75,14 +74,21 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     return `${location.protocol}//${location.hostname}${path}`;
   }
 
+  getStreamInfo() {
+    this.liveService.processStreamInfo(this.liveInfo).then((streamInfo) => {
+      this.streamInfo = streamInfo;
+    });
+  }
+
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
-    this.streamInfo = this.route.snapshot.data['streamInfo'];
 
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
-    this.liveService.getLiveInfo(this.id, true, true); // 发送加入话题间的请求。
+    this.liveService.getLiveInfo(this.id, true, true).then(() => { // 发送加入话题间的请求。
+      this.getStreamInfo();
+    });
     this.setShareInfo(); // 设置分享参数等。
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
