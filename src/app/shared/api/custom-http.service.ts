@@ -39,7 +39,8 @@ export class CustomHttp extends Http {
           this.operationTipsService.popup('无访问权限');
           break;
         case 404:
-          this.operationTipsService.popup('资源不存在');
+          // 404有些一些不期望提示错误, 所以暂时隐藏
+          // this.operationTipsService.popup('资源不存在');
           break;
         case 408:
           this.operationTipsService.popup('请求超时，请重试');
