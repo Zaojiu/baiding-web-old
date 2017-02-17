@@ -1,6 +1,6 @@
 <video
+  *ngIf="hasVideo()"
   #videoPlayer
-  *ngIf="!liveInfo.isCreated()"
   class="video-js vjs-default-skin video-player"
   controls
   preload="none"
@@ -22,5 +22,5 @@
     [countDownStatus]="liveInfo.isCreated()"
   ></count-down>
 
-  <i class="bi bi-play-fill" *ngIf="!liveInfo.isCreated()"></i>
+  <i class="bi bi-play-fill" *ngIf="hasVideo()"></i>
 </div>
