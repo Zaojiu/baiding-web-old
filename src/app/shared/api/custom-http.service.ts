@@ -55,6 +55,9 @@ export class CustomHttp extends Http {
           case 504:
             this.operationTipsService.popup('请求超时，请重试');
             break;
+          case 599:
+            this.operationTipsService.popup('请重试或者咨询客服');
+            break;
           default:
             this.operationTipsService.popup('服务器内部错误，请重试');
             break;

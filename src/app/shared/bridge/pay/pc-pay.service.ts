@@ -27,6 +27,7 @@ export class PcPayService implements PayBridge {
         });
       });
 
+      // TODO too many requests?
       let count = 0;
       let timer = setInterval(() => {
         this.liveService.getLiveInfo(liveId, true).then(liveInfo => {
@@ -46,7 +47,7 @@ export class PcPayService implements PayBridge {
 
           count++;
         });
-      }, 1500);
+      }, 2500);
     });
 
   }
