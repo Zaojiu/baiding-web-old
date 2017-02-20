@@ -2,9 +2,11 @@
   *ngIf="hasVideo()"
   #videoPlayer
   class="video-js vjs-default-skin video-player"
-  controls
+  [ngClass]="{'no-progressbar': noProgressbar}"
+  controls="controls"
   preload="none"
   webkit-playsinline
+  playsinline
 >
   <source *ngFor="let item of streamInfo.streamSrc" [src]="item.src" [type]="item.type">
   <source *ngFor="let item of streamInfo.playbackSrc" [src]="item.src" [type]="item.type">

@@ -1,8 +1,10 @@
+import {SafeUrl} from "@angular/platform-browser";
+
 export class VideoPlayerSrc {
-  src: string;
+  src: SafeUrl;
   type: string;
 
-  constructor(src: string, type: string) {
+  constructor(src: SafeUrl, type: string) {
     this.src = src;
     this.type = type;
   }

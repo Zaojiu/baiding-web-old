@@ -32,6 +32,7 @@ export class UtilsService {
   static isInBaidingApp = /baidingapp\.com/i.test(location.hostname);
   static isTouchable = (<any>window).DocumentTouch && document instanceof DocumentTouch;
   static isAndroid = /Android/i.test(window.navigator.userAgent);
+  static isDesktopChrome = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(window.navigator.userAgent) && /Chrome/i.test(window.navigator.userAgent);
 
   static setStorage(key: string, value: Object) {
     localStorage.setItem(key, JSON.stringify(value));
