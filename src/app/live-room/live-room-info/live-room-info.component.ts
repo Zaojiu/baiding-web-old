@@ -110,6 +110,10 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
       if (reason === 'cancel') {
         this.paidStatus = this.paidEnums.None;
         this.paidShown = false;
+      } else if (reason === 'timeout') {
+        this.operationTipsService.popup("支付超时，请重新支付");
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidShown = true;
       } else {
         this.paidStatus = this.paidEnums.Failure;
         this.paidShown = true;
