@@ -18,3 +18,9 @@
 .vjs-big-play-button {
   display: none!important;
 }
+
+.no-progressbar {
+  .vjs-progress-control {
+    visibility: hidden;
+  }
+}

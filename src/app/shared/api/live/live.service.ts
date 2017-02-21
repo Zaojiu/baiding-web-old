@@ -8,10 +8,12 @@ import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {environment} from "../../../../environments/environment";
 import {VideoPlayerSrc} from "../../video-player/video-player.model";
+import {UtilsService} from "../../utils/utils";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Injectable()
 export class LiveService {
-  constructor(private http: Http) {
+  constructor(private http: Http, private sanitizer: DomSanitizer) {
   }
 
   private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
@@ -359,12 +361,12 @@ export class LiveService {
  }
 
   getStreamPullingAddr(id: string): Promise<LiveStreamInfo> {
-    const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/hls`;
+    const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/hls|rtmp`;
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let streamAddr = data ? data.hls : '';
-      let streamSrc = [new VideoPlayerSrc(streamAddr, 'application/x-mpegURL')];
+      let streamAddr = data ? UtilsService.isDesktopChrome ? data.rtmp : data.hls : '';
+      let streamSrc = [new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(streamAddr), UtilsService.isDesktopChrome ? 'rtmp/mp4' : 'application/x-mpegURL')];
       let streamInfo = new LiveStreamInfo();
 
       streamInfo.streamSrc = streamSrc;
@@ -389,7 +391,7 @@ export class LiveService {
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let playbackAddr = data && data.m3u8 ? [new VideoPlayerSrc(data.m3u8, 'application/x-mpegURL')] : data.SD_mp4 ? [new VideoPlayerSrc(data.SD_mp4, 'video/mp4')] : [];
+      let playbackAddr = data && data.SD_mp4 ? [new VideoPlayerSrc(data.SD_mp4, 'video/mp4')] : data.m3u8 ? [new VideoPlayerSrc(data.m3u8, 'application/x-mpegURL')] : [];
       let streamInfo = new LiveStreamInfo();
 
       streamInfo.playbackSrc = playbackAddr;
