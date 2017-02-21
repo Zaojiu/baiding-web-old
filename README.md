@@ -31,12 +31,6 @@ ps：如果没有安装 `node/npm` 那么也可以使用 `./hack/run.sh <command
 * environment.dev.ts: 不入库，开发配置，开发自己本地维护。
 * environment.prod.ts: 入库，线上配置，key和id只用渲染变量，线上docker运行时替换为真实值。
 
-###  mock REST API
-
-* cd ./src/assets/_mock_data/ && json-server xxx.json --port 8000
-* simply open localhost:8000, more on [json-server github page](https://github.com/typicode/json-server)
-
-
 # 如何引入第三方库
 
 首先, 需要评估第三方库, 包括以下方面:
