@@ -57,7 +57,7 @@
     "waypoints": "^4.0.1",
     "weixin-js-sdk": "^1.0.7",
     "yaqrcode": "^0.2.1",
-    "zone.js": "^0.7.2"
+    "zone.js": "0.7.2"
   },
   "devDependencies": {
     "@types/autosize": "^3.0.3",
