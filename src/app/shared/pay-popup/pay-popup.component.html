@@ -1,6 +1,6 @@
 <!--pc扫码支付-->
 <div class="qrcode-background" [ngClass]="{'show': isPopup }"
-     (click)="close()">
+     (click)="close()" *ngIf="isPopup">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="close()"></div>
