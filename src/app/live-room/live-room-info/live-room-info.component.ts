@@ -80,7 +80,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.liveService.bookLive(this.liveInfo.id).then(liveInfo => {
       this.liveInfo = liveInfo;
       if (!this.userInfo.isSubscribed && !this.inApp) {
-        this.operationTipsService.popup('请扫描二维码进行订阅');
+        this.operationTipsService.popup('请长按识别二维码进行订阅');
         this.showQrcode();
       } else if (!this.userInfo.isSubscribed && this.inApp) {
         this.showQrcode()
@@ -110,6 +110,10 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
       if (reason === 'cancel') {
         this.paidStatus = this.paidEnums.None;
         this.paidShown = false;
+      } else if (reason === 'timeout') {
+        this.operationTipsService.popup("支付超时，请重新支付");
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidShown = true;
       } else {
         this.paidStatus = this.paidEnums.Failure;
         this.paidShown = true;

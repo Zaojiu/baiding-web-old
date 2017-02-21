@@ -27,6 +27,7 @@ export class PcPayService implements PayBridge {
         });
       });
 
+      // TODO too many requests?
       let count = 0;
       let timer = setInterval(() => {
         this.liveService.getLiveInfo(liveId, true).then(liveInfo => {
@@ -39,14 +40,14 @@ export class PcPayService implements PayBridge {
 
           if (count > 100) {
             clearInterval(timer);
-            reject();
+            reject('timeout'); //若不扫码，最后会出现支付失败，叠加在下面
             if (this.payPopupSub) this.payPopupSub.unsubscribe();
             return;
           }
 
           count++;
         });
-      }, 1500);
+      }, 2500);
     });
 
   }
