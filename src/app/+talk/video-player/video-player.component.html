@@ -7,12 +7,12 @@
   webkit-playsinline
   playsinline
 >
-  <source *ngFor="let item of streamInfo.streamSrc" [src]="item.src" [type]="item.type">
-  <source *ngFor="let item of streamInfo.playbackSrc" [src]="item.src" [type]="item.type">
+  <source *ngFor="let item of videoInfo.streamSrc" [src]="item.src" [type]="item.type">
+  <source *ngFor="let item of videoInfo.playbackSrc" [src]="item.src" [type]="item.type">
 </video>
 
 <div class="live-cover" *ngIf="!isPlayed" (click)="play()">
-  <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
+  <img [src]="talkInfo.coverSmallUrl" alt="话题间封面">
 
   <h1></h1>
 
