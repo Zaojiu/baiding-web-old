@@ -30,7 +30,7 @@ export class LiveService {
     liveInfo.desc = stream.desc;
     liveInfo.coverUrl = `${stream.coverUrl}?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
 
-    switch (stream.kind) {
+    switch (stream.meta.kind) {
       case 'text':
         liveInfo.kind = LiveType.Text;
         break;
@@ -44,12 +44,12 @@ export class LiveService {
         liveInfo.kind = LiveType.Text;
     }
 
-    liveInfo.owner = users[stream.owner] as UserInfoModel;
-    liveInfo.admin = users[stream.admin] as UserInfoModel;
+    liveInfo.owner = users[stream.uid] as UserInfoModel;
+    liveInfo.admin = users[stream.meta.admin] as UserInfoModel;
 
     liveInfo.editors = [];
-    if (stream.editors) {
-      stream.editors.forEach(function (uid) {
+    if (stream.meta.editors) {
+      stream.meta.editors.forEach(function (uid) {
         let user = users[uid];
         if (user) {
           liveInfo.editors.push(user);
@@ -67,18 +67,18 @@ export class LiveService {
       });
     }
 
-    liveInfo.expectStartAt = stream.expectStartAt;
-    liveInfo.expectDuration = stream.expectDuration;
-    liveInfo.startedAt = stream.startedAt;
-    liveInfo.closedAt = stream.closedAt;
+    liveInfo.expectStartAt = stream.meta.expectStartAt;
+    liveInfo.expectDuration = stream.meta.expectDuration;
+    liveInfo.startedAt = stream.meta.startedAt;
+    liveInfo.closedAt = stream.meta.closedAt;
     liveInfo.createdAt = (+stream.createdAt / 1e6).toString();
     liveInfo.updatedAt = (+stream.updatedAt / 1e6).toString();
     liveInfo.isDraft = stream.isDraft;
 
-    if (stream.status === 'created') liveInfo.status = LiveStatus.Created;
-    if (stream.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
-    if (stream.status === 'started') liveInfo.status = LiveStatus.Started;
-    if (stream.status === 'closed') liveInfo.status = LiveStatus.Ended;
+    if (stream.meta.status === 'created') liveInfo.status = LiveStatus.Created;
+    if (stream.meta.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
+    if (stream.meta.status === 'started') liveInfo.status = LiveStatus.Started;
+    if (stream.meta.status === 'closed') liveInfo.status = LiveStatus.Ended;
 
     liveInfo.praised = stream.praised;
     liveInfo.isNeedPay = stream.isNeedPay;
@@ -97,7 +97,7 @@ export class LiveService {
     liveInfo.coverThumbnailUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x/gravity/Center/crop/60x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
 
     if (liveInfo.isTypeVideo()) {
-      switch (stream.publishStatus) {
+      switch (stream.meta.publishStatus) {
         case '':
           liveInfo.streamStatus = LiveStreamStatus.None;
           break;
