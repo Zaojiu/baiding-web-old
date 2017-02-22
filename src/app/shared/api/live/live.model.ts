@@ -1,7 +1,7 @@
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
-import {VideoPlayerSrc} from "../../video-player/video-player.model";
+import {VideoPlayerSrc} from "../../../live-room/video-player/video-player.model";
 
 export class LiveInfoModel {
   id: string;

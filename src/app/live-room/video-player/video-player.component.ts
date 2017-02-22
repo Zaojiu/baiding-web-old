@@ -1,6 +1,6 @@
 import {Component, Input, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import {VideoPlayerOption} from "./video-player.model";
-import {LiveInfoModel, LiveStreamInfo} from "../api/live/live.model";
+import {LiveInfoModel, LiveStreamInfo} from "../../shared/api/live/live.model";
 
 @Component({
   selector: 'video-player',
