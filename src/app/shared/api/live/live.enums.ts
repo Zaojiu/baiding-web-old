@@ -1,5 +1,6 @@
 export enum LiveStatus {
-  Created = 1,
+  Null = 0,
+  Created,
   Canceled,
   Started,
   Ended

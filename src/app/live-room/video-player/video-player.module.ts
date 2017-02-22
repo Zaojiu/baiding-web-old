@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {VideoPlayerComponent} from "./video-player.component";
-import {CountDownModule} from "../countdown/countdown.module";
+import {CountDownModule} from "../../shared/countdown/countdown.module";
 
 @NgModule({
   imports: [

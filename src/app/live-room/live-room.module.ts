@@ -51,7 +51,7 @@ import {DraggableModule} from "../shared/draggable/draggable.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
-import {VideoPlayerModule} from "../shared/video-player/video-player.module";
+import {VideoPlayerModule} from "./video-player/video-player.module";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 
 export class MessageHammerConfig extends HammerGestureConfig {

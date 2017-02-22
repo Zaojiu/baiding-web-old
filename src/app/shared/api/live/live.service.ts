@@ -7,7 +7,7 @@ import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {environment} from "../../../../environments/environment";
-import {VideoPlayerSrc} from "../../video-player/video-player.model";
+import {VideoPlayerSrc} from "../../../live-room/video-player/video-player.model";
 import {UtilsService} from "../../utils/utils";
 import {DomSanitizer} from "@angular/platform-browser";
 

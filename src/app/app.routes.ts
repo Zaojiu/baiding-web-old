@@ -4,6 +4,8 @@ import {NgModule} from "@angular/core";
 const appRoutes: Routes = [
   {path: '404', loadChildren: 'app/+notfound/notfound.module#NotFoundModule'},
   {path: 'info-center', loadChildren: 'app/+info-center/info-center.module#InfoCenterModule'},
+  {path: 'talks', loadChildren: 'app/+talk/talk.module#TalkModule'},
+  {path: 'speaker', loadChildren: 'app/+speaker/speaker.module#SpeakerModule'},
   {path: '', loadChildren: 'app/+live-list/live-list.module#LiveListModule'},
   {path: '**', redirectTo: '/404', pathMatch: 'full'},
 ];
