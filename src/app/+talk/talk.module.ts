@@ -3,7 +3,6 @@ import {TalkRoutingModule} from "./talk.route";
 import {TalkInfoComponent} from "./talk-info/talk-info.component";
 import {ArticleComponent} from "./article/article.component";
 import {TalkService} from "../shared/api/talk/talk.api";
-import {VideoPlayerComponent} from "./video-player/video-player.component";
 
 @NgModule({
   imports: [
@@ -12,7 +11,6 @@ import {VideoPlayerComponent} from "./video-player/video-player.component";
   declarations: [
     TalkInfoComponent,
     ArticleComponent,
-    VideoPlayerComponent,
   ],
   providers: [
     TalkService,
