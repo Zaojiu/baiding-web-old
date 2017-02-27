@@ -1,0 +1,19 @@
+:host {
+  position: relative;
+  width: 100%;
+  display: block;
+
+  &:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+}
+
+.video-player {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}

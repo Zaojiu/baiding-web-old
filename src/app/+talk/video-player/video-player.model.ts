@@ -10,9 +10,12 @@ export class VideoPlayerSrc {
   }
 }
 
-export class LiveStreamInfo {
-  streamSrc: VideoPlayerSrc[] = [];
-  playbackSrc: VideoPlayerSrc[] = [];
+export class VideoInfo {
+  src: VideoPlayerSrc[] = [];
+
+  hasVideo(): boolean {
+    return this.src && this.src.length
+  }
 }
 
 export class VideoPlayerOption {

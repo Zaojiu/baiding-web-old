@@ -5,13 +5,13 @@ import {Subscription} from 'rxjs/Subscription';
 import {TimelineService} from './timeline/timeline.service';
 import {LiveService} from '../shared/api/live/live.service';
 import {ShareApiService} from '../shared/api/share/share.api';
-import {LiveInfoModel, LiveStreamInfo} from '../shared/api/live/live.model';
+import {LiveInfoModel} from '../shared/api/live/live.model';
 import {UserInfoModel} from '../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model';
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from '../shared/bridge/share.interface';
 import {MessageApiService} from "../shared/api/message/message.api";
-import {ModalService} from "../shared/modal/modal.service";
+import {LiveStreamInfo} from "./video-player/video-player.model";
 
 @Component({
   templateUrl: './live-room.component.html',

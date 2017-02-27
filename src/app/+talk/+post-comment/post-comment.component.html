@@ -1,0 +1,32 @@
+<form [formGroup]="form" name="postComment" (submit)="submit()" class="post-comment" autofocus-first-invalid-input>
+  <header><i class="bi bi-close" (click)="backToTalk()"></i></header>
+
+  <section><small>发表评论</small>{{subject}}</section>
+
+  <div class="reply" *ngIf="replyId"><span class="nick">{{replyNick}}:</span>{{replyContent}}</div>
+
+  <div class="main-form">
+    <div class="form-group" [ngClass]="{'has-error': form.controls['content'].dirty && form.controls['content'].invalid}">
+      <div class="input-group">
+        <textarea
+          id="content"
+          class="content"
+          name="content"
+          formControlName="content"
+          [(ngModel)]="content"
+          autoresize
+          rows="1"
+        ></textarea>
+        <label class="required">评论内容</label>
+      </div>
+      <div *ngIf="form.controls['content'].errors">
+        <p class="helper error" *ngIf="form.controls['content'].errors.required">请填写简介</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="operation-area">
+    <button class="btn" *ngIf="!isSubmitting">提交评论</button>
+    <span class="btn disabled" *ngIf="isSubmitting">评论提交中...</span>
+  </div>
+</form>

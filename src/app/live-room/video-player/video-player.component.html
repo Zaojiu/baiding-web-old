@@ -12,7 +12,7 @@
   <source *ngFor="let item of streamInfo.playbackSrc" [src]="item.src" [type]="item.type">
 </video>
 
-<div class="live-cover" *ngIf="!isPlayed" (click)="play()">
+<div class="live-cover" *ngIf="!isPlaying" (click)="play()">
   <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
 
   <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>

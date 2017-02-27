@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {LiveInfoModel, UploadCoverTokenModel, LiveStreamInfo} from './live.model';
+import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {environment} from "../../../../environments/environment";
-import {VideoPlayerSrc} from "../../../live-room/video-player/video-player.model";
+import {VideoPlayerSrc, LiveStreamInfo} from "../../../live-room/video-player/video-player.model";
 import {UtilsService} from "../../utils/utils";
 import {DomSanitizer} from "@angular/platform-browser";
 

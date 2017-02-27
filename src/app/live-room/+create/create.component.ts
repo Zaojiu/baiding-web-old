@@ -98,7 +98,6 @@ export class CreateComponent implements OnInit, DoCheck {
     this.imageBridge.chooseImages(1).then((localIds) => {
       this.wxLocalId = localIds[0] as string;
       this.coverSrc = this.sanitizer.bypassSecurityTrustUrl(localIds[0] as string);
-      console.log(this.wxLocalId, this.coverSrc);
     });
   }
 

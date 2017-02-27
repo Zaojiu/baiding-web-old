@@ -1,11 +1,69 @@
-<header>
-  <!--<video-player [talkInfo]="talkInfo"></video-player>-->
-</header>
+<bd-loading class="loading" *ngIf="isLoading"></bd-loading>
 
-<section class="article"></section>
+<div class="main" *ngIf="!isLoading && talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)">
+  <header>
+    <video-player #videoPlayer [videoInfo]="talkInfo.media" [ngClass]="{sticky: videoPlayer.isPlaying}"></video-player>
 
-<section class="info"></section>
+    <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="videoPlayer.play()">
+      <img class="cover-image" [src]="talkInfo.coverSmallUrl" alt="话题间封面">
 
-<section class="comment"></section>
+      <div class="mask"></div>
 
-<footer></footer>
+      <i class="bi bi-play-fill" *ngIf="videoPlayer.hasVideo()"></i>
+
+      <div class="talk-info">
+        <div class="publisher-info">
+          <img class="avatar avatar-round avatar-medium" *ngIf="talkInfo.userInfo" [src]="talkInfo.userInfo.avatar" alt="发布人头像">
+          <span class="nick" *ngIf="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
+        </div>
+
+        <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
+      </div>
+
+      <h1>{{talkInfo.subject}}</h1>
+    </div>
+  </header>
+
+  <section class="article talk-article" [innerHtml]="talkInfo.safeContent"></section>
+
+  <section class="info">
+    <ul *ngFor="let catalogArr of talkInfo.categories">
+      <li *ngFor="let catalog of catalogArr">{{catalog.title}}</li>
+    </ul>
+
+    <div class="tags">
+      <small *ngFor="let tag of talkInfo.tags">{{tag}}</small>
+    </div>
+  </section>
+
+  <section class="comments">
+    <h2>评论</h2>
+
+    <div *ngIf="!isCommentLoading && comments && comments.length">
+      <div class="comment" *ngFor="let comment of comments">
+        <div class="header">
+          <div class="author-info">
+            <img class="avatar avatar-round avatar-small" [src]="comment.user.avatar" alt="用户头像">
+            <span class="nick">{{comment.user.nick}}</span>
+            <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
+          </div>
+          <span class="reply" (click)="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>
+        </div>
+        <div class="content"><div class="quote" *ngIf="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
+      </div>
+    </div>
+
+    <bd-loading class="comment-loading" *ngIf="isCommentLoading"></bd-loading>
+
+    <div class="no-comments" *ngIf="!isCommentLoading && (!comments || !comments.length)">暂无评论</div>
+  </section>
+</div>
+
+<footer *ngIf="talkInfo" #toolBar>
+  <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
+  <div class="icon"><i class="bi" [ngClass]="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()"></i>{{talkInfo.praiseTotal}}</div>
+  <div class="icon"><i class="bi" [ngClass]="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"></i></div>
+  <div class="icon"><i class="bi bi-comment" (click)="gotoComment()"></i>{{talkInfo.commentTotal}}</div>
+</footer>
+
+<div class="no-content" *ngIf="!isLoading && !talkInfo">无效内容</div>

@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild, ElementRef, OnDestroy} from '@angular/core';
-import {VideoPlayerOption, LiveStreamInfo} from "./video-player.model";
-import {LiveInfoModel} from "../../shared/api/live/live.model";
+import {TalkInfoMediaModel} from "../../shared/api/talk/talk.model";
 
 @Component({
   selector: 'video-player',
@@ -10,12 +9,9 @@ import {LiveInfoModel} from "../../shared/api/live/live.model";
 
 export class VideoPlayerComponent implements OnDestroy {
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
-  @Input() option: VideoPlayerOption[];
-  @Input() liveInfo: LiveInfoModel;
-  @Input() streamInfo: LiveStreamInfo;
+  @Input() videoInfo: TalkInfoMediaModel;
   private player: VideoJSPlayer;
-  isPlayed = false;
-  noProgressbar = false;
+  isPlaying = false;
 
   constructor() {
   }
@@ -25,14 +21,7 @@ export class VideoPlayerComponent implements OnDestroy {
   }
 
   hasVideo() {
-    if (this.streamInfo.streamSrc && this.streamInfo.streamSrc.length) {
-      this.noProgressbar = this.streamInfo.streamSrc[0].src.toString().indexOf('rtmp://') !== -1;
-    }
-
-    return !this.liveInfo.isCreated() &&
-      this.streamInfo &&
-      ((this.streamInfo.streamSrc && this.streamInfo.streamSrc.length) ||
-      (this.streamInfo.playbackSrc && this.streamInfo.playbackSrc.length));
+    return this.videoInfo && this.videoInfo.hasVideo();
   }
 
   play() {
@@ -40,11 +29,12 @@ export class VideoPlayerComponent implements OnDestroy {
 
     let opts = {
       nativeControlsForTouch: true,
+      controls: true,
       flash: {swf: '/assets/video-js.swf'}
     };
     if (!this.player) this.player = (<any>window).videojs(this.videoPlayer.nativeElement, opts); // ios不显示videojs控件, 避免跟原生控件冲突
 
-    this.isPlayed = true;
+    this.isPlaying = true;
     this.player.play();
   }
 }
