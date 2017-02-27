@@ -20,6 +20,7 @@ export class MyApiService {
     const url = `${environment.config.host.io}/api/live/my/history/objects?${$.param(query)}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
+      data.result = data.result || [];
       let list = [];
       let marker = data.include ? data.include.marker : '';
       let hasMore = data.include ? data.include.has_more : false;
@@ -42,6 +43,7 @@ export class MyApiService {
     const url = `${environment.config.host.io}/api/live/my/favorited/objects?${$.param(query)}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
+      data.result = data.result || [];
       let list = [];
       let marker = data.include ? data.include.marker : '';
       let hasMore = data.include ? data.include.has_more : false;

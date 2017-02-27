@@ -1,5 +1,5 @@
 import {Component, OnChanges, SimpleChanges, Input, ViewChild, ElementRef} from '@angular/core';
-import {ListViewResult, ListViewModel} from "./list-view.model";
+import {ListViewResult} from "./list-view.model";
 
 @Component({
   selector: 'list-view',
