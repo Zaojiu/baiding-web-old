@@ -1,0 +1,15 @@
+<div #listEle class="list" (scroll)="onScroll($event)">
+  <div class="item-wrapper" *ngIf="listResult.result.length">
+    <div class="item" *ngFor="let item of listResult.result" (click)="item.goto()">
+    <img [src]="item.cover" alt="头图">
+    <div class="text">
+      <div class="desc">{{item.desc}}</div>
+      <strong class="subject">{{item.subject}}</strong>
+    </div>
+  </div>
+  </div>
+  <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
+  <div class="no-more-data" *ngIf="!isLoading && listResult.result.length && !listResult.hasMore">到底啦~</div>
+</div>
+
+<div class="no-data" *ngIf="!isLoading && !listResult.result.length">暂无数据</div>

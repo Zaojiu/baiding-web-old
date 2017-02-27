@@ -109,7 +109,7 @@ export class UserInfoService {
     return this.http.put(url, data).toPromise().then((res) => {
       // 更新用户信息, 避免缓存数据不一致。
       return this.getUserInfo(true).then(() => {
-      return
+        return
       });
     });
   }
