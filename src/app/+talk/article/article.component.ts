@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {TalkService} from "../../shared/api/talk/talk.api";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './article.component.html',
@@ -20,6 +21,7 @@ export class ArticleComponent implements OnInit {
   $toolBar: any;
   isToolbarShow = false;
   originY = 0;
+  isOnScreen = UtilsService.isOnScreen;
 
   constructor(private route: ActivatedRoute, private router: Router, private talkApiService: TalkService) {
   }

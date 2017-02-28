@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {VideoPlayerComponent} from "./video-player.component";
-import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
-import {FormModule} from "../../shared/form/form.module";
-import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
+import {AutoresizeModule} from "../autoresize/autoresize.module";
+import {FormModule} from "../form/form.module";
+import {AutofocusFirstInvalidInputModule} from "../first-invalid/first-invalid.module";
 import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
