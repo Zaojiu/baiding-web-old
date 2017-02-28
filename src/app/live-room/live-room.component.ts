@@ -11,7 +11,7 @@ import {UserAnimEmoji} from '../shared/praised-animation/praised-animation.model
 import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from '../shared/bridge/share.interface';
 import {MessageApiService} from "../shared/api/message/message.api";
-import {LiveStreamInfo} from "./video-player/video-player.model";
+import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.model";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -26,7 +26,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isCommentOpened: boolean = true;
   refreshInterval: any;
   praisedSub: Subscription;
-  streamInfo: LiveStreamInfo;
+  videoInfo: VideoInfo;
+  videoOption: VideoPlayerOption;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -75,8 +76,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   getStreamInfo() {
-    this.liveService.processStreamInfo(this.liveInfo).then((streamInfo) => {
-      this.streamInfo = streamInfo;
+    this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
+      this.videoInfo = videoInfo;
+      this.videoOption = new VideoPlayerOption(!this.videoInfo.hasRtmp);
     });
   }
 

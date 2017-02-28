@@ -3,6 +3,8 @@ import {TalkService} from "../../shared/api/talk/talk.api";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model";
 import {UtilsService} from "../../shared/utils/utils";
+import {VideoInfo, VideoPlayerSrc} from "../../shared/video-player/video-player.model";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   templateUrl: './article.component.html',
@@ -12,6 +14,7 @@ import {UtilsService} from "../../shared/utils/utils";
 export class ArticleComponent implements OnInit {
   id: string;
   talkInfo: TalkInfoModel;
+  videoInfo: VideoInfo;
   comments: TalkCommentModel[];
   isLoading: boolean;
   isCommentLoading: boolean;
@@ -23,7 +26,8 @@ export class ArticleComponent implements OnInit {
   originY = 0;
   isOnScreen = UtilsService.isOnScreen;
 
-  constructor(private route: ActivatedRoute, private router: Router, private talkApiService: TalkService) {
+  constructor(private route: ActivatedRoute, private router: Router,
+              private talkApiService: TalkService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -36,6 +40,13 @@ export class ArticleComponent implements OnInit {
     this.isLoading = true;
     this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
+      if (talkInfo.media) {
+        this.videoInfo = new VideoInfo([
+          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_sd), 'video/mp4'),
+          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_hd), 'video/mp4'),
+          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4), 'video/mp4'),
+        ]);
+      }
     }).finally(() => {
       this.isLoading = false;
     });

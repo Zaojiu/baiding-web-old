@@ -2,14 +2,14 @@
 
 <div class="main" *ngIf="!isLoading && talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)">
   <header>
-    <video-player #videoPlayer [videoInfo]="talkInfo.media" [ngClass]="{sticky: videoPlayer.isPlaying && !isOnScreen}"></video-player>
+    <video-player class="video-player" #videoPlayer [videoInfo]="videoInfo" [ngClass]="{sticky: videoPlayer.isPlaying && !isOnScreen}"></video-player>
 
     <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="videoPlayer.play()">
       <img class="cover-image" [src]="talkInfo.coverSmallUrl" alt="话题间封面">
 
       <div class="mask"></div>
 
-      <i class="bi bi-play-fill" *ngIf="videoPlayer.hasVideo()"></i>
+      <i class="bi bi-play-fill" *ngIf="videoInfo && videoInfo.hasVideo"></i>
 
       <div class="talk-info">
         <div class="publisher-info">

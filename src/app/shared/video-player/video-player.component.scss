@@ -1,13 +1,5 @@
 :host {
   position: relative;
-  width: 100%;
-  display: block;
-
-  &:before {
-    content: "";
-    display: block;
-    padding-top: 100%;
-  }
 }
 
 .video-player {

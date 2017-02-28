@@ -1,6 +1,6 @@
 import {Component, Input, ViewChild, ElementRef, OnDestroy} from '@angular/core';
-import {TalkInfoMediaModel} from "../api/talk/talk.model";
 import {UtilsService} from "../utils/utils";
+import {VideoInfo, VideoPlayerOption} from "./video-player.model";
 
 @Component({
   selector: 'video-player',
@@ -10,7 +10,8 @@ import {UtilsService} from "../utils/utils";
 
 export class VideoPlayerComponent implements OnDestroy {
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
-  @Input() videoInfo: TalkInfoMediaModel;
+  @Input() videoInfo: VideoInfo;
+  @Input() option: VideoPlayerOption;
   private player: VideoJSPlayer;
   isPlaying = false;
 
@@ -21,13 +22,14 @@ export class VideoPlayerComponent implements OnDestroy {
     if (this.player && this.player.dispose) this.player.dispose();
   }
 
-  hasVideo() {
-    return this.videoInfo && this.videoInfo.hasVideo();
+  hasVideo(): boolean {
+    if (!this.videoInfo) return false;
+
+    return this.videoInfo.hasVideo;
   }
 
   play() {
     if (!this.hasVideo()) return;
-
 
     if (!this.player) {
       if (UtilsService.isiOS || UtilsService.isAndroid) {
