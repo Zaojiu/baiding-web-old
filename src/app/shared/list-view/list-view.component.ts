@@ -9,6 +9,7 @@ import {ListViewResult} from "./list-view.model";
 
 export class ListViewComponent implements OnChanges {
   @Input() loader: (size: number, marker?: string) => Promise<ListViewResult>;
+  @Input() noDataTips: string;
   @ViewChild('listEle') listEle: ElementRef;
   hasMore: boolean;
   isLoading: boolean;
