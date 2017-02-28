@@ -13,6 +13,9 @@
 <bd-app>
 
   <div class="loading-wrapper" id="loading-wrapper">
+    <script type="application/javascript">
+      if (/zaojiuliveapp/i.test(window.navigator.userAgent)) document.getElementById('loading-wrapper').hidden = true;
+    </script>
     <div class="svg">
       <svg width="101px" height="65px" viewBox="30 0 101 65" version="1.1" xmlns="http://www.w3.org/2000/svg"
            xmlns:xlink="http://www.w3.org/1999/xlink">
