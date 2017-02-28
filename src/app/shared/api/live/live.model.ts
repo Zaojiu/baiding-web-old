@@ -1,7 +1,6 @@
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
-import {VideoPlayerSrc} from "../../../live-room/video-player/video-player.model";
 
 export class LiveInfoModel {
   id: string;
@@ -107,9 +106,4 @@ export class UploadCoverTokenModel {
     this.coverKey = coverKey;
     this.token = token;
   }
-}
-
-export class LiveStreamInfo {
-  streamSrc: VideoPlayerSrc[] = [];
-  playbackSrc: VideoPlayerSrc[] = [];
 }

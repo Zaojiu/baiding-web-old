@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {LiveInfoModel, UploadCoverTokenModel, LiveStreamInfo} from './live.model';
+import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {environment} from "../../../../environments/environment";
-import {VideoPlayerSrc} from "../../../live-room/video-player/video-player.model";
 import {UtilsService} from "../../utils/utils";
 import {DomSanitizer} from "@angular/platform-browser";
+import {VideoInfo, VideoPlayerSrc} from "../../video-player/video-player.model";
 
 @Injectable()
 export class LiveService {
@@ -346,7 +346,7 @@ export class LiveService {
     return null
   }
 
-  processStreamInfo(liveInfo: LiveInfoModel): Promise<LiveStreamInfo> {
+  processStreamInfo(liveInfo: LiveInfoModel): Promise<VideoInfo> {
     if (!liveInfo.isTypeVideo()) return Promise.resolve(null);
 
     let hlsPromise = !liveInfo.isClosed() ? this.getStreamPullingAddr(liveInfo.id) : null;
@@ -356,22 +356,26 @@ export class LiveService {
     return Promise.all([hlsPromise, playbackPromise]).then(result => {
       let streamInfo = result[0];
       let playbackInfo = result[1];
-      return Object.assign({}, streamInfo, playbackInfo);
+      let videos: VideoPlayerSrc[] = [];
+      if (streamInfo) {
+        for (let item of streamInfo.src) videos.push(item);
+      }
+      if (playbackInfo) {
+        for (let item of playbackInfo.src) videos.push(item);
+      }
+      return new VideoInfo(videos);
     });
  }
 
-  getStreamPullingAddr(id: string): Promise<LiveStreamInfo> {
+  getStreamPullingAddr(id: string): Promise<VideoInfo> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/hls|rtmp`;
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let streamAddr = data ? UtilsService.isDesktopChrome ? data.rtmp : data.hls : '';
       let streamSrc = [new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(streamAddr), UtilsService.isDesktopChrome ? 'rtmp/mp4' : 'application/x-mpegURL')];
-      let streamInfo = new LiveStreamInfo();
 
-      streamInfo.streamSrc = streamSrc;
-
-      return streamInfo;
+      return new VideoInfo(streamSrc);
     });
   }
 
@@ -386,17 +390,21 @@ export class LiveService {
     });
   }
 
-  getPlaybackAddr(id: string): Promise<LiveStreamInfo> {
+  getPlaybackAddr(id: string): Promise<VideoInfo> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/playback`;
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let playbackAddr = data && data.SD_mp4 ? [new VideoPlayerSrc(data.SD_mp4, 'video/mp4')] : data.m3u8 ? [new VideoPlayerSrc(data.m3u8, 'application/x-mpegURL')] : [];
-      let streamInfo = new LiveStreamInfo();
+      let playbackAddr: VideoPlayerSrc[] = [];
 
-      streamInfo.playbackSrc = playbackAddr;
+      if (data) {
+        if (data.m3u8) playbackAddr.push(new VideoPlayerSrc(data.m3u8, 'application/x-mpegURL'));
+        if (data.SD_mp4) playbackAddr.push(new VideoPlayerSrc(data.SD_mp4, 'video/mp4'));
+        if (data.HD_mp4) playbackAddr.push(new VideoPlayerSrc(data.HD_mp4, 'video/mp4'));
+        if (data._mp4) playbackAddr.push(new VideoPlayerSrc(data._mp4, 'video/mp4'));
+      }
 
-      return streamInfo;
+      return new VideoInfo(playbackAddr);
     });
   }
 }

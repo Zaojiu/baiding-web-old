@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {TalkService} from "../../shared/api/talk/talk.api";
-import {ActivatedRoute} from "@angular/router";
-import {TalkInfoModel} from "../../shared/api/talk/talk.model";
+import {ActivatedRoute, Router} from "@angular/router";
+import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model";
+import {UtilsService} from "../../shared/utils/utils";
+import {VideoInfo, VideoPlayerSrc} from "../../shared/video-player/video-player.model";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   templateUrl: './article.component.html',
@@ -11,19 +14,155 @@ import {TalkInfoModel} from "../../shared/api/talk/talk.model";
 export class ArticleComponent implements OnInit {
   id: string;
   talkInfo: TalkInfoModel;
+  videoInfo: VideoInfo;
+  comments: TalkCommentModel[];
   isLoading: boolean;
+  isCommentLoading: boolean;
+  isPraising: boolean;
+  isFavoriting: boolean;
+  @ViewChild('toolBar') toolBar: ElementRef;
+  $toolBar: any;
+  isToolbarShow = false;
+  originY = 0;
+  isOnScreen = UtilsService.isOnScreen;
 
-  constructor(private route: ActivatedRoute, private talkApiService: TalkService) {
+  constructor(private route: ActivatedRoute, private router: Router,
+              private talkApiService: TalkService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
+    this.getTalkInfo();
+    this.listComments();
+  }
 
+  getTalkInfo() {
     this.isLoading = true;
     this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
+      if (talkInfo.media) {
+        this.videoInfo = new VideoInfo([
+          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_sd), 'video/mp4'),
+          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_hd), 'video/mp4'),
+          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4), 'video/mp4'),
+        ]);
+      }
     }).finally(() => {
       this.isLoading = false;
+    });
+  }
+
+  listComments() {
+    this.isCommentLoading = true;
+
+    this.talkApiService.listComments(this.id).then(comments => {
+      this.comments = comments;
+    }).finally(() => {
+      this.isCommentLoading = false;
+    })
+  }
+
+  favorite() {
+    if (this.isFavoriting) return;
+
+    this.talkInfo.isFavorited = true;
+    this.isFavoriting = true;
+
+    this.talkApiService.favorite(this.id).then(() => {
+      this.talkApiService.getTalkInfo(this.id, true);
+    }, () => {
+      this.isFavoriting = false;
+    }).finally(() => {
+      this.isFavoriting = false;
+    });
+  }
+
+  unfavorite() {
+    if (this.isFavoriting) return;
+
+    this.talkInfo.isFavorited = false;
+    this.isFavoriting = true;
+
+    this.talkApiService.unfavorite(this.id).then(() => {
+      this.talkApiService.getTalkInfo(this.id, true);
+    }, () => {
+      this.talkInfo.isFavorited = true;
+    }).finally(() => {
+      this.isFavoriting = false;
+    });
+  }
+
+  praise() {
+    if (this.isPraising) return;
+
+    this.talkInfo.isPraised = true;
+    this.talkInfo.praiseTotal+=1;
+    this.isPraising = true;
+
+    this.talkApiService.praise(this.id).then(() => {
+      this.talkApiService.getTalkInfo(this.id, true);
+    }, () => {
+      this.talkInfo.isPraised = false;
+      this.talkInfo.praiseTotal-=1;
+    }).finally(() => {
+      this.isPraising = false;
+    });
+  }
+
+  unpraise() {
+    if (this.isPraising) return;
+
+    this.talkInfo.isPraised = false;
+    this.talkInfo.praiseTotal > 0 ? this.talkInfo.praiseTotal-=1 : 0;
+    this.isPraising = true;
+
+    this.talkApiService.unpraise(this.id).then(() => {
+      this.talkApiService.getTalkInfo(this.id, true);
+    }, () => {
+      this.talkInfo.isPraised = true;
+      this.talkInfo.praiseTotal+=1;
+    }).finally(() => {
+      this.isPraising = false;
+    });
+  }
+
+  gotoComment(id?: string, nick?: string, content?: string) {
+    let queryParams: any = {title: encodeURIComponent(this.talkInfo.subject)};
+
+    if (id && nick && content) {
+      queryParams.request = encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content}));
+    }
+
+    this.router.navigate([`/talks/${this.id}/post-comment`], {queryParams: queryParams});
+  }
+
+  touchStart(e: TouchEvent) {
+    if (this.toolBar && !this.$toolBar) this.$toolBar = $(this.toolBar.nativeElement);
+
+    if (!this.$toolBar) return;
+
+    this.originY = e.touches[0].clientY;
+  }
+
+  touchMove(e: TouchEvent) {
+    if (!this.$toolBar) return;
+
+    if (this.originY - e.touches[0].clientY > 10 && this.isToolbarShow) {
+      this.toolbarHide();
+      this.isToolbarShow = false;
+    } else if (e.touches[0].clientY - this.originY > 10 && !this.isToolbarShow) {
+      this.toolbarShow();
+      this.isToolbarShow = true;
+    }
+  }
+
+  toolbarShow() {
+    this.$toolBar.css({'position': 'fixed', 'bottom': '-46px'}).animate({'bottom': '0px'}, 'fast');
+  }
+
+  toolbarHide() {
+    this.$toolBar.animate({'bottom': '-46px'}, 'fast', () => {
+      this.$toolBar.css({'bottom': '', 'position': ''});
     });
   }
 }

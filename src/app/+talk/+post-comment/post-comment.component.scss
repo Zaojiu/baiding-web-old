@@ -1,0 +1,77 @@
+.post-comment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  header {
+    flex-shrink: 0;
+    padding: 20px;
+
+    .bi-close {
+      font-size: 22px;
+      color: $color-dark-gray;
+    }
+  }
+
+  section {
+    padding-left: 15px;
+    padding-right: 15px;
+    color: $color-dark-gray;
+    font-size: 14px;
+    line-height: 1em;
+    flex-shrink: 0;
+
+    small {
+      display: block;
+      color: $color-gray;
+      font-size: 12px;
+      line-height: 1em;
+      margin-bottom: 10px;
+    }
+  }
+
+  .reply {
+    flex-shrink: 0;
+    background-color: rgb(237, 237, 237);
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+
+    .nick {
+      font-weight: bold;
+      margin-right: 6px;
+    }
+  }
+
+  .main-form {
+    flex-grow: 1;
+    overflow: auto;
+  }
+
+  .operation-area {
+    flex-shrink: 0;
+
+    .btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      height: 49px;
+      line-height: 49px;
+      font-size: 17px;
+      color: $color-w;
+      background-color: $color-brand;
+
+      &.disabled {
+        background-color: change_color($color-brand, $alpha: .5);
+      }
+    }
+  }
+}

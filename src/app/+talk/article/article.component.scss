@@ -1,0 +1,327 @@
+.main {
+  header {
+    position: relative;
+
+    .video-player {
+      position: relative;
+      width: 100%;
+      display: block;
+
+      &.sticky {
+        position: fixed;
+        top: 0;
+      }
+
+      &:before {
+        content: "";
+        display: block;
+        padding-top: 100%;
+      }
+    }
+
+    .live-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column-reverse;
+      background-color: $color-gray2;
+
+      .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .4);
+      }
+
+      .cover-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        text-indent: -10000px;
+        //background-image: url('/assets/img/default-cover.jpg');
+        background-position: center;
+        background-size: cover;
+      }
+
+      h1 {
+        position: relative;
+        font-size: 26px;
+        line-height: 1.3em;
+        color: $color-w;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-bottom: 15px;
+        font-weight: normal;
+      }
+
+      .talk-info {
+        position: relative;
+        display: flex;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-bottom: 24px;
+        align-items: center;
+        overflow: hidden;
+
+        .publisher-info {
+          flex-grow: 1;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+
+          .avatar {
+            flex-shrink: 0;
+            margin-right: 6px;
+          }
+
+          .nick {
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+            color: $color-w;
+            line-height: 1em;
+          }
+        }
+
+        time {
+          font-size: 12px;
+          color: $color-w;
+          line-height: 1em;
+        }
+      }
+
+      .bi-play-fill {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        font-size: 30px;
+        color: $color-w;
+        pointer-events: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        height: 70px;
+        width: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:before {
+          transform: translateX(3px);
+        }
+      }
+    }
+  }
+
+  .article {
+    padding: 12px;
+  }
+
+  .info {
+    margin-top: 42px;
+    padding: 12px;
+
+    ul {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+
+      li {
+        display: flex;
+        align-items: center;
+        font-size: 17px;
+        line-height: 1em;
+        color: $color-dark-gray;
+
+        &:last-child {
+          &:after {
+            display: none;
+          }
+        }
+
+        &:after {
+          margin-left: 6px;
+          margin-right: 6px;
+          content: ">";
+          font-size: 20px;
+        }
+      }
+    }
+
+    .tags {
+      display: flex;
+
+      small {
+        flex-shrink: 0;
+        min-width: 48px;
+        padding: 5px 15px;
+        margin-right: 10px;
+        font-size: 12px;
+        background-color: $color-brand;
+        color: $color-w;
+        line-height: 1em;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .comments {
+    margin-top: 42px;
+    padding: 12px;
+    padding-bottom: 30px;
+
+    h2 {
+      font-size: 26px;
+      line-height: 1em;
+      color: $color-dark-gray;
+      font-weight: normal;
+    }
+
+    .comment {
+      margin-top: 20px;
+
+      .header {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        margin-bottom: 6px;
+
+        .author-info {
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+
+          .avatar {
+            flex-shrink: 0;
+            margin-right: 6px;
+          }
+
+          .nick {
+            font-size: 14px;
+            color: $color-dark-gray;
+            line-height: 1em;
+            font-weight: bold;
+          }
+
+          time {
+            margin-left: 8px;
+            flex-shrink: 0;
+            font-size: 12px;
+            color: rgb(144, 144, 144);
+            line-height: 1em;
+          }
+        }
+
+        .reply {
+          line-height: 1em;
+          font-size: 12px;
+          color: $color-brand;
+        }
+      }
+
+      .content {
+        margin-left: 31px;
+        font-size: 14px;
+        color: $color-dark-gray;
+        line-height: 1.57em;
+        white-space: pre-wrap;
+
+        .quote {
+          background-color: rgb(237, 237, 237);
+          padding: 10px;
+          margin-bottom: 6px;
+          white-space: pre-wrap;
+
+          .nick {
+            font-weight: bold;
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+
+    .no-comments, .comment-loading {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .no-comments {
+      color: $color-gray;
+      font-size: 14px;
+    }
+  }
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  background-color: rgb(137, 137, 137);
+  padding-left: 24px;
+  padding-right: 24px;
+  max-width: 768px;
+  width: 100%;
+
+  .icon {
+    color: $color-w;
+    line-height: 1em;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .bi {
+      font-size: 21px;
+      margin-right: 4px;
+    }
+
+    .bi-heart-fill {
+      color: red;
+    }
+  }
+
+  .view {
+    flex-grow: 1;
+
+    .bi {
+      font-size: 16px;
+    }
+  }
+}
+
+.loading, .no-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-content {
+  font-size: 16px;
+  color: $color-gray;
+  line-height: 1em;
+}

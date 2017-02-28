@@ -5,7 +5,24 @@
   <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
 <!--&gt;</beginner-guide>-->
 
-<video-player class="video-player" *ngIf="liveInfo && streamInfo" [liveInfo]="liveInfo" [streamInfo]="streamInfo"></video-player>
+<div class="video">
+  <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
+
+  <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="videoPlayer.play()">
+    <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
+
+    <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
+    <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
+
+    <count-down
+      class="count-down"
+      [expectStartAt]="liveInfo.expectStartAt"
+      [countDownStatus]="liveInfo.isCreated()"
+    ></count-down>
+
+    <i class="bi bi-play-fill" *ngIf="videoInfo && videoInfo.hasVideo"></i>
+  </div>
+</div>
 
 <div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
   <top-bar

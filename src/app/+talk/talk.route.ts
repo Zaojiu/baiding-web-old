@@ -3,6 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {AuthGuard} from "../shared/guard/auth.guard";
 import {TalkInfoComponent} from "./talk-info/talk-info.component";
 import {ArticleComponent} from "./article/article.component";
+import {TalkPostCommentComponent} from "./+post-comment/post-comment.component";
 
 const route: Routes = [
   {
@@ -14,11 +15,14 @@ const route: Routes = [
         component: ArticleComponent,
         data: {
           isAsyncShareInfo: true,
-        },
+        }
       },
       {
         path: 'info',
         component: TalkInfoComponent,
+      },
+      {
+        path: 'post-comment', loadChildren: 'app/+talk/+post-comment/post-comment.module#TalkCommentModule'
       },
     ]
   },
