@@ -195,6 +195,7 @@ export class TalkCommentModel {
   toUsers: UserInfoModel[] = [];
   content: string;
   createdAt: Moment;
+  originCreatedAt: string;
 
   constructor(data, users) {
     this.id = data.id;
@@ -207,5 +208,7 @@ export class TalkCommentModel {
     }
     this.content = data.content;
     this.createdAt = moment(+data.createdAt / 1e6);
+    this.originCreatedAt = data.createdAt;
+
   }
 }

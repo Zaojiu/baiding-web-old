@@ -31,8 +31,14 @@ export class TalkService {
     });
   }
 
-  listComments(id: string): Promise<TalkCommentModel[]> {
-    const url = `${environment.config.host.io}/api/live/objects/${id}/comments`;
+  listComments(id: string, size = 20, marker = '', sorts = ['-createdAt']): Promise<TalkCommentModel[]> {
+    var query = {
+      createdAt: marker,
+      size: size,
+      sorts: sorts.join(','),
+    };
+
+    const url = `${environment.config.host.io}/api/live/objects/${id}/comments?${$.param(query)}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let result = data.result;

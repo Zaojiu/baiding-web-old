@@ -18,7 +18,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   id: string;
   talkInfo: TalkInfoModel;
   videoInfo: VideoInfo;
-  comments: TalkCommentModel[];
+  comments: TalkCommentModel[] = [];
   isLoading: boolean;
   isCommentLoading: boolean;
   isPraising: boolean;
@@ -29,6 +29,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   originY = 0;
   isOnScreen = UtilsService.isOnScreen;
   routeSub: Subscription;
+  hasMoreComments: boolean;
+  commentSize = 20;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private sanitizer: DomSanitizer,
@@ -38,10 +40,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.getTalkInfo();
-    this.listComments();
 
     this.routeSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
+        this.comments = [];
         this.listComments();
       }
     });
@@ -79,11 +81,22 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
   }
 
-  listComments() {
+  listComments(marker = '') {
     this.isCommentLoading = true;
 
-    this.talkApiService.listComments(this.id).then(comments => {
-      this.comments = comments;
+    marker = marker ? `$lt${marker}` : '';
+
+    this.talkApiService.listComments(this.id, this.commentSize+1, marker).then(comments => {
+      if (comments.length == this.commentSize+1) {
+        this.hasMoreComments = true;
+        comments.pop();
+      } else {
+        this.hasMoreComments = false;
+      }
+
+      for (let item of comments) {
+        this.comments.push(item);
+      }
     }).finally(() => {
       this.isCommentLoading = false;
     })
