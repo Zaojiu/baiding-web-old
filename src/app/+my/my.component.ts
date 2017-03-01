@@ -11,7 +11,6 @@ import {ListViewModel, ListViewResult} from "../shared/list-view/list-view.model
 
 export class MyComponent implements OnInit {
   loader: (size: number, marker?: string) => Promise<ListViewResult>;
-  marker: string;
 
   constructor(private myService: MyApiService, private route: ActivatedRoute, private router: Router) {}
 

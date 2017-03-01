@@ -1,25 +1,17 @@
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
-import {MyComponent} from "./my.component";
+import {SearchResultComponent} from "./search-result/search-result.component";
 import {AuthGuard} from "../shared/guard/auth.guard";
 
 const route: Routes = [
   {
-    path: 'favorites',
-    component: MyComponent,
+    path: 'result',
+    component: SearchResultComponent,
     canActivate: [AuthGuard],
     data: {
-      title: '我收藏的'
+      title: '搜索结果'
     }
   },
-  {
-    path: 'histories',
-    canActivate: [AuthGuard],
-    component: MyComponent,
-    data: {
-      title: '我看过的'
-    }
-  }
 ];
 
 const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
@@ -28,4 +20,4 @@ const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
   imports: [ ROUTES ],
   exports: [ RouterModule ]
 })
-export class MyRoutingModule {}
+export class SearchRoutingModule {}

@@ -12,4 +12,4 @@
   <div class="no-more-data" *ngIf="!isLoading && listResult.result.length && !listResult.hasMore">到底啦~</div>
 </div>
 
-<div class="no-data" *ngIf="!isLoading && !listResult.result.length">暂无数据</div>
+<div class="no-data" *ngIf="!isLoading && !listResult.result.length && loader">{{noDataTips ? noDataTips : '暂无数据'}}</div>
