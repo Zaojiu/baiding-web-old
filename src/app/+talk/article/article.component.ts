@@ -87,7 +87,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     marker = marker ? `$lt${marker}` : '';
 
     this.talkApiService.listComments(this.id, this.commentSize+1, marker).then(comments => {
-      if (comments.length == this.commentSize+1) {
+      if (comments.length === this.commentSize+1) {
         this.hasMoreComments = true;
         comments.pop();
       } else {
