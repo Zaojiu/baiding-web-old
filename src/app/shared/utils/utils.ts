@@ -69,7 +69,7 @@ export class UtilsService {
   static resetWindowScroll() {
     setTimeout(() => {
       document.body.scrollTop = document.body.scrollHeight;
-    }, 400);
+    }, 800);
   }
 
   static parseUrl(url: string): UrlModel {
