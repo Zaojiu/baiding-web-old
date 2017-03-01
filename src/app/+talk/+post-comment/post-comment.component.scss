@@ -5,12 +5,13 @@
   right: 0;
   bottom: 0;
   overflow: auto;
+  background-color: $color-w;
   display: flex;
   flex-direction: column;
 
   header {
     flex-shrink: 0;
-    padding: 20px;
+    padding: 20px 20px 0;
 
     .bi-close {
       font-size: 22px;
@@ -19,6 +20,7 @@
   }
 
   section {
+    padding-top: 20px;
     padding-left: 15px;
     padding-right: 15px;
     color: $color-dark-gray;

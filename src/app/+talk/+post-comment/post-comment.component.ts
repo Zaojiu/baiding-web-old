@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
 import {TalkService} from "../../shared/api/talk/talk.api";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   templateUrl: './post-comment.component.html',
@@ -18,14 +19,15 @@ export class TalkPostCommentComponent implements OnInit {
   isSubmitting: boolean;
   form: FormGroup;
   content: string;
-
+  isInApp = UtilsService.isInApp;
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
               private talkApiService: TalkService, private tipsService: OperationTipsService) {
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
+    this.id = this.route.snapshot.parent.parent.params['id'];
+
     this.subject = this.route.snapshot.queryParams['title'];
     if (this.subject) this.subject = decodeURIComponent(this.subject);
     let request = this.route.snapshot.queryParams['request'];

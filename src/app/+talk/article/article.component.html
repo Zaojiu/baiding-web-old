@@ -57,13 +57,15 @@
 
     <div class="no-comments" *ngIf="!isCommentLoading && (!comments || !comments.length)">暂无评论</div>
   </section>
+
+  <footer *ngIf="talkInfo" #toolBar>
+    <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
+    <div class="icon"><i class="bi" [ngClass]="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()"></i>{{talkInfo.praiseTotal}}</div>
+    <div class="icon"><i class="bi" [ngClass]="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"></i></div>
+    <div class="icon"><i class="bi bi-comment" (click)="gotoComment()"></i>{{talkInfo.commentTotal}}</div>
+  </footer>
 </div>
 
-<footer *ngIf="talkInfo" #toolBar>
-  <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
-  <div class="icon"><i class="bi" [ngClass]="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()"></i>{{talkInfo.praiseTotal}}</div>
-  <div class="icon"><i class="bi" [ngClass]="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"></i></div>
-  <div class="icon"><i class="bi bi-comment" (click)="gotoComment()"></i>{{talkInfo.commentTotal}}</div>
-</footer>
-
 <div class="no-content" *ngIf="!isLoading && !talkInfo">无效内容</div>
+
+<router-outlet></router-outlet>

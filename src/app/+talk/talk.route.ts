@@ -14,15 +14,17 @@ const route: Routes = [
         component: ArticleComponent,
         data: {
           isAsyncShareInfo: true,
-        }
+        },
+        children: [
+          { path: '' },
+          { path: 'post-comment', loadChildren: 'app/+talk/+post-comment/post-comment.module#TalkCommentModule' },
+        ]
       },
       {
+        // TODO: talk info
         path: 'info',
         component: TalkInfoComponent,
-      },
-      {
-        path: 'post-comment', loadChildren: 'app/+talk/+post-comment/post-comment.module#TalkCommentModule'
-      },
+      }
     ]
   },
 ];

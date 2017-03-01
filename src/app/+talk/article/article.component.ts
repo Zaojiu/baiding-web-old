@@ -1,17 +1,20 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import {TalkService} from "../../shared/api/talk/talk.api";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
 import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model";
 import {UtilsService} from "../../shared/utils/utils";
 import {VideoInfo, VideoPlayerSrc} from "../../shared/video-player/video-player.model";
 import {DomSanitizer} from "@angular/platform-browser";
+import {Subscription} from "rxjs";
+import {ShareBridge} from "../../shared/bridge/share.interface";
+import {TitleService} from "../../shared/title/title.service";
 
 @Component({
   templateUrl: './article.component.html',
   styleUrls: ['./article.component.scss'],
 })
 
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit, OnDestroy {
   id: string;
   talkInfo: TalkInfoModel;
   videoInfo: VideoInfo;
@@ -25,21 +28,34 @@ export class ArticleComponent implements OnInit {
   isToolbarShow = false;
   originY = 0;
   isOnScreen = UtilsService.isOnScreen;
+  routeSub: Subscription;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private talkApiService: TalkService, private sanitizer: DomSanitizer) {
+              private talkApiService: TalkService, private sanitizer: DomSanitizer,
+              private shareBridge: ShareBridge, private titleService: TitleService) {
   }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.getTalkInfo();
     this.listComments();
+
+    this.routeSub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.listComments();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.routeSub) this.routeSub.unsubscribe();
   }
 
   getTalkInfo() {
     this.isLoading = true;
     this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
+
       if (talkInfo.media) {
         this.videoInfo = new VideoInfo([
           new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_sd), 'video/mp4'),
@@ -47,9 +63,20 @@ export class ArticleComponent implements OnInit {
           new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4), 'video/mp4'),
         ]);
       }
+
+      this.setShareInfo(talkInfo);
+      this.titleService.set(talkInfo.subject);
     }).finally(() => {
       this.isLoading = false;
     });
+  }
+
+  setShareInfo(talkInfo: TalkInfoModel) {
+    let shareTitle = talkInfo.subject;
+    let shareDesc = talkInfo.desc;
+    let shareCover = this.talkInfo.coverThumbnailUrl;
+    let shareUrl = `${location.protocol}//${location.hostname}${this.router.url}`;
+    this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
   }
 
   listComments() {

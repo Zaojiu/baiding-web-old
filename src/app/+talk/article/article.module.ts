@@ -4,9 +4,11 @@ import {TalkService} from "../../shared/api/talk/talk.api";
 import {ArticleComponent} from "./article.component";
 import {VideoPlayerModule} from "../../shared/video-player/video-player.module";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   imports: [
+    RouterModule,
     CommonModule,
     VideoPlayerModule,
     LoadingModule,

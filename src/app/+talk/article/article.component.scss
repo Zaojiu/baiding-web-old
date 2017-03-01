@@ -1,4 +1,11 @@
 .main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+
   header {
     position: relative;
 
@@ -266,45 +273,45 @@
       font-size: 14px;
     }
   }
-}
 
-footer {
-  display: flex;
-  align-items: center;
-  height: 46px;
-  background-color: rgb(137, 137, 137);
-  padding-left: 24px;
-  padding-right: 24px;
-  max-width: 768px;
-  width: 100%;
-
-  .icon {
-    color: $color-w;
-    line-height: 1em;
-    font-size: 12px;
+  footer {
     display: flex;
     align-items: center;
-    margin-right: 15px;
+    height: 46px;
+    background-color: rgb(137, 137, 137);
+    padding-left: 24px;
+    padding-right: 24px;
+    max-width: 768px;
+    width: 100%;
 
-    &:last-child {
-      margin-right: 0;
+    .icon {
+      color: $color-w;
+      line-height: 1em;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      .bi {
+        font-size: 21px;
+        margin-right: 4px;
+      }
+
+      .bi-heart-fill {
+        color: red;
+      }
     }
 
-    .bi {
-      font-size: 21px;
-      margin-right: 4px;
-    }
+    .view {
+      flex-grow: 1;
 
-    .bi-heart-fill {
-      color: red;
-    }
-  }
-
-  .view {
-    flex-grow: 1;
-
-    .bi {
-      font-size: 16px;
+      .bi {
+        font-size: 16px;
+      }
     }
   }
 }
