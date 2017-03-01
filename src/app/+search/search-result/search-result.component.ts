@@ -1,33 +1,43 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ListViewModel, ListViewResult} from "../../shared/list-view/list-view.model";
 import {SearchApiService} from "../../shared/api/search/search.api";
 import {SearchResultItem} from "../../shared/api/search/search.model";
+import {Subscription} from "rxjs";
 
 @Component({
   templateUrl: './search-result.component.html',
   styleUrls: ['./search-result.component.scss'],
 })
 
-export class SearchResultComponent implements OnInit {
+export class SearchResultComponent implements OnInit, OnDestroy {
   loader: (size: number, marker?: string) => Promise<ListViewResult>;
   keyword: string;
+  paramsSub: Subscription[] = [];
 
   constructor(private searchApiService: SearchApiService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      let keyword = params['q'];
+    this.paramsSub.push(
+      this.route.params.subscribe(params => {
+        let keyword = params['q'];
 
-      this.resetLoader(keyword);
-    });
+        this.resetLoader(keyword);
+      })
+    );
 
-    this.route.queryParams.subscribe(params => {
-      let keyword = params['q'];
+    this.paramsSub.push(
+      this.route.queryParams.subscribe(params => {
+        let keyword = params['q'];
 
-      this.resetLoader(keyword);
-    });
+        this.resetLoader(keyword);
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    for (let sub of this.paramsSub) sub.unsubscribe();
   }
 
   resetLoader(keyword: string) {

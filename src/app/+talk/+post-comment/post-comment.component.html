@@ -1,5 +1,5 @@
 <form [formGroup]="form" name="postComment" (submit)="submit()" class="post-comment" autofocus-first-invalid-input>
-  <header><i class="bi bi-close" (click)="backToTalk()"></i></header>
+  <header *ngIf="!isInApp"><i class="bi bi-close" (click)="backToTalk()"></i></header>
 
   <section><small>发表评论</small>{{subject}}</section>
 

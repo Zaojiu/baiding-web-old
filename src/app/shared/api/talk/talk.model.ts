@@ -10,11 +10,9 @@ export class TalkInfoMediaModel {
   duration: Duration;
 
   constructor(mp3 = '', mp4 = '', mp4_sd = '', mp4_hd = '', preview = '', duration = 0) {
-    // this.mp3 = mp3;
-    this.mp3 = 'http://dn-fdsfsdfdsf.qbox.me/The%20Battle%20of%20Evony%20-%20BIG%20GAME%20Commercial%20-%20Extended%20Cut.mp3';
-    this.mp4_sd = 'http://dn-fdsfsdfdsf.qbox.me/The%20Battle%20of%20Evony%20-%20BIG%20GAME%20Commercial%20-%20Extended%20Cut.mp4';
+    this.mp3 = mp3;
     this.mp4 = mp4;
-    // this.mp4_sd = mp4_sd;
+    this.mp4_sd = mp4_sd;
     this.mp4_hd = mp4_hd;
     this.preview = preview;
     this.duration = moment.duration(duration);
@@ -197,6 +195,7 @@ export class TalkCommentModel {
   toUsers: UserInfoModel[] = [];
   content: string;
   createdAt: Moment;
+  originCreatedAt: string;
 
   constructor(data, users) {
     this.id = data.id;
@@ -209,5 +208,7 @@ export class TalkCommentModel {
     }
     this.content = data.content;
     this.createdAt = moment(+data.createdAt / 1e6);
+    this.originCreatedAt = data.createdAt;
+
   }
 }

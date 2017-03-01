@@ -1,21 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {MyApiService} from "../shared/api/my/my.api";
 import {ActivatedRoute, UrlSegment, Router} from "@angular/router";
 import {MyListModel} from "../shared/api/my/my.model";
 import {ListViewModel, ListViewResult} from "../shared/list-view/list-view.model";
+import {Subscription} from "rxjs";
 
 @Component({
   templateUrl: './my.component.html',
   styleUrls: ['./my.component.scss'],
 })
 
-export class MyComponent implements OnInit {
+export class MyComponent implements OnInit, OnDestroy {
   loader: (size: number, marker?: string) => Promise<ListViewResult>;
+  urlSub: Subscription;
 
   constructor(private myService: MyApiService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.route.url.subscribe(url => this.resetLoader(url));
+    this.urlSub = this.route.url.subscribe(url => this.resetLoader(url));
+  }
+
+  ngOnDestroy() {
+    if (this.urlSub) this.urlSub.unsubscribe();
   }
 
   resetLoader(url: UrlSegment[]) {

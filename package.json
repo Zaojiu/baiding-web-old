@@ -54,7 +54,7 @@
     "ts-helpers": "^1.1.1",
     "video.js": "^5.16.0",
     "waypoints": "^4.0.1",
-    "weixin-js-sdk": "^1.0.7",
+    "weixin-js-sdk": "^1.2.0",
     "yaqrcode": "^0.2.1",
     "zone.js": "0.7.2"
   },

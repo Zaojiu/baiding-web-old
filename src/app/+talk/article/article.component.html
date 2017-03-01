@@ -39,31 +39,33 @@
   <section class="comments">
     <h2>评论</h2>
 
-    <div *ngIf="!isCommentLoading && comments && comments.length">
-      <div class="comment" *ngFor="let comment of comments">
-        <div class="header">
-          <div class="author-info">
-            <img class="avatar avatar-round avatar-small" [src]="comment.user.avatar" alt="用户头像">
-            <span class="nick">{{comment.user.nick}}</span>
-            <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
-          </div>
-          <span class="reply" (click)="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>
+    <div class="comment" *ngFor="let comment of comments">
+      <div class="header">
+        <div class="author-info">
+          <img class="avatar avatar-round avatar-small" [src]="comment.user.avatar" alt="用户头像">
+          <span class="nick">{{comment.user.nick}}</span>
+          <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
         </div>
-        <div class="content"><div class="quote" *ngIf="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
+        <span class="reply" (click)="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>
       </div>
+      <div class="content"><div class="quote" *ngIf="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
     </div>
 
     <bd-loading class="comment-loading" *ngIf="isCommentLoading"></bd-loading>
 
-    <div class="no-comments" *ngIf="!isCommentLoading && (!comments || !comments.length)">暂无评论</div>
+    <div class="no-comments" *ngIf="!isCommentLoading && !comments.length">暂无评论</div>
+    <div class="more-comments" *ngIf="!isCommentLoading && hasMoreComments" (click)="listComments(comments[comments.length-1].originCreatedAt)">加载更多评论</div>
+    <div class="no-more-comments" *ngIf="!isCommentLoading && comments.length && !hasMoreComments">到底咯~</div>
   </section>
+
+  <footer *ngIf="talkInfo" #toolBar>
+    <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
+    <div class="icon" (click)="talkInfo.isPraised ? unpraise() : praise()"><i class="bi" [ngClass]="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}</div>
+    <div class="icon" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"><i class="bi" [ngClass]="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i></div>
+    <div class="icon" (click)="gotoComment()"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
+  </footer>
 </div>
 
-<footer *ngIf="talkInfo" #toolBar>
-  <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
-  <div class="icon"><i class="bi" [ngClass]="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()"></i>{{talkInfo.praiseTotal}}</div>
-  <div class="icon"><i class="bi" [ngClass]="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"></i></div>
-  <div class="icon"><i class="bi bi-comment" (click)="gotoComment()"></i>{{talkInfo.commentTotal}}</div>
-</footer>
-
 <div class="no-content" *ngIf="!isLoading && !talkInfo">无效内容</div>
+
+<router-outlet></router-outlet>
