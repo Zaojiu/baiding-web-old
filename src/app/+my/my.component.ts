@@ -45,6 +45,8 @@ export class MyComponent implements OnInit {
       this.router.navigate([`/lives/${item.id}`]);
     } else if (item.isTalk()) {
       this.router.navigate([`/talks/${item.id}`]);
+    } else if (item.isSpeaker()) {
+      this.router.navigate([`/speakers/${item.id}`]);
     }
   }
 }
