@@ -89,7 +89,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.liveService.getLiveInfo(this.id, true, true).then(() => { // 发送加入话题间的请求。
-      this.getStreamInfo();
+      if (this.liveInfo.isTypeVideo()) this.getStreamInfo(); // 必须等待加入房间后, 才可拿到拉流信息。
     });
     this.setShareInfo(); // 设置分享参数等。
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。

@@ -5,7 +5,7 @@
   <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
 <!--&gt;</beginner-guide>-->
 
-<div class="video">
+<div class="video" *ngIf="videoInfo">
   <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
 
   <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="videoPlayer.play()">
