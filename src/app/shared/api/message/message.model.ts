@@ -31,9 +31,11 @@ export class ImageMessageModel {
 export class MessageModel {
   id: string;
   parentId: string;
+  parentMessage: MessageModel;
   isReceived: boolean; // 用于判断是否为服务器拉取下来的信息，或者是本地发送时的信息。
   user: UserInfoModel;
   content: string;
+  contentParsed: string;
   type: MessageType;
   audio: AudioMessageModel;
   image: ImageMessageModel;
@@ -45,6 +47,10 @@ export class MessageModel {
   createdAt: string;
   createdAtParsed: Moment;
   postStatus = PostMessageStatus.PostSuccessful;
+
+  isMine(myUid): boolean {
+    return this.user.uid === myUid;
+  }
 
   isText(): boolean {
     return this.type === MessageType.Text;

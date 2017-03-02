@@ -54,7 +54,7 @@ export class ImageViewerComponent implements OnInit {
       this.isLoading = true;
       this.canDelete = model.canDelete;
 
-      if (model.images && model.images.length) {
+      if (model.images && model.images.length && model.images[0]) {
         let imagesFile = model.images[0];
         let reader = new FileReader();
 
@@ -65,13 +65,13 @@ export class ImageViewerComponent implements OnInit {
         reader.readAsDataURL(imagesFile);
       }
 
-      if (model.links && model.links.length) {
-        let link = model.links[0].smallLink.toString();
-        this.imageSrc = link;
+      if (model.weixinLocalIds && model.weixinLocalIds.length && model.weixinLocalIds[0]) {
+        this.imageSrc = model.weixinLocalIds[0];
       }
 
-      if (model.weixinLocalIds && model.weixinLocalIds.length) {
-        this.imageSrc = model.weixinLocalIds[0];
+      if (model.links && model.links.length && model.links[0]) {
+        let link = model.links[0].smallLink.toString();
+        this.imageSrc = link;
       }
 
       this.imgEvent = new ImgEvent();

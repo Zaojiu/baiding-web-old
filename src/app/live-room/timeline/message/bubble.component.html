@@ -15,27 +15,65 @@
   </div>
 
   <div class="message-container">
-
     <div class="message-info">
       <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
       <span class="time">{{message.createdAt | fromNow}}</span>
     </div>
 
-    <div class="bubble">
-      <div class="text" *ngIf="message.isText() || message.isNice()">{{messageParsed}}</div>
+    <div class="bubble" [ngClass]="{mine: message.isMine(userInfo.uid), 'different-user': message.parentMessage && message.user.uid !== message.parentMessage.user.uid && !message.isMine(userInfo.uid) && !message.parentMessage.isMine(userInfo.uid)}">
+      <div class="reply"
+           [ngClass]="{mine: message.parentMessage.isMine(userInfo.uid), collapse: isReplyCollapse}"
+           *ngIf="message.parentMessage"
+           (click)="isReplyCollapse = !isReplyCollapse"
+      >
+        <div class="reply-message-info">
+          <p class="name">{{message.parentMessage.user.nick}}</p>
+          <span class="time">{{message.parentMessage.createdAt | fromNow}}</span>
+        </div>
+
+        <div class="text" *ngIf="message.parentMessage.isText() || message.parentMessage.isNice()">{{message.parentMessage.contentParsed}}</div>
+
+        <image-viewer-preview
+          class="image"
+          *ngIf="message.parentMessage.isImage()"
+          [imageLinks]="[message.parentMessage.image]"
+          [imageFiles]="[message.parentMessage.image.imageData]"
+          [weixinLocalIds]="[message.parentMessage.image.localId]"
+        ></image-viewer-preview>
+
+        <audio-player
+          class="audio"
+          *ngIf="message.parentMessage.isAudio()"
+          [message]="message.parentMessage"
+          (playEnded)="audioPlayEndedHandler(message.parentMessage)"
+          #audioPlayer
+        ></audio-player>
+
+        <div
+          class="translate"
+          *ngIf="message.parentMessage.isAudio()"
+        >
+          <div class="translate-tips">以下由机器自动翻译</div>
+          {{message.parentMessage.audio.translateResult !== '' ? message.parentMessage.audio.translateResult : '暂无翻译内容'}}
+        </div>
+      </div>
+
+      <div class="text main-text" *ngIf="message.isText() || message.isNice()">{{message.contentParsed}}</div>
 
       <image-viewer-preview
+        class="image main-image"
+        *ngIf="message.isImage()"
         [imageLinks]="[message.image]"
         [imageFiles]="[message.image.imageData]"
         [weixinLocalIds]="[message.image.localId]"
-        *ngIf="message.isImage()"
       ></image-viewer-preview>
 
       <audio-player
-        #audioPlayer
-        (playEnded)="audioPlayEndedHandler(message)"
-        [message]="message"
+        class="audio main-audio"
         *ngIf="message.isAudio()"
+        [message]="message"
+        (playEnded)="audioPlayEndedHandler(message)"
+        #audioPlayer
       ></audio-player>
 
       <div
@@ -68,7 +106,7 @@
     </div>
   </div>
 
-  <div class="thumbs-up" [ngClass]="{'had-thumbs-up': message.hadPraised}">
+  <div class="thumbs-up-container" [ngClass]="{'had-thumbs-up': message.hadPraised}">
     <div class="thumbs-up-animations" praisedAnimation>
       <praised-animation *ngFor="let userAnim of message.praisedAnimations" [userAnim]="userAnim"></praised-animation>
     </div>
@@ -77,11 +115,10 @@
       <i class="bi bi-thumbsup-fill"></i>
     </a>
   </div>
-
 </div>
 
 <div class="operation-bar clearfix">
-  <span class="btn" *ngIf="canReply" (click)="gotoReply()"><i class="bi bi-bubble"></i>回复</span>
+  <span class="btn" *ngIf="canReply" (click)="reply(); $event.stopPropagation();"><i class="bi bi-bubble"></i>回复</span>
   <span class="btn" (click)="goToShare()"><i class="bi bi-share-fill"></i>分享</span>
 
   <div class="thumbs-up-users">

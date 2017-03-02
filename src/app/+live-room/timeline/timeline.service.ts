@@ -39,6 +39,10 @@ export class TimelineService {
   private avatarTouchedSource = new Subject <UserInfoModel>();
   avatarTouched$: Observable<UserInfoModel> = this.avatarTouchedSource.asObservable();
 
+  private replyMessageSource = new Subject<MessageModel>();
+  private replyMessage$: Observable<MessageModel> = this.replyMessageSource.asObservable();
+  private replyMessageSub: Subscription;
+
   avatarTouched(userInfo: UserInfoModel) {
     this.avatarTouchedSource.next(userInfo);
   }
@@ -112,5 +116,14 @@ export class TimelineService {
     if (this.receviedPraisesSub) this.receviedPraisesSub.unsubscribe();
     if (this.receivedEventSub) this.receivedEventSub.unsubscribe();
     if (this.timelineSub) this.timelineSub.unsubscribe();
+    if (this.replyMessageSub) this.replyMessageSub.unsubscribe();
+  }
+
+  replyMessage(message: MessageModel) {
+    this.replyMessageSource.next(message);
+  }
+
+  onReply(cb: (message: MessageModel) => void) {
+    this.replyMessageSub = this.replyMessage$.subscribe(cb);
   }
 }

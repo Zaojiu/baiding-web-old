@@ -32,8 +32,7 @@ export class BubbleComponent implements OnInit, OnDestroy {
   isTranslationCollapse: boolean;
   tranlationCollapseSub: Subscription;
   tranlationMaxLength = 32;
-  canReply: boolean;
-  messageParsed: string;
+  isReplyCollapse = true;
 
   constructor(private messageApiService: MessageApiService, private timelineService: TimelineService,
               private router: Router, private userInfoCardService: UserInfoCardService,
@@ -41,11 +40,6 @@ export class BubbleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // static msg content to prevent selection problem
-    if (this.message.content) this.messageParsed = UtilsService.parseAt(this.message.content);
-
-    this.canReply = this.liveInfo.isEditor(this.userInfo.uid) && this.message.isPostSuccessful() && !this.liveInfo.isClosed();
-
     let isTranlationCollapse = this.liveRoomService.isTranslationCollapse(this.liveId);
     this.judgeTranlastionLength(isTranlationCollapse, this.tranlationMaxLength);
 
@@ -96,8 +90,8 @@ export class BubbleComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  gotoReply() {
-    this.router.navigate([`lives/${this.liveInfo.id}/post`, {'message_id': this.message.id}]);
+  reply() {
+    this.timelineService.replyMessage(this.message);
   }
 
   goToShare() {
@@ -126,5 +120,9 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
   get isInWechat() {
     return UtilsService.isInWechat;
+  }
+
+  get canReply(): boolean {
+    return this.liveInfo.isEditor(this.userInfo.uid) && this.message.isPostSuccessful() && !this.liveInfo.isClosed();
   }
 }

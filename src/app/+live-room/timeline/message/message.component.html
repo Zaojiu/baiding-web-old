@@ -22,9 +22,11 @@
   </div>
 </div>
 
-<div
-  class="timeline-message-container"
+<message-bubble
+  class="message-bubble"
   *ngIf="message.isText() || message.isAudio() || message.isImage() || message.isNice()"
->
-  <message-bubble [liveId]="liveId" [liveInfo]="liveInfo" [userInfo]="userInfo" [message]="message"></message-bubble>
-</div>
+  [liveId]="liveId"
+  [liveInfo]="liveInfo"
+  [userInfo]="userInfo"
+  [message]="message"
+></message-bubble>

@@ -16,7 +16,6 @@ import {UtilsService} from "../../shared/utils/utils";
 export class PostComponent implements OnInit {
   id: string;
   content = '';
-  messageId: string;
   commentId: string;
   additionalContent: AdditionalContentModel;
   isSubmited: boolean = false;
@@ -30,16 +29,9 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.parent.snapshot.params['id'];
-    this.messageId = this.route.snapshot.params['message_id'];
     this.commentId = this.route.snapshot.params['comment_id'];
 
     this.content = this.liveRoomService.getPushCommentStashed(this.commentId);
-
-    if (this.messageId) {
-      this.postService.getMessage(this.id, this.messageId).then(additionalContent => {
-        this.additionalContent = additionalContent
-      })
-    }
 
     if (this.commentId) {
       this.postService.getComment(this.id, this.commentId).then(additionalContent => {
@@ -70,12 +62,6 @@ export class PostComponent implements OnInit {
 
       this.messageApiService.postNiceMessage(this.id, this.content, this.commentId,
         this.additionalContent.user, this.additionalContent.content);
-      this.isSubmited = true;
-      this.backToMainScreen();
-
-    } else if (this.messageId && this.content !== '') {
-
-      this.messageApiService.postTextMessage(this.id, this.content, this.messageId);
       this.isSubmited = true;
       this.backToMainScreen();
 

@@ -47,7 +47,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputtingComp') inputtingComp: InputtingComponent;
 
-
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
               private liveService: LiveService, private messageApiService: MessageApiService, private liveRoomService: LiveRoomService,
               private audioPlayerService: AudioPlayerService, private inputtingService: InputtingService) {
