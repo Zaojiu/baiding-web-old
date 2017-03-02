@@ -32,8 +32,6 @@ export class WechatPayService implements PayBridge {
           return '';
         }
 
-        history.pushState({}, '微信支付', environment.config.payAddress);
-
         (<any>window).WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
             "appId": wxPayReq.appId,     //公众号名称，由商户传入
@@ -44,13 +42,13 @@ export class WechatPayService implements PayBridge {
             "paySign": wxPayReq.paySign //微信签名
           },
           function (res) {
-            if (res.err_msg == 'get_brand_wcpay_request:ok') {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
               resolve('');
+            } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+              reject('cancel');
             } else {
               reject(res.err_msg);
             }
-
-            history.back();
           }
         );
       });
@@ -58,9 +56,12 @@ export class WechatPayService implements PayBridge {
   }
 
   pay(liveId: string): Promise<string> {
+    history.pushState({}, '微信支付', environment.config.payAddress);
+
     return this.wechatConfigService.init().then(() => {
-      console.log('init done');
       return this._pay(liveId);
-    })
+    }).finally(() => {
+      history.back();
+    });
   }
 }

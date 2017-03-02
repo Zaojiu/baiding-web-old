@@ -38,6 +38,8 @@ export class MyComponent implements OnInit, OnDestroy {
         return loader(size, marker).then(result => {
           let list: ListViewModel[] = [];
           for (let item of result.result) {
+            if (item.isSpeaker()) continue; // TODO: 之后有speaker页面, 再移除此代码
+
             list.push(new ListViewModel(item.id, item.coverThumbnailUrl, item.subject, item.desc, () => this.goto(item)));
           }
           return new ListViewResult(list, result.marker, result.hasMore);
