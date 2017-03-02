@@ -104,8 +104,22 @@ export class MessageApiService {
 
     if (data.type === 'nice') {
       message.type = MessageType.Nice;
-      message.user = users[data.nice.uid];
-      message.content = data.nice.message;
+
+      // 有内容的推送才会把推送语作为第一条回复
+      if (data.content) {
+        message.parentMessage = new MessageModel;
+        message.parentMessage.id = data.id;
+        message.parentMessage.type = MessageType.Nice;
+        message.parentMessage.user = users[data.nice.uid];
+        message.parentMessage.content = data.nice.message;
+        message.parentMessage.contentParsed = UtilsService.parseAt(message.parentMessage.content);
+        message.parentMessage.createdAt = data.createdAt; // TODO: 可能需要原创建时间
+        message.parentMessage.createdAtParsed = moment(+message.parentMessage.createdAt / 1e6);
+      } else {
+        message.user = users[data.nice.uid];
+        message.content = data.nice.message;
+        message.contentParsed = UtilsService.parseAt(message.content);
+      }
     }
 
     if (data.type === 'editorJoin') {
@@ -130,30 +144,6 @@ export class MessageApiService {
     }
 
     message.replies = [];
-
-    // TODO: 结构变化后, 需要处理推送
-    // 将推送消息的推送人和被推送人的内容交换
-    if (data.type === 'nice') {
-      // 有内容的推送才会把推送语作为第一条回复
-      if (data.content) {
-        let reply = new ReplyMessageModel();
-        reply.id = data.id;
-        reply.user = users[data.uid];
-        reply.content = data.content;
-        reply.createdAt = data.createdAt;
-        message.replies.push(reply);
-      }
-    }
-
-    // 包装回复消息
-    for (let replyData of data.replyMessages) {
-      let reply = new ReplyMessageModel();
-      reply.id = replyData.id;
-      reply.user = users[replyData.uid];
-      reply.content = replyData.content;
-      reply.createdAt = replyData.createdAt;
-      message.replies.push(reply)
-    }
 
     if (data.parentMessage) {
       message.parentMessage = this.parseMessage(data.parentMessage, users);

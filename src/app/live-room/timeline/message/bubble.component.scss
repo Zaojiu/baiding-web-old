@@ -109,26 +109,6 @@
           }
         }
 
-        /deep/ {
-          .audio-player-container {
-            color: $color-w;
-
-            /deep/ {
-              .wave div {
-                border-left: 1px solid $color-w;
-              }
-            }
-
-            .audio-duration {
-              color: $color-w;
-            }
-
-            .play-btn {
-              border: solid 1px $color-w;
-            }
-          }
-        }
-
         .reply {
           &.mine {
             background-color: rgb(51, 198, 180);
@@ -270,28 +250,14 @@
           }
 
           .translate {
+            color: $color-w;
+
+            .translate-tips {
+              color: $color-w;
+            }
+
             &:before {
               border-top: solid 1px $color-w;
-            }
-          }
-
-          /deep/ {
-            .audio-player-container {
-              color: $color-w;
-
-              /deep/ {
-                .wave div {
-                  border-left: 1px solid $color-w;
-                }
-              }
-
-              .audio-duration {
-                color: $color-w;
-              }
-
-              .play-btn {
-                border: solid 1px $color-w;
-              }
             }
           }
         }
@@ -301,24 +267,17 @@
           color: $color-dark-gray;
         }
 
-        //.image {
-        //  &:before {
-        //    content: "";
-        //    position: absolute;
-        //    left: 0;
-        //    right: 0;
-        //    bottom: 0;
-        //    height: 10px;
-        //    background-color: rgba(248, 248, 248, .8);
-        //  }
-        //}
-
         .audio {
           padding-bottom: 12px;
         }
 
         .translate {
+          color: $color-gray;
           padding-bottom: 0;
+
+          .translate-tips {
+            color: $color-gray;
+          }
 
           &:before {
             left: 0;
@@ -329,22 +288,6 @@
 
         /deep/ {
           .audio-player-container {
-            color: $color-gray;
-
-            /deep/ {
-              .wave div {
-                border-left: 1px solid $color-gray;
-              }
-            }
-
-            .audio-duration {
-              color: $color-gray;
-            }
-
-            .play-btn {
-              border: solid 1px $color-gray;
-            }
-
             .dot {
               display: none;
             }
@@ -367,6 +310,7 @@
           .time {
             flex-shrink: 0;
             line-height: 1em;
+            margin-left: 10px;
           }
         }
       }

@@ -39,6 +39,7 @@
           [imageLinks]="[message.parentMessage.image]"
           [imageFiles]="[message.parentMessage.image.imageData]"
           [weixinLocalIds]="[message.parentMessage.image.localId]"
+          (click)="$event.stopPropagation()"
         ></image-viewer-preview>
 
         <audio-player
@@ -47,6 +48,8 @@
           [message]="message.parentMessage"
           (playEnded)="audioPlayEndedHandler(message.parentMessage)"
           #audioPlayer
+          (click)="$event.stopPropagation()"
+          [isWhiteTheme]="message.parentMessage.isMine(userInfo.uid)"
         ></audio-player>
 
         <div
@@ -74,6 +77,8 @@
         [message]="message"
         (playEnded)="audioPlayEndedHandler(message)"
         #audioPlayer
+        (click)="$event.stopPropagation()"
+        [isWhiteTheme]="message.isMine(userInfo.uid)"
       ></audio-player>
 
       <div
