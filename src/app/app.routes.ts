@@ -5,6 +5,7 @@ const appRoutes: Routes = [
   {path: '404', loadChildren: 'app/+notfound/notfound.module#NotFoundModule'},
   {path: 'my', loadChildren: 'app/+my/my.module#MyModule'},
   {path: 'info-center', loadChildren: 'app/+info-center/info-center.module#InfoCenterModule'},
+  {path: 'lives', loadChildren: 'app/+live-room/live-room.module#LiveRoomModule'},
   {path: 'talks', loadChildren: 'app/+talk/talk.module#TalkModule'},
   {path: 'speaker', loadChildren: 'app/+speaker/speaker.module#SpeakerModule'},
   {path: 'search', loadChildren: 'app/+search/search.module#SearchModule'},
