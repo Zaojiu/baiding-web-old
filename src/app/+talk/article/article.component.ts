@@ -58,12 +58,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
 
-      if (talkInfo.media) {
-        this.videoInfo = new VideoInfo([
-          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_sd), 'video/mp4'),
-          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_hd), 'video/mp4'),
-          new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4), 'video/mp4'),
-        ]);
+      if (talkInfo.media.hasVideo) {
+        let videos = [];
+        if (talkInfo.media.mp4_sd) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_sd), 'video/mp4'));
+        if (talkInfo.media.mp4_hd) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_hd), 'video/mp4'));
+        if (talkInfo.media.mp4) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4), 'video/mp4'));
+        this.videoInfo = new VideoInfo(videos);
       }
 
       this.setShareInfo(talkInfo);

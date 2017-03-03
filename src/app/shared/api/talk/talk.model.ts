@@ -18,15 +18,15 @@ export class TalkInfoMediaModel {
     this.duration = moment.duration(duration);
   }
 
-  hasVideo(): boolean {
+  get hasVideo(): boolean {
     return !!this.mp4 || !!this.mp4_sd || !!this.mp4_hd;
   }
 
-  hasAudio(): boolean {
+  get hasAudio(): boolean {
     return !!this.mp3;
   }
 
-  hasPreview(): boolean {
+  get hasPreview(): boolean {
     return !!this.preview;
   }
 }
@@ -136,7 +136,8 @@ export class TalkInfoModel {
     this.content = data.meta && data.meta.content ? data.meta.content : '';
     this.safeContent = sanitizer.bypassSecurityTrustHtml(this.content);
     this.isOriginal = data.meta && data.meta.isOriginal ? data.meta.isOriginal : true;
-    this.media = data.meta ? new TalkInfoMediaModel(data.meta.mp3, data.meta.mp4, data.meta.mp4_sd, data.meta.mp4_hd, data.meta.preview, data.meta.duration) : null;
+    this.media = data.meta ? new TalkInfoMediaModel(data.meta.mp3, data.meta.mp4, data.meta.mp4_sd, data.meta.mp4_hd, data.meta.preview, data.meta.duration) : new TalkInfoMediaModel;
+
     if (data.meta && data.meta.refLink && data.meta.refLink.length) {
       for (let item of data.meta.refLink) {
         this.refLink.push(new TalkInfoRefModel(item.link, item.title));
