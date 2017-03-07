@@ -1,7 +1,6 @@
 import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 import {AuthGuard} from "../shared/guard/auth.guard";
-import {TalkInfoComponent} from "./talk-info/talk-info.component";
 import {ArticleComponent} from "./article/article.component";
 
 const route: Routes = [
@@ -23,7 +22,6 @@ const route: Routes = [
       {
         // TODO: talk info
         path: 'info',
-        component: TalkInfoComponent,
       }
     ]
   },
