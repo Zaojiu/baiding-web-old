@@ -14,7 +14,7 @@ export class PcPayService implements PayBridge {
   }
 
   _pay(liveId: string): Promise<string> {
-    const payUrl = `${environment.config.host.io}/api/live/streams/${liveId}/pay`;
+    const payUrl = `${environment.config.host.io}/api/live/objects/${liveId}/pay`;
     let headers = new Headers({'Content-Type': 'application/json'});
 
     return new Promise((resolve, reject) => {
