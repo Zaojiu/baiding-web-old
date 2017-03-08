@@ -1,5 +1,7 @@
 import {NgModule} from '@angular/core';
-import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
+import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule, FormsModule}   from '@angular/forms';
 
 import {LiveRoomRoutingModule} from './live-room.route';
@@ -42,7 +44,6 @@ import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-
 import {EmptyModule} from "../shared/empty/empty.module";
 import {UtilsService} from "../shared/utils/utils";
 import {CountDownModule} from "../shared/countdown/countdown.module";
-import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {DisplayWhenFocusModule} from "../shared/display-when-focus/display-when-focus.module";
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
@@ -65,8 +66,8 @@ export class MessageHammerConfig extends HammerGestureConfig {
 
 @NgModule({
   imports: [
+    CommonModule,
     LiveRoomRoutingModule,
-    BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     PipeModule,
