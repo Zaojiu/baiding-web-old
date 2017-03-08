@@ -26,7 +26,6 @@ import {TitleSetterDirective} from './shared/title/title.directive';
 import {AuthGuard} from './shared/guard/auth.guard'
 import {UserInfoService} from './shared/api/user-info/user-info.service'
 import {ImageViewerService} from "./shared/image-viewer/image-viewer.service";
-import {StoreService} from './shared/store/store.service'
 import {TitleService} from './shared/title/title.service'
 import {LiveService} from "./shared/api/live/live.service";
 import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
@@ -67,6 +66,7 @@ import {UserInfoCardModule} from "./shared/user-info-card/user-info-card.module"
 import {UserInfoCardService} from "./shared/user-info-card/user-info-card.service";
 import {PayPopupService} from "./shared/pay-popup/pay-popup.service";
 import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
+import {TalkService} from "./shared/api/talk/talk.api";
 
 @NgModule({
   imports: [
@@ -130,7 +130,8 @@ import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
     AdminGuard,
     AppJumperGuard,
     UserInfoService,
-    StoreService,
+    LiveService,
+    TalkService,
     ImageViewerService,
     TitleService,
     BottomPopupSelectorService,
@@ -138,7 +139,6 @@ import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
     PayPopupService,
     ModalService,
     TextPopupService,
-    LiveService,
     OperationTipsService,
     UserInfoCardService,
     Angulartics2GoogleAnalytics,
