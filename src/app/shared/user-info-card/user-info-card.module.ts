@@ -13,6 +13,9 @@ import {CommonModule} from "@angular/common";
   exports: [
     UserInfoCardComponent,
   ],
+  providers: [
+    UserInfoCardService,
+  ],
 })
 
 export class UserInfoCardModule {

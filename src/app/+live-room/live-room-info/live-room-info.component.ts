@@ -13,7 +13,6 @@ import {PaidStatus} from "./live-room-info.enums";
 import {InviteApiService} from "../../shared/api/invite/invite.api";
 import {AudienceInvitationModel} from "../../shared/api/invite/invite.model";
 import {PayBridge} from "../../shared/bridge/pay.interface";
-import {PayPopupService} from "../../shared/pay-popup/pay-popup.service";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -38,7 +37,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
               private iosBridgeService: IosBridgeService, private shareService: ShareApiService,
-              private inviteApiService: InviteApiService, private payBridge: PayBridge, private payPopupService: PayPopupService) {
+              private inviteApiService: InviteApiService, private payBridge: PayBridge) {
   }
 
   ngOnInit() {

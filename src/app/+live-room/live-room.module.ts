@@ -54,6 +54,14 @@ import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 import {VideoPlayerModule} from "../shared/video-player/video-player.module";
+import {PayPopupModule} from "../shared/pay-popup/pay-popup.module";
+import {UserInfoCardModule} from "../shared/user-info-card/user-info-card.module";
+import {PayPopupService} from "../shared/pay-popup/pay-popup.service";
+import {PayBridge} from "../shared/bridge/pay.interface";
+import {payServiceFactory} from "../app.factory";
+import {WechatPayService} from "../shared/bridge/pay/wechat-pay.service";
+import {IosPayService} from "../shared/bridge/pay/ios-pay.service";
+import {PcPayService} from "../shared/bridge/pay/pc-pay.service";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -91,6 +99,8 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CommentInputModule,
     AtKeyBoardModule,
     VideoPlayerModule,
+    PayPopupModule,
+    UserInfoCardModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -123,6 +133,11 @@ export class MessageHammerConfig extends HammerGestureConfig {
     UtilsService,
     LiveRoomService,
     InviteApiService,
+    PayPopupService,
+    WechatPayService,
+    IosPayService,
+    PcPayService,
+    {provide: PayBridge, useFactory: payServiceFactory, deps: [WechatPayService, IosPayService, PcPayService]},
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig}
   ]
 })

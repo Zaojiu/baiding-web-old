@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Angulartics2, Angulartics2GoogleAnalytics} from 'angulartics2';
-import {Router, Route, NavigationStart, RoutesRecognized} from "@angular/router";
+import {Router, Route, RoutesRecognized} from "@angular/router";
 import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 
 @Component({
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
         this.injectAppJumperGuard(route);
 
         let children = route.children;
-        if (route['_loadedConfig'] && route['_loadedConfig'].routes  && route['_loadedConfig'].routes.length) {
+        if (route['_loadedConfig'] && route['_loadedConfig'].routes && route['_loadedConfig'].routes.length) {
           children = route['_loadedConfig'].routes;
         }
 
