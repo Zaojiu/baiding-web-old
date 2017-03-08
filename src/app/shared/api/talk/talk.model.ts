@@ -144,10 +144,10 @@ export class TalkInfoModel {
       }
     }
 
-    if (data.meta && data.meta.speakerIds && data.meta.speakerIds.length && speakers && speakers.length) {
-      for (let id of data.meta.speakerIds) {
-        let speaker = _.find(speakers, {id: id}) as any;
-        this.speaker.push(new TalkInfoSpeakerModel(speaker.id, speaker.uid, speaker.subject, speaker.desc, speaker.coverUrl));
+    if (data.meta && data.meta.speakersId && data.meta.speakersId.length && speakers) {
+      for (let id of data.meta.speakersId) {
+        let speaker = speakers[id] as any;
+        if (speaker) this.speaker.push(new TalkInfoSpeakerModel(speaker.id, speaker.uid, speaker.subject, speaker.desc, speaker.coverUrl));
       }
     }
 
