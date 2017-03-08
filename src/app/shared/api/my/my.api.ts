@@ -4,6 +4,8 @@ import 'rxjs/add/operator/toPromise';
 
 import {environment} from "../../../../environments/environment";
 import {MyListModel, MyListResult} from "./my.model";
+import {TalkSummaryModel} from "../talk/talk.model";
+import {StoreService} from "../../store/store.service";
 
 @Injectable()
 export class MyApiService {
@@ -27,6 +29,11 @@ export class MyApiService {
 
       for (let item of data.result) {
         list.push(new MyListModel(item));
+
+        // 缓存talk信息
+        let talkSummary = StoreService.get('talkSummary') || {};
+        talkSummary[item.id] = new TalkSummaryModel(item.isNeedPay);
+        StoreService.set('talkSummary', talkSummary);
       }
 
       return new MyListResult(list, marker, hasMore);
@@ -50,6 +57,11 @@ export class MyApiService {
 
       for (let item of data.result) {
         list.push(new MyListModel(item));
+
+        // 缓存talk信息
+        let talkSummary = StoreService.get('talkSummary') || {};
+        talkSummary[item.id] = new TalkSummaryModel(item.isNeedPay);
+        StoreService.set('talkSummary', talkSummary);
       }
 
       return new MyListResult(list, marker, hasMore);

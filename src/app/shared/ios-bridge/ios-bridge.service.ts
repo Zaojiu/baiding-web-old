@@ -35,11 +35,13 @@ export class IosBridgeService {
     }
   }
 
-  pushH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let query = {
+  pushH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, data?: any) {
+    let query: any = {
       url: `${location.protocol}//${location.hostname}${state.url}`,
       title: route.data['title'] || '造就Now',
     };
+
+    if (data) query.data = data;
 
     if (this.hasInit) {
       this.bridge.callHandler('pushH5State', query);
