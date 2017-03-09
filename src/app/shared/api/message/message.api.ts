@@ -17,7 +17,6 @@ import {AudioBridge} from "../../bridge/audio.interface";
 import {UserInfoModel} from "../user-info/user-info.model";
 import {ImageBridge} from "../../bridge/image.interface";
 import {StoreService} from "../../store/store.service";
-import {LiveService} from "../live/live.service";
 
 declare var $: any;
 
@@ -25,7 +24,7 @@ declare var $: any;
 export class MessageApiService {
   constructor(private http: Http, private userInfoService: UserInfoService, private timelineService: TimelineService,
               private uploadService: UploadApiService, private audioService: AudioBridge,
-              private imageService: ImageBridge, private liveService: LiveService) {
+              private imageService: ImageBridge) {
   }
 
   postQueue: PostMessageModel[] = [];
@@ -677,12 +676,6 @@ export class MessageApiService {
       let historyMessage = StoreService.get('historyMessage') || {};
       historyMessage[liveId] = messages;
       StoreService.set('historyMessage', historyMessage);
-
-      if (data.include.liveInfo) {
-        let historyLiveInfo = StoreService.get('historyLiveInfo') || {};
-        historyLiveInfo[liveId] = this.liveService.parseLiveInfo(data.include.liveInfo, data.include.users);
-        StoreService.set('historyLiveInfo', historyLiveInfo);
-      }
 
       return messages;
     });

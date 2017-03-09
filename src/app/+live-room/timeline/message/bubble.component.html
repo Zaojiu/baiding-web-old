@@ -49,7 +49,8 @@
           (playEnded)="audioPlayEndedHandler(message.parentMessage)"
           #audioPlayer
           (click)="$event.stopPropagation()"
-          [isWhiteTheme]="message.parentMessage.isMine(userInfo.uid)"
+          [isWhiteTheme]="!message.isMine(userInfo.uid) && message.parentMessage.isMine(userInfo.uid)"
+          [isLightBrandTheme]="message.isMine(userInfo.uid) && message.parentMessage.isMine(userInfo.uid)"
         ></audio-player>
 
         <div

@@ -9,6 +9,8 @@ import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.mo
 import {EditMode} from "../../shared/comment-input/comment-input.enums";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {TimelineService} from "../timeline/timeline.service";
+import {CommentModel} from "../../shared/api/comment/comment.model";
+import {CommentService} from "../comment/comment.service";
 
 @Component({
   selector: 'audience-tool-bar',
@@ -27,7 +29,7 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   private receviedAvatarTouchedSub: Subscription;
 
   constructor(private liveService: LiveService, private timelineService: TimelineService,
-              private router: Router, private tipsService: OperationTipsService) {
+              private router: Router, private tipsService: OperationTipsService, private commentService: CommentService) {
   }
 
   ngOnInit() {
@@ -59,7 +61,8 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
     });
   }
 
-  postSuccessful() {
+  postSuccessful(comment: CommentModel) {
+    this.commentService.pushComment(comment);
     this.tipsService.popup('评论成功');
   }
 

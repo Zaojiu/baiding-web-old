@@ -23,6 +23,7 @@ import {LiveService} from "../../shared/api/live/live.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {TimelineService} from "../timeline/timeline.service";
 import {MessageModel} from "../../shared/api/message/message.model";
+import {CommentService} from "../comment/comment.service";
 
 declare var $: any;
 
@@ -57,7 +58,8 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
               private imageService: ImageBridge, private liveRoomService: LiveRoomService,
               private liveService: LiveService, private operationTips: OperationTipsService,
-              private inputtingService: InputtingService, private timelineService: TimelineService) {
+              private inputtingService: InputtingService, private timelineService: TimelineService,
+              private commentService: CommentService) {
   }
 
   ngOnInit() {
@@ -182,7 +184,8 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
       this.messageContent = '';
       this.liveRoomService.setTextWordsStashed('', this.liveId);
     } else {
-      this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
+      this.commentApiService.postComment(this.liveId, this.messageContent).then((comment) => {
+        this.commentService.pushComment(comment);
         this.isMessageSubmitting = false;
         this.messageContent = '';
         this.liveRoomService.setTextWordsStashed('', this.liveId);

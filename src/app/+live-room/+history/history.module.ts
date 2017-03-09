@@ -19,6 +19,12 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FormModule} from "../../shared/form/form.module";
 import {HistoryService} from "./history.service";
 import {FileSelectorModule} from "../../shared/file-selector/file-selector.module";
+import {CommentApiService} from "../../shared/api/comment/comment.service";
+import {LiveRoomService} from "../live-room.service";
+import {MessageApiService} from "../../shared/api/message/message.api";
+import {TimelineService} from "../timeline/timeline.service";
+import {UploadApiService} from "../../shared/api/upload/upload.api";
+import {UserInfoCardService} from "../../shared/user-info-card/user-info-card.service";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -50,8 +56,14 @@ export class MessageHammerConfig extends HammerGestureConfig {
     MessageEditorComponent,
   ],
   providers: [
+    LiveRoomService,
+    TimelineService,
+    UploadApiService,
+    UserInfoCardService,
+    MessageApiService,
     HistoryService,
     HistoryMessageResolver,
+    CommentApiService,
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig},
   ]
 })

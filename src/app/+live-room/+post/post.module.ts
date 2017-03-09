@@ -10,6 +10,11 @@ import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {ScrollerModule} from "../../shared/scroller/scroller.module";
 import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top-bar.module";
 import {PostService} from "./post.service";
+import {InputtingService} from "../timeline/message/inputting.service";
+import {MessageApiService} from "../../shared/api/message/message.api";
+import {TimelineService} from "../timeline/timeline.service";
+import {UploadApiService} from "../../shared/api/upload/upload.api";
+import {LiveRoomService} from "../live-room.service";
 
 @NgModule({
   imports: [
@@ -27,6 +32,11 @@ import {PostService} from "./post.service";
   providers: [
     PostService,
     CommentApiService,
+    InputtingService,
+    MessageApiService,
+    TimelineService,
+    UploadApiService,
+    LiveRoomService,
   ],
 })
 

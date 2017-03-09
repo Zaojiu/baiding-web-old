@@ -5,7 +5,6 @@ import 'rxjs/add/operator/toPromise';
 import {PostCommentModel, CommentType} from './comment.model';
 import {UserInfoService} from '../user-info/user-info.service';
 import {UserInfoModel} from '../user-info/user-info.model';
-import {CommentService} from '../../../+live-room/comment/comment.service';
 import {CommentModel} from './comment.model';
 import {environment} from "../../../../environments/environment";
 
@@ -13,7 +12,7 @@ declare var $: any;
 
 @Injectable()
 export class CommentApiService {
-  constructor(private http: Http, private userInfoService: UserInfoService, private commentService: CommentService) {
+  constructor(private http: Http, private userInfoService: UserInfoService) {
   }
 
   parseComment(data: any, users: any): CommentModel {
@@ -79,8 +78,6 @@ export class CommentApiService {
 
         commentResponse.toUsers = toUsers;
         commentResponse.toUids = comment.toUids;
-
-        this.commentService.pushComment(commentResponse);
 
         return commentResponse;
       }).catch(res => {
