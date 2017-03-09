@@ -20,16 +20,18 @@ export class SharePopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.isInWeb) {
-      System.import('yaqrcode').then(yaqrcode => {
-        this.qrcodeGenerator = yaqrcode
-      });
-    }
-
     // 此组件由于是全局组件，生命周期与app一样长，所以不需退订。
     this.sharePopupService.popup$.subscribe((link) => {
-      this.link = link;
-      this.isPopup = true;
+      if (this.isInWeb && !this.qrcodeGenerator) {
+        System.import('yaqrcode').then(yaqrcode => {
+          this.qrcodeGenerator = yaqrcode;
+          this.link = link;
+          this.isPopup = true;
+        });
+      } else {
+        this.link = link;
+        this.isPopup = true;
+      }
     });
   }
 

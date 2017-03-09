@@ -10,24 +10,24 @@ import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 
 const route: Routes = [
   {
-    path: 'lives/apply',
-    loadChildren: 'app/live-room/+apply/apply.module#ApplyModule',
+    path: 'apply',
+    loadChildren: 'app/+live-room/+apply/apply.module#ApplyModule',
     data: {
       title: '申请开通话题间权限'
     }
   },
   {
-    path: 'lives/create',
-    loadChildren: 'app/live-room/+create/create.module#CreateModule',
+    path: 'create',
+    loadChildren: 'app/+live-room/+create/create.module#CreateModule',
     data: {
       title: '新建话题间'
     }
   },
   {
-    path: 'lives/:id/history', loadChildren: 'app/live-room/+history/history.module#HistoryModule'
+    path: ':id/history', loadChildren: 'app/+live-room/+history/history.module#HistoryModule'
   },
   {
-    path: 'lives/:id',
+    path: ':id',
     canActivate: [AuthGuard],
     children: [
       {
@@ -50,13 +50,13 @@ const route: Routes = [
           userInfo: UserInfoResolver,
         },
       },
-      {path: 'push-comment', loadChildren: 'app/live-room/+push-comment/push-comment.module#PushCommentModule'},
-      {path: 'post', loadChildren: 'app/live-room/+post/post.module#PostModule'},
-      {path: 'vip-info', loadChildren: 'app/live-room/+vip-info/vip-info.module#VipInfoModule'},
-      {path: 'stream-info', loadChildren: 'app/live-room/+stream-info/stream-info.module#StreamInfoModule'},
-      {path: 'invitation', loadChildren: 'app/live-room/+invite/invite.module#InviteModule'},
-      {path: 'share/:message_id', loadChildren: 'app/live-room/+share/share.module#ShareModule'},
-      {path: 'settings', loadChildren: 'app/live-room/+settings/settings.module#SettingsModule'},
+      {path: 'push-comment', loadChildren: 'app/+live-room/+push-comment/push-comment.module#PushCommentModule'},
+      {path: 'post', loadChildren: 'app/+live-room/+post/post.module#PostModule'},
+      {path: 'vip-info', loadChildren: 'app/+live-room/+vip-info/vip-info.module#VipInfoModule'},
+      {path: 'stream-info', loadChildren: 'app/+live-room/+stream-info/stream-info.module#StreamInfoModule'},
+      {path: 'invitation', loadChildren: 'app/+live-room/+invite/invite.module#InviteModule'},
+      {path: 'share/:message_id', loadChildren: 'app/+live-room/+share/share.module#ShareModule'},
+      {path: 'settings', loadChildren: 'app/+live-room/+settings/settings.module#SettingsModule'},
     ]
   },
 ];

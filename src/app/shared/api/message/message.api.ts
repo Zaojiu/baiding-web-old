@@ -9,7 +9,7 @@ import {
 } from './message.model';
 import {PostMessageModel, PostAudioMessageModel, PostNiceMessageModel, PostImageMessageModel} from './message.model';
 import {UserInfoService} from '../user-info/user-info.service';
-import {TimelineService} from '../../../live-room/timeline/timeline.service';
+import {TimelineService} from '../../../+live-room/timeline/timeline.service';
 import {UploadApiService} from '../upload/upload.api'
 import {environment} from "../../../../environments/environment";
 import {UtilsService} from "../../utils/utils";

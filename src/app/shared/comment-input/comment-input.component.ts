@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {EditMode} from "./comment-input.enums";
 import {CommentApiService} from "../api/comment/comment.service";
-import {LiveRoomService} from "../../live-room/live-room.service";
+import {LiveRoomService} from "../../+live-room/live-room.service";
 import {LiveInfoModel} from "../api/live/live.model";
 import {UserInfoModel} from "../api/user-info/user-info.model";
 import {CommentModel} from "../api/comment/comment.model";

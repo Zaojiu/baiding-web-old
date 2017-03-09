@@ -7,7 +7,6 @@ import {TitleService} from './title.service';
 import {UtilsService} from '../utils/utils';
 import {ShareBridge} from '../bridge/share.interface';
 
-
 declare var $: any;
 
 @Directive({

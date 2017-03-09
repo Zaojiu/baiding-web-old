@@ -1,5 +1,7 @@
 import {NgModule} from '@angular/core';
-import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
+import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule, FormsModule}   from '@angular/forms';
 
 import {LiveRoomRoutingModule} from './live-room.route';
@@ -39,10 +41,8 @@ import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
-import {EmptyModule} from "../shared/empty/empty.module";
 import {UtilsService} from "../shared/utils/utils";
 import {CountDownModule} from "../shared/countdown/countdown.module";
-import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {DisplayWhenFocusModule} from "../shared/display-when-focus/display-when-focus.module";
 import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
@@ -53,6 +53,14 @@ import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 import {VideoPlayerModule} from "../shared/video-player/video-player.module";
+import {PayPopupModule} from "../shared/pay-popup/pay-popup.module";
+import {UserInfoCardModule} from "../shared/user-info-card/user-info-card.module";
+import {PayPopupService} from "../shared/pay-popup/pay-popup.service";
+import {PayBridge} from "../shared/bridge/pay.interface";
+import {payServiceFactory} from "../app.factory";
+import {WechatPayService} from "../shared/bridge/pay/wechat-pay.service";
+import {IosPayService} from "../shared/bridge/pay/ios-pay.service";
+import {PcPayService} from "../shared/bridge/pay/pc-pay.service";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -65,8 +73,8 @@ export class MessageHammerConfig extends HammerGestureConfig {
 
 @NgModule({
   imports: [
+    CommonModule,
     LiveRoomRoutingModule,
-    BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     PipeModule,
@@ -82,7 +90,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     ScrollerModule,
     LiveRoomInfoUpperModule,
     CountDownModule,
-    EmptyModule,
     HamburgerMenuModule,
     DisplayWhenFocusModule,
     AutoresizeModule,
@@ -90,6 +97,8 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CommentInputModule,
     AtKeyBoardModule,
     VideoPlayerModule,
+    PayPopupModule,
+    UserInfoCardModule,
   ],
   declarations: [
     LiveRoomComponent,
@@ -122,6 +131,11 @@ export class MessageHammerConfig extends HammerGestureConfig {
     UtilsService,
     LiveRoomService,
     InviteApiService,
+    PayPopupService,
+    WechatPayService,
+    IosPayService,
+    PcPayService,
+    {provide: PayBridge, useFactory: payServiceFactory, deps: [WechatPayService, IosPayService, PcPayService]},
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig}
   ]
 })

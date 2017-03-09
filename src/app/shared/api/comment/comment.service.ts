@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {PostCommentModel, CommentType} from './comment.model';
 import {UserInfoService} from '../user-info/user-info.service';
 import {UserInfoModel} from '../user-info/user-info.model';
-import {CommentService} from '../../../live-room/comment/comment.service';
+import {CommentService} from '../../../+live-room/comment/comment.service';
 import {CommentModel} from './comment.model';
 import {environment} from "../../../../environments/environment";
 

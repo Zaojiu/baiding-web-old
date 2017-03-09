@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {MqEvent, EventType} from "../../shared/mq/mq.service";
-import {TimelineService} from '../../live-room/timeline/timeline.service';
+import {TimelineService} from '../../+live-room/timeline/timeline.service';
 import {UserInfoService} from "../api/user-info/user-info.service";
 
 @Component({
