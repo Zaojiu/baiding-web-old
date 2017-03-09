@@ -9,7 +9,7 @@ import {InputtingService} from './inputting.service'
 @Component({
   selector: 'inputting',
   templateUrl: './inputting.component.html',
-  styleUrls: ['./message.component.scss'],
+  styleUrls: ['./bubble.component.scss'],
 })
 
 export class InputtingComponent implements OnInit, OnDestroy {
