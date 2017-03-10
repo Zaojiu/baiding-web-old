@@ -32,7 +32,6 @@ import {TopBarSwitchBtnModule} from "../shared/topbar-switch-btn/topbar-switch-b
 import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
 import {ToolTipsModule} from "../shared/tooltips/tooltips.module";
 import {AnimationModule} from "../shared/animation/animation.module";
-import {MessageService} from "./timeline/message/message.service";
 import {AutoBlurModule} from "../shared/auto-blur/auto-blur.module";
 import {EditorToolBarComponent} from "./editor-tool-bar/editor-tool-bar.component";
 import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
@@ -61,6 +60,7 @@ import {payServiceFactory} from "../app.factory";
 import {WechatPayService} from "../shared/bridge/pay/wechat-pay.service";
 import {IosPayService} from "../shared/bridge/pay/ios-pay.service";
 import {PcPayService} from "../shared/bridge/pay/pc-pay.service";
+import {BubbleComponent} from "./timeline/message/bubble.component";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -105,6 +105,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CommentComponent,
     TimelineComponent,
     MessageComponent,
+    BubbleComponent,
     InputtingComponent,
     EditorToolBarComponent,
     AudienceToolBarComponent,
@@ -125,7 +126,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     QuitEditGuard,
     RoleAuthGuard,
     UploadApiService,
-    MessageService,
     InputtingService,
     AudioPlayerService,
     UtilsService,

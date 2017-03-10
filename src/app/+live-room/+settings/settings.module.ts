@@ -14,6 +14,9 @@ import {ViewInfoComponent} from "./view-info/view-info.component";
 import {LiveRoomInfoUpperModule} from "../../shared/live-room-info-upper/live-room-info-upper.module";
 import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
 import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
+import {LiveRoomService} from "../live-room.service";
+import {TimelineService} from "../timeline/timeline.service";
+import {UploadApiService} from "../../shared/api/upload/upload.api";
 
 @NgModule({
   imports: [
@@ -33,6 +36,11 @@ import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
     SettingsComponent,
     EditInfoComponent,
     ViewInfoComponent,
+  ],
+  providers: [
+    LiveRoomService,
+    TimelineService,
+    UploadApiService,
   ],
 })
 

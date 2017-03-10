@@ -8,6 +8,7 @@ import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
 import {CommentApiService} from "../../shared/api/comment/comment.service";
 import {ScrollerModule} from "../../shared/scroller/scroller.module";
 import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top-bar.module";
+import {TimelineService} from "../timeline/timeline.service";
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top
   ],
   providers: [
     CommentApiService,
+    TimelineService,
   ],
 })
 

@@ -13,7 +13,8 @@ import {UtilsService} from "../utils/utils";
 
 export class AudioPlayerComponent implements OnInit, OnDestroy {
   @Input() message: MessageModel;
-  @Input() isWhiteTheme: MessageModel;
+  @Input() isWhiteTheme: boolean;
+  @Input() isLightBrandTheme: boolean;
   postStatus = PostMessageStatus;
 
   @Output() playEnded = new EventEmitter();

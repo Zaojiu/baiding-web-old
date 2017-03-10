@@ -17,7 +17,6 @@ import {AudioBridge} from "../../bridge/audio.interface";
 import {UserInfoModel} from "../user-info/user-info.model";
 import {ImageBridge} from "../../bridge/image.interface";
 import {StoreService} from "../../store/store.service";
-import {LiveService} from "../live/live.service";
 
 declare var $: any;
 
@@ -25,20 +24,18 @@ declare var $: any;
 export class MessageApiService {
   constructor(private http: Http, private userInfoService: UserInfoService, private timelineService: TimelineService,
               private uploadService: UploadApiService, private audioService: AudioBridge,
-              private imageService: ImageBridge, private liveService: LiveService) {
+              private imageService: ImageBridge) {
   }
 
   postQueue: PostMessageModel[] = [];
   posting: boolean;
 
-  listMessages(liveId: string, marker = '', size = 20, sorts = ['-createdAt'], parentId = 'null'): Promise<MessageModel[]> {
+  listMessages(liveId: string, marker = '', size = 20, sorts = ['-createdAt']): Promise<MessageModel[]> {
     var query = {
       createdAt: marker,
       size: size,
       sorts: sorts.join(','),
-      parentId: parentId
     };
-
 
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages?${$.param(query)}`;
 
@@ -83,6 +80,7 @@ export class MessageApiService {
     message.isReceived = true;
     message.user = users[data.uid];
     message.content = data.content;
+    if (message.content) message.contentParsed = UtilsService.parseAt(message.content);
 
     if (data.type === 'text') message.type = MessageType.Text;
     if (data.type === 'audio') {
@@ -105,8 +103,22 @@ export class MessageApiService {
 
     if (data.type === 'nice') {
       message.type = MessageType.Nice;
-      message.user = users[data.nice.uid];
-      message.content = data.nice.message;
+
+      // 有内容的推送才会把推送语作为第一条回复
+      if (data.content) {
+        message.parentMessage = new MessageModel;
+        message.parentMessage.id = data.id;
+        message.parentMessage.type = MessageType.Nice;
+        message.parentMessage.user = users[data.nice.uid];
+        message.parentMessage.content = data.nice.message;
+        message.parentMessage.contentParsed = UtilsService.parseAt(message.parentMessage.content);
+        message.parentMessage.createdAt = data.createdAt; // TODO: 可能需要原创建时间
+        message.parentMessage.createdAtParsed = moment(+message.parentMessage.createdAt / 1e6);
+      } else {
+        message.user = users[data.nice.uid];
+        message.content = data.nice.message;
+        message.contentParsed = UtilsService.parseAt(message.content);
+      }
     }
 
     if (data.type === 'editorJoin') {
@@ -129,29 +141,11 @@ export class MessageApiService {
       message.praisedAvatars = message.praisedAvatars || [];
       message.praisedAvatars.push(user);
     }
+
     message.replies = [];
 
-    // 将推送消息的推送人和被推送人的内容交换
-    if (data.type === 'nice') {
-      // 有内容的推送才会把推送语作为第一条回复
-      if (data.content) {
-        let reply = new ReplyMessageModel();
-        reply.id = data.id;
-        reply.user = users[data.uid];
-        reply.content = data.content;
-        reply.createdAt = data.createdAt;
-        message.replies.push(reply);
-      }
-    }
-
-    // 包装回复消息
-    for (let replyData of data.replyMessages) {
-      let reply = new ReplyMessageModel();
-      reply.id = replyData.id;
-      reply.user = users[replyData.uid];
-      reply.content = replyData.content;
-      reply.createdAt = replyData.createdAt;
-      message.replies.push(reply)
+    if (data.parentMessage) {
+      message.parentMessage = this.parseMessage(data.parentMessage, users);
     }
 
     message.createdAt = data.createdAt;
@@ -305,50 +299,39 @@ export class MessageApiService {
     });
   }
 
-  postTextMessage(liveId: string, content: string, replyParent = ''): Promise<MessageModel> {
+  postTextMessage(liveId: string, content: string, replyMessage: MessageModel = null): Promise<MessageModel> {
     let postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'text';
     postMessage.content = content;
-    postMessage.parentId = replyParent;
+    if (replyMessage) postMessage.parentId = replyMessage.id;
 
     let userInfo = this.userInfoService.getUserInfoCache();
+    let message = new MessageModel();
 
-    if (replyParent !== '') {
-      let message = new ReplyMessageModel();
-
-      message.id = UtilsService.randomId();
-      message.parentId = replyParent;
-      message.user = userInfo;
-      message.content = content;
-      message.createdAt = +moment() * 1e6 + '';
-      message.postStatus = PostMessageStatus.Pending;
-
-      postMessage.originMessage = message;
-
-      this.timelineService.pushReply(message);
-    } else {
-      let message = new MessageModel();
-
-      message.id = UtilsService.randomId();
-      message.parentId = '';
-      message.isReceived = false;
-      message.user = userInfo;
-      message.content = content;
-      message.type = MessageType.Text;
-      message.createdAt = +moment() * 1e6 + '';
-      message.postStatus = PostMessageStatus.Pending;
-
-      postMessage.originMessage = message;
-
-      this.timelineService.pushMessage(message);
+    if (replyMessage) {
+      message.parentId = replyMessage.id;
+      message.parentMessage = replyMessage;
     }
+
+    message.id = UtilsService.randomId();
+    message.isReceived = false;
+    message.user = userInfo;
+    message.content = content;
+    message.contentParsed = UtilsService.parseAt(content);
+    message.type = MessageType.Text;
+    message.createdAt = +moment() * 1e6 + '';
+    message.postStatus = PostMessageStatus.Pending;
+
+    postMessage.originMessage = message;
+
+    this.timelineService.pushMessage(message);
 
     this.postQueue.push(postMessage);
     return this.postMessage();
   }
 
-  postAudioMessage(liveId: string, localId: string, audioData: Blob, duration: number = 0): Promise<MessageModel> {
+  postAudioMessage(liveId: string, localId: string, audioData: Blob, duration: number = 0, replyMessage: MessageModel = null): Promise<MessageModel> {
     if (!audioData && !localId) {
       throw new Error('no audio data or audio local id');
     }
@@ -358,15 +341,21 @@ export class MessageApiService {
     postMessage.type = 'audio';
     postMessage.audio = new PostAudioMessageModel();
     postMessage.audio.duration = duration;
+    if (replyMessage) postMessage.parentId = replyMessage.id;
 
     let message = new MessageModel();
     let userInfo = this.userInfoService.getUserInfoCache();
 
+    if (replyMessage) {
+      message.parentId = replyMessage.id;
+      message.parentMessage = replyMessage;
+    }
+
     message.id = UtilsService.randomId();
-    message.parentId = '';
     message.isReceived = false;
     message.user = userInfo;
     message.content = '';
+    message.contentParsed = UtilsService.parseAt('');
     message.type = MessageType.Audio;
     message.createdAt = +moment() * 1e6 + '';
     message.postStatus = PostMessageStatus.Pending;
@@ -400,6 +389,7 @@ export class MessageApiService {
     message.isReceived = false;
     message.user = originUserInfo;
     message.content = originContent;
+    message.contentParsed = UtilsService.parseAt(originContent);
     message.type = MessageType.Nice;
     message.createdAt = +moment() * 1e6 + '';
     message.postStatus = PostMessageStatus.Pending;
@@ -418,20 +408,26 @@ export class MessageApiService {
     this.postMessage();
   }
 
-  postImageMessage(liveId: string, localId: string, file: File): Promise<MessageModel> {
+  postImageMessage(liveId: string, localId: string, file: File, replyMessage: MessageModel = null): Promise<MessageModel> {
     let postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'image';
     postMessage.image = new PostImageMessageModel();
+    if (replyMessage) postMessage.parentId = replyMessage.id;
 
     let message = new MessageModel();
     let userInfo = this.userInfoService.getUserInfoCache();
 
+    if (replyMessage) {
+      message.parentId = replyMessage.id;
+      message.parentMessage = replyMessage;
+    }
+
     message.id = UtilsService.randomId();
-    message.parentId = '';
     message.isReceived = false;
     message.user = userInfo;
     message.content = '';
+    message.contentParsed = UtilsService.parseAt('');
     message.type = MessageType.Image;
     message.createdAt = +moment() * 1e6 + '';
     message.postStatus = PostMessageStatus.Pending;
@@ -680,12 +676,6 @@ export class MessageApiService {
       let historyMessage = StoreService.get('historyMessage') || {};
       historyMessage[liveId] = messages;
       StoreService.set('historyMessage', historyMessage);
-
-      if (data.include.liveInfo) {
-        let historyLiveInfo = StoreService.get('historyLiveInfo') || {};
-        historyLiveInfo[liveId] = this.liveService.parseLiveInfo(data.include.liveInfo, data.include.users);
-        StoreService.set('historyLiveInfo', historyLiveInfo);
-      }
 
       return messages;
     });

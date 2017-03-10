@@ -1,23 +1,27 @@
-<div class="timeline-message-container" *ngIf="message">
-  <div class="message">
-    <div class="avatar-container">
-      <div class="avatar-wrapper" (contextmenu)="$event.preventDefault()">
-        <img class="avatar" [src]="message.user.avatar">
-        <i class="bi bi-admin-mark"
-           [ngClass]="{'bi-admin-mark':liveInfo.isAdmin(message.user.uid),'bi-vip-mark':liveInfo.isVip(message.user.uid)}"></i>
-      </div>
+<div class="main" *ngIf="message">
+  <div class="avatar-container">
+    <div
+      class="avatar-wrapper"
+      (press)="avatarTouched(message.user)"
+      (tap)="showUserInfoCard(message.user.uid)"
+      (click)="$event.stopPropagation()"
+      (contextmenu)="$event.preventDefault()"
+    >
+      <img class="avatar" [src]="message.user.avatar">
+      <i class="bi bi-admin-mark" *ngIf="liveInfo.isAdmin(message.user.uid)"></i>
+      <i class="bi bi-vip-mark" *ngIf="liveInfo.isVip(message.user.uid)"></i>
     </div>
-
-    <div class="content-container"
-         (contextmenu)="$event.preventDefault()">
-      <div class="content-info">
-        <p class="name">{{message.user.nick}} 正在输入...</p>
-      </div>
-
-      <div class="content">
-          <bd-loading></bd-loading>
-      </div>
-    </div>
-    <div class="thumbs-up"> </div>
   </div>
+
+  <div class="message-container">
+    <div class="message-info">
+      <p class="name">{{message.user.nick}} 正在输入...</p>
+    </div>
+
+    <div class="bubble">
+      <div class="text main-text"><bd-loading></bd-loading></div>
+    </div>
+  </div>
+
+  <div class="thumbs-up-container"></div>
 </div>

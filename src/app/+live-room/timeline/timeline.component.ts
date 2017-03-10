@@ -19,7 +19,6 @@ import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.mo
 import {AudioPlayerService} from '../../shared/audio-player/audio-player.service';
 import {InputtingService} from './message/inputting.service';
 
-import {MessageComponent} from './message/message.component';
 import {InputtingComponent} from './message/inputting.component';
 import {HackMessages} from "./hack-messages";
 import {LiveRoomService} from "../live-room.service";
@@ -38,17 +37,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   messages: MessageModel[] = [];
   receviedReplySubscription: Subscription;
-  timelineSubscription: Subscription;
   isOnOldest: boolean;
   isOnLatest: boolean;
   isOnBottom: boolean;
   isLoading: boolean;
   unreadCount = 0;
   historyTipsShown = false;
+  private audioSub: Subscription;
 
-  @ViewChildren('messagesComponents') messagesComponents: QueryList<MessageComponent>;
   @ViewChild('inputtingComp') inputtingComp: InputtingComponent;
-
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
               private liveService: LiveService, private messageApiService: MessageApiService, private liveRoomService: LiveRoomService,
@@ -63,8 +60,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.timelineService.onReceivedPraises(prised => this.onReceivedPraises(prised));
     this.timelineService.onReceiveMessages(message => this.onReceiveMessages(message));
     this.timelineService.onDeleteMessages(message => this.onDeleteMessages(message));
+    this.timelineService.onTimeLiveAction(goto => this.onTimelineAction(goto));
 
-    this.startObserveTimelineAction();
+    this.audioSub = this.audioPlayerService.globalAudio$.filter(event => event.isEnded()).subscribe(event => {
+      this.onAudioPlayEnded(event.data.message);
+    });
+
     this.startReceiveReply();
     this.gotoLatestMessages().then(result => {
       setTimeout(() => {
@@ -77,7 +78,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.timelineService.stopReceive(this.id);
-    this.timelineSubscription.unsubscribe();
+    this.timelineService.unsubscribeAll();
+    if (this.audioSub) this.audioSub.unsubscribe();
   }
 
   private findNextAudioTypeMessage(msgId: string): MessageModel {
@@ -90,7 +92,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }
 
     for (i++; i < this.messages.length; i++) {
-      if (this.messages[i].type === MessageType.Audio) {
+      if (this.messages[i].isAudio()) {
         return this.messages[i];
       }
     }
@@ -98,30 +100,25 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  private findMessageComponent(msgId: string): MessageComponent {
-    let components = this.messagesComponents.toArray();
-
-    for (let component of components) {
-      if (component.message.id === msgId) {
-        return component;
-      }
-    }
-
-    return null;
-  }
-
-  audioPlayEnded(msg: MessageModel) {
-    if (!this.liveRoomService.isAudioAutoPlay(this.liveInfo.id)) {
-      return;
-    }
+  onAudioPlayEnded(msg: MessageModel) {
+    if (!this.liveRoomService.isAudioAutoPlay(this.liveInfo.id)) return;
 
     let nextAudioMessage = this.findNextAudioTypeMessage(msg.id);
-    if (!nextAudioMessage) {
-      return;
-    }
-    let comp = this.findMessageComponent(nextAudioMessage.id);
-    if (comp) {
-      comp.playAudio();
+    if (!nextAudioMessage) return;
+
+    this.audioPlayerService.play(nextAudioMessage).subscribe();
+  }
+
+  autoPlayReceived(receivedMessages: MessageModel[]) {
+    if (!this.liveRoomService.isAudioAutoPlay(this.liveInfo.id)) return;
+    if (this.audioPlayerService.hasPlaying) return;
+    if (!this.audioPlayerService.userActivated) return;
+
+    for (let message of receivedMessages) {
+      if (message.isAudio()) {
+        this.audioPlayerService.play(message);
+        break;
+      }
     }
   }
 
@@ -130,13 +127,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
       case EventType.LiveMsgUpdate:
         if (this.isOnBottom) {
           this.inputtingComp.hide();
-          let has = this.hasNoPlayedAudio();
-          this.gotoLatestMessages().then(() => {
+
+          this.gotoLatestMessages().then(messages => {
             setTimeout(() => {
               this.scroller.scrollToBottom();
-              if (!has) {
-                this.autoPlayReceived();
-              }
+              this.autoPlayReceived(messages);
             }, 0);
           });
         } else {
@@ -162,42 +157,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }
   }
 
-  autoPlayReceived() {
-
-    if (this.audioPlayerService.hasPlaying) {
-      return;
-    }
-
-    if (!this.audioPlayerService.userActivated) {
-      return;
-    }
-
-    for (let comp of this.messagesComponents.toArray()) {
-      if (!comp.audioPlayer) {
-        continue;
-      }
-      if (comp.audioPlayer.isPlayed) {
-        continue;
-      }
-      if (comp.message.user.uid === this.userInfo.uid) {
-        continue;
-      }
-      return comp.playAudio();
-    }
-  }
-
-  hasNoPlayedAudio(): boolean {
-    return !!this.messagesComponents.toArray().filter((v) => {
-      return v.audioPlayer && !v.audioPlayer.isPlayed;
-    }).length;
-  }
-
   onReceivedPraises(praisedUser: MqPraisedUser) {
-    if (praisedUser.user.uid == this.userInfo.uid) {
-      return
-    }
-    for (let idx in this.messages) {
-      let message = this.messages[idx];
+    if (praisedUser.user.uid == this.userInfo.uid) return;
+
+    for (let message of this.messages) {
       if (message.id == praisedUser.msgId) {
         let userAnim = new UserAnimEmoji;
         userAnim.user = praisedUser.user;
@@ -268,9 +231,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         HackMessages.hackLiveEndMessage(this.liveInfo, messages);
       }
 
-      if (messages.length >= 11) {
-        messages.pop();
-      }
+      if (messages.length >= 11) messages.pop();
 
       this.scroller.resetData(messages);
 
@@ -328,9 +289,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
       this.scroller.prependData(messages);
 
-      if (messages.length === 0) {
-        this.isOnOldest = true;
-      }
+      if (messages.length === 0) this.isOnOldest = true;
 
       return;
     }).finally(() => {
@@ -373,43 +332,39 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.isOnBottom = e.position === ScrollerPosition.OnBottom;
 
-    this.timelineService.onScroll(e);
+    this.timelineService.triggerScroll(e);
   }
 
-  startObserveTimelineAction() {
-    this.timelineSubscription = this.timelineService.timeline$.subscribe(
-      oldestOrLatest => {
-        this.scroller.stopEmitScrollEvent();
+  onTimelineAction(gotoOldestOrLatest: boolean) {
+    this.scroller.stopEmitScrollEvent();
 
-        if (oldestOrLatest) {
-          this.gotoOldestMessages().then(result => {
-            if (result) {
-              setTimeout(() => {
-                this.scroller.scrollToTop();
+    if (gotoOldestOrLatest) {
+      this.gotoOldestMessages().then(result => {
+        if (result) {
+          setTimeout(() => {
+            this.scroller.scrollToTop();
 
-                // 等待滚动完毕
-                setTimeout(() => {
-                  this.scroller.startEmitScrollEvent();
-                }, 0);
-              }, 0);
-            }
-          });
-        } else {
-          this.gotoLatestMessages().then(result => {
-            if (result) {
-              setTimeout(() => {
-                this.scroller.scrollToBottom();
-
-                // 等待滚动完毕
-                setTimeout(() => {
-                  this.scroller.startEmitScrollEvent();
-                }, 0);
-              }, 0);
-            }
-          });
+            // 等待滚动完毕
+            setTimeout(() => {
+              this.scroller.startEmitScrollEvent();
+            }, 0);
+          }, 0);
         }
-      }
-    );
+      });
+    } else {
+      this.gotoLatestMessages().then(result => {
+        if (result) {
+          setTimeout(() => {
+            this.scroller.scrollToBottom();
+
+            // 等待滚动完毕
+            setTimeout(() => {
+              this.scroller.startEmitScrollEvent();
+            }, 0);
+          }, 0);
+        }
+      });
+    }
   }
 
   startReceiveReply() {

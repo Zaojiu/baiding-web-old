@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {MessageModel} from '../api/message/message.model';
 import {AudioBridge} from "../bridge/audio.interface";
 import {Subject} from "rxjs";
-import {AudioListPlayerPosition, AudioListPlayerEvent, AudioListPlayerEventType} from "./audio-list-player.model";
+import {AudioPlayerData, AudioPlayerEvent, AudioPlayerEventType} from "./audio-player.model";
 
 @Injectable()
 export class AudioPlayerService {
@@ -14,8 +14,8 @@ export class AudioPlayerService {
   private static preloadAudioEl = document.createElement('audio');
   private _playbackRate = 1.0;
   private playingLock = false;
-  private globalAudioSource = new Subject<AudioListPlayerEvent>();
-  globalAudio$: Observable<AudioListPlayerEvent> = this.globalAudioSource.asObservable();
+  private globalAudioSource = new Subject<AudioPlayerEvent>();
+  globalAudio$: Observable<AudioPlayerEvent> = this.globalAudioSource.asObservable();
 
   userActivated = false;
 
@@ -43,22 +43,22 @@ export class AudioPlayerService {
 
     AudioPlayerService.audioEl.onloadstart = () => {
       timer = setTimeout(() => { // avoid short loading flash
-        let data = new AudioListPlayerPosition(msg, offset);
-        this.globalAudioSource.next(new AudioListPlayerEvent(AudioListPlayerEventType.Loading, data));
+        let data = new AudioPlayerData(msg, offset);
+        this.globalAudioSource.next(new AudioPlayerEvent(AudioPlayerEventType.Loading, data));
       }, 100);
     };
 
     AudioPlayerService.audioEl.onabort = () => {
-      let data = new AudioListPlayerPosition(msg, offset);
-      this.globalAudioSource.next(new AudioListPlayerEvent(AudioListPlayerEventType.Abort, data));
+      let data = new AudioPlayerData(msg, offset);
+      this.globalAudioSource.next(new AudioPlayerEvent(AudioPlayerEventType.Abort, data));
     };
 
     AudioPlayerService.audioEl.onplaying = () => {
       if (this.playingLock) return;
       this.playingLock = true;
       AudioPlayerService.audioEl.playbackRate = rate;
-      let data = new AudioListPlayerPosition(msg, offset);
-      this.globalAudioSource.next(new AudioListPlayerEvent(AudioListPlayerEventType.Play, data));
+      let data = new AudioPlayerData(msg, offset);
+      this.globalAudioSource.next(new AudioPlayerEvent(AudioPlayerEventType.Play, data));
       observer.next('loaded');
     };
 
@@ -69,8 +69,8 @@ export class AudioPlayerService {
 
     AudioPlayerService.audioEl.onended = () => {
       AudioPlayerService.playingMessageId = '';
-      let data = new AudioListPlayerPosition(msg, AudioPlayerService.audioEl.currentTime);
-      this.globalAudioSource.next(new AudioListPlayerEvent(AudioListPlayerEventType.End, data));
+      let data = new AudioPlayerData(msg, AudioPlayerService.audioEl.currentTime);
+      this.globalAudioSource.next(new AudioPlayerEvent(AudioPlayerEventType.End, data));
       observer.complete();
     };
 
@@ -99,8 +99,8 @@ export class AudioPlayerService {
         AudioPlayerService.audioEl.onplaying = null;
         AudioPlayerService.audioEl.onended = null;
         AudioPlayerService.audioEl.pause();
-        let data = new AudioListPlayerPosition(msg, AudioPlayerService.audioEl.currentTime);
-        this.globalAudioSource.next(new AudioListPlayerEvent(AudioListPlayerEventType.Pause, data));
+        let data = new AudioPlayerData(msg, AudioPlayerService.audioEl.currentTime);
+        this.globalAudioSource.next(new AudioPlayerEvent(AudioPlayerEventType.Pause, data));
       } catch (Error) {
       }
     }

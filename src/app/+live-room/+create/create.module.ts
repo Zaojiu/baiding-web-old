@@ -10,6 +10,8 @@ import {CreateComponent} from "./create.component";
 import {CreateGuard} from "../../shared/guard/create.guard";
 import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
 import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
+import {UploadApiService} from "../../shared/api/upload/upload.api";
+import {TimelineService} from "../timeline/timeline.service";
 
 @NgModule({
   imports: [
@@ -26,6 +28,8 @@ import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
     CreateComponent
   ],
   providers: [
+    UploadApiService,
+    TimelineService,
     CreateGuard,
   ]
 })

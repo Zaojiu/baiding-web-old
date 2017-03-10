@@ -4,7 +4,7 @@ import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
 import {UtilsService} from "../utils/utils";
 import {Subscription} from "rxjs";
-import {AudioListPlayerEventType} from "./audio-list-player.model";
+import {AudioPlayerEventType} from "./audio-player.model";
 
 @Component({
   selector: 'audio-player-small',
@@ -32,7 +32,7 @@ export class AudioPlayerSmallComponent implements OnInit, OnDestroy {
 
     this.audioSub = this.audioPlayerService.globalAudio$.subscribe((e) => {
 
-      if (e.type === AudioListPlayerEventType.Play && e.data.message === this.message) {
+      if (e.type === AudioPlayerEventType.Play && e.data.message === this.message) {
         if (!this.played) {
           this.played = true;
           this.setPlayed(this.message.id);

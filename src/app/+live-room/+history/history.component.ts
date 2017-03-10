@@ -61,10 +61,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.liveId = this.route.snapshot.params['id'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.messages = this.route.snapshot.data['messages'];
     this.isAutoPlayNext = this.liveRoomService.isAudioAutoPlay(this.liveId);
     this.audioMessages = this.messages.filter((message) => message.isAudio());
-    this.liveInfo = this.liveService.getHistoryLiveInfo(this.liveId);
     this.coverUrl = this.liveInfo.coverSmallUrl;
     this.listNextComments();
 

@@ -14,7 +14,6 @@ import {UtilsService} from "../../shared/utils/utils";
 import {FormGroup, FormBuilder, FormControl} from "@angular/forms";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {Subscription} from "rxjs";
-import {MessageService} from "../timeline/message/message.service";
 import {InputtingService} from "../timeline/message/inputting.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {RecorderData} from "./recorder/recorder.models";
@@ -22,6 +21,9 @@ import {ImageBridge} from "../../shared/bridge/image.interface";
 import {LiveRoomService} from "../live-room.service";
 import {LiveService} from "../../shared/api/live/live.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {TimelineService} from "../timeline/timeline.service";
+import {MessageModel} from "../../shared/api/message/message.model";
+import {CommentService} from "../comment/comment.service";
 
 declare var $: any;
 
@@ -49,12 +51,15 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   receviedAvatarTouchedSub: Subscription;
   touchStartY: number;
   timer: any;
+  placeholder = '此时此刻你在想什么?';
+  replyMessage = null;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,
-              private messageService: MessageService, private imageService: ImageBridge,
-              private liveRoomService: LiveRoomService, private liveService: LiveService,
-              private operationTips: OperationTipsService, private inputtingService: InputtingService) {
+              private imageService: ImageBridge, private liveRoomService: LiveRoomService,
+              private liveService: LiveService, private operationTips: OperationTipsService,
+              private inputtingService: InputtingService, private timelineService: TimelineService,
+              private commentService: CommentService) {
   }
 
   ngOnInit() {
@@ -68,10 +73,12 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     });
 
     // 监听点击用户头像事件
-    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched) => {
+    this.receviedAvatarTouchedSub = this.timelineService.avatarTouched$.subscribe((userTouched) => {
       this.messageContent = `@${userTouched.nick}(${userTouched.uid}) `;
       if (this.mode !== EditMode.Text && this.mode !== EditMode.At) this.switchMode(EditMode.Text);
     });
+
+    this.timelineService.onReply(message => this.onReplyMessage(message));
   }
 
   switchMode(mode: EditMode) {
@@ -156,8 +163,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   recordEnd(recorderData: RecorderData) {
-
-    let promise = this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration);
+    let promise = this.messageApiService.postAudioMessage(this.liveId, recorderData.localId, recorderData.audioData, recorderData.duration, this.replyMessage);
     if (promise) {
       this.timer = setInterval(() => {
         this.inputtingService.collect({liveId: this.liveId, type: 'audio'});
@@ -173,12 +179,13 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     if (this.messageContent === '' || this.isMessageSubmitting) return;
 
     if (!this.liveInfo.isClosed()) {
-      this.messageApiService.postTextMessage(this.liveId, this.messageContent);
+      this.messageApiService.postTextMessage(this.liveId, this.messageContent, this.replyMessage);
       this.isMessageSubmitting = false;
       this.messageContent = '';
       this.liveRoomService.setTextWordsStashed('', this.liveId);
     } else {
-      this.commentApiService.postComment(this.liveId, this.messageContent).then(() => {
+      this.commentApiService.postComment(this.liveId, this.messageContent).then((comment) => {
+        this.commentService.pushComment(comment);
         this.isMessageSubmitting = false;
         this.messageContent = '';
         this.liveRoomService.setTextWordsStashed('', this.liveId);
@@ -209,7 +216,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
     let promises = [];
 
     for (let image of this.images) {
-      promises.push(this.messageApiService.postImageMessage(this.liveId, '', image));
+      promises.push(this.messageApiService.postImageMessage(this.liveId, '', image, this.replyMessage));
     }
 
     if (promises.length) {
@@ -228,7 +235,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   selectImages() {
     this.imageService.chooseImages().then((localIds) => {
       for (let localId of localIds) {
-        this.messageApiService.postImageMessage(this.liveId, (localId as string), null);
+        this.messageApiService.postImageMessage(this.liveId, (localId as string), null, this.replyMessage);
       }
     });
   }
@@ -277,5 +284,21 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
 
   get isInWechat(): boolean {
     return UtilsService.isInWechat;
+  }
+
+  onReplyMessage(message: MessageModel) {
+    if (message) {
+      this.placeholder = `回复 ${message.user.nick}`;
+      this.replyMessage = message;
+      this.switchMode(EditMode.Text);
+      this.focusMessageInput();
+    } else {
+      this.placeholder = '此时此刻你在想什么?';
+      this.replyMessage = null;
+    }
+  }
+
+  clearReplyMessage() {
+    if (this.replyMessage) this.timelineService.replyMessage(null);
   }
 }

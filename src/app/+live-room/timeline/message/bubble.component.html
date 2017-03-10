@@ -1,0 +1,133 @@
+<div class="main">
+
+  <div class="avatar-container">
+    <div
+      class="avatar-wrapper"
+      (press)="avatarTouched(message.user)"
+      (tap)="showUserInfoCard(message.user.uid)"
+      (click)="$event.stopPropagation()"
+      (contextmenu)="$event.preventDefault()"
+    >
+      <img class="avatar" [src]="message.user.avatar">
+      <i class="bi bi-admin-mark" *ngIf="liveInfo.isAdmin(message.user.uid)"></i>
+      <i class="bi bi-vip-mark" *ngIf="liveInfo.isVip(message.user.uid)"></i>
+    </div>
+  </div>
+
+  <div class="message-container">
+    <div class="message-info">
+      <p class="name">{{message.user.nick}}</p>
+      <span class="time">{{message.createdAt | fromNow}}</span>
+    </div>
+
+    <div class="bubble" [ngClass]="{mine: message.isMine(userInfo.uid), 'different-user': message.parentMessage && message.user.uid !== message.parentMessage.user.uid && !message.isMine(userInfo.uid) && !message.parentMessage.isMine(userInfo.uid)}">
+      <div class="reply"
+           [ngClass]="{mine: message.parentMessage.isMine(userInfo.uid), collapse: isReplyCollapse}"
+           *ngIf="message.parentMessage"
+           (click)="isReplyCollapse = !isReplyCollapse"
+      >
+        <div class="reply-message-info">
+          <p class="name">{{message.parentMessage.user.nick}}</p>
+          <span class="time">{{message.parentMessage.createdAt | fromNow}}</span>
+        </div>
+
+        <div class="text" *ngIf="message.parentMessage.isText() || message.parentMessage.isNice()">{{message.parentMessage.contentParsed}}</div>
+
+        <image-viewer-preview
+          class="image"
+          *ngIf="message.parentMessage.isImage()"
+          [imageLinks]="[message.parentMessage.image]"
+          [imageFiles]="[message.parentMessage.image.imageData]"
+          [weixinLocalIds]="[message.parentMessage.image.localId]"
+          (click)="$event.stopPropagation()"
+        ></image-viewer-preview>
+
+        <audio-player
+          class="audio"
+          *ngIf="message.parentMessage.isAudio()"
+          [message]="message.parentMessage"
+          (playEnded)="audioPlayEndedHandler(message.parentMessage)"
+          #audioPlayer
+          (click)="$event.stopPropagation()"
+          [isWhiteTheme]="!message.isMine(userInfo.uid) && message.parentMessage.isMine(userInfo.uid)"
+          [isLightBrandTheme]="message.isMine(userInfo.uid) && message.parentMessage.isMine(userInfo.uid)"
+        ></audio-player>
+
+        <div
+          class="translate"
+          *ngIf="message.parentMessage.isAudio()"
+        >
+          <div class="translate-tips">以下由机器自动翻译</div>
+          {{message.parentMessage.audio.translateResult !== '' ? message.parentMessage.audio.translateResult : '暂无翻译内容'}}
+        </div>
+      </div>
+
+      <div class="text main-text" *ngIf="message.isText() || message.isNice()">{{message.contentParsed}}</div>
+
+      <image-viewer-preview
+        class="image main-image"
+        *ngIf="message.isImage()"
+        [imageLinks]="[message.image]"
+        [imageFiles]="[message.image.imageData]"
+        [weixinLocalIds]="[message.image.localId]"
+      ></image-viewer-preview>
+
+      <audio-player
+        class="audio main-audio"
+        *ngIf="message.isAudio()"
+        [message]="message"
+        (playEnded)="audioPlayEndedHandler(message)"
+        #audioPlayer
+        (click)="$event.stopPropagation()"
+        [isWhiteTheme]="message.isMine(userInfo.uid)"
+      ></audio-player>
+
+      <div
+        class="translate"
+        [ngClass]="{'collapse': isTranslationCollapse}"
+        (click)="toggleTranslationCollapse(message.audio.translateResult)"
+        *ngIf="message.isAudio()"
+      >
+        <div class="translate-tips">以下由机器自动翻译</div>
+        {{message.audio.translateResult !== '' ? message.audio.translateResult : message.isPostPending() ? '翻译中...' :
+        '暂无翻译内容'}}
+        <i
+          class="bi bi-elliplis"
+          *ngIf="isTranslationCollapse && message.audio.translateResult"
+        ></i>
+      </div>
+
+      <div class="post-status">
+        <i
+          class="bi bi-sun-flow loading-animation"
+          *ngIf="message.isPostPending()"
+        ></i>
+        <i
+          class="bi bi-warning-round"
+          (click)="resendMessage()"
+          *ngIf="!message.isPostSuccessful() && !message.isPostPending()"
+        ></i>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="thumbs-up-container" [ngClass]="{'had-thumbs-up': message.hadPraised}">
+    <div class="thumbs-up-animations" praisedAnimation>
+      <praised-animation *ngFor="let userAnim of message.praisedAnimations" [userAnim]="userAnim"></praised-animation>
+    </div>
+
+    <a class="thumbs-up-btn" (click)="confirmPraise()" *ngIf="message.isPostSuccessful()">
+      <i class="bi bi-thumbsup-fill"></i>
+    </a>
+  </div>
+</div>
+
+<div class="operation-bar clearfix">
+  <span class="btn" *ngIf="canReply" (click)="reply(); $event.stopPropagation();"><i class="bi bi-bubble"></i>回复</span>
+  <span class="btn" (click)="goToShare()"><i class="bi bi-share-fill"></i>分享</span>
+
+  <div class="thumbs-up-users">
+    <img class="avatar" *ngFor="let user of message.getPraisedAvatars(userInfo)" [src]="user.avatar">
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import {MessageModel} from "../api/message/message.model";
 
-export class AudioListPlayerPosition {
+export class AudioPlayerData {
   message: MessageModel;
   offset: number;
 
@@ -10,7 +10,7 @@ export class AudioListPlayerPosition {
   }
 }
 
-export enum AudioListPlayerEventType {
+export enum AudioPlayerEventType {
   Play = 0,
   Pause,
   Loading,
@@ -18,12 +18,16 @@ export enum AudioListPlayerEventType {
   End,
 }
 
-export class AudioListPlayerEvent {
-  type: AudioListPlayerEventType;
-  data: AudioListPlayerPosition;
+export class AudioPlayerEvent {
+  type: AudioPlayerEventType;
+  data: AudioPlayerData;
 
-  constructor(type: AudioListPlayerEventType, data: AudioListPlayerPosition) {
+  constructor(type: AudioPlayerEventType, data: AudioPlayerData) {
     this.type = type;
     this.data = data;
+  }
+
+  isEnded(): boolean {
+    return this.type === AudioPlayerEventType.End;
   }
 }

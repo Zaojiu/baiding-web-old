@@ -8,6 +8,7 @@ import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 import {HistoryMessageResolver} from "./history.resolver";
 import {AuthGuard} from "../../shared/guard/auth.guard";
 import {AdminGuard} from "../../shared/guard/admin.guard";
+import {LiveInfoResolver} from "../../shared/guard/live-info.resolver";
 
 const route: Routes = [
   {
@@ -17,6 +18,7 @@ const route: Routes = [
     },
     resolve: {
       userInfo: UserInfoResolver,
+      liveInfo: LiveInfoResolver,
       messages: HistoryMessageResolver,
     },
     children: [

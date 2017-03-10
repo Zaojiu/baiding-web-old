@@ -8,6 +8,7 @@ import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top
 import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
 import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 import {FormModule} from "../../shared/form/form.module";
+import {TimelineService} from "../timeline/timeline.service";
 
 @NgModule({
   imports: [
@@ -22,6 +23,9 @@ import {FormModule} from "../../shared/form/form.module";
   ],
   declarations: [
     VipInfoComponent,
+  ],
+  providers: [
+    TimelineService,
   ],
 })
 

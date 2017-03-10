@@ -8,6 +8,7 @@ import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top
 import {FormsModule} from "@angular/forms";
 import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
+import {TimelineService} from "../timeline/timeline.service";
 
 @NgModule({
   imports: [
@@ -21,6 +22,9 @@ import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
   ],
   declarations: [
     StreamInfoComponent,
+  ],
+  providers: [
+    TimelineService,
   ],
 })
 

@@ -1,6 +1,6 @@
-<div class="audio-player-container" [ngClass]="{'theme-white': isWhiteTheme}" (click)="playOrStopVoice()">
+<div class="audio-player-container" [ngClass]="{'theme-white': isWhiteTheme, 'theme-light-brand': isLightBrandTheme}" (click)="playOrStopVoice()">
 
-  <app-waving-progress [playing]="isPlaying&&isLoaded" [isWhite]="isWhiteTheme" class="wave-component"></app-waving-progress>
+  <app-waving-progress [playing]="isPlaying&&isLoaded" [isWhite]="isWhiteTheme || isLightBrandTheme" class="wave-component"></app-waving-progress>
 
   <span class="audio-duration">{{audioDuration}}秒</span>
 
@@ -15,7 +15,15 @@
   </div>
 
   <!--加载完成并播放-->
-  <playing-btn *ngIf="isPlaying&&isLoaded" class="animation-playing-btn" [audioDuration]="message.audio.duration / 1000"></playing-btn>
+  <div class="playing-btn playing" *ngIf="isPlaying&&isLoaded">
+    <div class="playing-btn-left">
+      <span class="playing-btn-inner" [style.animation-duration]="message.audio.duration / 1000 + 's'" [style.-webkit-animation-duration]="message.audio.duration / 1000 + 's'"></span>
+    </div>
+    <div class="playing-btn-right">
+      <span class="playing-btn-inner" [style.animation-duration]="message.audio.duration / 1000 / 2 + 's'" [style.-webkit-animation-duration]="message.audio.duration / 1000 / 2 + 's'"></span>
+    </div>
+    <span class="btn-center"><i class="bi bi-pause"></i></span>
+  </div>
 
   <span class="dot" *ngIf="!isPlayed && message.postStatus === postStatus.PostSuccessful"></span>
 </div>

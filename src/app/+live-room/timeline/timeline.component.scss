@@ -2,6 +2,11 @@
   padding-top: 50px;
   flex-grow: 1;
 
+  &::-webkit-scrollbar {
+    width: 0;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+  }
+
   .data-container {
     position: relative;
     min-height: calc(100% - 50px);

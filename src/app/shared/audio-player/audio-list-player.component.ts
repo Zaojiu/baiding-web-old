@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit, ViewChild, ElementRef} from '@angul
 
 import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
-import {AudioListPlayerPosition, AudioListPlayerEventType} from "./audio-list-player.model";
+import {AudioPlayerData, AudioPlayerEventType} from "./audio-player.model";
 import {UtilsService} from "../utils/utils";
 import {Subscription} from "rxjs";
 
@@ -18,7 +18,7 @@ export class AudioListPlayerComponent implements OnInit, OnDestroy {
   @Input() messages: MessageModel[] = [];
   @Input() coverUrl: string;
   @Input() avatarUrl: string;
-  lastPosition: AudioListPlayerPosition;
+  lastPosition: AudioPlayerData;
   totalDuration = moment.duration(0);
   currentDuration = moment.duration(0);
   currentDurationTimer: any;
@@ -39,7 +39,7 @@ export class AudioListPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.globalAudioSub = this.audioPlayerService.globalAudio$.subscribe(e => {
-      if (e.type === AudioListPlayerEventType.Play) {
+      if (e.type === AudioPlayerEventType.Play) {
         this.isLoaded = true;
         this.setCurrentDuration(e.data.offset);
         this.prefetch(e.data.message);
@@ -51,17 +51,17 @@ export class AudioListPlayerComponent implements OnInit, OnDestroy {
         }
       }
 
-      if (e.type === AudioListPlayerEventType.Loading) {
+      if (e.type === AudioPlayerEventType.Loading) {
         this.isLoaded = false;
       }
 
-      if (e.type === AudioListPlayerEventType.End || e.type === AudioListPlayerEventType.Pause || e.type === AudioListPlayerEventType.Abort) {
+      if (e.type === AudioPlayerEventType.End || e.type === AudioPlayerEventType.Pause || e.type === AudioPlayerEventType.Abort) {
         clearInterval(this.currentDurationTimer);
         this.currentDurationTimer = null;
         this.lastPosition = e.data;
       }
 
-      if (e.type === AudioListPlayerEventType.End) {
+      if (e.type === AudioPlayerEventType.End) {
         this.playNext(e.data.message);
       }
     });

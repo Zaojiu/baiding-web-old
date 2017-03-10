@@ -45,7 +45,7 @@ export class PreviewComponent implements OnDestroy {
     let linkChange = changes['imageLinks'];
     let weixinIdChange = changes['weixinLocalIds'];
 
-    if (fileChange && fileChange.currentValue && fileChange.currentValue.length) {
+    if (fileChange && fileChange.currentValue && fileChange.currentValue.length && fileChange.currentValue[0]) {
       let file = fileChange.currentValue[0];
       let reader = new FileReader();
 
@@ -54,16 +54,19 @@ export class PreviewComponent implements OnDestroy {
       };
 
       reader.readAsDataURL(file);
+      return;
     }
 
-    if (linkChange && linkChange.currentValue && linkChange.currentValue.length) {
-      let link = linkChange.currentValue[0];
-      this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(link.thumbLink);
-    }
-
-    if (weixinIdChange && weixinIdChange.currentValue && weixinIdChange.currentValue.length) {
+    if (weixinIdChange && weixinIdChange.currentValue && weixinIdChange.currentValue.length && weixinIdChange.currentValue[0]) {
       let localId = weixinIdChange.currentValue[0];
       this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(localId);
+      return;
+    }
+
+    if (linkChange && linkChange.currentValue && linkChange.currentValue.length && linkChange.currentValue[0]) {
+      let link = linkChange.currentValue[0];
+      this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(link.thumbLink);
+      return;
     }
   }
 

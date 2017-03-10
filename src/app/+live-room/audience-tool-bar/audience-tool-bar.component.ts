@@ -4,11 +4,13 @@ import {Router} from "@angular/router";
 
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {LiveService} from '../../shared/api/live/live.service';
-import {MessageService} from '../timeline/message/message.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {EditMode} from "../../shared/comment-input/comment-input.enums";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {TimelineService} from "../timeline/timeline.service";
+import {CommentModel} from "../../shared/api/comment/comment.model";
+import {CommentService} from "../comment/comment.service";
 
 @Component({
   selector: 'audience-tool-bar',
@@ -26,13 +28,13 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   isPraisePosting: boolean;
   private receviedAvatarTouchedSub: Subscription;
 
-  constructor(private liveService: LiveService, private messageService: MessageService,
-              private router: Router, private tipsService: OperationTipsService) {
+  constructor(private liveService: LiveService, private timelineService: TimelineService,
+              private router: Router, private tipsService: OperationTipsService, private commentService: CommentService) {
   }
 
   ngOnInit() {
     //监听点击用户头像事件
-    this.receviedAvatarTouchedSub = this.messageService.avatarTouched$.subscribe((userTouched)=> {
+    this.receviedAvatarTouchedSub = this.timelineService.avatarTouched$.subscribe((userTouched)=> {
       this.commentContent = `@${userTouched.nick}(${userTouched.uid}) `;
       this.mode = EditMode.Text;
     });
@@ -59,7 +61,8 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
     });
   }
 
-  postSuccessful() {
+  postSuccessful(comment: CommentModel) {
+    this.commentService.pushComment(comment);
     this.tipsService.popup('评论成功');
   }
 

@@ -1,165 +1,32 @@
-<live-room-info-upper class="live-room-info-component" *ngIf="message.type === messageType.LiveRoomInfo && !liveInfo.isTypeVideo()"
-                      [liveInfo]="liveInfo"></live-room-info-upper>
+<live-room-info-upper
+  class="live-room-info-component"
+  *ngIf="message.isLiveInfo() && !liveInfo.isTypeVideo()"
+  [liveInfo]="liveInfo"
+></live-room-info-upper>
 
-<div class="live-started" *ngIf="message.type === messageType.LiveStart">
-  <div class="live-started-tip">话题正式开始啦!</div>
-</div>
-
-<div class="message-type-join" *ngIf="message.type === messageType.EditorJoin">
+<div class="message-type-join" *ngIf="message.isEditorJoin()">
   <div class="vip-joined-tip">
     <img class="avatar-sm" [src]="message.user.avatar">
     <span>嘉宾<span>{{message.user.nick}}</span>加入了话题</span>
   </div>
 </div>
 
-<div class="live-ended" *ngIf="message.type === messageType.LiveEnd">
+<div class="live-started" *ngIf="message.isLiveStarted()">
+  <div class="live-started-tip">话题正式开始啦!</div>
+</div>
+
+<div class="live-ended" *ngIf="message.isLiveEnded()">
   <div class="live-ended-tip">
     <p>话题结束</p>
     <p>{{liveInfo.closedAt | timeFormater: 'YYYY年MM月DD日 HH:mm'}}</p>
   </div>
-
-  <!--<div class="ended-review">-->
-  <!--<i class="bi bi-paper"></i>-->
-  <!--<div class="published">话题记录已经发布</div>-->
-  <!--<div class="read"><a (click)="gotoHistory()">阅读</a></div>-->
-  <!--</div>-->
 </div>
 
-<div
-  class="timeline-message-container"
-  *ngIf="message.type !== messageType.EditorJoin && message.type !== messageType.LiveStart &&
-  message.type !== messageType.LiveEnd && message.type !== messageType.LiveRoomInfo"
->
-  <div class="thumbs-up-row">
-    <div class="message-wrapper">
-      <div class="message" [ngClass]="{'has-reply': message.replies.length, 'mime': message.user.uid == userInfo.uid}">
-        <div class="avatar-container">
-          <div
-            class="avatar-wrapper"
-            (press)="emitAvatarClick(message.user)"
-            (tap)="showUserInfoCard(message.user.uid)"
-            (click)="$event.stopPropagation()"
-            (contextmenu)="$event.preventDefault()"
-          >
-            <img class="avatar" [src]="message.user.avatar">
-            <i class="bi bi-admin-mark" *ngIf="liveInfo.isAdmin(message.user.uid)"></i>
-            <i class="bi bi-vip-mark" *ngIf="liveInfo.isVip(message.user.uid)"></i>
-          </div>
-        </div>
-
-        <div class="content-container">
-          <div class="content-info">
-            <p class="name">{{message.user.nick}} / {{message.user | role: liveInfo}}</p>
-            <span class="time">{{message.createdAt | fromNow}}</span>
-          </div>
-
-          <div class="content text-content" *ngIf="message.type === 0 || message.type === 3">
-            <div class="word-wrap">{{messageParsed}}</div>
-            <div class="post-status">
-              <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
-              <i class="bi bi-warning-round"
-                 (click)="resendMessage(message)"
-                 *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
-              ></i>
-            </div>
-          </div>
-
-          <div class="content image-content" *ngIf="message.type === 1">
-            <image-viewer-preview
-              [imageLinks]="[message.image]"
-              *ngIf="message.postStatus === postStatus.PostSuccessful"
-            ></image-viewer-preview>
-            <image-viewer-preview
-              [imageFiles]="[message.image.imageData]"
-              *ngIf="message.postStatus !== postStatus.PostSuccessful && !isInWechat"
-            ></image-viewer-preview>
-            <image-viewer-preview
-              [weixinLocalIds]="[message.image.localId]"
-              *ngIf="message.postStatus !== postStatus.PostSuccessful && isInWechat"
-            ></image-viewer-preview>
-            <div class="post-status">
-              <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
-              <i class="bi bi-warning-round"
-                 (click)="resendMessage(message)"
-                 *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
-              ></i>
-            </div>
-          </div>
-
-          <div class="content audio-content" *ngIf="message.type === 2">
-            <audio-player #audioPlayer (playEnded)="audioPlayEndedHandler(message)" [message]="message"
-                          [isWhiteTheme]="message.user.uid == userInfo.uid"></audio-player>
-            <div class="translate" [ngClass]="{'collapse': isTranslationCollapse}"
-                 (click)="toggleTranslatioExpanded(message.audio.translateResult)">
-              <div class="translate-tips">以下由机器自动翻译</div>
-              {{message.audio.translateResult !== '' ? message.audio.translateResult : message.postStatus ===
-              postStatus.Pending ? '翻译中...' : '暂无翻译内容'}}
-            </div>
-            <i class="bi bi-elliplis"
-               (click)="toggleTranslatioExpanded(message.audio.translateResult)"
-               *ngIf="isTranslationCollapse && message.audio.translateResult"></i>
-            <div class="post-status">
-              <i class="bi bi-sun-flow loading-animation" *ngIf="message.postStatus === postStatus.Pending"></i>
-              <i class="bi bi-warning-round"
-                 (click)="resendMessage(message)"
-                 *ngIf="message.postStatus !== postStatus.PostSuccessful && message.postStatus !== postStatus.Pending"
-              ></i>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="message-reply-container">
-        <div class="message-reply" *ngFor="let reply of message.replies"
-             [ngClass]="{'mime': reply.user.uid == userInfo.uid}">
-          <div class="avatar-container">
-            <div
-              class="avatar-wrapper "
-              (press)="emitAvatarClick(reply.user)"
-              (tap)="showUserInfoCard(reply.user.uid)"
-              (click)="$event.stopPropagation()"
-              (contextmenu)="$event.preventDefault()"
-            >
-              <img class="avatar" [src]="reply.user.avatar">
-              <i class="bi bi-admin-mark" *ngIf="liveInfo.isAdmin(reply.user.uid)"></i>
-              <i class="bi bi-vip-mark" *ngIf="liveInfo.isVip(reply.user.uid)"></i>
-            </div>
-          </div>
-          <div class="content-container">
-            <div class="content">
-              {{reply.user.nick}}回复{{message.user.nick}}
-              <div class="word-wrap" [innerHtml]="parseContent(reply.content)"></div>
-              <div class="post-status">
-                <i class="bi bi-sun-flow loading-animation" *ngIf="reply.postStatus === postStatus.Pending"></i>
-                <i class="bi bi-warning-round"
-                   (click)="resendMessage(reply)"
-                   *ngIf="reply.postStatus !== postStatus.PostSuccessful && reply.postStatus !== postStatus.Pending"
-                ></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="thumbs-up" [ngClass]="{'had-thumbs-up': message.hadPraised}">
-      <div class="thumbs-up-animations" praisedAnimation>
-        <praised-animation *ngFor="let userAnim of message.praisedAnimations" [userAnim]="userAnim"></praised-animation>
-      </div>
-
-      <a class="thumbs-up-btn" (click)="setPraise()" *ngIf="message.postStatus === postStatus.PostSuccessful">
-        <i class="bi bi-thumbsup-fill"></i>
-      </a>
-    </div>
-  </div>
-
-  <div class="operation-bar clearfix">
-    <span class="btn" *ngIf="canReply" (click)="gotoReply()"><i class="bi bi-bubble"></i>回复</span>
-    <span class="btn" (click)="goToShare()"><i class="bi bi-share-fill"></i>分享</span>
-
-    <div class="thumbs-up-users">
-      <img class="avatar" *ngFor="let user of message.getPraisedAvatars(userInfo)" [src]="user.avatar">
-    </div>
-  </div>
-</div>
+<message-bubble
+  class="message-bubble"
+  *ngIf="message.isText() || message.isAudio() || message.isImage() || message.isNice()"
+  [liveId]="liveId"
+  [liveInfo]="liveInfo"
+  [userInfo]="userInfo"
+  [message]="message"
+></message-bubble>

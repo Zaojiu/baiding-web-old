@@ -1,0 +1,396 @@
+.main {
+  display: flex;
+
+  .avatar-container {
+    flex-shrink: 0;
+    margin-left: 12px;
+    margin-right: 10px;
+
+    .avatar-wrapper {
+      position: relative;
+      width: 35px;
+      height: 35px;
+      margin: 0 auto;
+
+      .avatar {
+        display: block;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+      }
+
+      .bi-admin-mark, .bi-vip-mark {
+        position: absolute;
+        right: -4px;
+        bottom: -4px;
+        height: 18px;
+        width: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color-brand;
+        border: solid 1px $color-w;
+        border-radius: 50%;
+        font-size: 12px;
+        color: $color-w;
+
+        &:before {
+          transform: scale(0.8) translateY(-1px);
+        }
+      }
+    }
+
+    .role {
+      display: block;
+      width: 48px;
+      margin: 0 auto;
+      background-color: rgb(224, 229, 234);
+      padding: 4px 6px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1em;
+      text-align: center;
+      color: $color-dark-gray;
+      transform: scale(0.833333333); /*10/12=0.833, font-size:10px*/
+    }
+  }
+
+  .message-container {
+    flex-grow: 1;
+
+    .message-info {
+      margin-bottom: 6px;
+      display: flex;
+
+      .name {
+        flex-grow: 1;
+        margin: 0;
+        color: $color-gray;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        line-height: 1em;
+      }
+
+      .time {
+        flex-shrink: 0;
+        float: right;
+        color: $color-gray;
+        font-size: 14px;
+        line-height: 1em;
+      }
+    }
+
+    .bubble {
+      position: relative;
+      background-color: rgb(238, 239, 239);
+      font-size: 16px;
+      border-radius: 10px;
+      border-top-left-radius: 0;
+      word-break: break-all;
+
+      &.mine {
+        background-color: $color-brand;
+
+        .text {
+          color: $color-w;
+        }
+
+        .translate {
+          color: $color-w;
+
+          &:before {
+            border-top: solid 1px $color-w;
+          }
+
+          .translate-tips {
+            color: $color-w;
+          }
+        }
+
+        .reply {
+          &.mine {
+            background-color: rgb(51, 198, 180);
+          }
+        }
+      }
+
+      &.different-user {
+        background-color: rgb(225, 225, 225);
+      }
+
+      .text {
+        line-height: 1.25em;
+        white-space: pre-wrap;
+        color: $color-dark-gray;
+      }
+
+      .audio {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .main-text, .main-audio {
+        padding: 12px;
+      }
+
+      .translate {
+        position: relative;
+        padding: 12px;
+        font-size: 14px;
+        line-height: 1.28em;
+        color: $color-gray;
+
+        &.collapse {
+          max-height: 76px;
+          overflow: hidden;
+        }
+
+        &:before {
+          position: absolute;
+          top: 0;
+          left: 12px;
+          right: 12px;
+          height: 0;
+          content: "";
+          border-top: solid 1px rgb(204, 204, 204);
+        }
+
+        .translate-tips {
+          color: $color-gray;
+          font-size: 12px;
+          margin-bottom: 4px;
+          line-height: 1em;
+        }
+
+        .bi-elliplis {
+          margin-top: 3px;
+          font-size: 12px;
+          transform: scale(.5);
+        }
+      }
+
+      .image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 180px;
+
+        /deep/ {
+          .priview-image {
+            width: 100%;
+            height: 180px;
+          }
+        }
+      }
+
+      .main-image {
+        border-radius: 10px;
+        border-top-left-radius: 0;
+        overflow: hidden;
+      }
+
+      .reply + .main-image {
+        border-top-right-radius: 0;
+      }
+
+      .post-status {
+        position: absolute;
+        right: -35px;
+        top: 14px;
+        z-index: 1;
+
+        .bi {
+          font-size: 24px;
+        }
+
+        .bi-warning-round {
+          color: rgb(243, 33, 33);
+        }
+
+        .bi-sun-flow {
+          color: $color-gray;
+        }
+      }
+
+      .reply {
+        position: relative;
+        padding: 14px 30px;
+        max-height: 1000px;
+        font-size: 14px;
+        background-color: rgb(238, 239, 239);
+        border-top-right-radius: 10px;
+        overflow: hidden;
+        transition: max-height .5s;
+
+        &.collapse {
+          max-height: 80px;
+
+          &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+          }
+        }
+
+        &.mine {
+          background-color: $color-brand;
+
+          .reply-message-info {
+            color: $color-w;
+            opacity: .8;
+          }
+
+          .text {
+            color: $color-w;
+          }
+
+          .translate {
+            color: $color-w;
+
+            .translate-tips {
+              color: $color-w;
+            }
+
+            &:before {
+              border-top: solid 1px $color-w;
+            }
+          }
+        }
+
+        .text {
+          line-height: 1.4em;
+          color: $color-dark-gray;
+        }
+
+        .audio {
+          padding-bottom: 12px;
+        }
+
+        .translate {
+          color: $color-gray;
+          padding-bottom: 0;
+
+          .translate-tips {
+            color: $color-gray;
+          }
+
+          &:before {
+            left: 0;
+            right: 0;
+            border-top: solid 1px $color-gray;
+          }
+        }
+
+        /deep/ {
+          .audio-player-container {
+            .dot {
+              display: none;
+            }
+          }
+        }
+
+        .reply-message-info {
+          margin-bottom: 12px;
+          font-size: 14px;
+          color: $color-gray;
+          display: flex;
+
+          .name {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            line-height: 1em;
+          }
+
+          .time {
+            flex-shrink: 0;
+            line-height: 1em;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .thumbs-up-container {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 46px;
+    color: $color-gray2;
+
+    &.had-thumbs-up {
+      color: $color-brand;
+
+      .thumbs-up-btn {
+        color: $color-brand;
+      }
+    }
+
+    .thumbs-up-animations {
+      position: absolute;
+      width: 70px;
+      height: 200px;
+      bottom: 25px;
+      right: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .thumbs-up-btn {
+      flex-shrink: 0;
+      line-height: 1em;
+      font-size: 21px;
+      margin-bottom: 4px;
+      color: $color-gray2;
+    }
+  }
+}
+
+.operation-bar {
+  display: flex;
+  position: relative;
+  padding-left: 57px;
+  height: 29px;
+
+  .btn {
+    padding-right: 12px;
+    font-size: 12px;
+    color: $color-gray;
+    padding-top: 12px;
+    line-height: 1em;
+
+    .bi {
+      font-size: 14px;
+      margin-right: 2px;
+      margin-top: -1px;
+    }
+  }
+
+  .thumbs-up-users {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    font-size: 0;
+
+    .avatar {
+      width: 23px;
+      height: 23px;
+      border: solid 1px $color-w;
+      border-radius: 12px;
+      margin-right: -7px;
+
+      &:last-child {
+        margin-right: 12px;
+      }
+    }
+  }
+}

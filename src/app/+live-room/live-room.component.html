@@ -45,7 +45,10 @@
   <timeline class="timeline" [liveInfo]="liveInfo" [userInfo]="userInfo" #timeline></timeline>
 
   <div class="praised-animations" praisedAnimation>
-    <praised-animation *ngFor="let userAnim of liveInfo.praisedAnimations" [userAnim]="userAnim"></praised-animation>
+    <praised-animation
+      *ngFor="let userAnim of liveInfo.praisedAnimations"
+      [userAnim]="userAnim"
+    ></praised-animation>
   </div>
 
   <audience-tool-bar

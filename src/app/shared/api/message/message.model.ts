@@ -31,9 +31,11 @@ export class ImageMessageModel {
 export class MessageModel {
   id: string;
   parentId: string;
+  parentMessage: MessageModel;
   isReceived: boolean; // 用于判断是否为服务器拉取下来的信息，或者是本地发送时的信息。
   user: UserInfoModel;
   content: string;
+  contentParsed: string;
   type: MessageType;
   audio: AudioMessageModel;
   image: ImageMessageModel;
@@ -46,20 +48,60 @@ export class MessageModel {
   createdAtParsed: Moment;
   postStatus = PostMessageStatus.PostSuccessful;
 
-  isText() {
+  isMine(myUid): boolean {
+    return this.user.uid === myUid;
+  }
+
+  isText(): boolean {
     return this.type === MessageType.Text;
   }
 
-  isAudio () {
+  isAudio(): boolean {
     return this.type === MessageType.Audio;
   }
 
-  isImage() {
+  isImage(): boolean {
     return this.type === MessageType.Image;
   }
 
-  isNice() {
+  isNice(): boolean {
     return this.type === MessageType.Nice;
+  }
+
+  isLiveInfo(): boolean {
+    return this.type === MessageType.LiveRoomInfo;
+  }
+
+  isLiveStarted(): boolean {
+    return this.type === MessageType.LiveStart;
+  }
+
+  isLiveEnded(): boolean {
+    return this.type === MessageType.LiveEnd;
+  }
+
+  isEditorJoin(): boolean {
+    return this.type === MessageType.EditorJoin;
+  }
+
+  isReply(): boolean {
+    return !!this.parentId;
+  }
+
+  isPostPending(): boolean {
+    return this.postStatus === PostMessageStatus.Pending;
+  }
+
+  isPostFailed(): boolean {
+    return this.postStatus === PostMessageStatus.PostFailed;
+  }
+
+  isPostSuccessful(): boolean {
+    return this.postStatus === PostMessageStatus.PostSuccessful;
+  }
+
+  isUploadFailed(): boolean {
+    return this.postStatus === PostMessageStatus.UploadFailed;
   }
 
   getPraisedAvatars(currentUser: UserInfoModel) {
