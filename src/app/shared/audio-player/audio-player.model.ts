@@ -21,13 +21,19 @@ export enum AudioPlayerEventType {
 export class AudioPlayerEvent {
   type: AudioPlayerEventType;
   data: AudioPlayerData;
+  isEnded: boolean;
+  isPlaying: boolean;
+  isLoading: boolean;
+  isAbort: boolean;
+  isPause: boolean;
 
   constructor(type: AudioPlayerEventType, data: AudioPlayerData) {
     this.type = type;
     this.data = data;
-  }
-
-  isEnded(): boolean {
-    return this.type === AudioPlayerEventType.End;
+    this.isEnded = this.type === AudioPlayerEventType.End;
+    this.isPlaying = this.type === AudioPlayerEventType.Play;
+    this.isAbort = this.type === AudioPlayerEventType.Abort;
+    this.isPause = this.type === AudioPlayerEventType.Pause;
+    this.isLoading = this.type === AudioPlayerEventType.Loading;
   }
 }

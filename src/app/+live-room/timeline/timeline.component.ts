@@ -62,8 +62,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.timelineService.onDeleteMessages(message => this.onDeleteMessages(message));
     this.timelineService.onTimeLiveAction(goto => this.onTimelineAction(goto));
 
-    this.audioSub = this.audioPlayerService.globalAudio$.filter(event => event.isEnded()).subscribe(event => {
-      this.onAudioPlayEnded(event.data.message);
+    this.audioSub = this.audioPlayerService.globalAudio$.filter(e => e.isEnded).subscribe(e => {
+      this.onAudioPlayEnded(e.data.message);
     });
 
     this.startReceiveReply();
@@ -105,7 +105,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     let nextAudioMessage = this.findNextAudioTypeMessage(msg.id);
     if (!nextAudioMessage) return;
-
+    
     this.audioPlayerService.play(nextAudioMessage).subscribe();
   }
 

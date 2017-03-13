@@ -4,6 +4,7 @@ import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
 import {PostMessageStatus} from "../api/message/message.enum";
 import {UtilsService} from "../utils/utils";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'audio-player',
@@ -22,12 +23,22 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   played: boolean;
 
   isLoaded = false;
+  globalSub: Subscription;
 
   constructor(private audioPlayerService: AudioPlayerService) {
   }
 
   ngOnInit() {
     this.played = !!UtilsService.getStorage('audioPlayed')[this.message.id];
+    this.globalSub = this.audioPlayerService.globalAudio$.filter(e => e.data.message.id === this.message.id).subscribe(e => {
+      if (!this.played) {
+        this.played = true;
+        this.setPlayed(this.message.id);
+      }
+
+      if (e.isEnded) this.playEnded.emit(this.message);
+      if (e.isPlaying) this.isLoaded = true;
+    });
   }
 
   playOrStopVoice() {
@@ -41,21 +52,8 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   }
 
   play() {
-
-    if (!this.played) {
-      this.played = true;
-      this.setPlayed(this.message.id);
-    }
-
     this.audioPlayerService.userActivated = true;
-    this.audioPlayerService.play(this.message).subscribe(value => {
-      if (value === 'loaded') {
-        this.isLoaded = true;
-      }
-    }, () => {
-    }, () => {
-      this.playEnded.emit(this.message);
-    });
+    this.audioPlayerService.play(this.message).subscribe();
   }
 
   private _isPlaying() {
@@ -78,5 +76,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
     if (this.isPlaying) {
       this.audioPlayerService.stop(this.message);
     }
+
+    if (this.globalSub) this.globalSub.unsubscribe();
   }
 }
