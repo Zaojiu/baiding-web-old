@@ -9,6 +9,7 @@ export const appConfig = {
   lcAppKey: '_REPL_LEADCLOUD_APP_KEY_',
   wechatLink: '_REPL_WECHAT_LINK_',
   payAddress: '_REPL_WECHAT_PAY_ADDRESS_',
+  iosDownloadLink: 'http://fir.im/pkch',
 };
 
 export const environment = {
