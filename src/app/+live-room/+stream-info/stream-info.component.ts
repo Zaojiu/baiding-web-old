@@ -4,7 +4,6 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 import {LiveService} from "../../shared/api/live/live.service";
 import {UtilsService} from "../../shared/utils/utils";
 import {PushStreamAddr} from "./stream-info.model";
-import {SafeUrl} from "@angular/platform-browser";
 
 @Component({
   templateUrl: './stream-info.component.html',
