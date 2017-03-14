@@ -47,8 +47,8 @@ export class MyListModel {
 
     this.desc = data.desc;
     this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/60x/gravity/Center/crop/60x&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
+    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
+    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
 
     this.isNeedPay = data.isNeedPay;
     this.totalFee = data.totalFee;

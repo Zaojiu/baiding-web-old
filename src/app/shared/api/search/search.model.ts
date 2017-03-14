@@ -49,8 +49,8 @@ export class SearchResultItem {
     }
 
     this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.publish_at)}`;
-    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x/gravity/Center/crop/640x300&updatedAt=${Math.round(+data.publish_at)}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/60x/gravity/Center/crop/60x&updatedAt=${Math.round(+data.publish_at)}` : '/assets/img/default-cover.jpg';
+    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+data.publish_at)}` : '/assets/img/default-cover.jpg';
+    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${Math.round(+data.publish_at)}` : '/assets/img/default-cover.jpg';
     this.publishAt = moment(data.publishAt/1e6);
   }
 
