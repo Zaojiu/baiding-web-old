@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
@@ -46,17 +46,19 @@ export class ShareApiService {
   }
 
   // TODO, remove mock hash
-  makeShareQuery(rt, rid: string): URLSearchParams {
+  makeShareQuery(rt, rid: string): Params {
     let uid = this.userInfoService.getUserInfoCache().uid;
     let t = Math.ceil(new Date().getTime() / 1000);
 
-    let parmas = new URLSearchParams();
-    parmas.set('s', 'wechat');
-    parmas.set('u', uid + '');
-    parmas.set('rt', rt);
-    parmas.set('rid', rid);
-    parmas.set('t', t + '');
-    parmas.set('h', 'hash');
+    let parmas: Params = {
+      's': 'wechat',
+      'u': uid + '',
+      'rt': rt,
+      'rid': rid,
+      't': t + '',
+      'h': 'hash',
+    };
+
 
     return parmas;
   }
