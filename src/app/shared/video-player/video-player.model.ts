@@ -8,6 +8,14 @@ export class VideoPlayerSrc {
     this.src = src;
     this.type = type;
   }
+
+  get isM3u8(): boolean {
+    return this.src.toString().indexOf('.m3u8') !== -1;
+  }
+
+  get isRtmp(): boolean {
+    return this.src.toString().indexOf('rtmp://') !== -1;
+  }
 }
 
 export class VideoInfo {
@@ -25,7 +33,7 @@ export class VideoInfo {
     if (!this.src || !this.src.length) return false;
 
     for (let item of this.src) {
-      if (item.src.toString().indexOf('.m3u8') !== -1) return true;
+      if (item.isM3u8) return true;
     }
 
     return false;
@@ -35,7 +43,7 @@ export class VideoInfo {
     if (!this.src || !this.src.length) return false;
 
     for (let item of this.src) {
-      if (item.src.toString().indexOf('rtmp://') !== -1) return true;
+      if (item.isRtmp) return true;
     }
 
     return false;

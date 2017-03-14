@@ -51,16 +51,18 @@
   flex-shrink: 0;
   position: relative;
 
-  .video-player {
-    position: relative;
-    width: 100%;
+  &:before {
+    content: "";
     display: block;
+    padding-top: 56.25%;
+  }
 
-    &:before {
-      content: "";
-      display: block;
-      padding-top: 56.25%;
-    }
+  .video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 
   .live-cover {

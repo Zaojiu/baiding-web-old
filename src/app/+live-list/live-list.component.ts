@@ -10,7 +10,6 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {LiveStatus} from "../shared/api/live/live.enums";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {UserInfoModel} from "../shared/api/user-info/user-info.model";
-import {ShareBridge} from "../shared/bridge/share.interface";
 
 declare var $: any;
 declare var Waypoint: any;
@@ -38,8 +37,6 @@ export class LiveListComponent implements OnInit, OnDestroy {
   from = '/';
 
   ngOnInit() {
-    this.getNextMessages('', this.loadSize);
-
     this.userInfo = this.route.snapshot.data['userInfo'];
 
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}正在使用造就，发现更多经验分享`;
@@ -95,7 +92,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
     this.router.navigate(([`info-center/${uid}`]));
   }
 
-  getNextMessages(markerId: string, size: number): Promise<LiveInfoModel[]> {
+  getLists(markerId: string, size: number): Promise<LiveInfoModel[]> {
     return this.liveService.listRecommendLiveInfo(markerId, size + 1).then((livesList) => {
       if (livesList.length < size + 1) {
         this.isOnLatest = true;
@@ -159,7 +156,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
     if (e.position == ScrollerPosition.OnBottom) {
       if (this.livesList.length !== 0 && !this.isOnLatest) {
         let lastId = this.livesList[this.livesList.length - 1].id;
-        this.getNextMessages(lastId, this.loadSize).finally(() => {
+        this.getLists(lastId, this.loadSize).finally(() => {
           this.scroller.hideFootLoading();
         });
       }

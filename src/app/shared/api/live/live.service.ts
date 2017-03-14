@@ -349,20 +349,27 @@ export class LiveService {
   processStreamInfo(liveInfo: LiveInfoModel): Promise<VideoInfo> {
     if (!liveInfo.isTypeVideo()) return Promise.resolve(null);
 
-    let hlsPromise = !liveInfo.isClosed() ? this.getStreamPullingAddr(liveInfo.id) : null;
-    // 直播已开始, 并且推过流
-    let playbackPromise = !liveInfo.isCreated() && liveInfo.isStreamDone() ? this.getPlaybackAddr(liveInfo.id) : null;
+    let promise = null;
 
-    return Promise.all([hlsPromise, playbackPromise]).then(result => {
-      let streamInfo = result[0];
-      let playbackInfo = result[1];
+    if (liveInfo.isCreated()) {
+      return Promise.resolve(null);
+    } else if (liveInfo.isStarted()) {
+      if (liveInfo.isStreamNone()) return Promise.resolve(null);
+
+      if (liveInfo.isStreamPushing()) promise = this.getStreamPullingAddr(liveInfo.id);
+
+      if (liveInfo.isStreamDone()) promise = this.getPlaybackAddr(liveInfo.id);
+    } else if (liveInfo.isClosed()) {
+      promise = this.getPlaybackAddr(liveInfo.id);
+    }
+
+    return promise.then(result => {
       let videos: VideoPlayerSrc[] = [];
-      if (streamInfo) {
-        for (let item of streamInfo.src) videos.push(item);
+      for (let item of result.src) {
+        if (UtilsService.isDesktopChrome && item.isM3u8) continue;
+        videos.push(item);
       }
-      if (playbackInfo) {
-        for (let item of playbackInfo.src) videos.push(item);
-      }
+
       return new VideoInfo(videos);
     });
  }
@@ -372,8 +379,15 @@ export class LiveService {
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let streamAddr = data ? UtilsService.isDesktopChrome ? data.rtmp : data.hls : '';
-      let streamSrc = [new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(streamAddr), UtilsService.isDesktopChrome ? 'rtmp/mp4' : 'application/x-mpegURL')];
+      let streamSrc = [];
+
+      if (data && data.rtmp) {
+        streamSrc.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.rtmp), 'rtmp/mp4'));
+      }
+
+      if (data && data.hls) {
+        streamSrc.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.hls), 'application/x-mpegURL'));
+      }
 
       return new VideoInfo(streamSrc);
     });
@@ -398,10 +412,10 @@ export class LiveService {
       let playbackAddr: VideoPlayerSrc[] = [];
 
       if (data) {
-        if (data.m3u8) playbackAddr.push(new VideoPlayerSrc(data.m3u8, 'application/x-mpegURL'));
-        if (data.SD_mp4) playbackAddr.push(new VideoPlayerSrc(data.SD_mp4, 'video/mp4'));
-        if (data.HD_mp4) playbackAddr.push(new VideoPlayerSrc(data.HD_mp4, 'video/mp4'));
-        if (data._mp4) playbackAddr.push(new VideoPlayerSrc(data._mp4, 'video/mp4'));
+        if (data.m3u8 && !UtilsService.isDesktopChrome) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.m3u8), 'video/mp4'));
+        if (data.SD_mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.SD_mp4), 'video/mp4'));
+        if (data.HD_mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.HD_mp4), 'video/mp4'));
+        if (data._mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data._mp4), 'video/mp4'));
       }
 
       return new VideoInfo(playbackAddr);

@@ -13,6 +13,7 @@ import {PushStreamAddr} from "./stream-info.model";
 export class StreamInfoComponent implements OnInit, AfterViewInit {
   liveId: string;
   pushStreamAddr: PushStreamAddr[];
+  pullStreamAddr: {[key: string]: string} = {};
   @ViewChild('copyBtn') copyBtn: ElementRef;
   isInApp = UtilsService.isInApp;
 
@@ -27,6 +28,13 @@ export class StreamInfoComponent implements OnInit, AfterViewInit {
 
       for (let addr of pushStreamAddr) {
         this.pushStreamAddr.push(new PushStreamAddr(addr));
+      }
+    });
+
+    this.liveService.getStreamPullingAddr(this.liveId).then(pullStreamAddr => {
+      for (let item of pullStreamAddr.src) {
+        if (item.isM3u8) this.pullStreamAddr['m3u8'] = item.src['changingThisBreaksApplicationSecurity'];
+        if (item.isRtmp) this.pullStreamAddr['rtmp'] = item.src['changingThisBreaksApplicationSecurity'];
       }
     });
   }

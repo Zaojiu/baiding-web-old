@@ -38,11 +38,12 @@ export class VideoPlayerComponent implements OnDestroy {
         this.player.play();
       } else {
         System.import('video.js').then(videojs => {
-          let opts = {
+          let opts: any = {
             nativeControlsForTouch: true,
             controls: true,
             flash: {swf: '/assets/video-js.swf'}
           };
+
           this.player = videojs(this.videoPlayer.nativeElement, opts);
           this.isPlaying = true;
           this.player.play();
