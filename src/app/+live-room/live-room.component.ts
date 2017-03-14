@@ -12,6 +12,9 @@ import {MqEvent, EventType} from '../shared/mq/mq.service';
 import {ShareBridge} from '../shared/bridge/share.interface';
 import {MessageApiService} from "../shared/api/message/message.api";
 import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.model";
+import {UtilsService} from "../shared/utils/utils";
+import {environment} from "../../environments/environment";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -28,10 +31,47 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   praisedSub: Subscription;
   videoInfo: VideoInfo;
   videoOption: VideoPlayerOption;
+  isDownloadTipsShow = UtilsService.isiOS;
+  iosDownloadLink: SafeUrl;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
-              private shareService: ShareApiService, private messageApiService: MessageApiService) {
+              private shareService: ShareApiService, private messageApiService: MessageApiService, private sanitizer: DomSanitizer) {
+  }
+
+  ngOnInit() {
+    this.id = this.route.snapshot.params['id'];
+    this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
+
+    this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
+    this.liveService.getLiveInfo(this.id, true, true).then(() => { // 发送加入话题间的请求。
+      if (this.liveInfo.isTypeVideo()) this.getStreamInfo(); // 必须等待加入房间后, 才可拿到拉流信息。
+    });
+    this.setShareInfo(); // 设置分享参数等。
+    this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
+    this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
+
+    this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
+      if (evt.event != EventType.LivePraise) {
+        return
+      }
+      if (evt.info.user.uid == this.userInfo.uid) {
+        return
+      }
+      let userAnim = new UserAnimEmoji;
+      userAnim.emoji = evt.info.emoji;
+      userAnim.user = new UserInfoModel;
+      this.liveInfo.praisedAnimations.push(userAnim);
+    });
+
+    this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);
+  }
+
+  ngOnDestroy() {
+    if (this.praisedSub) this.praisedSub.unsubscribe();
+
+    if (this.refreshInterval) clearInterval(this.refreshInterval);
   }
 
   refreshLiveInfo() {
@@ -80,38 +120,5 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       this.videoInfo = videoInfo;
       this.videoOption = new VideoPlayerOption(!this.videoInfo.hasRtmp);
     });
-  }
-
-  ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
-    this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
-
-    this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
-    this.liveService.getLiveInfo(this.id, true, true).then(() => { // 发送加入话题间的请求。
-      if (this.liveInfo.isTypeVideo()) this.getStreamInfo(); // 必须等待加入房间后, 才可拿到拉流信息。
-    });
-    this.setShareInfo(); // 设置分享参数等。
-    this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
-    this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
-
-    this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
-      if (evt.event != EventType.LivePraise) {
-        return
-      }
-      if (evt.info.user.uid == this.userInfo.uid) {
-        return
-      }
-      let userAnim = new UserAnimEmoji;
-      userAnim.emoji = evt.info.emoji;
-      userAnim.user = new UserInfoModel;
-      this.liveInfo.praisedAnimations.push(userAnim);
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.praisedSub) this.praisedSub.unsubscribe();
-
-    if (this.refreshInterval) clearInterval(this.refreshInterval);
   }
 }

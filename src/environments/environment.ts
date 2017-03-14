@@ -14,6 +14,7 @@ export const appConfig = {
   lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
   wechatLink: 'http://weixin.qq.com/r/OkOrs7fEwOq-rfPQ9xYo',
   payAddress: '/dev/wxpay/',
+  iosDownloadLink: 'http://fir.im/pkch',
 };
 
 export const environment = {
