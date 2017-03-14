@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -15,6 +15,7 @@ import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.
 import {UtilsService} from "../shared/utils/utils";
 import {environment} from "../../environments/environment";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {VideoPlayerComponent} from "../shared/video-player/video-player.component";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -29,6 +30,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isCommentOpened: boolean = true;
   refreshInterval: any;
   praisedSub: Subscription;
+  @ViewChild('videoPlayer') videoPlayer: VideoPlayerComponent;
   videoInfo: VideoInfo;
   videoOption: VideoPlayerOption;
   isDownloadTipsShow = UtilsService.isiOS;
@@ -118,7 +120,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   getStreamInfo() {
     this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
       this.videoInfo = videoInfo;
-      this.videoOption = new VideoPlayerOption(!this.videoInfo.hasRtmp);
+      let hasProgressBar = this.videoInfo && !this.videoInfo.hasRtmp;
+      this.videoOption = new VideoPlayerOption(hasProgressBar);
     });
+  }
+
+  playVideo() {
+    if (this.videoPlayer) this.videoPlayer.play();
   }
 }

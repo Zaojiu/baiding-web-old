@@ -14,10 +14,10 @@
   <a class="download-btn" target="_blank" [href]="iosDownloadLink">立即下载</a>
 </div>
 
-<div class="video" *ngIf="videoInfo">
-  <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
+<div class="video" *ngIf="liveInfo && liveInfo.isTypeVideo()">
+  <video-player #videoPlayer class="video-player" *ngIf="videoInfo" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
 
-  <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="videoPlayer.play()">
+  <div class="live-cover" *ngIf="!videoPlayer || !videoPlayer.isPlaying" (click)="playVideo()">
     <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
 
     <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
