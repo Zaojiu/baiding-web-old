@@ -33,7 +33,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   @ViewChild('videoPlayer') videoPlayer: VideoPlayerComponent;
   videoInfo: VideoInfo;
   videoOption: VideoPlayerOption;
-  isDownloadTipsShow = UtilsService.isiOS;
+  isDownloadTipsShow = UtilsService.isiOS && !UtilsService.isInApp;
   iosDownloadLink: SafeUrl;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,

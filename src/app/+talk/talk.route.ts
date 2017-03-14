@@ -1,18 +1,20 @@
 import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
-import {AuthGuard} from "../shared/guard/auth.guard";
 import {ArticleComponent} from "./article/article.component";
+import {UserInfoResolver} from "../shared/guard/user-info.resolver";
 
 const route: Routes = [
   {
     path: ':id',
-    canActivate: [AuthGuard],
     children: [
       {
         path: '',
         component: ArticleComponent,
         data: {
           isAsyncShareInfo: true,
+        },
+        resolve: {
+          userInfo: UserInfoResolver,
         },
         children: [
           { path: '' },
