@@ -20,6 +20,36 @@
     </div>
   </div>
 
+  <div class="form-group" *ngIf="pullStreamAddr && pullStreamAddr.rtmp">
+    <div class="input-group">
+      <textarea
+        name="pullStreamRtmp"
+        class="stream-info-input"
+        type="text"
+        readonly
+        [(ngModel)]="pullStreamAddr.rtmp"
+        autoresize
+        rows="1"
+      ></textarea>
+      <label>rtmp拉流地址</label>
+    </div>
+  </div>
+
+  <div class="form-group" *ngIf="pullStreamAddr && pullStreamAddr.m3u8">
+    <div class="input-group">
+      <textarea
+        name="pullStreamM3u8"
+        class="stream-info-input"
+        type="text"
+        readonly
+        [(ngModel)]="pullStreamAddr.m3u8"
+        autoresize
+        rows="1"
+      ></textarea>
+      <label>m3u8拉流地址</label>
+    </div>
+  </div>
+
   <div class="operation-area">
     <button #copyBtn type="button" class="btn" data-clipboard-action="copy" data-clipboard-target="#streamInfo0">
       复制推流地址

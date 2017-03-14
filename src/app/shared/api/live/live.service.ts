@@ -365,7 +365,10 @@ export class LiveService {
 
     return promise.then(result => {
       let videos: VideoPlayerSrc[] = [];
-      for (let item of result.src) videos.push(item);
+      for (let item of result.src) {
+        if (UtilsService.isDesktopChrome && item.isM3u8) continue;
+        videos.push(item);
+      }
 
       return new VideoInfo(videos);
     });
@@ -376,8 +379,15 @@ export class LiveService {
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let streamAddr = data ? UtilsService.isDesktopChrome ? data.rtmp : data.hls : '';
-      let streamSrc = [new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(streamAddr), UtilsService.isDesktopChrome ? 'rtmp/mp4' : 'application/x-mpegURL')];
+      let streamSrc = [];
+
+      if (data && data.rtmp) {
+        streamSrc.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.rtmp), 'rtmp/mp4'));
+      }
+
+      if (data && data.hls) {
+        streamSrc.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.hls), 'application/x-mpegURL'));
+      }
 
       return new VideoInfo(streamSrc);
     });
@@ -402,10 +412,10 @@ export class LiveService {
       let playbackAddr: VideoPlayerSrc[] = [];
 
       if (data) {
-        if (data.m3u8 && !UtilsService.isDesktopChrome) playbackAddr.push(new VideoPlayerSrc(data.m3u8, 'video/mp4'));
-        if (data.SD_mp4) playbackAddr.push(new VideoPlayerSrc(data.SD_mp4, 'video/mp4'));
-        if (data.HD_mp4) playbackAddr.push(new VideoPlayerSrc(data.HD_mp4, 'video/mp4'));
-        if (data._mp4) playbackAddr.push(new VideoPlayerSrc(data._mp4, 'video/mp4'));
+        if (data.m3u8 && !UtilsService.isDesktopChrome) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.m3u8), 'video/mp4'));
+        if (data.SD_mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.SD_mp4), 'video/mp4'));
+        if (data.HD_mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.HD_mp4), 'video/mp4'));
+        if (data._mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data._mp4), 'video/mp4'));
       }
 
       return new VideoInfo(playbackAddr);
