@@ -8,6 +8,8 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {TitleService} from "../../shared/title/title.service";
+import {AuthBridge} from "../../shared/bridge/auth.interface";
+import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 @Component({
   templateUrl: './article.component.html',
@@ -16,6 +18,7 @@ import {TitleService} from "../../shared/title/title.service";
 
 export class ArticleComponent implements OnInit, OnDestroy {
   id: string;
+  userInfo: UserInfoModel;
   talkInfo: TalkInfoModel;
   videoInfo: VideoInfo;
   comments: TalkCommentModel[] = [];
@@ -34,11 +37,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private sanitizer: DomSanitizer,
-              private shareBridge: ShareBridge, private titleService: TitleService) {
+              private shareBridge: ShareBridge, private titleService: TitleService, private authBridge: AuthBridge) {
   }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
+    this.userInfo = this.route.snapshot.data['userInfo'];
+
     this.getTalkInfo();
 
     this.routeSub = this.router.events.subscribe((event) => {
@@ -102,7 +107,18 @@ export class ArticleComponent implements OnInit, OnDestroy {
     })
   }
 
+  checkSignIn() {
+    if (!this.userInfo) {
+      this.authBridge.auth(encodeURIComponent(location.href));
+      return false;
+    }
+
+    return true;
+  }
+
   favorite() {
+    if (!this.checkSignIn()) return;
+
     if (this.isFavoriting) return;
 
     this.talkInfo.isFavorited = true;
@@ -118,6 +134,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   unfavorite() {
+    if (!this.checkSignIn()) return;
+
     if (this.isFavoriting) return;
 
     this.talkInfo.isFavorited = false;
@@ -133,6 +151,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   praise() {
+    if (!this.checkSignIn()) return;
+
     if (this.isPraising) return;
 
     this.talkInfo.isPraised = true;
@@ -150,6 +170,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   unpraise() {
+    if (!this.checkSignIn()) return;
+
     if (this.isPraising) return;
 
     this.talkInfo.isPraised = false;
