@@ -45,14 +45,14 @@ export class MyListModel {
         this.type = ResourceType.Unknown;
     }
 
+    this.publishAt = moment(data.publishAt);
     this.desc = data.desc;
-    this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
+    this.coverUrl = `${data.coverUrl}?updatedAt=${this.publishAt.unix()}`;
+    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${this.publishAt.unix()}` : '/assets/img/default-cover.jpg';
+    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${this.publishAt.unix()}` : '/assets/img/default-cover.jpg';
 
     this.isNeedPay = data.isNeedPay;
     this.totalFee = data.totalFee;
-    this.publishAt = moment(data.publishAt);
   }
 
   isLive(): boolean {

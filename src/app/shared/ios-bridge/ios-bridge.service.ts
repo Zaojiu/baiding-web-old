@@ -52,6 +52,21 @@ export class IosBridgeService {
     }
   }
 
+  gotoRoom(id: string, data: any) {
+    let query: any = {
+      id: id,
+      data: data,
+    };
+    
+    if (this.hasInit) {
+      this.bridge.callHandler('gotoRoom', query);
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('gotoRoom', query);
+      });
+    }
+  }
+
   copyText(text: string) {
     return new Promise((resolve, reject) => {
       if (this.hasInit) {

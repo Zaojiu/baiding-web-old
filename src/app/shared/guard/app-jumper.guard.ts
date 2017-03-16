@@ -10,9 +10,10 @@ import {UtilsService} from "../utils/utils";
 import {IosBridgeService} from "../ios-bridge/ios-bridge.service";
 import {AuthBridge} from "../bridge/auth.interface";
 import {ArticleComponent} from "../../+talk/article/article.component";
-import {TalkSummaryModel} from "../api/talk/talk.model";
 import {TalkService} from "../api/talk/talk.api";
 import {StoreService} from "../store/store.service";
+import {MyListModel} from "../api/my/my.model";
+import {ResourceType} from "../api/resource-type.enums";
 
 @Injectable()
 export class AppJumperGuard implements CanActivate {
@@ -22,7 +23,7 @@ export class AppJumperGuard implements CanActivate {
               private iosBridge: IosBridgeService, private router: Router, private authService: AuthBridge) {
   }
 
-  private gotoLive(liveId: string, route: ActivatedRouteSnapshot, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
+  private gotoLive(liveId: string, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
     return Promise.all<UserInfoModel, LiveInfoModel>([this.processUserInfo(state), this.processLiveInfo(liveId)]).then(result => {
       let userInfo = result[0];
       let liveInfo = result[1];
@@ -35,7 +36,24 @@ export class AppJumperGuard implements CanActivate {
 
       // 文字直播间, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
       if (UtilsService.isInApp && needPush) {
-        this.iosBridge.pushH5State(route, state);
+        let model = this.getObjectInfoCache(liveId);
+
+        if (!model) {
+          model = {
+            id: liveInfo.id,
+            type: ResourceType.Live,
+            subject: liveInfo.subject,
+            desc: liveInfo.desc,
+            coverUrl: liveInfo.coverUrl,
+            coverSmallUrl: liveInfo.coverSmallUrl,
+            coverThumbnailUrl: liveInfo.coverThumbnailUrl,
+            isNeedPay: liveInfo.isNeedPay,
+            totalFee: liveInfo.totalFee,
+            publishAt: moment(+liveInfo.createdAt),
+          } as MyListModel;
+        }
+
+        this.iosBridge.gotoRoom(liveId, model);
         return false;
       }
 
@@ -45,33 +63,51 @@ export class AppJumperGuard implements CanActivate {
     });
   }
 
-  private gotoTalk(talkId: string, route: ActivatedRouteSnapshot, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
-    return this.processTalkInfo(talkId).then(talkSummary => {
-      // 文字直播间, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
+  private gotoTalk(talkId: string, needPush: boolean): Promise<boolean> {
+    let goto = (data: MyListModel, resolve) => {
       if (UtilsService.isInApp && needPush) {
-        this.iosBridge.pushH5State(route, state, talkSummary);
-        return false;
+        this.iosBridge.gotoRoom(talkId, data);
+        resolve(false);
       }
 
-      return true;
-    }, () => {
-      return false;
+      resolve(true);
+    };
+
+    return new Promise((resolve, reject) => {
+      let cache = this.getObjectInfoCache(talkId);
+      if (cache) {
+        goto(cache, resolve);
+      } else {
+        this.talkService.getTalkInfo(talkId).then(talkInfo => {
+          let model = {
+            id: talkInfo.id,
+            type: ResourceType.Talk,
+            subject: talkInfo.subject,
+            desc: talkInfo.desc,
+            coverUrl: talkInfo.coverUrl,
+            coverSmallUrl: talkInfo.coverSmallUrl,
+            coverThumbnailUrl: talkInfo.coverThumbnailUrl,
+            isNeedPay: talkInfo.isNeedPay,
+            totalFee: talkInfo.totalFee,
+            publishAt: talkInfo.publishAt,
+          } as MyListModel;
+          goto(model, resolve);
+        }, () => {
+          this.router.navigate([`404`]);
+          resolve(false);
+        });
+      }
     });
   }
 
-  private processTalkInfo(talkId: string): Promise<TalkSummaryModel> {
-    let talkSummary = StoreService.get('talkSummary');
+  private getObjectInfoCache(objectId: string): MyListModel {
+    let objectCache = StoreService.get('objectCache');
 
-    if (talkSummary && talkSummary[talkId]) {
-      return Promise.resolve(talkSummary[talkId] as TalkSummaryModel);
+    if (objectCache && objectCache[objectId]) {
+      return objectCache[objectId] as MyListModel;
     }
 
-    return this.talkService.getTalkInfo(talkId).then(talkInfo => {
-      return new TalkSummaryModel(talkInfo.isNeedPay);
-    }, () => {
-      this.router.navigate([`404`]);
-      return null;
-    });
+    return null;
   }
 
   private processLiveInfo(liveId: string): Promise<LiveInfoModel> {
@@ -113,10 +149,10 @@ export class AppJumperGuard implements CanActivate {
 
     if (route.component === LiveRoomComponent) {
       let liveId = route.params['id'];
-      return this.gotoLive(liveId, route, state, needPush);
+      return this.gotoLive(liveId, state, needPush);
     } else if (route.parent.component === ArticleComponent) {
       let talkId = route.params['id'];
-      return this.gotoTalk(talkId, route, state, needPush);
+      return this.gotoTalk(talkId, needPush);
     } else {
       // 其他路由, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
       if (UtilsService.isInApp && needPush) {
