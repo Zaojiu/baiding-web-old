@@ -5,14 +5,14 @@
     <div class="editors-container" *ngIf="audienceListInvitations && audienceListInvitations.length!==0">
       <div class="introduce">嘉宾介绍</div>
       <div class="editors-wrapper">
-        <div class="editors" *ngFor="let editor of audienceListInvitations">
+        <div class="editors" *ngFor="let speaker of audienceListInvitations">
           <div class="avatar-wrapper">
-            <img class="editor-avatar" [src]="editor.avatar_url">
+            <img class="editor-avatar" [src]="speaker.avatar_url">
           </div>
           <div class="words-wrapper">
             <div class="words-align-center">
-              <div class="editor-name">{{editor.nick}}</div>
-              <div class="editor-intro">{{editor.title}}</div>
+              <span class="editor-name">{{speaker.name}}</span>
+              <div class="editor-intro">{{speaker.title}}</div>
             </div>
           </div>
         </div>
