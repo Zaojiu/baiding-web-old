@@ -4,7 +4,6 @@ import 'rxjs/add/operator/toPromise';
 
 import {environment} from "../../../../environments/environment";
 import {MyListModel, MyListResult} from "./my.model";
-import {TalkSummaryModel} from "../talk/talk.model";
 import {StoreService} from "../../store/store.service";
 
 @Injectable()
@@ -28,12 +27,13 @@ export class MyApiService {
       let hasMore = data.include ? data.include.has_more : false;
 
       for (let item of data.result) {
-        list.push(new MyListModel(item));
+        let model = new MyListModel(item);
+        list.push(model);
 
         // 缓存talk信息
-        let talkSummary = StoreService.get('talkSummary') || {};
-        talkSummary[item.id] = new TalkSummaryModel(item.isNeedPay);
-        StoreService.set('talkSummary', talkSummary);
+        let objectCache = StoreService.get('objectCache') || {};
+        objectCache[item.id] = model;
+        StoreService.set('objectCache', objectCache);
       }
 
       return new MyListResult(list, marker, hasMore);
@@ -56,12 +56,13 @@ export class MyApiService {
       let hasMore = data.include ? data.include.has_more : false;
 
       for (let item of data.result) {
-        list.push(new MyListModel(item));
+        let model = new MyListModel(item);
+        list.push(model);
 
         // 缓存talk信息
-        let talkSummary = StoreService.get('talkSummary') || {};
-        talkSummary[item.id] = new TalkSummaryModel(item.isNeedPay);
-        StoreService.set('talkSummary', talkSummary);
+        let objectCache = StoreService.get('objectCache') || {};
+        objectCache[item.id] = model;
+        StoreService.set('objectCache', objectCache);
       }
 
       return new MyListResult(list, marker, hasMore);

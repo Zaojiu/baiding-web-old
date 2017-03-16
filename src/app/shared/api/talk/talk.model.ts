@@ -1,14 +1,6 @@
 import {UserInfoModel} from '../user-info/user-info.model';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
-export class TalkSummaryModel {
-  isNeedPay: boolean;
-
-  constructor(isNeedPay: boolean) {
-    this.isNeedPay = isNeedPay;
-  }
-}
-
 export class TalkInfoMediaModel {
   mp3: string;
   mp4: string;
