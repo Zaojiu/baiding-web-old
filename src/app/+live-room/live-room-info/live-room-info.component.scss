@@ -69,6 +69,7 @@
         .editors {
           display: flex;
           margin: 20px 10px auto 10px;
+          flex-shrink: 0;
 
           .avatar-wrapper {
             display: flex;
@@ -83,12 +84,13 @@
 
           .words-wrapper {
             display: flex;
+            flex-shrink: 0;
 
             .words-align-center {
               margin: auto;
               margin-left: 10px;
               word-wrap: break-word;
-              max-width: 200px;
+              max-width: 150px;
 
               .editor-name {
                 font-size: 16px;
@@ -170,6 +172,7 @@
     width: 260px;
     overflow: hidden;
     background-color: $color-w;
+    padding-bottom: 10px;
 
     .header {
       position: relative;
