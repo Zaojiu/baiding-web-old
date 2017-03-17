@@ -9,6 +9,8 @@ import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first
 import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 import {FormModule} from "../../shared/form/form.module";
 import {TimelineService} from "../timeline/timeline.service";
+import {FileSelectorModule} from "../../shared/file-selector/file-selector.module";
+import {UploadApiService} from "../../shared/api/upload/upload.api";
 
 @NgModule({
   imports: [
@@ -19,6 +21,7 @@ import {TimelineService} from "../timeline/timeline.service";
     AutofocusFirstInvalidInputModule,
     FormsModule,
     FormModule,
+    FileSelectorModule,
     AutoresizeModule,
   ],
   declarations: [
@@ -26,6 +29,7 @@ import {TimelineService} from "../timeline/timeline.service";
   ],
   providers: [
     TimelineService,
+    UploadApiService,
   ],
 })
 

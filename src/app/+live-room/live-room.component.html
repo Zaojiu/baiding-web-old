@@ -5,14 +5,14 @@
   <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
 <!--&gt;</beginner-guide>-->
 
-<div class="download-tips" *ngIf="isDownloadTipsShow">
-  <i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>
-  <div class="tips">
-    造就iOS版
-    <small>发现最有创造力的声音</small>
-  </div>
-  <a class="download-btn" target="_blank" [href]="iosDownloadLink">立即下载</a>
-</div>
+<!--<div class="download-tips" *ngIf="isDownloadTipsShow">-->
+  <!--<i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>-->
+  <!--<div class="tips">-->
+    <!--造就iOS版-->
+    <!--<small>发现最有创造力的声音</small>-->
+  <!--</div>-->
+  <!--<a class="download-btn" target="_blank" [href]="iosDownloadLink">立即下载</a>-->
+<!--</div>-->
 
 <div class="video" *ngIf="liveInfo && liveInfo.isTypeVideo()">
   <video-player #videoPlayer class="video-player" *ngIf="videoInfo" [videoInfo]="videoInfo" [option]="videoOption"></video-player>

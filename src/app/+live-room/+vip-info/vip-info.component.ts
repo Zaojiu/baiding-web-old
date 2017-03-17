@@ -8,6 +8,10 @@ import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {InvitationModel} from "../../shared/api/invite/invite.model";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {UtilsService} from "../../shared/utils/utils";
+import {SafeUrl, DomSanitizer} from "@angular/platform-browser";
+import {ImageBridge} from "../../shared/bridge/image.interface";
+import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
+import {UploadApiService} from "../../shared/api/upload/upload.api";
 
 @Component({
   templateUrl: './vip-info.component.html',
@@ -19,7 +23,14 @@ export class VipInfoComponent implements OnInit {
   liveId: string;
   token: string;
   nick = '';
+  title = '';
   intro = '';
+  avatarFiles: File[];
+  avatarSrc: SafeUrl | string;
+  wxLocalId: string;
+  oldFileName = '';
+  fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
+  maxSizeMB = 8;
   maxIntroLength = 100;
   form: FormGroup;
   isSubmitting = false;
@@ -27,9 +38,11 @@ export class VipInfoComponent implements OnInit {
   liveInfo: LiveInfoModel;
   invitations: InvitationModel[];
   isInApp = UtilsService.isInApp;
+  isInWechat = UtilsService.isInWechat;
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
-              private inviteApiService: InviteApiService, private operationTipsService: OperationTipsService) {
+              private inviteApiService: InviteApiService, private operationTipsService: OperationTipsService,
+              private sanitizer: DomSanitizer, private imageBridge: ImageBridge, private uploadService: UploadApiService) {
   }
 
   ngOnInit() {
@@ -42,12 +55,52 @@ export class VipInfoComponent implements OnInit {
     });
 
     this.form = this.fb.group({
+      'avatar': new FormControl(this.avatarFiles, [
+        sizeValidator(this.maxSizeMB),
+        typeValidator(this.fileTypeRegexp),
+      ]),
       'nick': new FormControl(this.nick, [
         Validators.required,
       ]),
+      'title': new FormControl(this.title, []),
       'intro': new FormControl(this.intro, [
         Validators.maxLength(this.maxIntroLength),
       ]),
+    });
+  }
+
+  ngDoCheck() {
+    if (!this.isInWechat) {
+      if (this.form.controls['avatar'].valid && this.avatarFiles) {
+
+        if (this.avatarFiles.length) {
+          let file = this.avatarFiles[0];
+
+          if (this.oldFileName === file.name) return;
+
+          let reader = new FileReader();
+
+          reader.onload = (e) => {
+            this.avatarSrc = this.sanitizer.bypassSecurityTrustUrl(e.target['result']);
+            this.oldFileName = file.name;
+          };
+
+          reader.readAsDataURL(file);
+        } else {
+          this.avatarSrc = '';
+          this.oldFileName = '';
+        }
+      } else {
+        this.avatarSrc = '';
+        this.oldFileName = '';
+      }
+    }
+  }
+
+  selectImages() {
+    this.imageBridge.chooseImages(1).then((localIds) => {
+      this.wxLocalId = localIds[0] as string;
+      this.avatarSrc = this.sanitizer.bypassSecurityTrustUrl(localIds[0] as string);
     });
   }
 
@@ -82,7 +135,23 @@ export class VipInfoComponent implements OnInit {
         return;
       }
 
-      return this.inviteApiService.getInvited(this.liveId, this.nick, this.intro);
+      let promise = null;
+
+      if (this.wxLocalId) {
+        promise = this.imageBridge.uploadImage(this.wxLocalId).then(serverId => {
+          return this.inviteApiService.createInvititation(this.liveId, this.nick, null, serverId, this.intro, this.title);
+        });
+      } else if (this.avatarFiles && this.avatarFiles.length) {
+        promise = this.inviteApiService.getInviteUploadToken(this.liveId).then(token => {
+          return this.uploadService.uploadToQiniu(this.avatarFiles[0], '', token);
+        }).then(imageKey => {
+          return this.inviteApiService.createInvititation(this.liveId, this.nick, imageKey, '', this.intro, this.title);
+        });
+      } else {
+        promise = this.inviteApiService.createInvititation(this.liveId, this.nick, '', '', this.intro, this.title);
+      }
+
+      return promise;
     }).then((model) => {
       this.router.navigate(([`lives/${this.liveId}/invitation`, {token: model.token}]));
     }).finally(() => {

@@ -12,7 +12,7 @@ export class UploadApiService {
   uploadToQiniu(file: File|Blob, key: string, token: string): Promise<string> {
     let form = new FormData();
 
-    form.append("key", key);
+    if (key) form.append("key", key);
     form.append('token', token);
     form.append('file', file);
 
