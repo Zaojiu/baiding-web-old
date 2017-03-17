@@ -28,4 +28,4 @@
   </div>
 </div>
 
-<hamburger-menu class="hamburger-menu" [liveId]="liveInfo.id" [userInfo]="userInfo"></hamburger-menu>
+<hamburger-menu class="hamburger-menu" [liveId]="liveInfo.id" [userInfo]="userInfo" *ngIf="!isInApp"></hamburger-menu>

@@ -22,6 +22,7 @@ import {InputtingService} from './message/inputting.service';
 import {InputtingComponent} from './message/inputting.component';
 import {HackMessages} from "./hack-messages";
 import {LiveRoomService} from "../live-room.service";
+import {UtilsService} from "../../shared/utils/utils";
 
 @Component({
   selector: 'timeline',
@@ -44,6 +45,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   unreadCount = 0;
   historyTipsShown = false;
   private audioSub: Subscription;
+  isInApp = UtilsService.isInApp;
 
   @ViewChild('inputtingComp') inputtingComp: InputtingComponent;
 
@@ -105,7 +107,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     let nextAudioMessage = this.findNextAudioTypeMessage(msg.id);
     if (!nextAudioMessage) return;
-    
+
     this.audioPlayerService.play(nextAudioMessage).subscribe();
   }
 

@@ -16,14 +16,9 @@ export class InvitationModel {
   id: string;
   name: string;
   desc: string;
+  avatar_url: string;
   userInfo: UserInfoModel;
   token: string;
-}
-
-export class PostInvitationModel {
-  name: string;
-  desc: string;
-
 }
 
 export class AudienceInvitationModel {

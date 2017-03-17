@@ -35,6 +35,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
   timer: any;
   userInfo: UserInfoModel;
   from = '/';
+  isInApp = UtilsService.isInApp;
 
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];

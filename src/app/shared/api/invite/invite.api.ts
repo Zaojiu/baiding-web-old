@@ -1,8 +1,7 @@
 import {Injectable}     from '@angular/core';
-import {Http, Response, Headers} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {InvitationModel, InvitationSummaryModel, AudienceInvitationModel} from './invite.model';
-import {PostInvitationModel} from './invite.model';
 import {environment} from "../../../../environments/environment";
 
 @Injectable()
@@ -10,10 +9,16 @@ export class InviteApiService {
   constructor(private http: Http) {
   }
 
-  getInvited(liveId: string, name: string, desc: string): Promise<InvitationModel> {
-    let data = new PostInvitationModel();
-    data.name = name;
-    data.desc = desc;
+  createInvititation(liveId: string, name: string, avatarKey?: string, avatarWeixinId?: string, desc?: string, title?: string): Promise<InvitationModel> {
+    let data: any = {
+      name: name,
+    };
+
+    if (avatarKey) data.avatarKey = avatarKey;
+    if (avatarWeixinId) data.avatarWeixinId = avatarWeixinId;
+    if (desc) data.desc = desc;
+    if (title) data.title = title;
+
     let url = `${environment.config.host.io}/api/live/streams/${liveId}/invite`;
 
     return this.http.post(url, JSON.stringify(data)).toPromise()
@@ -26,6 +31,15 @@ export class InviteApiService {
         model.token = data.token;
         model.userInfo = null;
         return model;
+      });
+  }
+
+  getInviteUploadToken(liveId: string): Promise<string> {
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/invite/avatar/uptoken`;
+    return this.http.post(url, null).toPromise()
+      .then(response => {
+        let data = response.json();
+        return data.token;
       });
   }
 
@@ -49,7 +63,6 @@ export class InviteApiService {
 
 
   listInvitations(liveId: string): Promise<InvitationModel[]> {
-
     let url = `${environment.config.host.io}/api/live/streams/${liveId}/invites/by/admin?size=1000`;
 
     return this.http.get(url).toPromise()
@@ -76,6 +89,7 @@ export class InviteApiService {
     invitation.name = data.name;
     invitation.desc = data.desc;
     invitation.token = data.token;
+    invitation.avatar_url = data.avatar_url;
     invitation.userInfo = users[data.acceptedBy] || null;
 
     return invitation;
