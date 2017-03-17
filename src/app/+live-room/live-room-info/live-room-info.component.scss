@@ -66,9 +66,11 @@
         flex-wrap: nowrap;
         overflow-x: scroll;
 
+
+
         .editors {
           display: flex;
-          margin: 20px 10px auto 10px;
+          padding: 20px 10px 0 10px;
           flex-shrink: 0;
 
           .avatar-wrapper {
@@ -79,6 +81,12 @@
               height: 80px;
               width: 80px;
               border-radius: 80px;
+            }
+
+            .bi-people2 {
+              height: 80px;
+              width: 80px;
+              font-size: 60px;
             }
           }
 
