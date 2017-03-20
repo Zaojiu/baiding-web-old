@@ -83,6 +83,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       if (oldInfo) {
         this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
       }
+      if (this.liveInfo.isTypeVideo()) this.getStreamInfo();
     });
   }
 
