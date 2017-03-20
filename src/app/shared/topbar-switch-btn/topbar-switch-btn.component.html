@@ -2,10 +2,10 @@
   <div class="people-count-wrapper" [ngClass]="{'is-opened':isCommentOpened,'is-closed':!isCommentOpened}">
     <span class="people-count">
       <i class="bi bi-people"></i>
-      {{onlineCount > 999 ? '999+' : onlineCount}}人次
+      {{onlineCount}}人
     </span>
-  </div>
-  <span class="toggler">
+    <span class="toggler">
     <span class="toggler-inner" [innerHtml]="_btnText"></span>
   </span>
+  </div>
 </a>
