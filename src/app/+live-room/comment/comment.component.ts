@@ -13,8 +13,7 @@ import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
 import {TimelineService} from '../timeline/timeline.service';
 import {UtilsService} from "../../shared/utils/utils";
-import {UserInfoService} from "../../shared/api/user-info/user-info.service";
-import {UserInfoCardService} from "../../shared/user-info-card/user-info-card.service";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
 @Component({
   selector: 'comments',
@@ -39,7 +38,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   constructor(private commentService: CommentService, private router: Router,
               private commentApiService: CommentApiService, private sanitizer: DomSanitizer,
-              private timelineService: TimelineService, private userInfoService: UserInfoService, private editorCardService: UserInfoCardService) {
+              private timelineService: TimelineService, private tooltips: OperationTipsService) {
   }
 
   ngOnInit() {
@@ -157,6 +156,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         comment.createdAt = evt.info.comment.createdAt;
         comment.type = CommentType.CommentPushed;
         comment.eventData = evt.info;
+        this.tooltips.popup('您的评论已被推送');
         this.commentPushQueue.push(comment);
         break;
     }
