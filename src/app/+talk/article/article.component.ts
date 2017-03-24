@@ -67,7 +67,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
         let videos = [];
         if (talkInfo.media.mp4_sd) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_sd), 'video/mp4'));
         if (talkInfo.media.mp4_hd) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_hd), 'video/mp4'));
-        if (talkInfo.media.mp4) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4), 'video/mp4'));
         this.videoInfo = new VideoInfo(videos);
       }
 
