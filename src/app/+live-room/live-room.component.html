@@ -15,9 +15,9 @@
 <!--</div>-->
 
 <div class="video" *ngIf="liveInfo && liveInfo.isTypeVideo()">
-  <video-player #videoPlayer class="video-player" *ngIf="videoInfo" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
+  <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
 
-  <div class="live-cover" *ngIf="!videoPlayer || !videoPlayer.isPlaying" (click)="playVideo()">
+  <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="playVideo()">
     <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
 
     <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
@@ -29,7 +29,7 @@
       [countDownStatus]="liveInfo.isCreated()"
     ></count-down>
 
-    <i class="bi bi-play-fill" *ngIf="videoInfo && videoInfo.hasVideo"></i>
+    <i class="bi bi-play-fill"></i>
   </div>
 </div>
 

@@ -16,6 +16,7 @@ import {UtilsService} from "../shared/utils/utils";
 import {environment} from "../../environments/environment";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {VideoPlayerComponent} from "../shared/video-player/video-player.component";
+import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -30,15 +31,18 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isCommentOpened: boolean = true;
   refreshInterval: any;
   praisedSub: Subscription;
-  @ViewChild('videoPlayer') videoPlayer: VideoPlayerComponent;
   videoInfo: VideoInfo;
   videoOption: VideoPlayerOption;
+  isJoin = false;
+  isVideoLoading = false;
+  @ViewChild('videoPlayer') videoPlayer: VideoPlayerComponent;
   isDownloadTipsShow = UtilsService.isiOS && !UtilsService.isInApp;
   iosDownloadLink: SafeUrl;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
-              private shareService: ShareApiService, private messageApiService: MessageApiService, private sanitizer: DomSanitizer) {
+              private shareService: ShareApiService, private messageApiService: MessageApiService,
+              private sanitizer: DomSanitizer, private tooltips: OperationTipsService) {
   }
 
   ngOnInit() {
@@ -47,11 +51,11 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.userInfo = this.route.snapshot.data['userInfo'];
 
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
-    this.liveService.getLiveInfo(this.id, true, true).then(() => { // 发送加入话题间的请求。
-      if (this.liveInfo.isTypeVideo()) this.getStreamInfo(); // 必须等待加入房间后, 才可拿到拉流信息。
-    });
     this.setShareInfo(); // 设置分享参数等。
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
+    this.joinLiveRoom().then(() => {
+        if (this.liveInfo.isTypeVideo() && !this.liveInfo.isCreated()) this.playVideo(true);
+    });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
     this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
@@ -83,7 +87,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       if (oldInfo) {
         this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
       }
-      if (this.liveInfo.isTypeVideo()) this.getStreamInfo();
     });
   }
 
@@ -118,15 +121,52 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     return `${location.protocol}//${location.hostname}${path}`;
   }
 
-  getStreamInfo() {
-    this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
+  getStreamInfo(): Promise<void> {
+    return this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
       this.videoInfo = videoInfo;
       let hasProgressBar = this.videoInfo && !this.videoInfo.hasRtmp;
       this.videoOption = new VideoPlayerOption(hasProgressBar);
+      return;
     });
   }
 
-  playVideo() {
-    if (this.videoPlayer) this.videoPlayer.play();
+  joinLiveRoom(): Promise<void> {
+    return this.liveService.getLiveInfo(this.id, true, true).then(liveInfo => { // 发送加入话题间的请求。
+      this.liveInfo = liveInfo;
+      this.isJoin = true;
+      return;
+    });
+  }
+
+  playVideo(isAutoPlay = false) {
+    let promise = null;
+
+    if (!this.isJoin) {
+      promise = this.joinLiveRoom().then(() => {
+        return this.getStreamInfo();
+      });
+    } else if (!this.videoInfo || !this.videoInfo.hasVideo) {
+      promise = this.getStreamInfo();
+    }
+
+    if (promise) {
+      this.isVideoLoading = true;
+
+      promise.then(() => {
+        if (!this.videoInfo || !this.videoInfo.hasVideo) {
+          if (this.liveInfo.isCreated()) {
+            if (!isAutoPlay) this.tooltips.popup('直播尚未开始');
+          } else {
+            if (!isAutoPlay) this.tooltips.popup('暂无视频源, 请稍后重试');
+          }
+        } else {
+          setTimeout(() => this.videoPlayer.play());
+        }
+      }).finally(() => {
+        this.isVideoLoading = false;
+      });
+    } else {
+      setTimeout(() => this.videoPlayer.play());
+    }
   }
 }
