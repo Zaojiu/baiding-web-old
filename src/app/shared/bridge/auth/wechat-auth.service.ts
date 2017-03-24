@@ -7,7 +7,8 @@ export class WechatAuthService implements AuthBridge {
   constructor() {
   }
 
-  auth(redirectTo: string) {
+  auth(redirectTo?: string) {
+    redirectTo = redirectTo || location.href;
     location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${redirectTo}`;
   }
 }

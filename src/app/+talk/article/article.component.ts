@@ -107,9 +107,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
     })
   }
 
-  checkSignIn() {
+  checkSignIn(to?: string) {
     if (!this.userInfo) {
-      this.authBridge.auth(encodeURIComponent(location.href));
+      this.authBridge.auth(to);
       return false;
     }
 
@@ -189,6 +189,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   gotoComment(id?: string, nick?: string, content?: string) {
+    if (!this.checkSignIn(`/talks/${this.id}/post-comment`)) return;
+
     let queryParams: any = {title: encodeURIComponent(this.talkInfo.subject)};
 
     if (id && nick && content) {
