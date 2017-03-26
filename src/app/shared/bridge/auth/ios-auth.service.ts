@@ -7,9 +7,11 @@ export class IosAuthService implements AuthBridge {
   constructor(private iosBridgeService: IosBridgeService) {
   }
 
-  auth(redirectTo: string) {
+  auth(redirectTo?: string) {
+    let query = redirectTo ? {to: redirectTo} : null;
+
     if (this.iosBridgeService.hasInit) {
-      this.iosBridgeService.bridge.callHandler('login', {to: redirectTo}, (result) => {
+      this.iosBridgeService.bridge.callHandler('login', query, (result) => {
         return;
       });
 
@@ -17,7 +19,7 @@ export class IosAuthService implements AuthBridge {
     }
 
     this.iosBridgeService.init().then(() => {
-      this.iosBridgeService.bridge.callHandler('login', {to: redirectTo}, (result) => {
+      this.iosBridgeService.bridge.callHandler('login', query, (result) => {
         return;
       });
     });

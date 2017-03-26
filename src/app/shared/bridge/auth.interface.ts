@@ -1,3 +1,3 @@
 export abstract class AuthBridge {
-  abstract auth(redirectTo: string);
+  abstract auth(redirectTo?: string);
 }
