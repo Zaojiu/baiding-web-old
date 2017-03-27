@@ -136,7 +136,7 @@ export class TalkInfoModel {
     this.content = data.meta && data.meta.content ? data.meta.content : '';
     this.safeContent = sanitizer.bypassSecurityTrustHtml(this.content);
     this.isOriginal = data.meta && data.meta.isOriginal ? data.meta.isOriginal : true;
-    this.media = data.meta ? new TalkInfoMediaModel(data.meta.mp3, data.meta.mp4, data.meta.mp4_sd, data.meta.mp4_hd, data.meta.preview, data.meta.duration) : new TalkInfoMediaModel;
+    this.media = data.meta ? new TalkInfoMediaModel(data.meta.mp3, data.meta.mp4, data.meta.mp4SD, data.meta.mp4HD, data.meta.preview, data.meta.duration) : new TalkInfoMediaModel;
 
     if (data.meta && data.meta.refLink && data.meta.refLink.length) {
       for (let item of data.meta.refLink) {
