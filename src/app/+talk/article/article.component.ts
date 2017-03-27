@@ -30,7 +30,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   $toolBar: any;
   isToolbarShow = false;
   originY = 0;
-  isOnScreen = UtilsService.isOnScreen;
+  isOnScreen = UtilsService.isOnLargeScreen;
   routeSub: Subscription;
   hasMoreComments: boolean;
   commentSize = 20;
