@@ -12,19 +12,6 @@ div {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  //-webkit-user-callout: none;
-  //-webkit-user-select: none;
-  //-webkit-user-drag: none;
-  //-webkit-user-modify: none;
-  //-webkit-highlight: none;
-  //
-  //-webkit-touch-callout:  none;
-  //-webkit-user-select:    none;
-  //-khtml-user-select:     none;
-  //-moz-user-select:       none;
-  //-ms-user-select:        none;
-  //-o-user-select:         none;
-  //user-select:            none;
 }
 
 /* Set up a default font and some padding to provide breathing room */
@@ -80,9 +67,9 @@ a {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
   body {
-    width: 768px;
+    width: 1024px;
     min-height: 100%;
     margin: 0 auto;
     position: relative;

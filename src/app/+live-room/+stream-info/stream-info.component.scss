@@ -5,25 +5,15 @@
   top: 0;
   bottom: 0;
   overflow: auto;
-  display: flex;
   background-color: $color-w;
   z-index: 3;
-  flex-direction: column;
-
-  .top-bar, .operation-area {
-    flex-shrink: 0;
-  }
-
-  .form-group {
-    flex-grow: 1;
-  }
 
   .loading {
-    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    margin: 100px 0 50px;
   }
 }
 
@@ -32,7 +22,7 @@
 }
 
 .operation-area {
-  padding: 60px 0;
+  padding: 50px 0;
   text-align: center;
 
   .btn {

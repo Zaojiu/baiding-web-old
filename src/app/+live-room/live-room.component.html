@@ -1,5 +1,3 @@
-<bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
-
 <!--<beginner-guide-->
   <!--[showAdminGuide]="liveInfo.isEditor(userInfo.uid)"-->
   <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
@@ -8,32 +6,34 @@
 <!--<div class="download-tips" *ngIf="isDownloadTipsShow">-->
   <!--<i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>-->
   <!--<div class="tips">-->
-    <!--造就iOS版-->
-    <!--<small>发现最有创造力的声音</small>-->
+  <!--造就iOS版-->
+  <!--<small>发现最有创造力的声音</small>-->
   <!--</div>-->
   <!--<a class="download-btn" target="_blank" [href]="iosDownloadLink">立即下载</a>-->
 <!--</div>-->
 
-<div class="video" *ngIf="liveInfo && liveInfo.isTypeVideo()">
-  <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
+<div class="video-container" *ngIf="liveInfo.isTypeVideo()">
+  <div class="video">
+    <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
 
-  <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="playVideo()">
-    <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
+    <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="playVideo()">
+      <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
 
-    <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-    <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
+      <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
+      <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
 
-    <count-down
-      class="count-down"
-      [expectStartAt]="liveInfo.expectStartAt"
-      [countDownStatus]="liveInfo.isCreated()"
-    ></count-down>
+      <count-down
+        class="count-down"
+        [expectStartAt]="liveInfo.expectStartAt"
+        [countDownStatus]="liveInfo.isCreated()"
+      ></count-down>
 
-    <i class="bi bi-play-fill"></i>
+      <i class="bi bi-play-fill"></i>
+    </div>
   </div>
 </div>
 
-<div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
+<div class="chat" [ngClass]="{'blured': showInfo}">
   <top-bar
     class="top-bar"
     [onlineCount]="liveInfo.totalUsers"
