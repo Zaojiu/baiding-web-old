@@ -12,22 +12,24 @@
   <!--<a class="download-btn" target="_blank" [href]="iosDownloadLink">立即下载</a>-->
 <!--</div>-->
 
-<div class="video" *ngIf="liveInfo.isTypeVideo()">
-  <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
+<div class="video-container" *ngIf="liveInfo.isTypeVideo()">
+  <div class="video">
+    <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
 
-  <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="playVideo()">
-    <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
+    <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="playVideo()">
+      <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
 
-    <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-    <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
+      <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
+      <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
 
-    <count-down
-      class="count-down"
-      [expectStartAt]="liveInfo.expectStartAt"
-      [countDownStatus]="liveInfo.isCreated()"
-    ></count-down>
+      <count-down
+        class="count-down"
+        [expectStartAt]="liveInfo.expectStartAt"
+        [countDownStatus]="liveInfo.isCreated()"
+      ></count-down>
 
-    <i class="bi bi-play-fill"></i>
+      <i class="bi bi-play-fill"></i>
+    </div>
   </div>
 </div>
 
