@@ -49,10 +49,10 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.liveId = this.route.parent.snapshot.params['id'];
+    this.liveId = this.route.parent.parent.snapshot.params['id'];
+    this.commentId = this.route.snapshot.params['commentId'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.commentId = this.route.snapshot.params['commentId'];
 
     // 监控router变化，如果route换了，那么重新获取以下值
     this.routerSubscription = this.router.events.subscribe(
@@ -90,9 +90,9 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   }
 
   resetRouteParams(): Promise<void> {
-    this.marker = this.route.parent.snapshot.params['marker'] || '';
+    this.marker = this.route.snapshot.params['marker'] || '';
 
-    let uidsStr = this.route.parent.snapshot.params['uids'];
+    let uidsStr = this.route.snapshot.params['uids'];
     let uidNums: number[] = [];
     if (uidsStr) {
       let uids = uidsStr.split(',');

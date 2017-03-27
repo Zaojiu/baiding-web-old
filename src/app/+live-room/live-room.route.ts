@@ -29,19 +29,16 @@ const route: Routes = [
   {
     path: ':id',
     canActivate: [AuthGuard],
+    component: LiveRoomComponent,
+    data: {
+      isAsyncShareInfo: true,
+    },
+    resolve: {
+      liveInfo: LiveInfoResolver,
+      userInfo: UserInfoResolver,
+    },
     children: [
-      {
-        path: '',
-        canActivate: [RoleAuthGuard],
-        component: LiveRoomComponent,
-        data: {
-          isAsyncShareInfo: true,
-        },
-        resolve: {
-          liveInfo: LiveInfoResolver,
-          userInfo: UserInfoResolver,
-        },
-      },
+      { path: '', canActivate: [RoleAuthGuard] },
       {
         path: 'info',
         component: LiveRoomInfoComponent,

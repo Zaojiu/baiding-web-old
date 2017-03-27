@@ -18,7 +18,7 @@ export class ShareComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.liveId = this.route.parent.snapshot.params['id'];
+    this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.messageId = this.route.snapshot.params['message_id'];
     this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${environment.config.host.io}/api/live/streams/${this.liveId}/messages/${this.messageId}/dessert.jpg`);
   }

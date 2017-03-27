@@ -5,6 +5,8 @@
   top: 0;
   bottom: 0;
   color: $color-dark-gray;
+  background-color: $color-w;
+  z-index: 3;
   overflow: auto;
 
   .invitation {

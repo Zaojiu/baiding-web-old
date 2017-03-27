@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private authService: AuthBridge) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     let to = `${location.protocol}//${location.hostname}${state.url}`;
     return this.userInfoService.getUserInfo().then(() => {
       return true;

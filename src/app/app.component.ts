@@ -12,7 +12,6 @@ export class AppComponent implements OnInit {
   constructor(angulartics2: Angulartics2,
               angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
               private router: Router) {
-    this.initAppJumperGuard();
   }
 
   initAppJumperGuard() {
@@ -30,9 +29,7 @@ export class AppComponent implements OnInit {
 
         if (!children) continue;
 
-        for (let child of children) {
-          queue.push(child);
-        }
+        queue.push(...children);
       }
     });
   }

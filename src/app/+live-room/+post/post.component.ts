@@ -28,7 +28,7 @@ export class PostComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.id = this.route.parent.snapshot.params['id'];
+    this.id = this.route.parent.parent.snapshot.params['id'];
     this.commentId = this.route.snapshot.params['comment_id'];
 
     this.content = this.liveRoomService.getPushCommentStashed(this.commentId);

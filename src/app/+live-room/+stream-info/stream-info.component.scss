@@ -6,6 +6,8 @@
   bottom: 0;
   overflow: auto;
   display: flex;
+  background-color: $color-w;
+  z-index: 3;
   flex-direction: column;
 
   .top-bar, .operation-area {

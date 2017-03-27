@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private liveService: LiveService, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot) {
+  canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
     let liveId = route.params['id'];
 
     if (!liveId) {

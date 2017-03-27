@@ -27,7 +27,7 @@ export class InviteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.liveId = this.route.parent.snapshot.params['id'];
+    this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.token = this.route.snapshot.params['token'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];

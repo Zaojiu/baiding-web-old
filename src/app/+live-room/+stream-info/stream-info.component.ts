@@ -21,7 +21,7 @@ export class StreamInfoComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.liveId = this.route.parent.snapshot.params['id'];
+    this.liveId = this.route.parent.parent.snapshot.params['id'];
 
     this.liveService.getStreamPushingAddr(this.liveId).then(pushStreamAddr => {
       this.pushStreamAddr = [];
