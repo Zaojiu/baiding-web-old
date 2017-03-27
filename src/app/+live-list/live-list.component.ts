@@ -137,7 +137,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
         }
       }
 
-      let isOnPcWithoutSticky = CSS && CSS.supports && !CSS.supports('position', 'sticky') && UtilsService.isOnScreen;
+      let isOnPcWithoutSticky = CSS && CSS.supports && !CSS.supports('position', 'sticky') && UtilsService.isOnLargeScreen;
 
       if (UtilsService.isiOS || isOnPcWithoutSticky) {
         setTimeout(() => {

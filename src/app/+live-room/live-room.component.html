@@ -1,5 +1,3 @@
-<bd-loading class="live-room-loading" *ngIf="!liveInfo"></bd-loading>
-
 <!--<beginner-guide-->
   <!--[showAdminGuide]="liveInfo.isEditor(userInfo.uid)"-->
   <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
@@ -8,13 +6,13 @@
 <!--<div class="download-tips" *ngIf="isDownloadTipsShow">-->
   <!--<i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>-->
   <!--<div class="tips">-->
-    <!--造就iOS版-->
-    <!--<small>发现最有创造力的声音</small>-->
+  <!--造就iOS版-->
+  <!--<small>发现最有创造力的声音</small>-->
   <!--</div>-->
   <!--<a class="download-btn" target="_blank" [href]="iosDownloadLink">立即下载</a>-->
 <!--</div>-->
 
-<div class="video" *ngIf="liveInfo && liveInfo.isTypeVideo()">
+<div class="video" *ngIf="liveInfo.isTypeVideo()">
   <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
 
   <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="playVideo()">
@@ -33,7 +31,7 @@
   </div>
 </div>
 
-<div class="live-room-container" *ngIf="liveInfo" [ngClass]="{'blured': showInfo}">
+<div class="chat" [ngClass]="{'blured': showInfo}">
   <top-bar
     class="top-bar"
     [onlineCount]="liveInfo.totalUsers"

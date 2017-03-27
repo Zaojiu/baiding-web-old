@@ -5,6 +5,16 @@
   transform: translateX(-50%) translateY(-50%);
 }
 
+:host {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .download-tips {
   position: fixed;
   top: 0;
@@ -147,17 +157,7 @@
 
 }
 
-:host {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.live-room-container {
+.chat {
   position: relative;
   flex-grow: 1;
   display: flex;
@@ -204,3 +204,14 @@
     pointer-events: none;
   }
 }
+
+@media screen and (min-width: 1024px) {
+  :host {
+    flex-direction: row;
+
+    .video {
+      width: 50%;
+    }
+  }
+}
+
