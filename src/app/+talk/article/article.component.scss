@@ -9,15 +9,15 @@
   header {
     position: relative;
 
+    &.sticky {
+      position: sticky;
+      top: 0;
+    }
+
     .video-player {
       position: relative;
       width: 100%;
       display: block;
-
-      &.sticky {
-        position: fixed;
-        top: 0;
-      }
 
       &:before {
         content: "";
