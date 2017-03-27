@@ -41,7 +41,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.liveId = this.route.parent.snapshot.params['id'];
+    this.liveId = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     if (this.liveInfo.paid) this.paidStatus = PaidStatus.Completed;

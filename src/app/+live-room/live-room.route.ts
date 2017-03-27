@@ -27,6 +27,15 @@ const route: Routes = [
     path: ':id/history', loadChildren: 'app/+live-room/+history/history.module#HistoryModule'
   },
   {
+    path: ':id/info',
+    canActivate: [AuthGuard],
+    component: LiveRoomInfoComponent,
+    resolve: {
+      liveInfo: LiveInfoResolver,
+      userInfo: UserInfoResolver,
+    },
+  },
+  {
     path: ':id',
     canActivate: [AuthGuard],
     component: LiveRoomComponent,
@@ -39,14 +48,6 @@ const route: Routes = [
     },
     children: [
       { path: '', canActivate: [RoleAuthGuard] },
-      {
-        path: 'info',
-        component: LiveRoomInfoComponent,
-        resolve: {
-          liveInfo: LiveInfoResolver,
-          userInfo: UserInfoResolver,
-        },
-      },
       {path: 'push-comment', loadChildren: 'app/+live-room/+push-comment/push-comment.module#PushCommentModule'},
       {path: 'post', loadChildren: 'app/+live-room/+post/post.module#PostModule'},
       {path: 'vip-info', loadChildren: 'app/+live-room/+vip-info/vip-info.module#VipInfoModule'},
