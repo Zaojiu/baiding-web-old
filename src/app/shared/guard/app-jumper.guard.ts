@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {LiveService} from "../api/live/live.service";
@@ -141,11 +141,83 @@ export class AppJumperGuard implements CanActivate {
     }
   }
 
+  private getRoute(route: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
+    if (!route.component) {
+      let parent = route.parent;
+
+      while (parent) {
+        if (parent.component) {
+          route = parent;
+          break;
+        }
+
+        parent = parent.parent;
+      }
+    }
+
+    return route;
+  }
+
+  private isRouteChildren(parentComp: any, childComp: any): boolean {
+    if (!parentComp || !childComp) return false;
+
+    let parentConfig: Route = null;
+
+    this.router.config.forEach((root) => {
+      let queue = [root];
+
+      while (queue.length > 0) {
+        let route = queue.pop();
+
+        // 找到父路由在路由树种的配置
+        if (route.component === parentComp) {
+          parentConfig = route;
+          break;
+        }
+
+        let children = route.children;
+        if (route['_loadedConfig'] && route['_loadedConfig'].routes && route['_loadedConfig'].routes.length) {
+          children = route['_loadedConfig'].routes;
+        }
+
+        if (!children) continue;
+
+        queue.push(...children);
+      }
+    });
+
+    if (parentConfig) {
+      let queue = [parentConfig];
+
+      while (queue.length > 0) {
+        let routeConfig = queue.pop();
+
+        // 在父路由中找到子路由, 关系确认, 返回, 否则继续遍历查找其他子元素
+        if (routeConfig.component === childComp) return true;
+
+        let children = routeConfig.children;
+        if (routeConfig['_loadedConfig'] && routeConfig['_loadedConfig'].routes && routeConfig['_loadedConfig'].routes.length) {
+          children = routeConfig['_loadedConfig'].routes;
+        }
+
+        if (!children) continue;
+
+        queue.push(...children);
+      }
+    }
+
+    return false;
+  }
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    let preRoute = this.router.routerState.root;
+    let preRoute = this.router.routerState.root.snapshot;
     while (preRoute.firstChild) preRoute = preRoute.firstChild;
+    preRoute = this.getRoute(preRoute);
+    let currentRoute = this.getRoute(route);
+
     // 已经有过第一次导航(非新开), 并且下一个路由非同一个页面(同个component内的跳转不push, 避免重定向一次追加参数, 又会再次push)
-    let needPush = preRoute.component !== route.component && this.router.navigated;
+    let needPush = preRoute.component !== currentRoute.component && this.router.navigated;
+    let isPop = this.isRouteChildren(currentRoute.component, preRoute.component);
 
     if (route.component === LiveRoomComponent) {
       let liveId = route.params['id'];
@@ -156,7 +228,11 @@ export class AppJumperGuard implements CanActivate {
     } else {
       // 其他路由, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
       if (UtilsService.isInApp && needPush) {
-        this.iosBridge.pushH5State(route, state);
+        if (!isPop) {
+          this.iosBridge.pushH5State(route, state);
+        } else {
+          this.iosBridge.popH5State(route, state);
+        }
         return Promise.resolve(false);
       } else {
         return Promise.resolve(true);

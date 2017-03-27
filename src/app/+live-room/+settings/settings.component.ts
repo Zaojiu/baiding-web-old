@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.liveId = this.route.parent.snapshot.params['id'];
+    this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 

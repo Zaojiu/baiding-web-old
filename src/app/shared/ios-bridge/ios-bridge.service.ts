@@ -35,13 +35,11 @@ export class IosBridgeService {
     }
   }
 
-  pushH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, data?: any) {
+  pushH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let query: any = {
       url: `${location.protocol}//${location.hostname}${state.url}`,
       title: route.data['title'] || '造就Now',
     };
-
-    if (data) query.data = data;
 
     if (this.hasInit) {
       this.bridge.callHandler('pushH5State', query);
@@ -52,12 +50,27 @@ export class IosBridgeService {
     }
   }
 
+  popH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    let query: any = {
+      url: `${location.protocol}//${location.hostname}${state.url}`,
+      title: route.data['title'] || '造就Now',
+    };
+
+    if (this.hasInit) {
+      this.bridge.callHandler('popH5State', query);
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('popH5State', query);
+      });
+    }
+  }
+
   gotoRoom(id: string, data: any) {
     let query: any = {
       id: id,
       data: data,
     };
-    
+
     if (this.hasInit) {
       this.bridge.callHandler('gotoRoom', query);
     } else {

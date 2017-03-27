@@ -12,7 +12,7 @@ export class RoleAuthGuard implements CanActivate {
               private authService: AuthBridge, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     let to = `${location.protocol}//${location.hostname}${state.url}/info`;
     let liveId = route.parent.params['id'];
 
