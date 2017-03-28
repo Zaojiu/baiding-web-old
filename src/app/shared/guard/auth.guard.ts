@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     let to = `${location.protocol}//${location.hostname}${state.url}`;
-    return this.userInfoService.getUserInfo().then(() => {
+    return this.userInfoService.getUserInfo(true).then(() => {
       return true;
     }, () => {
       this.authService.auth(encodeURIComponent(to));
