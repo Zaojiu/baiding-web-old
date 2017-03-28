@@ -74,6 +74,7 @@ import {TalkService} from "./shared/api/talk/talk.api";
     OperationTipsComponent,
   ],
   providers: [
+    OperationTipsService,
     WechatConfigService,
     WechatAudioService,
     WechatShareService,
@@ -117,7 +118,6 @@ import {TalkService} from "./shared/api/talk/talk.api";
     BottomPopupSelectorService,
     SharePopupService,
     ModalService,
-    OperationTipsService,
     Angulartics2GoogleAnalytics,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],

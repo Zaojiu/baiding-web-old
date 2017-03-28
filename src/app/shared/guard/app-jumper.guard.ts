@@ -15,13 +15,15 @@ import {StoreService} from "../store/store.service";
 import {MyListModel} from "../api/my/my.model";
 import {ResourceType} from "../api/resource-type.enums";
 import {NotFoundComponent} from "../../+notfound/notfound.component";
+import {OperationTipsService} from "../operation-tips/operation-tips.service";
 
 @Injectable()
 export class AppJumperGuard implements CanActivate {
 
   constructor(private userInfoService: UserInfoService,
               private liveService: LiveService, private talkService: TalkService,
-              private iosBridge: IosBridgeService, private router: Router, private authService: AuthBridge) {
+              private iosBridge: IosBridgeService, private router: Router,
+              private authService: AuthBridge, private toolTips: OperationTipsService) {
   }
 
   private gotoLive(liveId: string, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
@@ -96,7 +98,11 @@ export class AppJumperGuard implements CanActivate {
           } as MyListModel;
           goto(model, resolve);
         }, (err) => {
-          if (err.status === 404) this.router.navigate([`404`]);
+          if (err.status === 404) {
+            this.router.navigate([`404`]);
+          } else if (err.status !== 401) {
+            this.toolTips.popup('获取数据错误, 请重试');
+          }
           resolve(false);
         });
       }
@@ -122,7 +128,11 @@ export class AppJumperGuard implements CanActivate {
       return this.liveService.getLiveInfo(liveId).then(liveInfo => {
         return liveInfo;
       }, (err) => {
-        if (err.status === 404) this.router.navigate([`404`]);
+        if (err.status === 404) {
+          this.router.navigate([`404`]);
+        } else if (err.status !== 401) {
+          this.toolTips.popup('获取数据错误, 请重试');
+        }
         return null;
       });
     }
