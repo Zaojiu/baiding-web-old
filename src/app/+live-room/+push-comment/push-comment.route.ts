@@ -13,7 +13,7 @@ const route: Routes = [
       userInfo: UserInfoResolver,
     },
     data: {
-      title: '消息推送'
+      title: '评论列表'
     }
   }
 ];

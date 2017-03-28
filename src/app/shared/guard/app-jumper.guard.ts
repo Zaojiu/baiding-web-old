@@ -14,6 +14,7 @@ import {TalkService} from "../api/talk/talk.api";
 import {StoreService} from "../store/store.service";
 import {MyListModel} from "../api/my/my.model";
 import {ResourceType} from "../api/resource-type.enums";
+import {NotFoundComponent} from "../../+notfound/notfound.component";
 
 @Injectable()
 export class AppJumperGuard implements CanActivate {
@@ -233,11 +234,14 @@ export class AppJumperGuard implements CanActivate {
     } else if (currentRoute.component === ArticleComponent) {
       let talkId = route.params['id'];
       return this.gotoTalk(talkId, needRedirect);
+      // 如果是app中404, 则不pushstate
+    } else if (currentRoute.component === NotFoundComponent && UtilsService.isInApp) {
+      return Promise.resolve(true);
     } else if (UtilsService.isInApp && needRedirect) {
       // 其他路由, 如果在app中, 使用app的pushH5State
       this.iosBridge.pushH5State(currentRoute, state);
       return Promise.resolve(false);
-    }else{
+    } else {
       // 其他情况, 在其他浏览器正常跳转
       return Promise.resolve(true);
     }

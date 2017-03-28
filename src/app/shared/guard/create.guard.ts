@@ -9,7 +9,7 @@ export class CreateGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService) {
   }
 
-  canActivate() {
+  canActivate(): Promise<boolean> {
     return this.userInfoService.getUserInfo().then(userInfo => {
       return userInfo.permissions.publish;
     });

@@ -1,5 +1,5 @@
 <div class="notfound-page">
   <i class="bi bi-not-found"></i>
   <div class="slogan">页面被机器狗吃了</div>
-  <a class="back-btn" (click)="gotoInfoCenter()">返回</a>
+  <a class="back-btn" (click)="gotoInfoCenter()" *ngIf="!isInApp">返回</a>
 </div>
