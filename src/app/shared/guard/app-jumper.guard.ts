@@ -95,8 +95,8 @@ export class AppJumperGuard implements CanActivate {
             publishAt: talkInfo.publishAt,
           } as MyListModel;
           goto(model, resolve);
-        }, () => {
-          this.router.navigate([`404`]);
+        }, (err) => {
+          if (err.status === 404) this.router.navigate([`404`]);
           resolve(false);
         });
       }
@@ -121,8 +121,8 @@ export class AppJumperGuard implements CanActivate {
     } else {
       return this.liveService.getLiveInfo(liveId).then(liveInfo => {
         return liveInfo;
-      }, () => {
-        this.router.navigate([`404`]);
+      }, (err) => {
+        if (err.status === 404) this.router.navigate([`404`]);
         return null;
       });
     }
@@ -135,7 +135,7 @@ export class AppJumperGuard implements CanActivate {
     if (userInfoCache) {
       return Promise.resolve(userInfoCache);
     } else {
-      return this.userInfoService.getUserInfo().then(userInfo => {
+      return this.userInfoService.getUserInfo(true).then(userInfo => {
         return Promise.resolve(userInfo);
       }, () => {
         this.authService.auth(encodeURIComponent(to));
