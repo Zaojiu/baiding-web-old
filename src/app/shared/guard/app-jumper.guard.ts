@@ -28,13 +28,14 @@ export class AppJumperGuard implements CanActivate {
       let userInfo = result[0];
       let liveInfo = result[1];
 
+      // app视频直播, 使用app的gotoLive
       if (liveInfo.isTypeApp() && liveInfo.isEditor(userInfo.uid)) {
         let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
         this.iosBridge.gotoLive(liveInfo.id, liveInfo.kind, role);
         return false;
       }
 
-      // 文字直播间, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
+      // 文字直播间, 如果在app中, 使用app的gotoRoom, 在其他浏览器正常跳转
       if (UtilsService.isInApp && needPush) {
         let model = this.getObjectInfoCache(liveId);
 
@@ -64,13 +65,14 @@ export class AppJumperGuard implements CanActivate {
   }
 
   private gotoTalk(talkId: string, needPush: boolean): Promise<boolean> {
+    // 文章, 如果在app中, 使用app的gotoRoom, 在其他浏览器正常跳转
     let goto = (data: MyListModel, resolve) => {
       if (UtilsService.isInApp && needPush) {
         this.iosBridge.gotoRoom(talkId, data);
         resolve(false);
+      } else {
+        resolve(true);
       }
-
-      resolve(true);
     };
 
     return new Promise((resolve, reject) => {
@@ -216,27 +218,28 @@ export class AppJumperGuard implements CanActivate {
     let currentRoute = this.getRoute(route);
 
     // 已经有过第一次导航(非新开), 并且下一个路由非同一个页面(同个component内的跳转不push, 避免重定向一次追加参数, 又会再次push)
-    let needPush = preRoute.component !== currentRoute.component && this.router.navigated;
+    let needRedirect = preRoute.component !== currentRoute.component && this.router.navigated;
     let isPop = this.isRouteChildren(currentRoute.component, preRoute.component);
 
-    if (route.component === LiveRoomComponent) {
+    // 如果有回退, 并且在app中, 优先使用popH5State
+    if (isPop && UtilsService.isInApp && needRedirect) {
+      this.iosBridge.popH5State(currentRoute, state);
+      return Promise.resolve(false);
+      // 否则检测是否是直播间
+    } else if (currentRoute.component === LiveRoomComponent) {
       let liveId = route.params['id'];
-      return this.gotoLive(liveId, state, needPush);
-    } else if (route.parent.component === ArticleComponent) {
+      return this.gotoLive(liveId, state, needRedirect);
+      // 再检测是否是文章
+    } else if (currentRoute.component === ArticleComponent) {
       let talkId = route.params['id'];
-      return this.gotoTalk(talkId, needPush);
-    } else {
-      // 其他路由, 如果在app中, 使用app的pushState, 在其他浏览器正常跳转
-      if (UtilsService.isInApp && needPush) {
-        if (!isPop) {
-          this.iosBridge.pushH5State(route, state);
-        } else {
-          this.iosBridge.popH5State(route, state);
-        }
-        return Promise.resolve(false);
-      } else {
-        return Promise.resolve(true);
-      }
+      return this.gotoTalk(talkId, needRedirect);
+    } else if (UtilsService.isInApp && needRedirect) {
+      // 其他路由, 如果在app中, 使用app的pushH5State
+      this.iosBridge.pushH5State(currentRoute, state);
+      return Promise.resolve(false);
+    }else{
+      // 其他情况, 在其他浏览器正常跳转
+      return Promise.resolve(true);
     }
   }
 }
