@@ -2,7 +2,7 @@
   <live-room-top-bar class="top-bar" [liveId]="liveId" *ngIf="!isInApp"></live-room-top-bar>
 
   <div class="settings-container" *ngIf="liveInfo">
-    <div class="live-info-container block" (click)="gotoRoomInfo()">
+    <div class="live-info-container block" *ngIf="!isInApp" (click)="gotoRoomInfo()">
       <div class="title">
         <i class="bi bi-tv"></i>
         话题间信息
@@ -120,18 +120,18 @@
                   (toggling)="translationExpanded = $event"></switch-btn>
     </div>
 
-    <div class="create-bar bar" (click)="gotoCreateOrApply()">
+    <div class="create-bar bar" *ngIf="!isInApp" (click)="gotoCreateOrApply()">
       <span class="title">我要发起话题</span>
       <i class="bi bi-right-arrow"></i>
     </div>
 
-    <div class="info-center-bar bar" (click)="gotoInfoCenter()">
+    <div class="info-center-bar bar" *ngIf="!isInApp" (click)="gotoInfoCenter()">
       <span class="title">我的话题间</span>
       <i class="bi bi-right-arrow"></i>
     </div>
 
     <a class="end-btn" *ngIf="liveInfo.isStarted() && isAdmin" (click)="closeLive()">结束话题间</a>
-    <a class="end-btn" *ngIf="(!liveInfo.isStarted() && isAdmin) || !isAdmin" (click)="closeWindow()">退出话题间</a>
+    <a class="end-btn" *ngIf="((!liveInfo.isStarted() && isAdmin) || !isAdmin) && !isInApp" (click)="closeWindow()">退出话题间</a>
   </div>
 
 </div>

@@ -5,6 +5,7 @@ import {UserInfoCardService} from './user-info-card.service';
 import {UserPublicInfoModel} from "../api/user-info/user-info.model";
 import {Router} from "@angular/router";
 import {UserInfoService} from "../api/user-info/user-info.service";
+import {UtilsService} from "../utils/utils";
 
 @Component({
   selector: 'user-info-card',
@@ -16,6 +17,7 @@ export class UserInfoCardComponent implements OnInit {
   isPopup: boolean;
   publicUserInfo: UserPublicInfoModel;
   msgUserSub: Subscription;
+  isInApp = UtilsService.isInApp;
 
   constructor(private userInfoCardService: UserInfoCardService, private userInfoService: UserInfoService,
               private router: Router) {
@@ -31,6 +33,6 @@ export class UserInfoCardComponent implements OnInit {
   }
 
   gotoInfoCenter() {
-    this.router.navigate([`info-center/${this.publicUserInfo.uid}`]);
+    if (!this.isInApp) this.router.navigate([`info-center/${this.publicUserInfo.uid}`]);
   }
 }

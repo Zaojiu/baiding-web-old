@@ -121,7 +121,7 @@
       编辑话题
     </div>
 
-    <div class="btn view" *ngIf="!(liveInfo.isAdmin(userInfo.uid) && liveInfo.isCreated())" (click)="gotoRoomInfo()">
+    <div class="btn view" *ngIf="!(liveInfo.isAdmin(userInfo.uid) && liveInfo.isCreated()) && !isInApp" (click)="gotoRoomInfo()">
       <i class="bi bi-tv"></i>
       查看话题
     </div>

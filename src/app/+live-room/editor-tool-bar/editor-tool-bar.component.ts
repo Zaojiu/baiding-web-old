@@ -53,6 +53,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   timer: any;
   placeholder = '此时此刻你在想什么?';
   replyMessage = null;
+  isInApp = true;
 
   constructor(private messageApiService: MessageApiService, private commentApiService: CommentApiService,
               private modalService: ModalService, private router: Router, private fb: FormBuilder,

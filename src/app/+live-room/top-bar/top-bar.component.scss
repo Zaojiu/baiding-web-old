@@ -7,11 +7,16 @@
 
   .online-count {
     flex-grow: 1;
-    margin-left: 14px;
     font-size: 22px;
+    margin-left: 14px;
     display: flex;
 
+    .bi-info-center {
+      margin-right: 16px;
+    }
+
     .oldest-btn, .latest-btn {
+      display: none;
       font-size: 0;
       color: $color-dark-gray;
 
@@ -24,11 +29,6 @@
         font-size: 22px;
         margin-left: 2px;
       }
-    }
-
-    .oldest-btn, .latest-btn {
-      margin-left: 16px;
-      display: none;
     }
 
     .at-people {
