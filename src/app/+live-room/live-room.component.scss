@@ -169,7 +169,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow: hidden;
   background-color: $color-w;
 
   &.blured {
@@ -192,6 +192,8 @@
   }
 
   .editor-tool-bar, .audience-tool-bar {
+    position: relative;
+    z-index: 2;
     flex-shrink: 0;
   }
 
