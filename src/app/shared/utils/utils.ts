@@ -28,7 +28,7 @@ export class UrlModel {
 export class UtilsService {
   static isInWechat = /micromessenger/i.test(window.navigator.userAgent);
   static isiOS = /iPhone|iPad/i.test(window.navigator.userAgent);
-  static isInApp = false;
+  static isInApp = /zaojiuliveapp/i.test(window.navigator.userAgent);
   static isInBaidingApp = /baidingapp\.com/i.test(location.hostname);
   static isTouchable = (<any>window).DocumentTouch && document instanceof DocumentTouch;
   static isAndroid = /Android/i.test(window.navigator.userAgent);
