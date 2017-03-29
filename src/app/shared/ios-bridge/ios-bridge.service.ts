@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {LiveType} from "../api/live/live.enums";
 import {UtilsService} from "../utils/utils";
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
+import {environment} from "../../../environments/environment";
 
 declare var window: any;
 declare var $: any;
@@ -38,7 +39,7 @@ export class IosBridgeService {
   pushH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let query: any = {
       url: `${location.protocol}//${location.hostname}${state.url}`,
-      title: route.data['title'] || '造就Now',
+      title: route.data['title'] || environment.config.name,
     };
 
     if (this.hasInit) {
@@ -53,7 +54,7 @@ export class IosBridgeService {
   popH5State(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let query: any = {
       url: `${location.protocol}//${location.hostname}${state.url}`,
-      title: route.data['title'] || '造就Now',
+      title: route.data['title'] || environment.config.name,
     };
 
     if (this.hasInit) {
