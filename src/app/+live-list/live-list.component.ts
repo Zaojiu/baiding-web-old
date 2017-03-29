@@ -10,6 +10,7 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {LiveStatus} from "../shared/api/live/live.enums";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {UserInfoModel} from "../shared/api/user-info/user-info.model";
+import {environment} from "../../environments/environment";
 
 declare var $: any;
 declare var Waypoint: any;
@@ -40,7 +41,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}正在使用造就，发现更多经验分享`;
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}正在使用${environment.config.name}，发现更多经验分享`;
 
     this.timer = setInterval(() => this.timeNow = UtilsService.now.toString(), 1000);
   }

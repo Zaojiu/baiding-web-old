@@ -3,13 +3,14 @@ import {Routes, RouterModule} from '@angular/router';
 import {LiveListComponent} from "./live-list.component";
 import {AuthGuard} from "../shared/guard/auth.guard";
 import {UserInfoResolver} from "../shared/guard/user-info.resolver";
+import {environment} from "../../environments/environment";
 
 const route: Routes = [
   {
     path: '',
     component: LiveListComponent,
     data: {
-      title: '造就Now',
+      title: environment.config.name,
     },
     resolve: {
       userInfo: UserInfoResolver,

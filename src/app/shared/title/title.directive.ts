@@ -6,6 +6,7 @@ import {Title as NgTitle}     from '@angular/platform-browser';
 import {TitleService} from './title.service';
 import {UtilsService} from '../utils/utils';
 import {ShareBridge} from '../bridge/share.interface';
+import {environment} from "../../../environments/environment";
 
 declare var $: any;
 
@@ -41,7 +42,7 @@ export class TitleSetterDirective implements OnInit {
 
   private initOnRouteChange() {
     this.sub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(_ => {
-      let title = '造就Now';
+      let title = environment.config.name;
       let titleArr = [];
       let activeRoutes: ActivatedRoute[] = this.route.children;
       let isAsyncTitle = this.route.snapshot.data && this.route.snapshot.data['isAsyncTitle'];
@@ -67,8 +68,8 @@ export class TitleSetterDirective implements OnInit {
     while (route.firstChild) route = route.firstChild;
 
     let routeData = route.data;
-    let shareTitle = routeData && routeData['shareTitle'] ? routeData['shareTitle'] : '造就Now';
-    let shareDesc = routeData && routeData['shareDesc'] ? routeData['shareDesc'] : '小人物也有大声音。每个想法都值得赞赏。';
+    let shareTitle = routeData && routeData['shareTitle'] ? routeData['shareTitle'] : environment.config.name;
+    let shareDesc = routeData && routeData['shareDesc'] ? routeData['shareDesc'] : environment.config.slogan;
     let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${location.protocol}//${location.hostname}assets/img/zaojiu-logo.jpg`;
     let shareLink = routeData && routeData['shareLink'] ? routeData['shareLink'] : `${location.protocol}//${location.hostname}`; // 默认分享首页地址
     let isAsyncShareInfo = routeData && routeData['isAsyncShareInfo'];

@@ -12,6 +12,7 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {Subscription} from "rxjs";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {TitleService} from "../shared/title/title.service";
+import {environment} from "../../environments/environment";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -82,10 +83,10 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       this.pageUserInfo = publicUserInfo;
       this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${publicUserInfo.avatar})`);
       this.from = encodeURIComponent(`info-center/${uid}`);
-      this.titleService.set(`${this.pageUserInfo.nick}的造就`); // 设置页面标题
+      this.titleService.set(`${this.pageUserInfo.nick}的${environment.config.name}`); // 设置页面标题
       this.shareService.setShareInfo(
         `${this.pageUserInfo.nick}等你加入我的话题讨论`,
-        '小人物也有大声音。每个想法都值得赞赏。',
+        environment.config.slogan,
         this.pageUserInfo.avatar,
         this.getShareUri()
       );
