@@ -136,7 +136,7 @@
         点赞
       </div>
 
-      <div class="btn" [ngClass]="{'activate':  mode === modeEnums.None}" (click)="fireShare()">
+      <div class="btn" *ngIf="!isInApp" [ngClass]="{'activate':  mode === modeEnums.None}" (click)="fireShare()">
         <i class="bi bi-share"></i>
         分享
       </div>

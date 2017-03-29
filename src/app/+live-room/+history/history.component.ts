@@ -48,6 +48,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   @ViewChild('audioListPlayer') audioListPlayer: AudioListPlayerComponent;
   refreshSub: Subscription;
   contentParsed: {[key: string]: string} = {};
+  isInApp = UtilsService.isInApp;
 
   constructor(private liveService: LiveService, private route: ActivatedRoute,
               private router: Router, private shareBridge: ShareBridge,
