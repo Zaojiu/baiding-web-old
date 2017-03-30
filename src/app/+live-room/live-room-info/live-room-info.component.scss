@@ -19,7 +19,7 @@
     }
 
     .people-container {
-      margin: 20px 12px auto;
+      margin: 20px 12px;
 
       .title {
         margin-right: 10px;
@@ -67,8 +67,7 @@
         display: flex;
         flex-wrap: nowrap;
         overflow-x: scroll;
-
-
+        overflow-y: hidden;
 
         .editors {
           display: flex;
