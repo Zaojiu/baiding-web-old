@@ -65,7 +65,11 @@
           overflow: hidden;
           overflow-x: auto; // fuck qq browser x5
           text-overflow: ellipsis;
-          padding: 0px;
+          padding: 0;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
 
           /deep/ {
             .highlight {
