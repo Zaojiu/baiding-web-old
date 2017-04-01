@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, NavigationEnd} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {TimelineService} from './timeline/timeline.service';
@@ -38,6 +38,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   @ViewChild('videoPlayer') videoPlayer: VideoPlayerComponent;
   isDownloadTipsShow = UtilsService.isiOS && !UtilsService.isInApp;
   iosDownloadLink: SafeUrl;
+  routerSub: Subscription;
+  isLiveRoomVisable: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -54,7 +56,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.setShareInfo(); // 设置分享参数等。
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.joinLiveRoom().then(() => {
-        if (this.liveInfo.isTypeVideo() && !this.liveInfo.isCreated()) this.playVideo(true);
+      // ios不自动支持自动播放: https://webkit.org/blog/6784/new-video-policies-for-ios/
+      if (this.liveInfo.isTypeVideo() && this.liveInfo.isStarted() && !UtilsService.isiOS && !UtilsService.isAndroid) this.playVideo(true);
     });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
@@ -72,6 +75,17 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     });
 
     this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);
+
+    // 为了防止各种神奇浏览器的神奇播放器总是在最顶层, 打开子页面的时候, 把视频销毁
+    this.routerSub = this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        let route = this.router.routerState.snapshot.root;
+
+        while (route.firstChild) route = route.firstChild;
+
+        this.isLiveRoomVisable = !route.component && route.parent.component === LiveRoomComponent;
+      }
+    });
   }
 
   ngOnDestroy() {

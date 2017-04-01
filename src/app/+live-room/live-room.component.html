@@ -14,7 +14,7 @@
 
 <div class="video-container" *ngIf="liveInfo.isTypeVideo()">
   <div class="video">
-    <video-player #videoPlayer class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
+    <video-player #videoPlayer [ngClass]="{hidden: !isLiveRoomVisable}" class="video-player" [videoInfo]="videoInfo" [option]="videoOption"></video-player>
 
     <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="playVideo()">
       <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
