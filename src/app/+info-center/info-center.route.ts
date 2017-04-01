@@ -25,7 +25,8 @@ const route: Routes = [
       userInfo: UserInfoResolver,
     },
     data: {
-      title: '个人话题间列表'
+      title: '个人话题间列表',
+      isAsyncShareInfo: true,
     }
   },
   {
