@@ -11,7 +11,7 @@ export const host = {
 export const appConfig = {
   host: host,
   name: '造就',
-  slogan: '小人物也有大声音。每个想法都值得赞赏。',
+  slogan: '发现最有创造力的思想',
   lcAppId: 'UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz',
   lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
   wechatLink: 'http://weixin.qq.com/r/OkOrs7fEwOq-rfPQ9xYo',
