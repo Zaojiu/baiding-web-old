@@ -33,9 +33,9 @@
   </div>
 
   <div class="operation-area">
-    <a class="btn notification" *ngIf="!liveInfo.booked && !liveInfo.isClosed()" (click)="bookLive()"><i
+    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated()" (click)="bookLive()"><i
       class="bi bi-clock"></i>开播提醒</a>
-    <a class="btn notification turn-on" *ngIf="liveInfo.booked && !liveInfo.isClosed()" (click)="unbookLive()"><i
+    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated()" (click)="unbookLive()"><i
       class="bi bi-clock"></i>已经开通</a>
     <a class="btn enter-room"
        *ngIf="!lockPayClick && liveInfo.isNeedPay && paidStatus!==paidEnums.Completed && liveInfo.isAudience(userInfo.uid)"
@@ -49,7 +49,7 @@
   </div>
 </div>
 
-<div class="qrcode-background" [ngClass]="{'show': isQrcodeShown}" *ngIf="!inApp && isQrcodeShown" (click)="closeQrcode()">
+<div class="qrcode-background" *ngIf="!inApp && isQrcodeShown" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
@@ -67,7 +67,7 @@
 </div>
 
 
-<div class="qrcode-background" [ngClass]="{'show': isQrcodeShown}" *ngIf="inApp && isQrcodeShown" (click)="closeQrcode()">
+<div class="qrcode-background" *ngIf="inApp && isQrcodeShown" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
@@ -84,8 +84,11 @@
   </div>
 </div>
 
-<div class="qrcode-background" [ngClass]="{'show': paidShown}" *ngIf="paidStatus===paidEnums.Failure && paidShown"
-     (click)="closeQrcode()">
+<div
+  class="qrcode-background"
+  *ngIf="paidStatus===paidEnums.Failure && paidShown"
+  (click)="closeQrcode()"
+>
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
@@ -108,9 +111,11 @@
 </div>
 
 
-<div class="qrcode-background" [ngClass]="{'show': paidShown}"
-     *ngIf="!inApp && liveInfo.isCreated()&& paidStatus===paidEnums.Completed && paidShown"
-     (click)="closeQrcode()">
+<div
+  class="qrcode-background"
+  *ngIf="!inApp && liveInfo.isCreated()&& paidStatus===paidEnums.Completed && paidShown"
+  (click)="closeQrcode()"
+>
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
