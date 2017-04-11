@@ -45,7 +45,7 @@
                   <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
                   <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
                   <span class="time"
-                        *ngIf="liveInfo.isStarted()">已进行{{liveInfo.expectStartAt | timeToFormated:timeNow}}</span>
+                        *ngIf="liveInfo.isStarted()">已进行 {{liveInfo.expectStartAt | timeToFormated:timeNow}}</span>
                 </div>
               </div>
             </div>
