@@ -107,29 +107,20 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
           liveInfo.latestUsers = liveInfo.latestUsers.slice(0, 5);
         }
 
-        if (liveInfo.status === LiveStatus.Created) {
-          if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
-            let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
-            let dayStr = '';
+        if (liveInfo.isCreated()) {
+          let dayStr = moment(liveInfo.expectStartAt).calendar(null, {
+            sameDay: '[今天] HH:mm:ss',
+            nextDay: '[明天] HH:mm:ss',
+            nextWeek: 'YYYY-MM-DD HH:mm:ss',
+            lastDay: 'YYYY-MM-DD HH:mm:ss',
+            lastWeek: 'YYYY-MM-DD HH:mm:ss',
+            sameElse: 'YYYY-MM-DD HH:mm:ss'
+          });
 
-            switch (leftDays) {
-              case 0:
-                dayStr = '今天';
-                break;
-              case 1:
-                dayStr = '明天';
-                break;
-              case 2:
-                dayStr = '后天';
-                break;
-            }
-
-            this.liveTime[liveInfo.id] = `开始时间 ${dayStr} ${moment(liveInfo.expectStartAt).format('HH:mm:ss')}`;
-          } else {
-            this.liveTime[liveInfo.id] = `开始时间 ${moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss')}`;
-          }
-        } else if (liveInfo.status === LiveStatus.Ended) {
+          this.liveTime[liveInfo.id] = `开始时间 ${dayStr}`;
+        } else if (liveInfo.isClosed()) {
           this.liveTime[liveInfo.id] = `直播时长 ${this.timeToformatedPipe.transform(liveInfo.expectStartAt, liveInfo.closedAt)}`;
+        } else if (liveInfo.isStarted()) {
         } else {
           this.liveTime[liveInfo.id] = '未知状态';
         }
@@ -151,29 +142,20 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
           liveInfo.latestUsers = liveInfo.latestUsers.slice(0, 5);
         }
 
-        if (liveInfo.status === LiveStatus.Created) {
-          if (moment(liveInfo.expectStartAt).isBefore(moment().add(3, 'd')) && moment(liveInfo.expectStartAt).isAfter(moment())) {
-            let leftDays = moment.duration(moment(liveInfo.expectStartAt).diff(moment())).days();
-            let dayStr = '';
+        if (liveInfo.isCreated()) {
+          let dayStr = moment(liveInfo.expectStartAt).calendar(null, {
+            sameDay: '[今天] HH:mm:ss',
+            nextDay: '[明天] HH:mm:ss',
+            nextWeek: 'YYYY-MM-DD HH:mm:ss',
+            lastDay: 'YYYY-MM-DD HH:mm:ss',
+            lastWeek: 'YYYY-MM-DD HH:mm:ss',
+            sameElse: 'YYYY-MM-DD HH:mm:ss'
+          });
 
-            switch (leftDays) {
-              case 0:
-                dayStr = '今天';
-                break;
-              case 1:
-                dayStr = '明天';
-                break;
-              case 2:
-                dayStr = '后天';
-                break;
-            }
-
-            this.liveTime[liveInfo.id] = `开始时间 ${dayStr} ${moment(liveInfo.expectStartAt).format('HH:mm:ss')}`;
-          } else {
-            this.liveTime[liveInfo.id] = `开始时间 ${moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss')}`;
-          }
-        } else if (liveInfo.status === LiveStatus.Ended) {
+          this.liveTime[liveInfo.id] = `开始时间 ${dayStr}`;
+        } else if (liveInfo.isClosed()) {
           this.liveTime[liveInfo.id] = `直播时长 ${this.timeToformatedPipe.transform(liveInfo.expectStartAt, liveInfo.closedAt)}`;
+        } else if (liveInfo.isStarted()) {
         } else {
           this.liveTime[liveInfo.id] = '未知状态';
         }
