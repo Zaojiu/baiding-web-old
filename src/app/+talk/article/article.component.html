@@ -5,7 +5,16 @@
     <video-player class="video-player" #videoPlayer [videoInfo]="videoInfo"></video-player>
 
     <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="videoPlayer.play()">
-      <img class="cover-image" [src]="talkInfo.coverSmallUrl" alt="话题间封面">
+      <div class="cover-thumbnail-wrapper">
+        <div class="cover-thumnail" [style.background-image]="trustBackgroundCover"></div>
+      </div>
+      <img
+        class="cover-image"
+        [ngClass]="{fadein: coverLoaded}"
+        [src]="talkInfo.cover11Url" alt="话题间封面"
+        (load)="coverLoaded = true"
+        (error)="resetDefaultBackground()"
+      >
 
       <div class="mask"></div>
 

@@ -28,7 +28,6 @@ export class LiveService {
     liveInfo.id = stream.id;
     liveInfo.subject = stream.subject;
     liveInfo.desc = stream.desc;
-    liveInfo.coverUrl = `${stream.coverUrl}?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
 
     switch (stream.meta.kind) {
       case 'text':
@@ -75,6 +74,20 @@ export class LiveService {
     liveInfo.updatedAt = (+stream.updatedAt / 1e6).toString();
     liveInfo.isDraft = stream.isDraft;
 
+    // TODO: need to fix live cover ratio, maybe?
+    liveInfo.coverUrl = `${stream.coverUrl}?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverSmallUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
+    liveInfo.coverThumbnailUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
+
+    liveInfo.cover169Url = `${stream.coverUrl}~16-9?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverSmall169Url = `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverThumbnail169Url = `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+
+    liveInfo.cover11Url = `${stream.coverUrl}~1-1?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverSmall11Url = `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverThumbnail11Url = `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+
+
     if (stream.meta.status === 'created') liveInfo.status = LiveStatus.Created;
     if (stream.meta.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
     if (stream.meta.status === 'started') liveInfo.status = LiveStatus.Started;
@@ -92,9 +105,6 @@ export class LiveService {
     liveInfo.paid = currentStreamUser && currentStreamUser.paid;
 
     liveInfo.totalUsers = stream.totalUsers;
-
-    liveInfo.coverSmallUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
-    liveInfo.coverThumbnailUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
 
     if (liveInfo.isTypeVideo()) {
       switch (stream.meta.publishStatus) {

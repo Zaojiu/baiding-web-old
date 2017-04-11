@@ -1,7 +1,11 @@
 <div #listEle class="list" (scroll)="onScroll($event)">
   <div class="item-wrapper" *ngIf="listResult.result.length">
     <div class="item" *ngFor="let item of listResult.result" (click)="item.goto()">
-    <img [src]="item.cover" alt="头图">
+    <img
+      [src]="item.cover"
+      alt="头图"
+      (error)="resetDefaultCover(item)"
+    >
     <div class="text">
       <div class="desc">{{item.desc}}</div>
       <strong class="subject">{{item.subject}}</strong>
