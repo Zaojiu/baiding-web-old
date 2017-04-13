@@ -4,7 +4,7 @@ import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
 import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model";
 import {UtilsService} from "../../shared/utils/utils";
 import {VideoInfo, VideoPlayerSrc} from "../../shared/video-player/video-player.model";
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {TitleService} from "../../shared/title/title.service";
@@ -34,10 +34,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
   hasMoreComments: boolean;
   commentSize = 20;
+  trustBackgroundCover: SafeStyle;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private sanitizer: DomSanitizer,
-              private shareBridge: ShareBridge, private titleService: TitleService, private authBridge: AuthBridge) {
+              private shareBridge: ShareBridge, private titleService: TitleService,
+              private authBridge: AuthBridge) {
   }
 
   ngOnInit() {
@@ -54,6 +56,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
     });
   }
 
+  resetDefaultBackground() {
+    this.talkInfo.cover11Url = '/assets/img/default-cover.jpg';
+    this.talkInfo.coverSmall11Url = this.talkInfo.cover11Url;
+    this.talkInfo.coverThumbnail11Url = this.talkInfo.cover11Url;
+    this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnail11Url})`);
+  }
+
   ngOnDestroy() {
     if (this.routeSub) this.routeSub.unsubscribe();
   }
@@ -62,6 +71,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
+      this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnail11Url})`);
 
       if (talkInfo.media.hasVideo) {
         let videos = [];

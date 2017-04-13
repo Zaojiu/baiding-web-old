@@ -1,5 +1,5 @@
 import {Component, OnChanges, SimpleChanges, Input, ViewChild, ElementRef} from '@angular/core';
-import {ListViewResult} from "./list-view.model";
+import {ListViewResult, ListViewModel} from "./list-view.model";
 
 @Component({
   selector: 'list-view',
@@ -54,5 +54,9 @@ export class ListViewComponent implements OnChanges {
     let isOnBottom = scrollBottom >= 0 && scrollBottom <= 10;
 
     if (isOnBottom) this.getNextResult();
+  }
+
+  resetDefaultCover(item: ListViewModel) {
+    item.cover = '/assets/img/default-cover.jpg';
   }
 }

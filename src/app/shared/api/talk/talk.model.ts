@@ -75,6 +75,12 @@ export class TalkInfoModel {
   coverUrl: string;
   coverSmallUrl: string;
   coverThumbnailUrl: string;
+  cover169Url: string;
+  coverSmall169Url: string;
+  coverThumbnail169Url: string;
+  cover11Url: string;
+  coverSmall11Url: string;
+  coverThumbnail11Url: string;
   isNeedPay: boolean;
   totalFee: number;
   praiseTotal: number;
@@ -107,8 +113,16 @@ export class TalkInfoModel {
     this.subject = data.subject;
     this.desc = data.desc;
     this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${Math.round(+data.updatedAt)}` : '/assets/img/default-cover.jpg';
+    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverThumbnailUrl =`${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x&updatedAt=${Math.round(+data.updatedAt)}`;
+
+    this.cover169Url = `${data.coverUrl}~16-9?updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverSmall169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverThumbnail169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x&updatedAt=${Math.round(+data.updatedAt)}`;
+
+    this.cover11Url = `${data.coverUrl}~1-1?updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverSmall11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverThumbnail11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x&updatedAt=${Math.round(+data.updatedAt)}`;
 
     this.isNeedPay = data.isNeedPay;
     this.totalFee = data.totalFee;
