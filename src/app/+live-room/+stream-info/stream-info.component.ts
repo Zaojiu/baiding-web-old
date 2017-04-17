@@ -31,11 +31,9 @@ export class StreamInfoComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.liveService.getStreamPullingAddr(this.liveId).then(pullStreamAddr => {
-      for (let item of pullStreamAddr.src) {
-        if (item.isM3u8) this.pullStreamAddr['m3u8'] = item.src['changingThisBreaksApplicationSecurity'];
-        if (item.isRtmp) this.pullStreamAddr['rtmp'] = item.src['changingThisBreaksApplicationSecurity'];
-      }
+    this.liveService.getStreamPullingAddr(this.liveId).then(videoInfo => {
+      this.pullStreamAddr['m3u8'] = videoInfo.m3u8;
+      this.pullStreamAddr['rtmp'] = videoInfo.rtmp;
     });
   }
 

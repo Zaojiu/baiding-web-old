@@ -1,10 +1,16 @@
 <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
 
 <div class="main" *ngIf="!isLoading && talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)">
-  <header [ngClass]="{sticky: videoPlayer.isPlaying && !isOnScreen}">
-    <video-player class="video-player" #videoPlayer [videoInfo]="videoInfo"></video-player>
+  <header [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen}">
+    <video-player
+      *ngIf="videoInfo"
+      class="video-player"
+      [videoInfo]="videoInfo"
+      [option]="videoOption"
+      (onEvents)="onVideoEvent($event)"
+    ></video-player>
 
-    <div class="live-cover" *ngIf="!videoPlayer.isPlaying" (click)="videoPlayer.play()">
+    <div class="live-cover" *ngIf="isVideoCoverShown">
       <div class="cover-thumbnail-wrapper">
         <div class="cover-thumnail" [style.background-image]="trustBackgroundCover"></div>
       </div>

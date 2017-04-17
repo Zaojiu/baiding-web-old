@@ -31,7 +31,7 @@ export class CustomHttp extends Http {
 
   intercept(observable: Observable<Response>): Observable<Response> {
     return observable.catch((err, source) => {
-      if (err.status === 0) this.operationTipsService.popup('网络请求错误，请刷新页面');
+      if (err.status === 0) this.operationTipsService.popup('请求错误');
 
       switch (err.status) {
         case 400:
@@ -52,7 +52,7 @@ export class CustomHttp extends Http {
       if (err.status >= 500 && err.status < 600) {
         switch (err.status) {
           case 502:
-            this.operationTipsService.popup('网络错误');
+            this.operationTipsService.popup('请求错误');
             break;
           case 504:
             this.operationTipsService.popup('请求超时，请重试');

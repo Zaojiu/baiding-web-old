@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, NavigationEnd} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -15,7 +15,6 @@ import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.
 import {UtilsService} from "../shared/utils/utils";
 import {environment} from "../../environments/environment";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {VideoPlayerComponent} from "../shared/video-player/video-player.component";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 
 @Component({
@@ -34,8 +33,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   videoInfo: VideoInfo;
   videoOption: VideoPlayerOption;
   isJoin = false;
-  isVideoLoading = false;
-  @ViewChild('videoPlayer') videoPlayer: VideoPlayerComponent;
+  isVideoLoading = true;
+  isVideoLoadError = false;
+  isVideoCoverShown = true;
   isDownloadTipsShow = UtilsService.isiOS && !UtilsService.isInApp;
   iosDownloadLink: SafeUrl;
   routerSub: Subscription;
@@ -56,8 +56,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.setShareInfo(); // 设置分享参数等。
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.joinLiveRoom().then(() => {
-      // ios不自动支持自动播放: https://webkit.org/blog/6784/new-video-policies-for-ios/
-      if (this.liveInfo.isTypeVideo() && this.liveInfo.isStarted() && !UtilsService.isiOS && !UtilsService.isAndroid) this.playVideo(true);
+      if (this.liveInfo.isTypeVideo()) this.fetchStream();
     });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
@@ -137,9 +136,13 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   getStreamInfo(): Promise<void> {
     return this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
-      this.videoInfo = videoInfo;
-      let hasProgressBar = this.videoInfo && !this.videoInfo.hasRtmp;
-      this.videoOption = new VideoPlayerOption(hasProgressBar);
+      let isLive = this.liveInfo.isStreamPushing();
+      // ios及安卓不自动支持自动播放: https://webkit.org/blog/6784/new-video-policies-for-ios/
+      let isAutoPlay = !UtilsService.isiOS && !UtilsService.isAndroid;
+      if (videoInfo.hasVideo) {
+        this.videoInfo = videoInfo;
+        this.videoOption = new VideoPlayerOption(isLive, isAutoPlay);
+      }
       return;
     });
   }
@@ -152,35 +155,52 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     });
   }
 
-  playVideo(isAutoPlay = false) {
+  fetchStream() {
     let promise = null;
 
     if (!this.isJoin) {
       promise = this.joinLiveRoom().then(() => {
         return this.getStreamInfo();
       });
-    } else if (!this.videoInfo || !this.videoInfo.hasVideo) {
+    } else if (!this.videoInfo) {
       promise = this.getStreamInfo();
     }
 
     if (promise) {
       this.isVideoLoading = true;
+      this.isVideoLoadError = false;
 
       promise.then(() => {
-        if (!this.videoInfo || !this.videoInfo.hasVideo) {
-          if (this.liveInfo.isCreated()) {
-            if (!isAutoPlay) this.tooltips.popup('直播尚未开始');
-          } else {
-            if (!isAutoPlay) this.tooltips.popup('暂无视频源, 请稍后重试');
-          }
-        } else {
-          setTimeout(() => this.videoPlayer.play());
-        }
+      }, (err) => {
+        this.isVideoLoadError = true;
       }).finally(() => {
         this.isVideoLoading = false;
       });
-    } else {
-      setTimeout(() => this.videoPlayer.play());
+    }
+  }
+
+  onClick() {
+    if (this.isVideoLoadError) {
+      this.tooltips.popup('视频源加载错误, 请重试');
+      this.fetchStream();
+    } else if (!this.videoInfo) {
+      if (this.isVideoLoading) {
+        this.tooltips.popup('视频源加载中, 请稍后播放');
+      } else if (this.liveInfo.isCreated()) {
+        this.tooltips.popup('直播尚未开始');
+      } else {
+        this.tooltips.popup('暂无视频源');
+      }
+    }
+  }
+
+  onVideoEvent(e: TcPlayerOptionListenerMsg) {
+    if (e.type === 'play' || e.type === 'error') {
+      this.isVideoCoverShown = false;
+    }
+
+    if (e.type === 'load' && this.videoOption.isAutoPlay) {
+      this.isVideoCoverShown = false;
     }
   }
 }

@@ -30,6 +30,7 @@
         "../node_modules/moment-duration-format/lib/moment-duration-format.js",
         "../node_modules/moment/locale/zh-cn.js",
         "../node_modules/fastclick/lib/fastclick.js",
+        "../node_modules/tcplayer/TcPlayer.js",
         "../node_modules/weixin-js-sdk/index.original.js"
       ],
       "environments": {

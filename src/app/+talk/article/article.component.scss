@@ -34,6 +34,7 @@
       right: 0;
       display: flex;
       flex-direction: column-reverse;
+      pointer-events: none;
 
       .mask {
         position: absolute;

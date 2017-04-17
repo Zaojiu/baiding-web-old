@@ -10,6 +10,7 @@ import {ApplyComponent} from "./apply.component";
 import {ApplyApiService} from "../../shared/api/apply/apply.service";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
 import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
+import {TimelineService} from "../timeline/timeline.service";
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first
     ApplyComponent
   ],
   providers: [
+    TimelineService,
     ApplyApiService,
   ]
 })

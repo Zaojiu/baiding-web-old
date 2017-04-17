@@ -3,7 +3,7 @@ import {TalkService} from "../../shared/api/talk/talk.api";
 import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
 import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model";
 import {UtilsService} from "../../shared/utils/utils";
-import {VideoInfo, VideoPlayerSrc} from "../../shared/video-player/video-player.model";
+import {VideoInfo, VideoPlayerOption} from "../../shared/video-player/video-player.model";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {ShareBridge} from "../../shared/bridge/share.interface";
@@ -21,6 +21,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   userInfo: UserInfoModel;
   talkInfo: TalkInfoModel;
   videoInfo: VideoInfo;
+  videoOption: VideoPlayerOption;
   comments: TalkCommentModel[] = [];
   isLoading: boolean;
   isCommentLoading: boolean;
@@ -35,11 +36,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
   hasMoreComments: boolean;
   commentSize = 20;
   trustBackgroundCover: SafeStyle;
+  isVideoCoverShown = true;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private talkApiService: TalkService, private sanitizer: DomSanitizer,
-              private shareBridge: ShareBridge, private titleService: TitleService,
-              private authBridge: AuthBridge) {
+              private talkApiService: TalkService, private shareBridge: ShareBridge,
+              private titleService: TitleService, private authBridge: AuthBridge,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -74,10 +76,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
       this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnail11Url})`);
 
       if (talkInfo.media.hasVideo) {
-        let videos = [];
-        if (talkInfo.media.mp4_sd) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_sd), 'video/mp4'));
-        if (talkInfo.media.mp4_hd) videos.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(talkInfo.media.mp4_hd), 'video/mp4'));
-        this.videoInfo = new VideoInfo(videos);
+        this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
+        this.videoInfo = new VideoInfo('', talkInfo.media.mp4_sd, talkInfo.media.mp4_hd, '');
       }
 
       this.setShareInfo(talkInfo);
@@ -239,5 +239,15 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.$toolBar.animate({'bottom': '-46px'}, 'fast', () => {
       this.$toolBar.css({'bottom': '', 'position': ''});
     });
+  }
+
+  onVideoEvent(e: TcPlayerOptionListenerMsg) {
+    if (e.type === 'play' || e.type === 'error') {
+      this.isVideoCoverShown = false;
+    }
+
+    if (e.type === 'load' && this.videoOption.isAutoPlay) {
+      this.isVideoCoverShown = false;
+    }
   }
 }
