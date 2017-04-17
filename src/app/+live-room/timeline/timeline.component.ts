@@ -141,12 +141,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
           this.isOnLatest = false;
         }
         break;
-      case EventType.LiveClosed:
-        this.liveService.getLiveInfo(this.id, true).then((result) => {
-          this.liveInfo = result;
-          this.checkHistoryTips();
-        });
-        break;
       case EventType.LiveMessageInputting:
         let i = new InputtingMessageModel();
         i.type = evt.info.type;
