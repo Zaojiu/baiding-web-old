@@ -59,10 +59,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   resetDefaultBackground() {
-    this.talkInfo.cover11Url = '/assets/img/default-cover.jpg';
-    this.talkInfo.coverSmall11Url = this.talkInfo.cover11Url;
-    this.talkInfo.coverThumbnail11Url = this.talkInfo.cover11Url;
-    this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnail11Url})`);
+    this.talkInfo.coverUrl = '/assets/img/default-cover.jpg';
+    this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg';
+    this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg';
+    this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnailUrl})`);
   }
 
   ngOnDestroy() {
@@ -73,11 +73,11 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
-      this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnail11Url})`);
+      this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnailUrl})`);
 
       if (talkInfo.media.hasVideo) {
         this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
-        this.videoInfo = new VideoInfo('', talkInfo.media.mp4_sd, talkInfo.media.mp4_hd, '');
+        this.videoInfo = new VideoInfo('', talkInfo.media.mp4_sd, talkInfo.media.mp4_hd, talkInfo.media.mp4);
       }
 
       this.setShareInfo(talkInfo);

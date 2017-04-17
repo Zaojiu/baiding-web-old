@@ -14,16 +14,18 @@
       top: 0;
     }
 
-    .video-player {
-      position: relative;
-      width: 100%;
+    &:before {
+      content: "";
       display: block;
+      padding-top: 100%;
+    }
 
-      &:before {
-        content: "";
-        display: block;
-        padding-top: 100%;
-      }
+    .video-player {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
     }
 
     .live-cover {

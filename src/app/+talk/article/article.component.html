@@ -17,7 +17,7 @@
       <img
         class="cover-image"
         [ngClass]="{fadein: coverLoaded}"
-        [src]="talkInfo.cover11Url" alt="话题间封面"
+        [src]="talkInfo.coverUrl" alt="话题间封面"
         (load)="coverLoaded = true"
         (error)="resetDefaultBackground()"
       >
