@@ -1,59 +1,45 @@
-import {SafeUrl} from "@angular/platform-browser";
-
-export class VideoPlayerSrc {
-  src: SafeUrl;
-  type: string;
-
-  constructor(src: SafeUrl, type: string) {
-    this.src = src;
-    this.type = type;
-  }
-
-  get isM3u8(): boolean {
-    return this.src.toString().indexOf('.m3u8') !== -1;
-  }
-
-  get isRtmp(): boolean {
-    return this.src.toString().indexOf('rtmp://') !== -1;
-  }
-}
-
 export class VideoInfo {
-  src: VideoPlayerSrc[] = [];
+  m3u8: string;
+  mp4SD: string;
+  mp4HD: string;
+  mp4: string;
+  rtmpSD: string;
+  rtmpHD: string;
+  rtmp: string;
 
-  constructor(src: VideoPlayerSrc[]) {
-    this.src = src;
+  constructor(m3u8 = '', mp4SD = '', mp4HD = '', mp4 = '', rtmpSD = '', rtmpHD = '', rtmp = '') {
+    this.m3u8 = m3u8;
+    this.mp4SD = mp4SD;
+    this.mp4HD = mp4HD;
+    this.mp4 = mp4;
+    this.rtmpSD = rtmpSD;
+    this.rtmpHD = rtmpHD;
+    this.rtmp = rtmp;
   }
 
   get hasVideo(): boolean {
-    return this.src && !!this.src.length
+    for (let key of Object.keys(this)) {
+      if (this[key] !== '') return true;
+    }
+
+    return false;
   }
 
   get hasM3u8(): boolean {
-    if (!this.src || !this.src.length) return false;
-
-    for (let item of this.src) {
-      if (item.isM3u8) return true;
-    }
-
-    return false;
+    return !!this.m3u8;
   }
 
   get hasRtmp(): boolean {
-    if (!this.src || !this.src.length) return false;
-
-    for (let item of this.src) {
-      if (item.isRtmp) return true;
-    }
-
-    return false;
+    return !!this.rtmpSD && !!this.rtmpHD && !!this.rtmp;
   }
 }
 
 export class VideoPlayerOption {
-  progessBar: boolean;
+  isLive: boolean;
+  isAutoPlay: boolean;
 
-  constructor(progressBar: boolean) {
-    this.progessBar = progressBar;
+  constructor(isLive = false, isAutoPlay = false) {
+    this.isLive = isLive;
+    this.isAutoPlay = isAutoPlay;
   }
 }

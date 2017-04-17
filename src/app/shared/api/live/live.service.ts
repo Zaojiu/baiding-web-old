@@ -8,12 +8,11 @@ import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {environment} from "../../../../environments/environment";
 import {UtilsService} from "../../utils/utils";
-import {DomSanitizer} from "@angular/platform-browser";
-import {VideoInfo, VideoPlayerSrc} from "../../video-player/video-player.model";
+import {VideoInfo} from "../../video-player/video-player.model";
 
 @Injectable()
 export class LiveService {
-  constructor(private http: Http, private sanitizer: DomSanitizer) {
+  constructor(private http: Http) {
   }
 
   private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
@@ -357,14 +356,18 @@ export class LiveService {
   }
 
   processStreamInfo(liveInfo: LiveInfoModel): Promise<VideoInfo> {
-    if (!liveInfo.isTypeVideo()) return Promise.resolve(null);
+    if (!liveInfo.isTypeVideo()) return Promise.resolve(new VideoInfo);
 
     let promise = null;
 
     if (liveInfo.isCreated()) {
-      return Promise.resolve(null);
+      if (liveInfo.isStreamPushing()){
+        promise = this.getStreamPullingAddr(liveInfo.id);
+      } else {
+        return Promise.resolve(new VideoInfo);
+      }
     } else if (liveInfo.isStarted()) {
-      if (liveInfo.isStreamNone()) return Promise.resolve(null);
+      if (liveInfo.isStreamNone()) return Promise.resolve(new VideoInfo);
 
       if (liveInfo.isStreamPushing()) promise = this.getStreamPullingAddr(liveInfo.id);
 
@@ -373,14 +376,8 @@ export class LiveService {
       promise = this.getPlaybackAddr(liveInfo.id);
     }
 
-    return promise.then(result => {
-      let videos: VideoPlayerSrc[] = [];
-      for (let item of result.src) {
-        if (UtilsService.isDesktopChrome && item.isM3u8) continue;
-        videos.push(item);
-      }
-
-      return new VideoInfo(videos);
+    return promise.then(videoInfo => {
+      return videoInfo;
     });
  }
 
@@ -389,17 +386,21 @@ export class LiveService {
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let streamSrc = [];
+      let videoInfo = null;
 
-      if (data && data.rtmp) {
-        streamSrc.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.rtmp), 'rtmp/mp4'));
+      if (data && data.rtmp && UtilsService.isChrome && !UtilsService.isInWechat) {
+        videoInfo = new VideoInfo('', '', '', '', data.rtmp_sd, data.rtmp_hd, data.rtmp);
       }
 
-      if (data && data.hls) {
-        streamSrc.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.hls), 'application/x-mpegURL'));
+      if (data && data.hls && !UtilsService.isChrome) {
+        videoInfo = new VideoInfo(data.hls);
       }
 
-      return new VideoInfo(streamSrc);
+      if (data && data.hls && UtilsService.isInWechat) {
+        videoInfo = new VideoInfo(data.hls);
+      }
+
+      return videoInfo;
     });
   }
 
@@ -419,16 +420,16 @@ export class LiveService {
 
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let playbackAddr: VideoPlayerSrc[] = [];
+      let m3u8 = '', mp4 = '', mp4SD = '', mp4HD = '';
 
       if (data) {
-        if (data.m3u8 && !UtilsService.isDesktopChrome) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.m3u8), 'video/mp4'));
-        if (data.SD_mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.SD_mp4), 'video/mp4'));
-        if (data.HD_mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data.HD_mp4), 'video/mp4'));
-        if (data._mp4) playbackAddr.push(new VideoPlayerSrc(this.sanitizer.bypassSecurityTrustUrl(data._mp4), 'video/mp4'));
+        m3u8 = data.m3u8 && !UtilsService.isChrome ? data.m3u8 : '';
+        mp4 = data._mp4 || '';
+        mp4SD = data.SD_mp4 || '';
+        mp4HD = data.HD_mp4 || '';
       }
 
-      return new VideoInfo(playbackAddr);
+      return new VideoInfo(m3u8, mp4SD, mp4HD, mp4);
     });
   }
 }

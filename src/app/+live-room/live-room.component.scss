@@ -66,6 +66,7 @@
 
   .video {
     position: relative;
+    overflow: hidden;
 
     &:before {
       content: "";
@@ -87,6 +88,7 @@
       left: 0;
       bottom: 0;
       right: 0;
+      pointer-events: none;
 
       .count-down {
         position: absolute;

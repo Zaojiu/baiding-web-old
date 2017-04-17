@@ -1,12 +1,15 @@
-<video
-  *ngIf="hasVideo()"
-  #videoPlayer
-  class="video-js vjs-default-skin video-player"
-  [ngClass]="{'no-progressbar': option && !option.progessBar}"
-  controls="controls"
-  preload="none"
-  webkit-playsinline
-  playsinline
->
-  <source *ngFor="let item of videoInfo.src" [src]="item.src" [type]="item.type">
-</video>
+<!--<video-->
+  <!--*ngIf="hasVideo()"-->
+  <!--#videoPlayer-->
+  <!--class="video-js vjs-default-skin video-player"-->
+  <!--[ngClass]="{'no-progressbar': option && !option.progessBar}"-->
+  <!--controls="controls"-->
+  <!--preload="none"-->
+  <!--webkit-playsinline-->
+  <!--playsinline-->
+<!--&gt;-->
+  <!--<source *ngFor="let item of videoInfo.src" [src]="item.src" [type]="item.type">-->
+<!--</video>-->
+
+<div id="bd-player" #videoPlayer></div>
+
