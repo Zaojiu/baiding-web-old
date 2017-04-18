@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router, NavigationEnd} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -16,6 +16,7 @@ import {UtilsService} from "../shared/utils/utils";
 import {environment} from "../../environments/environment";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
+import {TimelineComponent} from "./timeline/timeline.component";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -29,7 +30,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   showInfo: boolean;
   isCommentOpened: boolean = true;
   refreshInterval: any;
-  praisedSub: Subscription;
+  eventSub: Subscription;
   videoInfo: VideoInfo;
   videoOption: VideoPlayerOption;
   isJoin = false;
@@ -40,6 +41,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   iosDownloadLink: SafeUrl;
   routerSub: Subscription;
   isLiveRoomVisable: boolean;
+  @ViewChild('timeline') timeline: TimelineComponent;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -60,17 +62,23 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
-    this.praisedSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
-      if (evt.event != EventType.LivePraise) {
-        return
+    this.eventSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
+      if (evt.event === EventType.LiveClosed) {
+        this.refreshLiveInfo().then(() => {
+          this.getStreamInfo();
+          this.timeline.checkHistoryTips();
+        });
       }
-      if (evt.info.user.uid == this.userInfo.uid) {
-        return
+
+      if (evt.event === EventType.LivePraise) {
+        if (evt.info.user.uid == this.userInfo.uid) {
+          return
+        }
+        let userAnim = new UserAnimEmoji;
+        userAnim.emoji = evt.info.emoji;
+        userAnim.user = new UserInfoModel;
+        this.liveInfo.praisedAnimations.push(userAnim);
       }
-      let userAnim = new UserAnimEmoji;
-      userAnim.emoji = evt.info.emoji;
-      userAnim.user = new UserInfoModel;
-      this.liveInfo.praisedAnimations.push(userAnim);
     });
 
     this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);
@@ -88,18 +96,17 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.praisedSub) this.praisedSub.unsubscribe();
+    if (this.eventSub) this.eventSub.unsubscribe();
 
     if (this.refreshInterval) clearInterval(this.refreshInterval);
   }
 
-  refreshLiveInfo() {
-    this.liveService.getLiveInfo(this.id, true).then(liveInfo => {
+  refreshLiveInfo(): Promise<boolean> {
+    return this.liveService.getLiveInfo(this.id, true).then(liveInfo => {
       let oldInfo = this.liveInfo;
       this.liveInfo = liveInfo;
-      if (oldInfo) {
-        this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
-      }
+      if (oldInfo) this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
+      return;
     });
   }
 
@@ -136,12 +143,17 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   getStreamInfo(): Promise<void> {
     return this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
+      this.videoInfo = null;
       let isLive = this.liveInfo.isStreamPushing();
       // ios及安卓不自动支持自动播放: https://webkit.org/blog/6784/new-video-policies-for-ios/
       let isAutoPlay = !UtilsService.isiOS && !UtilsService.isAndroid;
       if (videoInfo.hasVideo) {
-        this.videoInfo = videoInfo;
-        this.videoOption = new VideoPlayerOption(isLive, isAutoPlay);
+        setTimeout(() => {
+          this.videoInfo = videoInfo;
+          this.videoOption = new VideoPlayerOption(isLive, isAutoPlay);
+        });
+      } else {
+        this.isVideoCoverShown = true;
       }
       return;
     });

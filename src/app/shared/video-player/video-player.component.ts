@@ -24,17 +24,17 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     let videos = changes['videoInfo'];
 
-    if (videos && videos.currentValue) {
-      this.setPlayer();
+    if (videos) {
+      if (videos.currentValue) {
+        this.setPlayer();
+      } else {
+        this.destroy();
+      }
     }
   }
 
-  ngOnDestroy() {}
-
-  get hasVideo(): boolean {
-    if (!this.videoInfo) return false;
-
-    return this.videoInfo.hasVideo;
+  ngOnDestroy() {
+    this.destroy();
   }
 
   setPlayer() {
@@ -50,11 +50,14 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
       live: this.option.isLive,
       width: this.videoPlayer.nativeElement.offsetWidth,
       height: this.videoPlayer.nativeElement.offsetHeight,
-      controls: 'default',
       listener: (msg: TcPlayerOptionListenerMsg) => this._onEvents(msg),
     };
 
     this.player = new TcPlayer('bd-player', opt);
+  }
+
+  destroy() {
+    this.videoPlayer.nativeElement.innerHTML = '';
   }
 
   private _onEvents(msg: TcPlayerOptionListenerMsg) {

@@ -58,7 +58,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
         for (let item of result.result) {
           if (item.isSpeaker()) continue; // TODO: 之后有speaker页面, 再移除此代码
 
-          list.push(new ListViewModel(item.id, item.coverSmall11Url, item.subject, item.desc, () => this.goto(item)));
+          list.push(new ListViewModel(item.id, item.coverSmallUrl, item.subject, item.desc, () => this.goto(item)));
         }
 
         return new ListViewResult(list, `${result.paging.from + result.paging.size}`, result.paging.from + result.paging.size < result.paging.total);

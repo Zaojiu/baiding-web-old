@@ -46,6 +46,7 @@ declare interface TcPlayerStatic {
 }
 
 declare interface TcPlayerInstance {
+  destroy();
 }
 
 declare module "tcplayer" {
