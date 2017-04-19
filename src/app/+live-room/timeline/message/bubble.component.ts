@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {MessageModel} from '../../../shared/api/message/message.model';
@@ -19,11 +19,12 @@ import {TimelineService} from "../timeline.service";
   styleUrls: ['./bubble.component.scss'],
 })
 
-export class BubbleComponent implements OnInit, OnDestroy {
+export class BubbleComponent implements AfterViewInit, OnDestroy {
   @Input() liveId: string;
   @Input() message: MessageModel;
   @Input() userInfo: UserInfoModel;
   @Input() liveInfo: LiveInfoModel;
+  @ViewChild('translate') translate: ElementRef;
 
   isLoading: boolean;
   praisesNum: number = 0;
@@ -31,33 +32,53 @@ export class BubbleComponent implements OnInit, OnDestroy {
   praised: boolean;
   isTranslationCollapse: boolean;
   tranlationCollapseSub: Subscription;
-  tranlationMaxLength = 32;
   isReplyCollapse = true;
+  maxTranslateHeight = 34;
+  private translateOriginHeight = 0;
 
   constructor(private messageApiService: MessageApiService, private timelineService: TimelineService,
               private router: Router, private userInfoCardService: UserInfoCardService,
               private modalService: ModalService, private liveRoomService: LiveRoomService) {
   }
 
-  ngOnInit() {
-    let isTranlationCollapse = this.liveRoomService.isTranslationCollapse(this.liveId);
-    this.judgeTranlastionLength(isTranlationCollapse, this.tranlationMaxLength);
+  ngAfterViewInit() {
+    if (this.translate) {
+      this.translateOriginHeight = this.translate.nativeElement.clientHeight;
 
-    this.tranlationCollapseSub = this.liveRoomService.$tranlationCollapse.subscribe((result) => {
-      this.judgeTranlastionLength(result, this.tranlationMaxLength);
-    });
+      let isGlobalTranlationCollapse = this.liveRoomService.isTranslationCollapse(this.liveId);
+      setTimeout(() => this.initTranslateCollapse(isGlobalTranlationCollapse));
+
+      this.tranlationCollapseSub = this.liveRoomService.$tranlationCollapse.subscribe((result) => {
+        this.initTranslateCollapse(result);
+      });
+
+      $(window).on(`resize.bubble${this.message.id}`, () => this.resetTranslateHeight());
+    }
   }
 
   ngOnDestroy() {
-    this.tranlationCollapseSub.unsubscribe();
+    this.tranlationCollapseSub && this.tranlationCollapseSub.unsubscribe();
+    $(window).off(`resize.bubble${this.message.id}`);
   }
 
-  judgeTranlastionLength(tranlationCollapse: boolean, tranlationLength: number) {
-    if (this.message && this.message.audio && this.message.audio.translateResult && this.message.audio.translateResult.length >= tranlationLength) {
-      this.isTranslationCollapse = tranlationCollapse;
-    } else {
-      this.isTranslationCollapse = false;
-    }
+  resetTranslateHeight() {
+    let isCollapseCache = this.isTranslationCollapse;
+    this.isTranslationCollapse = false;
+    setTimeout(() => {
+      this.translateOriginHeight = this.translate.nativeElement.clientHeight;
+      this.isTranslationCollapse = isCollapseCache;
+      this.initTranslateCollapse(this.isTranslationCollapse);
+    });
+  }
+
+  initTranslateCollapse(isTranlationCollapse: boolean) {
+    this.isTranslationCollapse = isTranlationCollapse && this.translateOriginHeight > this.maxTranslateHeight;
+  }
+
+  toggleTranslationCollapse() {
+    if (this.translateOriginHeight <= this.maxTranslateHeight) return;
+
+    this.isTranslationCollapse = !this.isTranslationCollapse;
   }
 
   confirmPraise() {
@@ -100,12 +121,6 @@ export class BubbleComponent implements OnInit, OnDestroy {
 
   avatarTouched(userInfo: UserInfoModel) {
     this.timelineService.avatarTouched(userInfo);
-  }
-
-  toggleTranslationCollapse(msg) {
-    if (msg.length <= this.tranlationMaxLength) return;
-
-    this.isTranslationCollapse = !this.isTranslationCollapse;
   }
 
   showUserInfoCard(uid: number) {

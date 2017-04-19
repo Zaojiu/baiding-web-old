@@ -82,16 +82,20 @@
 
       <div
         class="translate"
-        [ngClass]="{'collapse': isTranslationCollapse}"
-        (click)="toggleTranslationCollapse(message.audio.translateResult)"
+        (click)="toggleTranslationCollapse()"
+        [style.padding-bottom]="isTranslationCollapse ? '27px' : '12px'"
         *ngIf="message.isAudio()"
       >
         <div class="translate-tips">以下由机器自动翻译</div>
-        {{message.audio.translateResult !== '' ? message.audio.translateResult : message.isPostPending() ? '翻译中...' :
-        '暂无翻译内容'}}
+        <div class="translate-content"
+          #translate
+          [style.max-height]="isTranslationCollapse ? maxTranslateHeight + 'px' : 'none'"
+        >
+          {{message.audio.translateResult !== '' ? message.audio.translateResult : message.isPostPending() ? '翻译中...' : '暂无翻译内容'}}
+        </div>
         <i
           class="bi bi-elliplis"
-          *ngIf="isTranslationCollapse && message.audio.translateResult"
+          *ngIf="isTranslationCollapse"
         ></i>
       </div>
 
