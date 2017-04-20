@@ -142,12 +142,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     return `${location.protocol}//${location.hostname}${path}`;
   }
 
-  getStreamInfo(isAutoPlay = true): Promise<void> {
+  getStreamInfo(needAutoPlay = true): Promise<void> {
     return this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
       this.videoInfo = null;
       let isLive = this.liveInfo.isStreamPushing();
       // ios及安卓不自动支持自动播放: https://webkit.org/blog/6784/new-video-policies-for-ios/
-      let isAutoPlay = !UtilsService.isiOS && !UtilsService.isAndroid && isAutoPlay;
+      let isAutoPlay = !UtilsService.isiOS && !UtilsService.isAndroid && needAutoPlay;
       if (videoInfo.hasVideo) {
         setTimeout(() => {
           this.videoInfo = videoInfo;
