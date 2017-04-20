@@ -64,8 +64,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.eventSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
       if (evt.event === EventType.LiveClosed) {
+        this.tooltips.popup('直播已结束');
         this.refreshLiveInfo().then(() => {
-          this.getStreamInfo();
+          this.getStreamInfo(false);
           this.timeline.checkHistoryTips();
         });
       }
@@ -141,12 +142,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     return `${location.protocol}//${location.hostname}${path}`;
   }
 
-  getStreamInfo(): Promise<void> {
+  getStreamInfo(needAutoPlay = true): Promise<void> {
     return this.liveService.processStreamInfo(this.liveInfo).then((videoInfo) => {
       this.videoInfo = null;
       let isLive = this.liveInfo.isStreamPushing();
       // ios及安卓不自动支持自动播放: https://webkit.org/blog/6784/new-video-policies-for-ios/
-      let isAutoPlay = !UtilsService.isiOS && !UtilsService.isAndroid;
+      let isAutoPlay = !UtilsService.isiOS && !UtilsService.isAndroid && needAutoPlay;
       if (videoInfo.hasVideo) {
         setTimeout(() => {
           this.videoInfo = videoInfo;
