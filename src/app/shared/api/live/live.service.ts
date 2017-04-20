@@ -392,11 +392,7 @@ export class LiveService {
         videoInfo = new VideoInfo('', '', '', '', data.rtmp_sd, data.rtmp_hd, data.rtmp);
       }
 
-      if (data && data.hls && !UtilsService.isChrome) {
-        videoInfo = new VideoInfo(data.hls);
-      }
-
-      if (data && data.hls && UtilsService.isInWechat) {
+      if (data && data.hls && !(UtilsService.isChrome && !UtilsService.isInWechat)) {
         videoInfo = new VideoInfo(data.hls);
       }
 
@@ -423,7 +419,7 @@ export class LiveService {
       let m3u8 = '', mp4 = '', mp4SD = '', mp4HD = '';
 
       if (data) {
-        m3u8 = data.m3u8 && !UtilsService.isChrome ? data.m3u8 : '';
+        m3u8 = data.m3u8 && !(UtilsService.isChrome && !UtilsService.isInWechat) ? data.m3u8 : '';
         mp4 = data._mp4 || '';
         mp4SD = data.SD_mp4 || '';
         mp4HD = data.HD_mp4 || '';
