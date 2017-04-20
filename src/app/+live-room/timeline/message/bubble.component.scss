@@ -57,6 +57,7 @@
 
   .message-container {
     flex-grow: 1;
+    max-width: calc(100% - 57px - 46px);
 
     .message-info {
       margin-bottom: 6px;
@@ -107,6 +108,10 @@
           .translate-tips {
             color: $color-w;
           }
+
+          .bi-elliplis {
+            color: $color-w;
+          }
         }
 
         .reply {
@@ -142,11 +147,6 @@
         line-height: 1.28em;
         color: $color-gray;
 
-        &.collapse {
-          max-height: 76px;
-          overflow: hidden;
-        }
-
         &:before {
           position: absolute;
           top: 0;
@@ -164,10 +164,18 @@
           line-height: 1em;
         }
 
+        .translate-content {
+          overflow: hidden;
+        }
+
         .bi-elliplis {
-          margin-top: 3px;
+          position: absolute;
+          left: 50%;
           font-size: 12px;
-          transform: scale(.5);
+          margin-top: 6px;
+          transform: scale(0.5) translateX(-50%);
+          transform-origin: left;
+          color: $color-dark-gray;
         }
       }
 
