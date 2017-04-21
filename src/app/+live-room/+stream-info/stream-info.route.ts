@@ -10,7 +10,8 @@ const route: Routes = [
     canActivate: [AdminGuard],
     component: StreamInfoComponent,
     data: {
-      title: '推流地址'
+      title: '推流地址',
+      isInheritShareInfo: true,
     }
   }
 ];

@@ -53,14 +53,13 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
-
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
-    this.setShareInfo(); // 设置分享参数等。
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.joinLiveRoom().then(() => {
       if (this.liveInfo.isTypeVideo()) this.fetchStream();
     });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
+    this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);
 
     this.eventSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
       if (evt.event === EventType.LiveClosed) {
@@ -82,8 +81,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);
-
     // 为了防止各种神奇浏览器的神奇播放器总是在最顶层, 打开子页面的时候, 把视频销毁
     this.routerSub = this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
@@ -91,7 +88,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
         while (route.firstChild) route = route.firstChild;
 
-        this.isLiveRoomVisable = !route.component && route.parent.component === LiveRoomComponent;
+        if (!route.component && route.parent.component === LiveRoomComponent) {
+          this.isLiveRoomVisable = true;
+          this.setShareInfo();
+        }
       }
     });
   }

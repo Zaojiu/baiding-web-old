@@ -11,6 +11,9 @@ const route: Routes = [
     path: '',
     canActivate: [AdminGuard],
     component: VipInfoComponent,
+    data: {
+      isInheritShareInfo: true,
+    },
     resolve: {
       liveInfo: LiveInfoResolver,
       userInfo: UserInfoResolver,
