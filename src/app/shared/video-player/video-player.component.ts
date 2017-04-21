@@ -48,8 +48,8 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
       rtmp_hd: this.videoInfo.rtmpHD,
       autoplay: this.option.isAutoPlay,
       live: this.option.isLive,
-      width: this.videoPlayer.nativeElement.offsetWidth,
-      height: this.videoPlayer.nativeElement.offsetHeight,
+      width: '100%',
+      height: '100%',
       listener: (msg: TcPlayerOptionListenerMsg) => this._onEvents(msg),
     };
 
