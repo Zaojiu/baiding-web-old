@@ -32,7 +32,7 @@ export class UtilsService {
   static isInBaidingApp = /baidingapp\.com/i.test(location.hostname);
   static isTouchable = (<any>window).DocumentTouch && document instanceof DocumentTouch;
   static isAndroid = /Android/i.test(window.navigator.userAgent);
-  static isOnLargeScreen = matchMedia && matchMedia('(min-width: 1024px)').matches;
+  static isOnLargeScreen = matchMedia && matchMedia('(min-width: 1022px)').matches;
   static isChrome = /Chrome/i.test(window.navigator.userAgent);
 
   static setStorage(key: string, value: Object) {

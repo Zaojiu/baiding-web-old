@@ -29,8 +29,8 @@ declare interface TcPlayerOption {
   rtmp?: string;
   rtmp_hd?: string;
   rtmp_sd?: string;
-  width: number;
-  height: number;
+  width: number|string;
+  height: number|string;
   live: boolean;
   autoplay?: boolean;
   coverpic?: string|TcPlayerOptionCover;
