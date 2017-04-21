@@ -16,7 +16,8 @@ const route: Routes = [
       userInfo: UserInfoResolver,
     },
     data: {
-      title: '话题间设置'
+      title: '话题间设置',
+      isInheritShareInfo: true,
     },
     component: SettingsComponent,
   },
@@ -27,7 +28,8 @@ const route: Routes = [
       userInfo: UserInfoResolver,
     },
     data: {
-      title: '话题间信息'
+      title: '话题间信息',
+      isInheritShareInfo: true,
     }
   },
   {
@@ -39,7 +41,8 @@ const route: Routes = [
       userInfo: UserInfoResolver,
     },
     data: {
-      title: '编辑话题间信息'
+      title: '编辑话题间信息',
+      isInheritShareInfo: true,
     }
   },
 ];

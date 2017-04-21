@@ -47,7 +47,7 @@ const route: Routes = [
       userInfo: UserInfoResolver,
     },
     children: [
-      { path: '', canActivate: [RoleAuthGuard] },
+      {path: '', canActivate: [RoleAuthGuard]},
       {path: 'push-comment', loadChildren: 'app/+live-room/+push-comment/push-comment.module#PushCommentModule'},
       {path: 'post', loadChildren: 'app/+live-room/+post/post.module#PostModule'},
       {path: 'vip-info', loadChildren: 'app/+live-room/+vip-info/vip-info.module#VipInfoModule'},

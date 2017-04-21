@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
+import {NgModule} from '@angular/core';
+import {CommonModule} from "@angular/common";
 
-import { ShareRoutingModule } from './share.route';
-import { ShareComponent } from './share.component';
-import { LoadingModule } from "../../shared/bd-loading/bd-loading.module";
+import {ShareRoutingModule} from './share.route';
+import {ShareComponent} from './share.component';
+import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
 
 
 @NgModule({
@@ -17,4 +17,5 @@ import { LoadingModule } from "../../shared/bd-loading/bd-loading.module";
   ],
 })
 
-export class ShareModule {}
+export class ShareModule {
+}

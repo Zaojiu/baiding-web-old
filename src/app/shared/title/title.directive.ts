@@ -1,6 +1,6 @@
 import {Directive, ElementRef, OnInit} from '@angular/core'
 import {Subscription} from 'rxjs/Subscription';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import {Router, ActivatedRoute, NavigationEnd, ActivatedRouteSnapshot} from '@angular/router';
 import {Title as NgTitle}     from '@angular/platform-browser';
 
 import {TitleService} from './title.service';
@@ -40,19 +40,36 @@ export class TitleSetterDirective implements OnInit {
     this.initOnRouteChange();
   }
 
+  private getRoute(route: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
+    if (!route.component) {
+      let parent = route.parent;
+
+      while (parent) {
+        if (parent.component) {
+          route = parent;
+          break;
+        }
+
+        parent = parent.parent;
+      }
+    }
+
+    return route;
+  }
+
   private initOnRouteChange() {
     this.sub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(_ => {
       let title = environment.config.name;
       let titleArr = [];
-      let activeRoutes: ActivatedRoute[] = this.route.children;
-      let isAsyncTitle = this.route.snapshot.data && this.route.snapshot.data['isAsyncTitle'];
+      let route = this.getRoute(this.route.snapshot);
+      let activeRoutes: ActivatedRouteSnapshot[] = route.children;
+      let isAsyncTitle = route.data && route.data['isAsyncTitle'];
 
-      activeRoutes.forEach((route: ActivatedRoute) => {
-        let activeRoute: ActivatedRoute = route;
-        while (activeRoute.firstChild) {
-          activeRoute = activeRoute.firstChild;
-        }
-        let d = activeRoute.snapshot.data;
+      activeRoutes.forEach((route: ActivatedRouteSnapshot) => {
+        let activeRoute: ActivatedRouteSnapshot = route;
+        while (activeRoute.firstChild) activeRoute = activeRoute.firstChild;
+        activeRoute = this.getRoute(activeRoute);
+        let d = activeRoute.data;
         if (d && d['title']) titleArr.push([d['title']]);
       });
 
@@ -66,6 +83,7 @@ export class TitleSetterDirective implements OnInit {
   private setDefaultShareInfo() {
     let route = this.route.snapshot;
     while (route.firstChild) route = route.firstChild;
+    route = this.getRoute(route);
 
     let routeData = route.data;
     let shareTitle = routeData && routeData['shareTitle'] ? routeData['shareTitle'] : environment.config.name;
@@ -73,8 +91,17 @@ export class TitleSetterDirective implements OnInit {
     let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${location.protocol}//${location.hostname}assets/img/zaojiu-logo.jpg`;
     let shareLink = routeData && routeData['shareLink'] ? routeData['shareLink'] : `${location.protocol}//${location.hostname}`; // 默认分享首页地址
     let isAsyncShareInfo = routeData && routeData['isAsyncShareInfo'];
+    let isInheritShareInfo = routeData && routeData['isInheritShareInfo'];
 
-    if (!isAsyncShareInfo) this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareLink);
+    if (isInheritShareInfo && this.shareBridge.title && this.shareBridge.desc && this.shareBridge.cover && this.shareBridge.link) {
+      this.shareBridge.setShareInfo(this.shareBridge.title, this.shareBridge.desc, this.shareBridge.cover, this.shareBridge.link);
+      return;
+    }
+
+    if (!isAsyncShareInfo) {
+      this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareLink);
+      return;
+    }
   }
 
   private setWechatWebviewTitle(newTitle: string) {

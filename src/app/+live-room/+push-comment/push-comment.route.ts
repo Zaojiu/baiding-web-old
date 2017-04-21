@@ -13,7 +13,8 @@ const route: Routes = [
       userInfo: UserInfoResolver,
     },
     data: {
-      title: '评论列表'
+      title: '评论列表',
+      isInheritShareInfo: true,
     }
   }
 ];
