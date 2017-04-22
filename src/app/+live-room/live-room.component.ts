@@ -88,10 +88,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
         while (route.firstChild) route = route.firstChild;
 
-        if (!route.component && route.parent.component === LiveRoomComponent) {
-          this.isLiveRoomVisable = true;
-          this.setShareInfo();
-        }
+        this.isLiveRoomVisable = !route.component && route.parent.component === LiveRoomComponent;
+
+        if (this.isLiveRoomVisable) this.setShareInfo();
       }
     });
   }
