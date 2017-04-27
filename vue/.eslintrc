@@ -1,0 +1,16 @@
+{
+  "extends": "vue",
+  "plugins": ["testcafe"],
+  "parserOptions": {
+    "ecmaVersion": 8 // or 2017
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  },
+  "rules": {
+    "import/no-unresolved": 0,
+    "import/no-unassigned-import": 0
+  }
+}

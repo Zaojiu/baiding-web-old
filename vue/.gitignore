@@ -1,0 +1,32 @@
+node_modules
+*.log
+.DS_Store
+/dist
+
+# IDEs and editors
+/.idea
+/.vscode
+.project
+.classpath
+*.launch
+.settings/
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+
+#System Files
+.DS_Store
+Thumbs.db
+
+# config
+/src/env/environment.development.js
+/angular-cli.dev.json
+/angular-cli.prod.json
+hack/Dockerfile
+
