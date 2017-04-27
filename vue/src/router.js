@@ -17,8 +17,9 @@ export default new Router({
       path: '/talks/:id',
       component: Talks,
       children: [
+        { path: '' },
         {
-          path: '/comments',
+          path: 'post-comment',
           component: Comments
         }
       ]

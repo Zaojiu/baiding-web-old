@@ -69,4 +69,8 @@
       background-color: $color-dark-gray;
     }
   }
+
+  @import "../css/_avatar";
+  @import "../css/_form";
+  @import "../css/_iconfont";
 </style>

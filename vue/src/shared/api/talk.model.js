@@ -131,3 +131,29 @@ export class TalkInfoModel {
     this.publishAt = moment(data.publishAt)
   }
 }
+
+export class TalkCommentParentModel {
+  constructor (userInfo, content, createdAt) {
+    this.user = userInfo;
+    this.content = content;
+    this.createdAt = createdAt;
+  }
+}
+
+export class TalkCommentModel {
+  constructor (data, users) {
+    this.id = data.id
+    if (users) this.user = users[data.uid]
+    if (data.parent && users) this.parent = new TalkCommentParentModel(users[data.parent.uid], data.parent.content, this.createdAt = moment(+data.parent.createdAt / 1e6))
+    if (data.toUids) {
+      for (const uid of data.toUsers) {
+        this.toUsers.push(users[uid]);
+      }
+    }
+    this.content = data.content;
+    this.createdAt = moment(+data.createdAt / 1e6);
+    this.originCreatedAt = data.createdAt;
+
+  }
+}
+
