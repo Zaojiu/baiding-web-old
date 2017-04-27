@@ -6,7 +6,8 @@ import { Utils } from '../utils/utils'
 export default {
   async getTalkInfo (id) {
     const url = `${host.io}/api/live/objects/${id}`
-    const res = await axios.get(url);
+    const res = await axios.get(url).catch(() => null);
+    if (res === null) return null;
     return new TalkInfoModel(res.data.object, res.data.users, res.data.speakers, res.data.categories, res.data.tags, res.data.currentUserInfo)
   },
 

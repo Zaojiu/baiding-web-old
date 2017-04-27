@@ -10,13 +10,13 @@ export const POST_TALK_COMMENT = 'talks.POST_TALK_COMMENT'
 export const TALK_COMMENT_COUNT = 20
 
 const state = {
-  talks: {},
+  info: {},
   comments: {}
 }
 
 const mutations = {
-  [ADD_TALK] ({ talks }, newTalk) {
-    Vue.set(talks, newTalk.id, newTalk.info)
+  [ADD_TALK] ({ info }, newTalk) {
+    Vue.set(info, newTalk.id, newTalk.info)
   },
   [ADD_TALK_COMMENT] ({ comments }, talkComments) {
     if (comments[talkComments.id]) {
@@ -48,7 +48,7 @@ const actions = {
     commit(ADD_TALK_COMMENT, { id: id, comments: talkComments, hasMore: hasMore})
   },
   [POST_TALK_COMMENT]: async ({ commit, state }, data) => {
-    const talkInfo = {...state.talks[data.id]}
+    const talkInfo = {...state.info[data.id]}
     talkInfo.commentTotal += 1;
     await talkApi.postTalkComment(data.id, data.content, data.parentId)
     commit(REMOVE_TALK_COMMENT, data.id)

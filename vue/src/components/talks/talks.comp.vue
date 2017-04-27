@@ -77,7 +77,7 @@
         </div>
 
         <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
-        <div class="no-comments" v-else-if="!comments && comments.data.length">暂无评论</div>
+        <div class="no-comments" v-else-if="!comments.data.length">暂无评论</div>
         <div class="no-more-comments" v-else-if="!comments.hasMore">到底咯~</div>
         <div class="more-comments" v-else @click="fetchComments">加载更多评论</div>
       </section>
@@ -537,10 +537,10 @@
     },
     computed: {
       talkInfo() {
-        if (this.$store.state.talks.talks[this.id] === undefined) {
+        if (this.$store.state.talks.info[this.id] === undefined) {
           this.$store.dispatch(FETCH_TALK, this.id)
         }
-        return this.$store.state.talks.talks[this.id]
+        return this.$store.state.talks.info[this.id]
       },
       comments() {
         if (this.$store.state.talks.comments[this.id] === undefined) {
