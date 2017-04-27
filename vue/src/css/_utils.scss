@@ -1,0 +1,57 @@
+.scrollable {
+  overflow: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.invisible-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.no-callout {
+  -webkit-user-callout: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-modify: none;
+  -webkit-highlight: none;
+
+  touch-callout:  none;
+  user-select:    none;
+  user-callout: none;
+  -khtml-user-select:     none;
+  -moz-user-select:       none;
+  -ms-user-select:        none;
+  -o-user-select:         none;
+  user-select:            none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.btn-text {
+  display: inline-block;
+  line-height: 1em;
+  vertical-align: middle;
+}
+
+.clearfix {
+  overflow: auto;
+}
+
+.loading-animation{
+  animation: rotateFrames linear 1s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes rotateFrames{
+  0% {
+    transform:  rotate(0deg) ;
+  }
+  100% {
+    transform:  rotate(180deg) ;
+  }
+}
