@@ -18,7 +18,7 @@
 .download-tips {
   position: fixed;
   top: 0;
-  max-width: 1022px;
+  max-width: 1024px;
   background-color: rgba(0, 0, 0, .5);
   color: $color-w;
   display: flex;
@@ -68,10 +68,16 @@
     position: relative;
     overflow: hidden;
 
+    &.mobile-landscape {
+      &:before {
+        padding-top: 100vh;
+      }
+    }
+
     &:before {
       content: "";
       display: block;
-      height: 56.25vw;
+      padding-top: 56.25%;
     }
 
     .video-player {
@@ -214,22 +220,12 @@
   }
 }
 
-@media screen and (min-width: 1022px) {
+@media (min-width: 1024px) {
   :host {
     flex-direction: row;
 
     .video-container {
       width: 62%;
-    }
-  }
-}
-
-@media (max-width: 1022px) and (orientation: landscape) {
-  .video-container {
-    .video {
-      &:before {
-        height: 100vh;
-      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
 
 <div class="main" *ngIf="!isLoading && talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)">
-  <header [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen}">
+  <header [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen, 'mobile-landscape': !isOnScreen && isLandscape}">
     <video-player
       *ngIf="videoInfo"
       class="video-player"
@@ -39,9 +39,9 @@
     </div>
   </header>
 
-  <section class="article talk-article" [innerHtml]="talkInfo.safeContent"></section>
+  <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}" [innerHtml]="talkInfo.safeContent"></section>
 
-  <section class="info">
+  <section class="info" [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <ul *ngFor="let catalogArr of talkInfo.categories">
       <li *ngFor="let catalog of catalogArr">{{catalog.title}}</li>
     </ul>
@@ -51,7 +51,7 @@
     </div>
   </section>
 
-  <section class="comments">
+  <section class="comments" [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <h2>评论</h2>
 
     <div class="comment" *ngFor="let comment of comments">
@@ -73,7 +73,7 @@
     <div class="no-more-comments" *ngIf="!isCommentLoading && comments.length && !hasMoreComments">到底咯~</div>
   </section>
 
-  <footer *ngIf="talkInfo" #toolBar>
+  <footer *ngIf="talkInfo" [ngClass]="{hidden: !isOnScreen && isLandscape}" #toolBar>
     <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
     <div class="icon" (click)="talkInfo.isPraised ? unpraise() : praise()"><i class="bi" [ngClass]="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}</div>
     <div class="icon" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"><i class="bi" [ngClass]="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i></div>

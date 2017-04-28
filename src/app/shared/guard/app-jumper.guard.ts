@@ -31,6 +31,8 @@ export class AppJumperGuard implements CanActivate {
       let userInfo = result[0];
       let liveInfo = result[1];
 
+      if (!liveInfo || !userInfo) return false;
+
       // app视频直播, 使用app的gotoLive
       if (liveInfo.isTypeApp() && liveInfo.isEditor(userInfo.uid)) {
         let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
