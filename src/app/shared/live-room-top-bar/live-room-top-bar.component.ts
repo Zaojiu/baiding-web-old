@@ -1,5 +1,6 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
+import {Subscription}   from 'rxjs/Subscription';
 
 import {MqEvent, EventType} from "../../shared/mq/mq.service";
 import {TimelineService} from '../../+live-room/timeline/timeline.service';
@@ -15,6 +16,7 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
   @Input() liveId: string;
   unreadCount = 0;
   from: string;
+  eventSub: Subscription;
 
   constructor(private router: Router, private route: ActivatedRoute,
               private timelineService: TimelineService, private userInfoService: UserInfoService) {
@@ -24,15 +26,12 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
     this.from = this.route.snapshot.params['from'] ? decodeURIComponent(this.route.snapshot.params['from']) : '';
 
     if (this.liveId) {
-      this.timelineService.startReceive(this.liveId);
-      this.timelineService.onReceivedEvents(evt => this.receivedEvents(evt));
+      this.eventSub = this.timelineService.event$.subscribe(evt => this.receivedEvents(evt));
     }
   }
 
   ngOnDestroy() {
-    if (this.liveId) {
-      this.timelineService.stopReceive(this.liveId);
-    }
+    if (this.eventSub) this.eventSub.unsubscribe();
   }
 
   receivedEvents(evt: MqEvent) {
