@@ -47,7 +47,7 @@
 
     // pc position: sticky not support fallback
     @supports not (position: sticky) {
-      @media (min-width: 1022px) {
+      @media (min-width: 1024px) {
         position: relative;
 
         &:before {
@@ -66,8 +66,8 @@
         &.entered {
           .admin-info {
             position: fixed;
-            left: calc((100% - 1022px) / 2);
-            right: calc((100% - 1022px) / 2 + 15px);
+            left: calc((100% - 1024px) / 2);
+            right: calc((100% - 1024px) / 2 + 15px);
             z-index: 2;
           }
         }

@@ -32,6 +32,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isToolbarShow = false;
   originY = 0;
   isOnScreen = UtilsService.isOnLargeScreen;
+  isLandscape = false;
   routeSub: Subscription;
   hasMoreComments: boolean;
   commentSize = 20;
@@ -78,6 +79,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
       if (talkInfo.media.hasVideo) {
         this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
         this.videoInfo = new VideoInfo('', talkInfo.media.mp4_sd, talkInfo.media.mp4_hd, talkInfo.media.mp4);
+
+        // 横竖屏polyfill
+        System.import('o9n').then(o9n => {
+          this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+          o9n.orientation.onchange = (evt) => this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+        });
       }
 
       this.setShareInfo(talkInfo);

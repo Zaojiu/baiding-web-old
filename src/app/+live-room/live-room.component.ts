@@ -42,6 +42,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   routerSub: Subscription;
   isLiveRoomVisable: boolean;
   @ViewChild('timeline') timeline: TimelineComponent;
+  isLandscape = false;
+  isOnLargeScreen = UtilsService.isOnLargeScreen;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -56,7 +58,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.joinLiveRoom().then(() => {
-      if (this.liveInfo.isTypeVideo()) this.fetchStream();
+      if (this.liveInfo.isTypeVideo()) {
+        this.fetchStream();
+
+        // 横竖屏polyfill
+        System.import('o9n').then(o9n => {
+          this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+          o9n.orientation.onchange = (evt) => this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+        });
+      }
     });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
     this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);

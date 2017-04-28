@@ -13,7 +13,7 @@
 <!--</div>-->
 
 <div class="video-container" *ngIf="liveInfo.isTypeVideo()">
-  <div class="video" (click)="onClick()">
+  <div class="video" [ngClass]="{'mobile-landscape': !isOnLargeScreen && isLandscape}" (click)="onClick()">
     <video-player
       [ngClass]="{hidden: !isLiveRoomVisable}"
       class="video-player"
