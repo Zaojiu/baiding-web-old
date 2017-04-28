@@ -377,6 +377,15 @@ export class LiveService {
     }
 
     return promise.then(videoInfo => {
+      if (videoInfo) {
+        if (UtilsService.isChrome && !UtilsService.isInWechat) {
+          videoInfo.m3u8 = '';
+        } else {
+          videoInfo.rtmpSD = '';
+          videoInfo.rtmpHD = '';
+          videoInfo.rtmp = '';
+        }
+      }
       return videoInfo;
     });
  }
@@ -385,18 +394,8 @@ export class LiveService {
     const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/hls|rtmp`;
 
     return this.http.get(url).toPromise().then(res => {
-      let data = res.json();
-      let videoInfo = null;
-
-      if (data && data.rtmp && UtilsService.isChrome && !UtilsService.isInWechat) {
-        videoInfo = new VideoInfo('', '', '', '', data.rtmp_sd, data.rtmp_hd, data.rtmp);
-      }
-
-      if (data && data.hls && !(UtilsService.isChrome && !UtilsService.isInWechat)) {
-        videoInfo = new VideoInfo(data.hls);
-      }
-
-      return videoInfo;
+      const data = res.json();
+      return new VideoInfo(data.hls, '', '', '', data.rtmp_sd, data.rtmp_hd, data.rtmp);
     });
   }
 
@@ -419,7 +418,7 @@ export class LiveService {
       let m3u8 = '', mp4 = '', mp4SD = '', mp4HD = '';
 
       if (data) {
-        m3u8 = data.m3u8 && !(UtilsService.isChrome && !UtilsService.isInWechat) ? data.m3u8 : '';
+        m3u8 = data.m3u8 || '';
         mp4 = data._mp4 || '';
         mp4SD = data.SD_mp4 || '';
         mp4HD = data.HD_mp4 || '';
