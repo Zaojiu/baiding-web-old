@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {Subscription}   from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/Subscription';
 
 import {CommentModel, CommentType} from '../../shared/api/comment/comment.model';
 import {CommentService} from './comment.service';
@@ -8,7 +8,6 @@ import {CommentApiService} from '../../shared/api/comment/comment.service';
 import {ScrollerDirective} from '../../shared/scroller/scroller.directive';
 import {ScrollerEventModel} from '../../shared/scroller/scroller.model';
 import {ScrollerPosition} from '../../shared/scroller/scroller.enums';
-import {Subscription} from 'rxjs';
 import {SafeHtml, DomSanitizer} from '@angular/platform-browser';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
