@@ -33,8 +33,10 @@
     left: 22px;
 
     .indicator {
-      width: 59px;
+      width: 60px;
       height: 20px;
+      white-space: nowrap;
+      overflow: hidden;
       border-radius: 4px;
       line-height: 20px;
       text-align: center;
