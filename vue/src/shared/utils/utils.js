@@ -62,6 +62,10 @@ export const Utils = {
     return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, +aEle.port, aEle.pathname, aEle.search, aEle.hash)
   },
 
+  params (obj) {
+    return Object.keys(obj).map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&')
+  },
+
   randomId (size = 10, dic) {
     const defaultDic = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     return _.sampleSize((dic || defaultDic).split(''), size).join('')

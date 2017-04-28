@@ -1,0 +1,205 @@
+.form-group {
+  margin: 20px 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .input-group {
+    position: relative;
+    padding-top: 14px;
+
+    input[type="text"].v-has-value + label,
+    input[type="text"]:focus + label,
+    input[type="password"].v-has-value + label,
+    input[type="password"]:focus + label,
+    input[type="datetime-local"].v-has-value + label,
+    input[type="datetime-local"]:focus + label,
+    input[type="tel"].v-has-value + label,
+    input[type="tel"]:focus + label,
+    textarea.v-has-value + label,
+    textarea:focus + label {
+      transform: translateY(0px);
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus + label,
+    input[type="password"]:focus + label,
+    input[type="datetime-local"]:focus + label,
+    input[type="tel"]:focus + label,
+    textarea:focus + label {
+      color: $color-brand;
+    }
+
+    label {
+      position: absolute;
+      top: 0;
+      transform: translateY(23px);
+      pointer-events: none;
+      transition: all .2s;
+      font-size: 16px;
+    }
+  }
+
+  label {
+    position: relative;
+    display: block;
+    font-size: 14px;
+    color: $color-gray;
+    line-height: 1em;
+    margin-bottom: 10px;
+
+    &.required {
+      &:after {
+        position: absolute;
+        content: "*";
+        color: rgb(233, 66, 63);
+        padding-left: 2px;
+        font-size: 12px;
+        height: 0;
+        line-height: 0;
+        top: 5px;
+      }
+    }
+  }
+
+  input[type="text"], input[type="password"], input[type="datetime-local"], input[type="tel"], textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    border-bottom: solid 1px rgb(218, 218, 218);
+    background: transparent;
+    color: rgb(75, 75, 75);
+    font-size: 16px;
+    box-sizing: content-box;
+    padding: 7px 0;
+    border-radius: 0;
+    transition: border-bottom .2s;
+
+    &:focus {
+      border-bottom: solid 1px $color-brand;
+    }
+
+    &:disabled {
+      color: rgb(218, 218, 218);
+      border-bottom: solid 1px rgb(218, 218, 218);
+      -webkit-text-fill-color: rgb(218, 218, 218); // ios下disabled的color是-webkit-text-fill-color
+      opacity: 1; // ios下disabled会调整opacity
+    }
+
+    &::selection {
+      background: rgba( $color-brand, .5 );
+    }
+  }
+
+  input[type="text"], input[type="password"], input[type="datetime-local"], input[type="tel"] {
+    line-height: 1em;
+    height: 18px;
+  }
+
+  .radio-group {
+    display: flex;
+
+    .radio {
+      flex-grow: 1;
+    }
+  }
+
+  .radio {
+    position: relative;
+    border-bottom: solid 1px rgb(218, 218, 218);
+    text-align: center;
+
+    .label {
+      position: relative;
+      display: inline-block;
+      line-height: 1em;
+      box-sizing: content-box;
+      padding: 7px 0;
+      padding-left: 29px;
+      height: 18px;
+      text-align: center;
+      color: $color-gray;
+      transition: color .2s;
+      pointer-events: none;
+
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        left: 0;
+        top: 50%;
+        border-radius: 50%;
+        transform: translateY(-50%);
+        transition: all .2s;
+        box-sizing: border-box;
+      }
+
+      &:before {
+        border: solid 1px $color-gray;
+        background-color: $color-w;
+      }
+
+      &:after {
+        opacity: 0;
+        background-color: $color-w;
+        transform: translateY(-50%) scale(.6);
+      }
+    }
+
+    input[type=radio]:checked + .label, input[type=checkbox]:checked + .label {
+      color: $color-dark-gray;
+
+      &:before {
+        border: solid 1px transparent;
+        background-color: $color-brand;
+      }
+
+      &:after {
+        opacity: 1;
+      }
+    }
+
+    input[type=radio], input[type=checkbox] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      left: 0;
+      top: 0;
+      margin: 0;
+    }
+  }
+
+  .helper {
+    color: $color-gray;
+    font-size: 12px;
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+
+  .helper.error {
+    display: none;
+    color: rgb(233, 66, 63);
+  }
+
+  &.has-error {
+    input[type="text"], input[type="password"], input[type="datetime-local"], input[type="tel"], textarea {
+      border-bottom: solid 1px rgb(233, 66, 63);
+
+      &:focus {
+        border-bottom: solid 1px rgb(233, 66, 63);
+      }
+    }
+
+    .helper.error {
+      display: block;
+    }
+  }
+}
+
+textarea {
+  display: block;
+  resize: none;
+}

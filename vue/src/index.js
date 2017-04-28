@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { app } from './app'
 import './shared/icons.font'
+import './polyfill'
 
 // // Enable progressive web app support (with offline-plugin)
 // if (process.env.NODE_ENV === 'production') {

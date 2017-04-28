@@ -1,103 +1,102 @@
 <template>
-  <bd-loading class="loading" v-if="isLoading"></bd-loading>
-  <div class="main" v-else-if="talkInfo" @touchstart="touchStart" @touchmove="touchMove">
-    <header v-bind:class="{sticky: !isVideoCoverShown && !isOnScreen}">
-      <!--<video-player-->
+  <div>
+    <bd-loading class="loading" v-if="isLoading"></bd-loading>
+    <div class="main" v-else-if="talkInfo" @touchstart="touchStart" @touchmove="touchMove">
+      <header v-bind:class="{sticky: !isVideoCoverShown && !isOnScreen}">
+        <!--<video-player-->
         <!--v-if="videoInfo"-->
         <!--class="video-player"-->
         <!--[videoInfo]="videoInfo"-->
         <!--[option]="videoOption"-->
         <!--(onEvents)="onVideoEvent($event)"-->
-      <!--&gt;</video-player>-->
+        <!--&gt;</video-player>-->
 
-      <div class="live-cover" v-if="isVideoCoverShown">
-        <div class="cover-thumbnail-wrapper">
-          <div class="cover-thumnail" v-bind:style="{backgroundImage: `url(${talkInfo.coverThumbnailUrl})`}"></div>
-        </div>
-        <img
-          class="cover-image"
-          alt="话题间封面"
-          v-bind:class="{fadein: coverLoaded}"
-          v-bind:src="talkInfo.coverUrl"
-          @load="coverLoaded = true"
-          @error="resetDefaultBackground()"
-        >
+        <div class="live-cover" v-if="isVideoCoverShown">
+          <div class="cover-thumbnail-wrapper">
+            <div class="cover-thumnail" v-bind:style="{backgroundImage: `url(${talkInfo.coverThumbnailUrl})`}"></div>
+          </div>
+          <img
+            class="cover-image"
+            alt="话题间封面"
+            v-bind:class="{fadein: coverLoaded}"
+            v-bind:src="talkInfo.coverUrl"
+            @load="coverLoaded = true"
+            @error="resetDefaultBackground()"
+          >
 
-        <div class="mask"></div>
+          <div class="mask"></div>
 
-        <i class="bi bi-play-fill" v-if="videoInfo && videoInfo.hasVideo"></i>
+          <i class="bi bi-play-fill" v-if="videoInfo && videoInfo.hasVideo"></i>
 
-        <div class="talk-info">
-          <div class="publisher-info">
-            <img
-              class="avatar avatar-round avatar-medium"
-              v-if="talkInfo.userInfo"
-              v-bind:src="talkInfo.userInfo.avatar"
-              alt="发布人头像"
-            >
-            <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
+          <div class="talk-info">
+            <div class="publisher-info">
+              <img
+                class="avatar avatar-round avatar-medium"
+                v-if="talkInfo.userInfo"
+                v-bind:src="talkInfo.userInfo.avatar"
+                alt="发布人头像"
+              >
+              <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
+            </div>
+
+            <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
           </div>
 
-          <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
+          <h1>{{talkInfo.subject}}</h1>
+        </div>
+      </header>
+
+      <section class="article talk-article" v-html="talkInfo.content" v-once></section>
+
+      <section class="info">
+        <ul v-for="catalogArr in talkInfo.categories">
+          <li v-for="catalog in catalogArr">{{catalog.title}}</li>
+        </ul>
+
+        <div class="tags">
+          <small v-for="tag in talkInfo.tags">{{tag}}</small>
+        </div>
+      </section>
+
+      <section class="comments">
+        <h2>评论</h2>
+
+        <div v-if="comments">
+          <div class="comment" v-for="comment in comments.data" v-bind:key="comment.id">
+            <div class="header" v-once>
+              <div class="author-info">
+                <img class="avatar avatar-round avatar-small" v-bind:src="comment.user.avatar" alt="用户头像">
+                <span class="nick">{{comment.user.nick}}</span>
+                <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
+              </div>
+              <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>
+            </div>
+            <!-- 不要换行，避免出现换行符 -->
+            <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
+          </div>
         </div>
 
-        <h1>{{talkInfo.subject}}</h1>
-      </div>
-    </header>
+        <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
+        <div class="no-comments" v-else-if="!comments.data.length">暂无评论</div>
+        <div class="no-more-comments" v-else-if="!comments.hasMore">到底咯~</div>
+        <div class="more-comments" v-else @click="fetchComments">加载更多评论</div>
+      </section>
 
-    <section class="article talk-article" v-html="talkInfo.content" v-once></section>
+      <footer ref="toolBar">
+        <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
+        <div class="icon" @click="talkInfo.isPraised ? unpraise() : praise()">
+          <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
+        </div>
+        <div class="icon" @click="talkInfo.isFavorited ? unfavorite() : favorite()">
+          <i class="bi" v-bind:class="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i>
+        </div>
+        <div class="icon" @click="gotoComment()"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
+      </footer>
+    </div>
+    <div class="no-content" v-else>无效内容</div>
 
-    <section class="info">
-      <ul v-for="catalogArr in talkInfo.categories">
-        <li v-for="catalog in catalogArr">{{catalog.title}}</li>
-      </ul>
-
-      <div class="tags">
-        <small v-for="tag in talkInfo.tags">{{tag}}</small>
-      </div>
-    </section>
-
-    <!--<section class="comments">-->
-      <!--<h2>评论</h2>-->
-
-      <!--<div class="comment" *ngFor="let comment of comments">-->
-        <!--<div class="header">-->
-          <!--<div class="author-info">-->
-            <!--<img class="avatar avatar-round avatar-small" [src]="comment.user.avatar" alt="用户头像">-->
-            <!--<span class="nick">{{comment.user.nick}}</span>-->
-            <!--<time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>-->
-          <!--</div>-->
-          <!--<span class="reply" (click)="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>-->
-        <!--</div>-->
-        <!--<div class="content">-->
-          <!--<div class="quote" *ngIf="comment.parent"><span-->
-            <!--class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}-->
-          <!--</div>-->
-          <!--{{comment.content}}-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<bd-loading class="comment-loading" *ngIf="isCommentLoading"></bd-loading>-->
-
-      <!--<div class="no-comments" *ngIf="!isCommentLoading && !comments.length">暂无评论</div>-->
-      <!--<div class="more-comments" *ngIf="!isCommentLoading && hasMoreComments"-->
-           <!--(click)="listComments(comments[comments.length-1].originCreatedAt)">加载更多评论-->
-      <!--</div>-->
-      <!--<div class="no-more-comments" *ngIf="!isCommentLoading && comments.length && !hasMoreComments">到底咯~</div>-->
-    <!--</section>-->
-
-    <footer ref="toolBar">
-      <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
-      <div class="icon" @click="talkInfo.isPraised ? unpraise() : praise()">
-        <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
-      </div>
-      <div class="icon" @click="talkInfo.isFavorited ? unfavorite() : favorite()">
-        <i class="bi" v-bind:class="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i>
-      </div>
-      <div class="icon" @click="gotoComment()"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
-    </footer>
+    <router-view></router-view>
   </div>
-  <div class="no-content" v-else>无效内容</div>
 </template>
 
 <style lang="scss">
@@ -281,7 +280,7 @@
         color: $color-dark-gray;
 
         i {
-          font-weight:inherit;
+          font-weight: inherit;
         }
 
         p {
@@ -518,8 +517,8 @@
 
 <script>
   import BdLoading from '../../shared/bd-loading.comp.vue'
-  import { FETCH_TALK } from '../../store/talk'
-  import { Utils } from '../../shared/utils/utils'
+  import {FETCH_TALK, FETCH_TALK_COMMENT} from '../../store/talk'
+  import {Utils} from '../../shared/utils/utils'
 
   export default {
     data() {
@@ -529,7 +528,8 @@
         isToolbarShow: true,
         isOnScreen: Utils.isOnLargeScreen,
         isVideoCoverShown: true,
-        coverLoaded: false
+        coverLoaded: false,
+        isCommentLoading: true
       }
     },
     components: {
@@ -537,10 +537,16 @@
     },
     computed: {
       talkInfo() {
-        if (this.$store.state.talks.talks[this.id] === undefined) {
+        if (this.$store.state.talks.info[this.id] === undefined) {
           this.$store.dispatch(FETCH_TALK, this.id)
         }
-        return this.$store.state.talks.talks[this.id]
+        return this.$store.state.talks.info[this.id]
+      },
+      comments() {
+        if (this.$store.state.talks.comments[this.id] === undefined) {
+          this.fetchComments()
+        }
+        return this.$store.state.talks.comments[this.id]
       },
       isLoading() {
         return this.talkInfo === undefined
@@ -551,6 +557,22 @@
         this.talkInfo.coverUrl = '/assets/img/default-cover.jpg';
         this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg';
         this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg';
+      },
+      async fetchComments() {
+        this.isCommentLoading = true;
+
+        await this.$store.dispatch(FETCH_TALK_COMMENT, this.id);
+
+        this.isCommentLoading = false;
+      },
+      gotoComment(id, nick, content) {
+        let query = {title: encodeURIComponent(this.talkInfo.subject)};
+
+        if (id && nick && content) {
+          query.request = encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content}));
+        }
+
+        this.$router.push({path: `/talks/${this.id}/post-comment`, query: query});
       },
       touchStart(e) {
         if (!this.$refs.toolBar) return
@@ -566,10 +588,14 @@
           this.isToolbarShow = true
         }
       },
-      praise() {},
-      unpraise() {},
-      favorite() {},
-      unfavorite() {}
+      praise() {
+      },
+      unpraise() {
+      },
+      favorite() {
+      },
+      unfavorite() {
+      }
     }
   };
 </script>
