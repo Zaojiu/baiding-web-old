@@ -55,6 +55,7 @@ import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 import {CustomHttp} from "./shared/api/custom-http.service";
 import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
 import {TalkService} from "./shared/api/talk/talk.api";
+import {VideoService} from "./shared/video-player/video-player.service";
 
 @NgModule({
   imports: [
@@ -113,6 +114,7 @@ import {TalkService} from "./shared/api/talk/talk.api";
     UserInfoService,
     LiveService,
     TalkService,
+    VideoService,
     ImageViewerService,
     TitleService,
     BottomPopupSelectorService,
