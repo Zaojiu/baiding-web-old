@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import talkApi from '../shared/api/talk.api'
 
-export const FETCH_TALK = 'talks.FETCH_TALK'
-export const ADD_TALK = 'talks.ADD_TALK'
-export const FETCH_TALK_COMMENT = 'talks.FETCH_TALK_COMMENT'
-export const ADD_TALK_COMMENT = 'talks.ADD_TALK_COMMENT'
-export const REMOVE_TALK_COMMENT = 'talks.REMOVE_TALK_COMMENT'
-export const POST_TALK_COMMENT = 'talks.POST_TALK_COMMENT'
-export const TALK_COMMENT_COUNT = 20
+export const FETCH_TALK = 'talks.FETCH_TALK';
+export const ADD_TALK = 'talks.ADD_TALK';
+export const FETCH_TALK_COMMENT = 'talks.FETCH_TALK_COMMENT';
+export const ADD_TALK_COMMENT = 'talks.ADD_TALK_COMMENT';
+export const REMOVE_TALK_COMMENT = 'talks.REMOVE_TALK_COMMENT';
+export const POST_TALK_COMMENT = 'talks.POST_TALK_COMMENT';
+export const TALK_COMMENT_COUNT = 20;
+export const TOGGLE_TALK_PRAISE = 'talks.TOGGLE_TALK_PRAISE';
+export const TOGGLE_TALK_FAVORITE = 'talks.TOGGLE_TALK_FAVORITE';
 
 const state = {
   info: {},
@@ -53,6 +55,21 @@ const actions = {
     await talkApi.postTalkComment(data.id, data.content, data.parentId)
     commit(REMOVE_TALK_COMMENT, data.id)
     commit(ADD_TALK, {id: data.id, info: talkInfo})
+  },
+  [TOGGLE_TALK_PRAISE]: async ({ commit, state }, id) => {
+    const talkInfo = {...state.info[id]};
+    talkInfo.isPraised = !talkInfo.isPraised;
+    talkInfo.praiseTotal = talkInfo.isPraised ? talkInfo.praiseTotal + 1 : talkInfo.praiseTotal - 1;
+    commit(ADD_TALK, {id: id, info: talkInfo});
+    const promise = talkInfo.isPraised ? talkApi.praise(id) : talkApi.unpraise(id);
+    await promise;
+  },
+  [TOGGLE_TALK_FAVORITE]: async ({ commit, state }, id) => {
+    const talkInfo = {...state.info[id]};
+    talkInfo.isFavorited = !talkInfo.isFavorited;
+    commit(ADD_TALK, {id: id, info: talkInfo});
+    const promise = talkInfo.isFavorited ? talkApi.favorite(id) : talkApi.unfavorite(id);
+    await promise;
   }
 }
 

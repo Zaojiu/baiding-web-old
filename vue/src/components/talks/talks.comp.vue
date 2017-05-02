@@ -84,13 +84,13 @@
 
       <footer ref="toolBar">
         <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
-        <div class="icon" @click="talkInfo.isPraised ? unpraise() : praise()">
+        <div class="icon" @click="togglePraise">
           <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
         </div>
-        <div class="icon" @click="talkInfo.isFavorited ? unfavorite() : favorite()">
+        <div class="icon" @click="toggleFavorite">
           <i class="bi" v-bind:class="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i>
         </div>
-        <div class="icon" @click="gotoComment()"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
+        <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
       </footer>
     </div>
     <div class="no-content" v-else>无效内容</div>
@@ -517,7 +517,7 @@
 
 <script>
   import BdLoading from '../../shared/bd-loading.comp.vue'
-  import {FETCH_TALK, FETCH_TALK_COMMENT} from '../../store/talk'
+  import {FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE} from '../../store/talk'
   import {Utils} from '../../shared/utils/utils'
 
   export default {
@@ -588,13 +588,11 @@
           this.isToolbarShow = true
         }
       },
-      praise() {
+      togglePraise() {
+        this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id);
       },
-      unpraise() {
-      },
-      favorite() {
-      },
-      unfavorite() {
+      toggleFavorite() {
+        this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id);
       }
     }
   };
