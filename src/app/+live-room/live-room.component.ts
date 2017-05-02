@@ -17,6 +17,7 @@ import {environment} from "../../environments/environment";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {TimelineComponent} from "./timeline/timeline.component";
+import {VideoService} from "../shared/video-player/video-player.service";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -40,7 +41,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isDownloadTipsShow = UtilsService.isiOS && !UtilsService.isInApp;
   iosDownloadLink: SafeUrl;
   routerSub: Subscription;
+  videoVisableSub: Subscription;
   isLiveRoomVisable: boolean;
+  hasGlobalPopup: boolean;
   @ViewChild('timeline') timeline: TimelineComponent;
   isLandscape = false;
   isOnLargeScreen = UtilsService.isOnLargeScreen;
@@ -48,7 +51,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
               private shareService: ShareApiService, private messageApiService: MessageApiService,
-              private sanitizer: DomSanitizer, private tooltips: OperationTipsService) {
+              private sanitizer: DomSanitizer, private tooltips: OperationTipsService,
+              private videoService: VideoService) {
   }
 
   ngOnInit() {
@@ -103,10 +107,14 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         if (this.isLiveRoomVisable) this.setShareInfo();
       }
     });
+
+    this.videoVisableSub = this.videoService.$switchVideo.subscribe(hasGlobalPopup => this.hasGlobalPopup = hasGlobalPopup);
   }
 
   ngOnDestroy() {
     if (this.eventSub) this.eventSub.unsubscribe();
+
+    if (this.videoVisableSub) this.videoVisableSub.unsubscribe();
 
     if (this.refreshInterval) clearInterval(this.refreshInterval);
   }

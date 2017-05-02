@@ -1,4 +1,4 @@
-<div class="share-popup-container" (click)="isPopup = false" [ngClass]="{opened: isPopup}">
+<div class="share-popup-container" (click)="close()" [ngClass]="{opened: isPopup}">
   <div class="wechat-share" *ngIf="isInWechat">
     点击分享<i class="bi bi-arrow"></i>
   </div>

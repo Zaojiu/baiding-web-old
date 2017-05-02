@@ -5,6 +5,7 @@ import {ImageViewerService} from './image-viewer.service';
 import {Router, NavigationStart} from '@angular/router';
 import {IosBridgeService} from "../ios-bridge/ios-bridge.service";
 import {UtilsService} from "../utils/utils";
+import {VideoService} from "../video-player/video-player.service";
 
 declare var $: any;
 
@@ -23,7 +24,9 @@ export class ImageViewerComponent implements OnInit {
   canDelete: boolean;
   timer: any;
 
-  constructor(el: ElementRef, private modalService: ModalService, private imageViewerService: ImageViewerService, private router: Router, private iosBridgeService: IosBridgeService) {
+  constructor(el: ElementRef, private modalService: ModalService,
+              private imageViewerService: ImageViewerService, private router: Router,
+              private iosBridgeService: IosBridgeService, private videoService: VideoService) {
     this.el = el.nativeElement;
 
     router.events
@@ -32,6 +35,7 @@ export class ImageViewerComponent implements OnInit {
         if (this.isPopup) {
           this.imageSrc = '';
           this.isPopup = false;
+          this.videoService.switchVideo(false);
           this.imageViewerService.close();
           this.iosBridgeService.offClose();
         }
@@ -50,6 +54,7 @@ export class ImageViewerComponent implements OnInit {
         this.iosBridgeService.onClose(() => this.closePopup());
       }
 
+      this.videoService.switchVideo(true);
       this.isPopup = true;
       this.isLoading = true;
       this.canDelete = model.canDelete;
@@ -120,6 +125,7 @@ export class ImageViewerComponent implements OnInit {
         this.imageSrc = '';
         this.imageViewerService.delete();
         this.isPopup = false;
+        this.videoService.switchVideo(false);
       }
     });
   }

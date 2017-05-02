@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {SharePopupService} from './share-popup.service';
 import {UtilsService} from "../utils/utils";
+import {VideoService} from "../video-player/video-player.service";
 
 @Component({
   selector: 'share-popup',
@@ -16,7 +17,7 @@ export class SharePopupComponent implements OnInit {
   link: string;
   qrcodeGenerator: any;
 
-  constructor(private sharePopupService: SharePopupService) {
+  constructor(private sharePopupService: SharePopupService, private videoService: VideoService) {
   }
 
   ngOnInit() {
@@ -27,12 +28,19 @@ export class SharePopupComponent implements OnInit {
           this.qrcodeGenerator = yaqrcode;
           this.link = link;
           this.isPopup = true;
+          this.videoService.switchVideo(true);
         });
       } else {
         this.link = link;
         this.isPopup = true;
+        this.videoService.switchVideo(true);
       }
     });
+  }
+
+  close() {
+    this.isPopup = false;
+    this.videoService.switchVideo(false);
   }
 
   get getQrcode(): string {
