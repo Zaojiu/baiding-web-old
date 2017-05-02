@@ -125,17 +125,12 @@
 </style>
 
 <script>
-  import {Utils} from '../../../shared/utils/utils'
+  /* @flow */
+  import { Utils } from '../../../shared/utils/utils'
   import {POST_TALK_COMMENT} from '../../../store/talk'
   import form from '../../../shared/form'
-  import beforeRouteEnter from '../../../shared/guard/before-route-enter'
-  import userAuth from '../../../shared/guard/user-auth.guard'
 
   export default {
-    beforeRouteEnter (to, from, next) {
-      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))]);
-      guards(to, from, next)
-    },
     directives: form,
     data() {
       const data = {
