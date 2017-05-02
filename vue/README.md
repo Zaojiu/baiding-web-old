@@ -23,6 +23,12 @@ To lint you code:
 $ npm run lint
 ```
 
+To flow-typed third part plugins:
+
+```bash
+$ npm run flow-typed install 'xxx'
+```
+
 
 ---
 

@@ -1,0 +1,11 @@
+[ignore]
+.*node_modules.*
+.*data.*
+.*dist.*
+.*\.tmp.*
+
+[include]
+
+[libs]
+
+[options]
