@@ -1,5 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
 
 import {CommentModel, CommentType} from '../../shared/api/comment/comment.model';
 import {CommentService} from './comment.service';
@@ -7,7 +8,6 @@ import {CommentApiService} from '../../shared/api/comment/comment.service';
 import {ScrollerDirective} from '../../shared/scroller/scroller.directive';
 import {ScrollerEventModel} from '../../shared/scroller/scroller.model';
 import {ScrollerPosition} from '../../shared/scroller/scroller.enums';
-import {Subscription} from 'rxjs';
 import {SafeHtml, DomSanitizer} from '@angular/platform-browser';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {MqEvent, EventType} from '../../shared/mq/mq.service';
@@ -35,6 +35,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   isOnBottom: boolean;
   unreadCount = 0;
   commentType = CommentType;
+  eventSub: Subscription;
 
   constructor(private commentService: CommentService, private router: Router,
               private commentApiService: CommentApiService, private sanitizer: DomSanitizer,
@@ -48,18 +49,17 @@ export class CommentComponent implements OnInit, OnDestroy {
       }, 0);
 
       this.commentService.startReceive(this.streamId);
-      this.commentService.onReceiveComments(comment => {
-        this.onReceiveComments(comment);
-      });
+      this.commentService.onReceiveComments(comment => this.onReceiveComments(comment));
 
       this.startObserveAction();
       this.startPushComment();
-      this.timelineService.onReceivedEvents(evt => this.onReceivedEvents(evt));
+      this.eventSub = this.timelineService.event$.subscribe(evt => this.onReceivedEvents(evt));
     });
   }
 
   ngOnDestroy() {
     this.commentService.stopReceive(this.streamId);
+    if (this.eventSub) this.eventSub.unsubscribe();
     if (this.actionSubscription) this.actionSubscription.unsubscribe();
     clearInterval(this.commentPushQueueTimer);
   }
