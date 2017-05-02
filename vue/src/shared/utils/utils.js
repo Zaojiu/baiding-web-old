@@ -69,5 +69,11 @@ export const Utils = {
   randomId (size = 10, dic) {
     const defaultDic = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     return _.sampleSize((dic || defaultDic).split(''), size).join('')
+  },
+
+  absUrl (path, query) {
+    let url = `${location.protocol}//${location.hostname}${path}`;
+    if (query) url += `?${this.params(query)}`;
+    return url;
   }
 }

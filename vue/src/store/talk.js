@@ -14,7 +14,7 @@ export const TOGGLE_TALK_FAVORITE = 'talks.TOGGLE_TALK_FAVORITE';
 const state = {
   info: {},
   comments: {}
-}
+};
 
 const mutations = {
   [ADD_TALK] ({ info }, newTalk) {
@@ -22,7 +22,7 @@ const mutations = {
   },
   [ADD_TALK_COMMENT] ({ comments }, talkComments) {
     if (comments[talkComments.id]) {
-      comments[talkComments.id].data.push(...talkComments.comments)
+      comments[talkComments.id].data.push(...talkComments.comments);
       comments[talkComments.id].hasMore = talkComments.hasMore
     } else {
       Vue.set(comments, talkComments.id, {data: talkComments.comments, hasMore: talkComments.hasMore})
@@ -31,15 +31,15 @@ const mutations = {
   [REMOVE_TALK_COMMENT] ({ comments }, id) {
     Vue.set(comments, id, undefined)
   }
-}
+};
 
 const actions = {
   [FETCH_TALK]: async ({ commit }, id) => {
-    const talkInfo = await talkApi.getTalkInfo(id)
+    const talkInfo = await talkApi.getTalkInfo(id);
     commit(ADD_TALK, { id: id, info: talkInfo })
   },
   [FETCH_TALK_COMMENT]: async ({ commit, state }, id) => {
-    const comments = state.comments[id] || {data: [], hasMore: false}
+    const comments = state.comments[id] || {data: [], hasMore: false};
     const lastMarker = comments && comments.data.length ? `$lt${comments.data[comments.data.length-1].originCreatedAt}` : '';
     const talkComments = await talkApi.listTalkComments(id, TALK_COMMENT_COUNT+1, lastMarker);
     let hasMore = false;
@@ -50,28 +50,30 @@ const actions = {
     commit(ADD_TALK_COMMENT, { id: id, comments: talkComments, hasMore: hasMore})
   },
   [POST_TALK_COMMENT]: async ({ commit, state }, data) => {
-    const talkInfo = {...state.info[data.id]}
+    const talkInfo = {...state.info[data.id]};
     talkInfo.commentTotal += 1;
-    await talkApi.postTalkComment(data.id, data.content, data.parentId)
-    commit(REMOVE_TALK_COMMENT, data.id)
+    await talkApi.postTalkComment(data.id, data.content, data.parentId);
+    commit(REMOVE_TALK_COMMENT, data.id);
     commit(ADD_TALK, {id: data.id, info: talkInfo})
   },
   [TOGGLE_TALK_PRAISE]: async ({ commit, state }, id) => {
     const talkInfo = {...state.info[id]};
+    const promise = talkInfo.isPraised ? talkApi.unpraise(id) : talkApi.praise(id);
+    const res = await promise;
+    if (res instanceof Error) return;
     talkInfo.isPraised = !talkInfo.isPraised;
     talkInfo.praiseTotal = talkInfo.isPraised ? talkInfo.praiseTotal + 1 : talkInfo.praiseTotal - 1;
     commit(ADD_TALK, {id: id, info: talkInfo});
-    const promise = talkInfo.isPraised ? talkApi.praise(id) : talkApi.unpraise(id);
-    await promise;
   },
   [TOGGLE_TALK_FAVORITE]: async ({ commit, state }, id) => {
     const talkInfo = {...state.info[id]};
+    const promise = talkInfo.isFavorited ? talkApi.unfavorite(id) : talkApi.favorite(id);
+    const res = await promise;
+    if (res instanceof Error) return;
     talkInfo.isFavorited = !talkInfo.isFavorited;
     commit(ADD_TALK, {id: id, info: talkInfo});
-    const promise = talkInfo.isFavorited ? talkApi.favorite(id) : talkApi.unfavorite(id);
-    await promise;
   }
-}
+};
 
 export default {
   state: state,
