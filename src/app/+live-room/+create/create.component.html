@@ -2,7 +2,7 @@
   <live-room-top-bar class="top-bar" *ngIf="!isInApp"></live-room-top-bar>
 
   <div class="main-form">
-    <div class="form-group" *ngIf="!isInBaidingApp"
+    <div class="form-group"
          [ngClass]="{'has-error': form.controls['type'].dirty && form.controls['type'].invalid}">
       <label class="required">类型</label>
 
@@ -26,16 +26,6 @@
             [(ngModel)]="type"
           >
           <div class="label">源推流</div>
-        </div>
-        <div class="radio">
-          <input
-            name="type"
-            type="radio"
-            formControlName="type"
-            value="app"
-            [(ngModel)]="type"
-          >
-          <div class="label">APP推流</div>
         </div>
       </div>
 
