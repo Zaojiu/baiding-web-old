@@ -133,7 +133,7 @@
 
   export default {
     beforeRouteEnter (to, from, next) {
-      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))])
+      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))]);
       guards(to, from, next)
     },
     directives: form,
