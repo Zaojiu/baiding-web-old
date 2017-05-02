@@ -40,5 +40,25 @@ export default {
 
     const url = `${host.io}/api/live/objects/${id}/comments`;
     return axios.post(url, data);
+  },
+
+  favorite(id) {
+    const url = `${host.io}/api/live/my/favorited/objects/${id}`;
+    return axios.post(url, null);
+  },
+
+  unfavorite(id) {
+    const url = `${host.io}/api/live/my/favorited/objects/${id}`;
+    return axios.delete(url);
+  },
+
+  praise(id) {
+    const url = `${host.io}/api/live/my/praised/objects/${id}`;
+    return axios.post(url, null);
+  },
+
+  unpraise(id) {
+    const url = `${host.io}/api/live/my/praised/objects/${id}`;
+    return axios.delete(url);
   }
 }
