@@ -68,7 +68,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
         // 横竖屏polyfill
         System.import('o9n').then(o9n => {
           this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
-          o9n.orientation.onchange = (evt) => this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+          o9n.orientation.onchange = (evt) => {
+            if (evt.target.type) {
+              this.isLandscape = evt.target.type.indexOf('landscape') !== -1;
+            } else {
+              setTimeout(() => {
+                this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+              }, 100);
+            }
+          }
         });
       }
     });
