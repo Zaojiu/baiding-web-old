@@ -1,0 +1,17 @@
+{
+  "presets": [
+    [
+      "latest",
+      {
+        "es2015": {
+          "modules": false
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "babel-plugin-transform-class-properties",
+    "babel-plugin-syntax-flow",
+    "babel-plugin-transform-flow-strip-types"
+  ]
+}

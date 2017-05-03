@@ -125,6 +125,7 @@
 </style>
 
 <script>
+  /* @flow */
   import { Utils } from '../../../shared/utils/utils'
   import {POST_TALK_COMMENT} from '../../../store/talk'
   import form from '../../../shared/form'

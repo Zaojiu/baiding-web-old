@@ -41,6 +41,16 @@ module.exports = {
   module: {
     loaders: [
       {
+        enforce: "pre",
+        test: /\.vue$/,
+        include: /src/,
+        loader: "eslint-loader",
+        options: {
+          failOnWarning: false,
+          failOnError: false
+        }
+      },
+      {
         test: /\.vue$/,
         loaders: ['vue-loader']
       },
@@ -51,16 +61,13 @@ module.exports = {
           {
             loader: 'string-replace-loader',
             query: {
+              presets: ['es2015'],
               search: 'env/environment',
               replace: envFilePath
             }
           }
         ],
         exclude: [/node_modules/]
-      },
-      {
-        test: /\.es6$/,
-        loaders: ['babel-loader']
       },
       {
         test: /\.(ico|jpg|png|gif|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
@@ -73,7 +80,7 @@ module.exports = {
         test: /\.svg$/,
         loader: 'raw-loader'
       },
-      { test: /\.font\.(js|json)$/, loader: 'style-loader!css-loader!fontgen-loader' }
+      {test: /\.font\.(js|json)$/, loader: 'style-loader!css-loader!fontgen-loader'}
     ]
   },
   plugins: [
