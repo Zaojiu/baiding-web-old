@@ -1,12 +1,11 @@
-import axios from 'axios'
+import './config'
+
+// before app bootstrap
 import { app } from './app'
-import './shared/icons.font'
-import './polyfill'
 
 // // Enable progressive web app support (with offline-plugin)
 // if (process.env.NODE_ENV === 'production') {
 //   require('./pwa')
 // }
 
-axios.defaults.withCredentials = true
-app.$mount('#app')
+app.$mount('#app');

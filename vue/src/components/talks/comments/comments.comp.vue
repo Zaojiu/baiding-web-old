@@ -125,14 +125,19 @@
 </style>
 
 <script>
-  /* @flow */
   import { Utils } from '../../../shared/utils/utils'
-  import {POST_TALK_COMMENT} from '../../../store/talk'
+  import { POST_TALK_COMMENT } from '../../../store/talk'
   import form from '../../../shared/form'
+  import beforeRouteEnter from '../../../shared/guard/before-route-enter'
+  import userAuth from '../../../shared/guard/user-auth.guard'
 
   export default {
+    beforeRouteEnter (to, from, next) {
+      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))])
+      guards(to, from, next)
+    },
     directives: form,
-    data() {
+    data () {
       const data = {
         id: this.$route.params.id,
         subject: decodeURIComponent(this.$route.query.title),
@@ -142,30 +147,30 @@
         isInApp: Utils.isInApp,
         isSubmitting: false,
         content: ''
-      };
-      const request = this.$route.query.request;
+      }
+      const request = this.$route.query.request
 
       if (request) {
-        let requestObj = JSON.parse(decodeURIComponent(request));
-        data.replyId = requestObj.id;
-        data.replyNick = requestObj.nick;
-        data.replyContent = requestObj.content;
+        const requestObj = JSON.parse(decodeURIComponent(request))
+        data.replyId = requestObj.id
+        data.replyNick = requestObj.nick
+        data.replyContent = requestObj.content
       }
 
       return data
     },
     methods: {
-      backToTalk() {
-        this.$router.push({path: `/talks/${this.id}`});
+      backToTalk () {
+        this.$router.push({ path: `/talks/${this.id}` })
       },
-      async submit() {
-        this.$validator.validateAll();
-        if (this.errors.count()) return;
+      async submit () {
+        this.$validator.validateAll()
+        if (this.errors.count()) return
 
-        this.isSubmitting = true;
-        await this.$store.dispatch(POST_TALK_COMMENT, {id: this.id, content: this.content, parentId: this.replyId})
-        this.isSubmitting = false;
-        this.backToTalk();
+        this.isSubmitting = true
+        await this.$store.dispatch(POST_TALK_COMMENT, { id: this.id, content: this.content, parentId: this.replyId })
+        this.isSubmitting = false
+        this.backToTalk()
       }
     }
   }

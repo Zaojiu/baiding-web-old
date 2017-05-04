@@ -517,11 +517,11 @@
 
 <script>
   import BdLoading from '../../shared/bd-loading.comp.vue'
-  import {FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE} from '../../store/talk'
-  import {Utils} from '../../shared/utils/utils'
+  import { FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE } from '../../store/talk'
+  import { Utils } from '../../shared/utils/utils'
 
   export default {
-    data() {
+    data () {
       return {
         id: this.$route.params.id,
         originY: 0,
@@ -536,50 +536,48 @@
       BdLoading
     },
     computed: {
-      talkInfo() {
+      talkInfo () {
         if (this.$store.state.talks.info[this.id] === undefined) {
           this.$store.dispatch(FETCH_TALK, this.id)
         }
         return this.$store.state.talks.info[this.id]
       },
-      comments() {
+      comments () {
         if (this.$store.state.talks.comments[this.id] === undefined) {
           this.fetchComments()
         }
         return this.$store.state.talks.comments[this.id]
       },
-      isLoading() {
+      isLoading () {
         return this.talkInfo === undefined
       }
     },
     methods: {
-      resetDefaultBackground() {
-        this.talkInfo.coverUrl = '/assets/img/default-cover.jpg';
-        this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg';
-        this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg';
+      resetDefaultBackground () {
+        this.talkInfo.coverUrl = '/assets/img/default-cover.jpg'
+        this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg'
+        this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg'
       },
-      async fetchComments() {
-        this.isCommentLoading = true;
-
-        await this.$store.dispatch(FETCH_TALK_COMMENT, this.id);
-
-        this.isCommentLoading = false;
+      async fetchComments () {
+        this.isCommentLoading = true
+        await this.$store.dispatch(FETCH_TALK_COMMENT, this.id)
+        this.isCommentLoading = false
       },
-      gotoComment(id, nick, content) {
-        let query = {title: encodeURIComponent(this.talkInfo.subject)};
+      gotoComment (id, nick, content) {
+        const query = { title: encodeURIComponent(this.talkInfo.subject) }
 
         if (id && nick && content) {
-          query.request = encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content}));
+          query.request = encodeURIComponent(JSON.stringify({ id: id, nick: nick, content: content }))
         }
 
-        this.$router.push({path: `/talks/${this.id}/post-comment`, query: query});
+        this.$router.push({ path: `/talks/${this.id}/post-comment`, query: query })
       },
-      touchStart(e) {
+      touchStart (e) {
         if (!this.$refs.toolBar) return
 
         this.originY = e.touches[0].clientY
       },
-      touchMove(e) {
+      touchMove (e) {
         if (!this.$refs.toolBar) return
 
         if (this.originY - e.touches[0].clientY > 10 && this.isToolbarShow) {
@@ -588,12 +586,12 @@
           this.isToolbarShow = true
         }
       },
-      togglePraise() {
-        this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id);
+      togglePraise () {
+        this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id)
       },
-      toggleFavorite() {
-        this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id);
+      toggleFavorite () {
+        this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id)
       }
     }
-  };
+  }
 </script>
