@@ -4,12 +4,33 @@
   <meta charset="utf-8">
   <title>_REPL_SITE_NAME_</title>
   <base href="/">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <script async src='assets/js/ga.js'></script>
+
+  <!-- Google Tag Manager -->
+  <script type="text/javascript">
+    var dataLayer = dataLayer || [];
+    var gaid = '_REPL_GAID_';
+    if(gaid.indexOf('_REPL_')==0){
+      gaid = 'UA-75377537-3';
+    }
+    dataLayer.push({
+      'gaid': gaid,
+      'version': ''
+    });
+  </script>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-TZQHFKM');</script>
+  <!-- End Google Tag Manager -->
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZQHFKM"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
 <bd-app>
   <style type="text/css">
@@ -133,13 +154,5 @@
     </div>
   </div>
 </bd-app>
-
-<script>
-  window.ga = window.ga || function () {
-    (ga.q = ga.q || []).push(arguments)
-  };
-  ga.l = +new Date;
-  ga('create', 'UA-85677719-1', 'auto');
-</script>
 </body>
 </html>
