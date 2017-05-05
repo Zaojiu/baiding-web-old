@@ -38,7 +38,7 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
   }
 
   setPlayer() {
-    var opt: TcPlayerOption = {
+    let opt: TcPlayerOption = {
       mp4: this.videoInfo.mp4,
       mp4_sd: this.videoInfo.mp4SD,
       mp4_hd: this.videoInfo.mp4HD,
@@ -57,7 +57,8 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
   }
 
   destroy() {
-    this.videoPlayer.nativeElement.innerHTML = '';
+    if (this.player) this.player.destroy();
+    if (this.videoPlayer) this.videoPlayer.nativeElement.innerHTML = '';
   }
 
   private _onEvents(msg: TcPlayerOptionListenerMsg) {

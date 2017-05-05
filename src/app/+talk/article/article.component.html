@@ -3,7 +3,6 @@
 <div class="main" *ngIf="!isLoading && talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)">
   <header [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen, 'mobile-landscape': !isOnScreen && isLandscape}">
     <video-player
-      *ngIf="videoInfo"
       class="video-player"
       [videoInfo]="videoInfo"
       [option]="videoOption"
