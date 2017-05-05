@@ -18,9 +18,7 @@
           <img
             class="cover-image"
             alt="话题间封面"
-            v-bind:class="{fadein: coverLoaded}"
             v-bind:src="talkInfo.coverUrl"
-            @load="coverLoaded = true"
             @error="resetDefaultBackground()"
           >
 
@@ -190,12 +188,6 @@
           height: 100%;
           object-fit: cover;
           text-indent: -10000px;
-          transition: opacity 2.5s;
-          opacity: 0;
-
-          &.fadein {
-            opacity: 1;
-          }
         }
 
         h1 {
@@ -528,7 +520,6 @@
         isToolbarShow: true,
         isOnScreen: Utils.isOnLargeScreen,
         isVideoCoverShown: true,
-        coverLoaded: false,
         isCommentLoading: true
       }
     },
