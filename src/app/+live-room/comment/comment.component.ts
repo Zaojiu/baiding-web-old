@@ -156,7 +156,9 @@ export class CommentComponent implements OnInit, OnDestroy {
         comment.createdAt = evt.info.comment.createdAt;
         comment.type = CommentType.CommentPushed;
         comment.eventData = evt.info;
-        this.tooltips.popup('您的评论已被推送');
+        if (comment.eventData.comment_user.uid === this.userInfo.uid) {
+          this.tooltips.popup('您的评论已被推送');
+        }
         this.commentPushQueue.push(comment);
         break;
     }
