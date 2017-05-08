@@ -14,7 +14,8 @@ export class AuthGuard implements CanActivate {
     let to = `${location.protocol}//${location.hostname}${state.url}`;
     return this.userInfoService.getUserInfo(true).then(() => {
       return true;
-    }, () => {
+    }, (err) => {
+      console.log(err);
       this.authService.auth(encodeURIComponent(to));
       return false;
     });

@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Angulartics2, Angulartics2GoogleAnalytics} from 'angulartics2';
+import { Component, OnInit } from '@angular/core';
+import { Angulartics2GoogleTagManager } from 'angulartics2';
 import {Router, Route, RoutesRecognized} from "@angular/router";
 import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 
@@ -9,9 +9,8 @@ import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 })
 
 export class AppComponent implements OnInit {
-  constructor(angulartics2: Angulartics2,
-              angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-              private router: Router) {
+  constructor(angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
+    private router: Router) {
   }
 
   initAppJumperGuard() {

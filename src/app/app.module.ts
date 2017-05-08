@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule, Title} from '@angular/platform-browser';
 import {HttpModule, BrowserXhr, XHRBackend, Http, RequestOptions} from '@angular/http';
 
-import {Angulartics2Module, Angulartics2GoogleAnalytics} from 'angulartics2';
+import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app.routes';
@@ -62,7 +62,7 @@ import {VideoService} from "./shared/video-player/video-player.service";
     BrowserModule,
     HttpModule,
     AppRoutingModule,
-    Angulartics2Module.forRoot(),
+    Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
     ImageViewerModule,
     LoadingModule,
   ],
@@ -120,7 +120,6 @@ import {VideoService} from "./shared/video-player/video-player.service";
     BottomPopupSelectorService,
     SharePopupService,
     ModalService,
-    Angulartics2GoogleAnalytics,
     {provide: BrowserXhr, useClass: CORSBrowserXHR}
   ],
   bootstrap: [AppComponent]

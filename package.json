@@ -37,7 +37,7 @@
     "@angular/router": "3.3.1",
     "@types/videojs": "0.0.31",
     "angular2-websocket": "^0.8.1",
-    "angulartics2": "git://github.com/slene/angulartics2.git#9ae8535fda2369fe70ac5c376c721cc14919af28",
+    "angulartics2": "2.2.1",
     "autosize": "^3.0.17",
     "clipboard": "^1.6.0",
     "core-js": "^2.4.1",
