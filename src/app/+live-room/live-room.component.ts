@@ -19,6 +19,9 @@ import {OperationTipsService} from "../shared/operation-tips/operation-tips.serv
 import {TimelineComponent} from "./timeline/timeline.component";
 import {VideoService} from "../shared/video-player/video-player.service";
 
+import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
+import { AnalyticsService, OnlineService, OnlineParams, OnlineInfo, MediaInfo } from "../shared/analytics/analytics.service"
+
 @Component({
   templateUrl: './live-room.component.html',
   styleUrls: ['./live-room.component.scss'],
@@ -48,14 +51,20 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isLandscape = false;
   isOnLargeScreen = UtilsService.isOnLargeScreen;
 
+  @ViewChild('videoPlayer') player: VideoPlayerComponent;
+  private onlineService: OnlineService;
+
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
               private shareService: ShareApiService, private messageApiService: MessageApiService,
               private sanitizer: DomSanitizer, private tooltips: OperationTipsService,
+              private analytics: AnalyticsService,
               private videoService: VideoService) {
   }
 
   ngOnInit() {
+    this.markOnline();
+
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
@@ -79,7 +88,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
           }
         });
       }
-    });
+    }).finally(() => {
+      this.onlineService.start()
+    });;
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
     this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);
 
@@ -125,6 +136,28 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     if (this.videoVisableSub) this.videoVisableSub.unsubscribe();
 
     if (this.refreshInterval) clearInterval(this.refreshInterval);
+
+    if (this.onlineService) this.onlineService.destroy();
+  }
+
+  markOnline() {
+    let onlineParams = new OnlineParams()
+    onlineParams.isPlaying = (): boolean => {
+      if (!this.player) {
+        return false
+      }
+      return this.player.isPlaying()
+    }
+    onlineParams.getMediaInfo = (): MediaInfo => {
+      if (!this.player) {
+        return new MediaInfo()
+      }
+      return this.player.buildMediaInfo()
+    }
+    onlineParams.currentScroll = (): number => {
+      return 0
+    }
+    this.onlineService = this.analytics.onlineService(onlineParams)
   }
 
   refreshLiveInfo(): Promise<boolean> {

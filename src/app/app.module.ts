@@ -56,6 +56,7 @@ import {CustomHttp} from "./shared/api/custom-http.service";
 import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
 import {TalkService} from "./shared/api/talk/talk.api";
 import {VideoService} from "./shared/video-player/video-player.service";
+import { AnalyticsService } from "./shared/analytics/analytics.service"
 
 @NgModule({
   imports: [
@@ -111,6 +112,7 @@ import {VideoService} from "./shared/video-player/video-player.service";
     AuthGuard,
     AdminGuard,
     AppJumperGuard,
+    AnalyticsService,
     UserInfoService,
     LiveService,
     TalkService,

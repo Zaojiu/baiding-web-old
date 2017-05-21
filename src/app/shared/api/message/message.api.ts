@@ -18,12 +18,15 @@ import {UserInfoModel} from "../user-info/user-info.model";
 import {ImageBridge} from "../../bridge/image.interface";
 import {StoreService} from "../../store/store.service";
 
+import { AnalyticsService, TargetInfo, ObjectType } from "../../analytics/analytics.service"
+
 declare var $: any;
 
 @Injectable()
 export class MessageApiService {
   constructor(private http: Http, private userInfoService: UserInfoService, private timelineService: TimelineService,
               private uploadService: UploadApiService, private audioService: AudioBridge,
+              private analytics: AnalyticsService,
               private imageService: ImageBridge) {
   }
 
@@ -685,6 +688,11 @@ export class MessageApiService {
     let data = new PostPraiseModel();
     data.praised = praised;
     data.num = num;
+
+    var target = new TargetInfo()
+    target.targetId = msgId
+    target.targetType = ObjectType.message
+    this.analytics.eventPraise(target)
 
     let url = `${environment.config.host.io}/api/live/streams/${liveId}/messages/${msgId}/praises`;
     return this.http.post(url, JSON.stringify(data)).toPromise().then(res => {

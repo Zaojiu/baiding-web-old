@@ -7,6 +7,8 @@ import {environment} from "../../../../environments/environment";
 import {ShareBridge} from "../share.interface";
 import {SharePopupService} from "../../share-popup/share-popup.service";
 
+import { AnalyticsService, SharePlatform } from "../../analytics/analytics.service"
+
 declare var wx: any;
 
 @Injectable()
@@ -17,7 +19,9 @@ export class WechatShareService implements ShareBridge {
   link: string;
   liveId?: string;
 
-  constructor(private http: Http, private wechatConfigService: WechatConfigService, private sharePopupService: SharePopupService) {
+  constructor(private http: Http, private wechatConfigService: WechatConfigService,
+              private analytics: AnalyticsService,
+              private sharePopupService: SharePopupService) {
   }
 
   private _setShareInfo(title: string, desc: string, cover: string, link: string, liveId?: string) {
@@ -36,6 +40,7 @@ export class WechatShareService implements ShareBridge {
       imgUrl: cover, // 分享图标
       success: () => {
         if (liveId) this.confirmShare(liveId);
+        this.analytics.eventShare(SharePlatform.wechatTimeline);
       },
       cancel: () => {
       }
@@ -48,6 +53,7 @@ export class WechatShareService implements ShareBridge {
       imgUrl: cover, // 分享图标
       success: () => {
         if (liveId) this.confirmShare(liveId);
+        this.analytics.eventShare(SharePlatform.wechatFriend);
       },
       cancel: () => {
       }
@@ -60,6 +66,7 @@ export class WechatShareService implements ShareBridge {
       imgUrl: cover, // 分享图标
       success: () => {
         if (liveId) this.confirmShare(liveId);
+        this.analytics.eventShare(SharePlatform.qq);
       },
       cancel: () => {
       }
@@ -71,7 +78,8 @@ export class WechatShareService implements ShareBridge {
       link: link, // 分享链接
       imgUrl: cover, // 分享图标
       success: () => {
-        if (liveId) this.confirmShare(liveId);
+      if (liveId) this.confirmShare(liveId);
+        this.analytics.eventShare(SharePlatform.weibo);
       },
       cancel: () => {
       }
@@ -84,6 +92,7 @@ export class WechatShareService implements ShareBridge {
       imgUrl: cover, // 分享图标
       success: () => {
         if (liveId) this.confirmShare(liveId)
+        this.analytics.eventShare(SharePlatform.qzone);
       },
       cancel: () => {
       }

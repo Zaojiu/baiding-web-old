@@ -77,7 +77,7 @@ export class MqService {
   }
 
   static unsubscribeLiveEvents(streamId: string) {
-    let channel = `live_messages_${streamId}`;
+    let channel = `live_events_${streamId}`;
     MqService.getInstance().pubsub(channel, null, false)
   }
 

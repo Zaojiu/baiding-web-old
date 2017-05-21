@@ -20,6 +20,7 @@
       [videoInfo]="videoInfo"
       [option]="videoOption"
       (onEvents)="onVideoEvent($event)"
+      #videoPlayer
     ></video-player>
 
     <div class="live-cover" *ngIf="isVideoCoverShown">

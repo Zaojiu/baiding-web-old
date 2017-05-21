@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
-import {Router, Route, RoutesRecognized} from "@angular/router";
-import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
+import { Router, Route, RoutesRecognized, NavigationEnd } from "@angular/router";
+import { AppJumperGuard } from "./shared/guard/app-jumper.guard";
+import { AnalyticsService } from "./shared/analytics/analytics.service"
 
 @Component({
   selector: 'bd-app',
@@ -10,6 +11,7 @@ import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 
 export class AppComponent implements OnInit {
   constructor(angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
+    private analytics: AnalyticsService,
     private router: Router) {
   }
 
@@ -46,9 +48,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.analytics.eventEnterpage()
+
     this.router.events.subscribe(e => {
       if (e instanceof RoutesRecognized) {
         this.initAppJumperGuard();
+      }
+
+      if (e instanceof NavigationEnd) {
+        this.analytics.eventPageview()
       }
     });
   }

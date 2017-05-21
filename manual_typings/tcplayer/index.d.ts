@@ -45,7 +45,32 @@ declare interface TcPlayerStatic {
   new (id: string, option: TcPlayerOption): TcPlayerInstance;
 }
 
+declare interface TcPlayerVideoElement {
+  currentTime: number;
+  duration: number;
+}
+
+declare interface TcPlayerVideo {
+  el: TcPlayerVideoElement;
+  playState: string;
+  seekState: string;
+}
+
+declare interface TcPlayerVideoSource {
+  curDef: string;
+  curFormat: string;
+  curUrl: string;
+}
+
+declare interface TcPlayerVideoOptions {
+  videoSource: TcPlayerVideoSource;
+  live: boolean;
+  flash: boolean;
+}
+
 declare interface TcPlayerInstance {
+  video: TcPlayerVideo;
+  options: TcPlayerVideoOptions;
   destroy();
 }
 
