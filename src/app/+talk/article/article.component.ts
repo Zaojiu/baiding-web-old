@@ -4,12 +4,15 @@ import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
 import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model";
 import {UtilsService} from "../../shared/utils/utils";
 import {VideoInfo, VideoPlayerOption} from "../../shared/video-player/video-player.model";
+import {VideoPlayerComponent} from "../../shared/video-player/video-player.component";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {TitleService} from "../../shared/title/title.service";
 import {AuthBridge} from "../../shared/bridge/auth.interface";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
+
+import { AnalyticsService, OnlineService, OnlineParams, OnlineInfo, MediaInfo } from "../../shared/analytics/analytics.service"
 
 @Component({
   templateUrl: './article.component.html',
@@ -39,17 +42,26 @@ export class ArticleComponent implements OnInit, OnDestroy {
   trustBackgroundCover: SafeStyle;
   isVideoCoverShown = true;
 
+  @ViewChild('container') container: ElementRef;
+  @ViewChild('videoPlayer') player: VideoPlayerComponent;
+  private onlineService: OnlineService;
+
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private shareBridge: ShareBridge,
               private titleService: TitleService, private authBridge: AuthBridge,
+              private analytics: AnalyticsService,
               private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
+    this.markOnline();
+
     this.id = this.route.snapshot.params['id'];
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    this.getTalkInfo();
+    this.getTalkInfo().finally(() => {
+      this.onlineService.start()
+    });
 
     this.routeSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -68,11 +80,32 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.routeSub) this.routeSub.unsubscribe();
+    if (this.onlineService) this.onlineService.destroy();
+  }
+
+  markOnline() {
+    let onlineParams = new OnlineParams()
+    onlineParams.isPlaying = (): boolean => {
+      if (!this.player) {
+        return false
+      }
+      return this.player.isPlaying()
+    }
+    onlineParams.getMediaInfo = (): MediaInfo => {
+      if (!this.player) {
+        return new MediaInfo()
+      }
+      return this.player.buildMediaInfo()
+    }
+    onlineParams.currentScroll = (): number => {
+      return $(this.container.nativeElement).scrollTop()
+    }
+    this.onlineService = this.analytics.onlineService(onlineParams)
   }
 
   getTalkInfo() {
     this.isLoading = true;
-    this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
+    return this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
       this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnailUrl})`);
 
