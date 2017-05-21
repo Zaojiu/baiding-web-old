@@ -10,9 +10,11 @@ import {environment} from "../../../../environments/environment";
 import {UtilsService} from "../../utils/utils";
 import {VideoInfo} from "../../video-player/video-player.model";
 
+import { AnalyticsService, TargetInfo, ObjectType } from "../../analytics/analytics.service"
+
 @Injectable()
 export class LiveService {
-  constructor(private http: Http) {
+  constructor(private http: Http, private analytics: AnalyticsService) {
   }
 
   private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
@@ -199,6 +201,11 @@ export class LiveService {
       num: 0,
       emoji: emoji,
     };
+
+    var target = new TargetInfo()
+    target.targetId = id
+    target.targetType = ObjectType.stream
+    this.analytics.eventPraise(target)
 
     return this.http.post(url, JSON.stringify(data)).toPromise().then(res => {
       return this.refreshLiveInfo(id);
