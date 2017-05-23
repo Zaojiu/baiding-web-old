@@ -3,6 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const FlowtypePlugin = require('flowtype-loader/plugin')
 const config = require('./config')
 const _ = require('./utils')
 const fs = require('fs')
@@ -12,6 +13,17 @@ if (fs) {
   const env = `${process.cwd()}/src/env/environment${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}.js`
   if (fs.existsSync(env)) envFilePath = `env/environment${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`
 }
+
+const scriptLoader = [
+  'babel-loader',
+  {
+    loader: 'string-replace-loader',
+    query: {
+      search: 'env/environment',
+      replace: envFilePath
+    }
+  }
+];
 
 module.exports = {
   entry: {
@@ -43,30 +55,26 @@ module.exports = {
       {
         enforce: "pre",
         test: /\.vue$/,
-        include: /src/,
-        loader: "eslint-loader",
+        loaders: 'vue-loader',
         options: {
-          failOnWarning: false,
-          failOnError: false
+          loaders:{
+            js: 'flowtype-loader'
+          }
         }
       },
+      { test: /\.js$/, loader: 'flowtype-loader', enforce: 'pre', exclude: /node_modules/ },
       {
         test: /\.vue$/,
-        loaders: ['vue-loader']
+        loaders: 'vue-loader'
+        // options: {
+        //   loaders: {
+        //     js: scriptLoader
+        //   }
+        // }
       },
       {
         test: /\.js$/,
-        loaders: [
-          'babel-loader',
-          {
-            loader: 'string-replace-loader',
-            query: {
-              presets: ['es2015'],
-              search: 'env/environment',
-              replace: envFilePath
-            }
-          }
-        ],
+        loaders: scriptLoader,
         exclude: [/node_modules/]
       },
       {
@@ -84,6 +92,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new FlowtypePlugin(),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, 'index.html'),

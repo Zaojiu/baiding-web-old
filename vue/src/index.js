@@ -1,3 +1,4 @@
+// @flow
 import './config'
 
 // before app bootstrap
@@ -9,3 +10,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.$mount('#app');
+
+function bar(x: number): number {
+  return x;
+}
+bar(2);

@@ -1,3 +1,60 @@
+<script>// @flow
+  import { Utils } from '../../../shared/utils/utils'
+  import { POST_TALK_COMMENT } from '../../../store/talk'
+  import form from '../../../shared/form'
+  import beforeRouteEnter from '../../../shared/guard/before-route-enter'
+  import userAuth from '../../../shared/guard/user-auth.guard'
+
+  function square(n: number): number {
+    return n * n;
+  }
+  square("2");
+
+  export default {
+    beforeRouteEnter (to, from, next) {
+      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))])
+      guards(to, from, next)
+    },
+    directives: form,
+    data () {
+      const data = {
+        id: this.$route.params.id,
+        subject: decodeURIComponent(this.$route.query.title),
+        replyId: '',
+        replyNick: '',
+        replyContent: '',
+        isInApp: Utils.isInApp,
+        isSubmitting: false,
+        content: ''
+      }
+      const request = this.$route.query.request
+
+      if (request) {
+        const requestObj = JSON.parse(decodeURIComponent(request))
+        data.replyId = requestObj.id
+        data.replyNick = requestObj.nick
+        data.replyContent = requestObj.content
+      }
+
+      return data
+    },
+    methods: {
+      backToTalk () {
+        this.$router.push({ path: `/talks/${this.id}` })
+      },
+      async submit () {
+        this.$validator.validateAll()
+        if (this.errors.count()) return
+
+        this.isSubmitting = true
+        await this.$store.dispatch(POST_TALK_COMMENT, { id: this.id, content: this.content, parentId: this.replyId })
+        this.isSubmitting = false
+        this.backToTalk()
+      }
+    }
+  }
+</script>
+
 <template>
   <form name="postComment" class="post-comment" @submit.prevent="submit" v-focus-first-invalid>
     <header v-if="!isInApp"><i class="bi bi-close" @click="backToTalk()"></i></header>
@@ -123,55 +180,3 @@
     }
   }
 </style>
-
-<script>
-  import { Utils } from '../../../shared/utils/utils'
-  import { POST_TALK_COMMENT } from '../../../store/talk'
-  import form from '../../../shared/form'
-  import beforeRouteEnter from '../../../shared/guard/before-route-enter'
-  import userAuth from '../../../shared/guard/user-auth.guard'
-
-  export default {
-    beforeRouteEnter (to, from, next) {
-      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))])
-      guards(to, from, next)
-    },
-    directives: form,
-    data () {
-      const data = {
-        id: this.$route.params.id,
-        subject: decodeURIComponent(this.$route.query.title),
-        replyId: '',
-        replyNick: '',
-        replyContent: '',
-        isInApp: Utils.isInApp,
-        isSubmitting: false,
-        content: ''
-      }
-      const request = this.$route.query.request
-
-      if (request) {
-        const requestObj = JSON.parse(decodeURIComponent(request))
-        data.replyId = requestObj.id
-        data.replyNick = requestObj.nick
-        data.replyContent = requestObj.content
-      }
-
-      return data
-    },
-    methods: {
-      backToTalk () {
-        this.$router.push({ path: `/talks/${this.id}` })
-      },
-      async submit () {
-        this.$validator.validateAll()
-        if (this.errors.count()) return
-
-        this.isSubmitting = true
-        await this.$store.dispatch(POST_TALK_COMMENT, { id: this.id, content: this.content, parentId: this.replyId })
-        this.isSubmitting = false
-        this.backToTalk()
-      }
-    }
-  }
-</script>
