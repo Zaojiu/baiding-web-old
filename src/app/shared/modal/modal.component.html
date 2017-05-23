@@ -1,11 +1,9 @@
 <div class="modal-selector-container" [ngClass]="{ 'is-opened': isOpened}" (click)="close()">
-  <div class="popup-selecter-items">
-
-    <div class="modal-context">{{content}}</div>
+  <div class="popup-selecter-items" (click)="$event.stopPropagation();">
+    <div class="modal-context" [innerHTML]="content"></div>
     <div class="button-wrapper">
       <div class="button" (click)="close()" *ngIf="hasCancelBtn">{{cancelText}}</div>
       <div class="button" (click)="confirm()">{{confirmText}}</div>
     </div>
   </div>
-
 </div>

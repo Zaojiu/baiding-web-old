@@ -3,15 +3,6 @@
   <!--[showUserGuide]="liveInfo.isAudience(userInfo.uid)"-->
 <!--&gt;</beginner-guide>-->
 
-<!--<div class="download-tips" *ngIf="isDownloadTipsShow">-->
-  <!--<i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>-->
-  <!--<div class="tips">-->
-  <!--造就iOS版-->
-  <!--<small>发现最有创造力的声音</small>-->
-  <!--</div>-->
-  <!--<a class="download-btn" target="_blank" [href]="iosDownloadLink">立即下载</a>-->
-<!--</div>-->
-
 <div class="video-container" *ngIf="liveInfo.isTypeVideo()">
   <div class="video" [ngClass]="{'mobile-landscape': !isOnLargeScreen && isLandscape}" (click)="onClick()">
     <video-player
@@ -41,6 +32,15 @@
 </div>
 
 <div class="chat" [ngClass]="{'blured': showInfo}">
+  <div class="download-tips" *ngIf="isDownloadTipsShow">
+    <i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>
+    <div class="tips">
+      造就iOS版
+      <small>发现最有创造力的声音</small>
+    </div>
+    <a class="download-btn" (click)="showDownload()">立即下载</a>
+  </div>
+
   <top-bar
     class="top-bar"
     [onlineCount]="liveInfo.totalUsers"
