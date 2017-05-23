@@ -3,6 +3,7 @@ import {Router, NavigationStart} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {ModalService} from './modal.service';
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'modal',
@@ -11,7 +12,7 @@ import {ModalService} from './modal.service';
 })
 
 export class ModalComponent implements OnInit {
-  content: string;
+  content: SafeHtml;
   cancelText: string;
   confirmText: string;
   hasCancelBtn: boolean;
@@ -19,15 +20,15 @@ export class ModalComponent implements OnInit {
   isOpened: boolean;
   routerSubscription: Subscription;
 
-  constructor(private router: Router, private ModalService: ModalService) {
+  constructor(private router: Router, private ModalService: ModalService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
     // 此组件由于是全局组件，生命周期与app一样长，所以不需退订。
     this.ModalService.needPopup$.subscribe(
       ctx => {
-        if (this.isOpened)return ctx.resolver(false)
-        this.content = ctx.content;
+        if (this.isOpened)return ctx.resolver(false);
+        this.content = this.sanitizer.bypassSecurityTrustHtml(ctx.content);
         this.cancelText = ctx.cancelText;
         this.confirmText = ctx.confirmText;
         this.hasCancelBtn = ctx.hasCancelBtn;

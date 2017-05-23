@@ -16,7 +16,8 @@ export const appConfig = {
   lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
   wechatLink: 'http://weixin.qq.com/r/OkOrs7fEwOq-rfPQ9xYo',
   payAddress: '/dev/wxpay/',
-  iosDownloadLink: 'http://fir.im/pkch',
+  iosDownloadLink: 'https://a.app.qq.com/o/ioslink.jsp?id=1190044215',
+  iosDownloadPage: 'https://www.zaojiu.com/app',
 };
 
 export const environment = {

@@ -16,9 +16,10 @@
 }
 
 .download-tips {
-  position: fixed;
+  position: absolute;
   top: 0;
-  max-width: 1024px;
+  left: 0;
+  right: 0;
   background-color: rgba(0, 0, 0, .5);
   color: $color-w;
   display: flex;
@@ -30,6 +31,7 @@
     flex-shrink: 0;
     font-size: 22px;
     padding: 14px 16px;
+    cursor: pointer;
   }
 
   .tips {
@@ -54,6 +56,7 @@
     margin-right: 16px;
     color: $color-w;
     border-radius: 6px;
+    cursor: pointer;
   }
 }
 

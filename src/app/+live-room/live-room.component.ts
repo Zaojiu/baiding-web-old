@@ -13,11 +13,12 @@ import {ShareBridge} from '../shared/bridge/share.interface';
 import {MessageApiService} from "../shared/api/message/message.api";
 import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.model";
 import {UtilsService} from "../shared/utils/utils";
-import {environment} from "../../environments/environment";
+import {appConfig, environment} from "../../environments/environment";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {TimelineComponent} from "./timeline/timeline.component";
 import {VideoService} from "../shared/video-player/video-player.service";
+import {ModalService} from "../shared/modal/modal.service";
 
 import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
 import { AnalyticsService, OnlineService, OnlineParams, OnlineInfo, MediaInfo } from "../shared/analytics/analytics.service"
@@ -41,7 +42,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isVideoLoading = true;
   isVideoLoadError = false;
   isVideoCoverShown = true;
-  isDownloadTipsShow = UtilsService.isiOS && !UtilsService.isInApp;
+  isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
   iosDownloadLink: SafeUrl;
   routerSub: Subscription;
   videoVisableSub: Subscription;
@@ -58,8 +59,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
               private timelineService: TimelineService, private shareBridge: ShareBridge,
               private shareService: ShareApiService, private messageApiService: MessageApiService,
               private sanitizer: DomSanitizer, private tooltips: OperationTipsService,
-              private analytics: AnalyticsService,
-              private videoService: VideoService) {
+              private analytics: AnalyticsService, private videoService: VideoService,
+              private modalService: ModalService) {
   }
 
   ngOnInit() {
@@ -273,5 +274,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     if (e.type === 'load' && this.videoOption.isAutoPlay) {
       this.isVideoCoverShown = false;
     }
+  }
+
+  showDownload() {
+    const content = UtilsService.isiOS ? '点击下载造就APP' : '<img style="max-width: 80vw; height: auto;" src="/assets/img/zaojiu-app-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>';
+    this.modalService.popup(content, '取消', '下载').then((result) => {
+      if (result) location.href = UtilsService.isiOS ? appConfig.iosDownloadLink : appConfig.iosDownloadPage;
+    });
   }
 }
