@@ -11,14 +11,9 @@
     ></video-player>
 
     <div class="live-cover" *ngIf="isVideoCoverShown">
-      <div class="cover-thumbnail-wrapper">
-        <div class="cover-thumnail" [style.background-image]="trustBackgroundCover"></div>
-      </div>
       <img
         class="cover-image"
-        [ngClass]="{fadein: coverLoaded}"
-        [src]="talkInfo.coverUrl" alt="话题间封面"
-        (load)="coverLoaded = true"
+        [src]="talkInfo.coverSmallUrl" alt="话题间封面"
         (error)="resetDefaultBackground()"
       >
 

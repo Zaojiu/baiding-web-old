@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs/Subscription';
 
 import {ModalService} from './modal.service';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {ModalLink} from "./modal.model";
 
 @Component({
   selector: 'modal',
@@ -18,6 +19,7 @@ export class ModalComponent implements OnInit {
   hasCancelBtn: boolean;
   resolver: any;
   isOpened: boolean;
+  confirmLink: ModalLink;
   routerSubscription: Subscription;
 
   constructor(private router: Router, private ModalService: ModalService, private sanitizer: DomSanitizer) {
@@ -32,6 +34,7 @@ export class ModalComponent implements OnInit {
         this.cancelText = ctx.cancelText;
         this.confirmText = ctx.confirmText;
         this.hasCancelBtn = ctx.hasCancelBtn;
+        this.confirmLink = ctx.confirmLink;
         this.resolver = ctx.resolver;
         this.isOpened = true;
       }

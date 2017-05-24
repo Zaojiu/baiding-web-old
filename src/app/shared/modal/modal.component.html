@@ -3,7 +3,8 @@
     <div class="modal-context" [innerHTML]="content"></div>
     <div class="button-wrapper">
       <div class="button" (click)="close()" *ngIf="hasCancelBtn">{{cancelText}}</div>
-      <div class="button" (click)="confirm()">{{confirmText}}</div>
+      <div class="button" *ngIf="!confirmLink" (click)="confirm()">{{confirmText}}</div>
+      <a class="button" *ngIf="confirmLink" [href]="confirmLink.link" [target]="confirmLink.target">{{confirmText}}</a>
     </div>
   </div>
 </div>

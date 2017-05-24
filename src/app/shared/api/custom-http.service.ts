@@ -1,7 +1,15 @@
 import {Injectable} from "@angular/core";
-import {Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions} from "@angular/http";
+import {
+  Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions,
+  RequestMethod
+} from "@angular/http";
 import {Observable} from "rxjs";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
+
+const whiteList = [{
+  regexp: /api\/stats\/record$/,
+  method: 'POST',
+}];
 
 @Injectable()
 export class CustomHttp extends Http {
@@ -10,27 +18,59 @@ export class CustomHttp extends Http {
   }
 
   request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.request(url, options));
+    const urlStr = typeof url === 'string' ? url : url.url;
+    const method = typeof url === 'string' ? options.method : url.method;
+    let methodStr = '';
+    switch (method) {
+      case RequestMethod.Get:
+        methodStr = 'GET';
+        break;
+      case RequestMethod.Delete:
+        methodStr = 'DELETE';
+        break;
+      case RequestMethod.Head:
+        methodStr = 'HEAD';
+        break;
+      case RequestMethod.Options:
+        methodStr = 'OPTIONS';
+        break;
+      case RequestMethod.Patch:
+        methodStr = 'PATCH';
+        break;
+      case RequestMethod.Post:
+        methodStr = 'POST';
+        break;
+      case RequestMethod.Put:
+        methodStr = 'PUT';
+        break;
+    }
+    return this.intercept(super.request(url, options), urlStr, methodStr);
   }
 
   get(url: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.get(url, options));
+    return this.intercept(super.get(url, options), url, 'GET');
   }
 
   post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.post(url, body, options));
+    return this.intercept(super.post(url, body, options), url, 'POST');
   }
 
   put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.put(url, body, options));
+    return this.intercept(super.put(url, body, options), url, 'PUT');
   }
 
   delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.delete(url, options));
+    return this.intercept(super.delete(url, options), url, 'DELETE');
   }
 
-  intercept(observable: Observable<Response>): Observable<Response> {
+  intercept(observable: Observable<Response>, url: string, method: string): Observable<Response> {
     return observable.catch((err, source) => {
+      for (let item of whiteList) {
+        if (item.regexp.test(url) && method === item.method) {
+          return Observable.throw(err);
+        }
+      }
+
       if (err.status === 0) this.operationTipsService.popup('请求错误');
 
       switch (err.status) {

@@ -6,7 +6,7 @@ export const host = {
 export const appConfig = {
   host: host,
   name: '_REPL_SITE_NAME_',
-  slogan: '发现最有创造力的思想',
+  slogan: '_REPL_SLOGAN_',
   lcAppId: '_REPL_LEADCLOUD_ID_',
   lcAppKey: '_REPL_LEADCLOUD_APP_KEY_',
   wechatLink: '_REPL_WECHAT_LINK_',

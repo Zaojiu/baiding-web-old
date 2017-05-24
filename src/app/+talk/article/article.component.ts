@@ -49,8 +49,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private shareBridge: ShareBridge,
               private titleService: TitleService, private authBridge: AuthBridge,
-              private analytics: AnalyticsService,
-              private sanitizer: DomSanitizer) {
+              private analytics: AnalyticsService) {
   }
 
   ngOnInit() {
@@ -75,7 +74,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.talkInfo.coverUrl = '/assets/img/default-cover.jpg';
     this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg';
     this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg';
-    this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnailUrl})`);
   }
 
   ngOnDestroy() {
@@ -107,7 +105,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     return this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
-      this.trustBackgroundCover = this.sanitizer.bypassSecurityTrustStyle(`url(${this.talkInfo.coverThumbnailUrl})`);
 
       if (talkInfo.media.hasVideo) {
         this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
