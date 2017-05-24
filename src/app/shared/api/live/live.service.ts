@@ -77,16 +77,16 @@ export class LiveService {
 
     // TODO: need to fix live cover ratio, maybe?
     liveInfo.coverUrl = `${stream.coverUrl}?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
-    liveInfo.coverSmallUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
-    liveInfo.coverThumbnailUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
+    liveInfo.coverSmallUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
+    liveInfo.coverThumbnailUrl = stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/60x>/format/jpg/interlace/1&updatedAt=${Math.round(+liveInfo.updatedAt)}` : '/assets/img/default-cover.jpg';
 
     liveInfo.cover169Url = `${stream.coverUrl}~16-9?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
-    liveInfo.coverSmall169Url = `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
-    liveInfo.coverThumbnail169Url = `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverSmall169Url = `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverThumbnail169Url = `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
 
     liveInfo.cover11Url = `${stream.coverUrl}~1-1?updatedAt=${Math.round(+liveInfo.updatedAt)}`;
-    liveInfo.coverSmall11Url = `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
-    liveInfo.coverThumbnail11Url = `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverSmall11Url = `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
+    liveInfo.coverThumbnail11Url = `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+liveInfo.updatedAt)}`;
 
 
     if (stream.meta.status === 'created') liveInfo.status = LiveStatus.Created;
