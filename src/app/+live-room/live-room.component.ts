@@ -22,6 +22,7 @@ import {ModalService} from "../shared/modal/modal.service";
 
 import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
 import { AnalyticsService, OnlineService, OnlineParams, OnlineInfo, MediaInfo } from "../shared/analytics/analytics.service"
+import {ModalLink} from "../shared/modal/modal.model";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -278,8 +279,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   showDownload() {
     const content = UtilsService.isiOS ? '点击下载造就APP' : '<img style="max-width: 80vw; height: auto;" src="/assets/img/zaojiu-app-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>';
-    this.modalService.popup(content, '取消', '下载').then((result) => {
-      if (result) location.href = UtilsService.isiOS ? appConfig.iosDownloadLink : appConfig.iosDownloadPage;
-    });
+    const link = this.sanitizer.bypassSecurityTrustUrl(UtilsService.isiOS ? appConfig.iosDownloadLink : appConfig.iosDownloadPage);
+    const target = UtilsService.isiOS ? '' : '_target';
+    const confirmLink = new ModalLink(link, target);
+    this.modalService.popup(content, '取消', '下载', true, confirmLink);
   }
 }

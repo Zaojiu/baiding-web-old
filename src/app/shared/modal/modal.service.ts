@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject}    from 'rxjs/Subject';
 import {Observable} from "rxjs/Observable";
 
-import {ModalContext}    from './modal.model';
+import {ModalContext, ModalLink}    from './modal.model';
 
 @Injectable()
 export class ModalService {
@@ -13,8 +13,8 @@ export class ModalService {
   needClose$: Observable<string> = this.closeSource.asObservable();
   isOpened = true;
 
-  popup(content: string, cancelText = '取消', confirmText = '确定', hasCancelBtn = true): Promise<boolean> {
-    let ctx = new ModalContext(content, cancelText, confirmText, hasCancelBtn);
+  popup(content: string, cancelText = '取消', confirmText = '确定', hasCancelBtn = true, confirmLink?: ModalLink): Promise<boolean> {
+    let ctx = new ModalContext(content, cancelText, confirmText, hasCancelBtn, confirmLink);
     let promise = new Promise((resolve)=> {
       ctx.resolver = resolve;
       this.popupSource.next(ctx);
@@ -29,5 +29,4 @@ export class ModalService {
     this.closeSource.next('');
     this.isOpened = true;
   }
-
 }
