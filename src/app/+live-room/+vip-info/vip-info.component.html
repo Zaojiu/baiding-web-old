@@ -59,9 +59,9 @@
 
         <div class="file-selector" *ngIf="isInWechat" (click)="selectImages()"></div>
       </div>
-      <p class="helper" *ngIf="form.controls['avatar'].valid || !form.controls['avatar'].dirty">格式: jpg、png、gif、bmp, 并小于8M.</p>
+      <p class="helper" *ngIf="form.controls['avatar'].valid || !form.controls['avatar'].dirty">格式: jpg、png、gif、bmp, 并小于1M.</p>
       <div *ngIf="form.controls['avatar'].errors">
-        <p class="helper error" *ngIf="form.controls['avatar'].errors.size">头像大小须小于8M</p>
+        <p class="helper error" *ngIf="form.controls['avatar'].errors.size">头像大小须小于1M</p>
         <p class="helper error" *ngIf="form.controls['avatar'].errors.accept">头像格式须符合jpg、png、gif、bmp</p>
       </div>
     </div>

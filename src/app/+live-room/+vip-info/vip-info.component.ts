@@ -30,7 +30,7 @@ export class VipInfoComponent implements OnInit {
   wxLocalId: string;
   oldFileName = '';
   fileTypeRegexp = /^image\/gif|jpg|jpeg|png|bmp|raw$/;
-  maxSizeMB = 8;
+  maxSizeMB = 1;
   maxIntroLength = 100;
   form: FormGroup;
   isSubmitting = false;
