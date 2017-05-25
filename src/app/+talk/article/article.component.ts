@@ -39,7 +39,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
   hasMoreComments: boolean;
   commentSize = 20;
-  trustBackgroundCover: SafeStyle;
   isVideoCoverShown = true;
 
   @ViewChild('container') container: ElementRef;
@@ -88,16 +87,16 @@ export class ArticleComponent implements OnInit, OnDestroy {
         return false
       }
       return this.player.isPlaying()
-    }
+    };
     onlineParams.getMediaInfo = (): MediaInfo => {
       if (!this.player) {
         return new MediaInfo()
       }
       return this.player.buildMediaInfo()
-    }
+    };
     onlineParams.currentScroll = (): number => {
       return $(this.container.nativeElement).scrollTop()
-    }
+    };
     this.onlineService = this.analytics.onlineService(onlineParams)
   }
 
@@ -105,6 +104,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     return this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
+
+      if (talkInfo.parentId) {
+        this.live
+      }
 
       if (talkInfo.media.hasVideo) {
         this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
@@ -127,7 +130,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   setShareInfo(talkInfo: TalkInfoModel) {
     let shareTitle = talkInfo.subject;
     let shareDesc = talkInfo.desc;
-    let shareCover = this.talkInfo.coverThumbnailUrl;
+    let shareCover = talkInfo.coverThumbnailUrl;
     let shareUrl = `${location.protocol}//${location.hostname}${this.router.url}`;
     this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
   }

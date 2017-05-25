@@ -63,7 +63,7 @@ export class TitleSetterDirective implements OnInit {
       let titleArr = [];
       let route = this.getRoute(this.route.snapshot);
       let activeRoutes: ActivatedRouteSnapshot[] = route.children;
-      let isAsyncTitle = route.data && route.data['isAsyncTitle'];
+      let isAsyncTitle = false;
 
       activeRoutes.forEach((route: ActivatedRouteSnapshot) => {
         let activeRoute: ActivatedRouteSnapshot = route;
@@ -71,11 +71,12 @@ export class TitleSetterDirective implements OnInit {
         activeRoute = this.getRoute(activeRoute);
         let d = activeRoute.data;
         if (d && d['title']) titleArr.push([d['title']]);
+        if (d && d['isAsyncTitle']) isAsyncTitle = true;
       });
 
       if (titleArr.length) title = titleArr.join('-');
 
-      this.titleService.set(title);
+      if (!isAsyncTitle) this.titleService.set(title);
       this.setDefaultShareInfo();
     });
   }

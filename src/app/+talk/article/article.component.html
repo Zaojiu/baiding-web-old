@@ -35,7 +35,7 @@
   </header>
 
   <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}" [innerHtml]="talkInfo.safeContent"></section>
-
+  
   <section class="info" [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <ul *ngFor="let catalogArr of talkInfo.categories">
       <li *ngFor="let catalog of catalogArr">{{catalog.title}}</li>
@@ -69,9 +69,9 @@
   </section>
 
   <footer *ngIf="talkInfo" [ngClass]="{hidden: !isOnScreen && isLandscape}" #toolBar>
-    <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
-    <div class="icon" (click)="talkInfo.isPraised ? unpraise() : praise()"><i class="bi" [ngClass]="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}</div>
-    <div class="icon" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"><i class="bi" [ngClass]="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i></div>
+    <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
+    <div class="icon" [ngClass]="{'activate': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()"><i class="bi bi-thumbsup"></i>{{talkInfo.praiseTotal}}</div>
+    <div class="icon" [ngClass]="{'activate': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"><i class="bi bi-favorite"></i></div>
     <div class="icon" (click)="gotoComment()"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
   </footer>
 </div>

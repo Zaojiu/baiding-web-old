@@ -12,6 +12,7 @@ const route: Routes = [
         component: ArticleComponent,
         data: {
           isAsyncShareInfo: true,
+          isAsyncTitle: true,
         },
         resolve: {
           userInfo: UserInfoResolver,
