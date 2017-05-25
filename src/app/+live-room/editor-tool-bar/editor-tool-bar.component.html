@@ -111,7 +111,7 @@
       流地址
     </div>
 
-    <div class="btn invite" (click)="gotoInvitationInfo()" *ngIf="liveInfo.isAdmin(userInfo.uid) && !liveInfo.isClosed()">
+    <div class="btn invite" (click)="gotoInvitationInfo()" *ngIf="liveInfo.isAdmin(userInfo.uid)">
       <i class="bi bi-invite"></i>
       邀请嘉宾
     </div>
