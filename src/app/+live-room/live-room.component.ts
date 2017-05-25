@@ -44,7 +44,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isVideoLoadError = false;
   isVideoCoverShown = true;
   isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
-  iosDownloadLink: SafeUrl;
   routerSub: Subscription;
   videoVisableSub: Subscription;
   isLiveRoomVisable: boolean;
@@ -52,7 +51,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   @ViewChild('timeline') timeline: TimelineComponent;
   isLandscape = false;
   isOnLargeScreen = UtilsService.isOnLargeScreen;
-
+  isIniOS = UtilsService.isiOS;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
   private onlineService: OnlineService;
 
@@ -94,7 +93,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       this.onlineService.start()
     });;
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
-    this.iosDownloadLink = this.sanitizer.bypassSecurityTrustUrl(environment.config.iosDownloadLink);
 
     this.eventSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
       if (evt.event === EventType.LiveClosed) {
@@ -277,10 +275,14 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     }
   }
 
-  showDownload() {
-    const content = UtilsService.isiOS ? '点击下载造就APP' : '<img style="max-width: 80vw; height: auto;" src="/assets/img/zaojiu-app-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>';
-    const link = this.sanitizer.bypassSecurityTrustUrl(UtilsService.isiOS ? appConfig.iosDownloadLink : appConfig.iosDownloadPage);
-    const target = UtilsService.isiOS ? '' : '_target';
+  redirectToYingYongBao() {
+    location.href = appConfig.iosDownloadLink;
+  }
+
+  showDownloadModal() {
+    const content = '<img style="max-width: 80vw; height: auto;" src="/assets/img/yingyongbao-ios-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>';
+    const link = this.sanitizer.bypassSecurityTrustUrl(appConfig.iosDownloadLink);
+    const target = '_target';
     const confirmLink = new ModalLink(link, target);
     this.modalService.popup(content, '取消', '下载', true, confirmLink);
   }
