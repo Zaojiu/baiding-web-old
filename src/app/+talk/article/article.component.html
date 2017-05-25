@@ -35,7 +35,7 @@
   </header>
 
   <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}" [innerHtml]="talkInfo.safeContent"></section>
-  
+
   <section class="info" [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <ul *ngFor="let catalogArr of talkInfo.categories">
       <li *ngFor="let catalog of catalogArr">{{catalog.title}}</li>

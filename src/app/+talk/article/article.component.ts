@@ -105,10 +105,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
     return this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
 
-      if (talkInfo.parentId) {
-        this.live
-      }
-
       if (talkInfo.media.hasVideo) {
         this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
         this.videoInfo = new VideoInfo('', talkInfo.media.mp4_sd, talkInfo.media.mp4_hd, talkInfo.media.mp4);
