@@ -4,6 +4,7 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const host = {
+  self: 'http://www.zaojiu.fm',
   auth: 'http://auth.zaojiu.fm',
   io: 'http://io.zaojiu.fm',
 };
