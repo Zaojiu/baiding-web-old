@@ -70,6 +70,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
+    this.setShareInfo();
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.joinLiveRoom().then(() => {
       if (this.liveInfo.isTypeVideo()) {
@@ -170,13 +171,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   setShareInfo() {
-    this.getLatestTextMessage().then(latestText => {
-      let shareTitle = `${this.userInfo.nick}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
-      let shareDesc = latestText;
-      let shareCover = this.liveInfo.coverThumbnailUrl;
-      let shareUrl = this.getShareUri();
-      this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
-    });
+    let shareTitle = `${this.userInfo.nick}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
+    let shareDesc = this.liveInfo.desc;
+    let shareCover = this.liveInfo.coverThumbnailUrl;
+    console.log(this.liveInfo.coverThumbnailUrl);
+    let shareUrl = this.getShareUri();
+    this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
   }
 
   getLatestTextMessage(marker = ''): Promise<string> {
