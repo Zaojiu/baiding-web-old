@@ -296,10 +296,14 @@
     .icon {
       color: $color-w;
       line-height: 1em;
-      font-size: 12px;
+      font-size: 14px;
       display: flex;
       align-items: center;
       padding-left: 15px;
+
+      &.activate {
+        color: $color-brand;
+      }
 
       &:first-child {
         padding-left: 24px;
@@ -310,21 +314,13 @@
       }
 
       .bi {
-        font-size: 21px;
-        margin-right: 4px;
-      }
-
-      .bi-heart-fill {
-        color: red;
+        font-size: 20px;
+        margin-right: 5px;
       }
     }
 
     .view {
       flex-grow: 1;
-
-      .bi {
-        font-size: 16px;
-      }
     }
   }
 }
