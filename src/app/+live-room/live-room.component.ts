@@ -92,7 +92,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       }
     }).finally(() => {
       this.onlineService.start()
-    });;
+    });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
     this.eventSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
@@ -142,22 +142,22 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   markOnline() {
-    let onlineParams = new OnlineParams()
+    const onlineParams = new OnlineParams();
     onlineParams.isPlaying = (): boolean => {
       if (!this.player) {
-        return false
+        return false;
       }
-      return this.player.isPlaying()
-    }
+      return this.player.isPlaying();
+    };
     onlineParams.getMediaInfo = (): MediaInfo => {
       if (!this.player) {
-        return new MediaInfo()
+        return new MediaInfo();
       }
-      return this.player.buildMediaInfo()
-    }
+      return this.player.buildMediaInfo();
+    };
     onlineParams.currentScroll = (): number => {
       return 0
-    }
+    };
     this.onlineService = this.analytics.onlineService(onlineParams)
   }
 
@@ -174,7 +174,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     let shareTitle = `${this.userInfo.nick}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
     let shareDesc = this.liveInfo.desc;
     let shareCover = this.liveInfo.coverThumbnailUrl;
-    console.log(this.liveInfo.coverThumbnailUrl);
     let shareUrl = this.getShareUri();
     this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
   }
