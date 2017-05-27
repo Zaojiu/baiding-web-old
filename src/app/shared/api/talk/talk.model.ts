@@ -114,18 +114,18 @@ export class TalkInfoModel {
     }
     this.subject = data.subject;
     this.desc = data.desc;
-    this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`; // for ios 375 * 3
-    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${environment.config.host.self}/assets/img/zaojiu-logo.jpg`; // 请使用%3E代替>，微信小图无法识别>。。。
+    this.coverUrl = encodeURI(`${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`);
+    this.coverSmallUrl = encodeURI(`${data.coverUrl}?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`); // for ios 375 * 3
+    this.coverThumbnailUrl = encodeURI(data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${environment.config.host.self}/assets/img/zaojiu-logo.jpg`);
 
-    this.cover169Url = `${data.coverUrl}~16-9?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmall169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`; // for ios 375 * 3
-    this.coverThumbnail169Url = data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${environment.config.host.self}/assets/img/zaojiu-logo.jpg`; // 请使用%3E代替>，微信小图无法识别>。。。
+    this.cover169Url = encodeURI(`${data.coverUrl}~16-9?updatedAt=${Math.round(+data.updatedAt)}`);
+    this.coverSmall169Url = encodeURI(`${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`); // for ios 375 * 3
+    this.coverThumbnail169Url = encodeURI(data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${environment.config.host.self}/assets/img/zaojiu-logo.jpg`);
 
-    this.cover11Url = `${data.coverUrl}~1-1?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmall11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`; // for ios 375 * 3
-    this.coverThumbnail11Url = data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${environment.config.host.self}/assets/img/zaojiu-logo.jpg`; // 请使用%3E代替>，微信小图无法识别>。。。
-    
+    this.cover11Url = encodeURI(`${data.coverUrl}~1-1?updatedAt=${Math.round(+data.updatedAt)}`);
+    this.coverSmall11Url = encodeURI(`${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`); // for ios 375 * 3
+    this.coverThumbnail11Url = encodeURI(data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${environment.config.host.self}/assets/img/zaojiu-logo.jpg`);
+
     this.isNeedPay = data.isNeedPay;
     this.totalFee = data.totalFee;
     this.praiseTotal = data.praiseTotal;
