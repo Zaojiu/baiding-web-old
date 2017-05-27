@@ -36,13 +36,24 @@
 
   <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}" [innerHtml]="talkInfo.safeContent"></section>
 
-  <section class="info" [ngClass]="{hidden: !isOnScreen && isLandscape}">
+  <section class="info" *ngIf="talkInfo.categories.length || talkInfo.tags.length" [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <ul *ngFor="let catalogArr of talkInfo.categories">
       <li *ngFor="let catalog of catalogArr">{{catalog.title}}</li>
     </ul>
 
     <div class="tags">
       <small *ngFor="let tag of talkInfo.tags">{{tag}}</small>
+    </div>
+  </section>
+
+  <section class="relatives" *ngIf="liveObject" [ngClass]="{hidden: !isOnScreen && isLandscape}">
+    <h2>查看完整内容</h2>
+    <div class="card" (click)="gotoLive(liveObject.id)">
+      <img class="cover" [src]="liveObject.coverSmallUrl" alt="直播封面" (error)="liveObject.coverSmallUrl = '/assets/img/default-cover.jpg'">
+      <div class="content">
+        <h3>{{liveObject.subject}}</h3>
+        <p>{{liveObject.desc}}</p>
+      </div>
     </div>
   </section>
 

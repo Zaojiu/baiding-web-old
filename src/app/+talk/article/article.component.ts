@@ -12,7 +12,15 @@ import {TitleService} from "../../shared/title/title.service";
 import {AuthBridge} from "../../shared/bridge/auth.interface";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
-import { AnalyticsService, OnlineService, OnlineParams, OnlineInfo, MediaInfo } from "../../shared/analytics/analytics.service"
+import {
+  AnalyticsService,
+  OnlineService,
+  OnlineParams,
+  OnlineInfo,
+  MediaInfo
+} from "../../shared/analytics/analytics.service"
+import {ObjectService} from "../../shared/api/object/object.api";
+import {ObjectModel} from "../../shared/api/object/object.model";
 
 @Component({
   templateUrl: './article.component.html',
@@ -40,6 +48,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   hasMoreComments: boolean;
   commentSize = 20;
   isVideoCoverShown = true;
+  liveObject: ObjectModel;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
@@ -48,7 +57,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private shareBridge: ShareBridge,
               private titleService: TitleService, private authBridge: AuthBridge,
-              private analytics: AnalyticsService) {
+              private analytics: AnalyticsService, private objectService: ObjectService) {
   }
 
   ngOnInit() {
@@ -105,6 +114,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
     return this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
       this.talkInfo = talkInfo;
 
+      if (talkInfo.parentId) {
+        this.objectService.getObject(talkInfo.parentId).then(liveObject => {
+          this.liveObject = liveObject;
+        });
+      }
+
       if (talkInfo.media.hasVideo) {
         this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
         this.videoInfo = new VideoInfo('', talkInfo.media.mp4_sd, talkInfo.media.mp4_hd, talkInfo.media.mp4);
@@ -136,8 +151,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     marker = marker ? `$lt${marker}` : '';
 
-    this.talkApiService.listComments(this.id, this.commentSize+1, marker).then(comments => {
-      if (comments.length === this.commentSize+1) {
+    this.talkApiService.listComments(this.id, this.commentSize + 1, marker).then(comments => {
+      if (comments.length === this.commentSize + 1) {
         this.hasMoreComments = true;
         comments.pop();
       } else {
@@ -201,14 +216,14 @@ export class ArticleComponent implements OnInit, OnDestroy {
     if (this.isPraising) return;
 
     this.talkInfo.isPraised = true;
-    this.talkInfo.praiseTotal+=1;
+    this.talkInfo.praiseTotal += 1;
     this.isPraising = true;
 
     this.talkApiService.praise(this.id).then(() => {
       this.talkApiService.getTalkInfo(this.id, true);
     }, () => {
       this.talkInfo.isPraised = false;
-      this.talkInfo.praiseTotal-=1;
+      this.talkInfo.praiseTotal -= 1;
     }).finally(() => {
       this.isPraising = false;
     });
@@ -220,14 +235,14 @@ export class ArticleComponent implements OnInit, OnDestroy {
     if (this.isPraising) return;
 
     this.talkInfo.isPraised = false;
-    this.talkInfo.praiseTotal > 0 ? this.talkInfo.praiseTotal-=1 : 0;
+    this.talkInfo.praiseTotal > 0 ? this.talkInfo.praiseTotal -= 1 : 0;
     this.isPraising = true;
 
     this.talkApiService.unpraise(this.id).then(() => {
       this.talkApiService.getTalkInfo(this.id, true);
     }, () => {
       this.talkInfo.isPraised = true;
-      this.talkInfo.praiseTotal+=1;
+      this.talkInfo.praiseTotal += 1;
     }).finally(() => {
       this.isPraising = false;
     });
@@ -285,5 +300,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
     if (e.type === 'load' && this.videoOption.isAutoPlay) {
       this.isVideoCoverShown = false;
     }
+  }
+
+  gotoLive(id: string) {
+    this.router.navigate([`/lives/${id}/info`]);
   }
 }

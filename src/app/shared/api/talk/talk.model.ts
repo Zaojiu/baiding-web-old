@@ -85,6 +85,7 @@ export class TalkInfoModel {
   isNeedPay: boolean;
   totalFee: number;
   praiseTotal: number;
+  parentId: string;
   isPraised: boolean = false;
   isFavorited: boolean = false;
   commentTotal: number;
@@ -128,6 +129,7 @@ export class TalkInfoModel {
     this.isNeedPay = data.isNeedPay;
     this.totalFee = data.totalFee;
     this.praiseTotal = data.praiseTotal;
+    this.parentId = data.parentId;
     if (currentUserInfo) this.isPraised = currentUserInfo.praised;
     this.commentTotal = data.commentTotal;
     if (currentUserInfo) this.isFavorited = !!currentUserInfo.favoritedAt;
