@@ -107,20 +107,30 @@ export class IosBridgeService {
 
   onClose(cb: () => void) {
     if (this.hasInit) {
-      this.bridge.callHandler('onClose', cb);
+      this.bridge.registerHandler('onClose', cb);
     } else {
       this.init().then(() => {
-        this.bridge.callHandler('onClose', cb);
+        this.bridge.registerHandler('onClose', cb);
       });
     }
   }
 
   offClose() {
     if (this.hasInit) {
-      this.bridge.callHandler('onClose');
+      this.bridge.registerHandler('onClose');
     } else {
       this.init().then(() => {
-        this.bridge.callHandler('onClose');
+        this.bridge.registerHandler('onClose');
+      });
+    }
+  }
+
+  onRefreshTalkComments(cb: (url: any) => void) {
+    if (this.hasInit) {
+      this.bridge.registerHandler('onRefreshTalkComments', cb);
+    } else {
+      this.init().then(() => {
+        this.bridge.registerHandler('onRefreshTalkComments', cb);
       });
     }
   }
