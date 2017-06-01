@@ -1,6 +1,6 @@
 <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
 
-<div class="main" *ngIf="!isLoading && talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)" #container>
+<div class="main" #main *ngIf="!isLoading && talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)" #container>
   <header [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen, 'mobile-landscape': !isOnScreen && isLandscape}">
     <video-player
       class="video-player"
@@ -58,7 +58,7 @@
   </section>
 
   <section class="comments" [ngClass]="{hidden: !isOnScreen && isLandscape}">
-    <h2>评论</h2>
+    <h2 #commentTitle>评论</h2>
 
     <div class="comment" *ngFor="let comment of comments">
       <div class="header">

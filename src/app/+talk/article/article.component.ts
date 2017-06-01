@@ -22,6 +22,8 @@ import {
 import {ObjectService} from "../../shared/api/object/object.api";
 import {ObjectModel} from "../../shared/api/object/object.model";
 
+import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
+
 @Component({
   templateUrl: './article.component.html',
   styleUrls: ['./article.component.scss'],
@@ -39,6 +41,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isPraising: boolean;
   isFavoriting: boolean;
   @ViewChild('toolBar') toolBar: ElementRef;
+  @ViewChild('main') main: ElementRef;
+  @ViewChild('commentTitle') commentTitle: ElementRef;
   $toolBar: any;
   isToolbarShow = false;
   originY = 0;
@@ -57,7 +61,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private shareBridge: ShareBridge,
               private titleService: TitleService, private authBridge: AuthBridge,
-              private analytics: AnalyticsService, private objectService: ObjectService) {
+              private analytics: AnalyticsService, private objectService: ObjectService,
+              private iosBridge: IosBridgeService) {
   }
 
   ngOnInit() {
@@ -67,14 +72,34 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.userInfo = this.route.snapshot.data['userInfo'];
 
     this.getTalkInfo().finally(() => {
-      this.onlineService.start()
+      this.onlineService.start();
     });
 
+    let firstRefreshComment = true;
     this.routeSub = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.comments = [];
-        this.listComments();
+      if (event instanceof NavigationEnd && this.route.firstChild && !this.route.firstChild.firstChild) {
+        this.refreshComments(!firstRefreshComment);
+        if (firstRefreshComment) firstRefreshComment = false;
       }
+    });
+
+    if (UtilsService.isInApp) {
+      this.iosBridge.onRefreshTalkComments((data) => {
+        if (data.url.match(this.id)) {
+          this.refreshComments();
+        }
+      })
+    }
+  }
+
+  scrollToComment() {
+    this.main.nativeElement.scrollTop = this.commentTitle.nativeElement.offsetTop;
+  }
+
+  refreshComments(needScrollToComment = true) {
+    this.comments = [];
+    this.listComments().then(() => {
+      if (needScrollToComment) setTimeout(() => this.scrollToComment());
     });
   }
 
@@ -151,7 +176,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     marker = marker ? `$lt${marker}` : '';
 
-    this.talkApiService.listComments(this.id, this.commentSize + 1, marker).then(comments => {
+    return this.talkApiService.listComments(this.id, this.commentSize + 1, marker).then(comments => {
       if (comments.length === this.commentSize + 1) {
         this.hasMoreComments = true;
         comments.pop();
@@ -162,6 +187,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       for (let item of comments) {
         this.comments.push(item);
       }
+      return;
     }).finally(() => {
       this.isCommentLoading = false;
     })
