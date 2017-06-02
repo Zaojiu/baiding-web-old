@@ -29,6 +29,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   isLoading = false;
   isOnOldest: boolean;
   isOnLatest: boolean;
+  loadCommentErr = false;
   actionSubscription: Subscription;
   commentPushQueue: CommentModel[] = [];
   commentPushQueueTimer: any;
@@ -62,6 +63,14 @@ export class CommentComponent implements OnInit, OnDestroy {
     if (this.eventSub) this.eventSub.unsubscribe();
     if (this.actionSubscription) this.actionSubscription.unsubscribe();
     clearInterval(this.commentPushQueueTimer);
+  }
+
+  reloadComments() {
+    this.gotoLatestComments().then(() => {
+      setTimeout(() => {
+        this.scroller.scrollToBottom();
+      }, 0);
+    })
   }
 
   parseContent(comment: CommentModel): SafeHtml {
@@ -195,7 +204,10 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.isOnLatest = true;
       this.isOnBottom = true;
       this.unreadCount = 0;
+      this.loadCommentErr = false;
       return;
+    }, () => {
+      this.loadCommentErr = true;
     }).finally(() => {
       this.isLoading = false;
     });

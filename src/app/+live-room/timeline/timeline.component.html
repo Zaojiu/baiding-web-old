@@ -17,6 +17,7 @@
     <inputting #inputtingComp [liveInfo]="liveInfo" [userInfo]="userInfo" (onshow)="onShowInputting()"></inputting>
   </div>
 
+  <button class="reload-btn" *ngIf="messagesIntialErr" (click)="loadMessage()">重新加载</button>
   <bd-loading class="loading-foot"
               [ngClass]="{show: scroller.isFootLoadingShown,hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
