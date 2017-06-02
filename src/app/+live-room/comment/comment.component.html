@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <bd-loading class="loading-foot" *ngIf="scroller.isFootLoadingShown"></bd-loading>
+    <bd-loading class="loading-foot" *ngIf="scroller.isFootLoadingShown || loadCommentErr" (click)="reloadComments()"></bd-loading>
 
   </div>
 

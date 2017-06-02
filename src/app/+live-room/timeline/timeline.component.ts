@@ -37,6 +37,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   @Input() userInfo: UserInfoModel;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   messages: MessageModel[] = [];
+  messagesIntialErr = false;
   receviedReplySubscription: Subscription;
   isOnOldest: boolean;
   isOnLatest: boolean;
@@ -69,12 +70,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     });
 
     this.startReceiveReply();
-    this.gotoLatestMessages().then(result => {
-      setTimeout(() => {
-        this.scroller.scrollToBottom();
-      }, 0);
-    });
-
+    this.loadMessage();
     this.checkHistoryTips();
   }
 
@@ -100,6 +96,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }
 
     return null;
+  }
+
+  loadMessage() {
+    this.gotoLatestMessages().then(result => {
+      setTimeout(() => {
+        this.scroller.scrollToBottom();
+      }, 0);
+    });
   }
 
   onAudioPlayEnded(msg: MessageModel) {
@@ -209,7 +213,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.isOnLatest = true;
       this.isOnBottom = true;
       this.unreadCount = 0;
+      this.messagesIntialErr = false;
       return messages;
+    }, () => {
+      this.messagesIntialErr = true;
     }).finally(() => {
       this.isLoading = false;
     });
