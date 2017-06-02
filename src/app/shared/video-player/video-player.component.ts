@@ -2,9 +2,7 @@ import {
   Component, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges, Output,
   EventEmitter
 } from '@angular/core';
-import { UtilsService } from "../utils/utils";
 import { VideoInfo, VideoPlayerOption } from "./video-player.model";
-
 import { AnalyticsService, MediaType, MediaInfo, MediaQuality, MediaFormat, MediaPlayer } from "../analytics/analytics.service"
 
 @Component({
