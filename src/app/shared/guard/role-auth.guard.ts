@@ -13,7 +13,6 @@ export class RoleAuthGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    let to = `${location.protocol}//${location.hostname}${state.url}/info`;
     let liveId = route.parent.params['id'];
 
     return this.userInfoService.getUserInfo().then((userInfo) => {
@@ -25,8 +24,16 @@ export class RoleAuthGuard implements CanActivate {
 
         return true;
       })
-    }, () => {
-      this.authService.auth(encodeURIComponent(to));
+    }, (err) => {
+      const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}/info`);
+      if (err.status === 401) {
+        this.authService.auth(to)
+      } else if (err.status === 404) {
+        this.router.navigate([`/404`]);
+      } else {
+        this.router.navigate([`/reload`], {queryParams: {backTo: to}});
+      }
+      this.authService.auth(to);
       return false;
     });
   }

@@ -3,6 +3,7 @@ import {NgModule} from "@angular/core";
 
 const appRoutes: Routes = [
   {path: '404', loadChildren: 'app/+notfound/notfound.module#NotFoundModule'},
+  {path: 'reload', loadChildren: 'app/+reload/reload.module#ReloadModule'},
   {path: 'my', loadChildren: 'app/+my/my.module#MyModule'},
   {path: 'info-center', loadChildren: 'app/+info-center/info-center.module#InfoCenterModule'},
   {path: 'lives', loadChildren: 'app/+live-room/live-room.module#LiveRoomModule'},

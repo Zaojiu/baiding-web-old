@@ -16,6 +16,7 @@ import {MyListModel} from "../api/my/my.model";
 import {ResourceType} from "../api/resource-type.enums";
 import {NotFoundComponent} from "../../+notfound/notfound.component";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
+import {ReloadComponent} from "../../+reload/reload.component";
 
 @Injectable()
 export class AppJumperGuard implements CanActivate {
@@ -27,7 +28,7 @@ export class AppJumperGuard implements CanActivate {
   }
 
   private gotoLive(liveId: string, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
-    return Promise.all<UserInfoModel, LiveInfoModel>([this.processUserInfo(state), this.processLiveInfo(liveId)]).then(result => {
+    return Promise.all<UserInfoModel, LiveInfoModel>([this.processUserInfo(state), this.processLiveInfo(liveId, state)]).then(result => {
       let userInfo = result[0];
       let liveInfo = result[1];
 
@@ -121,7 +122,7 @@ export class AppJumperGuard implements CanActivate {
     return null;
   }
 
-  private processLiveInfo(liveId: string): Promise<LiveInfoModel> {
+  private processLiveInfo(liveId: string, state: RouterStateSnapshot): Promise<LiveInfoModel> {
     let liveInfoCache = this.liveService.getLiveInfoCache(liveId);
 
     if (liveInfoCache) {
@@ -130,10 +131,13 @@ export class AppJumperGuard implements CanActivate {
       return this.liveService.getLiveInfo(liveId).then(liveInfo => {
         return liveInfo;
       }, (err) => {
+        const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
         if (err.status === 404) {
           this.router.navigate([`404`]);
-        } else if (err.status !== 401) {
-          this.toolTips.popup('获取数据错误, 请重试');
+        } else if (err.status === 401) {
+          this.authService.auth(to);
+        } else {
+          this.router.navigate([`reload`], {queryParams: {backTo: to}});
         }
         return null;
       });
@@ -141,7 +145,6 @@ export class AppJumperGuard implements CanActivate {
   }
 
   private processUserInfo(state: RouterStateSnapshot): Promise<UserInfoModel> {
-    let to = `${location.protocol}//${location.hostname}${state.url}`;
     let userInfoCache = this.userInfoService.getUserInfoCache();
 
     if (userInfoCache) {
@@ -149,8 +152,13 @@ export class AppJumperGuard implements CanActivate {
     } else {
       return this.userInfoService.getUserInfo(true).then(userInfo => {
         return Promise.resolve(userInfo);
-      }, () => {
-        this.authService.auth(encodeURIComponent(to));
+      }, (err) => {
+        const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
+        if (err.status == 401) {
+          this.authService.auth(to)
+        } else {
+          this.router.navigate([`/reload`], {queryParams: {backTo: to}});
+        }
         return null;
       });
     }
@@ -246,8 +254,8 @@ export class AppJumperGuard implements CanActivate {
     } else if (currentRoute.component === ArticleComponent) {
       let talkId = route.params['id'];
       return this.gotoTalk(talkId, needRedirect);
-      // 如果是app中404, 则不pushstate
-    } else if (currentRoute.component === NotFoundComponent && UtilsService.isInApp) {
+      // 如果是app中404或reload页面, 则不pushstate
+    } else if (currentRoute.component === NotFoundComponent || currentRoute.component === ReloadComponent && UtilsService.isInApp) {
       return Promise.resolve(true);
     } else if (UtilsService.isInApp && needRedirect) {
       // 其他路由, 如果在app中, 使用app的pushH5State
