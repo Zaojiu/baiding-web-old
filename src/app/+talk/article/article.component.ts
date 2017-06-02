@@ -84,10 +84,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
     });
 
     if (UtilsService.isInApp) {
-      this.iosBridge.onRefreshTalkComments((data) => {
-        if (data.url.match(this.id)) {
-          this.refreshComments();
-        }
+      this.iosBridge.onRefreshPage(() => {
+        this.refreshComments();
       })
     }
   }
