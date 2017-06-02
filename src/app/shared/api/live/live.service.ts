@@ -10,7 +10,7 @@ import {environment} from "../../../../environments/environment";
 import {UtilsService} from "../../utils/utils";
 import {VideoInfo} from "../../video-player/video-player.model";
 
-import { AnalyticsService, TargetInfo, ObjectType } from "../../analytics/analytics.service"
+import {AnalyticsService, TargetInfo, ObjectType} from "../../analytics/analytics.service"
 
 @Injectable()
 export class LiveService {
@@ -141,9 +141,7 @@ export class LiveService {
     const url = `${environment.config.host.io}/api/live/streams/${id}?${$.param(query)}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
-      let liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
-
-      return liveInfo;
+      return this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
     });
   }
 
@@ -153,7 +151,7 @@ export class LiveService {
   }
 
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
-    let data: {[key: string]: string} = {
+    let data: { [key: string]: string } = {
       subject: subject,
       desc: desc,
       coverUrl: coverUrl,
@@ -170,7 +168,7 @@ export class LiveService {
   }
 
   updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string, coverWeixinId?: string): Promise<LiveInfoModel> {
-    let data: {[key: string]: string} = {
+    let data: { [key: string]: string } = {
       subject: title,
       desc: desc,
       expectStartAt: expectStartAt,
@@ -367,7 +365,7 @@ export class LiveService {
     let promise = null;
 
     if (liveInfo.isCreated()) {
-      if (liveInfo.isStreamPushing()){
+      if (liveInfo.isStreamPushing()) {
         promise = this.getStreamPullingAddr(liveInfo.id);
       } else {
         return Promise.resolve(new VideoInfo);
@@ -394,7 +392,7 @@ export class LiveService {
       }
       return videoInfo;
     });
- }
+  }
 
   getStreamPullingAddr(id: string): Promise<VideoInfo> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/live/urls/hls|rtmp`;

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {LiveService} from "../api/live/live.service";
@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private liveService: LiveService, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     let liveId = route.params['id'];
 
     if (!liveId) {
@@ -35,8 +35,13 @@ export class AdminGuard implements CanActivate {
       let userInfo = result[1];
 
       return liveInfo.isAdmin(userInfo.uid);
-    }, () => {
-      this.router.navigate([`/404`]);
+    }, (err) => {
+      const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
+      if (err.status == 404) {
+        this.router.navigate([`/404`]);
+      } else {
+        this.router.navigate([`/reload`], {queryParams: {backTo: to}});
+      }
       return false;
     });
   }

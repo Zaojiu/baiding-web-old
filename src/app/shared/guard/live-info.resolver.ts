@@ -27,10 +27,15 @@ export class LiveInfoResolver implements Resolve<LiveInfoModel> {
       }
     }
 
-    return this.liveService.getLiveInfo(liveId).then((res)=> {
+    return this.liveService.getLiveInfo(liveId).then((res) => {
       return res
-    }, () => {
-      this.router.navigate([`404`]);
+    }, (err) => {
+      const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
+      if (err.status == 404) {
+        this.router.navigate([`/404`]);
+      } else {
+        this.router.navigate([`/reload`], {queryParams: {backTo: to}});
+      }
       return false;
     });
   }
