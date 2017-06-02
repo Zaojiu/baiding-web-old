@@ -125,12 +125,12 @@ export class IosBridgeService {
     }
   }
 
-  onRefreshTalkComments(cb: (url: any) => void) {
+  onRefreshPage(cb: (url: any) => void) {
     if (this.hasInit) {
-      this.bridge.registerHandler('onRefreshTalkComments', cb);
+      this.bridge.registerHandler('refreshPage', cb);
     } else {
       this.init().then(() => {
-        this.bridge.registerHandler('onRefreshTalkComments', cb);
+        this.bridge.registerHandler('refreshPage', cb);
       });
     }
   }
