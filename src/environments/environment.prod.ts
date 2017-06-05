@@ -2,7 +2,7 @@ export const host = {
   self: '_REPL_SELF_HOST_',
   auth: '_REPL_AUTH_HOST_',
   io:  '_REPL_IO_HOST_',
-  werinre: '',
+  weinre: '',
 };
 
 export const appConfig = {
@@ -20,5 +20,4 @@ export const appConfig = {
 export const environment = {
   production: true,
   config: appConfig,
-  enableWeinre: false,
 };

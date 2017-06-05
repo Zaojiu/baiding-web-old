@@ -7,7 +7,7 @@ export const host = {
   self: 'http://www.zaojiu.fm',
   auth: 'http://auth.zaojiu.fm',
   io: 'http://io.zaojiu.fm',
-  werinre: '',
+  weinre: '',
 };
 
 export const appConfig = {
@@ -25,5 +25,4 @@ export const appConfig = {
 export const environment = {
   production: false,
   config: appConfig,
-  enableWeinre: false,
 };
