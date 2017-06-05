@@ -103,7 +103,7 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
         mediaInfo.mediaFormat = MediaFormat.mp4
     }
 
-    mediaInfo.mediaLive = this.player.options.live
+    mediaInfo.mediaLive = this.option.isLive
     if (!mediaInfo.mediaLive) {
       mediaInfo.mediaOffset = _.toInteger(this.player.video.el.currentTime * 1e3)
       mediaInfo.mediaTotalDur = _.toInteger(this.player.video.el.duration * 1e3)
@@ -143,7 +143,7 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
     }
 
     // drag point
-    if (!this.player.options.live) {
+    if (!this.option.isLive) {
       if (msg.type == "seeking") {
         this.seeking = (new Date()).getTime()
         this.seekingOffset = this.lastOffset

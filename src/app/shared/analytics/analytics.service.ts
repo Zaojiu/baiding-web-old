@@ -290,11 +290,17 @@ export class AnalyticsService {
     if (t.secureConnectionStart > 0) {
       params['connSecure'] = t.connectEnd - t.secureConnectionStart || 0
     }
-    params['connInit'] = t.connectEnd - t.connectStart || 0
-    params['requestDur'] = t.responseStart - t.requestStart || 0
-    params['responseDur'] = t.responseEnd - t.responseStart || 0
-    params['networkDur'] = t.responseEnd - t.navigationStart || 0
-    params['loadDur'] = (new Date()).getTime() - t.responseEnd || 0
+    if (t.connectEnd > 0) {
+      params['connInit'] = t.connectEnd - t.connectStart || 0
+    }
+    if (t.responseStart > 0) {
+      params['requestDur'] = t.responseStart - t.requestStart || 0
+    }
+    if (t.responseEnd > 0) {
+      params['responseDur'] = t.responseEnd - t.responseStart || 0
+      params['networkDur'] = t.responseEnd - t.navigationStart || 0
+      params['loadDur'] = (new Date()).getTime() - t.responseEnd || 0
+    }
     return params
   }
 
