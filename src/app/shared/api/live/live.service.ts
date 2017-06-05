@@ -382,7 +382,7 @@ export class LiveService {
 
     return promise.then(videoInfo => {
       if (videoInfo) {
-        if (UtilsService.isChrome && !UtilsService.isInWechat) {
+        if ((UtilsService.isChrome && !UtilsService.isInWechat) || UtilsService.isWindowsWechat) {
           videoInfo.m3u8 = '';
         } else {
           videoInfo.rtmpSD = '';

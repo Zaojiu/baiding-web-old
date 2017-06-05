@@ -26,14 +26,15 @@ export class UrlModel {
 }
 
 export class UtilsService {
-  static isInWechat = /micromessenger/i.test(window.navigator.userAgent);
-  static isiOS = /iPhone|iPad/i.test(window.navigator.userAgent);
-  static isInApp = /zaojiuliveapp/i.test(window.navigator.userAgent);
+  static isInWechat = /micromessenger/i.test(navigator.userAgent);
+  static isiOS = /iPhone|iPad/i.test(navigator.userAgent);
+  static isInApp = /zaojiuliveapp/i.test(navigator.userAgent);
   static isInBaidingApp = /baidingapp\.com/i.test(location.hostname);
   static isTouchable = (<any>window).DocumentTouch && document instanceof DocumentTouch;
-  static isAndroid = /Android/i.test(window.navigator.userAgent);
+  static isAndroid = /Android/i.test(navigator.userAgent);
   static isOnLargeScreen = matchMedia && matchMedia('(min-width: 1024px)').matches;
-  static isChrome = /Chrome/i.test(window.navigator.userAgent);
+  static isChrome = /Chrome/i.test(navigator.userAgent);
+  static isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
 
   static setStorage(key: string, value: Object) {
     localStorage.setItem(key, JSON.stringify(value));
