@@ -1,5 +1,6 @@
 import './polyfills.ts';
 import './scripts.ts';
+import './app/shared/utils/weinre';
 
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {AppModule} from './app/app.module';
