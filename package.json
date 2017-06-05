@@ -51,7 +51,7 @@
     "o9n": "^1.0.0",
     "recordrtc": "^5.4.0",
     "rxjs": "5.0.0-rc.4",
-    "tcplayer": "git://github.com/duxiaofeng-github/zaojiu-player.git#b68eda2188774e1f9fef4dcf09f1e8df7013de1a",
+    "tcplayer": "git://github.com/duxiaofeng-github/zaojiu-player.git#0979cc8354f8291d642ac11e9da2a19fa4004efc",
     "touch-emulator": "^1.0.0",
     "ts-helpers": "^1.1.1",
     "video.js": "^5.16.0",
