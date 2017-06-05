@@ -3,7 +3,6 @@ import {environment} from "../../../../environments/environment";
 import {PayBridge} from "../pay.interface";
 import {Headers, Http} from "@angular/http";
 import {WechatConfigService} from "../../wechat/wechat.service";
-import Util = jasmine.Util;
 import {UtilsService} from "../../utils/utils";
 import {Router} from "@angular/router";
 declare var wx: any;
