@@ -12,6 +12,7 @@ import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
 import {UtilsService} from "../../../shared/utils/utils";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 import {ImageBridge} from "../../../shared/bridge/image.interface";
+import {OperationTipsService} from "../../../shared/operation-tips/operation-tips.service";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -44,7 +45,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
   constructor(private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
               private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService,
-              private userInfoService: UserInfoService, private imageBridge: ImageBridge) {
+              private userInfoService: UserInfoService, private imageBridge: ImageBridge, private tipsService: OperationTipsService) {
   }
 
   ngOnInit() {
@@ -130,6 +131,8 @@ export class EditInfoComponent implements OnInit, DoCheck {
   }
 
   submit() {
+    const isTimeUpdate = this.form.controls['time'].dirty;
+
     Object.keys(this.form.controls).forEach((key) => {
       this.form.controls[key].markAsDirty();
       this.form.controls[key].updateValueAndValidity();
@@ -137,7 +140,9 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
     if (this.form.invalid) return;
 
-    this.postLiveInfo();
+    this.postLiveInfo().then(() => {
+      if (isTimeUpdate) this.tipsService.popup('推流地址已变更，请重新获取');
+    });
   }
 
   selectImages() {
@@ -147,37 +152,43 @@ export class EditInfoComponent implements OnInit, DoCheck {
     });
   }
 
-  postLiveInfo() {
+  postLiveInfo(): Promise<void> {
     this.isSubmitting = true;
 
     if (this.coverFiles && this.coverFiles.length) {
-      this.liveService.getCoverUploadToken(this.liveId).then((data) => {
+      return this.liveService.getCoverUploadToken(this.liveId).then((data) => {
         return this.uploadService.uploadToQiniu(this.coverFiles[0], data.coverKey, data.token);
       }).then((imageKey) => {
-        this.updateLiveInfo(imageKey);
+        return this.updateLiveInfo(imageKey);
       });
     } else if (this.wxLocalId) {
-      this.imageBridge.uploadImage(this.wxLocalId).then(serverId => {
-        this.updateLiveInfo('', serverId);
+      return this.imageBridge.uploadImage(this.wxLocalId).then(serverId => {
+        return this.updateLiveInfo('', serverId);
       });
     } else {
       let pathname = UtilsService.parseUrl(this.liveInfo.coverUrl).pathname;
       let coverKey = pathname.substr(1, pathname.length - 1);
 
-      this.updateLiveInfo(coverKey);
+      return this.updateLiveInfo(coverKey);
     }
   }
 
-  updateLiveInfo(coverKey: string, wxServerId = '') {
+  updateLiveInfo(coverKey: string, wxServerId = ''): Promise<void> {
     let expectStartAt = moment(`${this.time}:00`).local();
 
-    this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey, wxServerId).then(() => {
-      setTimeout(() => { // prevent delay while cdn syncing source image
-        this.submitted = true;
-        this.router.navigate([`lives/${this.liveId}/info`]);
-      }, coverKey || wxServerId ? 2000 : 0);
-    }).finally(() => {
-      setTimeout(() => this.isSubmitting = false, coverKey || wxServerId ? 2000 : 0);
+    return new Promise((resolve, reject) => {
+      this.liveService.updateLiveInfo(this.liveId, this.title, this.desc, expectStartAt.toISOString(), coverKey, wxServerId).then(() => {
+        setTimeout(() => { // prevent delay while cdn syncing source image
+          this.submitted = true;
+          this.router.navigate([`lives/${this.liveId}/info`]);
+          resolve();
+        }, coverKey || wxServerId ? 2000 : 0);
+      }, (err) => {
+        console.error(err);
+        reject(err);
+      }).finally(() => {
+        setTimeout(() => this.isSubmitting = false, coverKey || wxServerId ? 2000 : 0);
+      });
     });
   }
 
