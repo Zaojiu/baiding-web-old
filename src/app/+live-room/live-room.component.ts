@@ -51,7 +51,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   @ViewChild('timeline') timeline: TimelineComponent;
   isLandscape = false;
   isOnLargeScreen = UtilsService.isOnLargeScreen;
-  isIniOS = UtilsService.isiOS;
+  isiOS = UtilsService.isiOS;
+  isAndroid = UtilsService.isAndroid;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
   private onlineService: OnlineService;
 
@@ -76,19 +77,21 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       if (this.liveInfo.isTypeVideo()) {
         this.fetchStream();
 
-        // 横竖屏polyfill
-        System.import('o9n').then(o9n => {
-          this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
-          o9n.orientation.onchange = (evt) => {
-            if (evt.target.type) {
-              this.isLandscape = evt.target.type.indexOf('landscape') !== -1;
-            } else {
-              setTimeout(() => {
-                this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
-              }, 100);
+        if (this.isiOS || this.isAndroid) {
+          // 横竖屏polyfill
+          System.import('o9n').then(o9n => {
+            this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+            o9n.orientation.onchange = (evt) => {
+              if (evt.target.type) {
+                this.isLandscape = evt.target.type.indexOf('landscape') !== -1;
+              } else {
+                setTimeout(() => {
+                  this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+                }, 100);
+              }
             }
-          }
-        });
+          });
+        }
       }
     }).finally(() => {
       this.onlineService.start()
