@@ -11,7 +11,7 @@
   <script type="text/javascript">
     var dataLayer = dataLayer || [];
     var gaid = '_REPL_GAID_';
-    if(gaid.indexOf('_REPL_')==0){
+    if (gaid.indexOf('_REPL_') == 0) {
       gaid = 'UA-75377537-3';
     }
     dataLayer.push({
@@ -19,18 +19,27 @@
       'version': ''
     });
   </script>
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TZQHFKM');</script>
+  <script>(function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({
+      'gtm.start': new Date().getTime(), event: 'gtm.js'
+    });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src =
+      'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TZQHFKM');</script>
   <!-- End Google Tag Manager -->
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZQHFKM"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZQHFKM"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <bd-app>
   <style type="text/css">
@@ -99,7 +108,88 @@
         transform: scale(1);
       }
     }
+
+    a, img {
+      border: none;
+      outline: none;
+      display: block;
+    }
+
+    #ie9 {
+      position: fixed;
+      height: 100%;
+      overflow: auto;
+      z-index: 100000;
+      width: 100%;
+      left: 0;
+      top: 0;
+      background-color: white;
+    }
+
+    .img-center {
+      margin: 0 auto;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    #rain {
+      margin-top: 20px;
+    }
+
+    .rain-img {
+      text-align: center;
+      width: 144px;
+      height: 149px;
+    }
+
+    .rain-text {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .recommend-text {
+      margin-top: 80px;
+      margin-bottom: 40px;
+    }
+
+    .browsers {
+      float: left;
+      width: 100px;
+      background-image: url("/src/assets/img/browsers.jpg");
+      background-repeat: no-repeat;
+      padding-top: 100px;
+      text-align: center;
+    }
+
   </style>
+
+
+  <!--[if lt IE 9]>
+  <div id="ie9">
+    <div id="rain">
+      <img src="/src/assets/img/rain.jpg" class="rain-img img-center">
+      <div class="rain-text text-center">您的浏览器版本太低，无法正常访问当前页面。</div>
+    </div>
+    <div id="recommend">
+      <div class="recommend-text text-center">推荐使用以下浏览器的最新版本。</div>
+      <a class="browsers" style="margin-left: 20%;  background-position: 0 0;"
+         href="http://www.google.cn/chrome/browser/desktop/"
+         target="_blank">
+        <span>chrome</span>
+      </a>
+      <a class="browsers" style="margin-left: 192px;  background-position: -100px 0;"
+         href="https://support.apple.com/downloads/safari" target="_blank">
+        <span>safari</span>
+      </a>
+      <a class="browsers" style="margin-left: 192px; background-position: -200px 0;"
+         href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">
+        <span>firefox</span>
+      </a>
+    </div>
+  </div>
+  <![endif]-->
 
   <div class="loading-wrapper" id="loading-wrapper">
     <script type="application/javascript">
