@@ -1,6 +1,4 @@
-import {
-  Component, OnInit, OnDestroy, Input, ViewChild, ViewChildren, QueryList
-} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {Subscription}   from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -8,7 +6,6 @@ import {MessageModel, InputtingMessageModel} from '../../shared/api/message/mess
 import {MessageType} from '../../shared/api/message/message.enum';
 import {TimelineService} from './timeline.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
-import {LiveService} from '../../shared/api/live/live.service';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {MqPraisedUser, MqEvent, EventType} from '../../shared/mq/mq.service';
 import {MessageApiService} from "../../shared/api/message/message.api";
@@ -51,7 +48,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   @ViewChild('inputtingComp') inputtingComp: InputtingComponent;
 
   constructor(private route: ActivatedRoute, private router: Router, private timelineService: TimelineService,
-              private liveService: LiveService, private messageApiService: MessageApiService, private liveRoomService: LiveRoomService,
+              private messageApiService: MessageApiService, private liveRoomService: LiveRoomService,
               private audioPlayerService: AudioPlayerService, private inputtingService: InputtingService) {
   }
 
@@ -99,11 +96,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   loadMessage() {
-    this.gotoLatestMessages().then(result => {
-      setTimeout(() => {
-        this.scroller.scrollToBottom();
-      }, 0);
-    });
+    if (!this.liveInfo.isClosed()) {
+      this.gotoLatestMessages().then(() => {
+        setTimeout(() => {
+          this.scroller.scrollToBottom();
+        }, 0);
+      });
+    } else {
+      this.gotoOldestMessages();
+    }
   }
 
   onAudioPlayEnded(msg: MessageModel) {
@@ -258,7 +259,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       if (messages.length < limit + 1 && this.messages[this.messages.length - 1].type !== MessageType.LiveEnd) {
         HackMessages.hackLiveEndMessage(this.liveInfo, messages);
       } else {
-        messages.shift();
+        messages.pop();
       }
 
       this.scroller.appendData(messages);
@@ -287,7 +288,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       if (messages.length < limit + 1 && this.messages[0].type !== MessageType.LiveRoomInfo) {
         HackMessages.hackLiveInfoMessage(this.liveInfo, messages);
       } else {
-        messages.pop();
+        messages.shift();
       }
 
       this.scroller.prependData(messages);
