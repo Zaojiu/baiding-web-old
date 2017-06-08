@@ -8,25 +8,9 @@ const config = require('./config')
 const _ = require('./utils')
 const fs = require('fs')
 
-let envFilePath = 'env/environment'
-if (fs) {
-  const env = `${process.cwd()}/src/env/environment${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}.js`
-  if (fs.existsSync(env)) envFilePath = `env/environment${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`
-}
-
-const scriptLoader = [
-  'babel-loader',
-  {
-    loader: 'string-replace-loader',
-    query: {
-      search: 'env/environment',
-      replace: envFilePath
-    }
-  }
-];
-
 module.exports = {
   entry: {
+    'babel-polyfill': 'babel-polyfill',
     client: './src/index.js'
   },
   output: {
@@ -52,29 +36,19 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        enforce: "pre",
-        test: /\.vue$/,
-        loaders: 'vue-loader',
-        options: {
-          loaders:{
-            js: 'flowtype-loader'
-          }
-        }
-      },
       { test: /\.js$/, loader: 'flowtype-loader', enforce: 'pre', exclude: /node_modules/ },
       {
         test: /\.vue$/,
-        loaders: 'vue-loader'
-        // options: {
-        //   loaders: {
-        //     js: scriptLoader
-        //   }
-        // }
+        loaders: 'vue-loader',
+        options: {
+          preLoaders: {
+            js: 'flowtype-loader'
+          },
+        }
       },
       {
         test: /\.js$/,
-        loaders: scriptLoader,
+        loaders: 'babel-loader',
         exclude: [/node_modules/]
       },
       {

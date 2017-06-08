@@ -5,19 +5,31 @@
   import beforeRouteEnter from '../../../shared/guard/before-route-enter'
   import userAuth from '../../../shared/guard/user-auth.guard'
 
-  function square(n: number): number {
-    return n * n;
-  }
-  square("2");
+  type commentQuery = {
+    id: string,
+    nick: string,
+    content: string,
+  };
+
+  type commentData = {
+    id: string,
+    subject: string,
+    replyId: string,
+    replyNick: string,
+    replyContent: string,
+    isInApp: boolean,
+    isSubmitting: boolean,
+    content: string,
+  };
 
   export default {
-    beforeRouteEnter (to, from, next) {
-      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))])
+    beforeRouteEnter (to: any, from: any, next: any) {
+      const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))]);
       guards(to, from, next)
     },
     directives: form,
     data () {
-      const data = {
+      const data: commentData = {
         id: this.$route.params.id,
         subject: decodeURIComponent(this.$route.query.title),
         replyId: '',
@@ -26,14 +38,14 @@
         isInApp: Utils.isInApp,
         isSubmitting: false,
         content: ''
-      }
-      const request = this.$route.query.request
+      };
+      const request: any = this.$route.query.request;
 
       if (request) {
-        const requestObj = JSON.parse(decodeURIComponent(request))
-        data.replyId = requestObj.id
-        data.replyNick = requestObj.nick
-        data.replyContent = requestObj.content
+        const requestObj: commentQuery = JSON.parse(decodeURIComponent(request));
+        data.replyId = requestObj.id;
+        data.replyNick = requestObj.nick;
+        data.replyContent = requestObj.content;
       }
 
       return data
@@ -43,12 +55,12 @@
         this.$router.push({ path: `/talks/${this.id}` })
       },
       async submit () {
-        this.$validator.validateAll()
-        if (this.errors.count()) return
+        this.$validator.validateAll();
+        if (this.errors.count()) return;
 
-        this.isSubmitting = true
-        await this.$store.dispatch(POST_TALK_COMMENT, { id: this.id, content: this.content, parentId: this.replyId })
-        this.isSubmitting = false
+        this.isSubmitting = true;
+        await this.$store.dispatch(POST_TALK_COMMENT, { id: this.id, content: this.content, parentId: this.replyId });
+        this.isSubmitting = false;
         this.backToTalk()
       }
     }
