@@ -31,7 +31,7 @@
           <span class="time">{{message.parentMessage.createdAt | fromNow}}</span>
         </div>
 
-        <div class="text" *ngIf="message.parentMessage.isText() || message.parentMessage.isNice()">{{message.parentMessage.contentParsed}}</div>
+        <div class="text" *ngIf="message.parentMessage.isText() || message.parentMessage.isNice()" [innerHtml]="message.parentMessage.contentParsed"></div>
 
         <image-viewer-preview
           class="image"
@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div class="text main-text" *ngIf="message.isText() || message.isNice()">{{message.contentParsed}}</div>
+      <div class="text main-text" *ngIf="message.isText() || message.isNice()" [innerHtml]="message.contentParsed"></div>
 
       <image-viewer-preview
         class="image main-image"
