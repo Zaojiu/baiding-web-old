@@ -70,7 +70,7 @@ export class UtilsService {
 
   static parseLink(content: string): string {
     console.log('linke', content)
-    let re = /(http[s]?:\/\/){0,1}(www\.){0,1}([a-zA-Z0-9\.\-]+)(\.[a-zA-Z]{2,10}){1,3}\/{0,1}.*?(?=$|\s|[^\u0000-\u007F])?/;
+    let re = /(http[s]?:\/\/){0,1}(www\.){0,1}([a-zA-Z0-9\.\-]+)(\.[a-zA-Z]{2,10}){1,3}\/{0,1}.*?(?=$|\s|[^\u0000-\u007F])/;
     let result = null;
     let _content = content;
 

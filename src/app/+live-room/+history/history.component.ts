@@ -70,7 +70,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
     this.listNextComments();
 
     this.messages.map((msg) => {
-      if (msg.isText() || msg.isNice()) this.contentParsed[msg.id] = UtilsService.parseAt(msg.content);
+      if (msg.isText() || msg.isNice()) this.contentParsed[msg.id] = msg.content;
     });
 
     this.route.snapshot.data['title'] = this.liveInfo.subject;
