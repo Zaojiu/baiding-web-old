@@ -76,3 +76,17 @@ describe('utils parse at test', () => {
     expect(parser(content, true)).toEqual('a@#!~$%^&*()_+|{}":<>? 1');
   }));
 });
+
+describe('utils parse link test', () => {
+  let parser = null;
+
+  beforeEach(() => {
+    parser = UtilsService.parseLink;
+  });
+
+  it(`positive parse`, async(() => {
+    const content = 'back好的http://www.baidu.com好的https://www.baidu.com好的www.baidu.com好的baidu.com好的baidu.com/好的https://www.baidu.com/aa/bb好的https://www.baidu.com/aa/bb';
+    const expected = 'back好的<a href="http://www.baidu.com" target="_blank">http://www.baidu.com</a>好的<a href="https://www.baidu.com" target="_blank">https://www.baidu.com</a>好的<a href="http://www.baidu.com" target="_blank">www.baidu.com</a>好的<a href="http://baidu.com" target="_blank">baidu.com</a>好的<a href="http://baidu.com/" target="_blank">baidu.com/</a>好的<a href="https://www.baidu.com/aa/bb" target="_blank">https://www.baidu.com/aa/bb</a>好的<a href="https://www.baidu.com/aa/bb" target="_blank">https://www.baidu.com/aa/bb</a>';
+    expect(parser(content)).toEqual(expected);
+  }));
+});

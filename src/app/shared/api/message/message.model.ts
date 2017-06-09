@@ -1,6 +1,7 @@
 import {MessageType, PostMessageStatus} from './message.enum';
 import {UserInfoModel} from '../user-info/user-info.model'
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model'
+import {SafeHtml} from "@angular/platform-browser";
 
 export class AudioMessageModel {
   audioData: Blob;
@@ -35,7 +36,7 @@ export class MessageModel {
   isReceived: boolean; // 用于判断是否为服务器拉取下来的信息，或者是本地发送时的信息。
   user: UserInfoModel;
   content: string;
-  contentParsed: string;
+  contentParsed: SafeHtml;
   type: MessageType;
   audio: AudioMessageModel;
   image: ImageMessageModel;

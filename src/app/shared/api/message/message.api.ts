@@ -19,6 +19,7 @@ import {ImageBridge} from "../../bridge/image.interface";
 import {StoreService} from "../../store/store.service";
 
 import { AnalyticsService, TargetInfo, ObjectType } from "../../analytics/analytics.service"
+import {DomSanitizer} from "@angular/platform-browser";
 
 declare var $: any;
 
@@ -26,7 +27,7 @@ declare var $: any;
 export class MessageApiService {
   constructor(private http: Http, private userInfoService: UserInfoService, private timelineService: TimelineService,
               private uploadService: UploadApiService, private audioService: AudioBridge,
-              private analytics: AnalyticsService,
+              private analytics: AnalyticsService,private sanitizer:DomSanitizer,
               private imageService: ImageBridge) {
   }
 
@@ -34,7 +35,7 @@ export class MessageApiService {
   posting: boolean;
 
   listMessages(liveId: string, marker = '', size = 20, sorts = ['-createdAt']): Promise<MessageModel[]> {
-    var query = {
+    const query = {
       createdAt: marker,
       size: size,
       sorts: sorts.join(','),
@@ -83,7 +84,11 @@ export class MessageApiService {
     message.isReceived = true;
     message.user = users[data.uid];
     message.content = data.content;
-    if (message.content) message.contentParsed = UtilsService.parseAt(message.content);
+    if (message.content) {
+      let contentParsed = UtilsService.parseAt(message.content);
+      contentParsed = UtilsService.parseLink(contentParsed);
+      message.contentParsed = this.sanitizer.bypassSecurityTrustHtml(contentParsed);
+    }
 
     if (data.type === 'text') message.type = MessageType.Text;
     if (data.type === 'audio') {
@@ -114,13 +119,17 @@ export class MessageApiService {
         message.parentMessage.type = MessageType.Nice;
         message.parentMessage.user = users[data.nice.uid];
         message.parentMessage.content = data.nice.message;
-        message.parentMessage.contentParsed = UtilsService.parseAt(message.parentMessage.content);
+        let contentParsed = UtilsService.parseAt(message.content);
+        contentParsed = UtilsService.parseLink(contentParsed);
+        message.parentMessage.contentParsed = this.sanitizer.bypassSecurityTrustHtml(contentParsed);
         message.parentMessage.createdAt = data.createdAt; // TODO: 可能需要原创建时间
         message.parentMessage.createdAtParsed = moment(+message.parentMessage.createdAt / 1e6);
       } else {
         message.user = users[data.nice.uid];
         message.content = data.nice.message;
-        message.contentParsed = UtilsService.parseAt(message.content);
+        let contentParsed = UtilsService.parseAt(message.content);
+        contentParsed = UtilsService.parseLink(contentParsed);
+        message.contentParsed = this.sanitizer.bypassSecurityTrustHtml(contentParsed);
       }
     }
 

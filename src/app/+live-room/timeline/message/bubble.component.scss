@@ -96,6 +96,11 @@
 
         .text {
           color: $color-w;
+
+          /deep/ a {
+            color: $color-w;
+            text-decoration: underline;
+          }
         }
 
         .translate {
@@ -129,6 +134,11 @@
         line-height: 1.25em;
         white-space: pre-wrap;
         color: $color-dark-gray;
+
+        /deep/ a {
+          color: $color-brand;
+          text-decoration: underline;
+        }
       }
 
       .audio {
@@ -255,6 +265,11 @@
 
           .text {
             color: $color-w;
+
+            /deep/ a {
+              color: $color-w;
+              text-decoration: underline;
+            }
           }
 
           .translate {
@@ -273,6 +288,11 @@
         .text {
           line-height: 1.4em;
           color: $color-dark-gray;
+
+          /deep/ a {
+            color: $color-brand;
+            text-decoration: underline;
+          }
         }
 
         .audio {
