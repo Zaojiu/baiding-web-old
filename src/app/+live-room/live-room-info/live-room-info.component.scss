@@ -154,6 +154,10 @@
           margin-right: 5px;
           font-size: 20px;
         }
+
+        &.disabled {
+          color: rgba(255, 255, 255, .3);
+        }
       }
     }
   }
@@ -324,8 +328,22 @@
   .qrcode {
     text-align: center;
 
-    .qrcode-image {
+    .qrcode-block {
       margin-top: 10px;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .retry-link {
+        color: $color-brand;
+        text-decoration: none;
+      }
+
+      .qrcode-image {
+        width: 130px;
+        height: 130px;
+      }
     }
 
     p {

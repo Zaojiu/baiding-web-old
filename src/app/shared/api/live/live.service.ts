@@ -431,4 +431,15 @@ export class LiveService {
       return new VideoInfo(m3u8, mp4SD, mp4HD, mp4);
     });
   }
+
+  getSubscribeLink(id: string) {
+    const url = `${environment.config.host.io}/api/live/streams/${id}/qrcode`;
+
+    return this.http.get(url).toPromise().then(res => {
+      const data = res.json();
+      const link = data && data.url ? data.url : '';
+      if (link === '') return Promise.reject('empty subscribe link');
+      return link;
+    });
+  }
 }

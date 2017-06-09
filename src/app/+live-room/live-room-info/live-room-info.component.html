@@ -33,9 +33,11 @@
   </div>
 
   <div class="operation-area">
-    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated()" (click)="bookLive()"><i
+    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking" (click)="bookLive()"><i
       class="bi bi-clock"></i>开播提醒</a>
-    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated()" (click)="unbookLive()"><i
+    <a class="btn notification disabled" *ngIf="booking"><i
+      class="bi bi-clock"></i>{{liveInfo.booked ? '取消中...' : '订阅中...'}}</a>
+    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking" (click)="unbookLive()"><i
       class="bi bi-clock"></i>已经开通</a>
     <a class="btn enter-room"
        *ngIf="!lockPayClick && liveInfo.isNeedPay && paidStatus!==paidEnums.Completed && liveInfo.isAudience(userInfo.uid)"
@@ -56,16 +58,19 @@
       <div class="live-title">{{liveInfo.subject}}</div>
       <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
                   [countDownStatus]="liveInfo.isCreated()"></count-down>
-      <p class="tips">直播还未开始</p>
     </div>
     <div class="qrcode">
-      <img class="qrcode-image" [src]="qrcode" alt="二维码">
-      <p>长按二维码关注服务号</p>
+      <div class="qrcode-block">
+        <img *ngIf="!isSubscribeLinkLoading && !isSubscribeLinkError" class="qrcode-image" [src]="qrcode" alt="订阅二维码">
+        <div *ngIf="isSubscribeLinkLoading">二维码加载中...</div>
+        <div *ngIf="isSubscribeLinkError">二维码加载失败，请<a class="retry-link" href="" (click)="getSubscribeLink(); $event.preventDefault();">重试</a></div>
+      </div>
+      <p *ngIf="isInWechat">长按二维码订阅话题间</p>
+      <p *ngIf="!isInWechat">使用微信扫描二维码订阅话题间</p>
       <p>开播会通知你</p>
     </div>
   </div>
 </div>
-
 
 <div class="qrcode-background" *ngIf="inApp && isQrcodeShown" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
@@ -110,7 +115,6 @@
   </div>
 </div>
 
-
 <div
   class="qrcode-background"
   *ngIf="!inApp && liveInfo.isCreated()&& paidStatus===paidEnums.Completed && paidShown"
@@ -146,7 +150,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="qrcode-background" [ngClass]="{'show': paidShown }"
      *ngIf="!liveInfo.isCreated() && paidStatus===paidEnums.Completed && paidShown"
