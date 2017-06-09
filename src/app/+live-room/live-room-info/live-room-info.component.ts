@@ -4,7 +4,6 @@ import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../../shared/api/live/live.service";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {ShareApiService} from '../../shared/api/share/share.api';
-import {environment} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {UtilsService} from "../../shared/utils/utils";
@@ -33,6 +32,9 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   audienceListInvitations: AudienceInvitationModel[];
   isInWechat = UtilsService.isInWechat;
   lockPayClick = false;
+  isSubscribeLinkLoading = false;
+  isSubscribeLinkError = false;
+  booking = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
@@ -62,6 +64,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.inviteApiService.audienceListInvitations(this.liveId).then((res) => {
       this.audienceListInvitations = res;
     });
+
+    this.getSubscribeLink();
   }
 
   ngOnDestroy() {
@@ -76,23 +80,34 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   bookLive() {
+    if (this.booking) return;
+
+    this.booking = true;
+
     this.liveService.bookLive(this.liveInfo.id).then(liveInfo => {
       this.liveInfo = liveInfo;
       if (!this.userInfo.isSubscribed && !this.inApp) {
-        this.operationTipsService.popup('请长按识别二维码进行订阅');
         this.showQrcode();
       } else if (!this.userInfo.isSubscribed && this.inApp) {
         this.showQrcode()
       } else if (this.userInfo.isSubscribed) {
         this.operationTipsService.popup('订阅成功');
       }
+    }).finally(() => {
+      this.booking = false;
     });
   }
 
   unbookLive() {
+    if (this.booking) return;
+
+    this.booking = true;
+
     this.liveService.unbookLive(this.liveInfo.id).then(liveInfo => {
       this.liveInfo = liveInfo;
       this.operationTipsService.popup('您已取消订阅');
+    }).finally(() => {
+      this.booking = false;
     });
   }
 
@@ -129,16 +144,16 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   showQrcode() {
     this.isQrcodeShown = true;
 
+    // 轮询用户是否已订阅公众号
     this.timer = setInterval(() => {
       this.userInfoService.getUserInfo(true).then((userInfo) => {
-        if (userInfo.isSubscribed) this.closeQrcode();
+        if (userInfo.isSubscribed) {
+          this.closeQrcode();
+          this.operationTipsService.popup('订阅成功');
+        }
         this.userInfo = userInfo;
       });
     }, 3 * 1000);
-
-    System.import('yaqrcode').then(yaqrcode => {
-      this.qrcode = yaqrcode(environment.config.wechatLink, {size: 130});
-    });
   }
 
   closeQrcode() {
@@ -152,6 +167,27 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.iosBridgeService.copyText(text).then(() => {
       this.operationTipsService.popup('复制成功');
       this.closeQrcode();
+    });
+  }
+
+  getSubscribeLink(): Promise<void> {
+    if (this.isSubscribeLinkLoading) return;
+
+    this.isSubscribeLinkLoading = true;
+    this.isSubscribeLinkError = false;
+
+    return this.liveService.getSubscribeLink(this.liveId).then(link => {
+      return Promise.all([Promise.resolve(link), System.import('yaqrcode')]);
+    }).then(res => {
+      const link = res[0];
+      const yaqrcode = res[1];
+      this.qrcode = yaqrcode(link, {size: 130});
+      return;
+    }).catch((err) => {
+      this.isSubscribeLinkError = true;
+      throw err;
+    }).finally(() => {
+      this.isSubscribeLinkLoading = false;
     });
   }
 }
