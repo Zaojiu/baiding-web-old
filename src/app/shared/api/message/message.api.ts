@@ -35,7 +35,7 @@ export class MessageApiService {
   posting: boolean;
 
   listMessages(liveId: string, marker = '', size = 20, sorts = ['-createdAt']): Promise<MessageModel[]> {
-    var query = {
+    const query = {
       createdAt: marker,
       size: size,
       sorts: sorts.join(','),
@@ -119,18 +119,17 @@ export class MessageApiService {
         message.parentMessage.type = MessageType.Nice;
         message.parentMessage.user = users[data.nice.uid];
         message.parentMessage.content = data.nice.message;
-        if (message.parentMessage.content) {
-          let contentParsed = UtilsService.parseAt(message.content);
-          contentParsed = UtilsService.parseLink(contentParsed);
-          message.parentMessage.contentParsed = this.sanitizer.bypassSecurityTrustHtml(contentParsed);
-        }
-        message.parentMessage.contentParsed = message.parentMessage.content;
+        let contentParsed = UtilsService.parseAt(message.content);
+        contentParsed = UtilsService.parseLink(contentParsed);
+        message.parentMessage.contentParsed = this.sanitizer.bypassSecurityTrustHtml(contentParsed);
         message.parentMessage.createdAt = data.createdAt; // TODO: 可能需要原创建时间
         message.parentMessage.createdAtParsed = moment(+message.parentMessage.createdAt / 1e6);
       } else {
         message.user = users[data.nice.uid];
         message.content = data.nice.message;
-        message.contentParsed = UtilsService.parseAt(message.content);
+        let contentParsed = UtilsService.parseAt(message.content);
+        contentParsed = UtilsService.parseLink(contentParsed);
+        message.contentParsed = this.sanitizer.bypassSecurityTrustHtml(contentParsed);
       }
     }
 

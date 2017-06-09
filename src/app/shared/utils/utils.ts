@@ -69,17 +69,23 @@ export class UtilsService {
   }
 
   static parseLink(content: string): string {
-    console.log('linke', content)
-    let re = /(http[s]?:\/\/){0,1}(www\.){0,1}([a-zA-Z0-9\.\-]+)(\.[a-zA-Z]{2,10}){1,3}\/{0,1}.*?(?=$|\s|[^\u0000-\u007F])/;
+    const re = /(http[s]?:\/\/){0,1}(www\.){0,1}([a-zA-Z0-9\.\-]+)(\.[a-zA-Z]{2,10}){1,3}\/{0,1}.*?(?=$|\s|[^\u0000-\u007F])/g;
+    const matchedArr = [];
+    const matchedPlaceholder = '**zjMatchedLink**';
     let result = null;
     let _content = content;
 
     while ((result = re.exec(content)) != null) {
       if (result[0].match(/^http/)) {
-        _content = _content.replace(result[0], ` <a href="${result[0]}" target="_blank">${result[0]}</a>`);
+        matchedArr.push(`<a href="${result[0]}" target="_blank">${result[0]}</a>`);
       } else {
-        _content = _content.replace(result[0], ` <a href="http://${result[0]}" target="_blank">${result[0]}</a>`);
+        matchedArr.push(`<a href="http://${result[0]}" target="_blank">${result[0]}</a>`);
       }
+      _content = _content.replace(result[0], matchedPlaceholder);
+    }
+
+    for (let item of matchedArr) {
+      _content = _content.replace(matchedPlaceholder, item);
     }
 
     return _content;
