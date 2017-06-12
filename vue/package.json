@@ -4,10 +4,11 @@
   "description": "My Superb Vue Project",
   "main": "src/index.js",
   "scripts": {
-    "test": "testcafe all test/e2e/index.js --app \"npm run dev\" --app-init-delay 10000",
-    "build": "webpack --config build/webpack.prod.js",
-    "dev": "node build/server.js",
-    "lint": "./node_modules/.bin/eslint **/src/**/*.{vue,js} !node_modules/**"
+    "init": "([ ! -d './node_modules' ] && npm install || true) && ([ ! -d './flow-typed' ] && flow-typed install || true)",
+    "test": "npm run init && testcafe all test/e2e/index.js --app \"npm run dev\" --app-init-delay 10000",
+    "build": "npm run init && webpack --config build/webpack.prod.js",
+    "dev": "npm run init && node build/server.js",
+    "lint": "npm run init && ./node_modules/.bin/eslint **/src/**/*.{vue,js} !node_modules/**"
   },
   "author": "duxiaofeng <297951292@qq.com>",
   "license": "MIT",
