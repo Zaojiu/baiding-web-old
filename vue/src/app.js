@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
 import App from './components/app.comp.vue'

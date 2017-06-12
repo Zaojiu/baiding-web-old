@@ -1,25 +1,12 @@
-// The file contents for the current environment will overwrite these during build.
-// The build system defaults to the dev environment which uses `environment.ts`, but if you do
-// `ng build --env=prod` then `environment.prod.ts` will be used instead.
-// The list of which env maps to which file can be found in `angular-cli.json`.
+import {host as devHost, appConfig as devAppConfig, environment as devEnvironment} from './environment.development';
+import {host as prodHost, appConfig as prodAppConfig, environment as prodEnvironment} from './environment.production';
 
-export const host = {
-  auth: 'http://auth.zaojiu.fm',
-  io: 'http://io.zaojiu.fm'
-};
+let _host = devHost, _appConfig = devAppConfig, _environment = devEnvironment;
 
-export const appConfig = {
-  host: host,
-  name: '造就',
-  slogan: '发现最有创造力的思想',
-  lcAppId: 'UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz',
-  lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
-  wechatLink: 'http://weixin.qq.com/r/OkOrs7fEwOq-rfPQ9xYo',
-  payAddress: '/dev/wxpay/',
-  iosDownloadLink: 'http://fir.im/pkch'
-};
+if (process.env.NODE_ENV === 'production') {
+  _host = prodHost;
+  _appConfig = prodAppConfig;
+  _environment = prodEnvironment;
+}
 
-export const environment = {
-  production: false,
-  config: appConfig
-};
+export const host = _host, appConfig = _appConfig, environment = _environment;

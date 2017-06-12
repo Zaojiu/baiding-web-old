@@ -3,18 +3,14 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const FlowtypePlugin = require('flowtype-loader/plugin')
 const config = require('./config')
 const _ = require('./utils')
 const fs = require('fs')
 
-let envFilePath = 'env/environment'
-if (fs) {
-  const env = `${process.cwd()}/src/env/environment${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}.js`
-  if (fs.existsSync(env)) envFilePath = `env/environment${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`
-}
-
 module.exports = {
   entry: {
+    'babel-polyfill': 'babel-polyfill',
     client: './src/index.js'
   },
   output: {
@@ -40,33 +36,19 @@ module.exports = {
   },
   module: {
     loaders: [
+      { test: /\.js$/, loader: 'flowtype-loader', enforce: 'pre', exclude: /node_modules/ },
       {
-        enforce: "pre",
         test: /\.vue$/,
-        include: /src/,
-        loader: "eslint-loader",
+        loaders: 'vue-loader',
         options: {
-          failOnWarning: false,
-          failOnError: false
+          preLoaders: {
+            js: 'flowtype-loader'
+          },
         }
       },
       {
-        test: /\.vue$/,
-        loaders: ['vue-loader']
-      },
-      {
         test: /\.js$/,
-        loaders: [
-          'babel-loader',
-          {
-            loader: 'string-replace-loader',
-            query: {
-              presets: ['es2015'],
-              search: 'env/environment',
-              replace: envFilePath
-            }
-          }
-        ],
+        loaders: 'babel-loader',
         exclude: [/node_modules/]
       },
       {
@@ -84,6 +66,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new FlowtypePlugin(),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, 'index.html'),

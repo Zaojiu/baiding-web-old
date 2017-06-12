@@ -1,3 +1,4 @@
+// @flow
 import './config'
 
 // before app bootstrap
