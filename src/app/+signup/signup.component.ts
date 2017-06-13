@@ -107,6 +107,8 @@ export class SignupComponent implements OnInit {
       let timer = null;
       let countDown = 60;
 
+      this.smsBtnText = `${countDown}s`;
+      this.tipsService.popup('验证码发送成功');
       timer = setInterval(() => {
         countDown--;
         if (countDown === 0) {
@@ -117,8 +119,6 @@ export class SignupComponent implements OnInit {
           this.smsBtnText = `${countDown}s`;
         }
       }, 1000);
-
-      this.tipsService.popup('验证码发送成功');
     }).catch((e) => {
       this.smsBtnAvailable = true;
       throw e;
