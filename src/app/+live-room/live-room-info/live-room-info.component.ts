@@ -177,11 +177,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.isSubscribeLinkError = false;
 
     return this.liveService.getSubscribeLink(this.liveId).then(link => {
-      return Promise.all([Promise.resolve(link), System.import('yaqrcode')]);
-    }).then(res => {
-      const link = res[0];
-      const yaqrcode = res[1];
-      this.qrcode = yaqrcode(link, {size: 130});
+      this.qrcode = link;
       return;
     }).catch((err) => {
       this.isSubscribeLinkError = true;

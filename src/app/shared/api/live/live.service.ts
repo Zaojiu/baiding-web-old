@@ -432,14 +432,14 @@ export class LiveService {
     });
   }
 
-  getSubscribeLink(id: string) {
+  getSubscribeLink(id: string): Promise<string> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/qrcode`;
 
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
-      const link = data && data.url ? data.url : '';
-      if (link === '') return Promise.reject('empty subscribe link');
-      return link;
+      const ticket = data && data.ticket ? data.ticket : '';
+      if (ticket === '') throw new Error('empty subscribe ticket');
+      return `https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=${ticket}`;
     });
   }
 }
