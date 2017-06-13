@@ -23,7 +23,7 @@
 
       <div class="talk-info">
         <div class="publisher-info">
-          <img class="avatar avatar-round avatar-medium" *ngIf="talkInfo.userInfo" [src]="talkInfo.userInfo.avatar" alt="发布人头像">
+          <img class="avatar avatar-round avatar-md" *ngIf="talkInfo.userInfo" [src]="talkInfo.userInfo.avatar" alt="发布人头像">
           <span class="nick" *ngIf="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
         </div>
 
@@ -63,7 +63,7 @@
     <div class="comment" *ngFor="let comment of comments">
       <div class="header">
         <div class="author-info">
-          <img class="avatar avatar-round avatar-small" [src]="comment.user.avatar" alt="用户头像">
+          <img class="avatar avatar-round avatar-sm" [src]="comment.user.avatar" alt="用户头像">
           <span class="nick">{{comment.user.nick}}</span>
           <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
         </div>

@@ -313,6 +313,8 @@ export class AnalyticsService {
     for (let key in values) {
        body.set(key, values[key])
     }
-    this.http.post(`${environment.config.host.io}/api/stats/record`, body).toPromise().then(res => { })
+    if (environment.production) {
+      this.http.post(`${environment.config.host.io}/api/stats/record`, body).toPromise();
+    }
   }
 }

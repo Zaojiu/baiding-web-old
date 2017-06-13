@@ -119,4 +119,21 @@ export class UserInfoService {
         return;
       });
   }
+
+  signup(mobile: string, smsCode: string, password: string, name: string, company: string, title: string): Promise<void> {
+    const url = `${environment.config.host.io}/api/user/mobile/bind`;
+    const data = {
+      mobile: mobile,
+      password: password,
+      code: smsCode,
+      realname: name,
+      company: company,
+      title: title,
+    };
+
+    return this.http.post(url, data).toPromise()
+      .then(res => {
+        return;
+      });
+  }
 }

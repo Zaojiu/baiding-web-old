@@ -128,7 +128,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     UploadApiService,
     InputtingService,
     AudioPlayerService,
-    UtilsService,
     LiveRoomService,
     InviteApiService,
     PayPopupService,
