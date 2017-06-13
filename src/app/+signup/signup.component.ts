@@ -58,7 +58,6 @@ export class SignupComponent implements OnInit {
       'title': new FormControl(this.title, [
         Validators.required,
       ]),
-
     });
   }
 
@@ -78,9 +77,11 @@ export class SignupComponent implements OnInit {
     this.tipsService.popup('绑定中...');
 
     this.userInfoService.signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title).then(() => {
+      return this.userInfoService.getUserInfo(true);
+    }).then(() => {
       this.tipsService.popup('绑定手机成功');
-      this.router.navigate([this.redirectTo]);
-    }, (err) => {
+      this.router.navigateByUrl(this.redirectTo);
+    }).catch((err) => {
       throw err;
     }).finally(() => {
       this.isSubmitting = false;

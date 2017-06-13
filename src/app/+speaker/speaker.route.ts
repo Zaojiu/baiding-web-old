@@ -1,11 +1,12 @@
 import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 import {AuthGuard} from "../shared/guard/auth.guard";
+import {BindMobileGuard} from "../shared/guard/bind-mobile.guard";
 
 const route: Routes = [
   {
     path: ':id',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BindMobileGuard],
   },
 ];
 

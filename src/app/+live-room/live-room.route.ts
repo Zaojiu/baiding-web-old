@@ -7,6 +7,7 @@ import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {UserInfoResolver} from '../shared/guard/user-info.resolver';
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
+import {BindMobileGuard} from "../shared/guard/bind-mobile.guard";
 
 const route: Routes = [
   {
@@ -28,7 +29,7 @@ const route: Routes = [
   },
   {
     path: ':id/info',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BindMobileGuard],
     component: LiveRoomInfoComponent,
     resolve: {
       liveInfo: LiveInfoResolver,
@@ -37,7 +38,7 @@ const route: Routes = [
   },
   {
     path: ':id',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BindMobileGuard],
     component: LiveRoomComponent,
     data: {
       isAsyncShareInfo: true,

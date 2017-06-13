@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
+import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel, MobileModel} from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 
@@ -25,6 +25,9 @@ export class UserInfoService {
     info.permissions = new PermissionModel;
     info.permissions.publish = data.permissions ? data.permissions.publish : false;
     info.isSubscribed = data.isSubscribed ? data.isSubscribed : false;
+    info.mobile = new MobileModel;
+    info.mobile.number = data.mobile && data.mobile.number ? data.mobile.number : '';
+    info.mobile.updatedAt = data.mobile && data.mobile.updatedAt ? data.mobile.updatedAt : '';
 
     return info;
 

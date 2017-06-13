@@ -1,19 +1,20 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router} from '@angular/router';
 
-import {UserInfoService} from '../api/user-info/user-info.service';
-import {AuthBridge} from "../bridge/auth.interface";
+import {UserInfoService} from '../shared/api/user-info/user-info.service';
+import {AuthBridge} from "../shared/bridge/auth.interface";
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-
+export class SignupGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private authService: AuthBridge, private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
-    return this.userInfoService.getUserInfo(true).then(() => {
-      return true;
+    return this.userInfoService.getUserInfo().then(userInfo => {
+      if (!userInfo.mobile.number) return true;
+
+      this.router.navigate([`/404`]);
     }, (err) => {
       if (err.status == 401) {
         this.authService.auth(to)

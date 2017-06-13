@@ -4,6 +4,7 @@ import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 import {AuthGuard} from "../../shared/guard/auth.guard";
 import {UserInfoResolver} from "../../shared/guard/user-info.resolver";
 import {ApplyComponent} from "./apply.component";
+import {BindMobileGuard} from "../../shared/guard/bind-mobile.guard";
 
 const route: Routes = [
   {
@@ -11,7 +12,7 @@ const route: Routes = [
     resolve: {
       userInfo: UserInfoResolver,
     },
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BindMobileGuard],
     canDeactivate: [QuitEditGuard],
     component: ApplyComponent,
   }

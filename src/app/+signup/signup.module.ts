@@ -5,6 +5,7 @@ import {CommonModule} from "@angular/common";
 import {FormModule} from "../shared/form/form.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SenderApiService} from "../shared/api/sender/sender.api";
+import {SignupGuard} from "./signup.guard";
 
 @NgModule({
   imports: [
@@ -18,8 +19,10 @@ import {SenderApiService} from "../shared/api/sender/sender.api";
   ],
   providers: [
     SenderApiService,
+    SignupGuard,
   ]
 })
 
 export class SignupModule {
+
 }
