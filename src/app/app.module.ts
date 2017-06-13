@@ -57,6 +57,7 @@ import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
 import {TalkService} from "./shared/api/talk/talk.api";
 import {VideoService} from "./shared/video-player/video-player.service";
 import { AnalyticsService } from "./shared/analytics/analytics.service"
+import {BindMobileGuard} from "./shared/guard/bind-mobile.guard";
 
 @NgModule({
   imports: [
@@ -110,6 +111,7 @@ import { AnalyticsService } from "./shared/analytics/analytics.service"
     UserInfoResolver,
     LiveInfoResolver,
     AuthGuard,
+    BindMobileGuard,
     AdminGuard,
     AppJumperGuard,
     AnalyticsService,

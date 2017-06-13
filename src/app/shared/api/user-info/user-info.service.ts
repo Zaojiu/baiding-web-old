@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel} from './user-info.model';
+import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel, MobileModel} from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 
@@ -25,6 +25,9 @@ export class UserInfoService {
     info.permissions = new PermissionModel;
     info.permissions.publish = data.permissions ? data.permissions.publish : false;
     info.isSubscribed = data.isSubscribed ? data.isSubscribed : false;
+    info.mobile = new MobileModel;
+    info.mobile.number = data.mobile && data.mobile.number ? data.mobile.number : '';
+    info.mobile.updatedAt = data.mobile && data.mobile.updatedAt ? data.mobile.updatedAt : '';
 
     return info;
 
@@ -115,6 +118,23 @@ export class UserInfoService {
 
   verifyUsername(username: string): Promise<void> {
     return this.http.post(`${environment.config.host.io}/api/user/username/verify`, {username: username}).toPromise()
+      .then(res => {
+        return;
+      });
+  }
+
+  signup(mobile: string, smsCode: string, password: string, name: string, company: string, title: string): Promise<void> {
+    const url = `${environment.config.host.io}/api/user/mobile/bind`;
+    const data = {
+      mobile: mobile,
+      password: password,
+      code: smsCode,
+      realname: name,
+      company: company,
+      title: title,
+    };
+
+    return this.http.post(url, data).toPromise()
       .then(res => {
         return;
       });

@@ -5,6 +5,7 @@ import {
 } from "@angular/http";
 import {Observable} from "rxjs";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
+import {ApiErrorMessage} from "./code-map.enum";
 
 const whiteList = [{
   regexp: /api\/stats\/record$/,
@@ -71,58 +72,53 @@ export class CustomHttp extends Http {
         }
       }
 
-      if (err.status === 0) this.operationTipsService.popup('请求错误');
-
-      switch (err.status) {
-        case 400:
-          this.operationTipsService.popup('提交数据错误');
-          break;
-        case 403 :
-          this.operationTipsService.popup('无访问权限');
-          break;
-        case 404:
-          // 404有些一些不期望提示错误, 所以暂时隐藏
-          // this.operationTipsService.popup('资源不存在');
-          break;
-        case 408:
-          this.operationTipsService.popup('请求超时，请重试');
-          break;
-      }
-
-      if (err.status >= 500 && err.status < 600) {
-        switch (err.status) {
-          case 502:
-            this.operationTipsService.popup('请求错误');
-            break;
-          case 504:
-            this.operationTipsService.popup('请求超时，请重试');
-            break;
-          case 599:
-            this.operationTipsService.popup('请重试或者咨询客服');
-            break;
-          default:
-            this.operationTipsService.popup('服务器内部错误，请重试');
-            break;
+      const data = err.json();
+      if (data) {
+        const code = data && data.code ? data.code : 0;
+        const message = ApiErrorMessage[code];
+        if (message) {
+          this.operationTipsService.popup(message);
+        } else {
+          this.operationTipsService.popup(`请求错误: ${code}`);
         }
-      }
-
-      if (err._body.code) {
-        switch (err._body.code) {
-          case 400001: {
-            this.operationTipsService.popup('请支付');
+      } else {
+        if (err.status === 0) {
+          this.operationTipsService.popup('请求错误');
+        } else if (err.status >= 400 && err.status < 500) {
+          switch (err.status) {
+            case 400:
+              this.operationTipsService.popup('提交数据错误');
+              break;
+            case 403 :
+              this.operationTipsService.popup('无访问权限');
+              break;
+            case 404:
+              // 404有些一些不期望提示错误, 所以暂时隐藏
+              // this.operationTipsService.popup('资源不存在');
+              break;
+            case 408:
+              this.operationTipsService.popup('请求超时，请重试');
+              break;
+            default:
+              this.operationTipsService.popup('提交数据错误');
           }
-          case 400002: {
-            this.operationTipsService.popup('无需支付');
+        } else if (err.status >= 500 && err.status < 600) {
+          switch (err.status) {
+            case 502:
+              this.operationTipsService.popup('请求错误');
+              break;
+            case 504:
+              this.operationTipsService.popup('请求超时，请重试');
+              break;
+            case 599:
+              this.operationTipsService.popup('请重试或者咨询客服');
+              break;
+            default:
+              this.operationTipsService.popup('服务器内部错误，请重试');
+              break;
           }
-          case 400003: {
-            this.operationTipsService.popup('无法识别支付平台');
-          }
-          case 400101: {
-            this.operationTipsService.popup('订单已支付');
-          }
-          case 400102: {
-            this.operationTipsService.popup('订单已关闭');
-          }
+        } else {
+          this.operationTipsService.popup('请求错误');
         }
       }
 

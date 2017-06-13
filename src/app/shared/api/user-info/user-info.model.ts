@@ -2,6 +2,11 @@ export class PermissionModel {
   publish: boolean;
 }
 
+export class MobileModel {
+  number: string;
+  updatedAt: string;
+}
+
 export class UserInfoModel {
   uid: number;
   username: string;
@@ -10,6 +15,7 @@ export class UserInfoModel {
   intro: string;
   permissions: PermissionModel;
   isSubscribed: boolean;
+  mobile: MobileModel;
 
   get canPublish(): boolean {
     return this.permissions.publish;

@@ -10,6 +10,7 @@ const appRoutes: Routes = [
   {path: 'talks', loadChildren: 'app/+talk/talk.module#TalkModule'},
   {path: 'speaker', loadChildren: 'app/+speaker/speaker.module#SpeakerModule'},
   {path: 'search', loadChildren: 'app/+search/search.module#SearchModule'},
+  {path: 'signup', loadChildren: 'app/+signup/signup.module#SignupModule'},
   {path: '', loadChildren: 'app/+live-list/live-list.module#LiveListModule'},
   {path: '**', redirectTo: '/404', pathMatch: 'full'},
 ];

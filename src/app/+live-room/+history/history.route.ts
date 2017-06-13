@@ -9,6 +9,7 @@ import {HistoryMessageResolver} from "./history.resolver";
 import {AuthGuard} from "../../shared/guard/auth.guard";
 import {AdminGuard} from "../../shared/guard/admin.guard";
 import {LiveInfoResolver} from "../../shared/guard/live-info.resolver";
+import {BindMobileGuard} from "../../shared/guard/bind-mobile.guard";
 
 const route: Routes = [
   {
@@ -31,7 +32,7 @@ const route: Routes = [
         resolve: {
           messages: HistoryMessageResolver,
         },
-        canActivate: [AuthGuard, AdminGuard],
+        canActivate: [AuthGuard, BindMobileGuard, AdminGuard],
         canDeactivate: [QuitEditGuard],
       },
     ],

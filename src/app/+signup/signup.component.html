@@ -1,0 +1,144 @@
+<div class="mobile-bind-container">
+  <section class="user-section">
+    <img class="avatar-lg avatar-round" [src]="userInfo.avatar" alt="头像">
+    <div class="nick">{{userInfo.nick}}</div>
+  </section>
+
+  <form class="main-form" [formGroup]="form" name="form" (submit)="validateAndSubmit()" autofocus-first-invalid-input>
+    <section>
+      <h2>手机号码绑定</h2>
+      <div class="form-group" [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
+        <div class="input-group">
+          <input
+            id="phoneNumber"
+            class="phoneNumber"
+            name="phoneNumber"
+            type="text"
+            formControlName="phoneNumber"
+            [(ngModel)]="phoneNumber"
+          >
+          <label class="required">手机号码</label>
+        </div>
+        <p class="helper" *ngIf="form.controls['phoneNumber'].valid || !form.controls['phoneNumber'].dirty">
+          手机号码为11位数字
+        </p>
+        <div *ngIf="form.controls['phoneNumber'].errors">
+          <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.required">请填写手机号码</p>
+          <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.pattern">手机号码格式错误，请重新填写</p>
+        </div>
+      </div>
+
+      <div class="form-group sms-code-group"
+           [ngClass]="{'has-error': form.controls['smsCode'].dirty && form.controls['smsCode'].invalid}">
+        <div class="input-group">
+          <input
+            id="smsCode"
+            class="smsCode"
+            name="smsCode"
+            type="text"
+            formControlName="smsCode"
+            [(ngModel)]="smsCode"
+          >
+          <label class="required">验证码</label>
+          <a class="sms-sender" [ngClass]="{'disabled': !smsBtnAvailable}" href="" (click)="sendSMS(); $event.preventDefault();">{{smsBtnText}}</a>
+        </div>
+        <p class="helper" *ngIf="form.controls['smsCode'].valid || !form.controls['smsCode'].dirty">
+          六位数字验证码
+        </p>
+        <div *ngIf="form.controls['smsCode'].errors">
+          <p class="helper error" *ngIf="form.controls['smsCode'].errors.required">请填写验证码</p>
+          <p class="helper error" *ngIf="form.controls['smsCode'].errors.pattern">手机验证码必须为6位数字</p>
+        </div>
+      </div>
+
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['password'].dirty && form.controls['password'].invalid}">
+        <div class="input-group">
+          <input
+            id="password"
+            class="password"
+            name="password"
+            type="password"
+            formControlName="password"
+            [(ngModel)]="password"
+          >
+          <label class="required">密码</label>
+        </div>
+        <p class="helper" *ngIf="form.controls['password'].valid || !form.controls['password'].dirty">
+          密码长度为8-32位，字符不限
+        </p>
+        <div *ngIf="form.controls['password'].errors">
+          <p class="helper error" *ngIf="form.controls['password'].errors.required">请填写密码</p>
+          <p class="helper error" *ngIf="form.controls['password'].errors.minlength">密码不能少于8位</p>
+          <p class="helper error" *ngIf="form.controls['password'].errors.maxlength">密码不能多于32位</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>直播报名信息</h2>
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['name'].dirty && form.controls['name'].invalid}">
+        <div class="input-group">
+          <input
+            id="name"
+            class="name"
+            name="name"
+            type="text"
+            formControlName="name"
+            [(ngModel)]="name"
+          >
+          <label class="required">姓名</label>
+        </div>
+        <p class="helper" *ngIf="form.controls['name'].valid || !form.controls['name'].dirty">
+          请填写您的真实姓名
+        </p>
+        <div *ngIf="form.controls['name'].errors">
+          <p class="helper error" *ngIf="form.controls['name'].errors.required">请填写姓名</p>
+        </div>
+      </div>
+
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['company'].dirty && form.controls['company'].invalid}">
+        <div class="input-group">
+          <input
+            id="company"
+            class="company"
+            name="company"
+            type="text"
+            formControlName="company"
+            [(ngModel)]="company"
+          >
+          <label class="required">公司名称</label>
+        </div>
+        <div *ngIf="form.controls['company'].errors">
+          <p class="helper error" *ngIf="form.controls['company'].errors.required">请填写公司名称</p>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': form.controls['title'].dirty && form.controls['title'].invalid}">
+        <div class="input-group">
+          <input
+            id="title"
+            class="title"
+            name="title"
+            type="text"
+            formControlName="title"
+            [(ngModel)]="title"
+          >
+          <label class="required">职位</label>
+        </div>
+        <div *ngIf="form.controls['title'].errors">
+          <p class="helper error" *ngIf="form.controls['title'].errors.required">请填写职位</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer-section">
+      <div class="form-group">
+        <button class="button button-primary" [disabled]="isSubmitting">{{!isSubmitting ? '绑定手机号码' : '绑定中...'}}</button>
+        <p class="tips">手机号码绑定之后即可观看直播</p>
+      </div>
+    </section>
+  </form>
+</div>

@@ -4,12 +4,13 @@ import {InfoCenterComponent} from "./info-center.component";
 import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {AuthGuard} from "../shared/guard/auth.guard";
 import {UserInfoResolver} from "../shared/guard/user-info.resolver";
+import {BindMobileGuard} from "../shared/guard/bind-mobile.guard";
 
 const route: Routes = [
   {
     path: 'edit-info',
     component: EditInfoComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BindMobileGuard],
     resolve: {
       userInfo: UserInfoResolver,
     },
@@ -20,7 +21,7 @@ const route: Routes = [
   {
     path: ':uid',
     component: InfoCenterComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BindMobileGuard],
     resolve: {
       userInfo: UserInfoResolver,
     },
