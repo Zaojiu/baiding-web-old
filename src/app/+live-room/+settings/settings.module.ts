@@ -12,8 +12,6 @@ import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {FormModule} from "../../shared/form/form.module";
 import {ViewInfoComponent} from "./view-info/view-info.component";
 import {LiveRoomInfoUpperModule} from "../../shared/live-room-info-upper/live-room-info-upper.module";
-import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
-import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 import {LiveRoomService} from "../live-room.service";
 import {TimelineService} from "../timeline/timeline.service";
 import {UploadApiService} from "../../shared/api/upload/upload.api";
@@ -29,8 +27,6 @@ import {UploadApiService} from "../../shared/api/upload/upload.api";
     ReactiveFormsModule,
     FormModule,
     LiveRoomInfoUpperModule,
-    AutofocusFirstInvalidInputModule,
-    AutoresizeModule,
   ],
   declarations: [
     SettingsComponent,

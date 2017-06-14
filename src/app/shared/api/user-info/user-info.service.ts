@@ -103,7 +103,7 @@ export class UserInfoService {
 
   postUserInfo(nick: string, intro: string): Promise<void> {
     const url = `${environment.config.host.io}/api/user/detail`;
-    let data: {[key: string]: string} = {
+    let data: { [key: string]: string } = {
       nick: nick,
       intro: intro,
     };
@@ -134,9 +134,22 @@ export class UserInfoService {
       title: title,
     };
 
-    return this.http.post(url, data).toPromise()
-      .then(res => {
-        return;
-      });
+    return this.http.post(url, data).toPromise().then(res => {
+      return;
+    });
+  }
+
+  signin(username: string, code: string, password: string): Promise<void> {
+    const query = {
+      useSms: !!code,
+    };
+    const url = `${environment.config.host.io}/api/user/login?${$.param(query)}`;
+    const data: {[key: string]: string} = {username};
+    if (code) data['code'] = code;
+    if (password) data['password'] = password;
+
+    return this.http.post(url, data).toPromise().then(res => {
+      return;
+    });
   }
 }

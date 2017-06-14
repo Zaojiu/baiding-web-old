@@ -8,24 +8,22 @@ import {OperationTipsService} from "../shared/operation-tips/operation-tips.serv
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 
 @Component({
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
+  templateUrl: './signin.component.html',
+  styleUrls: ['./signin.component.scss'],
 })
 
-export class SignupComponent implements OnInit {
+export class SigninComponent implements OnInit {
   id: string;
   userInfo: UserInfoModel;
   form: FormGroup;
   phoneNumber: string;
   smsCode: string;
   password: string;
-  name: string;
-  company: string;
-  title: string;
   smsBtnText = '发送验证码';
   smsBtnAvailable = true;
   isSubmitting = false;
   redirectTo: string;
+  mode = 'sms';
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router,
               private senderApiService: SenderApiService, private tipsService: OperationTipsService,
@@ -49,21 +47,40 @@ export class SignupComponent implements OnInit {
         Validators.minLength(8),
         Validators.maxLength(32),
       ]),
-      'name': new FormControl(this.name, [
-        Validators.required,
-      ]),
-      'company': new FormControl(this.company, [
-        Validators.required,
-      ]),
-      'title': new FormControl(this.title, [
-        Validators.required,
-      ]),
     });
+  }
+
+  switchMode(mode: string) {
+    this.mode = mode;
+
+    if (mode === 'sms') {
+      this.form.controls['smsCode'].setErrors(null);
+      this.form.controls['smsCode'].markAsPristine();
+      this.form.controls['smsCode'].markAsUntouched();
+      this.password = '';
+    } else if (mode === 'password') {
+      this.form.controls['password'].setErrors(null);
+      this.form.controls['password'].markAsPristine();
+      this.form.controls['password'].markAsUntouched();
+      this.smsCode = '';
+    }
+  }
+
+  clearError(controlKey: string, errorKey: string) {
+    const control = this.form.controls[controlKey];
+    const error = control.errors;
+    if (error) delete error[errorKey];
   }
 
   validateAndSubmit() {
     Object.keys(this.form.controls).forEach((key) => {
+      if ((this.mode === 'sms' && key === 'password') || (this.mode === 'password' && key === 'smsCode')) {
+        this.form.controls[key].setErrors(null);
+        return;
+      }
+
       this.form.controls[key].markAsDirty();
+      this.form.controls[key].markAsTouched();
       this.form.controls[key].updateValueAndValidity();
     });
 
@@ -74,12 +91,12 @@ export class SignupComponent implements OnInit {
 
   submit() {
     this.isSubmitting = true;
-    this.tipsService.popup('绑定中...');
+    this.tipsService.popup('登录中...');
 
-    this.userInfoService.signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title).then(() => {
+    this.userInfoService.signin(this.phoneNumber, this.smsCode, this.password).then(() => {
       return this.userInfoService.getUserInfo(true);
     }).then(() => {
-      this.tipsService.popup('绑定手机成功');
+      this.tipsService.popup('登录成功');
       this.router.navigateByUrl(this.redirectTo);
     }).catch((err) => {
       throw err;
@@ -90,6 +107,7 @@ export class SignupComponent implements OnInit {
 
   get isMobileValid(): boolean {
     this.form.controls['phoneNumber'].markAsDirty();
+    this.form.controls['phoneNumber'].markAsTouched();
     this.form.controls['phoneNumber'].updateValueAndValidity();
     return this.form.controls['phoneNumber'].valid;
   }
@@ -103,7 +121,7 @@ export class SignupComponent implements OnInit {
 
     this.smsBtnAvailable = false;
 
-    this.senderApiService.sendSmsByLoginUser(this.phoneNumber, SmsScene.BindMobile).then(() => {
+    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.Login).then(() => {
       let timer = null;
       let countDown = 60;
 

@@ -9,7 +9,6 @@ import {ApplyRoutingModule} from "./apply.route";
 import {ApplyComponent} from "./apply.component";
 import {ApplyApiService} from "../../shared/api/apply/apply.service";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
-import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
 import {TimelineService} from "../timeline/timeline.service";
 
 @NgModule({
@@ -21,7 +20,6 @@ import {TimelineService} from "../timeline/timeline.service";
     ReactiveFormsModule,
     FormModule,
     LoadingModule,
-    AutofocusFirstInvalidInputModule,
   ],
   declarations: [
     ApplyComponent

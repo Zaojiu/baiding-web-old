@@ -7,9 +7,11 @@
   <form class="main-form" [formGroup]="form" name="form" (submit)="validateAndSubmit()" autofocus-first-invalid-input>
     <section>
       <h2>手机号码绑定</h2>
-      <div class="form-group" [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
         <div class="input-group">
           <input
+            #mobileInput
             id="phoneNumber"
             class="phoneNumber"
             name="phoneNumber"
@@ -32,6 +34,7 @@
            [ngClass]="{'has-error': form.controls['smsCode'].dirty && form.controls['smsCode'].invalid}">
         <div class="input-group">
           <input
+            #smsCodeInput
             id="smsCode"
             class="smsCode"
             name="smsCode"
@@ -40,7 +43,10 @@
             [(ngModel)]="smsCode"
           >
           <label class="required">验证码</label>
-          <a class="sms-sender" [ngClass]="{'disabled': !smsBtnAvailable}" href="" (click)="sendSMS(); $event.preventDefault();">{{smsBtnText}}</a>
+          <a class="sms-sender" [ngClass]="{'disabled': !smsBtnAvailable}" href=""
+             (click)="sendSMS();
+             form.controls['phoneNumber'].errors ? mobileInput.focus() : smsCodeInput.focus();
+             $event.preventDefault();">{{smsBtnText}}</a>
         </div>
         <p class="helper" *ngIf="form.controls['smsCode'].valid || !form.controls['smsCode'].dirty">
           六位数字验证码
