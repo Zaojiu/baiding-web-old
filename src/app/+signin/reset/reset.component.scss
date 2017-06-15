@@ -1,0 +1,43 @@
+.forget-pwd-container {
+  position: relative;
+
+  form {
+    padding: 30px 15px;
+
+    .form-group:first-child {
+      margin-top: 0;
+    }
+
+    .form-group:last-child {
+      margin-top: 50px;
+    }
+
+    .mobile-group {
+      position: relative;
+
+      .bi-close-2 {
+        position: absolute;
+        right: 0;
+        top: 22px;
+      }
+    }
+
+    .sms-code-group {
+      position: relative;
+
+      .sms-sender {
+        position: absolute;
+        right: 0;
+        top: 24px;
+        color: $color-brand;
+        text-decoration: none;
+        font-size: $font-size-sm;
+
+        &.disabled {
+          opacity: .5;
+          color: $color-dark-gray;
+        }
+      }
+    }
+  }
+}

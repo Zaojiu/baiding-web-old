@@ -7,6 +7,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {SenderApiService} from "../shared/api/sender/sender.api";
 import {GuestGuard} from "../shared/guard/guest.guard";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
+import {ResetPwdComponent} from "./reset/reset.component";
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
   ],
   declarations: [
     SigninComponent,
+    ResetPwdComponent,
   ],
   providers: [
     SenderApiService,

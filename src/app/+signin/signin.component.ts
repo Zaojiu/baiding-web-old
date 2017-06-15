@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {UserInfoModel} from "../shared/api/user-info/user-info.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {RegexpConst} from "../shared/utils/regexp";
@@ -17,7 +16,6 @@ import {ApiError} from "../shared/api/code-map.enum";
 
 export class SigninComponent implements OnInit {
   id: string;
-  userInfo: UserInfoModel;
   form: FormGroup;
   phoneNumber = '';
   smsCode: string;
@@ -37,7 +35,6 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userInfo = this.route.snapshot.data['userInfo'];
     this.redirectTo = decodeURIComponent(this.route.snapshot.params['redirectTo'] || '/');
     this.redirectTo = this.redirectTo.replace(host.self, '');
     if (!this.redirectTo.startsWith('/')) this.redirectTo = '/';
@@ -186,5 +183,9 @@ export class SigninComponent implements OnInit {
       this.isWechatQrcodeLoading = false;
       throw e;
     });
+  }
+
+  gotoResetPwd() {
+    this.router.navigate(['/signin/reset-password', {redirectTo: this.route.snapshot.params['redirectTo']}]);
   }
 }

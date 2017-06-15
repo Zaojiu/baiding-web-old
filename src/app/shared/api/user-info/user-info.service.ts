@@ -156,6 +156,19 @@ export class UserInfoService {
     });
   }
 
+  resetPassword(mobile: string, code: string, password: string): Promise<void> {
+    const url = `${environment.config.host.io}/api/user/login/reset`;
+    const data = {
+      mobile,
+      password,
+      code,
+    };
+
+    return this.http.post(url, data).toPromise().then(res => {
+      return;
+    });
+  }
+
   getWechatSigninQrcode(redirectTo: string): Promise<WechatQrcodeModel> {
     const query = {
       device: 'web',

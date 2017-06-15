@@ -1,17 +1,19 @@
 import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
-import {UserInfoResolver} from '../shared/guard/user-info.resolver';
 import {SigninComponent} from "./signin.component";
 import {GuestGuard} from "../shared/guard/guest.guard";
+import {ResetPwdComponent} from "./reset/reset.component";
 
 const route: Routes = [
   {
     path: '',
     canActivate: [GuestGuard],
     component: SigninComponent,
-    resolve: {
-      userInfo: UserInfoResolver,
-    },
+  },
+  {
+    path: 'reset-password',
+    canActivate: [GuestGuard],
+    component: ResetPwdComponent,
   },
 ];
 
