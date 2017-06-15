@@ -8,6 +8,7 @@ import {OperationTipsService} from "../shared/operation-tips/operation-tips.serv
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {host} from "../../environments/environment";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {ApiError} from "../shared/api/code-map.enum";
 
 @Component({
   templateUrl: './signin.component.html',
@@ -103,11 +104,23 @@ export class SigninComponent implements OnInit {
 
     this.userInfoService.signin(this.phoneNumber, this.smsCode, this.password).then(() => {
       return this.userInfoService.getUserInfo(true);
+    }, err => {
+      const data = err.json();
+      if (data && data.code) {
+        switch (data.code) {
+          case ApiError.ErrSigninInvalidSmsCode:
+            this.form.controls['smsCode'].setErrors({wrongcode: true});
+            break;
+          case ApiError.ErrSigninInvalidPassword:
+            this.form.controls['password'].setErrors({wrongpassword: true});
+            break;
+        }
+      }
+
+      return Promise.reject(err);
     }).then(() => {
       this.tipsService.popup('登录成功');
       this.router.navigateByUrl(this.redirectTo);
-    }).catch((err) => {
-      throw err;
     }).finally(() => {
       this.isSubmitting = false;
     });
