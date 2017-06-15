@@ -3,6 +3,7 @@ import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router} from '
 
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {AuthBridge} from "../bridge/auth.interface";
+import {host} from "../../../environments/environment";
 
 @Injectable()
 export class GuestGuard implements CanActivate {
@@ -11,6 +12,18 @@ export class GuestGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    return Promise.resolve(true);
+    let redirectTo = decodeURIComponent(route.params['redirectTo'] || '/');
+    redirectTo = redirectTo.replace(host.self, '');
+    if (!redirectTo.startsWith('/')) redirectTo = '/';
+
+    return this.userInfoService.getUserInfo(true).then(() => {
+      this.router.navigateByUrl(redirectTo);
+      return false;
+    }, (err) => {
+      if (err.status !== 401) {
+        this.router.navigate([`/reload`], {queryParams: {backTo: redirectTo}});
+      }
+      return true;
+    });
   }
 }

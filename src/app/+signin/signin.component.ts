@@ -6,6 +6,8 @@ import {RegexpConst} from "../shared/utils/regexp";
 import {SenderApiService, SmsScene} from "../shared/api/sender/sender.api";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
+import {host} from "../../environments/environment";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   templateUrl: './signin.component.html',
@@ -16,7 +18,7 @@ export class SigninComponent implements OnInit {
   id: string;
   userInfo: UserInfoModel;
   form: FormGroup;
-  phoneNumber: string;
+  phoneNumber = '';
   smsCode: string;
   password: string;
   smsBtnText = '发送验证码';
@@ -24,15 +26,20 @@ export class SigninComponent implements OnInit {
   isSubmitting = false;
   redirectTo: string;
   mode = 'sms';
+  wechatQrcodeSrc: SafeResourceUrl;
+  isWechatQrcodeLoading = false;
+  isWechatQrcodeError = false;
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router,
               private senderApiService: SenderApiService, private tipsService: OperationTipsService,
-              private userInfoService: UserInfoService) {
+              private userInfoService: UserInfoService, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.redirectTo = decodeURIComponent(this.route.snapshot.params['redirectTo'] || '/');
+    this.redirectTo = this.redirectTo.replace(host.self, '');
+    if (!this.redirectTo.startsWith('/')) this.redirectTo = '/';
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
@@ -48,6 +55,7 @@ export class SigninComponent implements OnInit {
         Validators.maxLength(32),
       ]),
     });
+    this.getWechatQrCode();
   }
 
   switchMode(mode: string) {
@@ -140,6 +148,29 @@ export class SigninComponent implements OnInit {
     }).catch((e) => {
       this.smsBtnAvailable = true;
       this.tipsService.popup('手机验证码发送失败');
+      throw e;
+    });
+  }
+
+  getWechatQrCode() {
+    if (this.isWechatQrcodeLoading || (this.wechatQrcodeSrc && !this.isWechatQrcodeError)) return;
+
+    this.isWechatQrcodeLoading = true;
+    this.isWechatQrcodeError = false;
+
+    this.userInfoService.getWechatSigninQrcode(`${host.self}${this.redirectTo}`).then(qrCode => {
+      const wechatUri = qrCode.wechat_uri;
+      delete qrCode.wechat_uri;
+      this.wechatQrcodeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(`${wechatUri}?${$.param(qrCode)}`);
+      setTimeout(() => {
+        if (this.isWechatQrcodeLoading) {
+          this.isWechatQrcodeError = true;
+          this.isWechatQrcodeLoading = false;
+        }
+      }, 30 * 1000);
+    }).catch(e => {
+      this.isWechatQrcodeError = true;
+      this.isWechatQrcodeLoading = false;
       throw e;
     });
   }

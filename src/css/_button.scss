@@ -1,0 +1,19 @@
+.button {
+  display: block;
+  height: 41px;
+  width: 100%;
+  border-radius: 2px;
+  font-size: 17px;
+  line-height: 41px;
+  text-align: center;
+
+  &:disabled {
+    opacity: .5;
+  }
+
+  &.button-primary {
+    background-color: $color-brand;
+    border: #31B5A5;
+    color: #fff;
+  }
+}

@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
-import {environment} from "../../../../environments/environment";
+import {Router} from "@angular/router";
 import {AuthBridge} from "../auth.interface";
 
 @Injectable()
 export class PcAuthService implements AuthBridge {
-  constructor() {
+  constructor(private router: Router) {
   }
 
   auth(redirectTo?: string) {
-    redirectTo = redirectTo || location.href;
-    location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?device=web&to=${redirectTo}`;
+    redirectTo = redirectTo || this.router.routerState.snapshot.url;
+    this.router.navigate(['/signin', {redirectTo: redirectTo}]);
   }
 }

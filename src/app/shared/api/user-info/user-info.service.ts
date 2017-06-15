@@ -2,7 +2,10 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel, MobileModel} from './user-info.model';
+import {
+  UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel, MobileModel,
+  WechatQrcodeModel
+} from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 
@@ -150,6 +153,18 @@ export class UserInfoService {
 
     return this.http.post(url, data).toPromise().then(res => {
       return;
+    });
+  }
+
+  getWechatSigninQrcode(redirectTo: string): Promise<WechatQrcodeModel> {
+    const query = {
+      device: 'web',
+      to: redirectTo,
+    };
+    const url = `${environment.config.host.auth}/oauth2/wechat/redirect?${$.param(query)}`;
+    return this.http.get(url).toPromise().then(res => {
+      const data = res.json();
+      return new WechatQrcodeModel(data);
     });
   }
 }

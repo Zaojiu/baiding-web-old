@@ -6,6 +6,7 @@ import {FormModule} from "../shared/form/form.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SenderApiService} from "../shared/api/sender/sender.api";
 import {GuestGuard} from "../shared/guard/guest.guard";
+import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import {GuestGuard} from "../shared/guard/guest.guard";
     SigninRoutingModule,
     ReactiveFormsModule,
     FormModule,
+    LoadingModule,
   ],
   declarations: [
     SigninComponent,
