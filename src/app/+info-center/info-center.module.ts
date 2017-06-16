@@ -13,8 +13,6 @@ import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {TimeToFormatedPipe} from "../shared/pipe/time.pipe";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
-import {AutofocusFirstInvalidInputModule} from "../shared/first-invalid/first-invalid.module";
-import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {FormModule} from "../shared/form/form.module";
 import {DraggableModule} from "../shared/draggable/draggable.module";
 
@@ -31,8 +29,6 @@ import {DraggableModule} from "../shared/draggable/draggable.module";
     LoadingModule,
     CountDownModule,
     HamburgerMenuModule,
-    AutofocusFirstInvalidInputModule,
-    AutoresizeModule,
     DraggableModule,
   ],
   declarations: [

@@ -1,0 +1,114 @@
+<div class="signin-container">
+  <div class="wechat-signin-container"
+       [ngClass]="{'show': mode === 'wechat'}">
+    <div class="qrcode-container">
+      <div class="loading-container" [ngClass]="{show: isWechatQrcodeLoading}">
+        <bd-loading class="loading"></bd-loading>
+        二维码加载中...
+      </div>
+      <div class="retry" *ngIf="isWechatQrcodeError">二维码加载失败，请<a href="" (click)="getWechatQrCode(); $event.preventDefault();">重试</a></div>
+      <iframe *ngIf="wechatQrcodeSrc" [ngClass]="{show: !isWechatQrcodeLoading && !isWechatQrcodeError}" (load)="isWechatQrcodeLoading=false"
+              [src]="wechatQrcodeSrc"
+              frameborder="0"></iframe>
+    </div>
+    <a class="button button-primary" href="" (click)="switchMode('sms'); $event.preventDefault();">返回</a>
+  </div>
+
+  <div class="mobile-signin-container"
+       #mobileSigninContainer
+       [ngClass]="{'show': mode === 'sms' || mode === 'password', 'hide': mode !== 'sms' && mode !== 'password'}">
+    <nav>
+      <a href="" [ngClass]="{active: mode === 'sms'}"
+         (click)="switchMode('sms'); mobileInput.focus(); $event.preventDefault();">验证码登录</a>
+      <a href="" [ngClass]="{active: mode === 'password'}"
+         (click)="switchMode('password'); mobileInput.focus(); $event.preventDefault();">密码登录</a>
+    </nav>
+
+    <form class="main-form" [formGroup]="form" name="form" (submit)="validateAndSubmit()" autofocus-first-invalid-input>
+      <div class="form-group mobile-group"
+           [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
+        <div class="input-group">
+          <input
+            #mobileInput
+            id="phoneNumber"
+            class="phoneNumber"
+            name="phoneNumber"
+            type="text"
+            formControlName="phoneNumber"
+            [(ngModel)]="phoneNumber"
+            auto-focus
+          >
+          <label class="required">手机号码</label>
+        </div>
+        <i class="bi bi-close-2" *ngIf="phoneNumber!==''" (click)="phoneNumber=''; mobileInput.focus();"></i>
+        <div *ngIf="form.controls['phoneNumber'].errors && form.controls['phoneNumber'].touched">
+          <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.required">请填写手机号码</p>
+          <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.pattern">手机号码格式错误，请重新填写</p>
+        </div>
+      </div>
+
+      <div class="form-group sms-code-group"
+           *ngIf="mode === 'sms'"
+           [ngClass]="{'has-error': form.controls['smsCode'].dirty && form.controls['smsCode'].invalid}">
+        <div class="input-group">
+          <input
+            #smsCodeInput
+            id="smsCode"
+            class="smsCode"
+            name="smsCode"
+            type="text"
+            formControlName="smsCode"
+            [(ngModel)]="smsCode"
+            (input)="clearError('smsCode', 'wrongcode')"
+          >
+          <label class="required">验证码</label>
+          <a class="sms-sender" [ngClass]="{'disabled': !smsBtnAvailable}" href=""
+             (click)="sendSMS();
+           form.controls['phoneNumber'].errors ? mobileInput.focus() : smsCodeInput.focus();
+           $event.preventDefault();
+        ">{{smsBtnText}}</a>
+        </div>
+        <div *ngIf="form.controls['smsCode'].errors && form.controls['smsCode'].touched">
+          <p class="helper error" *ngIf="form.controls['smsCode'].errors.required">请填写验证码</p>
+          <p class="helper error" *ngIf="form.controls['smsCode'].errors.pattern">手机验证码必须为6位数字</p>
+          <p class="helper error" *ngIf="form.controls['smsCode'].errors.wrongcode">验证码错误</p>
+        </div>
+      </div>
+
+      <div class="form-group password-group"
+           *ngIf="mode === 'password'"
+           [ngClass]="{'has-error': form.controls['password'].dirty && form.controls['password'].invalid}">
+        <div class="input-group">
+          <input
+            id="password"
+            class="password"
+            name="password"
+            type="password"
+            formControlName="password"
+            [(ngModel)]="password"
+            (input)="clearError('password', 'wrongpassword')"
+          >
+          <label class="required">密码</label>
+        </div>
+        <a href="" class="forget-pwd" (click)="gotoResetPwd(); $event.preventDefault();">忘记密码</a>
+        <div *ngIf="form.controls['password'].errors && form.controls['password'].touched">
+          <p class="helper error" *ngIf="form.controls['password'].errors.required">请填写密码</p>
+          <p class="helper error" *ngIf="form.controls['password'].errors.minlength">密码不能少于8位</p>
+          <p class="helper error" *ngIf="form.controls['password'].errors.maxlength">密码不能多于32位</p>
+          <p class="helper error" *ngIf="form.controls['password'].errors.wrongpassword">密码错误</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button class="button button-primary" [disabled]="isSubmitting">{{!isSubmitting ? '登录' : '登录中...'}}</button>
+      </div>
+    </form>
+
+    <section class="vendor-signin">
+      <h2>第三方登录</h2>
+      <div class="vendor-container">
+        <a href="" (click)="switchMode('wechat'); $event.preventDefault();"><i class="bi bi-wechat"></i>微信登录</a>
+      </div>
+    </section>
+  </div>
+</div>

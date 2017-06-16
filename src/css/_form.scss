@@ -187,25 +187,6 @@
       display: block;
     }
   }
-
-  .button {
-    height: 41px;
-    width: 100%;
-    border-radius: 2px;
-    font-size: 17px;
-    line-height: 1em;
-    text-align: center;
-
-    &:disabled {
-      opacity: .5;
-    }
-  }
-
-  .button-primary {
-    background-color: $color-brand;
-    border: #31B5A5;
-    color: #fff;
-  }
 }
 
 textarea {

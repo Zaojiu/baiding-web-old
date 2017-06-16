@@ -32,7 +32,6 @@ import {TopBarSwitchBtnModule} from "../shared/topbar-switch-btn/topbar-switch-b
 import {SwitchBtnModule} from "../shared/switch-btn/switch-btn.module";
 import {ToolTipsModule} from "../shared/tooltips/tooltips.module";
 import {AnimationModule} from "../shared/animation/animation.module";
-import {AutoBlurModule} from "../shared/auto-blur/auto-blur.module";
 import {EditorToolBarComponent} from "./editor-tool-bar/editor-tool-bar.component";
 import {RecorderComponent} from "./editor-tool-bar/recorder/recorder.component";
 import {CommentApiService} from "../shared/api/comment/comment.service";
@@ -40,11 +39,8 @@ import {FileSelectorModule} from "../shared/file-selector/file-selector.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {AudioPlayerService} from "../shared/audio-player/audio-player.service";
 import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-info-upper.module";
-import {UtilsService} from "../shared/utils/utils";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
-import {DisplayWhenFocusModule} from "../shared/display-when-focus/display-when-focus.module";
-import {AutoresizeModule} from "../shared/autoresize/autoresize.module";
 import {LiveRoomService} from "./live-room.service";
 import {DraggableModule} from "../shared/draggable/draggable.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
@@ -61,6 +57,7 @@ import {WechatPayService} from "../shared/bridge/pay/wechat-pay.service";
 import {IosPayService} from "../shared/bridge/pay/ios-pay.service";
 import {PcPayService} from "../shared/bridge/pay/pc-pay.service";
 import {BubbleComponent} from "./timeline/message/bubble.component";
+import {FormModule} from "../shared/form/form.module";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -76,6 +73,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CommonModule,
     LiveRoomRoutingModule,
     FormsModule,
+    FormModule,
     ReactiveFormsModule,
     PipeModule,
     LoadingModule,
@@ -85,14 +83,11 @@ export class MessageHammerConfig extends HammerGestureConfig {
     TopBarSwitchBtnModule,
     ToolTipsModule,
     AnimationModule,
-    AutoBlurModule,
     FileSelectorModule,
     ScrollerModule,
     LiveRoomInfoUpperModule,
     CountDownModule,
     HamburgerMenuModule,
-    DisplayWhenFocusModule,
-    AutoresizeModule,
     DraggableModule,
     CommentInputModule,
     AtKeyBoardModule,

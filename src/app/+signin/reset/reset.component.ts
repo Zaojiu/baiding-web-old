@@ -1,27 +1,23 @@
 import {Component, OnInit} from '@angular/core';
-import {UserInfoModel} from "../shared/api/user-info/user-info.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {RegexpConst} from "../shared/utils/regexp";
-import {SenderApiService, SmsScene} from "../shared/api/sender/sender.api";
-import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
-import {UserInfoService} from "../shared/api/user-info/user-info.service";
+import {RegexpConst} from "../../shared/utils/regexp";
+import {SenderApiService, SmsScene} from "../../shared/api/sender/sender.api";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {ApiError} from "../../shared/api/code-map.enum";
 
 @Component({
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
+  templateUrl: './reset.component.html',
+  styleUrls: ['./reset.component.scss'],
 })
 
-export class SignupComponent implements OnInit {
+export class ResetPwdComponent implements OnInit {
   id: string;
-  userInfo: UserInfoModel;
   form: FormGroup;
-  phoneNumber: string;
+  phoneNumber = '';
   smsCode: string;
   password: string;
-  name: string;
-  company: string;
-  title: string;
   smsBtnText = '发送验证码';
   smsBtnAvailable = true;
   isSubmitting = false;
@@ -33,8 +29,6 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userInfo = this.route.snapshot.data['userInfo'];
-    this.redirectTo = decodeURIComponent(this.route.snapshot.params['redirectTo'] || '/');
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
@@ -49,23 +43,19 @@ export class SignupComponent implements OnInit {
         Validators.minLength(8),
         Validators.maxLength(32),
       ]),
-      'name': new FormControl(this.name, [
-        Validators.required,
-      ]),
-      'company': new FormControl(this.company, [
-        Validators.required,
-      ]),
-      'title': new FormControl(this.title, [
-        Validators.required,
-      ]),
     });
   }
 
+  clearError(controlKey: string, errorKey: string) {
+    const control = this.form.controls[controlKey];
+    const error = control.errors;
+    if (error) delete error[errorKey];
+  }
+
   validateAndSubmit() {
-    Object.keys(this.form.controls).forEach((key) => {
-      this.form.controls[key].markAsDirty();
-      this.form.controls[key].updateValueAndValidity();
-    });
+    this.form.markAsDirty();
+    this.form.markAsTouched();
+    this.form.updateValueAndValidity();
 
     if (this.form.invalid) return;
 
@@ -74,15 +64,22 @@ export class SignupComponent implements OnInit {
 
   submit() {
     this.isSubmitting = true;
-    this.tipsService.popup('绑定中...');
+    this.tipsService.popup('重置密码中...');
 
-    this.userInfoService.signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title).then(() => {
-      return this.userInfoService.getUserInfo(true);
-    }).then(() => {
-      this.tipsService.popup('绑定手机成功');
-      this.router.navigateByUrl(this.redirectTo);
-    }).catch((err) => {
-      throw err;
+    this.userInfoService.resetPassword(this.phoneNumber, this.smsCode, this.password).then(() => {
+      this.tipsService.popup('重置密码成功，请重新登录');
+      this.router.navigate(['/signin', {redirectTo: this.route.snapshot.params['redirectTo']}]);
+    }, err => {
+      const data = err.json();
+      if (data && data.code) {
+        switch (data.code) {
+          case ApiError.ErrSigninInvalidSmsCode:
+            this.form.controls['smsCode'].setErrors({wrongcode: true});
+            break;
+        }
+      }
+
+      return Promise.reject(err);
     }).finally(() => {
       this.isSubmitting = false;
     });
@@ -90,6 +87,7 @@ export class SignupComponent implements OnInit {
 
   get isMobileValid(): boolean {
     this.form.controls['phoneNumber'].markAsDirty();
+    this.form.controls['phoneNumber'].markAsTouched();
     this.form.controls['phoneNumber'].updateValueAndValidity();
     return this.form.controls['phoneNumber'].valid;
   }
@@ -103,7 +101,7 @@ export class SignupComponent implements OnInit {
 
     this.smsBtnAvailable = false;
 
-    this.senderApiService.sendSmsByLoginUser(this.phoneNumber, SmsScene.BindMobile).then(() => {
+    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.ResetPassWord).then(() => {
       let timer = null;
       let countDown = 60;
 

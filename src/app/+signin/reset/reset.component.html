@@ -1,0 +1,76 @@
+<div class="forget-pwd-container">
+  <form class="main-form" [formGroup]="form" name="form" (submit)="validateAndSubmit()" autofocus-first-invalid-input>
+    <div class="form-group mobile-group"
+         [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
+      <div class="input-group">
+        <input
+          #mobileInput
+          id="phoneNumber"
+          class="phoneNumber"
+          name="phoneNumber"
+          type="text"
+          formControlName="phoneNumber"
+          [(ngModel)]="phoneNumber"
+          auto-focus
+        >
+        <label class="required">手机号码</label>
+      </div>
+      <i class="bi bi-close-2" *ngIf="phoneNumber!==''" (click)="phoneNumber=''; mobileInput.focus();"></i>
+      <div *ngIf="form.controls['phoneNumber'].errors && form.controls['phoneNumber'].touched">
+        <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.required">请填写手机号码</p>
+        <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.pattern">手机号码格式错误，请重新填写</p>
+      </div>
+    </div>
+
+    <div class="form-group sms-code-group"
+         [ngClass]="{'has-error': form.controls['smsCode'].dirty && form.controls['smsCode'].invalid}">
+      <div class="input-group">
+        <input
+          #smsCodeInput
+          id="smsCode"
+          class="smsCode"
+          name="smsCode"
+          type="text"
+          formControlName="smsCode"
+          [(ngModel)]="smsCode"
+          (input)="clearError('smsCode', 'wrongcode')"
+        >
+        <label class="required">验证码</label>
+        <a class="sms-sender" [ngClass]="{'disabled': !smsBtnAvailable}" href=""
+           (click)="sendSMS();
+           form.controls['phoneNumber'].errors ? mobileInput.focus() : smsCodeInput.focus();
+           $event.preventDefault();
+        ">{{smsBtnText}}</a>
+      </div>
+      <div *ngIf="form.controls['smsCode'].errors && form.controls['smsCode'].touched">
+        <p class="helper error" *ngIf="form.controls['smsCode'].errors.required">请填写验证码</p>
+        <p class="helper error" *ngIf="form.controls['smsCode'].errors.pattern">手机验证码必须为6位数字</p>
+        <p class="helper error" *ngIf="form.controls['smsCode'].errors.wrongcode">验证码错误</p>
+      </div>
+    </div>
+
+    <div class="form-group"
+         [ngClass]="{'has-error': form.controls['password'].dirty && form.controls['password'].invalid}">
+      <div class="input-group">
+        <input
+          id="password"
+          class="password"
+          name="password"
+          type="password"
+          formControlName="password"
+          [(ngModel)]="password"
+        >
+        <label class="required">密码</label>
+      </div>
+      <div *ngIf="form.controls['password'].errors && form.controls['password'].touched">
+        <p class="helper error" *ngIf="form.controls['password'].errors.required">请填写密码</p>
+        <p class="helper error" *ngIf="form.controls['password'].errors.minlength">密码不能少于8位</p>
+        <p class="helper error" *ngIf="form.controls['password'].errors.maxlength">密码不能多于32位</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button class="button button-primary" [disabled]="isSubmitting">{{!isSubmitting ? '重置密码' : '重置密码中...'}}</button>
+    </div>
+  </form>
+</div>

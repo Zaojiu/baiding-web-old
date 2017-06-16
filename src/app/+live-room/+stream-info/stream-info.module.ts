@@ -6,7 +6,6 @@ import {StreamInfoComponent} from './stream-info.component';
 import {FormModule} from "../../shared/form/form.module";
 import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top-bar.module";
 import {FormsModule} from "@angular/forms";
-import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
 import {TimelineService} from "../timeline/timeline.service";
 
@@ -17,7 +16,6 @@ import {TimelineService} from "../timeline/timeline.service";
     StreamInfoRoutingModule,
     FormModule,
     LiveRoomTopBarModule,
-    AutoresizeModule,
     LoadingModule,
   ],
   declarations: [

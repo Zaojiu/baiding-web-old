@@ -1,0 +1,211 @@
+.signin-container {
+  position: relative;
+}
+
+.mobile-signin-container {
+  position: relative;
+
+  &.hide {
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s .3s, opacity .3s ease-out;
+  }
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .3s ease-in;
+  }
+
+  nav {
+    padding: 40px 30px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    a {
+      font-size: $font-size-xxlg;
+      color: rgb(144, 144, 144);
+      line-height: 1em;
+      text-decoration: none;
+      cursor: pointer;
+      transform: scale(.75);
+      transform-origin: left bottom;
+      transition: all .3s;
+
+      &:last-child {
+        transform-origin: right bottom;
+      }
+
+      &.active {
+        transform: scale(1);
+        color: $color-dark-gray;
+      }
+
+      &:active {
+        outline: 0;
+      }
+    }
+  }
+
+  form {
+    padding: 0 15px;
+
+    .form-group:first-child {
+      margin-top: 0;
+    }
+
+    .form-group:last-child {
+      margin-top: 50px;
+    }
+
+    .mobile-group {
+      position: relative;
+
+      .bi-close-2 {
+        position: absolute;
+        right: 0;
+        top: 22px;
+      }
+    }
+
+    .sms-code-group, .password-group {
+      position: relative;
+
+      .sms-sender, .forget-pwd {
+        position: absolute;
+        right: 0;
+        top: 24px;
+        color: $color-brand;
+        text-decoration: none;
+        font-size: $font-size-sm;
+
+        &.disabled {
+          opacity: .5;
+          color: $color-dark-gray;
+        }
+      }
+    }
+  }
+
+  .vendor-signin {
+    display: none;
+    margin: 80px 30px 30px;
+
+    @media (min-width: 415px) {
+      display: block;
+    }
+
+    h2 {
+      position: relative;
+      color: $color-dark-gray;
+      font-size: $font-size-lg;
+      text-align: center;
+      font-weight: normal;
+
+      &:before, &:after {
+        position: absolute;
+        content: '';
+        width: calc((100% - 130px) / 2);
+        top: 13px;
+        border-bottom: solid 1px rgb(225, 225, 225);
+      }
+
+      &:before {
+        left: 0;
+      }
+
+      &:after {
+        right: 0;
+      }
+    }
+
+    .vendor-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+        color: rgb(144, 144, 144);
+        font-size: $font-size-sm;
+
+        .bi-wechat {
+          font-size: 50px;
+          color: #55C13D;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}
+
+.wechat-signin-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity .3s;
+  padding: 30px;
+
+  &.show {
+    opacity: 1;
+  }
+
+  .qrcode-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 420px;
+
+    .loading-container, .retry {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transition: opacity .3s;
+      font-size: $font-size-sm;
+      color: $color-gray;
+
+      &.show {
+        opacity: 1;
+      }
+
+      .loading {
+        margin-bottom: 10px;
+      }
+    }
+
+    .retry {
+      white-space: nowrap;
+      font-size: $font-size-sm;
+      color: $color-dark-gray;
+
+      a {
+        margin-left: 5px;
+        color: $color-brand;
+      }
+    }
+
+    iframe {
+      height: 420px;
+      opacity: 0;
+      transition: opacity .3s;
+
+      &.show {
+        opacity: 1;
+      }
+    }
+  }
+}

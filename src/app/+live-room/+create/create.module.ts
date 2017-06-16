@@ -8,8 +8,6 @@ import {LiveRoomTopBarModule} from "../../shared/live-room-top-bar/live-room-top
 import {FormModule} from "../../shared/form/form.module";
 import {CreateComponent} from "./create.component";
 import {CreateGuard} from "../../shared/guard/create.guard";
-import {AutofocusFirstInvalidInputModule} from "../../shared/first-invalid/first-invalid.module";
-import {AutoresizeModule} from "../../shared/autoresize/autoresize.module";
 import {UploadApiService} from "../../shared/api/upload/upload.api";
 import {TimelineService} from "../timeline/timeline.service";
 
@@ -20,9 +18,7 @@ import {TimelineService} from "../timeline/timeline.service";
     FileSelectorModule,
     LiveRoomTopBarModule,
     ReactiveFormsModule,
-    AutofocusFirstInvalidInputModule,
     FormModule,
-    AutoresizeModule,
   ],
   declarations: [
     CreateComponent
