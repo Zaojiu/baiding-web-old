@@ -2,6 +2,7 @@ import {Component}      from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {UtilsService} from "../shared/utils/utils";
 import {Location} from "@angular/common";
+import {host} from "../../environments/environment";
 
 @Component({
   templateUrl: './reload.component.html',
@@ -15,12 +16,14 @@ export class ReloadComponent {
   }
 
   goBack() {
-    const backTo = decodeURIComponent(this.route.snapshot.queryParams['backTo']);
+    let backTo = decodeURIComponent(this.route.snapshot.queryParams['backTo']);
     if (backTo) {
+      backTo = backTo.replace(host.self, '');
+
       if (backTo.startsWith('/')) {
         this.router.navigateByUrl(backTo);
       } else {
-        location.href = backTo;
+        this.router.navigate(['/']);
       }
     } else {
       this.location.back();
