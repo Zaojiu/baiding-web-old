@@ -43,7 +43,7 @@ export class UserInfoService {
     }
     const header = new Headers();
     header.append('noIntercept', `${noHandleError}`);
-    
+
     return this.http.get(`${environment.config.host.io}/api/user`, {headers: header}).toPromise().then(res => {
       let data = res.json();
       let userInfo = this.parseUserInfo(data);

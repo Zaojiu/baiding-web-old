@@ -2,6 +2,7 @@ import {Component, Input, AfterViewInit, ViewChild} from '@angular/core';
 import {UserInfoModel} from '../api/user-info/user-info.model';
 import {Router} from '@angular/router';
 import {AutoOpacityDownDirective} from "../animation/auto-opacity-down/auto-opacity-down.directive";
+import {AuthBridge} from "../bridge/auth.interface";
 
 @Component({
   selector: 'hamburger-menu',
@@ -17,7 +18,7 @@ export class HamburgerMenuComponent implements AfterViewInit {
   @ViewChild(AutoOpacityDownDirective) autoFade: AutoOpacityDownDirective;
   timer: any;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthBridge) {}
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -41,7 +42,7 @@ export class HamburgerMenuComponent implements AfterViewInit {
   }
 
   gotoSignin() {
-    this.router.navigate(['/signin', {redirectTo: '/'}]);
+    this.authService.auth('/');
   }
 
   createRoom() {
