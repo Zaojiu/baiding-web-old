@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {
@@ -36,13 +36,17 @@ export class UserInfoService {
 
   }
 
-  getUserInfo(needRefresh?: boolean): Promise<UserInfoModel> {
+  getUserInfo(needRefresh?: boolean, noHandleError = false): Promise<UserInfoModel> {
     let userInfoCache = StoreService.get('userinfo') as UserInfoModel;
     if (userInfoCache && !needRefresh) {
       return Promise.resolve(userInfoCache);
     }
+    const header = new Headers();
+    header.append('noIntercept', `${noHandleError}`);
 
-    return this.http.get(`${environment.config.host.io}/api/user`).toPromise().then(res => {
+    console.log('no handle error', noHandleError);
+
+    return this.http.get(`${environment.config.host.io}/api/user`, {headers: header}).toPromise().then(res => {
       let data = res.json();
       let userInfo = this.parseUserInfo(data);
       StoreService.set('userinfo', userInfo);

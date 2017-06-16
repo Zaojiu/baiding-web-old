@@ -12,13 +12,20 @@ const whiteList = [{
   method: 'POST',
 }];
 
-@Injectable()
-export class CustomHttp extends Http {
-  constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private operationTipsService: OperationTipsService) {
-    super(backend, defaultOptions);
+const handleInterceptOption = (url: string | Request, options?: RequestOptionsArgs) => {
+  let noIntercept = options && options.headers && options.headers.get('noIntercept');
+  if (noIntercept) {
+    options.headers.delete('noIntercept');
+  } else {
+    if (url instanceof Request) {
+      noIntercept = url.headers.get('noIntercept');
+      if (noIntercept) url.headers.delete('noIntercept');
+    }
   }
 
-  request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
+  let noInterceptBool = noIntercept === 'true';
+
+  if (!noInterceptBool) {
     const urlStr = typeof url === 'string' ? url : url.url;
     const method = typeof url === 'string' ? options.method : url.method;
     let methodStr = '';
@@ -45,33 +52,46 @@ export class CustomHttp extends Http {
         methodStr = 'PUT';
         break;
     }
-    return this.intercept(super.request(url, options), urlStr, methodStr);
+    for (let item of whiteList) {
+      if (item.regexp.test(urlStr) && method === item.method) {
+        noInterceptBool = true;
+        break;
+      }
+    }
+  }
+
+  return noInterceptBool;
+};
+
+@Injectable()
+export class CustomHttp extends Http {
+  constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private operationTipsService: OperationTipsService) {
+    super(backend, defaultOptions);
+  }
+
+  request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
+    let noIntercept = handleInterceptOption(url, options);
+    return noIntercept ? super.request(url, options) : this.intercept(super.request(url, options));
   }
 
   get(url: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.get(url, options), url, 'GET');
+    return super.get(url, options);
   }
 
   post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.post(url, body, options), url, 'POST');
+    return super.post(url, body, options);
   }
 
   put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.put(url, body, options), url, 'PUT');
+    return super.put(url, body, options);
   }
 
   delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
-    return this.intercept(super.delete(url, options), url, 'DELETE');
+    return super.delete(url, options);
   }
 
-  intercept(observable: Observable<Response>, url: string, method: string): Observable<Response> {
+  intercept(observable: Observable<Response>): Observable<Response> {
     return observable.catch((err, source) => {
-      for (let item of whiteList) {
-        if (item.regexp.test(url) && method === item.method) {
-          return Observable.throw(err);
-        }
-      }
-
       const data = err.json();
       if (data) {
         const code = data && data.code ? data.code : 0;
