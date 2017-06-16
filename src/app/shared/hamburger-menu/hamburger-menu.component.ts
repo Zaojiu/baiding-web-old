@@ -40,20 +40,34 @@ export class HamburgerMenuComponent implements AfterViewInit {
     return this.isActivated = !this.isActivated;
   }
 
+  gotoSignin() {
+    this.router.navigate(['/signin', {redirectTo: '/'}]);
+  }
+
   createRoom() {
+    if (!this.userInfo) {
+      this.gotoSignin();
+      return;
+    }
+
     let from = this.liveId ? {from: encodeURIComponent(`lives/${this.liveId}`)} : this.from ? {from: this.from} : {from: encodeURIComponent(`info-center/${this.userInfo.uid}`)};
 
-    if (this.userInfo && this.userInfo.canPublish) {
-      this.router.navigate([`lives/create`, from]);
+    if (this.userInfo.canPublish) {
+      this.router.navigate([`/lives/create`, from]);
     } else {
-      this.router.navigate([`lives/apply`, from]);
+      this.router.navigate([`/lives/apply`, from]);
     }
 
     this.switch();
   }
 
   gotoInfoCenter() {
-    this.router.navigate([`info-center/${this.userInfo.uid}`]);
+    if (!this.userInfo) {
+      this.gotoSignin();
+      return;
+    }
+
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
 
     this.switch();
   }
