@@ -33,7 +33,7 @@ export class InviteComponent implements OnInit {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.route.snapshot.data['title'] = `${this.liveInfo.subject}的邀请函`;
 
-    if (UtilsService.isInApp) this.router.navigate([`lives/${this.liveId}/invitation`, {token: this.token}]); // still needed?
+    if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token}]); // still needed?
 
     if (this.token) {
       this.setShareInfo();
@@ -53,11 +53,11 @@ export class InviteComponent implements OnInit {
   }
 
   backToLive() {
-    this.router.navigate([`lives/${this.liveId}`]);
+    this.router.navigate([`/lives/${this.liveId}`]);
   }
 
   getShareUri(): string {
-    let uriTree = this.router.createUrlTree([`lives/${this.liveId}/invitation`, {token: this.token}]);
+    let uriTree = this.router.createUrlTree([`/lives/${this.liveId}/invitation`, {token: this.token}]);
     let path = this.router.serializeUrl(uriTree);
     return `${location.protocol}//${location.hostname}${path}`;
   }

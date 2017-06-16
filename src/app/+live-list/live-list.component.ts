@@ -10,7 +10,7 @@ import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {LiveStatus} from "../shared/api/live/live.enums";
 import {DurationFormaterPipe} from "../shared/pipe/time.pipe";
 import {UserInfoModel} from "../shared/api/user-info/user-info.model";
-import {environment} from "../../environments/environment";
+import {appConfig} from "../../environments/environment";
 
 declare var $: any;
 declare var Waypoint: any;
@@ -41,7 +41,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];
 
-    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}正在使用${environment.config.name}，发现更多经验分享`;
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo ? this.userInfo.nick : '我'}正在使用${appConfig.name}，发现更多经验分享`;
 
     this.timer = setInterval(() => this.timeNow = UtilsService.now.toString(), 1000);
   }
@@ -87,11 +87,11 @@ export class LiveListComponent implements OnInit, OnDestroy {
   }
 
   gotoLiveRoomInfo(liveId: string) {
-    this.router.navigate(([`lives/${liveId}/info`]));
+    this.router.navigate([`/lives/${liveId}/info`]);
   }
 
   gotoInfoCenter(uid: number) {
-    this.router.navigate(([`info-center/${uid}`]));
+    this.router.navigate(([`/info-center/${uid}`]));
   }
 
   getLists(markerId: string, size: number): Promise<LiveInfoModel[]> {

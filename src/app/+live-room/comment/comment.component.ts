@@ -315,7 +315,7 @@ export class CommentComponent implements OnInit, OnDestroy {
           } else {
             query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
           }
-          this.router.navigate([`lives/${this.streamId}/push-comment`, query]);
+          this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
         });
       } else {
 
@@ -327,7 +327,7 @@ export class CommentComponent implements OnInit, OnDestroy {
           } else {
             query.marker = `$gte${preFiveMessage[preFiveMessage.length - 1].createdAt}`;
           }
-          this.router.navigate([`lives/${this.streamId}/push-comment`, query]);
+          this.router.navigate([`/lives/${this.streamId}/push-comment`, query]);
         });
       }
 

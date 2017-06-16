@@ -182,7 +182,7 @@ export class PushCommentComponent implements OnInit, OnDestroy {
   }
 
   pushComment(comment: CommentModel) {
-    this.router.navigate([`lives/${this.liveId}/post`, {'comment_id': comment.id}]);
+    this.router.navigate([`/lives/${this.liveId}/post`, {'comment_id': comment.id}]);
   }
 
   parseContent(content: string): SafeHtml {
@@ -289,6 +289,6 @@ export class PushCommentComponent implements OnInit, OnDestroy {
     query.uids = uids.join(',');
     this.uids = uidNums;
 
-    this.router.navigate([`lives/${this.liveId}/push-comment`, query]);
+    this.router.navigate([`/lives/${this.liveId}/push-comment`, query]);
   }
 }

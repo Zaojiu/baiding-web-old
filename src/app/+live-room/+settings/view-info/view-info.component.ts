@@ -25,6 +25,6 @@ export class ViewInfoComponent implements OnInit {
   }
 
   gotoEdit() {
-    this.router.navigate([`lives/${this.liveId}/settings/edit-info`]);
+    this.router.navigate([`/lives/${this.liveId}/settings/edit-info`]);
   }
 }

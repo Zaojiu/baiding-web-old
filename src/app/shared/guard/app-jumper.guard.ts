@@ -102,7 +102,7 @@ export class AppJumperGuard implements CanActivate {
           goto(model, resolve);
         }, (err) => {
           if (err.status === 404) {
-            this.router.navigate([`404`]);
+            this.router.navigate([`/404`]);
           } else if (err.status !== 401) {
             this.toolTips.popup('获取数据错误, 请重试');
           }
@@ -133,11 +133,11 @@ export class AppJumperGuard implements CanActivate {
       }, (err) => {
         const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
         if (err.status === 404) {
-          this.router.navigate([`404`]);
+          this.router.navigate([`/404`]);
         } else if (err.status === 401) {
           this.authService.auth(to);
         } else {
-          this.router.navigate([`reload`], {queryParams: {backTo: to}});
+          this.router.navigate([`/reload`], {queryParams: {backTo: to}});
         }
         return null;
       });

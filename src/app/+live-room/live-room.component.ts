@@ -196,7 +196,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   getShareUri(): string {
     let shareQuery = this.shareService.makeShareQuery('streams', this.liveInfo.id);
-    let uriTree = this.router.createUrlTree([`lives/${this.id}/info`], {queryParams: shareQuery});
+    let uriTree = this.router.createUrlTree([`/lives/${this.id}/info`], {queryParams: shareQuery});
     let path = this.router.serializeUrl(uriTree);
     return `${location.protocol}//${location.hostname}${path}`;
   }

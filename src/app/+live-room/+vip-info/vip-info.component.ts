@@ -105,7 +105,7 @@ export class VipInfoComponent implements OnInit {
   }
 
   gotoInvitation(token: string) {
-    this.router.navigate([`lives/${this.liveId}/invitation`, {token: token}]);
+    this.router.navigate([`/lives/${this.liveId}/invitation`, {token: token}]);
   }
 
   submit() {
@@ -148,7 +148,7 @@ export class VipInfoComponent implements OnInit {
 
       return promise;
     }).then((model) => {
-      this.router.navigate(([`lives/${this.liveId}/invitation`, {token: model.token}]));
+      this.router.navigate(([`/lives/${this.liveId}/invitation`, {token: model.token}]));
     }).finally(() => {
       this.isSubmitting = false;
     });
