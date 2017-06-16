@@ -11,13 +11,17 @@ import {Location} from "@angular/common";
 export class ReloadComponent {
   isInApp = UtilsService.isInApp;
 
-  constructor(private location: Location, private route: ActivatedRoute) {
+  constructor(private location: Location, private route: ActivatedRoute, private router: Router) {
   }
 
   goBack() {
-    const backTo = this.route.snapshot.queryParams['backTo']
+    const backTo = decodeURIComponent(this.route.snapshot.queryParams['backTo']);
     if (backTo) {
-      location.href = decodeURIComponent(backTo);
+      if (backTo.startsWith('/')) {
+        this.router.navigateByUrl(backTo);
+      } else {
+        location.href = backTo;
+      }
     } else {
       this.location.back();
     }
