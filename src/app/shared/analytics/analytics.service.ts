@@ -3,7 +3,8 @@ import { Http, URLSearchParams } from '@angular/http';
 import { environment } from '../../../environments/environment';
 import { UtilsService } from "../utils/utils";
 
-declare var wx: any;
+declare const wx: any;
+declare const trackJs: any;
 
 enum App {
   AppH5 = 1,
@@ -315,6 +316,14 @@ export class AnalyticsService {
     }
     if (environment.production) {
       this.http.post(`${environment.config.host.io}/api/stats/record`, body).toPromise();
+      const userCookie = UtilsService.readCookie('_cur_user');
+      const userObj = UtilsService.serializeObj(userCookie);
+      const uid = userObj['uid'];
+      const sessCookie = UtilsService.readCookie('_sess');
+      const sessObj = UtilsService.serializeObj(sessCookie);
+      const sessId = sessObj['v'];
+      if (trackJs && uid) trackJs.configure({ userId: uid});
+      if (trackJs && sessId) trackJs.configure({ sessionId: sessId});
     }
   }
 }
