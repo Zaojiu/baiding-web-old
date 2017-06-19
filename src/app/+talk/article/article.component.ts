@@ -273,7 +273,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   gotoComment(id?: string, nick?: string, content?: string) {
-    let uriTree = this.router.createUrlTree([`talks/${this.id}/post-comment`]);
+    let uriTree = this.router.createUrlTree([`/talks/${this.id}/post-comment`]);
     let path = this.router.serializeUrl(uriTree);
     if (!this.checkSignIn(`${location.protocol}//${location.hostname}${path}`)) return;
 

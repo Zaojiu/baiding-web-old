@@ -47,14 +47,14 @@ export class EditInfoComponent implements OnInit {
   }
 
   backToViewInfo() {
-    this.router.navigate([`info-center/${this.userInfo.uid}`]);
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 
   submit() {
     if (this.form.invalid) return;
 
     this.userInfoService.postUserInfo(this.nameContent, this.introContent).then(()=> {
-      this.router.navigate([`info-center/${this.userInfo.uid}`]);
+      this.router.navigate([`/info-center/${this.userInfo.uid}`]);
     });
   }
 }

@@ -69,27 +69,27 @@ export class SettingsComponent implements OnInit {
   }
 
   gotoInvitationInfo() {
-    this.router.navigate([`lives/${this.liveId}/vip-info`]);
+    this.router.navigate([`/lives/${this.liveId}/vip-info`]);
   }
 
   gotoRoomInfo() {
-    this.router.navigate([`lives/${this.liveId}/settings/view-info`]);
+    this.router.navigate([`/lives/${this.liveId}/settings/view-info`]);
   }
 
   gotoCreateOrApply() {
     if (this.userInfo.canPublish) {
-      this.router.navigate([`lives/create`, {liveId: this.liveId}]);
+      this.router.navigate([`/lives/create`, {liveId: this.liveId}]);
     } else {
-      this.router.navigate([`lives/apply`, {from: encodeURIComponent(`lives/${this.liveId}`)}]);
+      this.router.navigate([`/lives/apply`, {from: encodeURIComponent(`lives/${this.liveId}`)}]);
     }
   }
 
   gotoInvitation(token: string) {
-    this.router.navigate([`lives/${this.liveId}/invitation`, {token: token}]);
+    this.router.navigate([`/lives/${this.liveId}/invitation`, {token: token}]);
   }
 
   gotoInfoCenter() {
-    this.router.navigate([`info-center/${this.userInfo.uid}`]);
+    this.router.navigate([`/info-center/${this.userInfo.uid}`]);
   }
 
   closeWindow() {

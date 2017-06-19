@@ -242,7 +242,7 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   gotoInvitationInfo() {
-    this.router.navigate([`lives/${this.liveId}/vip-info`]);
+    this.router.navigate([`/lives/${this.liveId}/vip-info`]);
   }
 
   closeLive() {
@@ -256,15 +256,15 @@ export class EditorToolBarComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   gotoRoomInfo() {
-    this.router.navigate([`lives/${this.liveId}/info`]);
+    this.router.navigate([`/lives/${this.liveId}/info`]);
   }
 
   gotoEditInfo() {
-    this.router.navigate([`lives/${this.liveId}/settings/edit-info`]);
+    this.router.navigate([`/lives/${this.liveId}/settings/edit-info`]);
   }
 
   gotoStreamInfo() {
-    this.router.navigate([`lives/${this.liveId}/stream-info`]);
+    this.router.navigate([`/lives/${this.liveId}/stream-info`]);
   }
 
   get isAudioAutoPlay() {

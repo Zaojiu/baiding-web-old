@@ -2,7 +2,6 @@ import {Component, ViewChild, OnInit, OnDestroy} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../shared/api/live/live.service";
 import {LiveInfoModel} from "../shared/api/live/live.model";
-import {LiveStatus} from '../shared/api/live/live.enums';
 import {UserInfoModel, UserPublicInfoModel} from "../shared/api/user-info/user-info.model";
 import {UtilsService} from "../shared/utils/utils";
 import {DomSanitizer, SafeUrl, SafeStyle} from "@angular/platform-browser";
@@ -48,7 +47,10 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
 
     this.uidParamSub = this.route.params.subscribe((params) => {
       this.uid = +params['uid'];
-      if (!this.uid) this.router.navigate([`404`]);
+      if (!this.uid) {
+        this.router.navigate([`/404`]);
+        return;
+      }
       this.initData(this.uid);
     });
 
@@ -92,7 +94,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       );
       return;
     }, () => {
-      this.router.navigate([`404`]);
+      this.router.navigate([`/404`]);
       return;
     });
   }
@@ -172,7 +174,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   goToEdit() {
-    this.router.navigate([`info-center/edit-info`]);
+    this.router.navigate([`/info-center/edit-info`]);
   }
 
   popupShare() {
@@ -180,24 +182,24 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   gotoVipInfo(liveId: string) {
-    this.router.navigate([`lives/${liveId}/vip-info`, {from: this.from}]);
+    this.router.navigate([`/lives/${liveId}/vip-info`, {from: this.from}]);
   }
 
   goEditLiveRoom(liveId: string) {
-    this.router.navigate([`lives/${liveId}/settings/edit-info`, {from: this.from}]);
+    this.router.navigate([`/lives/${liveId}/settings/edit-info`, {from: this.from}]);
   }
 
   gotoInfoCenter(uid: number) {
     if (this.pageUserInfo.uid === uid) return;
 
-    this.router.navigate([`info-center/${uid}`]);
+    this.router.navigate([`/info-center/${uid}`]);
   }
 
   gotoLiveRoom(liveId: string) {
     if (this.pageUserInfo.uid === this.currentUserInfo.uid) {
-      this.router.navigate(([`lives/${liveId}`]));
+      this.router.navigate(([`/lives/${liveId}`]));
     } else {
-      this.router.navigate(([`lives/${liveId}/info`]));
+      this.router.navigate(([`/lives/${liveId}/info`]));
     }
   }
 

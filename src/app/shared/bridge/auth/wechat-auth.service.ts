@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {environment} from "../../../../environments/environment";
+import {environment, host} from "../../../../environments/environment";
 import {AuthBridge} from "../auth.interface";
 
 @Injectable()
@@ -9,6 +9,7 @@ export class WechatAuthService implements AuthBridge {
 
   auth(redirectTo?: string) {
     redirectTo = redirectTo || location.href;
-    location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${redirectTo}`;
+    if (redirectTo.startsWith('/')) redirectTo = `${host.self}${redirectTo}`;
+    location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(redirectTo)}`;
   }
 }

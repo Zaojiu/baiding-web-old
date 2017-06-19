@@ -74,7 +74,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   getShareUri(): string {
     let shareQuery = this.shareService.makeShareQuery('streams', this.liveInfo.id);
-    let uriTree = this.router.createUrlTree([`lives/${this.liveInfo.id}/info`], {queryParams: shareQuery});
+    let uriTree = this.router.createUrlTree([`/lives/${this.liveInfo.id}/info`], {queryParams: shareQuery});
     let path = this.router.serializeUrl(uriTree);
     return `${location.protocol}//${location.hostname}${path}`;
   }
@@ -138,7 +138,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   gotoLive() {
-    this.router.navigate([`lives/${this.liveInfo.id}`]);
+    this.router.navigate([`/lives/${this.liveInfo.id}`]);
   }
 
   showQrcode() {

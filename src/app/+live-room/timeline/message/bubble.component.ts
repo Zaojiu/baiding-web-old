@@ -116,7 +116,7 @@ export class BubbleComponent implements AfterViewInit, OnDestroy {
   }
 
   goToShare() {
-    this.router.navigate([`lives/${this.liveInfo.id}/share/${this.message.id}`]);
+    this.router.navigate([`/lives/${this.liveInfo.id}/share/${this.message.id}`]);
   }
 
   avatarTouched(userInfo: UserInfoModel) {

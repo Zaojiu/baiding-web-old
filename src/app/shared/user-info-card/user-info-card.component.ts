@@ -33,6 +33,6 @@ export class UserInfoCardComponent implements OnInit {
   }
 
   gotoInfoCenter() {
-    if (!this.isInApp) this.router.navigate([`info-center/${this.publicUserInfo.uid}`]);
+    if (!this.isInApp) this.router.navigate([`/info-center/${this.publicUserInfo.uid}`]);
   }
 }

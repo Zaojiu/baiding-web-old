@@ -25,7 +25,7 @@ export class RoleAuthGuard implements CanActivate {
         return true;
       })
     }, (err) => {
-      const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}/info`);
+      const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
       if (err.status === 401) {
         this.authService.auth(to)
       } else if (err.status === 404) {
