@@ -14,13 +14,13 @@ import {MessageApiService} from "../shared/api/message/message.api";
 import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.model";
 import {UtilsService} from "../shared/utils/utils";
 import {appConfig} from "../../environments/environment";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {DomSanitizer} from "@angular/platform-browser";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {TimelineComponent} from "./timeline/timeline.component";
 import {VideoService} from "../shared/video-player/video-player.service";
 import {ModalService} from "../shared/modal/modal.service";
-import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
-import { AnalyticsService, OnlineService, OnlineParams, MediaInfo } from "../shared/analytics/analytics.service"
+import {VideoPlayerComponent} from "../shared/video-player/video-player.component";
+import {AnalyticsService, OnlineService, OnlineParams, MediaInfo} from "../shared/analytics/analytics.service"
 import {ModalLink} from "../shared/modal/modal.model";
 
 @Component({

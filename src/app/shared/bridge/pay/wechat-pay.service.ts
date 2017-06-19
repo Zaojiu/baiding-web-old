@@ -31,6 +31,10 @@ export class WechatPayService implements PayBridge {
           return '';
         }
 
+        if (!(<any>window).WeixinJSBridge) {
+          reject('weixin_js_bridge_not_found');
+        }
+
         (<any>window).WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
             "appId": wxPayReq.appId,     //公众号名称，由商户传入
