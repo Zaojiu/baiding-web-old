@@ -73,14 +73,14 @@ export class WechatConfigService {
     if (!this.needResign) return Promise.resolve();
 
     return new Promise<void>((resolve, reject) => {
-      wx.error(reason => {
-        console.log('wx err:', reason);
+      wx.error(err => {
+        console.log('wx err:', err);
 
-        if (reason.errMsg === 'config:invalid signature') {
+        if (err.errMsg === 'config:invalid signature') {
           this.configWechat(true);
         } else {
           this.tipsService.popup('微信初始化失败, 请刷新页面');
-          throw new Error(reason);
+          throw new Error(err && err.errMsg ? err.errMsg : err);
         }
       });
 
