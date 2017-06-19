@@ -90,3 +90,91 @@ describe('utils parse link test', () => {
     expect(parser(content)).toEqual(expected);
   }));
 });
+
+describe('utils serializeObj test', () => {
+  let parser = null;
+
+  beforeEach(() => {
+    parser = UtilsService.serializeObj;
+  });
+
+  it(`positive parse ''`, async(() => {
+    const content = '';
+    const expected = {};
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse 'a=b'`, async(() => {
+    const content = 'a=b';
+    const expected = {
+      'a': 'b',
+    };
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse 'a=b&c=1&d=2 3'`, async(() => {
+    const content = 'a=b&c=1&d=2%203';
+    const expected = {
+      'a': 'b',
+      'c': '1',
+      'd': '2 3'
+    };
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse 'a='`, async(() => {
+    const content = 'a=';
+    const expected = {'a': ''};
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse '=b'`, async(() => {
+    const content = '=b';
+    const expected = {'': 'b'};
+    expect(parser(content)).toEqual(expected);
+  }));
+});
+
+describe('utils deserializeObj test', () => {
+  let parser = null;
+
+  beforeEach(() => {
+    parser = UtilsService.deserializeObj;
+  });
+
+  it(`positive parse {}`, async(() => {
+    const content = {};
+    const expected = '';
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse {'a': 'b'}`, async(() => {
+    const content = {
+      'a': 'b',
+    };
+    const expected = 'a=b';
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse '{'a': 'b', 'c': '1', 'd': '2 3'}'`, async(() => {
+    const content = {
+      'a': 'b',
+      'c': '1',
+      'd': '2 3'
+    };
+    const expected = 'a=b&c=1&d=2%203';
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse {'a': undefined}`, async(() => {
+    const content = {'a': (<any>undefined)};
+    const expected = 'a=';
+    expect(parser(content)).toEqual(expected);
+  }));
+
+  it(`positive parse {undefined: 'b'}`, async(() => {
+    const content = {[(<any>undefined)]: 'b'};
+    const expected = '=b';
+    expect(parser(content)).toEqual(expected);
+  }));
+});
