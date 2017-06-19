@@ -2,6 +2,7 @@
   display: block;
   height: 41px;
   width: 100%;
+  padding: 0 12px;
   border-radius: 2px;
   font-size: 17px;
   line-height: 41px;
@@ -15,5 +16,11 @@
     background-color: $color-brand;
     border: #31B5A5;
     color: #fff;
+  }
+
+  &.button-outline {
+    background-color: transparent;
+    border: solid 1px change_color($color-gray3, $alpha: .5);
+    color: $color-dark-gray;
   }
 }
