@@ -124,11 +124,13 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
       if (reason === 'cancel') {
         this.paidStatus = this.paidEnums.None;
         this.paidShown = false;
-      } else if (reason === 'timeout') {
-        this.operationTipsService.popup("支付超时，请重新支付");
-        this.paidStatus = this.paidEnums.Failure;
-        this.paidShown = true;
       } else {
+        if (reason === 'timeout') {
+          this.operationTipsService.popup("支付超时，请重新支付");
+        } else if (reason === 'weixin_js_bridge_not_found') {
+          this.operationTipsService.popup("微信支付初始化失败，请刷新页面重试");
+        }
+
         this.paidStatus = this.paidEnums.Failure;
         this.paidShown = true;
       }

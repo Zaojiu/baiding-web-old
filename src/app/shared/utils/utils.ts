@@ -2,8 +2,8 @@ interface Window {
   navigator: any;
 }
 
-declare var window: Window;
-declare var DocumentTouch: any;
+declare const window: Window;
+declare const DocumentTouch: any;
 
 export class UrlModel {
   protocol: string;
@@ -106,5 +106,36 @@ export class UtilsService {
   static randomId(size = 10, dic?: string): string {
     let defaultDic: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     return _.sampleSize<string>((dic || defaultDic).split(''), size).join('');
+  }
+
+  static serializeObj(source: string): {[key: string]: string} {
+    const kvArr = source.split('&');
+    const target: {[key: string]: string} = {};
+    for (let kv of kvArr) {
+      const kvPair = kv.split('=');
+      if (kvPair.length === 2) target[decodeURIComponent(kvPair[0])] = decodeURIComponent(kvPair[1]);
+    }
+    return target;
+  }
+
+  static deserializeObj(source: {[key: string]: string}): string {
+    return Object.keys(source).map((k) => {
+      let kStr = encodeURIComponent(k);
+      if (kStr === 'undefined') kStr = '';
+      let vStr = encodeURIComponent(source[k]);
+      if (vStr === 'undefined') vStr = '';
+      return `${kStr}=${vStr}`;
+    }).join('&')
+  }
+
+  static readCookie(name: string): string {
+    const nameEQ = encodeURIComponent(name) + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return '';
   }
 }

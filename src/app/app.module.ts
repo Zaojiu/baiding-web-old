@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule, Title} from '@angular/platform-browser';
 import {HttpModule, BrowserXhr, XHRBackend, Http, RequestOptions} from '@angular/http';
 
-import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
+import {Angulartics2Module, Angulartics2GoogleTagManager} from 'angulartics2';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app.routes';
@@ -56,8 +56,10 @@ import {CustomHttp} from "./shared/api/custom-http.service";
 import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
 import {TalkService} from "./shared/api/talk/talk.api";
 import {VideoService} from "./shared/video-player/video-player.service";
-import { AnalyticsService } from "./shared/analytics/analytics.service"
+import {AnalyticsService} from "./shared/analytics/analytics.service"
 import {BindMobileGuard} from "./shared/guard/bind-mobile.guard";
+import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service";
+
 
 @NgModule({
   imports: [
@@ -124,7 +126,8 @@ import {BindMobileGuard} from "./shared/guard/bind-mobile.guard";
     BottomPopupSelectorService,
     SharePopupService,
     ModalService,
-    {provide: BrowserXhr, useClass: CORSBrowserXHR}
+    {provide: BrowserXhr, useClass: CORSBrowserXHR},
+    {provide: ErrorHandler, useClass: TrackJsErrorHandler}
   ],
   bootstrap: [AppComponent]
 })
