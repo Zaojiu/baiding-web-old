@@ -58,6 +58,7 @@ import {IosPayService} from "../shared/bridge/pay/ios-pay.service";
 import {PcPayService} from "../shared/bridge/pay/pc-pay.service";
 import {BubbleComponent} from "./timeline/message/bubble.component";
 import {FormModule} from "../shared/form/form.module";
+import {LiveRoomTitleResolver} from "../shared/guard/title.resolver";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -129,6 +130,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     WechatPayService,
     IosPayService,
     PcPayService,
+    LiveRoomTitleResolver,
     {provide: PayBridge, useFactory: payServiceFactory, deps: [WechatPayService, IosPayService, PcPayService]},
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig}
   ]

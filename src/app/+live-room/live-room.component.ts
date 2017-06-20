@@ -69,7 +69,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
-    this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.setShareInfo();
     this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.joinLiveRoom().then(() => {

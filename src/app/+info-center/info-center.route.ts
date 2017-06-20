@@ -5,6 +5,7 @@ import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {AuthGuard} from "../shared/guard/auth.guard";
 import {UserInfoResolver} from "../shared/guard/user-info.resolver";
 import {BindMobileGuard} from "../shared/guard/bind-mobile.guard";
+import {UserNickResolver} from "../shared/guard/title.resolver";
 
 const route: Routes = [
   {
@@ -24,9 +25,9 @@ const route: Routes = [
     canActivate: [AuthGuard, BindMobileGuard],
     resolve: {
       userInfo: UserInfoResolver,
+      title: UserNickResolver,
     },
     data: {
-      title: '个人话题间列表',
       isAsyncShareInfo: true,
     }
   },

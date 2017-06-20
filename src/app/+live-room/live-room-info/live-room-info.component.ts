@@ -53,7 +53,6 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
       this.paidShown = true;
     }
 
-    this.route.snapshot.data['title'] = this.liveInfo.subject; // 设置页面标题
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;
     this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;

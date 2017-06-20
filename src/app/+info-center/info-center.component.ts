@@ -85,7 +85,6 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
       this.pageUserInfo = publicUserInfo;
       this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${publicUserInfo.avatar})`);
       this.from = encodeURIComponent(`info-center/${uid}`);
-      this.titleService.set(`${this.pageUserInfo.nick}的${environment.config.name}`); // 设置页面标题
       this.shareService.setShareInfo(
         `${this.pageUserInfo.nick}等你加入我的话题讨论`,
         environment.config.slogan,

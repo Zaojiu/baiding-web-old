@@ -13,6 +13,7 @@ const route: Routes = [
     component: VipInfoComponent,
     data: {
       isInheritShareInfo: true,
+      title: '嘉宾信息',
     },
     resolve: {
       liveInfo: LiveInfoResolver,

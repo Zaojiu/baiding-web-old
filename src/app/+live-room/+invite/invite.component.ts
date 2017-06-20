@@ -31,7 +31,6 @@ export class InviteComponent implements OnInit {
     this.token = this.route.snapshot.params['token'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.route.snapshot.data['title'] = `${this.liveInfo.subject}的邀请函`;
 
     if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token}]); // still needed?
 
