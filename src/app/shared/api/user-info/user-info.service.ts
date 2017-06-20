@@ -8,9 +8,11 @@ import {
 } from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
+import {DataQueue} from "../data-queue.model";
 
 @Injectable()
 export class UserInfoService {
+  private userInfoQueue = new DataQueue;
 
   constructor(private http: Http) {
   }
@@ -44,11 +46,28 @@ export class UserInfoService {
     const header = new Headers();
     header.append('noIntercept', `${noHandleError}`);
 
+    const queue = this.userInfoQueue;
+
+    if (!needRefresh) {
+      if (queue.isLock) {
+        return new Promise((resolve, reject) => {
+          queue.append(resolve, reject);
+        });
+      } else {
+        queue.lock();
+      }
+    }
+
     return this.http.get(`${environment.config.host.io}/api/user`, {headers: header}).toPromise().then(res => {
       let data = res.json();
       let userInfo = this.parseUserInfo(data);
       StoreService.set('userinfo', userInfo);
+      if (!needRefresh && queue.isLock) queue.resolve(userInfo);
       return userInfo;
+    }, (err) => {
+      if (!needRefresh && queue.isLock) queue.reject(err);
+    }).finally(() => {
+      queue.unlock();
     });
   }
 
