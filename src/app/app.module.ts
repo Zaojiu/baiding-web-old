@@ -18,7 +18,6 @@ import {SharePopupService} from './shared/share-popup/share-popup.service';
 import {ModalComponent} from "./shared/modal/modal.component";
 import {OperationTipsComponent} from "./shared/operation-tips/operation-tips.component";
 import {ModalService} from "./shared/modal/modal.service";
-import {TitleSetterDirective} from './shared/title/title.directive';
 import {AuthGuard} from './shared/guard/auth.guard'
 import {UserInfoService} from './shared/api/user-info/user-info.service'
 import {ImageViewerService} from "./shared/image-viewer/image-viewer.service";
@@ -73,7 +72,6 @@ import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service"
   declarations: [
     AppComponent,
     BottomPopupSelectorComponent,
-    TitleSetterDirective,
     SharePopupComponent,
     ModalComponent,
     OperationTipsComponent,

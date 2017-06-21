@@ -22,6 +22,7 @@ import {MessageApiService} from "../../shared/api/message/message.api";
 import {TimelineService} from "../timeline/timeline.service";
 import {UploadApiService} from "../../shared/api/upload/upload.api";
 import {UserInfoCardService} from "../../shared/user-info-card/user-info-card.service";
+import {LiveRoomTitleResolver} from "../../shared/guard/title.resolver";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -58,6 +59,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     HistoryService,
     HistoryMessageResolver,
     CommentApiService,
+    LiveRoomTitleResolver,
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig},
   ]
 })

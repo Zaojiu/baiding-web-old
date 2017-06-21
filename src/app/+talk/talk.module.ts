@@ -4,6 +4,8 @@ import {CommonModule} from "@angular/common";
 import {TalkCommentModule} from "./+post-comment/post-comment.module";
 import {ArticleModule} from "./article/article.module";
 import {IosBridgeService} from "../shared/ios-bridge/ios-bridge.service";
+import {TalkInfoResolver} from "../shared/guard/talk-info.resolver";
+import {TalkTitleResolver} from "../shared/guard/title.resolver";
 
 @NgModule({
   imports: [
@@ -15,7 +17,9 @@ import {IosBridgeService} from "../shared/ios-bridge/ios-bridge.service";
   declarations: [
   ],
   providers:[
-    IosBridgeService
+    IosBridgeService,
+    TalkInfoResolver,
+    TalkTitleResolver,
   ]
 })
 

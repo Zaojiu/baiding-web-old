@@ -10,6 +10,7 @@ import {AuthGuard} from "../../shared/guard/auth.guard";
 import {AdminGuard} from "../../shared/guard/admin.guard";
 import {LiveInfoResolver} from "../../shared/guard/live-info.resolver";
 import {BindMobileGuard} from "../../shared/guard/bind-mobile.guard";
+import {LiveRoomTitleResolver} from "../../shared/guard/title.resolver";
 
 const route: Routes = [
   {
@@ -21,6 +22,7 @@ const route: Routes = [
       userInfo: UserInfoResolver,
       liveInfo: LiveInfoResolver,
       messages: HistoryMessageResolver,
+      title: LiveRoomTitleResolver,
     },
     children: [
       {

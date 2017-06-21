@@ -3,6 +3,7 @@ import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { Router, Route, RoutesRecognized, NavigationEnd } from "@angular/router";
 import { AppJumperGuard } from "./shared/guard/app-jumper.guard";
 import { AnalyticsService } from "./shared/analytics/analytics.service"
+import {TitleService} from "./shared/title/title.service";
 
 @Component({
   selector: 'bd-app',
@@ -10,9 +11,8 @@ import { AnalyticsService } from "./shared/analytics/analytics.service"
 })
 
 export class AppComponent implements OnInit {
-  constructor(angulartics2GoogleTagManager: Angulartics2GoogleTagManager,
-    private analytics: AnalyticsService,
-    private router: Router) {
+  constructor(angulartics2GoogleTagManager: Angulartics2GoogleTagManager, private analytics: AnalyticsService,
+    private titleService: TitleService,private router: Router) {
   }
 
   initAppJumperGuard() {

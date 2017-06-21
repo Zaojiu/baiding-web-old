@@ -73,7 +73,6 @@ export class HistoryComponent implements OnInit, OnDestroy {
       if (msg.isText() || msg.isNice()) this.contentParsed[msg.id] = msg.content;
     });
 
-    this.route.snapshot.data['title'] = this.liveInfo.subject;
     this.route.snapshot.data['shareTitle'] = this.liveInfo.subject;
     this.route.snapshot.data['shareDesc'] = this.getLatestText();
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;

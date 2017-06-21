@@ -59,8 +59,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   private onlineService: OnlineService;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private talkApiService: TalkService, private shareBridge: ShareBridge,
-              private titleService: TitleService, private authBridge: AuthBridge,
+              private talkApiService: TalkService, private shareBridge: ShareBridge, private authBridge: AuthBridge,
               private analytics: AnalyticsService, private objectService: ObjectService,
               private iosBridge: IosBridgeService) {
   }
@@ -70,10 +69,33 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     this.id = this.route.snapshot.params['id'];
     this.userInfo = this.route.snapshot.data['userInfo'];
+    this.talkInfo = this.route.snapshot.data['talkInfo'];
 
-    this.getTalkInfo().finally(() => {
-      this.onlineService.start();
-    });
+    if (!this.talkInfo) return;
+
+    this.init();
+  }
+
+  init() {
+    if (this.talkInfo.parentId) {
+      this.objectService.getObject(this.talkInfo.parentId).then(liveObject => {
+        this.liveObject = liveObject;
+      });
+    }
+
+    if (this.talkInfo.media.hasVideo) {
+      this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
+      this.videoInfo = new VideoInfo('', this.talkInfo.media.mp4_sd, this.talkInfo.media.mp4_hd, this.talkInfo.media.mp4);
+
+      // 横竖屏polyfill
+      System.import('o9n').then(o9n => {
+        this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+        o9n.orientation.onchange = (evt) => this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
+      });
+    }
+
+    this.setShareInfo(this.talkInfo);
+    this.onlineService.start();
 
     let firstRefreshComment = true;
     this.routeSub = this.router.events.subscribe((event) => {
@@ -130,35 +152,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
       return $(this.container.nativeElement).scrollTop()
     };
     this.onlineService = this.analytics.onlineService(onlineParams)
-  }
-
-  getTalkInfo() {
-    this.isLoading = true;
-    return this.talkApiService.getTalkInfo(this.id).then(talkInfo => {
-      this.talkInfo = talkInfo;
-
-      if (talkInfo.parentId) {
-        this.objectService.getObject(talkInfo.parentId).then(liveObject => {
-          this.liveObject = liveObject;
-        });
-      }
-
-      if (talkInfo.media.hasVideo) {
-        this.videoOption = new VideoPlayerOption(false, !UtilsService.isiOS && !UtilsService.isAndroid);
-        this.videoInfo = new VideoInfo('', talkInfo.media.mp4_sd, talkInfo.media.mp4_hd, talkInfo.media.mp4);
-
-        // 横竖屏polyfill
-        System.import('o9n').then(o9n => {
-          this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
-          o9n.orientation.onchange = (evt) => this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && UtilsService.isViewportLandscape;
-        });
-      }
-
-      this.setShareInfo(talkInfo);
-      this.titleService.set(talkInfo.subject);
-    }).finally(() => {
-      this.isLoading = false;
-    });
   }
 
   setShareInfo(talkInfo: TalkInfoModel) {

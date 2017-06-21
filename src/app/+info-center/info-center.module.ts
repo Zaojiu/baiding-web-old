@@ -15,6 +15,7 @@ import {TimeToFormatedPipe} from "../shared/pipe/time.pipe";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {FormModule} from "../shared/form/form.module";
 import {DraggableModule} from "../shared/draggable/draggable.module";
+import {UserNickResolver} from "../shared/guard/title.resolver";
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import {DraggableModule} from "../shared/draggable/draggable.module";
   providers: [
     InviteApiService,
     TimeToFormatedPipe,
+    UserNickResolver,
   ]
 })
 
