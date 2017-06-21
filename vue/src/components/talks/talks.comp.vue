@@ -24,7 +24,7 @@
 
           <div class="mask"></div>
 
-          <i class="bi bi-play-fill" v-if="videoInfo && videoInfo.hasVideo"></i>
+          <!--<i class="bi bi-play-fill" v-if="videoInfo && videoInfo.hasVideo"></i>-->
 
           <div class="talk-info">
             <div class="publisher-info">
@@ -47,12 +47,13 @@
       <section class="article talk-article" v-html="talkInfo.content" v-once></section>
 
       <section class="info">
-        <ul v-for="catalogArr in talkInfo.categories">
-          <li v-for="catalog in catalogArr">{{catalog.title}}</li>
-        </ul>
-
         <div class="tags">
           <small v-for="tag in talkInfo.tags">{{tag}}</small>
+        </div>
+
+        <div class="reflink" v-if="talkInfo.refLink.length > 0">
+          <div class="title">参考内容</div>
+          <div class="link" v-for="ref in talkInfo.refLink">{{ talkInfo.refLink.indexOf(ref) + 1}}  . {{ref.title}} : <a :href="ref.link" target="_blank">{{ ref.link }}</a></div>
         </div>
       </section>
 
@@ -65,9 +66,9 @@
               <div class="author-info">
                 <img class="avatar avatar-round avatar-small" v-bind:src="comment.user.avatar" alt="用户头像">
                 <span class="nick">{{comment.user.nick}}</span>
-                <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
+                <time>{{comment.createdAt.format('MM月DD日 HH:mm')}}</time>
               </div>
-              <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>
+              <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)"> <i class="bi bi-reply-comment"></i>回复</span>
             </div>
             <!-- 不要换行，避免出现换行符 -->
             <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
@@ -75,20 +76,20 @@
         </div>
 
         <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
-        <div class="no-comments" v-else-if="!comments.data.length">暂无评论</div>
+        <div class="no-comments" v-else-if="!comments.data.length"><i class="bi bi-no-comment"></i> 暂无评论</div>
         <div class="no-more-comments" v-else-if="!comments.hasMore">到底咯~</div>
         <div class="more-comments" v-else @click="fetchComments">加载更多评论</div>
       </section>
 
-      <footer ref="toolBar">
-        <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
+      <footer ref="toolBar" v-bind:class="{'footer-fixed': isToolbarShow}">
+        <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
         <div class="icon" @click="togglePraise">
           <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
         </div>
         <div class="icon" @click="toggleFavorite">
-          <i class="bi" v-bind:class="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i>
+          <i class="bi" v-bind:class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
         </div>
-        <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
+        <div class="icon" @click="gotoComment"><i class="bi" v-bind:class="{'bi-comment': talkInfo.commentTotal == 0,'bi-comment-fill':talkInfo.commentTotal > 0}"></i>{{talkInfo.commentTotal}}</div>
       </footer>
     </div>
     <div class="no-content" v-else>无效内容</div>
@@ -263,7 +264,7 @@
     }
 
     .article {
-      padding: 15px;
+      padding: 20px;
       text-align: justify;
 
       &.talk-article {
@@ -294,14 +295,14 @@
         }
 
         img {
-          max-width: 100%;
+          min-width: 100%;
           height: auto;
         }
       }
     }
 
     .info {
-      margin-top: 42px;
+      margin-top: 14px;
       padding: 12px;
 
       ul {
@@ -333,15 +334,18 @@
 
       .tags {
         display: flex;
+        flex-wrap: wrap;
 
         small {
           flex-shrink: 0;
           min-width: 48px;
-          padding: 5px 15px;
+          padding: 9px 18px;
           margin-right: 10px;
+          margin-top: 10px;
+          border-radius: 4px;
           font-size: 12px;
-          background-color: $color-brand;
-          color: $color-w;
+          background-color: rgb(239,239,239);
+          color: $color-dark-gray;
           line-height: 1em;
 
           &:last-child {
@@ -349,10 +353,20 @@
           }
         }
       }
+
+      .reflink {
+        margin-top: 30px;
+        .title {
+          font-size: 18px;
+        }
+        .link {
+          margin: 10px auto;
+        }
+      }
     }
 
     .comments {
-      margin-top: 42px;
+      margin-top: 28px;
       padding: 12px;
 
       h2 {
@@ -402,7 +416,11 @@
             line-height: 1em;
             padding: 5px;
             font-size: 12px;
-            color: $color-brand;
+            color: $color-gray;
+
+            .bi-reply-comment{
+              margin-right: 5px;
+            }
           }
         }
 
@@ -445,15 +463,21 @@
       }
     }
 
+    .footer-fixed {
+      position: fixed;
+      bottom: 0;
+      transition: all 0.5s ease;
+    }
+
     footer {
       display: flex;
       height: 46px;
-      background-color: rgb(137, 137, 137);
+      background-color: rgb(255, 255, 255);
+      border-top: 1px solid rgb(188, 188, 188);
       max-width: 1022px;
       width: 100%;
 
       .icon {
-        color: $color-w;
         line-height: 1em;
         font-size: 12px;
         display: flex;
@@ -473,8 +497,8 @@
           margin-right: 4px;
         }
 
-        .bi-heart-fill {
-          color: red;
+        .bi-bookmark-fill, .bi-thumbsup-fill, .bi-comment-fill {
+          color: rgb(0, 215, 198);
         }
       }
 
@@ -509,7 +533,7 @@
 
 <script>
   import BdLoading from '../../shared/bd-loading.comp.vue'
-  import { FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE } from '../../store/talk'
+  import { FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE} from '../../store/talk'
   import { Utils } from '../../shared/utils/utils'
 
   export default {

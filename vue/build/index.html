@@ -2,9 +2,46 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <script type="text/javascript">
+      var token = '_REPL_TRACKJS_TOKEN_';
+      if (token.indexOf('_REPL_') != 0) {
+        window._trackJs = { token: token };
+      }
+    </script>
+    <!-- Google Tag Manager -->
+    <script type="text/javascript">
+      var dataLayer = dataLayer || [];
+      var gaid = '_REPL_GAID_';
+      if (gaid.indexOf('_REPL_') == 0) {
+        gaid = 'UA-75377537-3';
+      }
+      dataLayer.push({
+        'gaid': gaid,
+        'version': ''
+      });
+    </script>
+    <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(), event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TZQHFKM');</script>
+    <!-- End Google Tag Manager -->
+
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
     <div id="app"></div>
+    <script type="text/javascript" src="https://oe5u0e10o.qnssl.com/trackjs.com/tracker.js"></script>
   </body>
 </html>

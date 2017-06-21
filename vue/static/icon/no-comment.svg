@@ -1,0 +1,18 @@
+
+<svg width="22px" height="20px" viewBox="0 0 22 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="免费文章（文字内容）详情页-评论为空" transform="translate(-140.000000, -2129.000000)">
+      <g id="暂无评论" transform="translate(141.000000, 2129.000000)">
+        <g id="评论为空" transform="translate(0.000000, 1.000000)">
+          <path d="M0.692672226,17.7748778 C0.863286588,17.7748778 1.03337004,17.7087472 1.15843202,17.5825172 L4.03158723,14.8428549 L16.244148,14.8428549 C18.3098263,14.8428549 20,13.1623226 20,11.0870029 L20,3.75585199 C20,1.69017375 18.3116738,0 16.244148,0 L3.75585199,0 C1.68131811,0 0,1.68832617 0,3.75585199 L0,17.0886615 C0,17.3700456 0.163032918,17.6158798 0.414431078,17.7259488 C0.502583956,17.7629641 0.59254194,17.7770652 0.68797895,17.7770652 L0.692672226,17.7748778 Z" id="Shape" stroke="#909090" stroke-width="1.2"></path>
+          <circle id="Oval-8" stroke="#909090" cx="6" cy="6" r="1.5"></circle>
+          <circle id="Oval-8" stroke="#909090" cx="14" cy="6" r="1.5"></circle>
+          <path d="M7,11 L13,11" id="Line" stroke="#979797" stroke-linecap="square"></path>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
