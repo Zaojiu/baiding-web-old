@@ -30,18 +30,18 @@
       </header>
 
       <section class="title">
-        <div class="categories">{{talkCategories}}</div>
+        <div class="categories" v-if="talkCategories">{{talkCategories}}</div>
         <h1>{{talkInfo.subject}}</h1>
         <div class="talk-info">
           <div class="publisher-info">
             <img
-              class="avatar avatar-round avatar-medium"
+              class="avatar avatar-round avatar-small"
               v-if="talkInfo.userInfo"
               v-bind:src="talkInfo.userInfo.avatar"
               alt="发布人头像"
             >
             <img
-              class="avatar avatar-round avatar-medium"
+              class="avatar avatar-round avatar-small"
               v-else
               :src="'/img/zaojiu-logo.jpg'"
               alt="发布人头像"
@@ -220,7 +220,7 @@
     }
 
     .title {
-      padding: 15px 15px 20px 15px;
+      padding: 20px 15px 0px 15px;
 
       .categories {
         margin-bottom: 15px;
@@ -251,7 +251,7 @@
 
           .avatar {
             flex-shrink: 0;
-            margin-right: 6px;
+            margin-right: 5px;
           }
 
           .nick {
@@ -260,7 +260,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             font-size: 16px;
-            color: $color-gray;
+            color: $color-dark-gray;
             line-height: 1em;
           }
         }
@@ -368,7 +368,7 @@
     }
 
     .comments {
-      margin-top: 28px;
+      margin-top: 38px;
       padding: 12px;
 
       h2 {
@@ -448,19 +448,27 @@
       }
 
       .no-comments, .more-comments, .comment-loading, .no-more-comments {
-        height: 80px;
+        height: 120px;
+        padding-bottom: 46px;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        .bi-no-comment{
+          font-size: 16px;
+          margin-right: 8px;
+        }
       }
 
       .no-comments, .no-more-comments {
         color: $color-gray;
-        font-size: 14px;
+      }
+
+      .no-comments{
+        font-size: 16px;
       }
 
       .more-comments {
-        margin-bottom: 28px;
         color: $color-dark-gray;
         font-size: 14px;
       }
@@ -482,7 +490,6 @@
       display: flex;
       height: 46px;
       background-color: rgb(10, 10, 23);
-      border-top: 1px solid rgb(188, 188, 188);
       max-width: 1022px;
       width: 100%;
 
@@ -508,7 +515,7 @@
         }
 
         .bi-bookmark-fill, .bi-thumbsup-fill, .bi-comment-fill {
-          color: rgb(0, 215, 198);
+          color: $color-brand2;
         }
       }
 
@@ -526,7 +533,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 0;
+    bottom:0;
     right: 0;
     display: flex;
     align-items: center;

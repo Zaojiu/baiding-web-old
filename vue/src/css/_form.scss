@@ -1,5 +1,5 @@
 .form-group {
-  margin: 20px 15px;
+  margin: auto 15px;
 
   &:last-child {
     margin-bottom: 0;
@@ -202,4 +202,7 @@
 textarea {
   display: block;
   resize: none;
+  &::placeholder{
+    color: rgb(188,188,188);
+  }
 }
