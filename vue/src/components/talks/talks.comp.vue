@@ -24,33 +24,39 @@
 
           <div class="mask"></div>
 
-          <i class="bi bi-play-fill" v-if="videoInfo && videoInfo.hasVideo"></i>
+          <!--<i class="bi bi-play-fill" v-if="videoInfo && videoInfo.hasVideo"></i>-->
 
-          <div class="talk-info">
-            <div class="publisher-info">
-              <img
-                class="avatar avatar-round avatar-medium"
-                v-if="talkInfo.userInfo"
-                v-bind:src="talkInfo.userInfo.avatar"
-                alt="发布人头像"
-              >
-              <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
-            </div>
-
-            <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
-          </div>
-
-          <h1>{{talkInfo.subject}}</h1>
         </div>
       </header>
+
+      <section class="title">
+        <div class="categories" v-if="talkCategories">{{talkCategories}}</div>
+        <h1>{{talkInfo.subject}}</h1>
+        <div class="talk-info">
+          <div class="publisher-info">
+            <img
+              class="avatar avatar-round avatar-small"
+              v-if="talkInfo.userInfo"
+              v-bind:src="talkInfo.userInfo.avatar"
+              alt="发布人头像"
+            >
+            <img
+              class="avatar avatar-round avatar-small"
+              v-else
+              :src="'/img/zaojiu-logo.jpg'"
+              alt="发布人头像"
+            >
+            <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
+            <span class="nick" v-else>造就</span>
+          </div>
+
+          <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
+        </div>
+      </section>
 
       <section class="article talk-article" v-html="talkInfo.content" v-once></section>
 
       <section class="info">
-        <ul v-for="catalogArr in talkInfo.categories">
-          <li v-for="catalog in catalogArr">{{catalog.title}}</li>
-        </ul>
-
         <div class="tags">
           <small v-for="tag in talkInfo.tags">{{tag}}</small>
         </div>
@@ -65,9 +71,9 @@
               <div class="author-info">
                 <img class="avatar avatar-round avatar-small" v-bind:src="comment.user.avatar" alt="用户头像">
                 <span class="nick">{{comment.user.nick}}</span>
-                <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
+                <time>{{comment.createdAt.format('MM月DD日 HH:mm')}}</time>
               </div>
-              <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>
+              <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)"> <i class="bi bi-reply-comment"></i>回复</span>
             </div>
             <!-- 不要换行，避免出现换行符 -->
             <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
@@ -75,23 +81,23 @@
         </div>
 
         <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
-        <div class="no-comments" v-else-if="!comments.data.length">暂无评论</div>
+        <div class="no-comments" v-else-if="!comments.data.length"><i class="bi bi-no-comment"></i> 暂无评论</div>
         <div class="no-more-comments" v-else-if="!comments.hasMore">到底咯~</div>
         <div class="more-comments" v-else @click="fetchComments">加载更多评论</div>
       </section>
 
-      <footer ref="toolBar">
-        <div class="icon view"><i class="bi bi-eye"></i>{{talkInfo.totalUsers}}</div>
+      <footer ref="toolBar" v-bind:class="{'footer-show': isToolbarShow,'footer-hide':!isToolbarShow}">
+        <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
         <div class="icon" @click="togglePraise">
           <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
         </div>
         <div class="icon" @click="toggleFavorite">
-          <i class="bi" v-bind:class="{'bi-heart': !talkInfo.isFavorited, 'bi-heart-fill': talkInfo.isFavorited}"></i>
+          <i class="bi" v-bind:class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
         </div>
         <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
       </footer>
     </div>
-    <div class="no-content" v-else>无效内容</div>
+    <div class="no-content" v-else>无效文章</div>
 
     <router-view></router-view>
   </div>
@@ -190,55 +196,6 @@
           text-indent: -10000px;
         }
 
-        h1 {
-          position: relative;
-          font-size: 26px;
-          line-height: 1.3em;
-          color: $color-w;
-          padding-left: 24px;
-          padding-right: 24px;
-          padding-bottom: 15px;
-          font-weight: normal;
-        }
-
-        .talk-info {
-          position: relative;
-          display: flex;
-          padding-left: 24px;
-          padding-right: 24px;
-          padding-bottom: 24px;
-          align-items: center;
-          overflow: hidden;
-
-          .publisher-info {
-            flex-grow: 1;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-
-            .avatar {
-              flex-shrink: 0;
-              margin-right: 6px;
-            }
-
-            .nick {
-              flex-grow: 1;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              font-size: 16px;
-              color: $color-w;
-              line-height: 1em;
-            }
-          }
-
-          time {
-            font-size: 12px;
-            color: $color-w;
-            line-height: 1em;
-          }
-        }
-
         .bi-play-fill {
           position: absolute;
           left: 50%;
@@ -262,8 +219,62 @@
       }
     }
 
+    .title {
+      padding: 20px 15px 0px 15px;
+
+      .categories {
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: rgb(80, 227, 194);
+        font-weight: 400;
+      }
+
+      h1 {
+        font-size: 24px;
+        line-height: 1.3em;
+        color: $color-b;
+        padding-bottom: 15px;
+        font-weight: 500;
+      }
+
+      .talk-info {
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+
+        .publisher-info {
+          flex-grow: 1;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+
+          .avatar {
+            flex-shrink: 0;
+            margin-right: 5px;
+          }
+
+          .nick {
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+            color: $color-dark-gray;
+            line-height: 1em;
+          }
+        }
+
+        time {
+          font-size: 14px;
+          color: rgb(144, 144, 144);
+          line-height: 1em;
+        }
+      }
+    }
+
     .article {
-      padding: 15px;
+      padding: 20px;
       text-align: justify;
 
       &.talk-article {
@@ -294,6 +305,8 @@
         }
 
         img {
+          display: block;
+          margin: 0 auto;
           max-width: 100%;
           height: auto;
         }
@@ -301,7 +314,7 @@
     }
 
     .info {
-      margin-top: 42px;
+      margin-top: 14px;
       padding: 12px;
 
       ul {
@@ -333,15 +346,18 @@
 
       .tags {
         display: flex;
+        flex-wrap: wrap;
 
         small {
           flex-shrink: 0;
           min-width: 48px;
-          padding: 5px 15px;
+          padding: 9px 18px;
           margin-right: 10px;
+          margin-top: 10px;
+          border-radius: 4px;
           font-size: 12px;
-          background-color: $color-brand;
-          color: $color-w;
+          background-color: rgb(239, 239, 239);
+          color: $color-dark-gray;
           line-height: 1em;
 
           &:last-child {
@@ -352,11 +368,11 @@
     }
 
     .comments {
-      margin-top: 42px;
+      margin-top: 38px;
       padding: 12px;
 
       h2 {
-        font-size: 26px;
+        font-size: 18px;
         line-height: 1em;
         color: $color-dark-gray;
         font-weight: normal;
@@ -402,7 +418,11 @@
             line-height: 1em;
             padding: 5px;
             font-size: 12px;
-            color: $color-brand;
+            color: $color-gray;
+
+            .bi-reply-comment {
+              margin-right: 5px;
+            }
           }
         }
 
@@ -428,15 +448,24 @@
       }
 
       .no-comments, .more-comments, .comment-loading, .no-more-comments {
-        height: 80px;
+        height: 120px;
+        padding-bottom: 46px;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        .bi-no-comment{
+          font-size: 16px;
+          margin-right: 8px;
+        }
       }
 
       .no-comments, .no-more-comments {
         color: $color-gray;
-        font-size: 14px;
+      }
+
+      .no-comments{
+        font-size: 16px;
       }
 
       .more-comments {
@@ -445,17 +474,29 @@
       }
     }
 
+    .footer-show {
+      position: fixed;
+      bottom: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-hide{
+      position: fixed;
+      bottom: -46px;
+      transition: all 0.3s ease;
+    }
+
     footer {
       display: flex;
       height: 46px;
-      background-color: rgb(137, 137, 137);
+      background-color: rgb(10, 10, 23);
       max-width: 1022px;
       width: 100%;
 
       .icon {
-        color: $color-w;
         line-height: 1em;
-        font-size: 12px;
+        font-size: 14px;
+        color: $color-w;
         display: flex;
         align-items: center;
         padding-left: 15px;
@@ -473,8 +514,8 @@
           margin-right: 4px;
         }
 
-        .bi-heart-fill {
-          color: red;
+        .bi-bookmark-fill, .bi-thumbsup-fill, .bi-comment-fill {
+          color: $color-brand2;
         }
       }
 
@@ -492,7 +533,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 0;
+    bottom:0;
     right: 0;
     display: flex;
     align-items: center;
@@ -509,8 +550,8 @@
 
 <script>
   import BdLoading from '../../shared/bd-loading.comp.vue'
-  import { FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE } from '../../store/talk'
-  import { Utils } from '../../shared/utils/utils'
+  import {FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE} from '../../store/talk'
+  import {Utils} from '../../shared/utils/utils'
 
   export default {
     data () {
@@ -541,6 +582,12 @@
       },
       isLoading () {
         return this.talkInfo === undefined
+      },
+      talkCategories(){
+        if (this.$store.state.talks.info[this.id] === undefined) {
+          this.$store.dispatch(FETCH_TALK, this.id)
+        }
+        return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : ''
       }
     },
     methods: {
@@ -555,13 +602,13 @@
         this.isCommentLoading = false
       },
       gotoComment (id, nick, content) {
-        const query = { title: encodeURIComponent(this.talkInfo.subject) }
+        const query = {title: encodeURIComponent(this.talkInfo.subject)}
 
         if (id && nick && content) {
-          query.request = encodeURIComponent(JSON.stringify({ id: id, nick: nick, content: content }))
+          query.request = encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content}))
         }
 
-        this.$router.push({ path: `/talks/${this.id}/post-comment`, query: query })
+        this.$router.push({path: `/talks/${this.id}/post-comment`, query: query})
       },
       touchStart (e) {
         if (!this.$refs.toolBar) return

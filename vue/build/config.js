@@ -4,10 +4,7 @@ module.exports = {
   title: 'baiding-web-vue',
   publicPath: '/',
   postcss: [
-    require('autoprefixer')({
-      // Vue does not support ie 8 and below
-      browsers: ['last 2 versions', 'ie > 8']
-    }),
+    require('autoprefixer')(),
     require('postcss-nested')
   ],
 }
