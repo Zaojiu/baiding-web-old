@@ -26,34 +26,39 @@
 
           <!--<i class="bi bi-play-fill" v-if="videoInfo && videoInfo.hasVideo"></i>-->
 
-          <div class="talk-info">
-            <div class="publisher-info">
-              <img
-                class="avatar avatar-round avatar-medium"
-                v-if="talkInfo.userInfo"
-                v-bind:src="talkInfo.userInfo.avatar"
-                alt="发布人头像"
-              >
-              <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
-            </div>
-
-            <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
-          </div>
-
-          <h1>{{talkInfo.subject}}</h1>
         </div>
       </header>
+
+      <section class="title">
+        <div class="categories">{{talkCategories}}</div>
+        <h1>{{talkInfo.subject}}</h1>
+        <div class="talk-info">
+          <div class="publisher-info">
+            <img
+              class="avatar avatar-round avatar-medium"
+              v-if="talkInfo.userInfo"
+              v-bind:src="talkInfo.userInfo.avatar"
+              alt="发布人头像"
+            >
+            <img
+              class="avatar avatar-round avatar-medium"
+              v-else
+              :src="'/img/zaojiu-logo.jpg'"
+              alt="发布人头像"
+            >
+            <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
+            <span class="nick" v-else>造就</span>
+          </div>
+
+          <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
+        </div>
+      </section>
 
       <section class="article talk-article" v-html="talkInfo.content" v-once></section>
 
       <section class="info">
         <div class="tags">
           <small v-for="tag in talkInfo.tags">{{tag}}</small>
-        </div>
-
-        <div class="reflink" v-if="talkInfo.refLink.length > 0">
-          <div class="title">参考内容</div>
-          <div class="link" v-for="ref in talkInfo.refLink">{{ talkInfo.refLink.indexOf(ref) + 1}}  . {{ref.title}} : <a :href="ref.link" target="_blank">{{ ref.link }}</a></div>
         </div>
       </section>
 
@@ -81,7 +86,7 @@
         <div class="more-comments" v-else @click="fetchComments">加载更多评论</div>
       </section>
 
-      <footer ref="toolBar" v-bind:class="{'footer-fixed': isToolbarShow}">
+      <footer ref="toolBar" v-bind:class="{'footer-show': isToolbarShow,'footer-hide':!isToolbarShow}">
         <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
         <div class="icon" @click="togglePraise">
           <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
@@ -89,10 +94,10 @@
         <div class="icon" @click="toggleFavorite">
           <i class="bi" v-bind:class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
         </div>
-        <div class="icon" @click="gotoComment"><i class="bi" v-bind:class="{'bi-comment': talkInfo.commentTotal == 0,'bi-comment-fill':talkInfo.commentTotal > 0}"></i>{{talkInfo.commentTotal}}</div>
+        <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
       </footer>
     </div>
-    <div class="no-content" v-else>无效内容</div>
+    <div class="no-content" v-else>无效文章</div>
 
     <router-view></router-view>
   </div>
@@ -191,55 +196,6 @@
           text-indent: -10000px;
         }
 
-        h1 {
-          position: relative;
-          font-size: 26px;
-          line-height: 1.3em;
-          color: $color-w;
-          padding-left: 24px;
-          padding-right: 24px;
-          padding-bottom: 15px;
-          font-weight: normal;
-        }
-
-        .talk-info {
-          position: relative;
-          display: flex;
-          padding-left: 24px;
-          padding-right: 24px;
-          padding-bottom: 24px;
-          align-items: center;
-          overflow: hidden;
-
-          .publisher-info {
-            flex-grow: 1;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-
-            .avatar {
-              flex-shrink: 0;
-              margin-right: 6px;
-            }
-
-            .nick {
-              flex-grow: 1;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              font-size: 16px;
-              color: $color-w;
-              line-height: 1em;
-            }
-          }
-
-          time {
-            font-size: 12px;
-            color: $color-w;
-            line-height: 1em;
-          }
-        }
-
         .bi-play-fill {
           position: absolute;
           left: 50%;
@@ -259,6 +215,60 @@
           &:before {
             transform: translateX(3px);
           }
+        }
+      }
+    }
+
+    .title {
+      padding: 15px 15px 20px 15px;
+
+      .categories {
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: rgb(80, 227, 194);
+        font-weight: 400;
+      }
+
+      h1 {
+        font-size: 24px;
+        line-height: 1.3em;
+        color: $color-b;
+        padding-bottom: 15px;
+        font-weight: 500;
+      }
+
+      .talk-info {
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+
+        .publisher-info {
+          flex-grow: 1;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+
+          .avatar {
+            flex-shrink: 0;
+            margin-right: 6px;
+          }
+
+          .nick {
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+            color: $color-gray;
+            line-height: 1em;
+          }
+        }
+
+        time {
+          font-size: 14px;
+          color: rgb(144, 144, 144);
+          line-height: 1em;
         }
       }
     }
@@ -295,7 +305,9 @@
         }
 
         img {
-          min-width: 100%;
+          display: block;
+          margin: 0 auto;
+          max-width: 100%;
           height: auto;
         }
       }
@@ -344,23 +356,13 @@
           margin-top: 10px;
           border-radius: 4px;
           font-size: 12px;
-          background-color: rgb(239,239,239);
+          background-color: rgb(239, 239, 239);
           color: $color-dark-gray;
           line-height: 1em;
 
           &:last-child {
             margin-right: 0;
           }
-        }
-      }
-
-      .reflink {
-        margin-top: 30px;
-        .title {
-          font-size: 18px;
-        }
-        .link {
-          margin: 10px auto;
         }
       }
     }
@@ -370,7 +372,7 @@
       padding: 12px;
 
       h2 {
-        font-size: 26px;
+        font-size: 18px;
         line-height: 1em;
         color: $color-dark-gray;
         font-weight: normal;
@@ -418,7 +420,7 @@
             font-size: 12px;
             color: $color-gray;
 
-            .bi-reply-comment{
+            .bi-reply-comment {
               margin-right: 5px;
             }
           }
@@ -458,28 +460,36 @@
       }
 
       .more-comments {
+        margin-bottom: 28px;
         color: $color-dark-gray;
         font-size: 14px;
       }
     }
 
-    .footer-fixed {
+    .footer-show {
       position: fixed;
       bottom: 0;
-      transition: all 0.5s ease;
+      transition: all 0.3s ease;
+    }
+
+    .footer-hide{
+      position: fixed;
+      bottom: -46px;
+      transition: all 0.3s ease;
     }
 
     footer {
       display: flex;
       height: 46px;
-      background-color: rgb(255, 255, 255);
+      background-color: rgb(10, 10, 23);
       border-top: 1px solid rgb(188, 188, 188);
       max-width: 1022px;
       width: 100%;
 
       .icon {
         line-height: 1em;
-        font-size: 12px;
+        font-size: 14px;
+        color: $color-w;
         display: flex;
         align-items: center;
         padding-left: 15px;
@@ -533,8 +543,8 @@
 
 <script>
   import BdLoading from '../../shared/bd-loading.comp.vue'
-  import { FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE} from '../../store/talk'
-  import { Utils } from '../../shared/utils/utils'
+  import {FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE} from '../../store/talk'
+  import {Utils} from '../../shared/utils/utils'
 
   export default {
     data () {
@@ -565,6 +575,12 @@
       },
       isLoading () {
         return this.talkInfo === undefined
+      },
+      talkCategories(){
+        if (this.$store.state.talks.info[this.id] === undefined) {
+          this.$store.dispatch(FETCH_TALK, this.id)
+        }
+        return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : ''
       }
     },
     methods: {
@@ -579,13 +595,13 @@
         this.isCommentLoading = false
       },
       gotoComment (id, nick, content) {
-        const query = { title: encodeURIComponent(this.talkInfo.subject) }
+        const query = {title: encodeURIComponent(this.talkInfo.subject)}
 
         if (id && nick && content) {
-          query.request = encodeURIComponent(JSON.stringify({ id: id, nick: nick, content: content }))
+          query.request = encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content}))
         }
 
-        this.$router.push({ path: `/talks/${this.id}/post-comment`, query: query })
+        this.$router.push({path: `/talks/${this.id}/post-comment`, query: query})
       },
       touchStart (e) {
         if (!this.$refs.toolBar) return
