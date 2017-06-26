@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];
-    this.redirectTo = decodeURIComponent(this.route.snapshot.params['redirectTo'] || '/');
+    this.redirectTo = decodeURIComponent(this.route.snapshot.queryParams['redirectTo'] || '/');
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
@@ -121,8 +121,6 @@ export class SignupComponent implements OnInit {
       }, 1000);
     }).catch((e) => {
       this.smsBtnAvailable = true;
-      this.tipsService.popup('手机验证码发送失败');
-      throw e;
     });
   }
 }

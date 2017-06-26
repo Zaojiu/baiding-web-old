@@ -1,5 +1,6 @@
-export enum ApiError{
-  ErrNeedToLogin = 20001,
+export enum ApiError {
+  ErrNeedToLogin = 401,
+  ErrUnauthorized = 20001,
   ErrSigninInvalidPassword = 20101,
   ErrSigninInvalidSmsCode = 20102,
   ErrSigninEmptyPassword = 20100,
@@ -15,6 +16,7 @@ export enum ApiError{
 
 export const ApiErrorMessage = {
   [ApiError.ErrNeedToLogin]: '请先登录',
+  [ApiError.ErrUnauthorized]: '请先登录',
   [ApiError.ErrSigninInvalidPassword]: '密码错误',
   [ApiError.ErrSigninInvalidSmsCode]: '验证码错误',
   [ApiError.ErrSigninEmptyPassword]: '密码未设置，请点忘记密码重置',

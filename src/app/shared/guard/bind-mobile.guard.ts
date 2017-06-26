@@ -15,7 +15,7 @@ export class BindMobileGuard implements CanActivate {
     return this.userInfoService.getUserInfo().then(userInfo => {
       if (userInfo.mobile.number) return true;
 
-      this.router.navigate([`/signup`, {redirectTo: innerTo}]);
+      this.router.navigate([`/signup`], {queryParams: {redirectTo: innerTo}});
 
       return false;
     }, (err) => {

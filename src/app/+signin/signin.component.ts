@@ -35,7 +35,7 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.redirectTo = decodeURIComponent(this.route.snapshot.params['redirectTo'] || '/');
+    this.redirectTo = decodeURIComponent(this.route.snapshot.queryParams['redirectTo'] || '/');
     this.redirectTo = this.redirectTo.replace(host.self, '');
     if (!this.redirectTo.startsWith('/')) this.redirectTo = '/';
     this.form = this.fb.group({
@@ -157,8 +157,6 @@ export class SigninComponent implements OnInit {
       }, 1000);
     }).catch((e) => {
       this.smsBtnAvailable = true;
-      this.tipsService.popup('手机验证码发送失败');
-      throw e;
     });
   }
 
@@ -186,6 +184,6 @@ export class SigninComponent implements OnInit {
   }
 
   gotoResetPwd() {
-    this.router.navigate(['/signin/reset-password', {redirectTo: this.route.snapshot.params['redirectTo']}]);
+    this.router.navigate(['/signin/reset-password'], {queryParams: {redirectTo: this.route.snapshot.queryParams['redirectTo']}});
   }
 }
