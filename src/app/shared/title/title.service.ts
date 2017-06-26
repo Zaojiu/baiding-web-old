@@ -17,12 +17,13 @@ export class TitleService {
 
   private initOnRouteChange() {
     let routeCache = null;
+    const self = this;
     const pushState = history.pushState;
-    history.pushState = (data: any, title: string, url?: string | null) => {
-      const route = this.getRoute(routeCache);
+    history.pushState = function (data: any, title: string, url?: string | null) {
+      const route = self.getRoute(routeCache);
       const routeData = route.data;
-      this.setTitle(routeData);
-
+      self.setTitle(routeData);
+      
       pushState(data, title, url);
     };
 
