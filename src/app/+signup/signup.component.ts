@@ -121,7 +121,6 @@ export class SignupComponent implements OnInit {
       }, 1000);
     }).catch((e) => {
       this.smsBtnAvailable = true;
-      this.tipsService.popup('手机验证码发送失败');
     });
   }
 }
