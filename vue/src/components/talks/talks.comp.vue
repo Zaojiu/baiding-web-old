@@ -454,7 +454,7 @@
         align-items: center;
         justify-content: center;
 
-        .bi-no-comment{
+        .bi-no-comment {
           font-size: 16px;
           margin-right: 8px;
         }
@@ -464,7 +464,7 @@
         color: $color-gray;
       }
 
-      .no-comments{
+      .no-comments {
         font-size: 16px;
       }
 
@@ -480,7 +480,7 @@
       transition: all 0.3s ease;
     }
 
-    .footer-hide{
+    .footer-hide {
       position: fixed;
       bottom: -46px;
       transition: all 0.3s ease;
@@ -533,7 +533,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    bottom:0;
+    bottom: 0;
     right: 0;
     display: flex;
     align-items: center;
@@ -561,7 +561,7 @@
         isToolbarShow: true,
         isOnScreen: Utils.isOnLargeScreen,
         isVideoCoverShown: true,
-        isCommentLoading: true
+        isCommentLoading: true,
       }
     },
     components: {

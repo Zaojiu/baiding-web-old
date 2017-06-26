@@ -1,6 +1,7 @@
 <template>
-  <div id="app">
+  <div>
     <router-view></router-view>
+    <tool-tips></tool-tips>
   </div>
 </template>
 
@@ -74,3 +75,13 @@
   @import "../css/_form";
   @import "../css/_iconfont";
 </style>
+
+<script>
+  import ToolTips from '../shared/tool-tips.comp.vue'
+
+  export default{
+    components: {
+      ToolTips,
+    }
+  }
+</script>

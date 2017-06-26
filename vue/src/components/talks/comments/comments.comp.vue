@@ -4,6 +4,7 @@ import {POST_TALK_COMMENT} from '../../../store/talk'
 import form from '../../../shared/form'
 import beforeRouteEnter from '../../../shared/guard/before-route-enter'
 import userAuth from '../../../shared/guard/user-auth.guard'
+import {SHOW_TIP} from '../../../store/tip'
 
 type commentQuery = {
   id: string,
@@ -61,6 +62,7 @@ export default {
       this.isSubmitting = true;
       await this.$store.dispatch(POST_TALK_COMMENT, {id: this.id, content: this.content, parentId: this.replyId});
       this.isSubmitting = false;
+      await this.$store.dispatch(SHOW_TIP, '评论成功');
       this.backToTalk()
     }
   }

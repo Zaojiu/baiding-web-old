@@ -1,5 +1,6 @@
 import axios from 'axios'
 import auth from '../auth'
+import { SHOW_TIP } from '../../store/tip'
 
 export const StatusContinue           = 100 // RFC 7231, 6.2.1
 export const StatusSwitchingProtocols = 101 // RFC 7231, 6.2.2
@@ -78,6 +79,46 @@ const interceptor = (forceAuth) => {
       } else {
         auth(location.href);
       }
+    }
+
+
+    let errCode = error.response.status;
+    if (errCode === 0) {
+      this.$store.dispatch(SHOW_TIP, '请求错误')
+    } else if (errCode >= 400 && errCode < 500) {
+      switch (errCode) {
+        case 400:
+          this.$store.dispatch(SHOW_TIP, '提交数据错误')
+          break;
+        case 403 :
+          this.$store.dispatch(SHOW_TIP, '无访问权限')
+          break;
+        case 404:
+          this.$store.dispatch(SHOW_TIP, '资源不存在')
+          break;
+        case 408:
+          this.$store.dispatch(SHOW_TIP, '请求超时，请重试')
+          break;
+        default:
+          this.$store.dispatch(SHOW_TIP, '提交数据错误')
+      }
+    } else if (errCode >= 500 && errCode < 600) {
+      switch (errCode) {
+        case 502:
+          this.$store.dispatch(SHOW_TIP, '请求错误')
+          break;
+        case 504:
+          this.$store.dispatch(SHOW_TIP, '请求超时，请重')
+          break;
+        case 599:
+          this.$store.dispatch(SHOW_TIP, '请重试或者咨询客服')
+          break;
+        default:
+          this.$store.dispatch(SHOW_TIP, '服务器内部错误，请重试')
+          break;
+      }
+    } else {
+      this.$store.dispatch(SHOW_TIP, '请求错误')
     }
 
     return error;
