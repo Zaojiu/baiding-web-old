@@ -68,7 +68,7 @@ export class ResetPwdComponent implements OnInit {
 
     this.userInfoService.resetPassword(this.phoneNumber, this.smsCode, this.password).then(() => {
       this.tipsService.popup('重置密码成功，请重新登录');
-      this.router.navigate(['/signin', {redirectTo: this.route.snapshot.params['redirectTo']}]);
+      this.router.navigate(['/signin'], {queryParams: {redirectTo: this.route.snapshot.queryParams['redirectTo']}});
     }, err => {
       const data = err.json();
       if (data && data.code) {

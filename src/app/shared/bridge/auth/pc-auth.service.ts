@@ -9,6 +9,6 @@ export class PcAuthService implements AuthBridge {
 
   auth(redirectTo?: string) {
     redirectTo = redirectTo || this.router.routerState.snapshot.url;
-    this.router.navigate(['/signin', {redirectTo: redirectTo}]);
+    this.router.navigate(['/signin'], {queryParams: {redirectTo: redirectTo}});
   }
 }
