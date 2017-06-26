@@ -64,8 +64,9 @@ export class UserInfoService {
       StoreService.set('userinfo', userInfo);
       if (!needRefresh && queue.isLock) queue.resolve(userInfo);
       return userInfo;
-    }, (err) => {
-      if (!needRefresh && queue.isLock) queue.reject(err);
+    }, (resp) => {
+      if (!needRefresh && queue.isLock) queue.reject(resp);
+      return Promise.reject(resp);
     }).finally(() => {
       queue.unlock();
     });
