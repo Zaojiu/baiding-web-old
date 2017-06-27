@@ -65,7 +65,7 @@ export class UserNickResolver implements Resolve<string> {
   }
 
   resolve(): Promise<string> {
-    return this.userInfoService.getUserInfo(false, true).then(userInfo => {
+    return this.userInfoService.getUserInfo(false, false).then(userInfo => {
       return userInfo.nick;
     }, () => {
       return '';

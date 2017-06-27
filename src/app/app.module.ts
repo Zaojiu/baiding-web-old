@@ -107,6 +107,11 @@ import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service"
       useClass: CustomHttp,
       deps: [XHRBackend, RequestOptions, OperationTipsService]
     },
+    {
+      provide: CustomHttp,
+      useClass: CustomHttp,
+      deps: [XHRBackend, RequestOptions, OperationTipsService]
+    },
     Title,
     UserInfoResolver,
     LiveInfoResolver,

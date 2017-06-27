@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {
@@ -9,12 +8,13 @@ import {
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 import {DataQueue} from "../data-queue.model";
+import {CustomHttp} from "../custom-http.service";
 
 @Injectable()
 export class UserInfoService {
   private userInfoQueue = new DataQueue;
 
-  constructor(private http: Http) {
+  constructor(private http: CustomHttp) {
   }
 
   getUserInfoCache(): UserInfoModel {
@@ -38,13 +38,11 @@ export class UserInfoService {
 
   }
 
-  getUserInfo(needRefresh?: boolean, noHandleError = false): Promise<UserInfoModel> {
+  getUserInfo(needRefresh?: boolean, autoHandleError = true): Promise<UserInfoModel> {
     let userInfoCache = StoreService.get('userinfo') as UserInfoModel;
     if (userInfoCache && !needRefresh) {
       return Promise.resolve(userInfoCache);
     }
-    const header = new Headers();
-    header.append('noIntercept', `${noHandleError}`);
 
     const queue = this.userInfoQueue;
 
@@ -58,7 +56,7 @@ export class UserInfoService {
       }
     }
 
-    return this.http.get(`${environment.config.host.io}/api/user`, {headers: header}).toPromise().then(res => {
+    return this.http.get(`${environment.config.host.io}/api/user`, {useIntercept: autoHandleError}).toPromise().then(res => {
       let data = res.json();
       let userInfo = this.parseUserInfo(data);
       StoreService.set('userinfo', userInfo);
@@ -133,7 +131,7 @@ export class UserInfoService {
       intro: intro,
     };
 
-    return this.http.put(url, data).toPromise().then((res) => {
+    return this.http.put(url, data).toPromise().then(() => {
       // 更新用户信息, 避免缓存数据不一致。
       return this.getUserInfo(true).then(() => {
         return
@@ -143,7 +141,7 @@ export class UserInfoService {
 
   verifyUsername(username: string): Promise<void> {
     return this.http.post(`${environment.config.host.io}/api/user/username/verify`, {username: username}).toPromise()
-      .then(res => {
+      .then(() => {
         return;
       });
   }
@@ -159,7 +157,7 @@ export class UserInfoService {
       title: title,
     };
 
-    return this.http.post(url, data).toPromise().then(res => {
+    return this.http.post(url, data).toPromise().then(() => {
       return;
     });
   }
@@ -173,7 +171,7 @@ export class UserInfoService {
     if (code) data['code'] = code;
     if (password) data['password'] = password;
 
-    return this.http.post(url, data).toPromise().then(res => {
+    return this.http.post(url, data).toPromise().then(() => {
       return;
     });
   }
@@ -186,7 +184,7 @@ export class UserInfoService {
       code,
     };
 
-    return this.http.post(url, data).toPromise().then(res => {
+    return this.http.post(url, data).toPromise().then(() => {
       return;
     });
   }
