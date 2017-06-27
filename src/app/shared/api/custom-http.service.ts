@@ -1,8 +1,5 @@
 import {Injectable} from "@angular/core";
-import {
-  Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions,
-  RequestMethod
-} from "@angular/http";
+import {Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions, RequestMethod} from "@angular/http";
 import {Observable} from "rxjs";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
 import {ApiErrorMessage} from "./code-map.enum";
@@ -19,12 +16,10 @@ const whiteList = [{
 
 const handleInterceptOption = (url: string, method: RequestMethod, options?: CustomRequestOptionsArgs) => {
   let useIntercept = options && options.useIntercept === false ? false : true;
-  if (!useIntercept) {
-    delete options.useIntercept;
-  }
 
   if (useIntercept) {
     let methodStr = '';
+
     switch (method) {
       case RequestMethod.Get:
         methodStr = 'GET';
@@ -48,6 +43,7 @@ const handleInterceptOption = (url: string, method: RequestMethod, options?: Cus
         methodStr = 'PUT';
         break;
     }
+
     for (let item of whiteList) {
       if (item.regexp.test(url) && methodStr === item.method) {
         useIntercept = false;
