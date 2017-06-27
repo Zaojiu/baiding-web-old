@@ -162,7 +162,7 @@ export class UserInfoService {
     });
   }
 
-  signin(username: string, code: string, password: string): Promise<void> {
+  signin(username: string, code: string, password: string, codeMap?: {[key: number]: string}): Promise<void> {
     const query = {
       useSms: !!code,
     };
@@ -171,7 +171,7 @@ export class UserInfoService {
     if (code) data['code'] = code;
     if (password) data['password'] = password;
 
-    return this.http.post(url, data).toPromise().then(() => {
+    return this.http.post(url, data, {customCodeMap: codeMap}).toPromise().then(() => {
       return;
     });
   }

@@ -3,6 +3,7 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {host} from "../../../../environments/environment";
+import {CustomHttp} from "../custom-http.service";
 
 export enum SmsScene {
   Login = 1,
@@ -10,12 +11,17 @@ export enum SmsScene {
   BindMobile,
 }
 
+export enum SmsType {
+  Text = 1,
+  Voice,
+}
+
 @Injectable()
 export class SenderApiService {
-  constructor(private http: Http) {
+  constructor(private http: CustomHttp) {
   }
 
-  sendSmsByLoginUser(mobile: string, scene: SmsScene, type = 1): Promise<void> {
+  sendSmsByLoginUser(mobile: string, scene: SmsScene, type = SmsType.Text): Promise<void> {
     const url = `${host.io}/api/user/sms`;
     const data = {
       mobile: mobile,
@@ -28,7 +34,7 @@ export class SenderApiService {
     });
   }
 
-  sendSmsByGuest(mobile: string, scene: SmsScene, type = 1): Promise<void> {
+  sendSmsByGuest(mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: {[key: number]: string}): Promise<void> {
     const url = `${host.io}/api/user/login/sms`;
     const data = {
       mobile: mobile,
@@ -36,7 +42,7 @@ export class SenderApiService {
       type: type,
     };
 
-    return this.http.post(url, data).toPromise().then(res => {
+    return this.http.post(url, data, {customCodeMap: codeMap}).toPromise().then(res => {
       return;
     });
   }

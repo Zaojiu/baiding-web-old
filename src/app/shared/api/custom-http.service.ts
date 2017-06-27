@@ -1,8 +1,16 @@
 import {Injectable} from "@angular/core";
-import {Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions, RequestMethod} from "@angular/http";
+import {
+  Http,
+  ConnectionBackend,
+  Request,
+  RequestOptionsArgs,
+  Response,
+  RequestOptions,
+  RequestMethod
+} from "@angular/http";
 import {Observable} from "rxjs";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
-import {ApiErrorMessage} from "./code-map.enum";
+import {DefaultErrorMessage} from "./code-map.enum";
 
 interface CustomRequestOptionsArgs extends RequestOptionsArgs {
   useIntercept?: boolean;
@@ -67,30 +75,31 @@ export class CustomHttp extends Http {
 
   get(url: string, options?: CustomRequestOptionsArgs): Observable<Response> {
     const useIntercept = handleInterceptOption(url, RequestMethod.Get, options);
-    return useIntercept ? this.intercept(super.get(url, options)) : super.get(url, options);
+    return useIntercept ? this.intercept(super.get(url, options), options) : super.get(url, options);
   }
 
   post(url: string, body: any, options?: CustomRequestOptionsArgs): Observable<Response> {
     const useIntercept = handleInterceptOption(url, RequestMethod.Post, options);
-    return useIntercept ? this.intercept(super.post(url, body, options)) : super.post(url, body, options);
+    return useIntercept ? this.intercept(super.post(url, body, options), options) : super.post(url, body, options);
   }
 
   put(url: string, body: any, options?: CustomRequestOptionsArgs): Observable<Response> {
     const useIntercept = handleInterceptOption(url, RequestMethod.Put, options);
-    return useIntercept ? this.intercept(super.put(url, body, options)) : super.put(url, body, options);
+    return useIntercept ? this.intercept(super.put(url, body, options), options) : super.put(url, body, options);
   }
 
   delete(url: string, options?: CustomRequestOptionsArgs): Observable<Response> {
     const useIntercept = handleInterceptOption(url, RequestMethod.Delete, options);
-    return useIntercept ? this.intercept(super.delete(url, options)) : super.delete(url, options);
+    return useIntercept ? this.intercept(super.delete(url, options), options) : super.delete(url, options);
   }
 
-  intercept(observable: Observable<Response>): Observable<Response> {
+  intercept(observable: Observable<Response>, options: CustomRequestOptionsArgs): Observable<Response> {
     return observable.catch((err, source) => {
       const data = err.json();
       if (data) {
         const code = data && data.code ? data.code : 0;
-        const message = ApiErrorMessage[code];
+        const customCodeMap = Object.assign(DefaultErrorMessage, options.customCodeMap);
+        const message = customCodeMap[code];
         if (message) {
           this.operationTipsService.popup(message);
         } else {

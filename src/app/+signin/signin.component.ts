@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {RegexpConst} from "../shared/utils/regexp";
-import {SenderApiService, SmsScene} from "../shared/api/sender/sender.api";
+import {SenderApiService, SmsScene, SmsType} from "../shared/api/sender/sender.api";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {host} from "../../environments/environment";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {ApiError} from "../shared/api/code-map.enum";
+import {ApiError, SigninBySmsErrorMessage} from "../shared/api/code-map.enum";
 
 @Component({
   templateUrl: './signin.component.html',
@@ -99,7 +99,9 @@ export class SigninComponent implements OnInit {
     this.isSubmitting = true;
     this.tipsService.popup('登录中...');
 
-    this.userInfoService.signin(this.phoneNumber, this.smsCode, this.password).then(() => {
+    const codeMap = this.smsCode ? SigninBySmsErrorMessage : null;
+
+    this.userInfoService.signin(this.phoneNumber, this.smsCode, this.password, codeMap).then(() => {
       return this.userInfoService.getUserInfo(true);
     }, err => {
       const data = err.json();
@@ -139,7 +141,7 @@ export class SigninComponent implements OnInit {
 
     this.smsBtnAvailable = false;
 
-    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.Login).then(() => {
+    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.Login, SmsType.Text, SigninBySmsErrorMessage).then(() => {
       let timer = null;
       let countDown = 60;
 
