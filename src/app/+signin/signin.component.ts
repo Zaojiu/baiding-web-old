@@ -7,7 +7,7 @@ import {OperationTipsService} from "../shared/operation-tips/operation-tips.serv
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {host} from "../../environments/environment";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {ApiError, SigninBySmsErrorMessage} from "../shared/api/code-map.enum";
+import {ApiError, SigninErrorMessage} from "../shared/api/code-map.enum";
 
 @Component({
   templateUrl: './signin.component.html',
@@ -99,7 +99,7 @@ export class SigninComponent implements OnInit {
     this.isSubmitting = true;
     this.tipsService.popup('登录中...');
 
-    const codeMap = this.smsCode ? SigninBySmsErrorMessage : null;
+    const codeMap = this.smsCode ? SigninErrorMessage : null;
 
     this.userInfoService.signin(this.phoneNumber, this.smsCode, this.password, codeMap).then(() => {
       return this.userInfoService.getUserInfo(true);
@@ -141,7 +141,7 @@ export class SigninComponent implements OnInit {
 
     this.smsBtnAvailable = false;
 
-    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.Login, SmsType.Text, SigninBySmsErrorMessage).then(() => {
+    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.Login, SmsType.Text, SigninErrorMessage).then(() => {
       let timer = null;
       let countDown = 60;
 

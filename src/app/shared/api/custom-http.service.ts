@@ -98,8 +98,13 @@ export class CustomHttp extends Http {
       const data = err.json();
       if (data) {
         const code = data && data.code ? data.code : 0;
-        const customCodeMap = Object.assign(DefaultErrorMessage, options.customCodeMap);
-        const message = customCodeMap[code];
+        let codeMap = options && options.customCodeMap ? options.customCodeMap : null;
+        if (codeMap) {
+          codeMap = Object.assign({}, DefaultErrorMessage, codeMap);
+        } else {
+          codeMap = DefaultErrorMessage;
+        }
+        const message = codeMap[code];
         if (message) {
           this.operationTipsService.popup(message);
         } else {
