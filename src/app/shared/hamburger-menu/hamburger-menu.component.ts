@@ -42,7 +42,7 @@ export class HamburgerMenuComponent implements AfterViewInit {
   }
 
   gotoSignin() {
-    this.authService.auth('/');
+    this.authService.auth(encodeURIComponent('/'));
   }
 
   createRoom() {

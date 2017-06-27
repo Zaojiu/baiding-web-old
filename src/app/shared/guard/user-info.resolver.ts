@@ -10,7 +10,7 @@ export class UserInfoResolver implements Resolve<UserInfoModel> {
   }
 
   resolve(): Promise<UserInfoModel> {
-    return this.userInfoService.getUserInfo(false, true).then((res) => {
+    return this.userInfoService.getUserInfo(false, false).then((res) => {
       return res
     }, () => {
       return null;
