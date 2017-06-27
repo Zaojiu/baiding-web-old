@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {RegexpConst} from "../../shared/utils/regexp";
-import {SenderApiService, SmsScene} from "../../shared/api/sender/sender.api";
+import {SenderApiService, SmsScene, SmsType} from "../../shared/api/sender/sender.api";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
-import {ApiError} from "../../shared/api/code-map.enum";
+import {ApiError, SigninErrorMessage} from "../../shared/api/code-map.enum";
 
 @Component({
   templateUrl: './reset.component.html',
@@ -66,7 +66,7 @@ export class ResetPwdComponent implements OnInit {
     this.isSubmitting = true;
     this.tipsService.popup('重置密码中...');
 
-    this.userInfoService.resetPassword(this.phoneNumber, this.smsCode, this.password).then(() => {
+    this.userInfoService.resetPassword(this.phoneNumber, this.smsCode, this.password, SigninErrorMessage).then(() => {
       this.tipsService.popup('重置密码成功，请重新登录');
       this.router.navigate(['/signin'], {queryParams: {redirectTo: this.route.snapshot.queryParams['redirectTo']}});
     }, err => {
@@ -100,8 +100,8 @@ export class ResetPwdComponent implements OnInit {
     if (!this.smsBtnAvailable || !isMobileValid) return;
 
     this.smsBtnAvailable = false;
-
-    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.ResetPassWord).then(() => {
+    
+    this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.ResetPassword, SmsType.Text, SigninErrorMessage).then(() => {
       let timer = null;
       let countDown = 60;
 
@@ -119,8 +119,6 @@ export class ResetPwdComponent implements OnInit {
       }, 1000);
     }).catch((e) => {
       this.smsBtnAvailable = true;
-      this.tipsService.popup('手机验证码发送失败');
-      throw e;
     });
   }
 }

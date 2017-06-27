@@ -15,7 +15,7 @@ export class GuestGuard implements CanActivate {
     redirectTo = redirectTo.replace(host.self, '');
     if (!redirectTo.startsWith('/')) redirectTo = '/';
 
-    return this.userInfoService.getUserInfo(true, true).then(() => {
+    return this.userInfoService.getUserInfo(true, false).then(() => {
       this.router.navigateByUrl(redirectTo);
       return false;
     }, (err) => {

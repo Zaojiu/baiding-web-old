@@ -7,7 +7,7 @@ import {CustomHttp} from "../custom-http.service";
 
 export enum SmsScene {
   Login = 1,
-  ResetPassWord,
+  ResetPassword,
   BindMobile,
 }
 

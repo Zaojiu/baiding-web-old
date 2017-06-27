@@ -176,7 +176,7 @@ export class UserInfoService {
     });
   }
 
-  resetPassword(mobile: string, code: string, password: string): Promise<void> {
+  resetPassword(mobile: string, code: string, password: string, codeMap?: {[key: number]: string}): Promise<void> {
     const url = `${environment.config.host.io}/api/user/login/reset`;
     const data = {
       mobile,
@@ -184,7 +184,7 @@ export class UserInfoService {
       code,
     };
 
-    return this.http.post(url, data).toPromise().then(() => {
+    return this.http.post(url, data, {customCodeMap: codeMap}).toPromise().then(() => {
       return;
     });
   }

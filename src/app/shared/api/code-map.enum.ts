@@ -32,7 +32,7 @@ export const DefaultErrorMessage = {
   [ApiError.ErrBillingClosed]: '订单已关闭',
 };
 
-export const SigninBySmsErrorMessage = {
+export const SigninErrorMessage = {
   [ApiError.ErrNotFound]: '手机号不存在',
   [ApiError.ErrSigninInvalidPassword]: '手机号不存在或验证码错误',
 };
