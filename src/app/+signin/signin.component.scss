@@ -80,10 +80,11 @@
       .sms-sender, .forget-pwd {
         position: absolute;
         right: 0;
-        top: 24px;
+        top: 0;
         color: $color-brand;
         text-decoration: none;
         font-size: $font-size-sm;
+        padding: 24px 0 8px;
 
         &.disabled {
           opacity: .5;
