@@ -1,7 +1,7 @@
 {
   "name": "baiding-web-vue",
   "version": "0.1.0",
-  "description": "My Superb Vue Project",
+  "description": "baiding-web-vue",
   "main": "src/index.js",
   "scripts": {
     "init": "([ ! -d './node_modules' ] && npm install || true) && ([ ! -d './flow-typed' ] && flow-typed install || true)",
