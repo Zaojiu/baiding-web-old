@@ -44,9 +44,7 @@
           >
           <label class="required">验证码</label>
           <a class="sms-sender" [ngClass]="{'disabled': !smsBtnAvailable}" href=""
-             (click)="sendSMS();
-             form.controls['phoneNumber'].errors ? mobileInput.focus() : smsCodeInput.focus();
-             $event.preventDefault();">{{smsBtnText}}</a>
+             (click)="sendSMS(); $event.preventDefault();">{{smsBtnText}}</a>
         </div>
         <p class="helper" *ngIf="form.controls['smsCode'].valid || !form.controls['smsCode'].dirty">
           六位数字验证码
