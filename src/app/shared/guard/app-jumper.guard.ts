@@ -131,7 +131,7 @@ export class AppJumperGuard implements CanActivate {
       return this.liveService.getLiveInfo(liveId).then(liveInfo => {
         return liveInfo;
       }, (err) => {
-        const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
+        const to = `${location.protocol}//${location.hostname}${state.url}`;
         if (err.status === 404) {
           this.router.navigate([`/404`]);
         } else if (err.status === 401) {
@@ -153,7 +153,7 @@ export class AppJumperGuard implements CanActivate {
       return this.userInfoService.getUserInfo(true).then(userInfo => {
         return Promise.resolve(userInfo);
       }, (err) => {
-        const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
+        const to = `${location.protocol}//${location.hostname}${state.url}`;
         if (err.status == 401) {
           this.authService.auth(to)
         } else {

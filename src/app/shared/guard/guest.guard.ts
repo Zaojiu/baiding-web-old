@@ -11,7 +11,7 @@ export class GuestGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    let redirectTo = decodeURIComponent(route.params['redirectTo'] || '/');
+    let redirectTo = route.params['redirectTo'] || '/';
     redirectTo = redirectTo.replace(host.self, '');
     if (!redirectTo.startsWith('/')) redirectTo = '/';
 

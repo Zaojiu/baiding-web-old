@@ -29,11 +29,11 @@ export class TalkPostCommentComponent implements OnInit {
     this.id = this.route.snapshot.parent.parent.params['id'];
 
     this.subject = this.route.snapshot.queryParams['title'];
-    if (this.subject) this.subject = decodeURIComponent(this.subject);
+    if (this.subject) this.subject = this.subject;
     let request = this.route.snapshot.queryParams['request'];
 
     if (request) {
-      let requestObj = JSON.parse(decodeURIComponent(request));
+      let requestObj = JSON.parse(request);
       this.replyId = requestObj.id;
       this.replyNick = requestObj.nick;
       this.replyContent = requestObj.content;

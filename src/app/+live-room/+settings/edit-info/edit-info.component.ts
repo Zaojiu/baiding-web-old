@@ -57,7 +57,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
     if (!this.liveInfo.isAdmin(this.userInfo.uid)) this.back();
 
-    this.from = this.route.snapshot.params['from'] ? decodeURIComponent(this.route.snapshot.params['from']) : '';
+    this.from = this.route.snapshot.params['from'] ? this.route.snapshot.params['from'] : '';
 
     let expectStartAt = moment(this.liveInfo.expectStartAt);
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDTHH:mm');

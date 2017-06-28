@@ -100,7 +100,7 @@ export class ResetPwdComponent implements OnInit {
     if (!this.smsBtnAvailable || !isMobileValid) return;
 
     this.smsBtnAvailable = false;
-    
+
     this.senderApiService.sendSmsByGuest(this.phoneNumber, SmsScene.ResetPassword, SmsType.Text, SigninErrorMessage).then(() => {
       let timer = null;
       let countDown = 60;

@@ -84,7 +84,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
     return this.userInfoService.getUserPublicInfo(uid).then(publicUserInfo => {
       this.pageUserInfo = publicUserInfo;
       this.avatarBackground = this.sanitizer.bypassSecurityTrustStyle(`url(${publicUserInfo.avatar})`);
-      this.from = encodeURIComponent(`info-center/${uid}`);
+      this.from = `info-center/${uid}`;
       this.shareService.setShareInfo(
         `${this.pageUserInfo.nick}等你加入我的话题讨论`,
         environment.config.slogan,

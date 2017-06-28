@@ -42,7 +42,7 @@ export class HamburgerMenuComponent implements AfterViewInit {
   }
 
   gotoSignin() {
-    this.authService.auth(encodeURIComponent('/'));
+    this.authService.auth('/');
   }
 
   createRoom() {
@@ -51,7 +51,7 @@ export class HamburgerMenuComponent implements AfterViewInit {
       return;
     }
 
-    let from = this.liveId ? {from: encodeURIComponent(`lives/${this.liveId}`)} : this.from ? {from: this.from} : {from: encodeURIComponent(`info-center/${this.userInfo.uid}`)};
+    let from = this.liveId ? {from: `lives/${this.liveId}`} : this.from ? {from: this.from} : {from: `info-center/${this.userInfo.uid}`};
 
     if (this.userInfo.canPublish) {
       this.router.navigate([`/lives/create`, from]);

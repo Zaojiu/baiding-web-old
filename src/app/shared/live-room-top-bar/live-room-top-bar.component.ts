@@ -23,7 +23,7 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.from = this.route.snapshot.params['from'] ? decodeURIComponent(this.route.snapshot.params['from']) : '';
+    this.from = this.route.snapshot.params['from'] ? this.route.snapshot.params['from'] : '';
 
     if (this.liveId) {
       this.eventSub = this.timelineService.event$.subscribe(evt => this.receivedEvents(evt));

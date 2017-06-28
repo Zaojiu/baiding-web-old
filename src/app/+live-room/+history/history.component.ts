@@ -156,7 +156,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   }
 
   goSignin() {
-    this.authBridge.auth(encodeURIComponent(location.href));
+    this.authBridge.auth(location.href);
   }
 
   audioPlayEnded(msg: MessageModel) {

@@ -8,9 +8,8 @@ export class WechatAuthService implements AuthBridge {
   }
 
   auth(redirectTo?: string) {
-    redirectTo = redirectTo || encodeURIComponent(location.href);
-    if (redirectTo.startsWith(encodeURIComponent('/'))) redirectTo = `${encodeURIComponent(host.self)}${redirectTo}`;
-    if (redirectTo.startsWith('/')) redirectTo = encodeURIComponent(`${host.self}${redirectTo}`);
-    location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${redirectTo}`;
+    redirectTo = redirectTo || location.href;
+    if (redirectTo.startsWith('/')) redirectTo = `${host.self}${redirectTo}`;
+    location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(redirectTo)}`;
   }
 }

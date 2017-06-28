@@ -26,7 +26,7 @@ export class TalkInfoResolver implements Resolve<TalkInfoModel> {
     return this.talkService.getTalkInfo(talkId).then(talkInfo => {
       return talkInfo;
     }, () => {
-      const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
+      const to = `${location.protocol}//${location.hostname}${state.url}`;
       this.router.navigate([`/reload`], {queryParams: {backTo: to}});
       return null;
     });
