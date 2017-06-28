@@ -7,7 +7,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ProgressPlugin = require('webpack/lib/ProgressPlugin')
 const OfflinePlugin = require('offline-plugin')
 const base = require('./webpack.base')
-const pkg = require('../package')
 const _ = require('./utils')
 const config = require('./config')
 
@@ -78,15 +77,6 @@ _.cssProcessors.forEach(processor => {
 })
 
 // minimize webpack output
-base.stats = {
-  // Add children information
-  children: false,
-  // Add chunk information (setting this to `false` allows for a less verbose output)
-  chunks: false,
-  // Add built modules information to chunk information
-  chunkModules: false,
-  chunkOrigins: false,
-  modules: false
-}
+base.stats = "minimal"
 
 module.exports = base

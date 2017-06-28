@@ -6,7 +6,7 @@ const base = require('./webpack.base')
 const _ = require('./utils')
 const FriendlyErrors = require('friendly-errors-webpack-plugin')
 
-base.devtool = 'eval-source-map'
+base.devtool = 'inline-source-map'
 base.plugins.push(
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('development')
