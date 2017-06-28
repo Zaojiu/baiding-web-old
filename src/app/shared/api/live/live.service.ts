@@ -11,12 +11,9 @@ import {UtilsService} from "../../utils/utils";
 import {VideoInfo} from "../../video-player/video-player.model";
 
 import {AnalyticsService, TargetInfo, ObjectType} from "../../analytics/analytics.service"
-import {DataQueue} from "../data-queue.model";
 
 @Injectable()
 export class LiveService {
-  private liveInfoQueue: {[id: string]: DataQueue} = {};
-
   constructor(private http: Http, private analytics: AnalyticsService) {
   }
 
@@ -141,31 +138,11 @@ export class LiveService {
       join: join,
     };
 
-    if (!this.liveInfoQueue[id]) this.liveInfoQueue[id] = new DataQueue;
-
-    const queue = this.liveInfoQueue[id];
-
-    if (!needRefresh && !join) {
-      if (queue.isLock) {
-        return new Promise((resolve, reject) => {
-          queue.append(resolve, reject);
-        });
-      } else {
-        queue.lock();
-      }
-    }
-
     const url = `${environment.config.host.io}/api/live/streams/${id}?${$.param(query)}`;
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
       const liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
-      if (!needRefresh && !join && queue.isLock) queue.resolve(liveInfo);
       return liveInfo;
-    }, (resp) => {
-      if (!needRefresh && !join && queue.isLock) queue.reject(resp);
-      return Promise.reject(resp);
-    }).finally(() => {
-      queue.unlock();
     });
   }
 

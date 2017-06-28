@@ -6,12 +6,9 @@ import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 import {TalkInfoModel, TalkCommentModel} from "./talk.model";
 import {DomSanitizer} from "@angular/platform-browser";
-import {DataQueue} from "../data-queue.model";
 
 @Injectable()
 export class TalkService {
-  private talkInfoQueue: {[id: string]: DataQueue} = {};
-
   constructor(private http: Http, private sanitizer: DomSanitizer) {
   }
 
@@ -19,20 +16,6 @@ export class TalkService {
     let talks = StoreService.get('talks') || {};
     let talksInfoCache = talks[id];
     if (talksInfoCache && !needRefresh) return Promise.resolve(talksInfoCache);
-
-    if (!this.talkInfoQueue[id]) this.talkInfoQueue[id] = new DataQueue;
-
-    const queue = this.talkInfoQueue[id];
-
-    if (!needRefresh) {
-      if (queue.isLock) {
-        return new Promise((resolve, reject) => {
-          queue.append(resolve, reject);
-        });
-      } else {
-        queue.lock();
-      }
-    }
 
     const url = `${environment.config.host.io}/api/live/objects/${id}`;
     return this.http.get(url).toPromise().then(res => {
@@ -44,14 +27,7 @@ export class TalkService {
       talks[id] = talkInfo;
       StoreService.set('talks', talks);
 
-      if (!needRefresh && queue.isLock) queue.resolve(talkInfo);
-
       return talkInfo;
-    }, (resp) => {
-      if (!needRefresh && queue.isLock) queue.reject(resp);
-      return Promise.reject(resp);
-    }).finally(() => {
-      queue.unlock();
     });
   }
 
