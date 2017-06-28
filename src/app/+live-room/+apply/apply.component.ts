@@ -37,7 +37,7 @@ export class ApplyComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.route.snapshot.data['userInfo'];
-    this.from = this.route.snapshot.params['from'] ? decodeURIComponent(this.route.snapshot.params['from']) : '';
+    this.from = this.route.snapshot.params['from'] ? this.route.snapshot.params['from'] : '';
 
     this.applyService.getApplication().then(application => {
       this.application = application;

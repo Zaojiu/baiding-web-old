@@ -35,7 +35,7 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.redirectTo = decodeURIComponent(this.route.snapshot.queryParams['redirectTo'] || '/');
+    this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/';
     this.redirectTo = this.redirectTo.replace(host.self, '');
     if (!this.redirectTo.startsWith('/')) this.redirectTo = '/';
     this.form = this.fb.group({

@@ -270,10 +270,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
     let path = this.router.serializeUrl(uriTree);
     if (!this.checkSignIn(`${location.protocol}//${location.hostname}${path}`)) return;
 
-    let queryParams: any = {title: encodeURIComponent(this.talkInfo.subject)};
+    let queryParams: any = {title: this.talkInfo.subject};
 
     if (id && nick && content) {
-      queryParams.request = encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content}));
+      queryParams.request = JSON.stringify({id: id, nick: nick, content: content});
     }
 
     this.router.navigate([`/talks/${this.id}/post-comment`], {queryParams: queryParams});

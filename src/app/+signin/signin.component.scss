@@ -1,6 +1,10 @@
 .signin-container {
-  position: relative;
-  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 .mobile-signin-container {
@@ -149,9 +153,9 @@
   top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   opacity: 0;
   transition: opacity .3s;
-  padding: 30px;
 
   &.show {
     opacity: 1;
@@ -162,6 +166,7 @@
     display: flex;
     justify-content: center;
     height: 420px;
+    margin: 30px;
 
     .loading-container, .retry {
       position: absolute;
@@ -208,5 +213,10 @@
         opacity: 1;
       }
     }
+  }
+
+  .button {
+    width: calc(100% - 30px * 2);
+    margin: 30px;
   }
 }

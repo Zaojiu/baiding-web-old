@@ -80,7 +80,7 @@ export class SettingsComponent implements OnInit {
     if (this.userInfo.canPublish) {
       this.router.navigate([`/lives/create`, {liveId: this.liveId}]);
     } else {
-      this.router.navigate([`/lives/apply`, {from: encodeURIComponent(`lives/${this.liveId}`)}]);
+      this.router.navigate([`/lives/apply`, {from: `lives/${this.liveId}`}]);
     }
   }
 

@@ -36,7 +36,7 @@ export class AdminGuard implements CanActivate {
 
       return liveInfo.isAdmin(userInfo.uid);
     }, (err) => {
-      const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
+      const to = `${location.protocol}//${location.hostname}${state.url}`;
       if (err.status == 404) {
         this.router.navigate([`/404`]);
       } else {

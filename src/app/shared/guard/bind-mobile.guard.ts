@@ -10,8 +10,8 @@ export class BindMobileGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    const to = encodeURIComponent(`${location.protocol}//${location.hostname}${state.url}`);
-    const innerTo = encodeURIComponent(state.url);
+    const to = `${location.protocol}//${location.hostname}${state.url}`;
+    const innerTo = state.url;
     return this.userInfoService.getUserInfo().then(userInfo => {
       if (userInfo.mobile.number) return true;
 

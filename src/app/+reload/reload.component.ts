@@ -16,7 +16,7 @@ export class ReloadComponent {
   }
 
   goBack() {
-    let backTo = decodeURIComponent(this.route.snapshot.queryParams['backTo']);
+    let backTo = this.route.snapshot.queryParams['backTo'];
     if (backTo) {
       backTo = backTo.replace(host.self, '');
 
