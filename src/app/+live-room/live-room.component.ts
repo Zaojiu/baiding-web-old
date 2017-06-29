@@ -70,7 +70,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.setShareInfo();
-    this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
+    // this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
     this.joinLiveRoom().then(() => {
       if (this.liveInfo.isTypeVideo()) {
         this.fetchStream();

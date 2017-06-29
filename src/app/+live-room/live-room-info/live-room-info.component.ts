@@ -58,7 +58,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
     this.route.snapshot.data['shareLink'] = this.getShareUri();
 
-    this.shareService.accessSharedByRoute(this.route);
+    // this.shareService.accessSharedByRoute(this.route);
 
     this.inviteApiService.audienceListInvitations(this.liveId).then((res) => {
       this.audienceListInvitations = res;
