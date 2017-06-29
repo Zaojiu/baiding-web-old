@@ -1,5 +1,5 @@
 import { ErrorHandler } from '@angular/core';
-declare const trackJs: any;
+declare const window: any;
 
 export class TrackJsErrorHandler implements ErrorHandler {
   handleError(error:any) {
@@ -8,8 +8,8 @@ export class TrackJsErrorHandler implements ErrorHandler {
     console.warn(error.message);
 
     // Assumes we have already loaded and configured TrackJS*
-    if (trackJs) {
-      trackJs.track(error.originalError); // Send the native error object to TrackJS
+    if (window.trackJs) {
+      window.trackJs.track(error.originalError); // Send the native error object to TrackJS
     }
   }
 }
