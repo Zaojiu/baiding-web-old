@@ -13,7 +13,6 @@ import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {appConfig} from "../../../environments/environment";
 
 declare var $: any;
-declare var Waypoint: any;
 
 @Component({
   templateUrl: './now.component.html',
@@ -25,7 +24,6 @@ export class NowComponent implements OnInit, OnDestroy {
               private sanitizer: DomSanitizer, private durationPipe: DurationFormaterPipe) {
   }
 
-  private waypoints: any[] = [];
   private loadSize = 20;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   livesList: LiveInfoModel[] = [];
@@ -49,43 +47,7 @@ export class NowComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    for (let waypoint of this.waypoints) {
-      waypoint.destroy();
-    }
-
     clearInterval(this.timer);
-  }
-
-  initWaypoint() {
-    let $container = $('.live-list');
-    let waypoints = this.waypoints;
-
-    $('.live-info-block').each(function () {
-      let $this = $(this);
-
-      if ($this.hasClass('has-waypoint')) return;
-
-      $this.addClass('has-waypoint');
-
-      waypoints.push(
-        new Waypoint.Inview({
-          element: $this[0],
-          context: $container[0],
-          enter: (direction) => {
-            if (direction === 'up') $this.addClass('entered');
-          },
-          entered: (direction) => {
-            if (direction === 'up') $this.removeClass('entered');
-          },
-          exit: (direction) => {
-            if (direction === 'down') $this.addClass('entered');
-          },
-          exited: (direction) => {
-            if (direction === 'down') $this.removeClass('entered');
-          }
-        })
-      );
-    });
   }
 
   gotoLiveRoomInfo(liveId: string) {
@@ -131,25 +93,10 @@ export class NowComponent implements OnInit, OnDestroy {
             this.liveTime[liveInfo.id] = `开始时间 ${moment(liveInfo.expectStartAt).format('YYYY-MM-DD HH:mm:ss')}`;
           }
         } else if (liveInfo.status === LiveStatus.Ended) {
-          let diffSec = moment(liveInfo.closedAt).diff(moment(liveInfo.expectStartAt)) / 1000;
-          let dayStr = this.durationPipe.transform(diffSec, 1);
-          if (dayStr !== '') dayStr += ':';
-          this.liveTime[liveInfo.id] = `直播时长 ${dayStr}${this.durationPipe.transform(diffSec, 2)}:${this.durationPipe.transform(diffSec, 3)}:${this.durationPipe.transform(diffSec, 4)}`;
+          this.liveTime[liveInfo.id] = `已于 ${moment(liveInfo.closedAt).format('YYYY-MM-DD HH:mm:ss')}结束`;
         } else {
           this.liveTime[liveInfo.id] = '未知状态';
         }
-      }
-
-      let isOnPcWithoutSticky = CSS && CSS.supports && !CSS.supports('position', 'sticky') && UtilsService.isOnLargeScreen;
-
-      if (UtilsService.isiOS || isOnPcWithoutSticky) {
-        setTimeout(() => {
-          System.import('waypoints/lib/noframework.waypoints.js').then(() => {
-            return System.import('waypoints/lib/shortcuts/inview.min.js');
-          }).then(() => {
-            this.initWaypoint();
-          });
-        }, 10);
       }
 
       return livesList;

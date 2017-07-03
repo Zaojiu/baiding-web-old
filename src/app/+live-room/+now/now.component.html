@@ -4,12 +4,6 @@
     <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoomInfo(liveInfo.id)">
 
       <div class="live-room-info-upper">
-        <div class="admin-info">
-          <div class="admin-info-wrapper" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
-            <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
-            <span class="nick">{{liveInfo.admin.nick}}</span>
-          </div>
-        </div>
 
         <div class="live-title-wrapper">
           <div class="live-title">{{liveInfo.subject}}</div>
@@ -17,13 +11,17 @@
           <span class="live-type video" *ngIf="liveInfo.isTypeVideo()"><i class="bi bi-video"></i>视频</span>
         </div>
 
-        <div class="live-info">
-          <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
-          <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
-          <span class="time" *ngIf="liveInfo.isStarted()">
-          已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
-        </span>
+        <div class="admin-info">
+          <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
+          <div class="nick-wrapper">
+            <div class="nick">{{liveInfo.admin.nick}}</div>
+            <div class="time">
+              <span class="time">{{liveTime[liveInfo.id]}}</span>
+            </div>
+          </div>
         </div>
+
+        <div class="desc" *ngIf="liveInfo.desc">{{liveInfo.desc}}</div>
 
         <div class="cover-container">
           <img class="cover" [src]="covers[liveInfo.id]" alt="话题间封面">
