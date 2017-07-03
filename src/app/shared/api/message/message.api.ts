@@ -119,7 +119,7 @@ export class MessageApiService {
         message.parentMessage.type = MessageType.Nice;
         message.parentMessage.user = users[data.nice.uid];
         message.parentMessage.content = data.nice.message;
-        let contentParsed = UtilsService.parseAt(message.content);
+        let contentParsed = UtilsService.parseAt(message.parentMessage.content);
         contentParsed = UtilsService.parseLink(contentParsed);
         message.parentMessage.contentParsed = this.sanitizer.bypassSecurityTrustHtml(contentParsed);
         message.parentMessage.createdAt = data.createdAt; // TODO: 可能需要原创建时间
