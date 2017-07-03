@@ -1,0 +1,84 @@
+<div class="live-list scrollable" (scroller)="onScroll($event)" [data]="livesList"
+     [dataContainerSelector]="'.main-list'" [needUnload]="false">
+  <div class="main-list">
+    <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoomInfo(liveInfo.id)">
+
+      <div class="live-room-info-upper">
+        <div class="admin-info">
+          <div class="admin-info-wrapper" (click)="gotoInfoCenter(liveInfo.admin.uid);$event.stopPropagation();">
+            <img class="avatar" [src]="liveInfo.admin.avatar" alt="主持人头像">
+            <span class="nick">{{liveInfo.admin.nick}}</span>
+          </div>
+        </div>
+
+        <div class="live-title-wrapper">
+          <div class="live-title">{{liveInfo.subject}}</div>
+          <span class="live-type text" *ngIf="liveInfo.isTypeText()"><i class="bi bi-paper2"></i>文字</span>
+          <span class="live-type video" *ngIf="liveInfo.isTypeVideo()"><i class="bi bi-video"></i>视频</span>
+        </div>
+
+        <div class="live-info">
+          <span class="time" *ngIf="liveInfo.isCreated()">{{liveTime[liveInfo.id]}}</span>
+          <span class="time" *ngIf="liveInfo.isClosed()">{{liveTime[liveInfo.id]}}</span>
+          <span class="time" *ngIf="liveInfo.isStarted()">
+          已进行 <span *ngIf="liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1">{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:1}}:</span>{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:2}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:3}}:{{liveInfo.expectStartAt | timeTo:timeNow | durationFormater:4}}
+        </span>
+        </div>
+
+        <div class="cover-container">
+          <img class="cover" [src]="covers[liveInfo.id]" alt="话题间封面">
+          <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                      [countDownStatus]="liveInfo.isCreated()"></count-down>
+          <span class="live-status living" *ngIf="liveInfo.isStarted()">直播中</span>
+          <span class="live-status closed" *ngIf="liveInfo.isClosed()">已结束</span>
+        </div>
+      </div>
+
+      <div class="invited-people">
+        <div class="vip-label">嘉宾</div>
+
+        <div class="vip-container" *ngIf="liveInfo.admin">
+          <div class="accepted">
+            <div class="avatar-wrapper">
+              <img class="avatar" [src]="liveInfo.admin.avatar" alt="嘉宾头像">
+            </div>
+
+            <span class="nick">{{liveInfo.admin.nick}}</span>
+          </div>
+        </div>
+
+        <div class="vip-container" *ngFor=" let editor of liveInfo.invitedEditors">
+          <div class="accepted">
+            <div class="avatar-wrapper">
+              <div class="invite-people-bg" *ngIf="!editor.avatar_url">
+                <i class="bi bi-people2"></i>
+              </div>
+              <img class="avatar" *ngIf="editor.avatar_url" [src]="editor.avatar_url" alt="嘉宾头像">
+            </div>
+
+            <span class="nick">{{editor.name}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="operation-area">
+        <div class="people-count">
+          <img class="avatar" alt="" src="{{user.avatar}}" *ngFor="let user of liveInfo.latestUsers">
+          {{liveInfo.totalUsers > 999 ? '999+' : liveInfo.totalUsers}}人观看
+        </div>
+      </div>
+    </div>
+
+
+    <div class="bottom" *ngIf="isOnLatest && livesList.length">
+      <div class="word">已显示全部内容</div>
+    </div>
+  </div>
+
+  <bd-loading *ngIf="!isOnLatest" class="loading-foot"
+              [ngClass]="{show: scroller.isFootLoadingShown, hide:!scroller.isFootLoadingShown}"></bd-loading>
+</div>
+
+<bd-loading class="loading" *ngIf="!livesList"></bd-loading>
+
+<div class="no-record-tips" *ngIf="!livesList.length">暂无Now直播内容</div>

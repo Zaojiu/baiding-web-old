@@ -12,6 +12,13 @@ import {BindMobileGuard} from "../shared/guard/bind-mobile.guard";
 
 const route: Routes = [
   {
+    path: '',
+    loadChildren: 'app/+live-room/+now/now.module#NowModule',
+    data: {
+      title: '造就Now'
+    }
+  },
+  {
     path: 'apply',
     loadChildren: 'app/+live-room/+apply/apply.module#ApplyModule',
     data: {
