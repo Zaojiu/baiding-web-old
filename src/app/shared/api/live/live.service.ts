@@ -113,7 +113,7 @@ export class LiveService {
 
     liveInfo.totalUsers = stream.totalUsers;
 
-    liveInfo.alertMessage = stream.alertMessage || '';
+    liveInfo.alertMessage = stream.meta.alertMessage || '';
 
     if (liveInfo.isTypeVideo()) {
       switch (stream.meta.publishStatus) {
@@ -160,11 +160,10 @@ export class LiveService {
     return lives[id];
   }
 
-  createLive(subject: string, coverUrl: string, desc: string, alertMessage: string, expectStartAt: string, kind: string): Promise<string> {
+  createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
     let data: { [key: string]: string } = {
       subject: subject,
       desc: desc,
-      alertMessage: alertMessage,
       coverUrl: coverUrl,
       expectStartAt: expectStartAt,
       kind: kind,
@@ -178,11 +177,10 @@ export class LiveService {
     });
   }
 
-  updateLiveInfo(id: string, title: string, desc: string, alertMessage: string, expectStartAt: string, coverKey?: string, coverWeixinId?: string): Promise<LiveInfoModel> {
+  updateLiveInfo(id: string, title: string, desc: string, expectStartAt: string, coverKey?: string, coverWeixinId?: string): Promise<LiveInfoModel> {
     let data: { [key: string]: string } = {
       subject: title,
       desc: desc,
-      alertMessage: alertMessage,
       expectStartAt: expectStartAt,
     };
 

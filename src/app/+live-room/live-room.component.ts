@@ -56,6 +56,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
   private onlineService: OnlineService;
   alertMessage: string;
+  isAlertMessageShown = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -74,8 +75,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     const alertMessageCache = alertMessageCacheStr ? JSON.parse(alertMessageCacheStr) : {};
     if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
       this.alertMessage = this.liveInfo.alertMessage;
+      this.isAlertMessageShown = true;
       alertMessageCache[this.id] = this.liveInfo.alertMessage;
-      localStorage.setItem('alertMessageCache', JSON.parse(alertMessageCache));
+      localStorage.setItem('alertMessageCache', JSON.stringify(alertMessageCache));
     }
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.setShareInfo();

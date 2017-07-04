@@ -225,6 +225,71 @@
   }
 }
 
+.live-room-alert-message {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .live-room-alert-message-container {
+    position: relative;
+    border-radius: 4px;
+    width: 260px;
+    overflow: hidden;
+    background-color: $color-w;
+
+    .live-room-alert-message-title {
+      font-size: $font-size-lg;
+      color: $color-dark-gray;
+      line-height: 1em;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .live-room-alert-message-content {
+      margin: 20px;
+      font-size: $font-size-sm;
+      color: $color-dark-gray;
+      line-height: 1.57em;
+      white-space: pre-wrap;
+    }
+
+    .close {
+      position: absolute;
+      background-color: rgba(12, 34, 34, .1);
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      right: -39px;
+      top: -39px;
+
+      &:before, &:after {
+        content: "";
+        position: absolute;
+        height: 22px;
+        width: 1px;
+        background-color: rgb(255, 255, 255);
+        top: 44px;
+        left: 24px;
+      }
+
+      &:before {
+        transform: rotate(45deg);
+      }
+
+      &:after {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}
+
 @media (min-width: 1024px) {
   :host {
     flex-direction: row;
