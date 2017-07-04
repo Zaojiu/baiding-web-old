@@ -84,6 +84,10 @@
   ></editor-tool-bar>
 </div>
 
+<div class="live-room-notification-popup" *ngIf="alertMessage">
+  {{alertMessage}}
+</div>
+
 <user-info-card></user-info-card>
 
 <router-outlet></router-outlet>

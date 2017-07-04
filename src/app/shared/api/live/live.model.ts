@@ -44,6 +44,7 @@ export class LiveInfoModel {
   totalFee: number; // 价格，单位“分”
   paid: boolean; //付费情况
   invited: number;
+  alertMessage: string;
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;

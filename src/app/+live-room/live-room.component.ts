@@ -22,6 +22,7 @@ import {ModalService} from "../shared/modal/modal.service";
 import {VideoPlayerComponent} from "../shared/video-player/video-player.component";
 import {AnalyticsService, OnlineService, OnlineParams, MediaInfo} from "../shared/analytics/analytics.service"
 import {ModalLink} from "../shared/modal/modal.model";
+import {StoreService} from "../shared/store/store.service";
 
 @Component({
   templateUrl: './live-room.component.html',
@@ -54,6 +55,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isAndroid = UtilsService.isAndroid;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
   private onlineService: OnlineService;
+  alertMessage: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -68,6 +70,13 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    const alertMessageCacheStr = localStorage.getItem('alertMessageCache');
+    const alertMessageCache = alertMessageCacheStr ? JSON.parse(alertMessageCacheStr) : {};
+    if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
+      this.alertMessage = this.liveInfo.alertMessage;
+      alertMessageCache[this.id] = this.liveInfo.alertMessage;
+      localStorage.setItem('alertMessageCache', JSON.parse(alertMessageCache));
+    }
     this.userInfo = this.route.snapshot.data['userInfo'];
     this.setShareInfo();
     // this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
