@@ -17,3 +17,8 @@ export enum LiveStreamStatus {
   Pushing = <any>'publish',
   Done = <any>'publish_done',
 }
+
+export enum LivePublishedStatus {
+  Published = 1,
+  Draft
+}

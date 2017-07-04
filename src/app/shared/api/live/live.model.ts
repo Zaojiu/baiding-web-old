@@ -21,6 +21,7 @@ export class LiveInfoModel {
   owner: UserInfoModel;
   admin: UserInfoModel;
   editors: UserInfoModel[]; //后端新增字段 avatar_url,title //TODO
+  invitedEditors: UserInfoModel[];
   latestUsers: UserInfoModel[]; // 话题间观众
   praised: number;
   commented: number;

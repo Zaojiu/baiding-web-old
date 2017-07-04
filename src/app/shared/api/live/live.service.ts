@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
-import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
+import {LiveStatus, LiveType, LiveStreamStatus,LivePublishedStatus} from './live.enums';
 import {environment} from "../../../../environments/environment";
 import {UtilsService} from "../../utils/utils";
 import {VideoInfo} from "../../video-player/video-player.model";
@@ -55,6 +55,11 @@ export class LiveService {
           liveInfo.editors.push(user);
         }
       });
+    }
+
+    liveInfo.invitedEditors = [];
+    if (stream.meta.invitedEditors) {
+      liveInfo.invitedEditors = stream.meta.invitedEditors;
     }
 
     liveInfo.latestUsers = [];
@@ -215,6 +220,7 @@ export class LiveService {
       createdAt: marker,
       size: size,
       sorts: sorts.join(','),
+      status: LivePublishedStatus.Published //默认显示已经发布的内容
     };
     const url = `${environment.config.host.io}/api/live/streams/owner/${uid}?${$.param(query)}`;
     return this.http.get(url).toPromise().then((res) => {
@@ -265,6 +271,30 @@ export class LiveService {
       size: size,
     };
     const url = `${environment.config.host.io}/api/live/streams/recommend?${$.param(query)}`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+
+      let streamData = data.result;
+      let liveInfoList: LiveInfoModel[] = [];
+
+      if (streamData) {
+        let usersData = data.include.users;
+        for (let liveInfo of streamData) {
+          let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
+          liveInfoList.push(liveInfoParsed);
+        }
+      }
+
+      return liveInfoList;
+    });
+  }
+
+  listNow(markerId: string, size = 20): Promise<LiveInfoModel[]> {
+    const query = {
+      size: size,
+      marker: markerId
+    };
+    const url = `${environment.config.host.io}/api/live/now/streams?${$.param(query)}`;
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
 

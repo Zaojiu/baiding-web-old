@@ -6,11 +6,9 @@ import {UserInfoModel, UserPublicInfoModel} from "../shared/api/user-info/user-i
 import {UtilsService} from "../shared/utils/utils";
 import {DomSanitizer, SafeUrl, SafeStyle} from "@angular/platform-browser";
 import {ShareBridge} from "../shared/bridge/share.interface";
-import {TimeToFormatedPipe} from "../shared/pipe/time.pipe";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {Subscription} from "rxjs";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
-import {TitleService} from "../shared/title/title.service";
 import {environment} from "../../environments/environment";
 
 @Component({
@@ -21,8 +19,7 @@ import {environment} from "../../environments/environment";
 export class InfoCenterComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
               private liveService: LiveService, private shareService: ShareBridge,
-              private sanitizer: DomSanitizer, private userInfoService: UserInfoService,
-              private timeToformatedPipe: TimeToFormatedPipe, private titleService: TitleService) {
+              private sanitizer: DomSanitizer, private userInfoService: UserInfoService) {
   }
 
   timeNow = UtilsService.now.toString();
@@ -32,8 +29,8 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   livesList: LiveInfoModel[] = [];
   livesListWatched: LiveInfoModel[] = [];
   from: string;
-  covers: {[liveId: string]: SafeUrl} = {};
-  liveTime: {[liveId: string]: string} = {};
+  covers: { [liveId: string]: SafeUrl } = {};
+  liveTime: { [liveId: string]: string } = {};
   avatarBackground: SafeStyle;
   tabIndex = 0;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
@@ -108,24 +105,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
           liveInfo.latestUsers = liveInfo.latestUsers.slice(0, 5);
         }
 
-        if (liveInfo.isCreated()) {
-          let dayStr = moment(liveInfo.expectStartAt).calendar(null, {
-            sameDay: '[今天] HH:mm:ss',
-            nextDay: '[明天] HH:mm:ss',
-            nextWeek: 'YYYY-MM-DD HH:mm:ss',
-            lastDay: 'YYYY-MM-DD HH:mm:ss',
-            lastWeek: 'YYYY-MM-DD HH:mm:ss',
-            sameElse: 'YYYY-MM-DD HH:mm:ss'
-          });
-
-          this.liveTime[liveInfo.id] = `开始时间 ${dayStr}`;
-        } else if (liveInfo.isClosed()) {
-          this.liveTime[liveInfo.id] = `直播时长 ${this.timeToformatedPipe.transform(liveInfo.expectStartAt, liveInfo.closedAt)}`;
-        } else if (liveInfo.isStarted()) {
-        } else {
-          this.liveTime[liveInfo.id] = '未知状态';
-        }
-
+        this.liveTime[liveInfo.id] = UtilsService.praseLiveTime(liveInfo)
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(liveInfo.coverSmallUrl);
       }
 
@@ -143,24 +123,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
           liveInfo.latestUsers = liveInfo.latestUsers.slice(0, 5);
         }
 
-        if (liveInfo.isCreated()) {
-          let dayStr = moment(liveInfo.expectStartAt).calendar(null, {
-            sameDay: '[今天] HH:mm:ss',
-            nextDay: '[明天] HH:mm:ss',
-            nextWeek: 'YYYY-MM-DD HH:mm:ss',
-            lastDay: 'YYYY-MM-DD HH:mm:ss',
-            lastWeek: 'YYYY-MM-DD HH:mm:ss',
-            sameElse: 'YYYY-MM-DD HH:mm:ss'
-          });
-
-          this.liveTime[liveInfo.id] = `开始时间 ${dayStr}`;
-        } else if (liveInfo.isClosed()) {
-          this.liveTime[liveInfo.id] = `直播时长 ${this.timeToformatedPipe.transform(liveInfo.expectStartAt, liveInfo.closedAt)}`;
-        } else if (liveInfo.isStarted()) {
-        } else {
-          this.liveTime[liveInfo.id] = '未知状态';
-        }
-
+        this.liveTime[liveInfo.id] = UtilsService.praseLiveTime(liveInfo)
         this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(liveInfo.coverSmallUrl);
       }
 
