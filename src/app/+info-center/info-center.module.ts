@@ -11,7 +11,6 @@ import {PipeModule} from "../shared/pipe/pipe.module";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CountDownModule} from "../shared/countdown/countdown.module";
-import {TimeToFormatedPipe} from "../shared/pipe/time.pipe";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {FormModule} from "../shared/form/form.module";
 import {DraggableModule} from "../shared/draggable/draggable.module";
@@ -38,7 +37,6 @@ import {UserNickResolver} from "../shared/guard/title.resolver";
   ],
   providers: [
     InviteApiService,
-    TimeToFormatedPipe,
     UserNickResolver,
   ]
 })

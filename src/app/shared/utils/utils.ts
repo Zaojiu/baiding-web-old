@@ -1,3 +1,4 @@
+import {LiveInfoModel} from '../../shared/api/live/live.model';
 interface Window {
   navigator: any;
 }
@@ -108,9 +109,9 @@ export class UtilsService {
     return _.sampleSize<string>((dic || defaultDic).split(''), size).join('');
   }
 
-  static serializeObj(source: string): {[key: string]: string} {
+  static serializeObj(source: string): { [key: string]: string } {
     const kvArr = source.split('&');
-    const target: {[key: string]: string} = {};
+    const target: { [key: string]: string } = {};
     for (let kv of kvArr) {
       const kvPair = kv.split('=');
       if (kvPair.length === 2) target[decodeURIComponent(kvPair[0])] = decodeURIComponent(kvPair[1]);
@@ -118,7 +119,7 @@ export class UtilsService {
     return target;
   }
 
-  static deserializeObj(source: {[key: string]: string}): string {
+  static deserializeObj(source: { [key: string]: string }): string {
     return Object.keys(source).map((k) => {
       let kStr = encodeURIComponent(k);
       if (kStr === 'undefined') kStr = '';
@@ -137,5 +138,63 @@ export class UtilsService {
       if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
     }
     return '';
+  }
+
+  static praseLiveTime(liveInfo: LiveInfoModel): string {
+    let timePrased = '';
+
+    if (liveInfo.isCreated()) {
+      let dayStr = moment(liveInfo.expectStartAt).calendar(null, {
+        sameDay: '[今天] HH:mm:ss',
+        nextDay: '[明天] HH:mm:ss',
+        nextWeek: 'YYYY-MM-DD HH:mm:ss',
+        lastDay: 'YYYY-MM-DD HH:mm:ss',
+        lastWeek: 'YYYY-MM-DD HH:mm:ss',
+        sameElse: 'YYYY-MM-DD HH:mm:ss'
+      });
+
+      timePrased = `开始时间 ${dayStr}`;
+    } else if (liveInfo.isStarted()) {
+      let diffSec = moment(new Date().getTime()).diff(moment(liveInfo.expectStartAt)) / 1000;
+      let dayStr = this.transform(diffSec, 1);
+      timePrased = `已进行 ${dayStr}天${this.transform(diffSec, 2)}小时${this.transform(diffSec, 3)}分${this.transform(diffSec, 4)}秒`;
+    } else if (liveInfo.isClosed()) {
+      timePrased = `已于${moment(liveInfo.closedAt).format('YYYY-MM-DD HH:mm:ss')}结束`;
+    } else {
+      timePrased = '未知状态';
+    }
+
+    return timePrased;
+  }
+
+  static  transform(durationSecond: number, index: number): string {
+    let fixDigest = (num: string) => {
+      if (num.length === 1) return `0${num}`;
+      return num;
+    };
+
+    if (durationSecond <= 0) return '00';
+
+    // 适用格式 天：小时：分：秒
+    let d = Math.floor(durationSecond / (24 * 60 * 60));
+    let h = Math.floor(durationSecond % (24 * 60 * 60) / (60 * 60));
+    let m = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) / 60);
+    let s = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) % 60);
+
+    if (index === 1) return d ? fixDigest(d.toString()) : '';
+    if (index === 2) return fixDigest(h.toString());
+    if (index === 3) return fixDigest(m.toString());
+    if (index === 4) return fixDigest(s.toString());
+
+    // 适用格式 小时：分：秒
+    let _h = Math.floor(durationSecond / (60 * 60));
+    let _m = Math.floor(durationSecond % (60 * 60) / 60);
+    let _s = Math.floor(durationSecond % (60 * 60) % 60);
+
+    if (index === 5) return fixDigest(_h.toString());
+    if (index === 6) return fixDigest(_m.toString());
+    if (index === 7) return fixDigest(_s.toString());
+
+    return '无效时间';
   }
 }

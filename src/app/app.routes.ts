@@ -12,7 +12,7 @@ const appRoutes: Routes = [
   {path: 'search', loadChildren: 'app/+search/search.module#SearchModule'},
   {path: 'signup', loadChildren: 'app/+signup/signup.module#SignupModule'},
   {path: 'signin', loadChildren: 'app/+signin/signin.module#SigninModule'},
-  {path: '', redirectTo: '/lives', pathMatch: 'full'},
+  {path: '', loadChildren: 'app/+live-list/live-list.module#LiveListModule'},
   {path: '**', redirectTo: '/404', pathMatch: 'full'},
 ];
 
