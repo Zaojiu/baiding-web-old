@@ -36,7 +36,7 @@
     }
   }
 
-  .switch-btn, .share-btn {
+  .switch-btn, .share-btn, .share-star-btn {
     margin-right: 14px;
   }
 
@@ -46,4 +46,9 @@
     font-size: 22px;
   }
 
+  .share-star-btn {
+    display: inline-flex;
+    color: $color-dark-gray;
+    font-size: 20px;
+  }
 }

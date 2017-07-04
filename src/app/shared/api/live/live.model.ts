@@ -1,6 +1,7 @@
 import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 export class LiveInfoModel {
   id: string;
@@ -42,6 +43,7 @@ export class LiveInfoModel {
   isNeedPay: boolean; // 是否收费，默认免费
   totalFee: number; // 价格，单位“分”
   paid: boolean; //付费情况
+  invited: number;
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;
@@ -112,5 +114,23 @@ export class UploadCoverTokenModel {
   constructor(coverKey: string, token: string) {
     this.coverKey = coverKey;
     this.token = token;
+  }
+}
+
+export class ShareRankingModel {
+  id: string;
+  uid: number;
+  invited: number;
+  avatar: SafeUrl;
+  username: string;
+  nick: string;
+
+  constructor(data: any, sanitizer: DomSanitizer) {
+    this.id = data.id;
+    this.uid = data.uid;
+    this.invited = data.invited;
+    this.avatar = sanitizer.bypassSecurityTrustUrl(data.avatar);
+    this.username = data.username;
+    this.nick = data.nick;
   }
 }

@@ -64,11 +64,11 @@ export class UserNickResolver implements Resolve<string> {
   constructor(private userInfoService: UserInfoService) {
   }
 
-  resolve(): Promise<string> {
-    return this.userInfoService.getUserInfo(false, false).then(userInfo => {
-      return userInfo.nick;
-    }, () => {
-      return '';
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<string> {
+    let uid = route.params['uid'];
+
+    return this.userInfoService.getUserPublicInfo(uid).then(publicUserInfo => {
+      return publicUserInfo.nick;
     });
   }
 }

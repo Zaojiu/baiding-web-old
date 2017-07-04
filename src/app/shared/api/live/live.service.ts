@@ -2,19 +2,20 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {LiveInfoModel, UploadCoverTokenModel} from './live.model';
+import {LiveInfoModel, ShareRankingModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus,LivePublishedStatus} from './live.enums';
-import {environment} from "../../../../environments/environment";
+import {environment, host} from "../../../../environments/environment";
 import {UtilsService} from "../../utils/utils";
 import {VideoInfo} from "../../video-player/video-player.model";
 
 import {AnalyticsService, TargetInfo, ObjectType} from "../../analytics/analytics.service"
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Injectable()
 export class LiveService {
-  constructor(private http: Http, private analytics: AnalyticsService) {
+  constructor(private http: Http, private analytics: AnalyticsService, private sanitizer: DomSanitizer) {
   }
 
   private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
@@ -108,6 +109,7 @@ export class LiveService {
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
     liveInfo.booked = currentStreamUser && currentStreamUser.booked;
     liveInfo.paid = currentStreamUser && currentStreamUser.paid;
+    liveInfo.invited = currentStreamUser && currentStreamUser.invited;
 
     liveInfo.totalUsers = stream.totalUsers;
 
@@ -471,6 +473,32 @@ export class LiveService {
       const ticket = data && data.ticket ? data.ticket : '';
       if (ticket === '') throw new Error('empty subscribe ticket');
       return `https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=${ticket}`;
+    });
+  }
+
+  getShareRanking(id: string): Promise<ShareRankingModel[]> {
+    const url = `${environment.config.host.io}/api/live/streams/${id}/users/share/ranking`;
+
+    return this.http.get(url).toPromise().then(res => {
+      const data = res.json();
+      const result = data && data.result ? data.result : [];
+      const resultParsed: ShareRankingModel[] = [];
+
+      for (let item of result) {
+        resultParsed.push(new ShareRankingModel(item, this.sanitizer));
+      }
+
+      return resultParsed;
+    });
+  }
+
+  getMyShareCard(id: string): Promise<string> {
+    const url = `${host.io}/api/live/streams/${id}/share/card/my`;
+
+    return this.http.get(url).toPromise().then(res => {
+      const data = res.json();
+
+      return data && data.src ? data.src : '';
     });
   }
 }
