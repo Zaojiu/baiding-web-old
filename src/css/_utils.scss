@@ -41,6 +41,22 @@
   overflow: auto;
 }
 
+.error-screen {
+  font-size: $font-size-md;
+  color: $color-gray3;
+
+  a {
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: $color-brand;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .loading-animation{
   animation: rotateFrames linear 1s;
   animation-iteration-count: infinite;

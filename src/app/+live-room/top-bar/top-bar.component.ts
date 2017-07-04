@@ -127,4 +127,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
   get btnText(): string {
     return '<i class="bi bi-comment-btn-text"></i>';
   }
+
+  gotoShareStar() {
+    this.router.navigate([`/lives/${this.liveInfo.id}/share-star`]);
+  }
 }

@@ -1,0 +1,231 @@
+.share-star-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #07193C;
+  z-index: 3;
+  overflow: auto;
+
+  .others {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .main-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    .circle {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100px;
+      width: 100px;
+      border: solid 92.5px rgba(255, 255, 255, .1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-sizing: content-box;
+
+      .bi-zaojiu-logo {
+        color: #00ECD8;
+        font-size: 40px;
+      }
+    }
+
+    .slogan {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: $color-brand;
+      font-size: $font-size-md;
+      padding-bottom: 10px;
+
+      &:before {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        bottom: 0;
+        content: '';
+        height: 4px;
+        background: linear-gradient(90deg, transparent 0%, $color-brand 20%, $color-brand 80%, transparent 100%);
+      }
+    }
+
+    .ranking {
+      position: absolute;
+      top: 200px;
+      left: 15px;
+      right: 15px;
+      bottom: 37px;
+      background-color: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(181, 181, 181, .5);
+      display: flex;
+      flex-direction: column;
+
+      .header {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        font-size: 20px;
+        color: $color-b;
+        height: 60px;
+        padding: 0 20px;
+
+        .title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .sub-title {
+          flex-shrink: 0;
+        }
+      }
+
+      .body {
+        flex-grow: 1;
+        overflow-y: auto;
+
+        .row {
+          height: 45px;
+          padding: 20px;
+          box-sizing: content-box;
+          display: flex;
+          justify-content: center;
+          border-bottom: solid 1px change_color(#E1E1E1, $alpha: .5);
+
+          &:first-child {
+            background-color: #F6F6F6;
+          }
+
+          .avatar {
+            flex-shrink: 0;
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
+
+          .info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .nick {
+              font-size: 16px;
+              color: $color-dark-gray;
+              margin-bottom: 6px;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              font-weight: bold;
+            }
+
+            .invite {
+              font-size: 14px;
+              color: $color-dark-gray;
+            }
+          }
+
+          .ranking-number {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: $color-gray3;
+
+            &.first {
+              color: #B9192C;
+            }
+
+            &.second {
+              color: #04183D;
+            }
+
+            &.third {
+              color: #4B4B4B;
+            }
+
+            &.no-ranking {
+              font-size: 14px;
+              font-weight: normal;
+            }
+          }
+        }
+      }
+
+      .footer {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 96px;
+        padding: 0 10px;
+
+        .button {
+          height: 36px;
+          line-height: 36px;
+        }
+      }
+    }
+  }
+
+  .share-card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #041337;
+    overflow: auto;
+
+    .tips {
+      height: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: rgb(158, 161, 165);
+      background-color: #041337;
+      line-height: 30px;
+    }
+
+    .card-image {
+      width: 100%;
+      height: auto;
+      opacity: 0;
+
+      &.shown {
+        opacity: 1;
+      }
+    }
+
+    .loading, .error {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+}
+
+

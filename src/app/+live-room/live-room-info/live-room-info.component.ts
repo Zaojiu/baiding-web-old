@@ -187,4 +187,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
       this.isSubscribeLinkLoading = false;
     });
   }
+
+  gotoShareStar() {
+    this.router.navigate([`/lives/${this.liveInfo.id}/share-star`]);
+  }
 }

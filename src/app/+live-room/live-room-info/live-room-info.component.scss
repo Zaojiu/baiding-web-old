@@ -19,26 +19,29 @@
     }
 
     .people-container {
-      margin: 20px 12px;
-
-      .title {
-        margin-right: 10px;
-        color: $color-gray;
-        display: flex;
-        align-items: center;
-        font-size: 16px;
-        line-height: 1em;
-
-        .bi {
-          margin-right: 5px;
-          margin-left: 5px;
-        }
-      }
+      margin: 15px 12px 20px;
 
       .people-count {
         display: flex;
         flex-wrap: wrap;
-        margin: 10px 0 12px;
+
+        .title, .avatar {
+          margin-top: 5px;
+        }
+
+        .title {
+          margin-right: 10px;
+          color: $color-gray;
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+          line-height: 1em;
+
+          .bi {
+            margin-right: 5px;
+            margin-left: 5px;
+          }
+        }
 
         .avatar {
           height: 24px;
@@ -120,6 +123,47 @@
       }
     }
 
+    .share-star-entry {
+      position: relative;
+      padding: 20px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 1em;
+
+      &:before {
+        position: absolute;
+        top: 0;
+        left: 15px;
+        right: 15px;
+        content: '';
+        height: 1px;
+        background-color: rgba(225, 225, 225, .5);
+      }
+
+      .share-star-title, .share-star-content {
+        display: flex;
+        align-items: center;
+      }
+
+      .share-star-title {
+        font-size: $font-size-md;
+
+        .bi-share-star {
+          margin-right: 6px;
+        }
+      }
+
+      .share-star-content {
+        font-size: $font-size-sm;
+        color: $color-gray3;
+
+        .bi-right-arrow {
+          margin-left: 10px;
+          color: rgb(199, 199, 204);
+        }
+      }
+    }
   }
 
   .operation-area {
