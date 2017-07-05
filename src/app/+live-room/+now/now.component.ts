@@ -34,6 +34,7 @@ export class NowComponent implements OnInit, OnDestroy {
   userInfo: UserInfoModel;
   from = '/';
   isInApp = UtilsService.isInApp;
+  isLoading = false;
 
   ngOnInit() {
     this.userInfo = this.userInfoService.getUserInfoCache();
@@ -42,7 +43,10 @@ export class NowComponent implements OnInit, OnDestroy {
 
     this.timer = setInterval(() => this.timeNow = UtilsService.now.toString(), 1000);
 
-    this.getLists('', 20);
+    this.isLoading = true;
+    this.getLists('', 20).finally(() => {
+      this.isLoading = false;
+    });
   }
 
   ngOnDestroy() {

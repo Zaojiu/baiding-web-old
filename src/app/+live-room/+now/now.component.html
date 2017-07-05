@@ -77,6 +77,6 @@
               [ngClass]="{show: scroller.isFootLoadingShown, hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
 
-<bd-loading class="loading" *ngIf="!livesList"></bd-loading>
+<bd-loading class="loading" *ngIf="isLoading"></bd-loading>
 
-<div class="no-record-tips" *ngIf="!livesList.length">暂无Now直播内容</div>
+<div class="no-record-tips" *ngIf="!livesList.length && !isLoading">暂无Now直播内容</div>
