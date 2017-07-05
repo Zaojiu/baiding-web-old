@@ -4,7 +4,6 @@ import {PayBridge} from "./shared/bridge/pay.interface";
 import {UtilsService} from "./shared/utils/utils";
 import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
 import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
-import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
 import {WechatPayService} from "./shared/bridge/pay/wechat-pay.service";
 import {IosPayService} from "./shared/bridge/pay/ios-pay.service";
 import {PcPayService} from "./shared/bridge/pay/pc-pay.service";
@@ -22,8 +21,8 @@ export function audioServiceFactory(wechatAudioService: WechatAudioService, iosA
   return UtilsService.isInWechat ? wechatAudioService : UtilsService.isInApp ? iosAudioService : pcAudioService;
 }
 
-export function authServiceFactory(wechatAuthService: WechatAuthService, iosAuthService: IosAuthService, pcAuthService: PcAuthService): AuthBridge {
-  return UtilsService.isInWechat ? wechatAuthService : UtilsService.isInApp ? iosAuthService : pcAuthService;
+export function authServiceFactory(wechatAuthService: WechatAuthService, iosAuthService: IosAuthService): AuthBridge {
+  return UtilsService.isInWechat ? wechatAuthService : iosAuthService;
 }
 
 export function shareServiceFactory(wechatShareService: WechatShareService, iosShareService: IosShareService, pcShareService: PcShareService): ShareBridge {

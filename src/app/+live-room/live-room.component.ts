@@ -22,6 +22,7 @@ import {ModalService} from "../shared/modal/modal.service";
 import {VideoPlayerComponent} from "../shared/video-player/video-player.component";
 import {AnalyticsService, OnlineService, OnlineParams, MediaInfo} from "../shared/analytics/analytics.service"
 import {ModalLink} from "../shared/modal/modal.model";
+import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {StoreService} from "../shared/store/store.service";
 
 @Component({
@@ -63,7 +64,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
               private shareService: ShareApiService, private messageApiService: MessageApiService,
               private sanitizer: DomSanitizer, private tooltips: OperationTipsService,
               private analytics: AnalyticsService, private videoService: VideoService,
-              private modalService: ModalService) {
+              private modalService: ModalService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
@@ -71,6 +72,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
+
     const alertMessageCacheStr = localStorage.getItem('alertMessageCache');
     const alertMessageCache = alertMessageCacheStr ? JSON.parse(alertMessageCacheStr) : {};
     if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
@@ -79,9 +82,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       alertMessageCache[this.id] = this.liveInfo.alertMessage;
       localStorage.setItem('alertMessageCache', JSON.stringify(alertMessageCache));
     }
-    this.userInfo = this.route.snapshot.data['userInfo'];
+
     this.setShareInfo();
     // this.shareService.accessSharedByRoute(this.route); // 跟踪分享路径。
+
     this.joinLiveRoom().then(() => {
       if (this.liveInfo.isTypeVideo()) {
         this.fetchStream();

@@ -28,9 +28,8 @@ export class AppJumperGuard implements CanActivate {
   }
 
   private gotoLive(liveId: string, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
-    return Promise.all<UserInfoModel, LiveInfoModel>([this.processUserInfo(state), this.processLiveInfo(liveId, state)]).then(result => {
-      let userInfo = result[0];
-      let liveInfo = result[1];
+    return this.processLiveInfo(liveId, state).then(liveInfo => {
+      const userInfo = this.userInfoService.getUserInfoCache(state.url);
 
       if (!liveInfo || !userInfo) return false;
 
@@ -134,28 +133,6 @@ export class AppJumperGuard implements CanActivate {
         const to = `${location.protocol}//${location.hostname}${state.url}`;
         if (err.status === 404) {
           this.router.navigate([`/404`]);
-        } else if (err.status === 401) {
-          this.authService.auth(to);
-        } else {
-          this.router.navigate([`/reload`], {queryParams: {backTo: to}});
-        }
-        return null;
-      });
-    }
-  }
-
-  private processUserInfo(state: RouterStateSnapshot): Promise<UserInfoModel> {
-    let userInfoCache = this.userInfoService.getUserInfoCache();
-
-    if (userInfoCache) {
-      return Promise.resolve(userInfoCache);
-    } else {
-      return this.userInfoService.getUserInfo(true).then(userInfo => {
-        return Promise.resolve(userInfo);
-      }, (err) => {
-        const to = `${location.protocol}//${location.hostname}${state.url}`;
-        if (err.status == 401) {
-          this.authService.auth(to)
         } else {
           this.router.navigate([`/reload`], {queryParams: {backTo: to}});
         }

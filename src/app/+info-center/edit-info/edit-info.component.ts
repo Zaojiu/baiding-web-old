@@ -22,12 +22,11 @@ export class EditInfoComponent implements OnInit {
   nameContent = '';
   introContent = '';
 
-  constructor(private router: Router, private route: ActivatedRoute,
-              private fb: FormBuilder, private userInfoService: UserInfoService) {
+  constructor(private router: Router, private fb: FormBuilder, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
 
     this.userInfoService.getUserDetailInfo().then((user)=> {
       this.userDetailInfo = user;

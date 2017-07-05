@@ -2,29 +2,23 @@ import {Injectable} from '@angular/core';
 import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
-import {AuthBridge} from "../bridge/auth.interface";
 
 @Injectable()
 export class BindMobileGuard implements CanActivate {
-  constructor(private userInfoService: UserInfoService, private authService: AuthBridge, private router: Router) {
+  constructor(private userInfoService: UserInfoService, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const to = `${location.protocol}//${location.hostname}${state.url}`;
-    const innerTo = state.url;
-    return this.userInfoService.getUserInfo().then(userInfo => {
-      if (userInfo.mobile.number) return true;
+    const userInfo = this.userInfoService.getUserInfoCache(to);
 
-      this.router.navigate([`/signup`], {queryParams: {redirectTo: innerTo}});
+    if (!userInfo) return false;
 
+    if (!userInfo.mobile.number) {
+      this.router.navigate([`/signup`], {queryParams: {redirectTo: to}});
       return false;
-    }, (err) => {
-      if (err.status == 401) {
-        this.authService.auth(to)
-      } else {
-        this.router.navigate([`/reload`], {queryParams: {backTo: to}});
-      }
-      return false;
-    });
+    }
+
+    return true;
   }
 }

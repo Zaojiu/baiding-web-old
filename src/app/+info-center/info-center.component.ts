@@ -40,7 +40,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   uidParamSub: Subscription;
 
   ngOnInit() {
-    this.currentUserInfo = this.route.snapshot.data['userInfo'];
+    this.currentUserInfo = this.userInfoService.getUserInfoCache();
 
     this.uidParamSub = this.route.params.subscribe((params) => {
       this.uid = +params['uid'];

@@ -5,24 +5,21 @@ import {TalkInfoModel, TalkCommentModel} from "../../shared/api/talk/talk.model"
 import {UtilsService} from "../../shared/utils/utils";
 import {VideoInfo, VideoPlayerOption} from "../../shared/video-player/video-player.model";
 import {VideoPlayerComponent} from "../../shared/video-player/video-player.component";
-import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {ShareBridge} from "../../shared/bridge/share.interface";
-import {TitleService} from "../../shared/title/title.service";
-import {AuthBridge} from "../../shared/bridge/auth.interface";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 
 import {
   AnalyticsService,
   OnlineService,
   OnlineParams,
-  OnlineInfo,
   MediaInfo
 } from "../../shared/analytics/analytics.service"
 import {ObjectService} from "../../shared/api/object/object.api";
 import {ObjectModel} from "../../shared/api/object/object.model";
 
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './article.component.html',
@@ -59,16 +56,16 @@ export class ArticleComponent implements OnInit, OnDestroy {
   private onlineService: OnlineService;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private talkApiService: TalkService, private shareBridge: ShareBridge, private authBridge: AuthBridge,
+              private talkApiService: TalkService, private shareBridge: ShareBridge,
               private analytics: AnalyticsService, private objectService: ObjectService,
-              private iosBridge: IosBridgeService) {
+              private iosBridge: IosBridgeService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
     this.markOnline();
 
     this.id = this.route.snapshot.params['id'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.talkInfo = this.route.snapshot.data['talkInfo'];
 
     if (!this.talkInfo) return;
@@ -186,7 +183,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   checkSignIn(to?: string) {
     if (!this.userInfo) {
-      this.authBridge.auth(to);
+      this.router.navigate(['/signin'], {queryParams: {redirectTo: to || location.href}});
       return false;
     }
 

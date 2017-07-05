@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {LiveInfoModel} from "../../../shared/api/live/live.model";
 import {UserInfoModel} from "../../../shared/api/user-info/user-info.model";
 import {UtilsService} from "../../../shared/utils/utils";
+import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './view-info.component.html',
@@ -15,13 +16,13 @@ export class ViewInfoComponent implements OnInit {
   userInfo: UserInfoModel;
   isInApp = UtilsService.isInApp;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
   }
 
   gotoEdit() {

@@ -33,7 +33,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/';
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
@@ -77,7 +77,7 @@ export class SignupComponent implements OnInit {
     this.tipsService.popup('绑定中...');
 
     this.userInfoService.signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title).then(() => {
-      return this.userInfoService.getUserInfo(true);
+      return this.userInfoService.getUserInfo();
     }).then(() => {
       this.tipsService.popup('绑定手机成功');
       this.router.navigateByUrl(this.redirectTo);

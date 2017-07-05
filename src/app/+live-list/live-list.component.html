@@ -40,7 +40,7 @@
               [ngClass]="{show: scroller.isFootLoadingShown, hide:!scroller.isFootLoadingShown}"></bd-loading>
 </div>
 
-<hamburger-menu class="hamburger-menu" [userInfo]="userInfo" [from]="from" *ngIf="!isInApp"></hamburger-menu>
+<hamburger-menu class="hamburger-menu" [from]="from" *ngIf="!isInApp"></hamburger-menu>
 
 <bd-loading class="loading" *ngIf="!livesList"></bd-loading>
 

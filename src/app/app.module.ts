@@ -26,7 +26,6 @@ import {LiveService} from "./shared/api/live/live.service";
 import {CORSBrowserXHR} from './shared/api/CORSBrowserXHR.service'
 import {OperationTipsService} from "./shared/operation-tips/operation-tips.service";
 import {AdminGuard} from "./shared/guard/admin.guard";
-import {UserInfoResolver} from "./shared/guard/user-info.resolver";
 import {WechatAudioService} from "./shared/bridge/audio/wechat-audio.service";
 import {WechatAuthService} from "./shared/bridge/auth/wechat-auth.service";
 import {WechatShareService} from "./shared/bridge/share/wechat-share.service";
@@ -34,7 +33,6 @@ import {AudioBridge} from "./shared/bridge/audio.interface";
 import {AuthBridge} from "./shared/bridge/auth.interface";
 import {ShareBridge} from "./shared/bridge/share.interface";
 import {WechatConfigService} from "./shared/wechat/wechat.service";
-import {PcAuthService} from "./shared/bridge/auth/pc-auth.service";
 import {IosAuthService} from "./shared/bridge/auth/ios-auth.service";
 import {IosShareService} from "./shared/bridge/share/ios-share.service";
 import {IosBridgeService} from "./shared/ios-bridge/ios-bridge.service";
@@ -58,7 +56,6 @@ import {VideoService} from "./shared/video-player/video-player.service";
 import {AnalyticsService} from "./shared/analytics/analytics.service"
 import {BindMobileGuard} from "./shared/guard/bind-mobile.guard";
 import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service";
-
 
 @NgModule({
   imports: [
@@ -89,13 +86,12 @@ import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service"
     IosAuthService,
     PcAudioService,
     PcShareService,
-    PcAuthService,
     {
       provide: AudioBridge,
       useFactory: audioServiceFactory,
       deps: [WechatAudioService, IosAudioService, PcAudioService]
     },
-    {provide: AuthBridge, useFactory: authServiceFactory, deps: [WechatAuthService, IosAuthService, PcAuthService]},
+    {provide: AuthBridge, useFactory: authServiceFactory, deps: [WechatAuthService, IosAuthService]},
     {
       provide: ShareBridge,
       useFactory: shareServiceFactory,
@@ -113,7 +109,6 @@ import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service"
       deps: [XHRBackend, RequestOptions, OperationTipsService]
     },
     Title,
-    UserInfoResolver,
     LiveInfoResolver,
     AuthGuard,
     BindMobileGuard,

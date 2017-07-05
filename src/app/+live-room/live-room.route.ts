@@ -4,7 +4,6 @@ import {Routes, RouterModule} from '@angular/router';
 import {LiveRoomComponent} from './live-room.component';
 import {AuthGuard} from '../shared/guard/auth.guard';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
-import {UserInfoResolver} from '../shared/guard/user-info.resolver';
 import {LiveRoomTitleResolver} from '../shared/guard/title.resolver';
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
@@ -41,7 +40,6 @@ const route: Routes = [
     component: LiveRoomInfoComponent,
     resolve: {
       liveInfo: LiveInfoResolver,
-      userInfo: UserInfoResolver,
       title: LiveRoomTitleResolver,
     },
   },
@@ -54,7 +52,6 @@ const route: Routes = [
     },
     resolve: {
       liveInfo: LiveInfoResolver,
-      userInfo: UserInfoResolver,
       title: LiveRoomTitleResolver,
     },
     children: [

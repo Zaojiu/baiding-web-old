@@ -6,6 +6,7 @@ import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {UtilsService} from "../../shared/utils/utils";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './invite.component.html',
@@ -23,13 +24,15 @@ export class InviteComponent implements OnInit {
   name = '';
 
   constructor(private liveService: LiveService, private route: ActivatedRoute,
-              private router: Router, private inviteApiService: InviteApiService) {
+              private router: Router, private inviteApiService: InviteApiService,
+              private userInfoService: UserInfoService,
+  ) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.token = this.route.snapshot.params['token'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
     if (UtilsService.isInApp) this.router.navigate([`/lives/${this.liveId}/invitation`, {token: this.token}]); // still needed?

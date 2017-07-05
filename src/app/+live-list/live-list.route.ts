@@ -1,7 +1,6 @@
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 import {LiveListComponent} from "./live-list.component";
-import {UserInfoResolver} from "../shared/guard/user-info.resolver";
 
 const route: Routes = [
   {
@@ -10,9 +9,6 @@ const route: Routes = [
     data: {
       title: '首页',
     },
-    resolve: {
-      userInfo: UserInfoResolver,
-    }
   },
 ];
 

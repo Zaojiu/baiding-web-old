@@ -1,8 +1,9 @@
-import {Component, Input, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, Input, AfterViewInit, ViewChild, OnInit} from '@angular/core';
 import {UserInfoModel} from '../api/user-info/user-info.model';
 import {Router} from '@angular/router';
 import {AutoOpacityDownDirective} from "../animation/auto-opacity-down/auto-opacity-down.directive";
 import {AuthBridge} from "../bridge/auth.interface";
+import {UserInfoService} from "../api/user-info/user-info.service";
 
 @Component({
   selector: 'hamburger-menu',
@@ -10,15 +11,19 @@ import {AuthBridge} from "../bridge/auth.interface";
   styleUrls: ['./hamburger-menu.component.scss'],
 })
 
-export class HamburgerMenuComponent implements AfterViewInit {
+export class HamburgerMenuComponent implements AfterViewInit, OnInit {
   isActivated = false;
+  userInfo: UserInfoModel;
   @Input() liveId: string;
   @Input() from: string;
-  @Input() userInfo: UserInfoModel;
   @ViewChild(AutoOpacityDownDirective) autoFade: AutoOpacityDownDirective;
   timer: any;
 
-  constructor(private router: Router, private authService: AuthBridge) {}
+  constructor(private router: Router, private userInfoService: UserInfoService) {}
+
+  ngOnInit() {
+    this.userInfo = this.userInfoService.getUserInfoCache();
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -42,7 +47,7 @@ export class HamburgerMenuComponent implements AfterViewInit {
   }
 
   gotoSignin() {
-    this.authService.auth('/');
+    this.router.navigate(['/signin'], {queryParams: {redirectTo: '/'}});
   }
 
   createRoom() {

@@ -16,8 +16,8 @@ export class CommentApiService {
   }
 
   parseComment(data: any, users: any): CommentModel {
-    let comment = new CommentModel()
-    let currentUserInfo = this.userInfoService.getUserInfoCache();
+    const comment = new CommentModel()
+    const currentUserInfo = this.userInfoService.getUserInfoCache();
 
     if (!data) return comment;
 
@@ -44,8 +44,8 @@ export class CommentApiService {
   }
 
   parseResponseComment(data: any): CommentModel {
-    var comment = new CommentModel();
-    let userInfo = this.userInfoService.getUserInfoCache();
+    const comment = new CommentModel();
+    const userInfo = this.userInfoService.getUserInfoCache();
 
     if (!data) return comment;
 

@@ -21,8 +21,8 @@ export class PraisedAnimationComponent implements OnInit {
   ngOnInit() {
     this.randomAnimation = _.random(0, 1, false);
     this.randomXAxisOffset = _.random(10, 44, false);
-    let userInfo = this.userInfoService.getUserInfoCache();
-    this.isMine = this.userAnim.user.uid === userInfo.uid;
+    const userInfo = this.userInfoService.getUserInfoCache();
+    if (userInfo) this.isMine = this.userAnim.user.uid === userInfo.uid;
   }
 
   getXAxisOffset(): SafeStyle {

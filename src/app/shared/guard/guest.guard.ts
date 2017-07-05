@@ -10,21 +10,17 @@ export class GuestGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let redirectTo = route.params['redirectTo'] || '/';
     redirectTo = redirectTo.replace(host.self, '');
     if (!redirectTo.startsWith('/')) redirectTo = '/';
 
-    return this.userInfoService.getUserInfo(true, false).then(() => {
+    const userInfo = this.userInfoService.getUserInfoCache();
+    if (userInfo) {
       this.router.navigateByUrl(redirectTo);
       return false;
-    }, (err) => {
-      if (err.status === 401) {
-        return true;
-      } else {
-        this.router.navigate([`/reload`], {queryParams: {backTo: redirectTo}});
-        return false;
-      }
-    });
+    }
+
+    return true;
   }
 }

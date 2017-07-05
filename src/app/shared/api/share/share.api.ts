@@ -47,8 +47,9 @@ export class ShareApiService {
 
   // TODO, remove mock hash
   makeShareQuery(rt, rid: string): Params {
-    let uid = this.userInfoService.getUserInfoCache().uid;
-    let t = Math.ceil(new Date().getTime() / 1000);
+    const userInfo = this.userInfoService.getUserInfoCache();
+    const uid = userInfo ? userInfo.uid : 0;
+    const t = Math.ceil(new Date().getTime() / 1000);
 
     let parmas: Params = {
       's': 'wechat',

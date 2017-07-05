@@ -312,14 +312,14 @@ export class MessageApiService {
   }
 
   postTextMessage(liveId: string, content: string, replyMessage: MessageModel = null): Promise<MessageModel> {
-    let postMessage = new PostMessageModel();
+    const postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'text';
     postMessage.content = content;
     if (replyMessage) postMessage.parentId = replyMessage.id;
 
-    let userInfo = this.userInfoService.getUserInfoCache();
-    let message = new MessageModel();
+    const userInfo = this.userInfoService.getUserInfoCache();
+    const message = new MessageModel();
 
     if (replyMessage) {
       message.parentId = replyMessage.id;
@@ -348,15 +348,15 @@ export class MessageApiService {
       throw new Error('no audio data or audio local id');
     }
 
-    let postMessage = new PostMessageModel();
+    const postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'audio';
     postMessage.audio = new PostAudioMessageModel();
     postMessage.audio.duration = duration;
     if (replyMessage) postMessage.parentId = replyMessage.id;
 
-    let message = new MessageModel();
-    let userInfo = this.userInfoService.getUserInfoCache();
+    const message = new MessageModel();
+    const userInfo = this.userInfoService.getUserInfoCache();
 
     if (replyMessage) {
       message.parentId = replyMessage.id;
@@ -384,7 +384,7 @@ export class MessageApiService {
   }
 
   postNiceMessage(liveId: string, content: string, originCommentId: string, originUserInfo: UserInfoModel, originContent: string) {
-    let postMessage = new PostMessageModel();
+    const postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'nice';
     postMessage.content = content;
@@ -393,8 +393,8 @@ export class MessageApiService {
     postMessage.nice.uid = originUserInfo.uid;
     postMessage.nice.message = originContent;
 
-    let message = new MessageModel();
-    let userInfo = this.userInfoService.getUserInfoCache();
+    const message = new MessageModel();
+    const userInfo = this.userInfoService.getUserInfoCache();
 
     message.id = UtilsService.randomId();
     message.parentId = '';
@@ -406,7 +406,7 @@ export class MessageApiService {
     message.createdAt = +moment() * 1e6 + '';
     message.postStatus = PostMessageStatus.Pending;
 
-    let reply = new ReplyMessageModel();
+    const reply = new ReplyMessageModel();
     reply.id = originCommentId;
     reply.user = userInfo;
     reply.content = content;
@@ -421,14 +421,14 @@ export class MessageApiService {
   }
 
   postImageMessage(liveId: string, localId: string, file: File, replyMessage: MessageModel = null): Promise<MessageModel> {
-    let postMessage = new PostMessageModel();
+    const postMessage = new PostMessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'image';
     postMessage.image = new PostImageMessageModel();
     if (replyMessage) postMessage.parentId = replyMessage.id;
 
-    let message = new MessageModel();
-    let userInfo = this.userInfoService.getUserInfoCache();
+    const message = new MessageModel();
+    const userInfo = this.userInfoService.getUserInfoCache();
 
     if (replyMessage) {
       message.parentId = replyMessage.id;
@@ -456,7 +456,7 @@ export class MessageApiService {
   }
 
   resendMessage(liveId: string, message: MessageModel|ReplyMessageModel) {
-    let headers = new Headers({'Content-Type': 'application/json'});
+    const headers = new Headers({'Content-Type': 'application/json'});
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/messages`;
 
     message.postStatus = PostMessageStatus.Pending;
