@@ -19,6 +19,7 @@ import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './push-comment.component.html',
@@ -45,13 +46,15 @@ export class PushCommentComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private commentApiService: CommentApiService,
               private operationTips: OperationTipsService, private liveService: LiveService,
-              private bottomPopupService: BottomPopupSelectorService, private sanitizer: DomSanitizer) {
+              private bottomPopupService: BottomPopupSelectorService, private sanitizer: DomSanitizer,
+              private userInfoService: UserInfoService,
+  ) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.commentId = this.route.snapshot.params['commentId'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
     // 监控router变化，如果route换了，那么重新获取以下值

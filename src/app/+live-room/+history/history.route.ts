@@ -2,7 +2,6 @@ import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 
 import {HistoryComponent} from "./history.component";
-import {UserInfoResolver} from "../../shared/guard/user-info.resolver";
 import {MessageEditorComponent} from "./message-editor/message-editor.component";
 import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 import {HistoryMessageResolver} from "./history.resolver";
@@ -19,7 +18,6 @@ const route: Routes = [
       title: '历史记录',
     },
     resolve: {
-      userInfo: UserInfoResolver,
       liveInfo: LiveInfoResolver,
       messages: HistoryMessageResolver,
       title: LiveRoomTitleResolver,

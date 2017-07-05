@@ -12,6 +12,7 @@ import {SafeUrl, DomSanitizer} from "@angular/platform-browser";
 import {ImageBridge} from "../../shared/bridge/image.interface";
 import {sizeValidator, typeValidator} from "../../shared/file-selector/file-selector.validator";
 import {UploadApiService} from "../../shared/api/upload/upload.api";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './vip-info.component.html',
@@ -42,12 +43,14 @@ export class VipInfoComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder,
               private inviteApiService: InviteApiService, private operationTipsService: OperationTipsService,
-              private sanitizer: DomSanitizer, private imageBridge: ImageBridge, private uploadService: UploadApiService) {
+              private sanitizer: DomSanitizer, private imageBridge: ImageBridge, private uploadService: UploadApiService,
+              private userInfoService: UserInfoService,
+  ) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
     this.inviteApiService.listInvitations(this.liveId).then((res) => {

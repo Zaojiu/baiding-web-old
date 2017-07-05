@@ -46,9 +46,8 @@ export class LiveRoomTopBarComponent implements OnInit, OnDestroy {
     } else if (this.liveId) {
       this.router.navigate([`/lives/${this.liveId}`]);
     } else {
-      this.userInfoService.getUserInfo().then(userInfo => {
-        this.router.navigate([`/info-center/${userInfo.uid}`]);
-      });
+      const userInfo = this.userInfoService.getUserInfoCache();
+      if (userInfo) this.router.navigate([`/info-center/${userInfo.uid}`]);
     }
   }
 }

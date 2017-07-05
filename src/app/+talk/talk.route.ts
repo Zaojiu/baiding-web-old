@@ -1,7 +1,6 @@
 import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 import {ArticleComponent} from "./article/article.component";
-import {UserInfoResolver} from "../shared/guard/user-info.resolver";
 import {TalkInfoResolver} from "../shared/guard/talk-info.resolver";
 import {TalkTitleResolver} from "../shared/guard/title.resolver";
 
@@ -17,7 +16,6 @@ const route: Routes = [
           isAsyncTitle: true,
         },
         resolve: {
-          userInfo: UserInfoResolver,
           talkInfo: TalkInfoResolver,
           title: TalkTitleResolver,
         },

@@ -21,6 +21,7 @@ import {AudioListPlayerComponent} from "../../shared/audio-player/audio-list-pla
 import {Subscription} from "rxjs";
 import {HistoryService} from "./history.service";
 import {UserInfoCardService} from "../../shared/user-info-card/user-info-card.service";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './history.component.html',
@@ -56,12 +57,12 @@ export class HistoryComponent implements OnInit, OnDestroy {
               private operationService: OperationTipsService, private authBridge: AuthBridge,
               private liveRoomService: LiveRoomService, private audioPlayerService: AudioPlayerService,
               private historyService: HistoryService, private messageApiService: MessageApiService,
-              private userInfoCardService: UserInfoCardService) {
+              private userInfoCardService: UserInfoCardService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
     this.liveId = this.route.snapshot.params['id'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.messages = this.route.snapshot.data['messages'];
     this.isAutoPlayNext = this.liveRoomService.isAudioAutoPlay(this.liveId);
@@ -156,7 +157,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   }
 
   goSignin() {
-    this.authBridge.auth(location.href);
+    this.router.navigate(['/signin'], {queryParams: {redirectTo: location.href}});
   }
 
   audioPlayEnded(msg: MessageModel) {

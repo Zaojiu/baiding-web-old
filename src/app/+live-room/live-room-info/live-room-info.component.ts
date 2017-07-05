@@ -45,7 +45,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.liveId = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     if (this.liveInfo.paid) this.paidStatus = PaidStatus.Completed;
 
     let payResult = this.route.snapshot.params['payResult'];
@@ -147,7 +147,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
     // 轮询用户是否已订阅公众号
     this.timer = setInterval(() => {
-      this.userInfoService.getUserInfo(true).then((userInfo) => {
+      this.userInfoService.getUserInfo().then((userInfo) => {
         if (userInfo.isSubscribed) {
           this.closeQrcode();
           this.operationTipsService.popup('订阅成功');

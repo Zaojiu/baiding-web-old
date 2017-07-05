@@ -36,7 +36,7 @@ export class ApplyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.from = this.route.snapshot.params['from'] ? this.route.snapshot.params['from'] : '';
 
     this.applyService.getApplication().then(application => {

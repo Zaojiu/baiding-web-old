@@ -9,6 +9,7 @@ import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
 import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {appConfig} from "../../../environments/environment";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 declare var $: any;
 
@@ -19,7 +20,7 @@ declare var $: any;
 
 export class NowComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer, private userInfoService: UserInfoService) {
   }
 
   private loadSize = 20;
@@ -35,7 +36,7 @@ export class NowComponent implements OnInit, OnDestroy {
   isInApp = UtilsService.isInApp;
 
   ngOnInit() {
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
 
     this.route.snapshot.data['shareTitle'] = `${this.userInfo ? this.userInfo.nick : '我'}正在使用${appConfig.name}，发现更多经验分享`;
 

@@ -11,6 +11,7 @@ import {WechatConfigService} from "../../shared/wechat/wechat.service";
 import {LiveRoomService} from "../live-room.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {UtilsService} from "../../shared/utils/utils";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   templateUrl: './settings.component.html',
@@ -29,12 +30,13 @@ export class SettingsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
               private liveService: LiveService, private wechatService: WechatConfigService,
               private modalService: ModalService, private inviteApiService: InviteApiService,
-              private liveRoomService: LiveRoomService, private operationTips: OperationTipsService) {
-  }
+              private liveRoomService: LiveRoomService, private operationTips: OperationTipsService,
+              private userInfoService: UserInfoService,
+  ) {}
 
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
     this.liveInfo = this.route.snapshot.data['liveInfo'];
 
     if (this.isAdmin) {

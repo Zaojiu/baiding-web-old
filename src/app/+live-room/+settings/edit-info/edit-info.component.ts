@@ -45,13 +45,14 @@ export class EditInfoComponent implements OnInit, DoCheck {
 
   constructor(private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer,
               private fb: FormBuilder, private liveService: LiveService, private uploadService: UploadApiService,
-              private userInfoService: UserInfoService, private imageBridge: ImageBridge, private tipsService: OperationTipsService) {
+              private userInfoService: UserInfoService, private imageBridge: ImageBridge,
+              private tipsService: OperationTipsService) {
   }
 
   ngOnInit() {
     this.liveId = this.route.parent.parent.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
-    this.userInfo = this.route.snapshot.data['userInfo'];
+    this.userInfo = this.userInfoService.getUserInfoCache();
 
     if (this.liveInfo.isStarted()) this.router.navigate([`/info-center/${this.userInfo.uid}`]);
 
@@ -124,9 +125,8 @@ export class EditInfoComponent implements OnInit, DoCheck {
     } else if (this.liveId) {
       this.router.navigate([`/lives/${this.liveId}`]);
     } else {
-      this.userInfoService.getUserInfo().then(userInfo => {
-        this.router.navigate([`/info-center/${userInfo.uid}`]);
-      });
+      const userInfo = this.userInfoService.getUserInfoCache();
+      if (userInfo) this.router.navigate([`/info-center/${userInfo.uid}`]);
     }
   }
 
