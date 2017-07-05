@@ -14,6 +14,7 @@ export class AdminGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     let liveId = route.params['id'];
+    const to = `${location.protocol}//${location.hostname}${state.url}`;
 
     if (!liveId) {
       let parent = route.parent;
@@ -30,13 +31,14 @@ export class AdminGuard implements CanActivate {
       }
     }
 
-    return Promise.all<LiveInfoModel, UserInfoModel>([this.liveService.getLiveInfo(liveId), this.userInfoService.getUserInfo()]).then((result) => {
-      let liveInfo = result[0];
-      let userInfo = result[1];
+    return this.liveService.getLiveInfo(liveId).then(liveInfo => {
+      const userInfo = this.userInfoService.getUserInfoCache(to);
+
+      if (!userInfo) return false;
 
       return liveInfo.isAdmin(userInfo.uid);
     }, (err) => {
-      const to = `${location.protocol}//${location.hostname}${state.url}`;
+
       if (err.status == 404) {
         this.router.navigate([`/404`]);
       } else {

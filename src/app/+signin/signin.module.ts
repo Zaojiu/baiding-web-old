@@ -5,9 +5,10 @@ import {CommonModule} from "@angular/common";
 import {FormModule} from "../shared/form/form.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SenderApiService} from "../shared/api/sender/sender.api";
-import {GuestGuard} from "../shared/guard/guest.guard";
 import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {ResetPwdComponent} from "./reset/reset.component";
+import {SigninGuard} from "./signin.guard";
+import {GuestGuard} from "../shared/guard/guest.guard";
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import {ResetPwdComponent} from "./reset/reset.component";
   ],
   providers: [
     SenderApiService,
+    SigninGuard,
     GuestGuard,
   ]
 })

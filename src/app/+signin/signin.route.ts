@@ -3,11 +3,12 @@ import {Routes, RouterModule} from '@angular/router';
 import {SigninComponent} from "./signin.component";
 import {GuestGuard} from "../shared/guard/guest.guard";
 import {ResetPwdComponent} from "./reset/reset.component";
+import {SigninGuard} from "./signin.guard";
 
 const route: Routes = [
   {
     path: '',
-    canActivate: [GuestGuard],
+    canActivate: [SigninGuard],
     component: SigninComponent,
   },
   {

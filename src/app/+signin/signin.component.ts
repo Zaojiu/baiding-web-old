@@ -102,7 +102,8 @@ export class SigninComponent implements OnInit {
     const codeMap = this.smsCode ? SigninErrorMessage : null;
 
     this.userInfoService.signin(this.phoneNumber, this.smsCode, this.password, codeMap).then(() => {
-      return this.userInfoService.getUserInfo(true);
+      this.tipsService.popup('登录成功');
+      this.router.navigateByUrl(this.redirectTo);
     }, err => {
       const data = err.json();
       if (data && data.code) {
@@ -117,9 +118,6 @@ export class SigninComponent implements OnInit {
       }
 
       return Promise.reject(err);
-    }).then(() => {
-      this.tipsService.popup('登录成功');
-      this.router.navigateByUrl(this.redirectTo);
     }).finally(() => {
       this.isSubmitting = false;
     });
@@ -168,7 +166,7 @@ export class SigninComponent implements OnInit {
     this.isWechatQrcodeLoading = true;
     this.isWechatQrcodeError = false;
 
-    this.userInfoService.getWechatSigninQrcode(`${host.self}${this.redirectTo}`).then(qrCode => {
+    this.userInfoService.getWechatSigninQrcode(`${host.self}${this.router.routerState.snapshot.url}`).then(qrCode => {
       const wechatUri = qrCode.wechat_uri;
       delete qrCode.wechat_uri;
       this.wechatQrcodeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(`${wechatUri}?${$.param(qrCode)}`);

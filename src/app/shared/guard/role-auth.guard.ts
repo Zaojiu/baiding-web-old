@@ -13,27 +13,26 @@ export class RoleAuthGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    let liveId = route.parent.params['id'];
+    const liveId = route.parent.params['id'];
 
-    return this.userInfoService.getUserInfo().then((userInfo) => {
-      return this.liveService.getLiveInfo(liveId).then((liveInfo) => {
-        if (liveInfo.isAudience(userInfo.uid) && liveInfo.isNeedPay && !liveInfo.paid) {
-          this.router.navigate([`${state.url}/info`]);
-          return false;
-        }
+    return this.liveService.getLiveInfo(liveId).then(liveInfo => {
+      const userInfo = this.userInfoService.getUserInfoCache(state.url);
 
-        return true;
-      })
+      if (!userInfo) return false;
+
+      if (liveInfo.isAudience(userInfo.uid) && liveInfo.isNeedPay && !liveInfo.paid) {
+        this.router.navigate([`${state.url}/info`]);
+        return false;
+      }
+
+      return true;
     }, (err) => {
       const to = `${location.protocol}//${location.hostname}${state.url}`;
-      if (err.status === 401) {
-        this.authService.auth(to)
-      } else if (err.status === 404) {
+      if (err.status === 404) {
         this.router.navigate([`/404`]);
       } else {
         this.router.navigate([`/reload`], {queryParams: {backTo: to}});
       }
-      this.authService.auth(to);
       return false;
     });
   }

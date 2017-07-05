@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
 
@@ -9,9 +9,11 @@ export class CreateGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService) {
   }
 
-  canActivate(): Promise<boolean> {
-    return this.userInfoService.getUserInfo().then(userInfo => {
-      return userInfo.permissions.publish;
-    });
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const userInfo = this.userInfoService.getUserInfoCache(state.url);
+
+    if (!userInfo) return false;
+
+    return userInfo.permissions.publish;
   }
 }
