@@ -84,6 +84,14 @@
   ></editor-tool-bar>
 </div>
 
+<div class="live-room-alert-message" (click)="isAlertMessageShown = false" *ngIf="alertMessage && isAlertMessageShown">
+  <div class="live-room-alert-message-container" (click)="$event.stopPropagation();">
+    <p class="live-room-alert-message-title">话题间参与须知</p>
+    <p class="live-room-alert-message-content">{{alertMessage}}</p>
+    <div class="close" (click)="isAlertMessageShown = false"></div>
+  </div>
+</div>
+
 <user-info-card></user-info-card>
 
 <router-outlet></router-outlet>

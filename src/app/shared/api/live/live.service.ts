@@ -113,6 +113,8 @@ export class LiveService {
 
     liveInfo.totalUsers = stream.totalUsers;
 
+    liveInfo.alertMessage = stream.meta.alertMessage || '';
+
     if (liveInfo.isTypeVideo()) {
       switch (stream.meta.publishStatus) {
         case '':
