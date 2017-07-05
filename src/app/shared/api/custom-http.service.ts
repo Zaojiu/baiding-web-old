@@ -10,7 +10,9 @@ import {
 } from "@angular/http";
 import {Observable} from "rxjs";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
-import {DefaultErrorMessage} from "./code-map.enum";
+import {ApiError, DefaultErrorMessage} from "./code-map.enum";
+import {StoreService} from "../store/store.service";
+import {Router} from "@angular/router";
 
 interface CustomRequestOptionsArgs extends RequestOptionsArgs {
   useIntercept?: boolean;
@@ -65,7 +67,11 @@ const handleInterceptOption = (url: string, method: RequestMethod, options?: Cus
 
 @Injectable()
 export class CustomHttp extends Http {
-  constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private operationTipsService: OperationTipsService) {
+  constructor(backend: ConnectionBackend,
+              defaultOptions: RequestOptions,
+              private operationTipsService: OperationTipsService,
+              private router: Router,
+  ) {
     super(backend, defaultOptions);
   }
 
@@ -96,19 +102,28 @@ export class CustomHttp extends Http {
   intercept(observable: Observable<Response>, options: CustomRequestOptionsArgs): Observable<Response> {
     return observable.catch((err, source) => {
       const data = err.json();
-      if (data) {
-        const code = data && data.code ? data.code : 0;
-        let codeMap = options && options.customCodeMap ? options.customCodeMap : null;
-        if (codeMap) {
-          codeMap = Object.assign({}, DefaultErrorMessage, codeMap);
+      const code = data && data.code ? data.code : 0;
+
+      if (err.status === 401 || code === ApiError.ErrUnauthorized || code === ApiError.ErrNeedToLogin) {
+        StoreService.delete('userinfo');
+        this.operationTipsService.popup(`请登录`);
+        this.router.navigate(['/signin'], {queryParams: {redirectTo: location.href}});
+      } else if (data) {
+        if (code) {
+          let codeMap = options && options.customCodeMap ? options.customCodeMap : null;
+
+          if (codeMap) {
+            codeMap = Object.assign({}, DefaultErrorMessage, codeMap);
+          } else {
+            codeMap = DefaultErrorMessage;
+          }
+
+          const message = codeMap[code];
+          if (message) {
+            this.operationTipsService.popup(message);
+          }
         } else {
-          codeMap = DefaultErrorMessage;
-        }
-        const message = codeMap[code];
-        if (message) {
-          this.operationTipsService.popup(message);
-        } else {
-          this.operationTipsService.popup(`请求错误: ${code}`);
+          this.operationTipsService.popup(`未知错误`);
         }
       } else {
         if (err.status === 0) {

@@ -16,9 +16,9 @@ export enum ApiError {
 }
 
 export const DefaultErrorMessage = {
-  [ApiError.ErrNeedToLogin]: '请先登录',
-  [ApiError.ErrUnauthorized]: '请先登录',
-  [ApiError.ErrNotFound]: '资源不存在',
+  [ApiError.ErrNeedToLogin]: '请登录',
+  [ApiError.ErrUnauthorized]: '请登录',
+  // [ApiError.ErrNotFound]: '资源不存在',
   [ApiError.ErrUserMobileAlreadyBinded]: '您已绑定过手机',
   [ApiError.ErrUserMobileUsedByOthers]: '手机已被其他用户绑定',
   [ApiError.ErrSigninInvalidPassword]: '手机号不存在或密码错误',

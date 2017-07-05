@@ -8,14 +8,22 @@ import {
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 import {CustomHttp} from "../custom-http.service";
+import {Router} from "@angular/router";
+import {OperationTipsService} from "../../operation-tips/operation-tips.service";
 
 @Injectable()
 export class UserInfoService {
-  constructor(private http: CustomHttp) {
+  constructor(private http: CustomHttp, private router: Router, private tipsService: OperationTipsService) {
   }
 
-  getUserInfoCache(): UserInfoModel {
-    return StoreService.get('userinfo') as UserInfoModel;
+  // 传 to 的话，代表userInfo没有的时候，需要跳转到singin页面
+  getUserInfoCache(signInAndredirectTo?: string): UserInfoModel {
+    const userInfo = StoreService.localStore.get('userinfo') as UserInfoModel;
+    if (!userInfo && signInAndredirectTo) {
+      this.tipsService.popup('请先登录');
+      this.router.navigate(['/signin'], {queryParams: {redirectTo: signInAndredirectTo || location.href}});
+    }
+    return userInfo || null;
   }
 
   parseUserInfo(data: any): UserInfoModel {
@@ -35,16 +43,11 @@ export class UserInfoService {
 
   }
 
-  getUserInfo(needRefresh?: boolean, autoHandleError = true): Promise<UserInfoModel> {
-    let userInfoCache = StoreService.get('userinfo') as UserInfoModel;
-    if (userInfoCache && !needRefresh) {
-      return Promise.resolve(userInfoCache);
-    }
-
+  getUserInfo(autoHandleError = true): Promise<UserInfoModel> {
     return this.http.get(`${environment.config.host.io}/api/user`, {useIntercept: autoHandleError}).toPromise().then(res => {
       let data = res.json();
       let userInfo = this.parseUserInfo(data);
-      StoreService.set('userinfo', userInfo);
+      StoreService.localStore.set('userinfo', userInfo);
       return userInfo;
     });
   }
@@ -112,7 +115,7 @@ export class UserInfoService {
 
     return this.http.put(url, data).toPromise().then(() => {
       // 更新用户信息, 避免缓存数据不一致。
-      return this.getUserInfo(true).then(() => {
+      return this.getUserInfo().then(() => {
         return
       });
     });
@@ -151,7 +154,7 @@ export class UserInfoService {
     if (password) data['password'] = password;
 
     return this.http.post(url, data, {customCodeMap: codeMap}).toPromise().then(() => {
-      return;
+      return this.getUserInfo(false);
     });
   }
 
