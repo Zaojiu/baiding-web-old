@@ -37,14 +37,6 @@ export class UtilsService {
   static isChrome = /Chrome/i.test(navigator.userAgent);
   static isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
 
-  static setStorage(key: string, value: Object) {
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-
-  static getStorage(key: string): any {
-    return JSON.parse(localStorage.getItem(key)) || {};
-  }
-
   static get isViewportLandscape(): boolean {
     return matchMedia && matchMedia('(orientation: landscape)').matches;
   }

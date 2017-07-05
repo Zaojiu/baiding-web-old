@@ -15,23 +15,23 @@ export class LiveRoomService {
   }
 
   setPushCommentStashed(text: string, messageId: string) {
-    let postCommentStashed = UtilsService.getStorage('postcomment');
+    let postCommentStashed = StoreService.localStore.get('postcomment');
     postCommentStashed[messageId] = text;
-    UtilsService.setStorage('postcomment', postCommentStashed);
+    StoreService.localStore.set('postcomment', postCommentStashed);
   };
 
   getPushCommentStashed(messageId: string): string {
-    return UtilsService.getStorage('postcomment')[messageId] || '';
+    return StoreService.localStore.get('postcomment')[messageId] || '';
   }
 
   setTextWordsStashed(text: string, liveId: string) {
-    let textStashed = UtilsService.getStorage('textStashed');
+    let textStashed = StoreService.localStore.get('textStashed');
     textStashed[liveId] = text;
-    UtilsService.setStorage('textStashed', textStashed);
+    StoreService.localStore.set('textStashed', textStashed);
   };
 
   getTextWordsStashed(liveId: string): string {
-    return UtilsService.getStorage('textStashed')[liveId] || '';
+    return StoreService.localStore.get('textStashed')[liveId] || '';
   }
 
   setLiveRoomAlreadyVisited() {
@@ -44,34 +44,34 @@ export class LiveRoomService {
   }
 
   toggleAudioAutoPlay(liveId: string) {
-    let audioAutoPlay = UtilsService.getStorage('audioAutoPlay');
+    let audioAutoPlay = StoreService.localStore.get('audioAutoPlay');
     audioAutoPlay[liveId] = !audioAutoPlay[liveId];
-    UtilsService.setStorage('audioAutoPlay', audioAutoPlay);
+    StoreService.localStore.set('audioAutoPlay', audioAutoPlay);
   }
 
   isAudioAutoPlay(liveId: string): boolean {
-    return !!UtilsService.getStorage('audioAutoPlay')[liveId];
+    return !!StoreService.localStore.get('audioAutoPlay')[liveId];
   }
 
   toggleTranslationCollapse(liveId: string) {
-    let expanded = UtilsService.getStorage('tranlastionCollapse');
+    let expanded = StoreService.localStore.get('tranlastionCollapse');
     expanded[liveId] = !expanded[liveId];
-    UtilsService.setStorage('tranlastionCollapse', expanded);
+    StoreService.localStore.set('tranlastionCollapse', expanded);
 
     this.tranlationCollapseSource.next(expanded[liveId]);
   }
 
   isTranslationCollapse(liveId: string): boolean {
-    return !!UtilsService.getStorage('tranlastionCollapse')[liveId];
+    return !!StoreService.localStore.get('tranlastionCollapse')[liveId];
   }
 
   setHistoryTipsShown(liveId: string) {
-    let historyTips = UtilsService.getStorage('historyTips');
+    let historyTips = StoreService.localStore.get('historyTips');
     historyTips[liveId] = true;
-    UtilsService.setStorage('historyTips', historyTips);
+    StoreService.localStore.set('historyTips', historyTips);
   };
 
   getHistoryTipsShown(liveId: string): boolean {
-    return !!UtilsService.getStorage('historyTips')[liveId];
+    return !!StoreService.localStore.get('historyTips')[liveId];
   }
 }

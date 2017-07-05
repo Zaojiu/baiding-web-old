@@ -1,5 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {UtilsService} from "../../shared/utils/utils";
+import {StoreService} from "../../shared/store/store.service";
 
 @Component({
   selector: 'beginner-guide',
@@ -27,11 +28,11 @@ export class BeginnerGuideComponent implements OnInit {
     this.showAdminGuide = false;
     this.isAdminStep2 = false;
     this.showUserGuide = false;
-    if(!this.checkGuideAlreadyShown()) UtilsService.setStorage('beginnerGuide', {isShowed: true});
+    if(!this.checkGuideAlreadyShown()) StoreService.localStore.set('beginnerGuide', {isShowed: true});
   }
 
   checkGuideAlreadyShown() {
-    let guideShowed = !!UtilsService.getStorage('beginnerGuide')['isShowed'];
+    let guideShowed = !!StoreService.localStore.get('beginnerGuide')['isShowed'];
     return guideShowed;
   }
 }

@@ -5,6 +5,7 @@ import {MessageModel} from '../api/message/message.model';
 import {PostMessageStatus} from "../api/message/message.enum";
 import {UtilsService} from "../utils/utils";
 import {Subscription} from "rxjs";
+import {StoreService} from "../store/store.service";
 
 @Component({
   selector: 'audio-player',
@@ -29,7 +30,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.played = !!UtilsService.getStorage('audioPlayed')[this.message.id];
+    this.played = !!StoreService.localStore.get('audioPlayed')[this.message.id];
     this.globalSub = this.audioPlayerService.globalAudio$.filter(e => e.data.message.id === this.message.id).subscribe(e => {
       if (!this.played) {
         this.played = true;
@@ -46,9 +47,9 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   }
 
   setPlayed(id: string) {
-    let audioPlayed = UtilsService.getStorage('audioPlayed');
+    let audioPlayed = StoreService.localStore.get('audioPlayed');
     audioPlayed[id] = true;
-    UtilsService.setStorage('audioPlayed', audioPlayed);
+    StoreService.localStore.set('audioPlayed', audioPlayed);
   }
 
   play() {
