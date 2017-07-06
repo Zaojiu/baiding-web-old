@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.userInfoService.getUserInfoCache();
-    this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/';
+    this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/lives';
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,

@@ -22,6 +22,7 @@ import {Subscription} from "rxjs";
 import {HistoryService} from "./history.service";
 import {UserInfoCardService} from "../../shared/user-info-card/user-info-card.service";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {host} from "../../../environments/environment";
 
 @Component({
   templateUrl: './history.component.html',
@@ -102,7 +103,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`/lives/${this.liveId}/history`]);
     let path = this.router.serializeUrl(uriTree);
-    return `${location.protocol}//${location.hostname}${path}`;
+    return `${host.self}${path}`;
   }
 
   listNextComments(lastComment?: CommentModel) {

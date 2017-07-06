@@ -16,15 +16,13 @@ export class ReloadComponent {
   }
 
   goBack() {
-    let backTo = this.route.snapshot.queryParams['backTo'];
-    if (backTo) {
-      backTo = backTo.replace(host.self, '');
+    let redirectTo = this.route.snapshot.queryParams['redirectTo'];
+    redirectTo = redirectTo.replace(host.self, '');
+    if (redirectTo === '/') redirectTo = '/lives';
+    if (redirectTo && !redirectTo.startsWith('/')) redirectTo = '/lives';
 
-      if (backTo.startsWith('/')) {
-        this.router.navigateByUrl(backTo);
-      } else {
-        this.router.navigate(['/']);
-      }
+    if (redirectTo) {
+      this.router.navigateByUrl(redirectTo);
     } else {
       this.location.back();
     }

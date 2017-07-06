@@ -47,7 +47,7 @@ export class HamburgerMenuComponent implements AfterViewInit, OnInit {
   }
 
   gotoSignin() {
-    this.router.navigate(['/signin'], {queryParams: {redirectTo: '/'}});
+    this.router.navigate(['/signin'], {queryParams: {redirectTo: '/lives'}});
   }
 
   createRoom() {

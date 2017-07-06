@@ -12,6 +12,7 @@ import {PaidStatus} from "./live-room-info.enums";
 import {InviteApiService} from "../../shared/api/invite/invite.api";
 import {AudienceInvitationModel} from "../../shared/api/invite/invite.model";
 import {PayBridge} from "../../shared/bridge/pay.interface";
+import {host} from "../../../environments/environment";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -75,7 +76,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     let shareQuery = this.shareService.makeShareQuery('streams', this.liveInfo.id);
     let uriTree = this.router.createUrlTree([`/lives/${this.liveInfo.id}/info`], {queryParams: shareQuery});
     let path = this.router.serializeUrl(uriTree);
-    return `${location.protocol}//${location.hostname}${path}`;
+    return `${host.self}${path}`;
   }
 
   bookLive() {

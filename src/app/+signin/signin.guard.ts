@@ -12,8 +12,9 @@ export class SigninGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    let redirectTo = route.queryParams['redirectTo'] || '/';
+    let redirectTo = route.queryParams['redirectTo'] || '/lives';
     redirectTo = redirectTo.replace(host.self, '');
+    if (redirectTo === '/') redirectTo = '/lives';
 
     return this.userInfoService.getUserInfo(false).then(() => {
       this.router.navigateByUrl(redirectTo);
@@ -28,7 +29,7 @@ export class SigninGuard implements CanActivate {
           return true;
         }
       } else {
-        this.router.navigate([`/reload`], {queryParams: {backTo: redirectTo}});
+        this.router.navigate([`/reload`], {queryParams: {redirectTo: redirectTo}});
         return false;
       }
     });

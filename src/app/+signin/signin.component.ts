@@ -35,9 +35,9 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/';
+    this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/lives';
     this.redirectTo = this.redirectTo.replace(host.self, '');
-    if (!this.redirectTo.startsWith('/')) this.redirectTo = '/';
+    if (this.redirectTo === '/' || !this.redirectTo.startsWith('/')) this.redirectTo = '/lives';
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
@@ -166,7 +166,7 @@ export class SigninComponent implements OnInit {
     this.isWechatQrcodeLoading = true;
     this.isWechatQrcodeError = false;
 
-    this.userInfoService.getWechatSigninQrcode(`${host.self}${this.router.routerState.snapshot.url}`).then(qrCode => {
+    this.userInfoService.getWechatSigninQrcode(`${host.self}${this.router.url}`).then(qrCode => {
       const wechatUri = qrCode.wechat_uri;
       delete qrCode.wechat_uri;
       this.wechatQrcodeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(`${wechatUri}?${$.param(qrCode)}`);

@@ -3,6 +3,7 @@ import {Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@ang
 
 import {LiveService} from '../api/live/live.service';
 import {LiveInfoModel} from "../api/live/live.model";
+import {host} from "../../../environments/environment";
 
 @Injectable()
 export class LiveInfoResolver implements Resolve<LiveInfoModel> {
@@ -26,8 +27,8 @@ export class LiveInfoResolver implements Resolve<LiveInfoModel> {
     return this.liveService.getLiveInfo(liveId).then((res) => {
       return res
     }, () => {
-      const to = `${location.protocol}//${location.hostname}${state.url}`;
-      this.router.navigate([`/reload`], {queryParams: {backTo: to}});
+      const to = `${host.self}${state.url}`;
+      this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
       return null;
     });
   }

@@ -7,6 +7,7 @@ import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {InviteApiService} from '../../shared/api/invite/invite.api';
 import {UtilsService} from "../../shared/utils/utils";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {host} from "../../../environments/environment";
 
 @Component({
   templateUrl: './invite.component.html',
@@ -61,7 +62,7 @@ export class InviteComponent implements OnInit {
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`/lives/${this.liveId}/invitation`, {token: this.token}]);
     let path = this.router.serializeUrl(uriTree);
-    return `${location.protocol}//${location.hostname}${path}`;
+    return `${host.self}${path}`;
   }
 
   setShareInfo() {

@@ -3,8 +3,7 @@ import {CanActivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '
 
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {LiveService} from "../api/live/live.service";
-import {LiveInfoModel} from "../api/live/live.model";
-import {UserInfoModel} from "../api/user-info/user-info.model";
+import {host} from "../../../environments/environment";
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -14,7 +13,7 @@ export class AdminGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     let liveId = route.params['id'];
-    const to = `${location.protocol}//${location.hostname}${state.url}`;
+    const to = `${host.self}${state.url}`;
 
     if (!liveId) {
       let parent = route.parent;
@@ -42,7 +41,7 @@ export class AdminGuard implements CanActivate {
       if (err.status == 404) {
         this.router.navigate([`/404`]);
       } else {
-        this.router.navigate([`/reload`], {queryParams: {backTo: to}});
+        this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
       }
       return false;
     });
