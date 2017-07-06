@@ -10,7 +10,7 @@
           <img class="avatar" [src]="userInfo.avatar" alt="头像">
           <div class="info">
             <p class="nick">{{userInfo.nick}}</p>
-            <p class="invite">推荐了{{liveInfo.invited}}个朋友</p>
+            <p class="invite">推荐了{{liveInfo.invited || 0}}个朋友</p>
           </div>
           <div class="ranking-number {{myRanking === 0 ? 'first' : ''}}{{myRanking === 1 ? 'second' : ''}}{{myRanking === 2 ? 'third' : ''}} {{myRanking === -1 ? 'no-ranking' : ''}}">{{myRanking !== -1 ? myRanking + 1 : '未获得排名'}}</div>
         </li>
@@ -24,7 +24,9 @@
         </li>
       </ul>
       <div class="footer">
-        <a class="button button-primary" href="" (click)="gotoShareCard(); $event.preventDefault();">去邀请</a>
+        <div class="footer-background">
+          <a class="button button-primary" href="" (click)="gotoShareCard(); $event.preventDefault();">去邀请</a>
+        </div>
       </div>
     </div>
   </div>
