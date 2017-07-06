@@ -10,6 +10,7 @@ import {environment} from "../../../../environments/environment";
 import {CustomHttp} from "../custom-http.service";
 import {Router} from "@angular/router";
 import {OperationTipsService} from "../../operation-tips/operation-tips.service";
+import {ApiError, DefaultErrorMessage} from "../code-map.enum";
 
 @Injectable()
 export class UserInfoService {
@@ -20,7 +21,7 @@ export class UserInfoService {
   getUserInfoCache(signInAndredirectTo?: string): UserInfoModel {
     const userInfo = StoreService.localStore.get('userinfo') as UserInfoModel;
     if (!userInfo && signInAndredirectTo) {
-      this.tipsService.popup('请先登录');
+      this.tipsService.popup(DefaultErrorMessage[ApiError.ErrUnauthorized]);
       this.router.navigate(['/signin'], {queryParams: {redirectTo: signInAndredirectTo || location.href}});
     }
     return userInfo || null;

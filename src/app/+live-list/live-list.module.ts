@@ -8,7 +8,6 @@ import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {ScrollerModule} from "../shared/scroller/scroller.module";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
-import {DraggableModule} from "../shared/draggable/draggable.module";
 
 @NgModule({
   imports: [
@@ -19,7 +18,6 @@ import {DraggableModule} from "../shared/draggable/draggable.module";
     CountDownModule,
     ScrollerModule,
     HamburgerMenuModule,
-    DraggableModule,
   ],
   declarations: [
     LiveListComponent,

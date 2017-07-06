@@ -31,7 +31,7 @@ export class RoleAuthGuard implements CanActivate {
       const to = `${host.self}${state.url}`;
       if (err.status === 404) {
         this.router.navigate([`/404`]);
-      } else {
+      } else if (err.status !== 401) {
         this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
       }
       return false;

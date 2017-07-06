@@ -56,6 +56,7 @@ import {VideoService} from "./shared/video-player/video-player.service";
 import {AnalyticsService} from "./shared/analytics/analytics.service"
 import {BindMobileGuard} from "./shared/guard/bind-mobile.guard";
 import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service";
+import {Router} from "@angular/router";
 
 @NgModule({
   imports: [
@@ -101,12 +102,12 @@ import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service"
     {
       provide: Http,
       useClass: CustomHttp,
-      deps: [XHRBackend, RequestOptions, OperationTipsService]
+      deps: [XHRBackend, RequestOptions, OperationTipsService, Router]
     },
     {
       provide: CustomHttp,
       useClass: CustomHttp,
-      deps: [XHRBackend, RequestOptions, OperationTipsService]
+      deps: [XHRBackend, RequestOptions, OperationTipsService, Router]
     },
     Title,
     LiveInfoResolver,

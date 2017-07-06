@@ -26,9 +26,9 @@ export class LiveInfoResolver implements Resolve<LiveInfoModel> {
 
     return this.liveService.getLiveInfo(liveId).then((res) => {
       return res
-    }, () => {
+    }, (err) => {
       const to = `${host.self}${state.url}`;
-      this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
+      if (err.status !== 401) this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
       return null;
     });
   }

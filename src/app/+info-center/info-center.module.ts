@@ -13,7 +13,6 @@ import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {FormModule} from "../shared/form/form.module";
-import {DraggableModule} from "../shared/draggable/draggable.module";
 import {UserNickResolver} from "../shared/guard/title.resolver";
 
 @NgModule({
@@ -29,7 +28,6 @@ import {UserNickResolver} from "../shared/guard/title.resolver";
     LoadingModule,
     CountDownModule,
     HamburgerMenuModule,
-    DraggableModule,
   ],
   declarations: [
     InfoCenterComponent,

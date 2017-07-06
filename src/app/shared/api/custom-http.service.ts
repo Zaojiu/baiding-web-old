@@ -105,7 +105,7 @@ export class CustomHttp extends Http {
       const code = data && data.code ? data.code : 0;
 
       if (err.status === 401 || code === ApiError.ErrUnauthorized || code === ApiError.ErrNeedToLogin) {
-        StoreService.delete('userinfo');
+        StoreService.localStore.delete('userinfo');
         this.operationTipsService.popup(`请登录`);
         this.router.navigate(['/signin'], {queryParams: {redirectTo: location.href}});
       } else if (data) {

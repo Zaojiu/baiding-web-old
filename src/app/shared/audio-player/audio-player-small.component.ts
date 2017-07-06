@@ -2,7 +2,6 @@ import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angula
 
 import {AudioPlayerService} from './audio-player.service';
 import {MessageModel} from '../api/message/message.model';
-import {UtilsService} from "../utils/utils";
 import {Subscription} from "rxjs";
 import {AudioPlayerEventType} from "./audio-player.model";
 import {StoreService} from "../store/store.service";
@@ -29,7 +28,8 @@ export class AudioPlayerSmallComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.totalDuration = moment.duration(this.message.audio.duration);
-    this.played = !!StoreService.localStore.get('audioPlayed')[this.message.id];
+    const audioPlayed = StoreService.localStore.get('audioPlayed');
+    this.played = audioPlayed && audioPlayed[this.message.id];
 
     this.audioSub = this.audioPlayerService.globalAudio$.subscribe((e) => {
 
@@ -52,7 +52,7 @@ export class AudioPlayerSmallComponent implements OnInit, OnDestroy {
   }
 
   setPlayed(id: string) {
-    let audioPlayed = StoreService.localStore.get('audioPlayed');
+    const audioPlayed = StoreService.localStore.get('audioPlayed');
     audioPlayed[id] = true;
     StoreService.localStore.set('audioPlayed', audioPlayed);
   }
