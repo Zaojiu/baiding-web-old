@@ -1,31 +1,33 @@
 <div class="share-star-container">
-  <div class="main-content" *ngIf="!isLoading && !isError">
-    <div class="circle"><i class="bi bi-zaojiu-logo"></i></div>
-    <p class="slogan">{{slogan}}</p>
+  <div class="main-content-container">
+    <div class="main-content" *ngIf="!isLoading && !isError">
+      <div class="circle"><i class="bi bi-zaojiu-logo"></i></div>
+      <p class="slogan">{{slogan}}</p>
 
-    <div class="ranking">
-      <div class="header"><div class="title">{{liveInfo.subject}}</div><div class="sub-title">分享达人排行榜</div></div>
-      <ul class="body">
-        <li class="row">
-          <img class="avatar" [src]="userInfo.avatar" alt="头像">
-          <div class="info">
-            <p class="nick">{{userInfo.nick}}</p>
-            <p class="invite">推荐了{{liveInfo.invited || 0}}个朋友</p>
+      <div class="ranking">
+        <div class="header"><div class="title">{{liveInfo.subject}}</div><div class="sub-title">分享达人排行榜</div></div>
+        <ul class="body">
+          <li class="row">
+            <img class="avatar" [src]="userInfo.avatar" alt="头像">
+            <div class="info">
+              <p class="nick">{{userInfo.nick}}</p>
+              <p class="invite">推荐了{{liveInfo.invited || 0}}个朋友</p>
+            </div>
+            <div class="ranking-number {{myRanking === 0 ? 'first' : ''}}{{myRanking === 1 ? 'second' : ''}}{{myRanking === 2 ? 'third' : ''}} {{myRanking === -1 ? 'no-ranking' : ''}}">{{myRanking !== -1 ? myRanking + 1 : '未获得排名'}}</div>
+          </li>
+          <li class="row" *ngFor="let item of shareRanking; let i = index">
+            <img class="avatar" [src]="item.avatar" alt="头像">
+            <div class="info">
+              <p class="nick">{{item.nick}}</p>
+              <p class="invite">推荐了{{item.invited}}个朋友</p>
+            </div>
+            <div class="ranking-number {{i === 0 ? 'first' : ''}}{{i === 1 ? 'second' : ''}}{{i === 2 ? 'third' : ''}}">{{i + 1}}</div>
+          </li>
+        </ul>
+        <div class="footer">
+          <div class="footer-background">
+            <a class="button button-primary" href="" (click)="gotoShareCard(); $event.preventDefault();">去邀请</a>
           </div>
-          <div class="ranking-number {{myRanking === 0 ? 'first' : ''}}{{myRanking === 1 ? 'second' : ''}}{{myRanking === 2 ? 'third' : ''}} {{myRanking === -1 ? 'no-ranking' : ''}}">{{myRanking !== -1 ? myRanking + 1 : '未获得排名'}}</div>
-        </li>
-        <li class="row" *ngFor="let item of shareRanking; let i = index">
-          <img class="avatar" [src]="item.avatar" alt="头像">
-          <div class="info">
-            <p class="nick">{{item.nick}}</p>
-            <p class="invite">推荐了{{item.invited}}个朋友</p>
-          </div>
-          <div class="ranking-number {{i === 0 ? 'first' : ''}}{{i === 1 ? 'second' : ''}}{{i === 2 ? 'third' : ''}}">{{i + 1}}</div>
-        </li>
-      </ul>
-      <div class="footer">
-        <div class="footer-background">
-          <a class="button button-primary" href="" (click)="gotoShareCard(); $event.preventDefault();">去邀请</a>
         </div>
       </div>
     </div>
