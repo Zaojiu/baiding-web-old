@@ -209,15 +209,14 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: #041337;
+    background-color: #F3F3F3;
     overflow: hidden;
 
     .tips {
       height: 30px;
       text-align: center;
       font-size: 14px;
-      color: rgb(158, 161, 165);
-      background-color: #041337;
+      color: $color-dark-gray;
       line-height: 30px;
     }
 
@@ -225,7 +224,7 @@
       display: block;
       margin: 0 auto;
       width: auto;
-      height: calc(100% - 30px - 61px);
+      height: calc(100% - 30px - 116px);
       opacity: 0;
 
       &.shown {
@@ -233,9 +232,14 @@
       }
     }
 
-    .button-primary {
-      margin: 0 20px 20px;
-      width: calc(100% - 40px);
+    .share-card-footer {
+      background-color: #F2F2F2;
+      height: 116px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      box-shadow: 0 -1px 4px rgba(99, 99, 99, .5);
     }
 
     .loading, .error {
