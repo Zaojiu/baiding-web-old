@@ -14,14 +14,13 @@ import {ApiError, DefaultErrorMessage} from "../code-map.enum";
 
 @Injectable()
 export class UserInfoService {
-  constructor(private http: CustomHttp, private router: Router, private tipsService: OperationTipsService) {
+  constructor(private http: CustomHttp, private router: Router) {
   }
 
   // 传 to 的话，代表userInfo没有的时候，需要跳转到singin页面
   getUserInfoCache(signInAndredirectTo?: string): UserInfoModel {
     const userInfo = StoreService.localStore.get('userinfo') as UserInfoModel;
     if (!userInfo && signInAndredirectTo) {
-      this.tipsService.popup(DefaultErrorMessage[ApiError.ErrUnauthorized]);
       this.router.navigate(['/signin'], {queryParams: {redirectTo: signInAndredirectTo || location.href}});
     }
     return userInfo || null;
