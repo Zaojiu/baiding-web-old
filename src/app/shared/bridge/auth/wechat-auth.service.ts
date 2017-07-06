@@ -9,6 +9,7 @@ export class WechatAuthService implements AuthBridge {
 
   auth(redirectTo?: string) {
     redirectTo = redirectTo || location.href;
+    if (redirectTo === '/') redirectTo = '/lives';
     if (redirectTo.startsWith('/')) redirectTo = `${host.self}${redirectTo}`;
     location.href = `${environment.config.host.auth}/oauth2/wechat/redirect?to=${encodeURIComponent(redirectTo)}`;
   }

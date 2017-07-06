@@ -34,7 +34,7 @@ export class LiveListComponent implements OnInit, OnDestroy {
   timeNow = UtilsService.now.toString();
   timer: any;
   userInfo: UserInfoModel;
-  from = '/';
+  from = '/lives';
   isInApp = UtilsService.isInApp;
 
   ngOnInit() {

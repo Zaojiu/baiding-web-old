@@ -35,9 +35,9 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/';
+    this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/lives';
     this.redirectTo = this.redirectTo.replace(host.self, '');
-    if (!this.redirectTo.startsWith('/')) this.redirectTo = '/';
+    if (this.redirectTo === '/' || !this.redirectTo.startsWith('/')) this.redirectTo = '/lives';
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
