@@ -25,7 +25,7 @@ export class AppJumperGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService,
               private liveService: LiveService, private talkService: TalkService,
               private iosBridge: IosBridgeService, private router: Router,
-              private authService: AuthBridge, private toolTips: OperationTipsService) {
+              private toolTips: OperationTipsService) {
   }
 
   private gotoLive(liveId: string, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
@@ -134,7 +134,7 @@ export class AppJumperGuard implements CanActivate {
         const to = `${host.self}${state.url}`;
         if (err.status === 404) {
           this.router.navigate([`/404`]);
-        } else {
+        } else if (err.status !== 401) {
           this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
         }
         return null;
