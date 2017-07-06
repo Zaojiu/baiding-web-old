@@ -8,6 +8,7 @@ import {sizeValidator, typeValidator} from "../../shared/file-selector/file-sele
 import {futureValidator} from "../../shared/form/future.validator";
 import {UtilsService} from "../../shared/utils/utils";
 import {ImageBridge} from "../../shared/bridge/image.interface";
+import {host} from "../../../environments/environment";
 
 @Component({
   templateUrl: './create.component.html',
@@ -41,7 +42,7 @@ export class CreateComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/default-cover.jpg');
+    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl(`${host.assets}/assets/img/default-cover.jpg`);
     this.coverSrc = this.defaultCoverSrc;
     this.time = moment().add(moment.duration(1, 'h')).format('YYYY-MM-DDTHH:mm');
 
