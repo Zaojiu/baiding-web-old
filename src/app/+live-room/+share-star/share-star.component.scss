@@ -209,7 +209,7 @@
     top: 0;
     bottom: 0;
     background-color: #041337;
-    overflow: auto;
+    overflow: hidden;
 
     .tips {
       height: 30px;
@@ -221,13 +221,20 @@
     }
 
     .card-image {
-      width: 100%;
-      height: auto;
+      display: block;
+      margin: 0 auto;
+      width: auto;
+      height: calc(100% - 30px - 61px);
       opacity: 0;
 
       &.shown {
         opacity: 1;
       }
+    }
+
+    .button-primary {
+      margin: 0 20px 20px;
+      width: calc(100% - 40px);
     }
 
     .loading, .error {
