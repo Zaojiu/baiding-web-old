@@ -6,6 +6,7 @@ import {RegexpConst} from "../shared/utils/regexp";
 import {SenderApiService, SmsScene} from "../shared/api/sender/sender.api";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
+import {host} from "../../environments/environment";
 
 @Component({
   templateUrl: './signup.component.html',
@@ -35,6 +36,8 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     this.userInfo = this.userInfoService.getUserInfoCache();
     this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/lives';
+    this.redirectTo = this.redirectTo.replace(host.self, '');
+    if (this.redirectTo === '/' || !this.redirectTo.startsWith('/')) this.redirectTo = '/lives';
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
