@@ -108,7 +108,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     }).finally(() => {
       this.onlineService.start()
     });
-    this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 30 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
+    this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 120 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
     this.eventSub = this.timelineService.event$.subscribe((evt: MqEvent) => {
       if (evt.event === EventType.LiveClosed) {
