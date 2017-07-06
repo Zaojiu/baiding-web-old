@@ -219,7 +219,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }, () => {
       this.messagesIntialErr = true;
     }).finally(() => {
-      this.isLoading = false;
+      setTimeout(() => this.isLoading = false, 2000);
     });
   }
 
@@ -244,7 +244,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       this.isOnBottom = false;
       return messages;
     }).finally(() => {
-      this.isLoading = false;
+      setTimeout(() => this.isLoading = false, 2000);
     });
   }
 
@@ -271,7 +271,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
       return;
     }).finally(() => {
-      this.isLoading = false;
+      setTimeout(() => this.isLoading = false, 2000);
     });
   }
 
@@ -297,7 +297,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
       return;
     }).finally(() => {
-      this.isLoading = false;
+      setTimeout(() => this.isLoading = false, 2000);
     });
   }
 
