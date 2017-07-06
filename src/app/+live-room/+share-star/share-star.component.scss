@@ -176,10 +176,11 @@
   }
 
   .footer {
-    left: 15px;
     flex-shrink: 0;
     position: fixed;
     bottom: 0;
+    margin-left: 15px;
+    margin-right: 15px;
     height: calc(96px + 37px);
     width: calc(100% - 15px - 15px);
     max-width: calc(1024px - 15px - 15px);
