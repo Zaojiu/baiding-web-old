@@ -22,7 +22,7 @@ export class SigninGuard implements CanActivate {
     }, (err) => {
       if (err.status === 401) {
         if (UtilsService.isInApp || UtilsService.isInWechat) {
-          redirectTo = location.href;
+          redirectTo = `${host.self}${state.url}`;
           this.authBridge.auth(redirectTo);
           return false;
         } else {
