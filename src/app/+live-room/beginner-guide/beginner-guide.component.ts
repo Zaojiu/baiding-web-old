@@ -32,7 +32,7 @@ export class BeginnerGuideComponent implements OnInit {
   }
 
   checkGuideAlreadyShown() {
-    let guideShowed = !!StoreService.localStore.get('beginnerGuide')['isShowed'];
-    return guideShowed;
+    let guideStore = StoreService.localStore.get('beginnerGuide');
+    return guideStore && !!guideStore['isShowed'];
   }
 }

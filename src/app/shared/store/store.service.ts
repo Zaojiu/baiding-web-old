@@ -22,11 +22,11 @@ class MemoryStore implements Store {
 
 class LocalStore implements Store {
   set(key: string, value: any) {
-    localStorage.setItem(key, JSON.stringify(value) || '{}');
+    localStorage.setItem(key, JSON.stringify(value) || 'null');
   }
 
   get(key: string): any {
-    return JSON.parse(localStorage.getItem(key)) || {};
+    return JSON.parse(localStorage.getItem(key));
   }
 
   delete(key: string) {

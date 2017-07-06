@@ -42,7 +42,6 @@ import {LiveRoomInfoUpperModule} from "../shared/live-room-info-upper/live-room-
 import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {LiveRoomService} from "./live-room.service";
-import {DraggableModule} from "../shared/draggable/draggable.module";
 import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
@@ -89,7 +88,6 @@ export class MessageHammerConfig extends HammerGestureConfig {
     LiveRoomInfoUpperModule,
     CountDownModule,
     HamburgerMenuModule,
-    DraggableModule,
     CommentInputModule,
     AtKeyBoardModule,
     VideoPlayerModule,

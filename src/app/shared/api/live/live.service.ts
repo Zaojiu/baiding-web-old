@@ -388,12 +388,6 @@ export class LiveService {
     });
   }
 
-  getHistoryLiveInfo(id: string): LiveInfoModel {
-    let historyLiveInfo = StoreService.get('historyLiveInfo');
-    if (historyLiveInfo && historyLiveInfo[id]) return historyLiveInfo[id];
-    return null
-  }
-
   processStreamInfo(liveInfo: LiveInfoModel): Promise<VideoInfo> {
     if (!liveInfo.isTypeVideo()) return Promise.resolve(new VideoInfo);
 
