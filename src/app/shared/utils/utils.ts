@@ -30,7 +30,6 @@ export class UtilsService {
   static isInWechat = /micromessenger/i.test(navigator.userAgent);
   static isiOS = /iPhone|iPad/i.test(navigator.userAgent);
   static isInApp = /zaojiuliveapp/i.test(navigator.userAgent);
-  static isInBaidingApp = /baidingapp\.com/i.test(location.hostname);
   static isTouchable = (<any>window).DocumentTouch && document instanceof DocumentTouch;
   static isAndroid = /Android/i.test(navigator.userAgent);
   static isOnLargeScreen = matchMedia && matchMedia('(min-width: 1024px)').matches;

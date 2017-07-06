@@ -1,5 +1,6 @@
 import {Component, OnChanges, SimpleChanges, Input, ViewChild, ElementRef} from '@angular/core';
 import {ListViewResult, ListViewModel} from "./list-view.model";
+import {host} from "../../../environments/environment";
 
 @Component({
   selector: 'list-view',
@@ -57,6 +58,6 @@ export class ListViewComponent implements OnChanges {
   }
 
   resetDefaultCover(item: ListViewModel) {
-    item.cover = '/assets/img/default-cover.jpg';
+    item.cover = `${host.assets}/assets/img/default-cover.jpg`;
   }
 }

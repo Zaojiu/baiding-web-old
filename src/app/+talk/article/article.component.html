@@ -47,7 +47,7 @@
   <section class="relatives" *ngIf="liveObject" [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <h2>查看完整内容</h2>
     <div class="card" (click)="gotoLive(liveObject.id)">
-      <img class="cover" [src]="liveObject.coverSmallUrl" alt="直播封面" (error)="liveObject.coverSmallUrl = '/assets/img/default-cover.jpg'">
+      <img class="cover" [src]="liveObject.coverSmallUrl" alt="直播封面" (error)="coverLoadError(liveObject)">
       <div class="content">
         <h3>{{liveObject.subject}}</h3>
         <p>{{liveObject.desc}}</p>

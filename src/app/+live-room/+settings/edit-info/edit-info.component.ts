@@ -13,6 +13,7 @@ import {UtilsService} from "../../../shared/utils/utils";
 import {UserInfoService} from "../../../shared/api/user-info/user-info.service";
 import {ImageBridge} from "../../../shared/bridge/image.interface";
 import {OperationTipsService} from "../../../shared/operation-tips/operation-tips.service";
+import {host} from "../../../../environments/environment";
 
 @Component({
   templateUrl: './edit-info.component.html',
@@ -64,7 +65,7 @@ export class EditInfoComponent implements OnInit, DoCheck {
     if (expectStartAt.isValid() && expectStartAt.unix() > 0) this.time = expectStartAt.format('YYYY-MM-DDTHH:mm');
 
     if (this.liveInfo.coverSmallUrl) this.originCoverSrc = this.sanitizer.bypassSecurityTrustUrl(this.liveInfo.coverSmallUrl);
-    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl('/assets/img/default-cover.jpg');
+    this.defaultCoverSrc = this.sanitizer.bypassSecurityTrustUrl(`${host.assets}/assets/img/default-cover.jpg`);
     this.coverSrc = this.originCoverSrc || this.defaultCoverSrc;
     this.title = this.liveInfo.subject;
     this.desc = this.liveInfo.desc;

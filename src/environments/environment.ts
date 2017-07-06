@@ -7,6 +7,7 @@ export const host = {
   self: 'http://www.zaojiu.fm',
   auth: 'http://auth.zaojiu.fm',
   io: 'http://io.zaojiu.fm',
+  assets: 'http://www.zaojiu.fm',
   weinre: '',
 };
 

@@ -2,6 +2,7 @@ export const host = {
   self: '_REPL_SELF_HOST_',
   auth: '_REPL_AUTH_HOST_',
   io:  '_REPL_IO_HOST_',
+  assets: '_REPL_ASSETS_HOST_',
   weinre: '',
 };
 

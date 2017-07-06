@@ -55,7 +55,7 @@ export class TitleService {
   private setDefaultShareInfo(routeData: Data) {
     let shareTitle = routeData && routeData['shareTitle'] ? routeData['shareTitle'] : environment.config.name;
     let shareDesc = routeData && routeData['shareDesc'] ? routeData['shareDesc'] : environment.config.slogan;
-    let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${host.self}/assets/img/zaojiu-logo.jpg`;
+    let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${host.assets}/assets/img/zaojiu-logo.jpg`;
     let shareLink = routeData && routeData['shareLink'] ? routeData['shareLink'] : `${host.self}/lives`; // 默认分享首页地址
     let isAsyncShareInfo = routeData && routeData['isAsyncShareInfo'];
     let isInheritShareInfo = routeData && routeData['isInheritShareInfo'];
@@ -74,7 +74,7 @@ export class TitleService {
   private setWechatWebviewTitle(newTitle: string) {
     document.title = newTitle;
     let i = document.createElement('iframe');
-    i.src = '/assets/img/transparent-pixel-min.png';
+    i.src = `${host.assets}/assets/img/transparent-pixel-min.png`;
     i.style.display = 'none';
     i.onload = function () {
       setTimeout(() => {

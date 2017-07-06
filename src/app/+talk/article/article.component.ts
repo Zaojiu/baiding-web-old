@@ -21,6 +21,7 @@ import {ObjectModel} from "../../shared/api/object/object.model";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {host} from "../../../environments/environment";
+import {LiveInfoModel} from "../../shared/api/live/live.model";
 
 @Component({
   templateUrl: './article.component.html',
@@ -122,9 +123,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   resetDefaultBackground() {
-    this.talkInfo.coverUrl = '/assets/img/default-cover.jpg';
-    this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg';
-    this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg';
+    this.talkInfo.coverUrl = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.coverSmallUrl = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.coverThumbnailUrl = `${host.assets}/assets/img/default-cover.jpg`;
   }
 
   ngOnDestroy() {
@@ -319,5 +320,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   gotoLive(id: string) {
     this.router.navigate([`/lives/${id}/info`]);
+  }
+
+  coverLoadError(liveInfo: LiveInfoModel) {
+    liveInfo.coverSmallUrl = '/assets/img/default-cover.jpg'
   }
 }
