@@ -32,15 +32,6 @@
 </div>
 
 <div class="chat" [ngClass]="{'blured': showInfo}">
-  <div class="download-tips" *ngIf="isDownloadTipsShow">
-    <i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>
-    <div class="tips">
-      造就iOS版
-      <small>_REPL_SLOGAN_</small>
-    </div>
-    <a class="download-btn" (click)="isiOS ? redirectToYingYongBao() : showDownloadModal()">立即下载</a>
-  </div>
-
   <top-bar
     class="top-bar"
     [onlineCount]="liveInfo.totalUsers"
@@ -50,6 +41,15 @@
     [isTimelineOnOldest]="timeline.isOnOldest"
     [isTimelineOnLatest]="timeline.isOnLatest"
   ></top-bar>
+
+  <div class="download-tips" *ngIf="isDownloadTipsShow">
+    <i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>
+    <div class="tips">
+      造就iOS版
+      <small>_REPL_SLOGAN_</small>
+    </div>
+    <a class="download-btn" (click)="isiOS ? redirectToYingYongBao() : showDownloadModal()">立即下载</a>
+  </div>
 
   <comments
     class="comments"

@@ -24,7 +24,7 @@
   color: $color-w;
   display: flex;
   width: 100%;
-  z-index: 3;
+  z-index: 2;
   align-items: center;
 
   .bi-close {
@@ -231,6 +231,7 @@
   right: 0;
   top: 0;
   bottom: 0;
+  z-index: 2;
   background-color: rgba(0, 0, 0, .3);
   display: flex;
   justify-content: center;
