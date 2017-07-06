@@ -9,7 +9,7 @@ import {ShareBridge} from "../shared/bridge/share.interface";
 import {ScrollerDirective} from "../shared/scroller/scroller.directive";
 import {Subscription} from "rxjs";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
-import {environment} from "../../environments/environment";
+import {environment, host} from "../../environments/environment";
 
 @Component({
   templateUrl: './info-center.component.html',
@@ -64,7 +64,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   getShareUri(): string {
     let uriTree = this.router.createUrlTree([`info-center/${this.pageUserInfo.uid}`]);
     let path = this.router.serializeUrl(uriTree);
-    return `${location.protocol}//${location.hostname}${path}`;
+    return `${host.self}${path}`;
   }
 
   initData(uid: number) {

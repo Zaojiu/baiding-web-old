@@ -4,6 +4,7 @@ import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Routes, Router
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {AuthBridge} from "../bridge/auth.interface";
 import {LiveService} from "../api/live/live.service";
+import {host} from "../../../environments/environment";
 
 @Injectable()
 export class RoleAuthGuard implements CanActivate {
@@ -27,7 +28,7 @@ export class RoleAuthGuard implements CanActivate {
 
       return true;
     }, (err) => {
-      const to = `${location.protocol}//${location.hostname}${state.url}`;
+      const to = `${host.self}${state.url}`;
       if (err.status === 404) {
         this.router.navigate([`/404`]);
       } else {

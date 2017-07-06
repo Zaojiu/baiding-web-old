@@ -3,6 +3,7 @@ import {Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@ang
 
 import {TalkInfoModel} from "../api/talk/talk.model";
 import {TalkService} from "../api/talk/talk.api";
+import {host} from "../../../environments/environment";
 
 @Injectable()
 export class TalkInfoResolver implements Resolve<TalkInfoModel> {
@@ -26,7 +27,7 @@ export class TalkInfoResolver implements Resolve<TalkInfoModel> {
     return this.talkService.getTalkInfo(talkId).then(talkInfo => {
       return talkInfo;
     }, () => {
-      const to = `${location.protocol}//${location.hostname}${state.url}`;
+      const to = `${host.self}${state.url}`;
       this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
       return null;
     });

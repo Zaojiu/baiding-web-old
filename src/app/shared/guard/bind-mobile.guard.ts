@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
+import {host} from "../../../environments/environment";
 
 @Injectable()
 export class BindMobileGuard implements CanActivate {
@@ -9,7 +10,7 @@ export class BindMobileGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const to = `${location.protocol}//${location.hostname}${state.url}`;
+    const to = `${host.self}${state.url}`;
     const userInfo = this.userInfoService.getUserInfoCache(to);
 
     if (!userInfo) return false;

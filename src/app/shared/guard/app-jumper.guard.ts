@@ -17,6 +17,7 @@ import {ResourceType} from "../api/resource-type.enums";
 import {NotFoundComponent} from "../../+notfound/notfound.component";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
 import {ReloadComponent} from "../../+reload/reload.component";
+import {host} from "../../../environments/environment";
 
 @Injectable()
 export class AppJumperGuard implements CanActivate {
@@ -130,7 +131,7 @@ export class AppJumperGuard implements CanActivate {
       return this.liveService.getLiveInfo(liveId).then(liveInfo => {
         return liveInfo;
       }, (err) => {
-        const to = `${location.protocol}//${location.hostname}${state.url}`;
+        const to = `${host.self}${state.url}`;
         if (err.status === 404) {
           this.router.navigate([`/404`]);
         } else {

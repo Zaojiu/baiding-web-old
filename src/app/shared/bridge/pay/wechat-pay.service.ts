@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {environment} from "../../../../environments/environment";
+import {environment, host} from "../../../../environments/environment";
 import {PayBridge} from "../pay.interface";
 import {Headers, Http} from "@angular/http";
 import {WechatConfigService} from "../../wechat/wechat.service";
@@ -24,7 +24,7 @@ export class WechatPayService implements PayBridge {
 
         //hack uiwebview
         if (UtilsService.isiOS) {
-          let url = `${location.protocol}//${location.hostname}${this.router.url}`;
+          let url = `${host.self}${this.router.url}`;
 
           location.href = `${environment.config.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
 

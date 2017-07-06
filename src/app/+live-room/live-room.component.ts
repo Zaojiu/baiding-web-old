@@ -13,7 +13,7 @@ import {ShareBridge} from '../shared/bridge/share.interface';
 import {MessageApiService} from "../shared/api/message/message.api";
 import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.model";
 import {UtilsService} from "../shared/utils/utils";
-import {appConfig} from "../../environments/environment";
+import {appConfig, host} from "../../environments/environment";
 import {DomSanitizer} from "@angular/platform-browser";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {TimelineComponent} from "./timeline/timeline.component";
@@ -211,7 +211,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     let shareQuery = this.shareService.makeShareQuery('streams', this.liveInfo.id);
     let uriTree = this.router.createUrlTree([`/lives/${this.id}/info`], {queryParams: shareQuery});
     let path = this.router.serializeUrl(uriTree);
-    return `${location.protocol}//${location.hostname}${path}`;
+    return `${host.self}${path}`;
   }
 
   getStreamInfo(needAutoPlay = true): Promise<void> {

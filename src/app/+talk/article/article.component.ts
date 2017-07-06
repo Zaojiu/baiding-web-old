@@ -20,6 +20,7 @@ import {ObjectModel} from "../../shared/api/object/object.model";
 
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {host} from "../../../environments/environment";
 
 @Component({
   templateUrl: './article.component.html',
@@ -155,7 +156,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     let shareTitle = talkInfo.subject;
     let shareDesc = talkInfo.desc;
     let shareCover = talkInfo.coverThumbnailUrl;
-    let shareUrl = `${location.protocol}//${location.hostname}${this.router.url}`;
+    let shareUrl = `${host.self}${this.router.url}`;
     this.shareBridge.setShareInfo(shareTitle, shareDesc, shareCover, shareUrl, this.id);
   }
 
@@ -265,7 +266,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   gotoComment(id?: string, nick?: string, content?: string) {
     let uriTree = this.router.createUrlTree([`/talks/${this.id}/post-comment`]);
     let path = this.router.serializeUrl(uriTree);
-    if (!this.checkSignIn(`${location.protocol}//${location.hostname}${path}`)) return;
+    if (!this.checkSignIn(`${host.self}${path}`)) return;
 
     let queryParams: any = {title: this.talkInfo.subject};
 

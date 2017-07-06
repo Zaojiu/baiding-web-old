@@ -166,7 +166,7 @@ export class SigninComponent implements OnInit {
     this.isWechatQrcodeLoading = true;
     this.isWechatQrcodeError = false;
 
-    this.userInfoService.getWechatSigninQrcode(`${host.self}${this.router.routerState.snapshot.url}`).then(qrCode => {
+    this.userInfoService.getWechatSigninQrcode(`${host.self}${this.router.url}`).then(qrCode => {
       const wechatUri = qrCode.wechat_uri;
       delete qrCode.wechat_uri;
       this.wechatQrcodeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(`${wechatUri}?${$.param(qrCode)}`);

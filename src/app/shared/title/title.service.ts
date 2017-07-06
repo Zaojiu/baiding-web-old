@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRoute, ActivatedRouteSnapshot, Data, NavigationEnd, Router, RoutesRecognized} from "@angular/router";
 import {ShareBridge} from "../bridge/share.interface";
-import {appConfig, environment} from "../../../environments/environment";
+import {appConfig, environment, host} from "../../../environments/environment";
 import {UtilsService} from "../utils/utils";
 import {Title}     from '@angular/platform-browser';
 
@@ -55,8 +55,8 @@ export class TitleService {
   private setDefaultShareInfo(routeData: Data) {
     let shareTitle = routeData && routeData['shareTitle'] ? routeData['shareTitle'] : environment.config.name;
     let shareDesc = routeData && routeData['shareDesc'] ? routeData['shareDesc'] : environment.config.slogan;
-    let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${location.protocol}//${location.hostname}assets/img/zaojiu-logo.jpg`;
-    let shareLink = routeData && routeData['shareLink'] ? routeData['shareLink'] : `${location.protocol}//${location.hostname}`; // 默认分享首页地址
+    let shareCover = routeData && routeData['shareCover'] ? routeData['shareCover'] : `${host.self}/assets/img/zaojiu-logo.jpg`;
+    let shareLink = routeData && routeData['shareLink'] ? routeData['shareLink'] : `${host.self}/lives`; // 默认分享首页地址
     let isAsyncShareInfo = routeData && routeData['isAsyncShareInfo'];
     let isInheritShareInfo = routeData && routeData['isInheritShareInfo'];
 
