@@ -42,7 +42,7 @@ export class AdminGuard implements CanActivate {
       if (err.status == 404) {
         this.router.navigate([`/404`]);
       } else {
-        this.router.navigate([`/reload`], {queryParams: {backTo: to}});
+        this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
       }
       return false;
     });
