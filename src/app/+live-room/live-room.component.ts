@@ -74,13 +74,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
 
-    const alertMessageCacheStr = localStorage.getItem('alertMessageCache');
-    const alertMessageCache = alertMessageCacheStr ? JSON.parse(alertMessageCacheStr) : {};
+    const alertMessageCache = StoreService.localStore.get('alertMessageCache') || {};
     if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
       this.alertMessage = this.liveInfo.alertMessage;
       this.isAlertMessageShown = true;
       alertMessageCache[this.id] = this.liveInfo.alertMessage;
-      localStorage.setItem('alertMessageCache', JSON.stringify(alertMessageCache));
+      StoreService.localStore.set('alertMessageCache', alertMessageCache);
     }
 
     this.setShareInfo();

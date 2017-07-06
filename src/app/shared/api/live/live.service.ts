@@ -305,7 +305,7 @@ export class LiveService {
       let streamData = data.result;
       let liveInfoList: LiveInfoModel[] = [];
 
-      if (streamData) {
+      if (streamData && streamData.length) {
         let usersData = data.include.users;
         for (let liveInfo of streamData) {
           let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);

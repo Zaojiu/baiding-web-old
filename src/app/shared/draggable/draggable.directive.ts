@@ -1,5 +1,6 @@
 import {Directive, ElementRef, Renderer, OnDestroy, OnInit} from '@angular/core';
 import {UtilsService} from "../utils/utils";
+import {StoreService} from "../store/store.service";
 
 @Directive({
   selector: '[draggable]',
@@ -30,8 +31,8 @@ export class Draggable implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.isTouchable = !!UtilsService.isTouchable;
-    let offsetX = UtilsService.getStorage('draggableLeft');
-    let offsetY = UtilsService.getStorage('draggableTop');
+    let offsetX = StoreService.localStore.get('draggableLeft');
+    let offsetY = StoreService.localStore.get('draggableTop');
 
     // if pc,set element draggable
     this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'true');
@@ -70,8 +71,8 @@ export class Draggable implements OnDestroy, OnInit {
     if (!this.isTouchable) {
       this.Δx = 0;
       this.Δy = 0;
-      UtilsService.setStorage('draggableTop', this.el.nativeElement.offsetTop);
-      UtilsService.setStorage('draggableLeft', this.el.nativeElement.offsetLeft);
+      StoreService.localStore.set('draggableTop', this.el.nativeElement.offsetTop);
+      StoreService.localStore.set('draggableLeft', this.el.nativeElement.offsetLeft);
     }
   }
 
@@ -88,8 +89,8 @@ export class Draggable implements OnDestroy, OnInit {
   touchEnd(event: TouchEvent) {
     this.Δx = 0;
     this.Δy = 0;
-    UtilsService.setStorage('draggableTop', this.el.nativeElement.offsetTop);
-    UtilsService.setStorage('draggableLeft', this.el.nativeElement.offsetLeft);
+    StoreService.localStore.set('draggableTop', this.el.nativeElement.offsetTop);
+    StoreService.localStore.set('draggableLeft', this.el.nativeElement.offsetLeft);
   }
 
   doTranslation(x: number, y: number) {

@@ -5,6 +5,7 @@ import {MessageModel} from '../api/message/message.model';
 import {UtilsService} from "../utils/utils";
 import {Subscription} from "rxjs";
 import {AudioPlayerEventType} from "./audio-player.model";
+import {StoreService} from "../store/store.service";
 
 @Component({
   selector: 'audio-player-small',
@@ -28,7 +29,7 @@ export class AudioPlayerSmallComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.totalDuration = moment.duration(this.message.audio.duration);
-    this.played = !!UtilsService.getStorage('audioPlayed')[this.message.id];
+    this.played = !!StoreService.localStore.get('audioPlayed')[this.message.id];
 
     this.audioSub = this.audioPlayerService.globalAudio$.subscribe((e) => {
 
@@ -51,9 +52,9 @@ export class AudioPlayerSmallComponent implements OnInit, OnDestroy {
   }
 
   setPlayed(id: string) {
-    let audioPlayed = UtilsService.getStorage('audioPlayed');
+    let audioPlayed = StoreService.localStore.get('audioPlayed');
     audioPlayed[id] = true;
-    UtilsService.setStorage('audioPlayed', audioPlayed);
+    StoreService.localStore.set('audioPlayed', audioPlayed);
   }
 
   play() {
