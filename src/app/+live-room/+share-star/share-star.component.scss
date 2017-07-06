@@ -6,7 +6,7 @@
   bottom: 0;
   background-color: #07193C;
   z-index: 3;
-  overflow: auto;
+  overflow: hidden;
 
   .others {
     position: absolute;
@@ -72,7 +72,8 @@
       }
 
       .ranking {
-        margin: 200px 15px 133px;
+        margin: 200px 15px 43px;
+        padding-bottom: 90px;
         background-color: #fff;
         border-top-left-radius: 6px;
         border-top-right-radius: 6px;
@@ -170,37 +171,36 @@
             }
           }
         }
-
-        .footer {
-          flex-shrink: 0;
-          position: fixed;
-          bottom: 0;
-          height: calc(96px + 37px);
-          width: calc(100% - 15px - 15px);
-          max-width: calc(1024px - 15px - 15px);
-          background-color: #07193C;
-
-          .footer-background {
-            height: 96px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 10px;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-            background-color: $color-w;
-
-            .button {
-              height: 36px;
-              line-height: 36px;
-            }
-          }
-        }
       }
     }
   }
 
+  .footer {
+    left: 15px;
+    flex-shrink: 0;
+    position: fixed;
+    bottom: 0;
+    height: calc(96px + 37px);
+    width: calc(100% - 15px - 15px);
+    max-width: calc(1024px - 15px - 15px);
+    background-color: #07193C;
 
+    .footer-background {
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      background-color: $color-w;
+
+      .button {
+        height: 36px;
+        line-height: 36px;
+      }
+    }
+  }
 
   .share-card {
     position: absolute;
