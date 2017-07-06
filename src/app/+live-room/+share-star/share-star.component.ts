@@ -43,7 +43,7 @@ export class ShareStarComponent implements OnInit {
 
     Promise.all<ShareRankingModel[], LiveInfoModel, string>([
       this.liveService.getShareRanking(this.liveId),
-      this.liveService.getLiveInfo(this.liveId),
+      this.liveService.getLiveInfo(this.liveId, true),
       this.liveService.getMyShareCard(this.liveId),
     ]).then(result => {
       this.shareRanking = result[0];
