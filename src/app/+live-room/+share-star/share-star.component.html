@@ -44,18 +44,19 @@
       (load)="isShareCardLoading = false; isShareCardError = false;"
       (error)="isShareCardError = true; isShareCardLoading = false;"
     >
-    <button class="button button-primary" (click)="isShareCardShow = false">返回</button>
+    <div class="share-card-footer" *ngIf="!isShareCardLoading && !isShareCardError">
+      <button class="button button-primary" (click)="isShareCardShow = false">返回</button>
+    </div>
     <bd-loading class="loading" *ngIf="isShareCardLoading"></bd-loading>
     <div
       class="error error-screen"
       *ngIf="isShareCardError"
-      (click)="$event.stopPropagation();"
-    >加载错误，请<a href="#" (click)="reloadShareCard(); $event.preventDefault(); $event.stopPropagation();">重试</a></div>
+    >加载错误，请<a href="#" (click)="reloadShareCard(); $event.preventDefault();">重试</a></div>
   </div>
 
   <div class="others" *ngIf="isLoading || isError">
     <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
-    <div class="error error-screen" *ngIf="isError">加载错误，请<a href="" (click)="getPageData(); $event.preventDefault();">重试</a></div>
+    <div class="error error-screen" *ngIf="isError">加载错误，请<a href="#" (click)="getPageData(); $event.preventDefault();">重试</a></div>
   </div>
 </div>
 
