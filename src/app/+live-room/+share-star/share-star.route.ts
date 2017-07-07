@@ -9,6 +9,7 @@ const route: Routes = [
     component: ShareStarComponent,
     data: {
       isInheritShareInfo: true,
+      title: '分享达人',
     },
   }
 ];

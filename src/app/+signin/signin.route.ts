@@ -8,11 +8,17 @@ import {SigninGuard} from "./signin.guard";
 const route: Routes = [
   {
     path: '',
+    data: {
+      title: '登录',
+    },
     canActivate: [SigninGuard],
     component: SigninComponent,
   },
   {
     path: 'reset-password',
+    data: {
+      title: '忘记密码',
+    },
     canActivate: [GuestGuard],
     component: ResetPwdComponent,
   },

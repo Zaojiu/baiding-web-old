@@ -11,10 +11,16 @@ const route: Routes = [
   {
     path: 'activate',
     canActivate: [AuthGuard, ActivateGuard],
+    data: {
+      title: '会员卡激活',
+    },
     component: ActivateComponent,
   },
   {
     path: 'info',
+    data: {
+      title: '会员信息',
+    },
     canActivate: [AuthGuard, BindMobileGuard, MemberGuard],
     component: InfoComponent,
   },
