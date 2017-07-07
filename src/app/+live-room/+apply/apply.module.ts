@@ -10,6 +10,7 @@ import {ApplyComponent} from "./apply.component";
 import {ApplyApiService} from "../../shared/api/apply/apply.service";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
 import {TimelineService} from "../timeline/timeline.service";
+import {ApplyGuard} from "./apply.guard";
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import {TimelineService} from "../timeline/timeline.service";
   providers: [
     TimelineService,
     ApplyApiService,
+    ApplyGuard,
   ]
 })
 

@@ -4,11 +4,12 @@ import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 import {AuthGuard} from "../../shared/guard/auth.guard";
 import {ApplyComponent} from "./apply.component";
 import {BindMobileGuard} from "../../shared/guard/bind-mobile.guard";
+import {ApplyGuard} from "./apply.guard";
 
 const route: Routes = [
   {
     path: '',
-    canActivate: [AuthGuard, BindMobileGuard],
+    canActivate: [AuthGuard, BindMobileGuard, ApplyGuard],
     canDeactivate: [QuitEditGuard],
     component: ApplyComponent,
   }
