@@ -1,0 +1,62 @@
+.member-info {
+  .background {
+    height: 50vw;
+    max-height: 400px;
+    background-image: url("/assets/img/member-activate-background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 50%;
+  }
+
+  .avatar {
+    position: absolute;
+    transform: translateX(22px) translateY(-37px);
+  }
+
+  .nick {
+    padding-left: 110px;
+    padding-top: 15px;
+    color: #101936;
+    font-weight: bold;
+    position: absolute;
+  }
+
+  .success-tips {
+    padding: 50px 22px 30px;
+    background-color: rgb(243, 243, 243);
+  }
+
+  .nick + .member-right {
+    margin-top: 80px;
+  }
+
+  .member-right {
+    padding: 0 30px;
+    margin-bottom: 40px;
+
+    .title {
+      font-size: $font-size-xxlg;
+      color: #101936;
+      margin-top: 40px;
+      margin-bottom: 15px;
+    }
+
+    .date, .list {
+      font-size: $font-size-md;
+      color: #101936;
+    }
+
+    .date {
+      font-weight: bold;
+    }
+
+    ol {
+      padding-left: 15px;
+
+      li {
+        margin-bottom: 15px;
+        font-size: $font-size-md;
+      }
+    }
+  }
+}

@@ -26,6 +26,12 @@ export class MobileModel {
   updatedAt: string;
 }
 
+export class MemberModel {
+  valid: boolean;
+  joinAt: Moment;
+  expiredAt: Moment;
+}
+
 export class UserInfoModel {
   uid: number;
   username: string;
@@ -35,9 +41,14 @@ export class UserInfoModel {
   permissions: PermissionModel;
   isSubscribed: boolean;
   mobile: MobileModel;
+  member: MemberModel;
 
   get canPublish(): boolean {
     return this.permissions.publish;
+  }
+
+  get isMember(): boolean {
+    return this.member.valid;
   }
 }
 export class UserDetailInfoModel {
@@ -47,6 +58,10 @@ export class UserDetailInfoModel {
   intro = '';
   avatar = '';
   sex = UserSex.Unknow;
+  member: MemberModel;
+  realname: string;
+  company: string;
+  position: string;
 }
 
 export class UserPublicInfoModel {
@@ -60,6 +75,7 @@ export class UserPublicInfoModel {
   province = '';
   city = '';
   intro = '';
+
 
   get userSex(): string {
     switch (this.sex) {

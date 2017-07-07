@@ -1,0 +1,20 @@
+<div class="member-info">
+  <section class="background"></section>
+
+  <img class="avatar-lg avatar-round avatar" [src]="userInfo.avatar" alt="头像">
+  <div class="nick">{{userInfo.nick}}</div>
+
+  <p class="success-tips" *ngIf="isSuccess">恭喜你，成为造就会员一份子。在今后的日子里，造就与你一起共享前沿信息，发现最有创造力的思想，期待与你一同创造更多。</p>
+
+  <div class="member-right">
+    <h2 class="title">会员有效期：</h2>
+    <p class="date">{{userInfo.member.joinAt.format('YYYY年MM月DD日')}}-{{userInfo.member.expiredAt.format('YYYY年MM月DD日')}}</p>
+    <h2 class="title">造就会员权益</h2>
+    <ol class="list">
+      <li>您可免费参加6次“造就Talk”线下演讲，并获得会员专享的优先坐席，更有机会与演讲嘉宾小范围面对面交流。</li>
+      <li>您将获得4本由造就为您精心挑选的畅销书籍，让好书陪你度过春夏秋冬。</li>
+      <li>您将享受9折会员价购买造就正价收费产品。</li>
+      <li>您将优先获得“在线大师课程”的体验机会。</li>
+    </ol>
+  </div>
+</div>
