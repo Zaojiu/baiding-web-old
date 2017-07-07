@@ -78,8 +78,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
       this.alertMessage = this.liveInfo.alertMessage;
       this.isAlertMessageShown = true;
-      alertMessageCache[this.id] = this.liveInfo.alertMessage;
-      StoreService.localStore.set('alertMessageCache', alertMessageCache);
     }
 
     this.setShareInfo();
@@ -299,5 +297,12 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     const target = '_target';
     const confirmLink = new ModalLink(link, target);
     this.modalService.popup(content, '取消', '下载', true, confirmLink);
+  }
+
+  closeAlert() {
+    const alertMessageCache = StoreService.localStore.get('alertMessageCache') || {};
+    alertMessageCache[this.id] = this.liveInfo.alertMessage;
+    StoreService.localStore.set('alertMessageCache', alertMessageCache);
+    this.isAlertMessageShown = false;
   }
 }
