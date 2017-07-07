@@ -9,8 +9,6 @@ import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
 import {CustomHttp} from "../custom-http.service";
 import {Router} from "@angular/router";
-import {OperationTipsService} from "../../operation-tips/operation-tips.service";
-import {ApiError, DefaultErrorMessage} from "../code-map.enum";
 
 @Injectable()
 export class UserInfoService {
