@@ -4,6 +4,8 @@ import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
+import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
+import {host} from "../../../environments/environment";
 
 @Component({
   templateUrl: './activate.component.html',
@@ -19,13 +21,17 @@ export class ActivateComponent implements OnInit {
   company: string;
   title: string;
   isSubmitting = false;
+  bg: SafeStyle;
 
   constructor(private fb: FormBuilder, private router: Router,
-              private tipsService: OperationTipsService, private userInfoService: UserInfoService) {
+              private tipsService: OperationTipsService, private userInfoService: UserInfoService,
+              private sanitizer: DomSanitizer,
+  ) {
   }
 
   ngOnInit() {
     this.userInfo = this.userInfoService.getUserInfoCache();
+    this.bg = this.sanitizer.bypassSecurityTrustStyle(`url('${host.assets}/assets/img/member-activate-background.png')`);
 
     this.userInfoService.getUserDetailInfo().then(userDetailInfo => {
       this.company = userDetailInfo.company;
