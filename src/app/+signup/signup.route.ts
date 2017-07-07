@@ -8,6 +8,9 @@ const route: Routes = [
   {
     path: '',
     canActivate: [AuthGuard, SignupGuard],
+    data: {
+      title: '注册',
+    },
     component: SignupComponent,
   },
 ];
