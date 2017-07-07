@@ -84,8 +84,13 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
     this.booking = true;
 
-    this.liveService.bookLive(this.liveInfo.id).then(liveInfo => {
-      this.liveInfo = liveInfo;
+    Promise.all<UserInfoModel, LiveInfoModel>([
+      this.userInfoService.getUserInfo(false),
+      this.liveService.bookLive(this.liveInfo.id),
+    ]).then(result => {
+      this.userInfo = result[0];
+      this.liveInfo = result[1];
+
       if (!this.userInfo.isSubscribed && !this.inApp) {
         this.showQrcode();
       } else if (!this.userInfo.isSubscribed && this.inApp) {
