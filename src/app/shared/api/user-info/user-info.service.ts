@@ -3,7 +3,7 @@ import 'rxjs/add/operator/toPromise';
 
 import {
   UserInfoModel, PermissionModel, UserPublicInfoModel, UserDetailInfoModel, MobileModel,
-  WechatQrcodeModel
+  WechatQrcodeModel, MemberModel
 } from './user-info.model';
 import {StoreService} from '../../store/store.service';
 import {environment} from "../../../../environments/environment";
@@ -17,11 +17,17 @@ export class UserInfoService {
 
   // 传 to 的话，代表userInfo没有的时候，需要跳转到singin页面
   getUserInfoCache(signInAndredirectTo?: string): UserInfoModel {
-    const userInfo = StoreService.localStore.get('userinfo') as UserInfoModel;
+    const userInfo = StoreService.localStore.get('userinfo');
+
     if (!userInfo && signInAndredirectTo) {
       this.router.navigate(['/signin'], {queryParams: {redirectTo: signInAndredirectTo || location.href}});
     }
-    return userInfo || null;
+
+    if (userInfo) {
+      return this.parseUserInfo(userInfo);
+    }
+
+    return null;
   }
 
   parseUserInfo(data: any): UserInfoModel {
@@ -36,6 +42,10 @@ export class UserInfoService {
     info.mobile = new MobileModel;
     info.mobile.number = data.mobile && data.mobile.number ? data.mobile.number : '';
     info.mobile.updatedAt = data.mobile && data.mobile.updatedAt ? data.mobile.updatedAt : '';
+    info.member = new MemberModel();
+    info.member.valid = data.member ? data.member.valid : false;
+    info.member.joinAt = data.member? moment(data.member.joinAt) : null;
+    info.member.expiredAt = data.member ? moment(data.member.expiredAt) : null;
 
     return info;
 
@@ -100,6 +110,14 @@ export class UserInfoService {
     if (data.intro) userDetailInfo.intro = data.intro;
     if (data.avatar) userDetailInfo.avatar = data.avatar;
     if (data.sex) userDetailInfo.sex = data.sex;
+    if (data.realname) userDetailInfo.realname = data.realname;
+    if (data.company) userDetailInfo.company = data.company;
+    if (data.position) userDetailInfo.position = data.position;
+
+    userDetailInfo.member = new MemberModel();
+    userDetailInfo.member.valid = data.member ? data.member.valid : false;
+    userDetailInfo.member.joinAt = data.member? moment(data.member.joinAt) : null;
+    userDetailInfo.member.expiredAt = data.member ? moment(data.member.expiredAt) : null;
 
     return userDetailInfo;
   }
@@ -134,7 +152,7 @@ export class UserInfoService {
       code: smsCode,
       realname: name,
       company: company,
-      title: title,
+      position: title,
     };
 
     return this.http.post(url, data).toPromise().then(() => {
@@ -178,6 +196,21 @@ export class UserInfoService {
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
       return new WechatQrcodeModel(data);
+    });
+  }
+
+  activateMember(code: string, wechat: string, realname: string, company: string, position: string): Promise<void> {
+    const url = `${environment.config.host.io}/api/user/member/activate`;
+    const data = {
+      code: code,
+      wechat: wechat,
+      realname: realname,
+      company: company,
+      position: position,
+    };
+
+    return this.http.post(url, data).toPromise().then(() => {
+      return;
     });
   }
 }

@@ -8,6 +8,8 @@ export enum ApiError {
   ErrPleaseWaitAMoment = 200200,
   ErrUserMobileAlreadyBinded = 200201,
   ErrUserMobileUsedByOthers = 200202,
+  ErrInvalidActivateCode = 200203,
+  ErrActivateCodeAlreadyUsed = 200204,
   ErrUnpay = 400001,
   ErrUnnecessaryToPay = 400002,
   ErrUnknownPaymentPlatform = 400003,
@@ -30,6 +32,8 @@ export const DefaultErrorMessage = {
   [ApiError.ErrUnknownPaymentPlatform]: '无法识别支付平台',
   [ApiError.ErrAlreadyPaid]: '订单已支付',
   [ApiError.ErrBillingClosed]: '订单已关闭',
+  [ApiError.ErrInvalidActivateCode]: '激活码不存在，或者已被用过',
+  [ApiError.ErrActivateCodeAlreadyUsed]: '激活码已被激活',
 };
 
 export const SigninErrorMessage = {

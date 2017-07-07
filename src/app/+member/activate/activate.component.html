@@ -1,0 +1,107 @@
+<div class="member-activate">
+  <section class="user-section"></section>
+
+  <form class="main-form" [formGroup]="form" name="form" (submit)="validateAndSubmit()" autofocus-first-invalid-input>
+    <section>
+      <h2>会员卡激活</h2>
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['memberCode'].dirty && form.controls['memberCode'].invalid}">
+        <div class="input-group">
+          <input
+            #mobileInput
+            id="memberCode"
+            class="memberCode"
+            name="memberCode"
+            type="text"
+            formControlName="memberCode"
+            [(ngModel)]="memberCode"
+          >
+          <label class="required">会员卡号</label>
+        </div>
+        <div *ngIf="form.controls['memberCode'].errors">
+          <p class="helper error" *ngIf="form.controls['memberCode'].errors.required">请填写会员卡号</p>
+        </div>
+      </div>
+
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['wechatNumber'].dirty && form.controls['wechatNumber'].invalid}">
+        <div class="input-group">
+          <input
+            id="wechatNumber"
+            class="wechatNumber"
+            name="wechatNumber"
+            type="text"
+            formControlName="wechatNumber"
+            [(ngModel)]="wechatNumber"
+          >
+          <label class="required">微信号</label>
+        </div>
+        <div *ngIf="form.controls['wechatNumber'].errors">
+          <p class="helper error" *ngIf="form.controls['wechatNumber'].errors.required">请填写微信号</p>
+        </div>
+      </div>
+
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['name'].dirty && form.controls['name'].invalid}">
+        <div class="input-group">
+          <input
+            id="name"
+            class="name"
+            name="name"
+            type="text"
+            formControlName="name"
+            [(ngModel)]="name"
+          >
+          <label class="required">姓名</label>
+        </div>
+        <p class="helper" *ngIf="form.controls['name'].valid || !form.controls['name'].dirty">
+          请填写您的真实姓名
+        </p>
+        <div *ngIf="form.controls['name'].errors">
+          <p class="helper error" *ngIf="form.controls['name'].errors.required">请填写姓名</p>
+        </div>
+      </div>
+
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['company'].dirty && form.controls['company'].invalid}">
+        <div class="input-group">
+          <input
+            id="company"
+            class="company"
+            name="company"
+            type="text"
+            formControlName="company"
+            [(ngModel)]="company"
+          >
+          <label class="required">公司名称</label>
+        </div>
+        <div *ngIf="form.controls['company'].errors">
+          <p class="helper error" *ngIf="form.controls['company'].errors.required">请填写公司名称</p>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': form.controls['title'].dirty && form.controls['title'].invalid}">
+        <div class="input-group">
+          <input
+            id="title"
+            class="title"
+            name="title"
+            type="text"
+            formControlName="title"
+            [(ngModel)]="title"
+          >
+          <label class="required">职位</label>
+        </div>
+        <div *ngIf="form.controls['title'].errors">
+          <p class="helper error" *ngIf="form.controls['title'].errors.required">请填写职位</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer-section">
+      <div class="form-group">
+        <button class="button button-primary" [disabled]="isSubmitting">{{!isSubmitting ? '激活会员卡' : '激活中...'}}</button>
+      </div>
+    </section>
+  </form>
+</div>

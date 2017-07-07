@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router} from '@angular/router';
 
-import {UserInfoService} from '../shared/api/user-info/user-info.service';
+import {UserInfoService} from '../api/user-info/user-info.service';
 
 @Injectable()
-export class SignupGuard implements CanActivate {
+export class MemberGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private router: Router) {
   }
 
@@ -13,8 +13,8 @@ export class SignupGuard implements CanActivate {
 
     if (!userInfo) return false;
 
-    if (userInfo.mobile.number) {
-      this.router.navigate(['/lives']);
+    if (!userInfo.member.valid) {
+      this.router.navigate(['/member/activate']);
       return false;
     }
 
