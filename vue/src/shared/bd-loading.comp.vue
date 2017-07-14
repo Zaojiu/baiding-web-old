@@ -7,8 +7,6 @@
 </template>
 
 <style lang="scss">
-  @import "../css/_variables";
-
   $spinkit-spinner-margin: 0 auto !default;
   $spinkit-size: 17px !default;
   $spinkit-spinner-color: $color-brand !default;
@@ -49,3 +47,9 @@
     }
   }
 </style>
+
+<script lang="ts">
+  import Vue from "vue";
+
+  export default {} as Vue;
+</script>

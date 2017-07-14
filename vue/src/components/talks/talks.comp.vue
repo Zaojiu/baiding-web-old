@@ -35,16 +35,16 @@
         <div class="talk-info">
           <div class="publisher-info">
             <img
-              class="avatar avatar-round avatar-small"
+              class="avatar avatar-round avatar-sm"
               v-if="talkInfo.userInfo"
               v-bind:src="talkInfo.userInfo.avatar"
               alt="发布人头像"
             >
             <img
-              class="avatar avatar-round avatar-small"
-              v-else
-              :src="'/img/zaojiu-logo.jpg'"
+              class="avatar avatar-round avatar-sm"
+              src="/assets/img/zaojiu-logo.jpg"
               alt="发布人头像"
+              v-else
             >
             <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
             <span class="nick" v-else>造就</span>
@@ -69,14 +69,20 @@
           <div class="comment" v-for="comment in comments.data" v-bind:key="comment.id">
             <div class="header" v-once>
               <div class="author-info">
-                <img class="avatar avatar-round avatar-small" v-bind:src="comment.user.avatar" alt="用户头像">
+                <img class="avatar avatar-round avatar-sm" v-bind:src="comment.user.avatar" alt="用户头像">
                 <span class="nick">{{comment.user.nick}}</span>
                 <time>{{comment.createdAt.format('MM月DD日 HH:mm')}}</time>
               </div>
-              <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)"> <i class="bi bi-reply-comment"></i>回复</span>
+              <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)"> <i
+                class="bi bi-reply-comment"></i>回复</span>
             </div>
             <!-- 不要换行，避免出现换行符 -->
-            <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
+            <div class="content" v-once>
+              <div class="quote" v-if="comment.parent"><span
+                class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}
+              </div>
+              {{comment.content}}
+            </div>
           </div>
         </div>
 
@@ -92,7 +98,8 @@
           <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
         </div>
         <div class="icon" @click="toggleFavorite">
-          <i class="bi" v-bind:class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
+          <i class="bi"
+             v-bind:class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
         </div>
         <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
       </footer>
@@ -104,8 +111,6 @@
 </template>
 
 <style lang="scss">
-  @import "../../css/_variables";
-
   .main {
     position: absolute;
     top: 0;
@@ -278,7 +283,7 @@
       text-align: justify;
 
       &.talk-article {
-        font-size: $font-size-content;
+        font-size: $font-size-md;
         line-height: 1.75;
         color: $color-dark-gray;
 
@@ -515,7 +520,7 @@
         }
 
         .bi-bookmark-fill, .bi-thumbsup-fill, .bi-comment-fill {
-          color: $color-brand2;
+          color: $color-brand;
         }
       }
 
@@ -548,10 +553,26 @@
 
 </style>
 
-<script>
-  import BdLoading from '../../shared/bd-loading.comp.vue'
+<script lang="ts">
+  import bdLoading from '../../shared/bd-loading.comp.vue'
   import {FETCH_TALK, FETCH_TALK_COMMENT, TOGGLE_TALK_PRAISE, TOGGLE_TALK_FAVORITE} from '../../store/talk'
-  import {Utils} from '../../shared/utils/utils'
+  import {isOnLargeScreen} from '../../shared/utils/utils'
+  import Vue from "vue";
+  import {ComponentOptions} from "vue";
+  import {TalkInfoModel} from "../../shared/api/talk.model";
+  import {Location} from "vue-router";
+
+  interface TalkComponent extends Vue {
+    id: string;
+    originY: number;
+    isToolbarShow: boolean;
+    isOnScreen: boolean;
+    isVideoCoverShown: boolean;
+    isCommentLoading: boolean;
+    talkInfo: TalkInfoModel;
+
+    fetchComments(): void;
+  }
 
   export default {
     data () {
@@ -559,77 +580,70 @@
         id: this.$route.params.id,
         originY: 0,
         isToolbarShow: true,
-        isOnScreen: Utils.isOnLargeScreen,
+        isOnScreen: isOnLargeScreen,
         isVideoCoverShown: true,
         isCommentLoading: true,
       }
     },
     components: {
-      BdLoading
+      bdLoading,
     },
     computed: {
       talkInfo () {
-        if (this.$store.state.talks.info[this.id] === undefined) {
-          this.$store.dispatch(FETCH_TALK, this.id)
-        }
+        if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
         return this.$store.state.talks.info[this.id]
       },
       comments () {
-        if (this.$store.state.talks.comments[this.id] === undefined) {
-          this.fetchComments()
-        }
+        if (!this.$store.state.talks.comments[this.id]) this.fetchComments();
         return this.$store.state.talks.comments[this.id]
       },
       isLoading () {
         return this.talkInfo === undefined
       },
       talkCategories(){
-        if (this.$store.state.talks.info[this.id] === undefined) {
-          this.$store.dispatch(FETCH_TALK, this.id)
-        }
-        return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : ''
+        if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
+        return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : '';
       }
     },
     methods: {
       resetDefaultBackground () {
-        this.talkInfo.coverUrl = '/assets/img/default-cover.jpg'
-        this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg'
-        this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg'
+        this.talkInfo.coverUrl = '/assets/img/default-cover.jpg';
+        this.talkInfo.coverSmallUrl = '/assets/img/default-cover.jpg';
+        this.talkInfo.coverThumbnailUrl = '/assets/img/default-cover.jpg';
       },
       async fetchComments () {
-        this.isCommentLoading = true
-        await this.$store.dispatch(FETCH_TALK_COMMENT, this.id)
-        this.isCommentLoading = false
+        this.isCommentLoading = true;
+        await this.$store.dispatch(FETCH_TALK_COMMENT, this.id);
+        this.isCommentLoading = false;
       },
       gotoComment (id, nick, content) {
-        const query = {title: encodeURIComponent(this.talkInfo.subject)}
+        const query = {
+          title: encodeURIComponent(this.talkInfo.subject),
+          request: id && nick && content ? encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content})) : null,
+        };
 
-        if (id && nick && content) {
-          query.request = encodeURIComponent(JSON.stringify({id: id, nick: nick, content: content}))
-        }
-
-        this.$router.push({path: `/talks/${this.id}/post-comment`, query: query})
+        this.$router.push({path: `/talks/${this.id}/post-comment`, query: query} as Location);
       },
       touchStart (e) {
-        if (!this.$refs.toolBar) return
+        if (!this.$refs.toolBar) return;
 
-        this.originY = e.touches[0].clientY
+        this.originY = e.touches[0].clientY;
       },
       touchMove (e) {
-        if (!this.$refs.toolBar) return
+        if (!this.$refs.toolBar) return;
 
         if (this.originY - e.touches[0].clientY > 10 && this.isToolbarShow) {
-          this.isToolbarShow = false
+          this.isToolbarShow = false;
         } else if (e.touches[0].clientY - this.originY > 10 && !this.isToolbarShow) {
-          this.isToolbarShow = true
+          this.isToolbarShow = true;
         }
       },
       togglePraise () {
-        this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id)
+        this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id);
       },
       toggleFavorite () {
-        this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id)
+        this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id);
       }
     }
-  }
+  } as ComponentOptions<TalkComponent>;
 </script>

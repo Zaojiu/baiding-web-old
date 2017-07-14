@@ -1,6 +1,7 @@
 module.exports = {
-  fontName: 'baiding-webfont',
-  files: ['../../static/icon/*.svg'],
-  baseClass: 'bi',
-  classPrefix: 'bi-'
-}
+  "fontName": 'baiding-webfont',
+  "files": ['../assets/icon/*.svg'],
+  "baseSelector": '.bi',
+  "classPrefix": 'bi-',
+  "fixedWidth": true,
+};

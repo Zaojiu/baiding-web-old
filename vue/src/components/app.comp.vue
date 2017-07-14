@@ -6,10 +6,12 @@
 </template>
 
 <style lang="scss">
-  @import "../css/_variables";
+  @import "../css/_utils.scss";
 
   /* Reset */
-  html, body, div {
+  html,
+  body,
+  div {
     border: 0;
   }
 
@@ -54,6 +56,25 @@
     line-height: 1em;
   }
 
+  .bi {
+    /* 避免before之后有一个空行 */
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+
+    &:before {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      /* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+      text-decoration: none;
+      text-transform: none;
+    }
+  }
+
   @media screen and (min-width: 1024px) {
     body {
       width: 1024px;
@@ -71,17 +92,19 @@
     }
   }
 
-  @import "../css/_avatar";
-  @import "../css/_form";
-  @import "../css/_iconfont";
+  @import "../css/_hack.scss";
+  @import "../css/_button.scss";
+  @import "../css/_form.scss";
+  @import "../css/_avatar.scss";
+  @import "../css/_article.scss";
 </style>
 
-<script>
-  import ToolTips from '../shared/tool-tips.comp.vue'
+<script lang="ts">
+  import toolTips from '../shared/tool-tips.comp.vue'
 
-  export default{
+  export default {
     components: {
-      ToolTips,
+      toolTips,
     }
-  }
+  };
 </script>
