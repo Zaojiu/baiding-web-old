@@ -1,0 +1,32 @@
+.talk-article {
+  font-size: $font-size-md;
+  line-height: 1.75;
+  color: $color-dark-gray;
+
+  i {
+    font-weight:inherit;
+  }
+
+  p {
+    padding-bottom: 9px;
+    padding-top: 10px;
+    margin-bottom: 0;
+    white-space: pre-wrap;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    padding-bottom: 20px;
+    padding-top: 40px;
+    margin-top: 0px;
+    margin-bottom: 0;
+  }
+
+  b, strong {
+    font-weight: bold;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}

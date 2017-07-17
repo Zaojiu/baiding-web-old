@@ -1,5 +1,5 @@
 .form-group {
-  margin: auto 15px;
+  margin: 20px 15px;
 
   &:last-child {
     margin-bottom: 0;
@@ -9,15 +9,17 @@
     position: relative;
     padding-top: 14px;
 
-    input[type="text"].v-has-value + label,
+    input[type="text"].ng-has-value + label,
     input[type="text"]:focus + label,
-    input[type="password"].v-has-value + label,
+    input[type="password"].ng-has-value + label,
     input[type="password"]:focus + label,
-    input[type="datetime-local"].v-has-value + label,
+    input[type="number"].ng-has-value + label,
+    input[type="number"]:focus + label,
+    input[type="datetime-local"].ng-has-value + label,
     input[type="datetime-local"]:focus + label,
-    input[type="tel"].v-has-value + label,
+    input[type="tel"].ng-has-value + label,
     input[type="tel"]:focus + label,
-    textarea.v-has-value + label,
+    textarea.ng-has-value + label,
     textarea:focus + label {
       transform: translateY(0px);
       font-size: 14px;
@@ -25,6 +27,7 @@
 
     input[type="text"]:focus + label,
     input[type="password"]:focus + label,
+    input[type="number"]:focus + label,
     input[type="datetime-local"]:focus + label,
     input[type="tel"]:focus + label,
     textarea:focus + label {
@@ -63,7 +66,7 @@
     }
   }
 
-  input[type="text"], input[type="password"], input[type="datetime-local"], input[type="tel"], textarea {
+  input[type="text"], input[type="number"], input[type="password"], input[type="datetime-local"], input[type="tel"], textarea {
     width: 100%;
     max-width: 100%;
     min-width: 100%;
@@ -74,11 +77,6 @@
     box-sizing: content-box;
     padding: 7px 0;
     border-radius: 0;
-    transition: border-bottom .2s;
-
-    &:focus {
-      border-bottom: solid 1px $color-brand;
-    }
 
     &:disabled {
       color: rgb(218, 218, 218);
@@ -88,11 +86,11 @@
     }
 
     &::selection {
-      background: rgba( $color-brand, .5 );
+      background: color-brand-transparent(.5);
     }
   }
 
-  input[type="text"], input[type="password"], input[type="datetime-local"], input[type="tel"] {
+  input[type="text"], input[type="number"], input[type="password"], input[type="datetime-local"], input[type="tel"] {
     line-height: 1em;
     height: 18px;
   }
@@ -181,18 +179,10 @@
 
   .helper.error {
     display: none;
-    color: rgb(233, 66, 63);
+    color: #911010;
   }
 
   &.has-error {
-    input[type="text"], input[type="password"], input[type="datetime-local"], input[type="tel"], textarea {
-      border-bottom: solid 1px rgb(233, 66, 63);
-
-      &:focus {
-        border-bottom: solid 1px rgb(233, 66, 63);
-      }
-    }
-
     .helper.error {
       display: block;
     }
@@ -202,7 +192,4 @@
 textarea {
   display: block;
   resize: none;
-  &::placeholder{
-    color: rgb(188,188,188);
-  }
 }

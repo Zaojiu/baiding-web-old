@@ -1,8 +1,12 @@
-node_modules
-*.log
-.DS_Store
-/dist
-/flow-typed
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist2
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
 
 # IDEs and editors
 /.idea
@@ -21,13 +25,15 @@ npm-debug.log
 testem.log
 /typings
 
+# e2e
+/e2e/*.js
+/e2e/*.map
+
 #System Files
 .DS_Store
 Thumbs.db
 
 # config
-/src/env/environment.development.js
-/angular-cli.dev.json
-/angular-cli.prod.json
+/src/environments/environment.development.ts
+/src/environments/environment.production.ts
 hack/Dockerfile
-

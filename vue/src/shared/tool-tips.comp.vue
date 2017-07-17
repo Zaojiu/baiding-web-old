@@ -3,8 +3,6 @@
 </template>
 
 <style lang="scss">
-  @import "../css/_variables";
-
   .operation-tips {
     position: absolute;
     left: 50%;
@@ -32,16 +30,18 @@
 
 </style>
 
-<script>
-  export default{
+<script lang="ts">
+  import Vue, {ComponentOptions} from "vue";
+  import {tipStore} from '../store/tip';
+
+  export default {
     computed: {
-      isOpened(){
-        if (this.$store.state.tip.errorMessage) return this.$store.state.tip.status
+      isOpened(): boolean {
+        return tipStore.state.errorMessage !== '' && tipStore.state.status;
       },
-      message(){
-        return this.$store.state.tip.errorMessage || ''
+      message(): string {
+        return tipStore.state.errorMessage || '';
       }
     }
-  }
-
+  } as ComponentOptions<Vue>;
 </script>

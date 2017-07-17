@@ -1,74 +1,3 @@
-<script>// @flow
-import {Utils} from '../../../shared/utils/utils'
-import {POST_TALK_COMMENT} from '../../../store/talk'
-import form from '../../../shared/form'
-import beforeRouteEnter from '../../../shared/guard/before-route-enter'
-import userAuth from '../../../shared/guard/user-auth.guard'
-import {SHOW_TIP} from '../../../store/tip'
-
-type commentQuery = {
-  id: string,
-  nick: string,
-  content: string,
-};
-
-type commentData = {
-  id: string,
-  subject: string,
-  replyId: string,
-  replyNick: string,
-  replyContent: string,
-  isInApp: boolean,
-  isSubmitting: boolean,
-  content: string,
-};
-
-export default {
-  beforeRouteEnter (to: any, from: any, next: any) {
-    const guards = beforeRouteEnter([userAuth(Utils.absUrl(to.fullPath))]);
-    guards(to, from, next)
-  },
-  directives: form,
-  data () {
-    const data: commentData = {
-      id: this.$route.params.id,
-      subject: decodeURIComponent(this.$route.query.title),
-      replyId: '',
-      replyNick: '',
-      replyContent: '',
-      isInApp: Utils.isInApp,
-      isSubmitting: false,
-      content: ''
-    };
-    const request: any = this.$route.query.request;
-
-    if (request) {
-      const requestObj: commentQuery = JSON.parse(decodeURIComponent(request));
-      data.replyId = requestObj.id;
-      data.replyNick = requestObj.nick;
-      data.replyContent = requestObj.content;
-    }
-
-    return data
-  },
-  methods: {
-    backToTalk () {
-      this.$router.push({path: `/talks/${this.id}`})
-    },
-    async submit () {
-      this.$validator.validateAll();
-      if (this.errors.count()) return;
-
-      this.isSubmitting = true;
-      await this.$store.dispatch(POST_TALK_COMMENT, {id: this.id, content: this.content, parentId: this.replyId});
-      this.isSubmitting = false;
-      await this.$store.dispatch(SHOW_TIP, '评论成功');
-      this.backToTalk()
-    }
-  }
-}
-</script>
-
 <template>
   <form name="postComment" class="post-comment" @submit.prevent="submit" v-focus-first-invalid>
     <header v-if="!isInApp"><i class="bi bi-close" @click="backToTalk()"></i>
@@ -114,17 +43,10 @@ export default {
         </div>
       </div>
     </div>
-
-    <!--<div class="operation-area">-->
-      <!--<button class="btn" v-if="!isSubmitting">提交评论</button>-->
-      <!--<span class="btn disabled" v-if="isSubmitting">评论提交中...</span>-->
-    <!--</div>-->
   </form>
 </template>
 
 <style lang="scss">
-  @import "../../../css/_variables";
-
   .post-comment {
     position: absolute;
     top: 0;
@@ -157,7 +79,7 @@ export default {
       .header_reply {
         padding: 15px;
         font-size: 17px;
-        color: $color-brand2;
+        color: $color-brand;
       }
 
     }
@@ -232,3 +154,82 @@ export default {
     }
   }
 </style>
+
+<script lang="ts">
+  import {absUrl, isInApp} from '../../../shared/utils/utils';
+  import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../../store/talk';
+  import form from '../../../shared/form';
+  import {beforeRouteEnter} from '../../../shared/guard/before-route-enter';
+  import userAuth from '../../../shared/guard/user-auth.guard';
+  import {tipStore, SHOW_TIP} from '../../../store/tip';
+  import {RawLocation, Route} from "vue-router";
+  import Vue from "vue";
+  import {ComponentOptions} from "vue";
+  import {ErrorBag} from "vee-validate";
+
+  interface PostCommentComponent extends Vue {
+    id: string;
+    subject: string;
+    replyId: string;
+    replyNick: string;
+    replyContent: string;
+    isInApp: boolean;
+    isSubmitting: boolean;
+    content: string;
+    errors: ErrorBag;
+
+    backToTalk(): void;
+  }
+
+  class commentQuery {
+    id: string;
+    nick: string;
+    content: string;
+  }
+
+  export default {
+    beforeRouteEnter (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      const guards = [userAuth(absUrl(to.fullPath))];
+      beforeRouteEnter(guards, to, from, next);
+    },
+    directives: form,
+    data () {
+      const data = {
+        id: this.$route.params.id,
+        subject: decodeURIComponent(this.$route.query.title),
+        replyId: '',
+        replyNick: '',
+        replyContent: '',
+        isInApp: isInApp,
+        isSubmitting: false,
+        content: '',
+      };
+
+      const request = this.$route.query.request;
+
+      if (request) {
+        const requestObj: commentQuery = JSON.parse(decodeURIComponent(request));
+        data.replyId = requestObj.id;
+        data.replyNick = requestObj.nick;
+        data.replyContent = requestObj.content;
+      }
+
+      return data
+    },
+    methods: {
+      backToTalk () {
+        this.$router.push({path: `/talks/${this.id}`});
+      },
+      async submit () {
+        this.$validator.validateAll();
+        if (this.errors.count()) return;
+
+        this.isSubmitting = true;
+        await this.$store.dispatch(POST_TALK_COMMENT, new PostTalkCommentsPayload(this.id, this.content, this.replyId));
+        this.isSubmitting = false;
+        await tipStore.dispatch(SHOW_TIP, '评论成功');
+        this.backToTalk();
+      }
+    }
+  } as ComponentOptions<PostCommentComponent>;
+</script>

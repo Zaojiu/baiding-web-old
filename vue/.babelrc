@@ -1,9 +1,0 @@
-{
-  "presets": [
-    "flow",
-    "latest"
-  ],
-  "plugins": [
-    "transform-object-rest-spread"
-  ]
-}
