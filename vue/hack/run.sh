@@ -3,6 +3,12 @@ function docker_killrm(){
     docker rm -f baiding-web-vue
 }
 
+function docker_bash(){
+    docker_killrm
+    docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+        297951292/node-with-yarn:latest /bin/bash
+}
+
 function docker_dev(){
     docker_killrm
     docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
@@ -31,6 +37,9 @@ for target in $@; do
             ;;
         docker.build)
             docker_build
+            ;;
+        docker.bash)
+            docker_bash
             ;;
     esac
 done

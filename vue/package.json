@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "./hack/run.sh docker.dev",
     "prod": "./hack/run.sh docker.prod",
-    "build": "./hack/run.sh docker.build"
+    "build": "./hack/run.sh docker.build",
+    "bash": "./hack/run.sh docker.bash"
   },
   "dependencies": {
     "autosize": "^3.0.21",
