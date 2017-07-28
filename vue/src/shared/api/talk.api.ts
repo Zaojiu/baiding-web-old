@@ -1,5 +1,5 @@
 import {host} from '../../env/environment';
-import {TalkInfoModel, TalkCommentModel} from './talk.model';
+import {TalkInfoModel, TalkCommentModel, TalkEmphasisModel} from './talk.model';
 import {params} from '../utils/utils';
 import {del, get, post} from "./xhr";
 
@@ -61,3 +61,19 @@ export const unpraise = (id: string) => {
   return del(url);
 };
 
+export const getTalkEmphasis = async (id: string): Promise<TalkEmphasisModel[]> => {
+  const url = `${host.io}/api/live/media/${id}/cues?size=1000`;
+  const res = await get(url).catch(() => null);
+  if (!res) return [];
+
+  const resultParsed: TalkEmphasisModel[] = [];
+  const result = res.data.result;
+  if (result && Array.isArray(result)) {
+    result.forEach(item => {
+      const itemParsed = new TalkEmphasisModel(item.id, item.mediaId, item.start, item.duration, item.text, item.coverUrl, item.createdAt);
+      resultParsed.push(itemParsed);
+    });
+  }
+
+  return resultParsed;
+};

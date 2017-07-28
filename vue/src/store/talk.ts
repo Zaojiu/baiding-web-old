@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import {Commit} from "vuex";
-import {TalkCommentModel, TalkInfoModel} from "../shared/api/talk.model";
+import {TalkCommentModel, TalkEmphasisModel, TalkInfoModel} from "../shared/api/talk.model";
 import {
-  favorite,
+  favorite, getTalkEmphasis,
   getTalkInfo, listTalkComments, postTalkComment, praise, unfavorite,
   unpraise
 } from '../shared/api/talk.api';
@@ -16,8 +16,10 @@ export const POST_TALK_COMMENT = 'talks.POST_TALK_COMMENT';
 export const TALK_COMMENT_COUNT = 20;
 export const TOGGLE_TALK_PRAISE = 'talks.TOGGLE_TALK_PRAISE';
 export const TOGGLE_TALK_FAVORITE = 'talks.TOGGLE_TALK_FAVORITE';
+export const FETCH_TALK_EMPHASIS = 'talks.FETCH_TALK_EMPHASIS';
+export const ADD_TALK_EMPHASIS = 'talks.ADD_TALK_EMPHASIS';
 
-class TalkCommentsStore {
+export class TalkCommentsStore {
   id: string;
   comments: TalkCommentModel[];
   hasMore: boolean;
@@ -30,8 +32,9 @@ class TalkCommentsStore {
 }
 
 class TalkStateModel {
-  info: {[key: string]: TalkInfoModel} = {};
-  comments: {[key: string]: TalkCommentsStore} = {};
+  info: {[id: string]: TalkInfoModel} = {};
+  comments: {[id: string]: TalkCommentsStore} = {};
+  emphasis: {[id: string]: TalkEmphasisModel[]} = {};
 }
 
 export class PostTalkCommentsPayload {
@@ -61,6 +64,9 @@ const mutations = {
       Vue.set(comments, newCommentStore.id, {data: newCommentStore.comments, hasMore: newCommentStore.hasMore})
     }
   },
+  [ADD_TALK_EMPHASIS] ({ emphasis }: {emphasis: {[key: string]: TalkEmphasisModel[]}}, newEmphasis: {id: string, emphasis: TalkEmphasisModel[]}) {
+    Vue.set(emphasis, newEmphasis.id, newEmphasis.emphasis);
+  },
   [REMOVE_TALK_COMMENT] ({ comments }: {comments: {[key: string]: TalkCommentsStore}}, id: string) {
     Vue.set(comments, id, null)
   }
@@ -81,6 +87,10 @@ const actions = {
       comments.pop()
     }
     commit(ADD_TALK_COMMENT, new TalkCommentsStore(id, comments, hasMore))
+  },
+  [FETCH_TALK_EMPHASIS]: async ({ commit }: { commit: Commit}, id: string) => {
+    const emphasis = await getTalkEmphasis(id);
+    commit(ADD_TALK_EMPHASIS, {id: id, emphasis: emphasis});
   },
   [POST_TALK_COMMENT]: async ({ commit, state }: { commit: Commit, state: TalkStateModel}, payload: PostTalkCommentsPayload) => {
     const talkInfo = {...state.info[payload.id]} as TalkInfoModel;
