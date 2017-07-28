@@ -1,7 +1,7 @@
 <template>
   <div>
     <bd-loading class="loading" v-if="isLoading"></bd-loading>
-    <div class="main" v-else-if="talkInfo" @touchstart="touchStart" @touchmove="touchMove">
+    <div class="main" v-show="!isChildActived()" v-else-if="talkInfo" @touchstart="touchStart" @touchmove="touchMove">
       <header v-bind:class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
@@ -61,13 +61,13 @@
             <section class="article talk-article"
                      v-html="talkInfo.content" v-once></section>
 
-            <section class="info">
+            <section class="info" v-if="talkInfo.tags && talkInfo.tags.length">
               <div class="tags">
                 <small v-for="tag in talkInfo.tags">{{tag}}</small>
               </div>
             </section>
 
-            <section class="comments">
+            <section id="comments" class="comments">
               <h2>评论</h2>
 
               <div v-if="comments">
@@ -82,12 +82,7 @@
                       class="bi bi-reply-comment"></i>回复</span>
                   </div>
                   <!-- 不要换行，避免出现换行符 -->
-                  <div class="content" v-once>
-                    <div class="quote" v-if="comment.parent"><span
-                      class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}
-                    </div>
-                    {{comment.content}}
-                  </div>
+                  <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
                 </div>
               </div>
 
@@ -288,6 +283,7 @@
           vertical-align: top;
           max-height: 0;
           transition: max-height .3s 0s;
+          white-space: normal;
         }
       }
     }
@@ -308,6 +304,7 @@
         color: $color-b;
         padding-bottom: 15px;
         font-weight: 500;
+        word-break: break-all;
       }
 
       .talk-info {
@@ -346,43 +343,8 @@
     }
 
     .article {
-      padding: 20px;
+      padding: 0 20px;
       text-align: justify;
-
-      &.talk-article {
-        font-size: $font-size-md;
-        line-height: 1.75;
-        color: $color-dark-gray;
-
-        i {
-          font-weight: inherit;
-        }
-
-        p {
-          padding-bottom: 9px;
-          padding-top: 10px;
-          margin-bottom: 0;
-          white-space: pre-wrap;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-          padding-bottom: 20px;
-          padding-top: 40px;
-          margin-top: 0px;
-          margin-bottom: 0;
-        }
-
-        b, strong {
-          font-weight: bold;
-        }
-
-        img {
-          display: block;
-          margin: 0 auto;
-          max-width: 100%;
-          height: auto;
-        }
-      }
     }
 
     .info {
@@ -440,8 +402,8 @@
     }
 
     .comments {
-      margin-top: 38px;
-      padding: 12px;
+      margin-top: 50px;
+      padding: 0 15px;
 
       h2 {
         font-size: 18px;
@@ -520,8 +482,7 @@
       }
 
       .no-comments, .more-comments, .comment-loading, .no-more-comments {
-        height: 120px;
-        padding-bottom: 46px;
+        height: 100px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -698,23 +659,10 @@
     togglePraise(): void;
     toggleFavorite(): void;
     emphasisClicked(): void;
+    isChildrenActived(): boolean;
   }
 
   export default {
-    beforeRouteEnter (to, from, next) {
-      console.log(to, 'to');
-      next();
-    },
-    beforeRouteUpdate (to, from, next) {
-      // 在当前路由改变，但是该组件被复用时调用
-      // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
-      // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
-      // 可以访问组件实例 `this`
-    },
-    beforeRouteLeave (to, from, next) {
-      console.log(to, 'to');
-      next();
-    },
     data() {
       return {
         id: this.$route.params.id,
@@ -759,12 +707,12 @@
         return this.$store.state.talks.comments[this.id]
       },
       isLoading() {
-        return this.talkInfo === undefined
+        return this.talkInfo === undefined || this.emphasis === undefined;
       },
       talkCategories() {
         if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
         return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : '';
-      }
+      },
     },
     methods: {
       async fetchComments() {
@@ -860,6 +808,9 @@
           this.player.video.el.currentTime = startTime;
           if (this.player.video.el.paused) this.player.video.el.play();
         }
+      },
+      isChildActived() {
+        return this.$router.currentRoute.name !== 'talks.main';
       },
     }
   } as ComponentOptions<TalkComponent>;

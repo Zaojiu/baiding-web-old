@@ -55,6 +55,13 @@ const mutations = {
   [ADD_TALK] ({ info }: {info: {[key: string]: TalkInfoModel}}, newTalk: {id: string, info: TalkInfoModel}) {
     Vue.set(info, newTalk.id, newTalk.info)
   },
+  [TOGGLE_TALK_FAVORITE] ({ info }: {info: {[key: string]: TalkInfoModel}}, newTalk: {id: string, info: TalkInfoModel}) {
+    Vue.set(info[newTalk.id], 'isFavorited', newTalk.info.isFavorited)
+  },
+  [TOGGLE_TALK_PRAISE] ({ info }: {info: {[key: string]: TalkInfoModel}}, newTalk: {id: string, info: TalkInfoModel}) {
+    Vue.set(info[newTalk.id], 'isPraised', newTalk.info.isPraised)
+    Vue.set(info[newTalk.id], 'praiseTotal', newTalk.info.praiseTotal)
+  },
   [ADD_TALK_COMMENT] ({ comments }: {comments: {[key: string]: TalkCommentsStore}}, newCommentStore: TalkCommentsStore) {
     const commentStore = comments[newCommentStore.id];
     if (commentStore) {
@@ -106,7 +113,7 @@ const actions = {
     if (res instanceof Error) return;
     talkInfo.isPraised = !talkInfo.isPraised;
     talkInfo.praiseTotal = talkInfo.isPraised ? talkInfo.praiseTotal + 1 : talkInfo.praiseTotal - 1;
-    commit(ADD_TALK, {id: id, info: talkInfo});
+    commit(TOGGLE_TALK_PRAISE, {id: id, info: talkInfo});
   },
   [TOGGLE_TALK_FAVORITE]: async ({ commit, state }: { commit: Commit, state: TalkStateModel}, id: string) => {
     const talkInfo = {...state.info[id]} as TalkInfoModel;
@@ -114,7 +121,7 @@ const actions = {
     const res = await promise;
     if (res instanceof Error) return;
     talkInfo.isFavorited = !talkInfo.isFavorited;
-    commit(ADD_TALK, {id: id, info: talkInfo});
+    commit(TOGGLE_TALK_FAVORITE, {id: id, info: talkInfo});
   }
 };
 
