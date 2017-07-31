@@ -54,6 +54,7 @@
     right: 0;
     bottom: 0;
     overflow: auto;
+    z-index: $z-index-page-lv2;
     background-color: $color-w;
     display: flex;
     flex-direction: column;

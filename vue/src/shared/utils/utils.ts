@@ -31,6 +31,9 @@ export const isOnLargeScreen = matchMedia && matchMedia('(min-width: 1024px)').m
 export const isChrome = /Chrome/i.test(navigator.userAgent);
 export const isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
 export const now = (): number => Math.floor((new Date()).getTime() / 1000);
+export const isViewportLandscape = (): boolean => {
+  return window.matchMedia && matchMedia('(orientation: landscape)').matches;
+};
 export const parseAt = (content: string, needHeightLight = false): string => {
   const patt = /(@.+?)(\((.+?)\)){1}/g
   let result = null;

@@ -18,8 +18,12 @@ export default new Router({
       path: '/talks/:id',
       component: talksComp,
       children: [
-        { path: '' },
         {
+          name: 'talks.main',
+          path: ''
+        },
+        {
+          name: 'talks.post-comment',
           path: 'post-comment',
           component: postCommentComp,
         }

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import {Commit} from "vuex";
-import {TalkCommentModel, TalkInfoModel} from "../shared/api/talk.model";
+import {TalkCommentModel, TalkEmphasisModel, TalkInfoModel} from "../shared/api/talk.model";
 import {
-  favorite,
+  favorite, getTalkEmphasis,
   getTalkInfo, listTalkComments, postTalkComment, praise, unfavorite,
   unpraise
 } from '../shared/api/talk.api';
@@ -16,8 +16,10 @@ export const POST_TALK_COMMENT = 'talks.POST_TALK_COMMENT';
 export const TALK_COMMENT_COUNT = 20;
 export const TOGGLE_TALK_PRAISE = 'talks.TOGGLE_TALK_PRAISE';
 export const TOGGLE_TALK_FAVORITE = 'talks.TOGGLE_TALK_FAVORITE';
+export const FETCH_TALK_EMPHASIS = 'talks.FETCH_TALK_EMPHASIS';
+export const ADD_TALK_EMPHASIS = 'talks.ADD_TALK_EMPHASIS';
 
-class TalkCommentsStore {
+export class TalkCommentsStore {
   id: string;
   comments: TalkCommentModel[];
   hasMore: boolean;
@@ -30,8 +32,9 @@ class TalkCommentsStore {
 }
 
 class TalkStateModel {
-  info: {[key: string]: TalkInfoModel} = {};
-  comments: {[key: string]: TalkCommentsStore} = {};
+  info: {[id: string]: TalkInfoModel} = {};
+  comments: {[id: string]: TalkCommentsStore} = {};
+  emphasis: {[id: string]: TalkEmphasisModel[]} = {};
 }
 
 export class PostTalkCommentsPayload {
@@ -52,6 +55,13 @@ const mutations = {
   [ADD_TALK] ({ info }: {info: {[key: string]: TalkInfoModel}}, newTalk: {id: string, info: TalkInfoModel}) {
     Vue.set(info, newTalk.id, newTalk.info)
   },
+  [TOGGLE_TALK_FAVORITE] ({ info }: {info: {[key: string]: TalkInfoModel}}, newTalk: {id: string, info: TalkInfoModel}) {
+    Vue.set(info[newTalk.id], 'isFavorited', newTalk.info.isFavorited)
+  },
+  [TOGGLE_TALK_PRAISE] ({ info }: {info: {[key: string]: TalkInfoModel}}, newTalk: {id: string, info: TalkInfoModel}) {
+    Vue.set(info[newTalk.id], 'isPraised', newTalk.info.isPraised)
+    Vue.set(info[newTalk.id], 'praiseTotal', newTalk.info.praiseTotal)
+  },
   [ADD_TALK_COMMENT] ({ comments }: {comments: {[key: string]: TalkCommentsStore}}, newCommentStore: TalkCommentsStore) {
     const commentStore = comments[newCommentStore.id];
     if (commentStore) {
@@ -60,6 +70,9 @@ const mutations = {
     } else {
       Vue.set(comments, newCommentStore.id, {data: newCommentStore.comments, hasMore: newCommentStore.hasMore})
     }
+  },
+  [ADD_TALK_EMPHASIS] ({ emphasis }: {emphasis: {[key: string]: TalkEmphasisModel[]}}, newEmphasis: {id: string, emphasis: TalkEmphasisModel[]}) {
+    Vue.set(emphasis, newEmphasis.id, newEmphasis.emphasis);
   },
   [REMOVE_TALK_COMMENT] ({ comments }: {comments: {[key: string]: TalkCommentsStore}}, id: string) {
     Vue.set(comments, id, null)
@@ -82,6 +95,10 @@ const actions = {
     }
     commit(ADD_TALK_COMMENT, new TalkCommentsStore(id, comments, hasMore))
   },
+  [FETCH_TALK_EMPHASIS]: async ({ commit }: { commit: Commit}, id: string) => {
+    const emphasis = await getTalkEmphasis(id);
+    commit(ADD_TALK_EMPHASIS, {id: id, emphasis: emphasis});
+  },
   [POST_TALK_COMMENT]: async ({ commit, state }: { commit: Commit, state: TalkStateModel}, payload: PostTalkCommentsPayload) => {
     const talkInfo = {...state.info[payload.id]} as TalkInfoModel;
     talkInfo.commentTotal += 1;
@@ -96,7 +113,7 @@ const actions = {
     if (res instanceof Error) return;
     talkInfo.isPraised = !talkInfo.isPraised;
     talkInfo.praiseTotal = talkInfo.isPraised ? talkInfo.praiseTotal + 1 : talkInfo.praiseTotal - 1;
-    commit(ADD_TALK, {id: id, info: talkInfo});
+    commit(TOGGLE_TALK_PRAISE, {id: id, info: talkInfo});
   },
   [TOGGLE_TALK_FAVORITE]: async ({ commit, state }: { commit: Commit, state: TalkStateModel}, id: string) => {
     const talkInfo = {...state.info[id]} as TalkInfoModel;
@@ -104,7 +121,7 @@ const actions = {
     const res = await promise;
     if (res instanceof Error) return;
     talkInfo.isFavorited = !talkInfo.isFavorited;
-    commit(ADD_TALK, {id: id, info: talkInfo});
+    commit(TOGGLE_TALK_FAVORITE, {id: id, info: talkInfo});
   }
 };
 

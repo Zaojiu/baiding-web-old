@@ -102,18 +102,18 @@ export class TalkInfoModel {
   createdAt: Moment;
   updatedAt: Moment;
 
-  constructor (data: any, users: any, speakers: any, categories: any, tags: any, currentUserInfo: any) {
+  constructor(data: any, users: any, speakers: any, categories: any, tags: any, currentUserInfo: any) {
     this.id = data.id;
     if (users && data.uid) this.userInfo = users[data.uid];
     this.subject = data.subject;
     this.desc = data.desc;
     this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}` ;
+    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
     this.coverThumbnailUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
 
     this.cover169Url = `${data.coverUrl}~16-9?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmall169Url =  `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverThumbnail169Url =  `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverSmall169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverThumbnail169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
 
     this.cover11Url = `${data.coverUrl}~1-1?updatedAt=${Math.round(+data.updatedAt)}`;
     this.coverSmall11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
@@ -226,5 +226,27 @@ export class TalkCommentModel {
     this.createdAt = moment(+data.createdAt / 1e6);
     this.originCreatedAt = data.createdAt;
 
+  }
+}
+
+export class TalkEmphasisModel {
+  id: string;
+  mediaId: string;
+  coverUrl: string;
+  createdAt: string;
+  duration: number;
+  start: number;
+  startParsed: Duration;
+  text: string;
+
+  constructor(id: string, mediaId: string, start: number,  duration: number,text: string, coverUrl: string, createdAt: string) {
+    this.id = id;
+    this.mediaId = mediaId;
+    this.coverUrl = coverUrl;
+    this.createdAt = createdAt;
+    this.duration = duration;
+    this.start = start;
+    this.startParsed = moment.duration(this.start);
+    this.text = text;
   }
 }
