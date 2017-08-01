@@ -150,7 +150,7 @@
         transition: height .5s;
       }
 
-      @media (max-width: 1022px) and (orientation: landscape) {
+      @media (max-width: 1024px) and (orientation: landscape) {
         .video-container {
           .video {
             &:before {
@@ -557,7 +557,7 @@
       display: flex;
       height: 46px;
       background-color: rgb(10, 10, 23);
-      max-width: 1022px;
+      max-width: 1024px;
       width: 100%;
 
       .icon {
