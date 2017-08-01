@@ -59,7 +59,7 @@
               </div>
             </section>
 
-            <section class="article talk-article"
+            <section class="article"
                      v-html="talkInfo.content" v-once></section>
 
             <section class="info" v-if="talkInfo.tags && talkInfo.tags.length">
@@ -345,8 +345,37 @@
     }
 
     .article {
-      padding: 0 20px;
       text-align: justify;
+      font-size: $font-size-md;
+      line-height: 1.75;
+      color: $color-dark-gray;
+
+      i {
+        font-weight:inherit;
+      }
+
+      p {
+        margin: 20px 20px;
+        white-space: pre-wrap;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        margin-bottom: 20px;
+        margin-top: 40px;
+      }
+
+      b, strong {
+        font-weight: bold;
+      }
+
+      img {
+        display: block;
+        max-width: calc(100% + 20px + 20px);
+        height: auto;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
 
     .info {
