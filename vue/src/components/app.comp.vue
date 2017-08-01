@@ -89,8 +89,7 @@
   @import "../css/_button";
   @import "../css/_form";
   @import "../css/_avatar";
-  @import "../css/_article";
-  @import "../css/clickable-block";
+  @import "../css/_clickable-block";
 </style>
 
 <script lang="ts">
