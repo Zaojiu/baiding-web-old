@@ -1,4 +1,3 @@
-import {sampleSize} from 'lodash';
 import {host} from "../../env/environment";
 
 declare const DocumentTouch: any;
@@ -86,9 +85,13 @@ export const parseUrl = (url: string): UrlModel => {
   });
   return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, aEle.port, aEle.pathname, queryObj, aEle.hash)
 };
-export const randomId = (size = 10, dic?: string): string => {
-  const defaultDic = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  return sampleSize((dic || defaultDic).split(''), size).join('')
+export const randomId = (size = 10, dict = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'): string => {
+  const dictArr = dict.split('');
+  let str = '';
+  for (let i = 0; i < size; i++) {
+    str += dictArr[Math.floor(Math.random() * dictArr.length)];
+  }
+  return str;
 };
 export const absUrl = (path: string, query?: {[key: string]: string}): string => {
   let url = `${location.protocol}//${location.hostname}${path}`;

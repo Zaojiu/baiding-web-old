@@ -38,7 +38,7 @@
               <div class="categories" v-if="talkCategories">{{talkCategories}}</div>
               <h1>{{talkInfo.subject}}</h1>
               <div class="talk-info">
-                <div class="publisher-info">
+                <div class="author-info">
                   <img
                     class="avatar avatar-round avatar-sm"
                     v-if="talkInfo.userInfo"
@@ -59,7 +59,7 @@
               </div>
             </section>
 
-            <section class="article"
+            <section class="article article-content"
                      v-html="talkInfo.content" v-once></section>
 
             <section class="info" v-if="talkInfo.tags && talkInfo.tags.length">
@@ -112,10 +112,8 @@
           <i class="bi" :class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
         </div>
         <div class="icon" @click="toggleFavorite">
-          <i class="bi"
-             :class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
+          <i class="bi" :class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
         </div>
-        <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
       </footer>
     </div>
     <div class="no-content" v-else>无效文章</div>
@@ -124,7 +122,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .main {
     header {
       position: relative;
@@ -302,7 +300,7 @@
 
       h1 {
         font-size: 24px;
-        line-height: 1.3em;
+        line-height: 1.25em;
         color: $color-b;
         padding-bottom: 15px;
         font-weight: 500;
@@ -313,8 +311,9 @@
         display: flex;
         align-items: center;
         overflow: hidden;
+        margin-bottom: 24px;
 
-        .publisher-info {
+        .author-info {
           flex-grow: 1;
           overflow: hidden;
           display: flex;
@@ -349,33 +348,6 @@
       font-size: $font-size-md;
       line-height: 1.75;
       color: $color-dark-gray;
-
-      i {
-        font-weight:inherit;
-      }
-
-      p {
-        margin: 20px 20px;
-        white-space: pre-wrap;
-      }
-
-      h1, h2, h3, h4, h5, h6 {
-        margin-bottom: 20px;
-        margin-top: 40px;
-      }
-
-      b, strong {
-        font-weight: bold;
-      }
-
-      img {
-        display: block;
-        max-width: calc(100% + 20px + 20px);
-        height: auto;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-      }
     }
 
     .info {
@@ -591,7 +563,7 @@
 
       .icon {
         line-height: 1em;
-        font-size: 14px;
+        font-size: $font-size-sm;
         color: $color-w;
         display: flex;
         align-items: center;
@@ -606,12 +578,23 @@
         }
 
         .bi {
-          font-size: 21px;
-          margin-right: 4px;
+          margin-right: 5px;
+
+          &.active {
+            color: $color-brand;
+          }
         }
 
-        .bi-bookmark-fill, .bi-thumbsup-fill, .bi-comment-fill {
-          color: $color-brand;
+        .bi-praise {
+          font-size: $font-size-lg;
+        }
+
+        .bi-favorite {
+          font-size: $font-size-lg;
+        }
+
+        .bi-comment2 {
+          font-size: $font-size-md;
         }
       }
 
@@ -713,6 +696,7 @@
 //          });
 //        }
 //      },
+
     async fetchComments() {
       this.isCommentLoading = true;
       await this.$store.dispatch(FETCH_TALK_COMMENT, this.id);

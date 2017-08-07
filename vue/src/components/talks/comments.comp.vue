@@ -44,7 +44,7 @@
   </form>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .post-comment {
     position: absolute;
     top: 0;
@@ -166,12 +166,24 @@
 </style>
 
 <script lang="ts">
+<<<<<<< HEAD:vue/src/components/talks/comments/comments.comp.vue
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import {isInApp} from '../../../shared/utils/utils';
   import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../../store/talk';
   import {form} from '../../../shared/form';
   import {showTips} from '../../../store/tip';
+=======
+  import {absUrl, isInApp} from '../../shared/utils/utils';
+  import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../store/talk';
+  import form from '../../shared/form';
+  import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
+  import userAuth from '../../shared/guard/user-auth.guard';
+  import {tipStore, SHOW_TIP} from '../../store/tip';
+  import {RawLocation, Route} from "vue-router";
+  import Vue from "vue";
+  import {ComponentOptions} from "vue";
+>>>>>>> column list done:vue/src/components/talks/comments.comp.vue
   import {ErrorBag} from "vee-validate";
 
   @Component({

@@ -1,0 +1,28 @@
+.article-content {
+  i {
+    font-weight:inherit;
+  }
+
+  p {
+    margin: 20px 20px;
+    white-space: pre-wrap;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 20px;
+    margin-top: 40px;
+  }
+
+  b, strong {
+    font-weight: bold;
+  }
+
+  img {
+    display: block;
+    max-width: calc(100% + 20px + 20px);
+    height: auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

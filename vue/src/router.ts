@@ -205,6 +205,19 @@ export const router = new Router({
       component: () => System.import('./components/event/ticket.comp.vue'),
     },
     {
+      path: '/columns',
+      name: 'column',
+      meta: {
+        title: '专栏',
+      },
+      component: () => System.import('./components/columns/index.comp.vue'),
+    },
+    {
+      path: '/columns/:id',
+      name: 'column.content',
+      component: () => System.import('./components/columns/columns.comp.vue'),
+    },
+    {
       path: '/500',
       name: 'error',
       component: errorComp,
