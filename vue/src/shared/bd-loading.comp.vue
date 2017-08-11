@@ -50,6 +50,8 @@
 
 <script lang="ts">
   import Vue from "vue";
+  import Component from 'vue-class-component';
 
-  export default {} as Vue;
+  @Component
+  export default class BdLoadingComponent extends Vue {}
 </script>

@@ -28,8 +28,7 @@
       </nav>
 
       <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
-        <div class="form-group mobile-group"
-             v-bind:class="{'has-error': fields.phoneNumber.dirty && fields.phoneNumber.invalid}">
+        <div class="form-group mobile-group" v-bind:class="{'has-error': errors.has('phoneNumber')}">
           <div class="input-group">
             <input
               ref="mobileInput"
@@ -37,29 +36,27 @@
               id="phoneNumber"
               name="phoneNumber"
               v-model="phoneNumber"
-              v-validate="{rules: {regex: regexpMobile, required: true}}"
+              v-validate="{rules: {required: true, regex: regexpMobile}}"
               v-focus
               v-has-value
             >
             <label class="required">手机号码</label>
           </div>
           <i class="bi bi-close-2" v-if="phoneNumber!==''" @click="phoneNumber=''; $refs.mobileInput.focus();"></i>
-          <div v-if="fields.phoneNumber.invalid && fields.phoneNumber.touched">
-            <p class="helper error" v-if="errors.phoneNumber.required">请填写手机号码</p>
-            <p class="helper error" v-if="errors.phoneNumber.pattern">手机号码格式错误，请重新填写</p>
-          </div>
+          <p class="helper error" v-if="errors.first('phoneNumber:required')">请填写手机号码</p>
+          <p class="helper error" v-else-if="errors.first('phoneNumber:regex')">手机号码格式错误，请重新填写</p>
         </div>
 
         <div class="form-group sms-code-group"
              v-if="mode === 'sms'"
-             v-bind:class="{'has-error': fields.smsCode.dirty && fields.smsCode.invalid}">
+             v-bind:class="{'has-error': errors.has('smsCode')}">
           <div class="input-group">
             <input
               ref="smsCodeInput"
               class="smsCode"
               name="smsCode"
               v-model="smsCode"
-              v-validate="{rules: {regex: /^[0-9]{6}$/, required: true}}"
+              v-validate="{rules: {required: true, regex: /^[0-9]{6}$/}}"
               v-has-value
               @input="clearError('smsCode', 'wrongcode')"
             >
@@ -67,18 +64,16 @@
             <a class="sms-sender"
                href=""
                v-bind:class="{'disabled': !smsBtnAvailable}"
-               @click.prevent="sendSMS(); fields.phoneNumber.errors ? $refs.mobileInput.focus() : $refs.smsCodeInput.focus();">{{smsBtnText}}</a>
+               @click.prevent="sendSMS(); errors.has('phoneNumber') ? $refs.mobileInput.focus() : $refs.smsCodeInput.focus();">{{smsBtnText}}</a>
           </div>
-          <div v-if="fields.smsCode.invalid && fields.smsCode.touched">
-            <p class="helper error" v-if="errors.smsCode.required">请填写验证码</p>
-            <p class="helper error" v-if="errors.smsCode.pattern">手机验证码必须为6位数字</p>
-            <p class="helper error" v-if="errors.smsCode.wrongcode">验证码错误</p>
-          </div>
+          <p class="helper error" v-if="errors.first('smsCode:required')">请填写验证码</p>
+          <p class="helper error" v-else-if="errors.first('smsCode:regexp')">手机验证码必须为6位数字</p>
+          <p class="helper error" v-else-if="errors.first('smsCode:wrongcode')">验证码错误</p>
         </div>
 
         <div class="form-group password-group"
              v-if="mode === 'password'"
-             v-bind:class="{'has-error': fields.password.dirty && fields.password.invalid}">
+             v-bind:class="{'has-error': errors.has('password')}">
           <div class="input-group">
             <input
               class="password"
@@ -92,12 +87,10 @@
             <label class="required">密码</label>
           </div>
           <a href="" class="forget-pwd" @click.prevent="gotoResetPwd()">忘记密码</a>
-          <div v-if="fields.password.invalid && fields.password.touched">
-            <p class="helper error" v-if="errors.password.required">请填写密码</p>
-            <p class="helper error" v-if="errors.password.minlength">密码不能少于8位</p>
-            <p class="helper error" v-if="errors.password.maxlength">密码不能多于32位</p>
-            <p class="helper error" v-if="errors.password.wrongpassword">密码错误</p>
-          </div>
+          <p class="helper error" v-if="errors.first('password:required')">请填写密码</p>
+          <p class="helper error" v-else-if="errors.first('password:minlength')">密码不能少于8位</p>
+          <p class="helper error" v-else-if="errors.first('password:maxlength')">密码不能多于32位</p>
+          <p class="helper error" v-else-if="errors.first('password:wrongpassword')">密码错误</p>
         </div>
 
         <div class="form-group">
@@ -127,8 +120,14 @@
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {host} from "../../env/environment";
   import form from '../../shared/form';
+  import bdLoading from '../../shared/bd-loading.comp.vue'
 
-  @Component
+  @Component({
+    components: {
+      bdLoading,
+    },
+    directives: form,
+  })
   export default class SigninComponent extends Vue {
     id: string;
     phoneNumber = '';
@@ -139,14 +138,12 @@
     isSubmitting = false;
     redirectTo: string;
     mode = 'sms';
-    wechatQrcodeSrc: string;
+    wechatQrcodeSrc = '';
     isWechatQrcodeLoading = false;
     isWechatQrcodeError = false;
     regexpMobile = regexpMobile;
-    directives = form;
 
     created() {
-      console.log(this);
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');
 //      this.getWechatQrCode();
     }
