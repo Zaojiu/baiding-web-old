@@ -2,7 +2,7 @@
   <h1>我的票券</h1>
   <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
   <div class="error error-screen" *ngIf="!isLoading && !tickets">
-    数据加载错误，请<a href="" (click)="initData()">重试</a>
+    数据加载错误，请<a href="" (click)="initData(); $event.preventDefault();">重试</a>
   </div>
   <div *ngIf="!isLoading && tickets">
     <div class="block" *ngFor="let ticket of tickets">

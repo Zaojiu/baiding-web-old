@@ -2,6 +2,13 @@
   background-color: rgb(251, 251, 251);
   overflow: hidden;
 
+  .loading, .error {
+    display: block;
+    background-color: $color-w;
+    padding: 200px 0;
+    text-align: center;
+  }
+
   h1 {
     font-size: $font-size-xlg;
     color: $color-dark-gray;
