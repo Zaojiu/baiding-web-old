@@ -40,7 +40,7 @@ export class PcPayService implements PayBridge {
 
           if (count > 100) {
             clearInterval(timer);
-            reject('timeout'); //若不扫码，最后会出现支付失败，叠加在下面
+            reject('timeout'); // 若不扫码，最后会出现支付失败，叠加在下面
             if (this.payPopupSub) this.payPopupSub.unsubscribe();
             return;
           }
@@ -51,7 +51,6 @@ export class PcPayService implements PayBridge {
     });
 
   }
-
 
   pay(liveId: string): Promise<string> {
     this.payPopupService.switch(true);

@@ -13,9 +13,9 @@
     </div>
     <div class="speaker block" *ngFor="let speaker of event.meta.speakers">
       <img class="avatar avatar-round" [src]="speaker.coverUrl" alt="嘉宾头像">
-      <h2 class="nick">{{speaker.name}}</h2>
-      <div class="title" [innerHTML]="speaker.title"></div>
-      <div class="desc" [innerHTML]="speaker.desc"></div>
+      <h2 class="nick">{{speaker.subject}}</h2>
+      <div class="title" [innerHTML]="speaker.title" *ngIf="speaker.title"></div>
+      <div class="desc" [innerHTML]="speaker.desc" *ngIf="speaker.desc"></div>
     </div>
     <div class="location block" *ngIf="event.meta.startAt || event.meta.address">
       <p *ngIf="event.meta.startAt">
@@ -28,26 +28,19 @@
   </div>
 
   <footer *ngIf="!isLoading && event">
-    <button class="button button-primary" (click)="buy()">{{btnText}}</button>
+    <button class="button button-primary" (click)="isPaymentPopup = true">{{btnText}}</button>
   </footer>
-
-  <div class="goto-wechat-popup" (click)="isGotoWechatPopup = false" [ngClass]="{'show': isGotoWechatPopup, 'hide': !isGotoWechatPopup}">
-    <div class="content" (click)="$event.stopPropagation()">
-      <img *ngIf="qrcode" class="qrcode" [src]="qrcode" alt="二维码">
-      <div class="tips">使用微信扫码购票</div>
-    </div>
-  </div>
 
   <div class="payment-popup" *ngIf="!isLoading && event" [ngClass]="{'show': isPaymentPopup}">
     <div class="header">
       <div class="subject">{{event.subject}}</div>
-      <i class="bi bi-close" (click)="isPaymentPopup = false" *ngIf="isNewPayment"></i>
+      <i class="bi bi-close" (click)="isPaymentPopup = false"></i>
     </div>
     <div class="detail">
       <div class="item-name">门票</div>
       <div class="item-count">
         <div class="adjuster">
-          <span class="increase" *ngIf="isNewPayment" (click)="ticketCount=ticketCount+1"></span><input [disabled]="!isNewPayment" class="count-input" type="number" [(ngModel)]="ticketCount"><span class="decrease" *ngIf="isNewPayment" (click)="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
+          <span class="increase" (click)="ticketCount=ticketCount+1"></span><input class="count-input" type="number" [(ngModel)]="ticketCount"><span class="decrease" (click)="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
         </div>
         <p class="error" *ngIf="isTicketCountError">输入数量错误，请输入大于0的整数</p>
       </div>
@@ -57,12 +50,6 @@
       <span *ngIf="!isAmoutLoading">{{amount.toYuan()}}</span>
     </div>
     <button class="button button-primary">微信支付</button>
-  </div>
-
-  <div class="continue-popup" *ngIf="!isLoading && event" [ngClass]="{'show': isContinuePopup}">
-    <div class="tips">你已{{oldTicket ? oldTicket.amount : '￥0.00'}}订购本次活动门票，正在等待付款</div>
-    <button class="button button-primary" (click)="popupPayment(false)">继续支付</button>
-    <button class="button button-outline" (click)="popupPayment(true); clearOldTicket()">重新购买</button>
   </div>
 </div>
 

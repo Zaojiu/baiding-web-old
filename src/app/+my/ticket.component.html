@@ -1,54 +1,34 @@
 <div class="ticket">
   <h1>我的票券</h1>
-  <div class="block">
-    <div class="ticket-info">
-      <img class="cover" [src]="" alt="头图">
-      <div class="content">
-        <strong class="subject">造就TALK上海《跃迁》——终身学习时代的能力清单</strong>
-        <div class="row">
-          <span class="type">门票</span>
-          <small class="time">2016/5/5 18:00:00</small>
-        </div>
-        <span class="amount">199.00元</span>
-      </div>
-    </div>
-    <div class="detail">
-      <div class="row">
-        <span class="status unused">未使用</span>
-        <span class="tips">检票时，请出示票号或手机号</span>
-      </div>
-      <ul>
-        <li>票号：<span class="text">132132132139</span></li>
-        <li>手机号：<span class="text">13127780269</span></li>
-        <li>时间：<span class="text">2016年5月5日 18:00:00</span></li>
-        <li>地点：<span class="text">2016年5月5日 18:00:00</span></li>
-      </ul>
-    </div>
+  <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
+  <div class="error error-screen" *ngIf="!isLoading && !tickets">
+    数据加载错误，请<a href="" (click)="initData()">重试</a>
   </div>
-
-  <div class="block">
-    <div class="ticket-info">
-      <img class="cover" [src]="" alt="头图">
-      <div class="content">
-        <strong class="subject">造就TALK上海《跃迁》——终身学习时代的能力清单</strong>
-        <div class="row">
-          <span class="type">门票</span>
-          <small class="time">2016/5/5 18:00:00</small>
+  <div *ngIf="!isLoading && tickets">
+    <div class="block" *ngFor="let ticket of tickets">
+      <div class="ticket-info">
+        <img class="cover" [src]="ticket.event.coverUrl" alt="头图">
+        <div class="content">
+          <strong class="subject">{{ticket.event.subject}}</strong>
+          <div class="row">
+            <span class="type">门票</span>
+            <small class="time">{{ticket.applyAtParsed.format('MM/DD HH:mm:ss')}}</small>
+          </div>
         </div>
-        <span class="amount">199.00元</span>
       </div>
-    </div>
-    <div class="detail">
-      <div class="row">
-        <span class="status unused">未使用</span>
-        <span class="tips">检票时，请出示票号或手机号</span>
+      <div class="detail">
+        <div class="row">
+          <span class="status unused" *ngIf="!ticket.signedInAtParsed.isAfter(now)">未使用</span>
+          <span class="status used" *ngIf="ticket.signedInAtParsed.isAfter(now)">已使用</span>
+          <span class="tips">检票时，请出示票号或手机号</span>
+        </div>
+        <ul>
+          <li>票号：<span class="text">{{ticket.ticketNo}}</span></li>
+          <li>手机号：<span class="text">{{ticket.mobile}}</span></li>
+          <li *ngIf="event.meta.startAt">时间：<span class="text">{{event.meta.startAtParsed.format('YYYY-MM-DD HH:mm:ss')}}<span *ngIf="event.meta.endAt"> - {{event.meta.endAtParsed.format('YYYY-MM-DD HH:mm:ss').replace(event.meta.startAtParsed.format('YYYY-MM-DD'), '')}}</span></span></li>
+          <li *ngIf="event.meta.address">地点：<span class="text"><span *ngIf="event.meta.city">{{event.meta.city}} </span>{{event.meta.address}}</span></li>
+        </ul>
       </div>
-      <ul>
-        <li>票号：<span class="text">132132132139</span></li>
-        <li>手机号：<span class="text">13127780269</span></li>
-        <li>时间：<span class="text">2016年5月5日 18:00:00</span></li>
-        <li>地点：<span class="text">2016年5月5日 18:00:00</span></li>
-      </ul>
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 import {EventApiService} from "../../shared/api/event/ticket.api";
 import {EventModel} from "../../shared/api/event/ticket.model";
 import {Money, UtilsService} from "../../shared/utils/utils";
+import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
 @Component({
   templateUrl: './buy.component.html',
@@ -10,27 +11,24 @@ import {Money, UtilsService} from "../../shared/utils/utils";
 })
 
 export class BuyComponent implements OnInit {
-  constructor(private router: Router, private route: ActivatedRoute, private eventApi: EventApiService) {}
-
   id: string;
   event: EventModel;
   isLoading: boolean;
-  btnText = `${(new Money(0)).toYuan()} 购买门票`;
+  btnText = '购买门票';
   isPaymentPopup = false;
-  isNewPayment = false;
-  private _ticketCount = 1;
+  private _ticketCount: number;
   isTicketCountError = false;
   amount = new Money(0);
   isAmoutLoading = false;
-  isContinuePopup = false;
   debounceTimer: any;
-  oldTicket = null;
-  isGotoWechatPopup = false;
-  qrcode: string;
+
+  constructor(private router: Router, private route: ActivatedRoute,
+              private eventApi: EventApiService, private tips: OperationTipsService) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.initData();
+    this.ticketCount = 1;
   }
 
   get ticketCount(): number {
@@ -55,8 +53,8 @@ export class BuyComponent implements OnInit {
     this.debounceTimer = setTimeout(() => {
       this.isAmoutLoading = true;
 
-      this.eventApi.getEventData(this.id).then(() => {
-
+      this.eventApi.fee(this.id, this.ticketCount).then(fee => {
+        this.amount = new Money(fee.totalFee);
       }).finally(() => {
         this.isAmoutLoading = false;
       })
@@ -72,36 +70,26 @@ export class BuyComponent implements OnInit {
     });
   }
 
-  clearOldTicket() {
-
-  }
-
-  buy() {
-    if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
-      if (this.oldTicket) {
-        this.popupContinue();
-      } else {
-        this.popupPayment(true);
-      }
-    } else {
-      this.popupPayment(true);
-      // this.popupGotoWechat();
+  handlePaymentReuslt(result: string) {
+    if (result === '') {
+      this.tips.popup('支付成功');
+      this.router.navigate(['/my/tickets']);
+    } else if (result === 'weixin_js_bridge_not_found') {
+      this.tips.popup('微信支付初始化失败，请刷新页面重试');
+    } else if (result === 'timeout') {
+      this.tips.popup('支付超时，请重新支付');
     }
   }
 
-  popupPayment(isNewPayment) {
-    this.isNewPayment = isNewPayment;
-    this.isPaymentPopup = true;
-  }
-
-  popupContinue() {
-    this.isContinuePopup = true;
-  }
-
-  popupGotoWechat() {
-    System.import('yaqrcode').then(yaqrcode => {
-      this.qrcode = yaqrcode(location.href, {size: 240});
-      this.isGotoWechatPopup = true;
-    });
+  pay() {
+    if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
+      this.eventApi.wechatPay(this.id, this.ticketCount).then(result => {
+        this.handlePaymentReuslt(result);
+      });
+    } else {
+      this.eventApi.pcPay(this.id, this.ticketCount).then(result => {
+        this.handlePaymentReuslt(result);
+      });
+    }
   }
 }

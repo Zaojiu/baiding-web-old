@@ -1,7 +1,9 @@
+import {Money} from "../../utils/utils";
+
 class SpeakerModel {
   id: string;
   uid: number;
-  name: string;
+  subject: string;
   title: string;
   coverUrl: string;
   desc: string;
@@ -9,10 +11,10 @@ class SpeakerModel {
   constructor(speakerData: any) {
     this.id = speakerData ? speakerData.id : '';
     this.uid = speakerData ? speakerData.uid : '';
-    this.name = speakerData ? speakerData.name : '';
-    this.title = speakerData ? speakerData.title : '';
+    this.subject = speakerData ? speakerData.subject : '';
+    this.title = speakerData ? speakerData.desc : ''; // 目前的desc是title。。。等待后端修改
     this.coverUrl = speakerData ? speakerData.coverUrl : '';
-    this.desc = speakerData ? speakerData.desc : '';
+    // this.desc = speakerData ? speakerData.desc : '';
   }
 }
 
@@ -27,7 +29,7 @@ class EventMetaModel {
   location: number[];
   speakers: SpeakerModel[];
 
-  constructor(eventMetaData: any, speakersData: any) {
+  constructor(eventMetaData: any) {
     this.startAt = eventMetaData ? eventMetaData.startAt : '';
     this.startAtParsed = eventMetaData ? moment(eventMetaData.startAt) : moment();
     this.endAt = eventMetaData ? eventMetaData.endAt : '';
@@ -36,15 +38,11 @@ class EventMetaModel {
     this.city = eventMetaData ? eventMetaData.city : '';
     this.address = eventMetaData ? eventMetaData.address : '';
     this.location = eventMetaData ? eventMetaData.location : '';
-    const speakers: SpeakerModel[] = [];
-    const speakersId = eventMetaData ? eventMetaData.speakersId : [];
-    speakersData = speakersData || [];
-    speakersId.forEach(speakerId => {
-      speakersData.forEach(speaker => {
-        if (speaker.id === speakerId) speakers.push(new SpeakerModel(speaker));
-      });
+    this.speakers = [];
+    const speakersData = eventMetaData ? eventMetaData.speakers : [];
+    speakersData.forEach(speaker => {
+      this.speakers.push(new SpeakerModel(speaker));
     });
-    this.speakers = speakers;
   }
 }
 
@@ -55,11 +53,79 @@ export class EventModel {
   coverUrl: string;
   meta: EventMetaModel;
 
-  constructor(eventData: any, speakersData: any) {
+  constructor(eventData: any) {
     this.id = eventData ? eventData.id : '';
     this.subject = eventData ? eventData.subject : '';
     this.desc = eventData ? eventData.desc : '';
     this.coverUrl = eventData ? eventData.coverUrl : '';
-    this.meta = eventData ? new EventMetaModel(eventData.meta, speakersData) : null;
+    this.meta = eventData ? new EventMetaModel(eventData.meta) : null;
+  }
+}
+
+export class EventTicketFeeModel {
+  totalDiscountedFee: number; // 折后费用
+  totalFee: number;           // 总费用
+  totalPrice: number;         // 原价
+
+  constructor(totalDiscountedFee: number, totalFee: number, totalPrice: number) {
+    this.totalDiscountedFee = totalDiscountedFee;
+    this.totalFee = totalFee;
+    this.totalPrice = totalPrice;
+  }
+}
+
+enum OrderType {
+  Paid = 1,// 付款
+}
+
+enum OrderStatus {
+  Pending = 1, // 待处理
+  Success, // 成功
+  Closed, // 关闭
+}
+
+export class OrderModel {
+  orderNo: string;
+  orderType: OrderType;
+  status: OrderStatus;
+  subject: string;
+  totalDiscountedFee: Money;
+  totalFee: Money;
+  totalPrice: Money;
+  createdAt: string;
+  createdAtParsed: Moment;
+  expiredAt: string;
+  expiredAtParsed: Moment;
+  finishedAt: string;
+  finishedAtParsed: Moment;
+
+  constructor(data: any) {
+    if (!data) return;
+
+    this.orderNo = data.orderNo;
+    this.orderType = data.orderType;
+    this.status = data.status;
+    this.subject = data.subject;
+    this.totalDiscountedFee = new Money(data.totalDiscountedFee);
+    this.totalFee = new Money(data.totalFee);
+    this.totalPrice = new Money(data.totalPrice);
+    this.createdAt = data.createdAt;
+    this.createdAtParsed = moment(data.createdAt);
+    this.expiredAt = data.expiredAt;
+    this.expiredAtParsed = moment(data.expiredAt);
+    this.finishedAt = data.finishedAt;
+    this.finishedAtParsed = moment(data.finishedAt);
+  }
+
+  get isSuccess() {
+    return this.status === OrderStatus.Success;
+  }
+
+  get isPending() {
+    return this.status === OrderStatus.Pending;
+  }
+
+  get isClosed() {
+    return this.status === OrderStatus.Closed;
   }
 }

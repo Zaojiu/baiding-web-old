@@ -192,9 +192,9 @@ export class UtilsService {
 
 export class Money {
   value: number;
-  ratioToYuan = 1000;
+  ratioToYuan = 100;
 
-  constructor(value: number, ratioToYuan = 1000) {
+  constructor(value: number, ratioToYuan = 100) {
     this.value = value;
     this.ratioToYuan = ratioToYuan;
   }

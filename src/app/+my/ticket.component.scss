@@ -96,6 +96,10 @@
         &.unused {
           color: $color-danger;
         }
+
+        &.used {
+          color: $color-dark-gray;
+        }
       }
 
       .tips {
