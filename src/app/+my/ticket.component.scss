@@ -1,0 +1,117 @@
+.ticket {
+  background-color: rgb(251, 251, 251);
+  overflow: hidden;
+
+  h1 {
+    font-size: $font-size-xlg;
+    color: $color-dark-gray;
+    font-weight: normal;
+    background-color: $color-w;
+    padding: 20px 20px 0;
+  }
+
+  .block {
+    padding-top: 20px;
+    box-shadow: 0 2px 2px rgb(236, 236, 236);
+    margin-bottom: 12px;
+    background-color: $color-w;
+    overflow: hidden;
+  }
+
+  .ticket-info {
+    display: flex;
+
+    .cover {
+      flex-shrink: 0;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      background-color: $color-gray3;
+    }
+
+    .content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 15px;
+
+      .subject {
+        font-size: $font-size-sm;
+        color: $color-b;
+        word-break: break-all;
+        white-space: pre-wrap;
+        line-height: 1.5em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-grow: 1;
+
+        .type {
+          flex-shrink: 0;
+          font-size: $font-size-sm;
+          color: $color-dark-gray;
+          border-radius: 5px;
+          padding: 4px 10px;
+          border: solid 1px $color-dark-gray;
+          transform: scale(.7);
+          transform-origin: left center;
+        }
+
+        .time {
+          font-size: $font-size-sm;
+          color: $color-gray3;
+        }
+      }
+
+      .amount {
+        line-height: 1em;
+        font-size: $font-size-md;
+        color: $color-dark-gray;
+      }
+    }
+  }
+
+  .detail {
+    margin: 20px;
+    padding-top: 18px;
+    border-top: solid 1px rgb(239, 239, 239);
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      .status {
+        font-size: $font-size-md;
+
+        &.unused {
+          color: $color-danger;
+        }
+      }
+
+      .tips {
+        font-size: $font-size-sm;
+        color: $color-b;
+      }
+    }
+
+    ul {
+      list-style: none;
+      font-size: $font-size-md;
+      line-height: 1.5em;
+
+      li:first-child .text {
+        font-weight: bold;
+      }
+    }
+  }
+}
