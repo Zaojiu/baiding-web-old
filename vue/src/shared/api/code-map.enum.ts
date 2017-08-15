@@ -1,4 +1,5 @@
-export enum ApiError {
+export enum ApiCode {
+  OK = 200,
   ErrNeedToLogin = 401,
   ErrNotFound = 404,
   ErrUnauthorized = 20001,
@@ -15,28 +16,29 @@ export enum ApiError {
   ErrUnknownPaymentPlatform = 400003,
   ErrAlreadyPaid = 400101,
   ErrBillingClosed = 400102,
+  ErrUnknown = 90000,
 }
 
 export const ApiErrorMessage: {[key: number]: string} = {
-  [ApiError.ErrNeedToLogin]: '请登录',
-  [ApiError.ErrUnauthorized]: '请登录',
-  // [ApiError.ErrNotFound]: '资源不存在',
-  [ApiError.ErrUserMobileAlreadyBinded]: '您已绑定过手机',
-  [ApiError.ErrUserMobileUsedByOthers]: '手机已被其他用户绑定',
-  [ApiError.ErrSigninInvalidPassword]: '手机号不存在或密码错误',
-  [ApiError.ErrSigninInvalidSmsCode]: '验证码错误',
-  [ApiError.ErrSigninEmptyPassword]: '密码未设置，请点忘记密码重置',
-  [ApiError.ErrPleaseWaitAMoment]: '请求过于频繁，请稍后重试',
-  [ApiError.ErrUnpay]: '请支付',
-  [ApiError.ErrUnnecessaryToPay]: '无需支付',
-  [ApiError.ErrUnknownPaymentPlatform]: '无法识别支付平台',
-  [ApiError.ErrAlreadyPaid]: '订单已支付',
-  [ApiError.ErrBillingClosed]: '订单已关闭',
-  [ApiError.ErrInvalidActivateCode]: '激活码不存在，或者已被用过',
-  [ApiError.ErrActivateCodeAlreadyUsed]: '激活码已被激活',
+  [ApiCode.ErrNeedToLogin]: '请登录',
+  [ApiCode.ErrUnauthorized]: '请登录',
+  // [ApiCode.ErrNotFound]: '资源不存在',
+  [ApiCode.ErrUserMobileAlreadyBinded]: '您已绑定过手机',
+  [ApiCode.ErrUserMobileUsedByOthers]: '手机已被其他用户绑定',
+  [ApiCode.ErrSigninInvalidSmsCode]: '验证码错误',
+  [ApiCode.ErrSigninEmptyPassword]: '密码未设置，请点忘记密码重置',
+  [ApiCode.ErrPleaseWaitAMoment]: '请求过于频繁，请稍后重试',
+  [ApiCode.ErrUnpay]: '请支付',
+  [ApiCode.ErrUnnecessaryToPay]: '无需支付',
+  [ApiCode.ErrUnknownPaymentPlatform]: '无法识别支付平台',
+  [ApiCode.ErrAlreadyPaid]: '订单已支付',
+  [ApiCode.ErrBillingClosed]: '订单已关闭',
+  [ApiCode.ErrInvalidActivateCode]: '激活码不存在，或者已被用过',
+  [ApiCode.ErrActivateCodeAlreadyUsed]: '激活码已被激活',
+  [ApiCode.ErrUnknown]: '服务器错误',
 };
 
 export const SigninErrorMessage = {
-  [ApiError.ErrNotFound]: '手机号不存在',
-  [ApiError.ErrSigninInvalidPassword]: '手机号不存在或验证码错误',
+  [ApiCode.ErrNotFound]: '手机号不存在',
+  [ApiCode.ErrSigninInvalidPassword]: '手机号不存在或验证码错误',
 };

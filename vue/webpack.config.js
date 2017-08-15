@@ -164,7 +164,7 @@ const config = {
       new RegExp(path.resolve(__dirname, './src/env/environment.ts')
         .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&')), path.resolve(__dirname, "./src/env/environment" + (process.env.NODE_ENV ? '.' + process.env.NODE_ENV : '') + ".ts")
     ),
-    new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
+    // new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
   ]
 };
 

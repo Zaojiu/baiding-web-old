@@ -162,7 +162,7 @@
   import form from '../../../shared/form';
   import {beforeRouteEnter} from '../../../shared/guard/before-route-enter';
   import userAuth from '../../../shared/guard/user-auth.guard';
-  import {tipStore, SHOW_TIP} from '../../../store/tip';
+  import {showTips} from '../../../store/tip';
   import {RawLocation, Route} from "vue-router";
   import Vue from "vue";
   import {ComponentOptions} from "vue";
@@ -228,7 +228,7 @@
         this.isSubmitting = true;
         await this.$store.dispatch(POST_TALK_COMMENT, new PostTalkCommentsPayload(this.id, this.content, this.replyId));
         this.isSubmitting = false;
-        await tipStore.dispatch(SHOW_TIP, '评论成功');
+        await showTips('评论成功');
         this.backToTalk();
       }
     }

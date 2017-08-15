@@ -109,8 +109,7 @@ const actions = {
   [TOGGLE_TALK_PRAISE]: async ({ commit, state }: { commit: Commit, state: TalkStateModel}, id: string) => {
     const talkInfo = {...state.info[id]} as TalkInfoModel;
     const promise = talkInfo.isPraised ? unpraise(id) : praise(id);
-    const res = await promise;
-    if (res instanceof Error) return;
+    await promise;
     talkInfo.isPraised = !talkInfo.isPraised;
     talkInfo.praiseTotal = talkInfo.isPraised ? talkInfo.praiseTotal + 1 : talkInfo.praiseTotal - 1;
     commit(TOGGLE_TALK_PRAISE, {id: id, info: talkInfo});
@@ -118,8 +117,7 @@ const actions = {
   [TOGGLE_TALK_FAVORITE]: async ({ commit, state }: { commit: Commit, state: TalkStateModel}, id: string) => {
     const talkInfo = {...state.info[id]} as TalkInfoModel;
     const promise = talkInfo.isFavorited ? unfavorite(id) : favorite(id);
-    const res = await promise;
-    if (res instanceof Error) return;
+    await promise;
     talkInfo.isFavorited = !talkInfo.isFavorited;
     commit(TOGGLE_TALK_FAVORITE, {id: id, info: talkInfo});
   }

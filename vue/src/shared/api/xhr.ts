@@ -1,65 +1,94 @@
-import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
-import auth from '../auth';
-import {SHOW_TIP, tipStore} from '../../store/tip';
-import {ApiError, ApiErrorMessage} from "./code-map.enum";
+import axios, {AxiosError, AxiosRequestConfig} from 'axios';
+import router from '../../router';
+import {showTips} from '../../store/tip';
+import {ApiCode, ApiErrorMessage} from "./code-map.enum";
 
 export const defaults = {
   withCredentials: true
 };
 
 interface Config extends AxiosRequestConfig {
-  needHandleError: boolean;
+  needHandleError?: boolean;
+  codeMap?: { [key: number]: string };
 }
 
-const interceptor = (result: AxiosError) => {
-  result.response = result.response || {status: 0} as AxiosResponse;
-  const httpCode: number = result.response.status;
-  const customCode: number = result.response.data && result.response.data.code ? result.response.data.code : 0;
+export class ApiError extends Error {
+  code: number;
+  message: string;
+  originError: AxiosError;
 
-  if (httpCode === ApiError.ErrNeedToLogin || customCode === ApiError.ErrUnauthorized || customCode === ApiError.ErrNeedToLogin) {
-    auth(location.href);
-  } else if (customCode) {
-    const message: string = ApiErrorMessage[customCode];
-    if (message) {
-      tipStore.dispatch(SHOW_TIP, message);
-    } else {
-      tipStore.dispatch(SHOW_TIP, `请求错误: ${customCode}`);
-    }
-  } else {
-    const message: string = ApiErrorMessage[httpCode];
-    if (httpCode >= 400 && httpCode < 500) {
-      if (message) {
-        tipStore.dispatch(SHOW_TIP, message)
-      } else {
-        tipStore.dispatch(SHOW_TIP, '提交数据错误')
-      }
-    } else if (httpCode >= 500 && httpCode < 600) {
-      if (message) {
-        tipStore.dispatch(SHOW_TIP, message)
-      } else {
-        tipStore.dispatch(SHOW_TIP, '服务器内部错误，请重试')
-      }
-    } else {
-      tipStore.dispatch(SHOW_TIP, '请求错误')
-    }
+  constructor(code: number, message: string, originError: AxiosError) {
+    super();
+    Object.setPrototypeOf(this, ApiError.prototype);
+
+    this.code = code;
+    this.message = `api request failed. code: ${code}, message: ${message}`;
+    this.originError = originError;
   }
 
-  return Promise.reject(result);
+  get isUnauthorized(): boolean {
+    return this.code === ApiCode.ErrUnauthorized || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrNeedToLogin;
+  }
+
+  get is4xx(): boolean {
+    return this.code >= 400 && this.code < 500;
+  }
+
+  get is5xx(): boolean {
+    return this.code >= 500 && this.code < 600;
+  }
+}
+
+const errorHandler = (err: ApiError, customCodeMap?: { [key: number]: string }) => {
+  if (err.isUnauthorized) {
+    router.push({path: '/signin', query: {redirectTo: location.href}});
+  } else {
+    let message = '';
+    const codeMap = Object.assign(ApiErrorMessage, customCodeMap);
+    const customMessage = codeMap[err.code];
+
+    if (customMessage) {
+      message = customMessage;
+    } else {
+      if (err.is4xx) {
+        message = '提交数据错误';
+      } else if (err.is5xx) {
+        message = '服务器内部错误，请重试';
+      } else {
+        message = `请求错误: ${err.code}`;
+      }
+    }
+
+    showTips(message);
+  }
 };
 
-export const get = (url: string, config?: Config) => {
-  const needHandleError = config ? config.needHandleError === false : true;
-  return axios.get(url, Object.assign(defaults, config)).catch(err => needHandleError ? interceptor(err) : Promise.reject(err));
+const interceptor = (error: AxiosError, config?: Config) => {
+  const resp = error.response;
+  const data = resp && resp.data;
+  const code = (data && data.code) || (resp && resp.status) || 0;
+  const message = (data && data.message) || (resp && resp.statusText) || '';
+  const apiError = new ApiError(code, message, error);
+
+  const needHandleError = !(config && config.needHandleError === false);
+  if (needHandleError) errorHandler(apiError, config && config.codeMap);
+
+  return Promise.reject(apiError);
 };
-export const post = (url: string, data?: any, config?: Config) => {
-  const needHandleError = config ? config.needHandleError === false : true;
-  return axios.post(url, data, Object.assign(defaults, config)).catch(err => needHandleError ? interceptor(err) : Promise.reject(err));
+
+export const get = async (url: string, config?: Config) => {
+  const _config = Object.assign(defaults, config);
+  return axios.get(url, _config).catch(res => interceptor(res, _config));
 };
-export const put = (url: string, data?: any, config?: Config) => {
-  const needHandleError = config ? config.needHandleError === false : true;
-  return axios.put(url, data, Object.assign(defaults, config)).catch(err => needHandleError ? interceptor(err) : Promise.reject(err));
+export const post = async (url: string, data?: any, config?: Config) => {
+  const _config = Object.assign(defaults, config);
+  return axios.post(url, data, _config).catch(res => interceptor(res, _config));
 };
-export const del = (url: string, config?: Config) => {
-  const needHandleError = config ? config.needHandleError === false : true;
-  return axios.delete(url, Object.assign(defaults, config)).catch(err => needHandleError ? interceptor(err) : Promise.reject(err));
+export const put = async (url: string, data?: any, config?: Config) => {
+  const _config = Object.assign(defaults, config);
+  return axios.put(url, data, _config).catch(res => interceptor(res, _config));
+};
+export const del = async (url: string, config?: Config) => {
+  const _config = Object.assign(defaults, config);
+  return axios.delete(url, _config).catch(res => interceptor(res, _config));
 };

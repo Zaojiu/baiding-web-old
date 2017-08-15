@@ -2,11 +2,17 @@ import {host} from '../../env/environment';
 import {TalkInfoModel, TalkCommentModel, TalkEmphasisModel} from './talk.model';
 import {params} from '../utils/utils';
 import {del, get, post} from "./xhr";
+import {AxiosResponse} from "axios";
 
 export const getTalkInfo = async (id: string) => {
   const url = `${host.io}/api/live/objects/${id}`;
-  const res = await get(url).catch(() => null);
-  if (res === null) return null;
+  let res: AxiosResponse;
+  try {
+    res = await get(url);
+  } catch (e) {
+    return null;
+  }
+
   return new TalkInfoModel(res.data.object, res.data.users, res.data.speakers, res.data.categories, res.data.tags, res.data.currentUserInfo)
 };
 
@@ -17,7 +23,13 @@ export const listTalkComments = async (id: string, size = 20, marker = '', sorts
     sorts: sorts.join(',')
   };
   const url = `${host.io}/api/live/objects/${id}/comments?${params(query)}`;
-  const res = await get(url);
+  let res: AxiosResponse;
+  try {
+    res = await get(url);
+  } catch (e) {
+    return [];
+  }
+
   const result = res.data.result;
   const users = res.data.include ? res.data.include.users : null;
   const comments = [];
@@ -31,40 +43,69 @@ export const listTalkComments = async (id: string, size = 20, marker = '', sorts
   return comments;
 };
 
-export const postTalkComment = (id: string, content: string, parentId?: string) => {
+export const postTalkComment = async (id: string, content: string, parentId?: string) => {
   const data = {
     content,
     parentId
   };
 
   const url = `${host.io}/api/live/objects/${id}/comments`;
-  return post(url, data);
+  try {
+    await post(url, data);
+  } catch (e) {
+  }
+
+  return;
 };
 
-export const favorite = (id: string) => {
+export const favorite = async (id: string) => {
   const url = `${host.io}/api/live/my/favorited/objects/${id}`;
-  return post(url, null);
+  try {
+    await post(url, null);
+  } catch (e) {
+  }
+
+  return;
 };
 
-export const unfavorite = (id: string) => {
+export const unfavorite = async (id: string) => {
   const url = `${host.io}/api/live/my/favorited/objects/${id}`;
-  return del(url);
+  try {
+    await del(url);
+  } catch (e) {
+  }
+
+  return;
 };
 
-export const praise = (id: string) => {
+export const praise = async (id: string) => {
   const url = `${host.io}/api/live/my/praised/objects/${id}`;
-  return post(url, null);
+  try {
+    await post(url, null);
+  } catch (e) {
+  }
+
+  return;
 };
 
-export const unpraise = (id: string) => {
+export const unpraise = async (id: string) => {
   const url = `${host.io}/api/live/my/praised/objects/${id}`;
-  return del(url);
+  try {
+    await del(url);
+  } catch (e) {
+  }
+
+  return;
 };
 
 export const getTalkEmphasis = async (id: string): Promise<TalkEmphasisModel[]> => {
   const url = `${host.io}/api/live/media/${id}/cues?size=1000`;
-  const res = await get(url).catch(() => null);
-  if (!res) return [];
+  let res: AxiosResponse;
+  try {
+    res = await get(url);
+  } catch (e) {
+    return [];
+  }
 
   const resultParsed: TalkEmphasisModel[] = [];
   const result = res.data.result;
