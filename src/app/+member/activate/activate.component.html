@@ -4,6 +4,7 @@
   <form class="main-form" [formGroup]="form" name="form" (submit)="validateAndSubmit()" autofocus-first-invalid-input>
     <section>
       <h2>会员卡激活</h2>
+      <small>仅限实物卡激活</small>
       <div class="form-group"
            [ngClass]="{'has-error': form.controls['memberCode'].dirty && form.controls['memberCode'].invalid}">
         <div class="input-group">

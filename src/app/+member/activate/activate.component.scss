@@ -10,6 +10,14 @@
       line-height: 1em;
       font-weight: bold;
     }
+
+    small {
+      display: block;
+      font-size: $font-size-sm;
+      color: $color-gray3;
+      text-align: center;
+      margin-top: 5px;
+    }
   }
 
   .user-section {
