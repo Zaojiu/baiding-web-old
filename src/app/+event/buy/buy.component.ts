@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
-import {EventApiService} from "../../shared/api/event/ticket.api";
-import {EventModel} from "../../shared/api/event/ticket.model";
+import {EventApiService} from "../../shared/api/event/event.api";
+import {EventModel} from "../../shared/api/event/event.model";
 import {Money, UtilsService} from "../../shared/utils/utils";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
@@ -21,6 +21,7 @@ export class BuyComponent implements OnInit {
   amount = new Money(0);
   isAmoutLoading = false;
   debounceTimer: any;
+  ticketId = '';
 
   constructor(private router: Router, private route: ActivatedRoute,
               private eventApi: EventApiService, private tips: OperationTipsService) {}
@@ -28,7 +29,6 @@ export class BuyComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.initData();
-    this.ticketCount = 1;
   }
 
   get ticketCount(): number {
@@ -53,7 +53,7 @@ export class BuyComponent implements OnInit {
     this.debounceTimer = setTimeout(() => {
       this.isAmoutLoading = true;
 
-      this.eventApi.fee(this.id, this.ticketCount).then(fee => {
+      this.eventApi.fee(this.id, this.ticketCount, this.ticketId).then(fee => {
         this.amount = new Money(fee.totalFee);
       }).finally(() => {
         this.isAmoutLoading = false;
@@ -65,6 +65,10 @@ export class BuyComponent implements OnInit {
     this.isLoading = true;
     this.eventApi.getEventData(this.id).then(event => {
       this.event = event;
+      if (this.event.meta.tickets.length) {
+        this.ticketId = this.event.meta.tickets[0].id;
+        this.ticketCount = 1;
+      }
     }).finally(() => {
       this.isLoading = false;
     });
@@ -83,13 +87,18 @@ export class BuyComponent implements OnInit {
 
   pay() {
     if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
-      this.eventApi.wechatPay(this.id, this.ticketCount).then(result => {
+      this.eventApi.wechatPay(this.id, this.ticketCount, this.ticketId).then(result => {
         this.handlePaymentReuslt(result);
       });
     } else {
-      this.eventApi.pcPay(this.id, this.ticketCount).then(result => {
+      this.eventApi.pcPay(this.id, this.ticketCount, this.ticketId).then(result => {
         this.handlePaymentReuslt(result);
       });
     }
+  }
+
+  chooseTicket(id: string) {
+    this.ticketId = id;
+    this.checkAmount(this.ticketCount);
   }
 }

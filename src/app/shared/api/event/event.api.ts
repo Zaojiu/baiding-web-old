@@ -1,18 +1,18 @@
 import {Injectable}     from '@angular/core';
-import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {appConfig, host} from "../../../../../vue/src/env/environment";
-import {EventModel, EventTicketFeeModel, OrderModel} from "./ticket.model";
+import {EventModel, EventTicketFeeModel, OrderModel} from "./event.model";
 import {UtilsService} from "../../utils/utils";
 import {WechatConfigService} from "../../wechat/wechat.service";
 import {PayPopupService} from "../../pay-popup/pay-popup.service";
 import {Subscription} from "rxjs/Subscription";
+import {CustomHttp} from "../custom-http.service";
 
 @Injectable()
 export class EventApiService {
   private payPopupSub: Subscription;
 
-  constructor(private http: Http, private wechatConfigService: WechatConfigService, private payPopupService: PayPopupService) {
+  constructor(private http: CustomHttp, private wechatConfigService: WechatConfigService, private payPopupService: PayPopupService) {
   }
 
   getEventData(id: string): Promise<EventModel> {
@@ -31,10 +31,10 @@ export class EventApiService {
     });
   }
 
-  private _wechatPay(eventId: string, quantity: number): Promise<string> {
+  private _wechatPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
     const payUrl = `${host.io}/api/live/events/${eventId}/tickets/pay`;
 
-    return this.http.post(payUrl, {"platform": 1, quantity: quantity}).toPromise().then(res => {
+    return this.http.post(payUrl, {"platform": 1, quantity: quantity, ticketId: ticketId}).toPromise().then(res => {
       return new Promise((resolve, reject) => {
         let data = res.json();
         let wxPayReq = data.wxPay.request;
@@ -75,21 +75,21 @@ export class EventApiService {
     });
   }
 
-  wechatPay(eventId: string, quantity: number): Promise<string> {
+  wechatPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
     history.pushState({}, '微信支付', appConfig.payAddress);
 
     return this.wechatConfigService.init().then(() => {
-      return this._wechatPay(eventId, quantity);
+      return this._wechatPay(eventId, quantity, ticketId);
     }).finally(() => {
       history.back();
     });
   }
 
-  _pcPay(eventId: string, quantity: number): Promise<string> {
+  _pcPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
     const payUrl = `${host.io}/api/live/events/${eventId}/tickets/pay`;
 
     return new Promise((resolve, reject) => {
-      this.http.post(payUrl, {"platform": 2}).toPromise().then(res => {
+      this.http.post(payUrl, {"platform": 2, quantity: quantity, ticketId: ticketId}).toPromise().then(res => {
         const data = res.json();
         const orderNo = data.orderNo;
         this.payPopupService.setPayUrl(data.wxPay.codeUrl);
@@ -125,16 +125,17 @@ export class EventApiService {
 
   }
 
-  pcPay(eventId: string, quantity: number): Promise<string> {
+  pcPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
     this.payPopupService.switch(true);
 
-    return this._pcPay(eventId, quantity);
+    return this._pcPay(eventId, quantity, ticketId);
   }
 
-  fee(eventId: string, quantity: number): Promise<EventTicketFeeModel> {
+  fee(eventId: string, quantity: number, ticketId: string): Promise<EventTicketFeeModel> {
     const payUrl = `${host.io}/api/live/events/${eventId}/tickets/fee`;
+    const data = {"platform": 1, quantity: quantity, ticketId: ticketId};
 
-    return this.http.post(payUrl, {"platform": 1, quantity: quantity}).toPromise().then(res => {
+    return this.http.post(payUrl, data).toPromise().then(res => {
       const data = res.json();
       return new EventTicketFeeModel(data.totalDiscountedFee, data.totalFee, data.totalPrice);
     });

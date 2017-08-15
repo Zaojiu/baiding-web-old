@@ -1,5 +1,5 @@
 import {ResourceType} from "../resource-type.enums";
-import {EventModel} from "../event/ticket.model";
+import {EventModel} from "../event/event.model";
 
 export class MyListResult {
   result: MyListModel[];

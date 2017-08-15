@@ -18,6 +18,22 @@ class SpeakerModel {
   }
 }
 
+class EventTicketModel {
+  id: string;
+  name: string;
+  price: Money;
+  sellTotal: number;
+  leftTotal: number;
+
+  constructor(ticketData: any) {
+    this.id = ticketData ? ticketData.id : '';
+    this.name = ticketData ? ticketData.name : '';
+    this.price = ticketData ? new Money(ticketData.price) : null;
+    this.sellTotal = ticketData ? ticketData.sellTotal : 0;
+    this.leftTotal = ticketData ? ticketData.leftTotal : 0;
+  }
+}
+
 class EventMetaModel {
   startAt: string;
   startAtParsed: Moment;
@@ -28,6 +44,7 @@ class EventMetaModel {
   address: string;
   location: number[];
   speakers: SpeakerModel[];
+  tickets: EventTicketModel[];
 
   constructor(eventMetaData: any) {
     this.startAt = eventMetaData ? eventMetaData.startAt : '';
@@ -39,9 +56,15 @@ class EventMetaModel {
     this.address = eventMetaData ? eventMetaData.address : '';
     this.location = eventMetaData ? eventMetaData.location : '';
     this.speakers = [];
-    const speakersData = eventMetaData ? eventMetaData.speakers : [];
+    const speakersData = eventMetaData && eventMetaData.speakers ? eventMetaData.speakers : [];
     speakersData.forEach(speaker => {
       this.speakers.push(new SpeakerModel(speaker));
+    });
+
+    this.tickets = [];
+    const ticketsData = eventMetaData && eventMetaData.tickets ? eventMetaData.tickets : [];
+    ticketsData.forEach(ticket => {
+      this.tickets.push(new EventTicketModel(ticket));
     });
   }
 }

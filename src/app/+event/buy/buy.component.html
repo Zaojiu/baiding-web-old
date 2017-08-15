@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <footer *ngIf="!isLoading && event">
+  <footer *ngIf="!isLoading && event && event.meta.tickets.length">
     <button class="button button-primary" (click)="isPaymentPopup = true">{{btnText}}</button>
   </footer>
 
@@ -37,7 +37,14 @@
       <i class="bi bi-close" (click)="isPaymentPopup = false"></i>
     </div>
     <div class="detail">
-      <div class="item-name">门票</div>
+      <div class="item-name">
+        <span
+          class="ticket"
+          [ngClass]="{'active': ticket.id === ticketId}"
+          *ngFor="let ticket of event.meta.tickets"
+          (click)="chooseTicket(ticket.id)"
+        >{{ticket.name}}</span>
+      </div>
       <div class="item-count">
         <div class="adjuster">
           <span class="increase" (click)="ticketCount=ticketCount+1"></span><input class="count-input" type="number" [(ngModel)]="ticketCount"><span class="decrease" (click)="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
@@ -49,7 +56,7 @@
       <bd-loading *ngIf="isAmoutLoading"></bd-loading>
       <span *ngIf="!isAmoutLoading">{{amount.toYuan()}}</span>
     </div>
-    <button class="button button-primary">微信支付</button>
+    <button class="button button-primary" (click)="pay()">微信支付</button>
   </div>
 </div>
 
