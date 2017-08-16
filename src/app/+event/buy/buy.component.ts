@@ -112,23 +112,31 @@ export class BuyComponent implements OnInit {
   }
 
   handlePaymentReuslt(result: string) {
-    this.isPaymentPopup = false;
-
-    if (result === '') {
-      this.tips.popup('支付成功');
-      this.router.navigate(['/my/tickets']);
-    } else if (result === 'weixin_js_bridge_not_found') {
-      this.isPayResultShow = true;
-      this.payResult = '微信支付初始化失败，请刷新页面重试';
-    } else if (result === 'timeout') {
-      this.isPayResultShow = true;
-      this.payResult = '支付超时，请重新支付';
-    } else if (result === 'closed') {
-      this.isPayResultShow = true;
-      this.payResult = '订单已关闭，请重新购买';
-    } else if (result === 'other error') {
-      this.isPayResultShow = true;
-      this.payResult = '下单失败，请联系我们';
+    switch (result) {
+      case '':
+        this.tips.popup('支付成功');
+        this.router.navigate(['/my/tickets']);
+        break;
+      case 'weixin_js_bridge_not_found':
+        this.isPaymentPopup = false;
+        this.isPayResultShow = true;
+        this.payResult = '微信支付初始化失败，请刷新页面重试';
+        break;
+      case 'timeout':
+        this.isPaymentPopup = false;
+        this.isPayResultShow = true;
+        this.payResult = '支付超时，请重新支付';
+        break;
+      case 'closed':
+        this.isPaymentPopup = false;
+        this.isPayResultShow = true;
+        this.payResult = '订单已关闭，请重新购买';
+        break;
+      case 'other error':
+        this.isPaymentPopup = false;
+        this.isPayResultShow = true;
+        this.payResult = '下单失败，请联系我们';
+        break;
     }
   }
 
@@ -138,12 +146,16 @@ export class BuyComponent implements OnInit {
     if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
       this.eventApi.wechatPay(this.id, this.ticketCount, this.ticketSelected.id).then(result => {
         this.handlePaymentReuslt(result);
+      }, err => {
+        this.handlePaymentReuslt(err);
       }).finally(() => {
         this.isPaying = false;
       });
     } else {
       this.eventApi.pcPay(this.id, this.ticketCount, this.ticketSelected.id).then(result => {
         this.handlePaymentReuslt(result);
+      }, err => {
+        this.handlePaymentReuslt(err);
       }).finally(() => {
         this.isPaying = false;
       });

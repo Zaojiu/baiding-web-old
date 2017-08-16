@@ -77,7 +77,7 @@ export class EventApiService {
           }
         );
       }, (err) => {
-        resolve('other error');
+        reject('other error');
       });
     });
   }
@@ -141,7 +141,7 @@ export class EventApiService {
           });
         }, 3 * 1000);
       }, (err) => {
-        resolve('other error');
+        reject('other error');
       });
     });
   }
