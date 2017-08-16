@@ -23,10 +23,10 @@
           <span class="tips">检票时，请出示票号或手机号</span>
         </div>
         <ul>
-          <li>票号：<span class="text">{{ticket.ticketNo}}</span></li>
-          <li>手机号：<span class="text">{{ticket.mobile}}</span></li>
-          <li *ngIf="event.meta.startAt">时间：<span class="text">{{event.meta.startAtParsed.format('YYYY-MM-DD HH:mm:ss')}}<span *ngIf="event.meta.endAt"> - {{event.meta.endAtParsed.format('YYYY-MM-DD HH:mm:ss').replace(event.meta.startAtParsed.format('YYYY-MM-DD'), '')}}</span></span></li>
-          <li *ngIf="event.meta.address">地点：<span class="text"><span *ngIf="event.meta.city">{{event.meta.city}} </span>{{event.meta.address}}</span></li>
+          <li>票号：<span class="text">{{ticket.ticketNo || '暂无'}}</span></li>
+          <li>手机号：<span class="text">{{ticket.mobile || '暂无'}}</span></li>
+          <li *ngIf="ticket.event.meta.startAt">时间：<span class="text">{{ticket.event.meta.startAtParsed.format('YYYY-MM-DD HH:mm:ss')}}<span *ngIf="ticket.event.meta.endAt"> - {{ticket.event.meta.endAtParsed.format('YYYY-MM-DD HH:mm:ss').replace(ticket.event.meta.startAtParsed.format('YYYY-MM-DD'), '')}}</span></span></li>
+          <li *ngIf="ticket.event.meta.address">地点：<span class="text"><span *ngIf="ticket.event.meta.city">{{ticket.event.meta.city}} </span>{{ticket.event.meta.address}}</span></li>
         </ul>
       </div>
     </div>
