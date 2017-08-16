@@ -33,6 +33,8 @@ export class BuyComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
+    const isContinue = this.handleiOSPaymentCallback();
+    if (!isContinue) return;
     this.initData();
   }
 
@@ -111,6 +113,16 @@ export class BuyComponent implements OnInit {
     });
   }
 
+  handleiOSPaymentCallback(): boolean {
+    const payResult = this.route.snapshot.params['payResult'];
+    if (payResult === 'success') {
+      this.handlePaymentReuslt('');
+      return false;
+    }
+
+    return true;
+  }
+
   handlePaymentReuslt(result: string) {
     switch (result) {
       case '':
@@ -135,7 +147,7 @@ export class BuyComponent implements OnInit {
       case 'other error':
         this.isPaymentPopup = false;
         this.isPayResultShow = true;
-        this.payResult = '下单失败，请联系我们';
+        this.payResult = '支付失败，请联系我们';
         break;
     }
   }
