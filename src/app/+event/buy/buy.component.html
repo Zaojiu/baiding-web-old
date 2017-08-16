@@ -5,7 +5,7 @@
     网络错误，请<a href="" (click)="initData(); $event.preventDefault();">重试</a>
   </div>
 
-  <div class="container" *ngIf="!isLoading && event">
+  <div class="container" *ngIf="!isLoading && event" (click)="isPaymentPopup = false">
     <img class="cover" [src]="event.coverUrl" alt="头图">
     <div class="block">
       <h1 class="subject">{{event.subject}}</h1>
@@ -56,7 +56,27 @@
       <bd-loading *ngIf="isAmoutLoading"></bd-loading>
       <span *ngIf="!isAmoutLoading">{{amount.toYuan()}}</span>
     </div>
-    <button class="button button-primary" (click)="pay()">微信支付</button>
+    <button class="button button-primary" (click)="pay()" [disabled]="isPaying">微信支付</button>
+  </div>
+
+  <div
+    class="pay-result"
+    *ngIf="isPayResultShow"
+    (click)="isPayResultShow = false"
+  >
+    <div class="content" (click)="$event.stopPropagation()">
+      <div class="header">
+        <div class="close" (click)="isPayResultShow = false"></div>
+        <i class="bi bi-unpaid"></i>
+        <h2 class="title">支付失败</h2>
+      </div>
+      <div class="main">
+        <h3 class="title">失败原因</h3>
+        <i class="bi bi-failure-face"></i>
+        <p class="result">{{payResult}}</p>
+      </div>
+    </div>
   </div>
 </div>
 
+<pay-popup></pay-popup>

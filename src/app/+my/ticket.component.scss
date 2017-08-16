@@ -33,7 +33,6 @@
       width: 100px;
       height: 100px;
       object-fit: cover;
-      background-color: $color-gray3;
     }
 
     .content {
@@ -99,6 +98,7 @@
 
       .status {
         font-size: $font-size-md;
+        font-weight: bold;
 
         &.unused {
           color: $color-danger;
@@ -112,6 +112,7 @@
       .tips {
         font-size: $font-size-sm;
         color: $color-b;
+        font-weight: bold;
       }
     }
 

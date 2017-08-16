@@ -39,13 +39,18 @@ export class EventApiService {
         let data = res.json();
         let wxPayReq = data.wxPay.request;
 
+        if (data.isOngoing) {
+          resolve('');
+          return;
+        }
+
         //hack uiwebview
         if (UtilsService.isiOS) {
           let url = location.href;
 
           location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
 
-          return '';
+          resolve('');
         }
 
         if (!(<any>window).WeixinJSBridge) {
@@ -92,6 +97,12 @@ export class EventApiService {
       this.http.post(payUrl, {"platform": 2, quantity: quantity, ticketId: ticketId}).toPromise().then(res => {
         const data = res.json();
         const orderNo = data.orderNo;
+
+        if (data.isOngoing) {
+          resolve('');
+          return;
+        }
+
         this.payPopupService.setPayUrl(data.wxPay.codeUrl);
         this.payPopupSub = this.payPopupService.close$.subscribe(() => {
           reject('cancel');
@@ -109,6 +120,13 @@ export class EventApiService {
               return;
             }
 
+            if (result.isClosed) {
+              clearInterval(timer);
+              resolve('closed');
+              this.payPopupService.switch(false);
+              return;
+            }
+
             if (count > 100) {
               clearInterval(timer);
               reject('timeout'); //若不扫码，最后会出现支付失败，叠加在下面
@@ -119,7 +137,7 @@ export class EventApiService {
 
             count++;
           });
-        }, 2500);
+        }, 3 * 1000);
       });
     });
 

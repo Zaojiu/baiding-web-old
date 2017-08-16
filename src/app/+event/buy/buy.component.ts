@@ -22,6 +22,9 @@ export class BuyComponent implements OnInit {
   isAmoutLoading = false;
   debounceTimer: any;
   ticketId = '';
+  isPaying = false;
+  isPayResultShow = false;
+  payResult = '';
 
   constructor(private router: Router, private route: ActivatedRoute,
               private eventApi: EventApiService, private tips: OperationTipsService) {}
@@ -75,24 +78,37 @@ export class BuyComponent implements OnInit {
   }
 
   handlePaymentReuslt(result: string) {
+    this.isPaymentPopup = false;
+
     if (result === '') {
       this.tips.popup('支付成功');
       this.router.navigate(['/my/tickets']);
     } else if (result === 'weixin_js_bridge_not_found') {
-      this.tips.popup('微信支付初始化失败，请刷新页面重试');
+      this.isPayResultShow = true;
+      this.payResult = '微信支付初始化失败，请刷新页面重试';
     } else if (result === 'timeout') {
-      this.tips.popup('支付超时，请重新支付');
+      this.isPayResultShow = true;
+      this.payResult = '支付超时，请重新支付';
+    } else if (result === 'closed') {
+      this.isPayResultShow = true;
+      this.payResult = '订单已关闭，请重新购买';
     }
   }
 
   pay() {
+    this.isPaying = true;
+
     if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
       this.eventApi.wechatPay(this.id, this.ticketCount, this.ticketId).then(result => {
         this.handlePaymentReuslt(result);
+      }).finally(() => {
+        this.isPaying = false;
       });
     } else {
       this.eventApi.pcPay(this.id, this.ticketCount, this.ticketId).then(result => {
         this.handlePaymentReuslt(result);
+      }).finally(() => {
+        this.isPaying = false;
       });
     }
   }
