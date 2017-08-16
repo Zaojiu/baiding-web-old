@@ -170,6 +170,11 @@
             border-color: $color-brand;
             color: $color-w;
           }
+
+          &.disabled {
+            opacity: .5;
+            cursor: default;
+          }
         }
       }
 
@@ -216,7 +221,7 @@
           }
 
           input {
-            width: 50px;
+            width: 60px;
             border: solid 1px $color-gray3;
             border-radius: 3px;
             font-size: $font-size-lg;

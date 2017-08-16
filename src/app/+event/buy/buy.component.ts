@@ -4,6 +4,7 @@ import {EventApiService} from "../../shared/api/event/event.api";
 import {EventModel} from "../../shared/api/event/event.model";
 import {Money, UtilsService} from "../../shared/utils/utils";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
+import {TicketModel} from "../../shared/api/my/my.model";
 
 @Component({
   templateUrl: './buy.component.html',
@@ -15,13 +16,14 @@ export class BuyComponent implements OnInit {
   event: EventModel;
   isLoading: boolean;
   btnText = '购买门票';
+  isPaymentDisabled = false;
   isPaymentPopup = false;
   private _ticketCount: number;
   isTicketCountError = false;
   amount = new Money(0);
   isAmoutLoading = false;
   debounceTimer: any;
-  ticketId = '';
+  ticketSelected = null;
   isPaying = false;
   isPayResultShow = false;
   payResult = '';
@@ -40,7 +42,16 @@ export class BuyComponent implements OnInit {
 
   set ticketCount(count: number) {
     this._ticketCount = count;
-    this.checkAmount(count);
+    setTimeout(() => {
+      this.checkTicketCount();
+      this.checkAmount(count);
+    });
+  }
+  
+  checkTicketCount() {
+    if (this.ticketCount > this.ticketSelected.leftTotal) {
+      this.ticketCount = this.ticketSelected.leftTotal;
+    }
   }
 
   checkAmount(count: number) {
@@ -56,7 +67,7 @@ export class BuyComponent implements OnInit {
     this.debounceTimer = setTimeout(() => {
       this.isAmoutLoading = true;
 
-      this.eventApi.fee(this.id, this.ticketCount, this.ticketId).then(fee => {
+      this.eventApi.fee(this.id, this.ticketCount, this.ticketSelected.id).then(fee => {
         this.amount = new Money(fee.totalFee);
       }).finally(() => {
         this.isAmoutLoading = false;
@@ -64,13 +75,36 @@ export class BuyComponent implements OnInit {
     }, 500);
   }
 
+  checkDate(event: EventModel, timer?: any) {
+    if (moment().isBefore(event.meta.startAtParsed)) {
+      this.isPaymentDisabled = true;
+      this.btnText = '未开始售票';
+    } else {
+      this.isPaymentDisabled = false;
+      this.btnText = '购买门票';
+    }
+
+    if (moment().isAfter(event.meta.endAtParsed)) {
+      this.isPaymentDisabled = true;
+      this.btnText = '已结束售票';
+      this.isPaymentPopup = false;
+      clearInterval(timer);
+    }
+  }
+
   initData() {
     this.isLoading = true;
     this.eventApi.getEventData(this.id).then(event => {
       this.event = event;
-      if (this.event.meta.tickets.length) {
-        this.ticketId = this.event.meta.tickets[0].id;
+
+      if (event.meta.tickets.length) {
+        this.ticketSelected = event.meta.tickets[0];
         this.ticketCount = 1;
+
+        this.checkDate(event);
+        const timer = setInterval(() => {
+          this.checkDate(event, timer);
+        }, 3000);
       }
     }).finally(() => {
       this.isLoading = false;
@@ -99,13 +133,13 @@ export class BuyComponent implements OnInit {
     this.isPaying = true;
 
     if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
-      this.eventApi.wechatPay(this.id, this.ticketCount, this.ticketId).then(result => {
+      this.eventApi.wechatPay(this.id, this.ticketCount, this.ticketSelected.id).then(result => {
         this.handlePaymentReuslt(result);
       }).finally(() => {
         this.isPaying = false;
       });
     } else {
-      this.eventApi.pcPay(this.id, this.ticketCount, this.ticketId).then(result => {
+      this.eventApi.pcPay(this.id, this.ticketCount, this.ticketSelected.id).then(result => {
         this.handlePaymentReuslt(result);
       }).finally(() => {
         this.isPaying = false;
@@ -113,8 +147,9 @@ export class BuyComponent implements OnInit {
     }
   }
 
-  chooseTicket(id: string) {
-    this.ticketId = id;
+  chooseTicket(ticket: TicketModel) {
+    this.ticketSelected = ticket;
+    this.checkTicketCount();
     this.checkAmount(this.ticketCount);
   }
 }

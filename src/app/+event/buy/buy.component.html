@@ -28,7 +28,7 @@
   </div>
 
   <footer *ngIf="!isLoading && event && event.meta.tickets.length">
-    <button class="button button-primary" (click)="isPaymentPopup = true">{{btnText}}</button>
+    <button class="button button-primary" (click)="isPaymentPopup = true" [disabled]="isPaymentDisabled">{{btnText}}</button>
   </footer>
 
   <div class="payment-popup" *ngIf="!isLoading && event" [ngClass]="{'show': isPaymentPopup}">
@@ -40,14 +40,14 @@
       <div class="item-name">
         <span
           class="ticket"
-          [ngClass]="{'active': ticket.id === ticketId}"
+          [ngClass]="{'active': ticket.id === ticketSelected.id, 'disabled': !ticket.leftTotal}"
           *ngFor="let ticket of event.meta.tickets"
-          (click)="chooseTicket(ticket.id)"
+          (click)="ticket.leftTotal && chooseTicket(ticket)"
         >{{ticket.name}}</span>
       </div>
       <div class="item-count">
         <div class="adjuster">
-          <span class="increase" (click)="ticketCount=ticketCount+1"></span><input class="count-input" type="number" [(ngModel)]="ticketCount"><span class="decrease" (click)="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
+          <span class="increase" (click)="ticketSelected.leftTotal > ticketCount ? ticketCount=ticketCount+1 : true"></span><input class="count-input" type="number" [(ngModel)]="ticketCount"><span class="decrease" (click)="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
         </div>
         <p class="error" *ngIf="isTicketCountError">输入数量错误，请输入大于0的整数</p>
       </div>
