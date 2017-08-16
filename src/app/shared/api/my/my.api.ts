@@ -3,7 +3,7 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {environment} from "../../../../environments/environment";
-import {MyListModel, MyListResult} from "./my.model";
+import {MyListModel, MyListResult, TicketModel} from "./my.model";
 import {StoreService} from "../../store/store.service";
 
 @Injectable()
@@ -66,6 +66,22 @@ export class MyApiService {
       }
 
       return new MyListResult(list, marker, hasMore);
+    });
+  }
+
+  tickets(): Promise<TicketModel[]> {
+    const url = `${environment.config.host.io}/api/live/my/events/tickets`;
+    return this.http.get(url).toPromise().then(res => {
+      const data = res.json();
+      const result = data.result || [];
+      const tickets = [];
+
+      for (let item of result) {
+        let model = new TicketModel(item);
+        tickets.push(model);
+      }
+
+      return tickets;
     });
   }
 }

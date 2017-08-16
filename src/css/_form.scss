@@ -179,7 +179,7 @@
 
   .helper.error {
     display: none;
-    color: #911010;
+    color: $color-danger;
   }
 
   &.has-error {
