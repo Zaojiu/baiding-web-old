@@ -47,7 +47,7 @@ export class BuyComponent implements OnInit {
       this.checkAmount(count);
     });
   }
-  
+
   checkTicketCount() {
     if (this.ticketCount > this.ticketSelected.leftTotal) {
       this.ticketCount = this.ticketSelected.leftTotal;
@@ -126,6 +126,9 @@ export class BuyComponent implements OnInit {
     } else if (result === 'closed') {
       this.isPayResultShow = true;
       this.payResult = '订单已关闭，请重新购买';
+    } else if (result === 'other error') {
+      this.isPayResultShow = true;
+      this.payResult = '下单失败，请联系我们';
     }
   }
 

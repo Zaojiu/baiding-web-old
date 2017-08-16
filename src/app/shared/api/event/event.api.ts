@@ -1,4 +1,4 @@
-import {Injectable}     from '@angular/core';
+import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import {appConfig, host} from "../../../../../vue/src/env/environment";
 import {EventModel, EventTicketFeeModel, OrderModel} from "./event.model";
@@ -34,8 +34,8 @@ export class EventApiService {
   private _wechatPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
     const payUrl = `${host.io}/api/live/events/${eventId}/tickets/pay`;
 
-    return this.http.post(payUrl, {"platform": 1, quantity: quantity, ticketId: ticketId}).toPromise().then(res => {
-      return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+      this.http.post(payUrl, {"platform": 1, quantity: quantity, ticketId: ticketId}).toPromise().then(res => {
         let data = res.json();
         let wxPayReq = data.wxPay.request;
 
@@ -76,6 +76,8 @@ export class EventApiService {
             }
           }
         );
+      }, (err) => {
+        resolve('other error');
       });
     });
   }
@@ -138,9 +140,10 @@ export class EventApiService {
             count++;
           });
         }, 3 * 1000);
+      }, (err) => {
+        resolve('other error');
       });
     });
-
   }
 
   pcPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
