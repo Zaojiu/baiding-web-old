@@ -184,6 +184,13 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        font-weight: bold;
+
+        .origin-fee {
+          font-weight: normal;
+          text-decoration: line-through;
+          padding-right: 5px;
+        }
       }
 
       &.turn-on {

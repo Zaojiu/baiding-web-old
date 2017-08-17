@@ -35,6 +35,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   isSubscribeLinkLoading = false;
   isSubscribeLinkError = false;
   booking = false;
+  originFee: string;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
@@ -70,6 +71,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   initPayment() {
     let payResult = this.route.snapshot.params['payResult'];
     if (payResult === 'success') this.paidStatus = this.paidEnums.Success;
+    this.originFee = '';
 
     if (
       this.liveInfo.isNeedPay &&
@@ -80,7 +82,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
         if (this.liveInfo.memberFee.value === 0) {
           this.btnText = `会员免费`;
           if (this.liveInfo.originFee.value && this.liveInfo.originFee.value !== this.liveInfo.memberFee.value) {
-            this.btnText += ` (原价:${this.liveInfo.originFee.toYuan()})`;
+            this.originFee = this.liveInfo.originFee.toYuan();
           }
         } else {
           this.btnText = `会员价: ${this.liveInfo.memberFee.toYuan()}`;
@@ -89,7 +91,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
         if (this.liveInfo.totalFee.value === 0) {
           this.btnText = `限时免费`;
           if (this.liveInfo.originFee.value && this.liveInfo.originFee.value !== this.liveInfo.totalFee.value) {
-            this.btnText += ` (原价:${this.liveInfo.originFee.toYuan()})`;
+            this.originFee = this.liveInfo.originFee.toYuan();
           }
         } else {
           this.btnText = `支付: ${this.liveInfo.totalFee.toYuan()}`;
