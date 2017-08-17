@@ -535,10 +535,9 @@ export class LiveService {
         //hack uiwebview
         if (UtilsService.isiOS) {
           const url = location.href;
-
           location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
-
-          resolve('');
+          resolve('cancel');
+          return;
         }
 
         if (!(<any>window).WeixinJSBridge) {
