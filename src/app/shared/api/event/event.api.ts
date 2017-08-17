@@ -32,13 +32,14 @@ export class EventApiService {
 
     return new Promise((resolve, reject) => {
       this.http.post(payUrl, {"platform": 1, quantity: quantity, ticketId: ticketId}).toPromise().then(res => {
-        let data = res.json();
-        let wxPayReq = data.wxPay.request;
+        const data = res.json();
 
         if (data.isOngoing) {
           resolve('');
           return;
         }
+
+        const wxPayReq = data.wxPay.request;
 
         //hack uiwebview
         if (UtilsService.isiOS) {
