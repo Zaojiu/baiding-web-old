@@ -45,6 +45,11 @@ const route: Routes = [
     },
   },
   {
+    path: ':id/share-star',
+    canActivate: [AuthGuard, BindMobileGuard],
+    loadChildren: 'app/+live-room/+share-star/share-star.module#ShareStarModule',
+  },
+  {
     path: ':id',
     canActivate: [AuthGuard, BindMobileGuard],
     component: LiveRoomComponent,
@@ -64,7 +69,6 @@ const route: Routes = [
       {path: 'invitation', loadChildren: 'app/+live-room/+invite/invite.module#InviteModule'},
       {path: 'share/:message_id', loadChildren: 'app/+live-room/+share/share.module#ShareModule'},
       {path: 'settings', loadChildren: 'app/+live-room/+settings/settings.module#SettingsModule'},
-      {path: 'share-star', loadChildren: 'app/+live-room/+share-star/share-star.module#ShareStarModule'},
     ]
   },
 ];
