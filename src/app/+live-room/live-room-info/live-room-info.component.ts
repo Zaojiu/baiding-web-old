@@ -69,8 +69,17 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   initPayment() {
-    let payResult = this.route.snapshot.params['payResult'];
-    if (payResult === 'success') this.paidStatus = this.paidEnums.Success;
+    const payResult = this.route.snapshot.params['payResult'];
+    switch (payResult) {
+      case 'success':
+        this.paidStatus = this.paidEnums.Success;
+        break;
+      case 'fail':
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidResult = '支付失败，请联系我们';
+        break;
+    }
+
     this.originFee = '';
 
     if (
@@ -192,16 +201,16 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
         this.paidStatus = this.paidEnums.Failure;
         this.paidResult = '订单已超时，请重新购买';
         break;
-      case 'other error':
-        this.paidStatus = this.paidEnums.Failure;
-        this.paidResult = '支付失败，请联系我们';
-        break;
       case 'already paid':
         this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
           this.liveInfo = liveInfo;
         });
         this.paidStatus = this.paidEnums.Failure;
         this.paidResult = '您已购买本话题间，无须再次支付';
+        break;
+      case 'fail':
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidResult = '支付失败，请联系我们';
         break;
     }
   }

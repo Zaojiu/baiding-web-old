@@ -68,12 +68,13 @@ export class EventApiService {
             } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
               reject('cancel');
             } else {
-              reject(res.err_msg);
+              reject('fail');
+              throw `wechat pay failed: ${res.err_msg}`;
             }
           }
         );
       }, (err) => {
-        reject('other error');
+        reject('fail');
       });
     });
   }
@@ -140,7 +141,7 @@ export class EventApiService {
           });
         }, 3 * 1000);
       }, (err) => {
-        reject('other error');
+        reject('fail');
         clear();
       });
     });
