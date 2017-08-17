@@ -119,6 +119,9 @@ export class BuyComponent implements OnInit {
     if (payResult === 'success') {
       this.handlePaymentReuslt('');
       return false;
+    } else if (this.payResult === 'fail') {
+      this.handlePaymentReuslt('fail');
+      return true;
     }
 
     return true;
@@ -145,7 +148,7 @@ export class BuyComponent implements OnInit {
         this.isPayResultShow = true;
         this.payResult = '订单已关闭，请重新购买';
         break;
-      case 'other error':
+      case 'fail':
         this.isPaymentPopup = false;
         this.isPayResultShow = true;
         this.payResult = '支付失败，请联系我们';

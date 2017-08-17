@@ -559,12 +559,13 @@ export class LiveService {
             } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
               reject('cancel');
             } else {
-              reject(res.err_msg);
+              reject('fail');
+              throw `wechat pay failed: ${res.err_msg}`;
             }
           }
         );
       }, (err) => {
-        reject('other error');
+        reject('fail');
       });
     });
   }
@@ -637,7 +638,7 @@ export class LiveService {
         if (data && data.code === ApiError.ErrAlreadyPaid) {
           reject('already paid');
         } else {
-          reject('other error');
+          reject('fail');
         }
       });
     });
