@@ -522,17 +522,18 @@ export class LiveService {
 
     return new Promise((resolve, reject) => {
       this.http.post(payUrl, {"platform": 1}).toPromise().then(res => {
-        let data = res.json();
-        let wxPayReq = data.wxPay.request;
+        const data = res.json();
 
         if (data.isOngoing) {
           resolve('');
           return;
         }
 
+        const wxPayReq = data.wxPay.request;
+
         //hack uiwebview
         if (UtilsService.isiOS) {
-          let url = location.href;
+          const url = location.href;
 
           location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
 
