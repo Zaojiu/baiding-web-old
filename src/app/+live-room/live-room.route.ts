@@ -3,6 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 
 import {LiveRoomComponent} from './live-room.component';
 import {AuthGuard} from '../shared/guard/auth.guard';
+import {CachedLiveInfoResolver} from '../shared/guard/cached-live-info.resolver';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {LiveRoomTitleResolver} from '../shared/guard/title.resolver';
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
@@ -51,7 +52,7 @@ const route: Routes = [
       isAsyncShareInfo: true,
     },
     resolve: {
-      liveInfo: LiveInfoResolver,
+      liveInfo: CachedLiveInfoResolver,
       title: LiveRoomTitleResolver,
     },
     children: [

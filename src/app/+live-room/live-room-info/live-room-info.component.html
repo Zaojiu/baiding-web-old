@@ -40,19 +40,16 @@
       class="bi bi-clock"></i>{{liveInfo.booked ? '取消中...' : '订阅中...'}}</a>
     <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking" (click)="unbookLive()"><i
       class="bi bi-clock"></i>已经开通</a>
-    <a class="btn enter-room"
-       *ngIf="!lockPayClick && liveInfo.isNeedPay && paidStatus!==paidEnums.Completed && liveInfo.isAudience(userInfo.uid)"
-       (click)="payLive()">支付:￥{{liveInfo.totalFee/100}}</a>
-    <a class="btn enter-room"
-       *ngIf="lockPayClick && liveInfo.isNeedPay && paidStatus!==paidEnums.Completed && liveInfo.isAudience(userInfo.uid)"
-       (click)="payLive()">支付中..</a>
-    <a class="btn enter-room"
-       *ngIf="!liveInfo.isNeedPay || paidStatus===paidEnums.Completed || !liveInfo.isAudience(userInfo.uid)"
-       (click)="gotoLive()">进入房间</a>
+
+    <button
+      class="button button-primary button-square enter-room"
+      [disabled]="paidStatus === paidEnums.Paying"
+      (click)="go()"
+    >{{btnText}}</button>
   </div>
 </div>
 
-<div class="qrcode-background" *ngIf="!inApp && isQrcodeShown" (click)="closeQrcode()">
+<div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
@@ -73,31 +70,14 @@
   </div>
 </div>
 
-<div class="qrcode-background" *ngIf="inApp && isQrcodeShown" (click)="closeQrcode()">
-  <div class="content" (click)="$event.stopPropagation()">
-    <div class="header">
-      <div class="close" (click)="closeQrcode()"></div>
-      <div class="live-title">{{liveInfo.subject}}</div>
-      <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
-                  [countDownStatus]="liveInfo.isCreated()"></count-down>
-      <p class="tips">直播还未开始</p>
-    </div>
-    <div class="noqrcode">
-      <p>复制微信公众号到微信中</p>
-      <p>直接粘贴搜索或手动输入ZaojiuTV</p>
-      <div class="copyzaojiu" (click)="copyToClipboard('ZaojiuTV')">复制微信公众号</div>
-    </div>
-  </div>
-</div>
-
 <div
   class="qrcode-background"
-  *ngIf="paidStatus===paidEnums.Failure && paidShown"
-  (click)="closeQrcode()"
+  *ngIf="paidStatus===paidEnums.Failure"
+  (click)="closePayment()"
 >
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
-      <div class="close" (click)="closeQrcode()"></div>
+      <div class="close" (click)="closePayment()"></div>
       <div class="live-title">
         <div class="paid-tick">
           <i class="bi bi-unpaid"></i>
@@ -110,54 +90,19 @@
       <div class="failure-reason">
         <i class="bi bi-failure-face"></i>
       </div>
-      <p>可能存在银行卡余额不足的情况</p>
-      <p>也可能是网络拥堵，建议稍后尝试</p>
+      <p>{{paidResult}}</p>
     </div>
   </div>
 </div>
 
 <div
   class="qrcode-background"
-  *ngIf="!inApp && liveInfo.isCreated()&& paidStatus===paidEnums.Completed && paidShown"
-  (click)="closeQrcode()"
+  *ngIf="paidStatus===paidEnums.Success"
+  (click)="closePayment()"
 >
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
-      <div class="close" (click)="closeQrcode()"></div>
-      <div class="live-title" *ngIf="paidStatus!==paidEnums.Completed">{{liveInfo.subject}}</div>
-      <div class="live-title" *ngIf="paidStatus===paidEnums.Completed">
-        <div class="paid-tick">
-          <i class="bi bi-paid"></i>
-        </div>
-        支付成功
-      </div>
-    </div>
-    <div class="success-wrapper" *ngIf="!inApp && !userInfo.isSubscribed">
-      <p>请点击底部开播提醒按钮</p>
-      <div class="failure-reason">
-        <i class="bi bi-paid-bell"></i>
-      </div>
-    </div>
-    <div class="success-wrapper" *ngIf="!inApp && userInfo.isSubscribed">
-      <p>开播提醒已开通</p>
-      <i class="bi bi-paid-bell"></i>
-      <p>开播提醒已经默认开通</p>
-      <p>点击底部开播按钮，即可取消</p>
-    </div>
-    <div class="noqrcode" *ngIf="inApp">
-      <p>复制微信公众号到微信中</p>
-      <p>直接粘贴搜索或手动输入ZaojiuTV</p>
-      <div class="copyzaojiu" (click)="copyToClipboard('ZaojiuTV')">复制微信公众号</div>
-    </div>
-  </div>
-</div>
-
-<div class="qrcode-background" [ngClass]="{'show': paidShown }"
-     *ngIf="!liveInfo.isCreated() && paidStatus===paidEnums.Completed && paidShown"
-     (click)="closeQrcode()">
-  <div class="content" (click)="$event.stopPropagation()">
-    <div class="header">
-      <div class="close" (click)="closeQrcode()"></div>
+      <div class="close" (click)="closePayment()"></div>
       <div class="live-title">
         <div class="paid-tick">
           <i class="bi bi-paid"></i>
@@ -165,11 +110,21 @@
         支付成功
       </div>
     </div>
-    <div class="paid-review" (click)="gotoLive()">
+    <div class="paid-review" *ngIf="!liveInfo.isCreated()" (click)="gotoLive()">
       <p>进入话题间 观看视频</p>
       <i class="bi bi-paid-review"></i>
     </div>
+    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && !liveInfo.booked">
+      <p>请点击底部开播提醒按钮</p>
+      <div class="failure-reason">
+        <i class="bi bi-paid-bell"></i>
+      </div>
+    </div>
+    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && liveInfo.booked">
+      <p>开播提醒已开通</p>
+      <i class="bi bi-paid-bell"></i>
+      <p>开播提醒已经开通</p>
+      <p>点击底部开播按钮，即可取消</p>
+    </div>
   </div>
 </div>
-
-<pay-popup></pay-popup>

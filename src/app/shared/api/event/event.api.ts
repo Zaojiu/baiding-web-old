@@ -1,18 +1,22 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import {appConfig, host} from "../../../../../vue/src/env/environment";
-import {EventModel, EventTicketFeeModel, OrderModel} from "./event.model";
+import {EventModel, EventTicketFeeModel} from "./event.model";
 import {UtilsService} from "../../utils/utils";
 import {WechatConfigService} from "../../wechat/wechat.service";
 import {PayPopupService} from "../../pay-popup/pay-popup.service";
 import {Subscription} from "rxjs/Subscription";
 import {CustomHttp} from "../custom-http.service";
+import {OrderApiService} from "../order/order.api";
 
 @Injectable()
 export class EventApiService {
   private payPopupSub: Subscription;
 
-  constructor(private http: CustomHttp, private wechatConfigService: WechatConfigService, private payPopupService: PayPopupService) {
+  constructor(private http: CustomHttp,
+              private wechatConfigService: WechatConfigService,
+              private payPopupService: PayPopupService,
+              private orderApiService: OrderApiService) {
   }
 
   getEventData(id: string): Promise<EventModel> {
@@ -20,14 +24,6 @@ export class EventApiService {
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
       return new EventModel(data);
-    });
-  }
-
-  getOrderData(oid: string): Promise<OrderModel> {
-    const url = `${host.io}/api/wallet/order/${oid}`;
-    return this.http.get(url).toPromise().then(res => {
-      const data = res.json();
-      return new OrderModel(data);
     });
   }
 
@@ -94,6 +90,11 @@ export class EventApiService {
 
   _pcPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
     const payUrl = `${host.io}/api/live/events/${eventId}/tickets/pay`;
+    const clear = (timer?: any) => {
+      clearInterval(timer);
+      if (this.payPopupSub) this.payPopupSub.unsubscribe();
+      this.payPopupService.switch(false);
+    };
 
     return new Promise((resolve, reject) => {
       this.http.post(payUrl, {"platform": 2, quantity: quantity, ticketId: ticketId}).toPromise().then(res => {
@@ -105,6 +106,7 @@ export class EventApiService {
           return;
         }
 
+        this.payPopupService.switch(true);
         this.payPopupService.setPayUrl(data.wxPay.codeUrl);
         this.payPopupSub = this.payPopupService.close$.subscribe(() => {
           reject('cancel');
@@ -113,27 +115,23 @@ export class EventApiService {
 
         // TODO check payment status?
         let count = 0;
-        let timer = setInterval(() => {
-          this.getOrderData(orderNo).then(result => {
+        const timer = setInterval(() => {
+          this.orderApiService.getOrderData(orderNo).then(result => {
             if (result.isSuccess) {
-              clearInterval(timer);
               resolve('');
-              this.payPopupService.switch(false);
+              clear(timer);
               return;
             }
 
             if (result.isClosed) {
-              clearInterval(timer);
               resolve('closed');
-              this.payPopupService.switch(false);
+              clear(timer);
               return;
             }
 
             if (count > 100) {
-              clearInterval(timer);
-              reject('timeout'); //若不扫码，最后会出现支付失败，叠加在下面
-              if (this.payPopupSub) this.payPopupSub.unsubscribe();
-              this.payPopupService.switch(false);
+              reject('timeout');
+              clear(timer);
               return;
             }
 
@@ -142,14 +140,23 @@ export class EventApiService {
         }, 3 * 1000);
       }, (err) => {
         reject('other error');
+        clear();
       });
     });
   }
 
   pcPay(eventId: string, quantity: number, ticketId: string): Promise<string> {
-    this.payPopupService.switch(true);
-
     return this._pcPay(eventId, quantity, ticketId);
+  }
+
+  pay(eventId: string, quantity: number, ticketId: string): Promise<string> {
+    if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
+      return this.wechatPay(eventId, quantity, ticketId);
+    } else if (UtilsService.isInApp) {
+      // TODO: app payment, 在ios中不能使用微信支付, 付费直播间app中不可点击
+    } else {
+      return this.pcPay(eventId, quantity, ticketId);
+    }
   }
 
   fee(eventId: string, quantity: number, ticketId: string): Promise<EventTicketFeeModel> {

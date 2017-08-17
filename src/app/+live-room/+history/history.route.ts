@@ -7,7 +7,7 @@ import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
 import {HistoryMessageResolver} from "./history.resolver";
 import {AuthGuard} from "../../shared/guard/auth.guard";
 import {AdminGuard} from "../../shared/guard/admin.guard";
-import {LiveInfoResolver} from "../../shared/guard/live-info.resolver";
+import {CachedLiveInfoResolver} from "../../shared/guard/cached-live-info.resolver";
 import {BindMobileGuard} from "../../shared/guard/bind-mobile.guard";
 import {LiveRoomTitleResolver} from "../../shared/guard/title.resolver";
 
@@ -18,7 +18,7 @@ const route: Routes = [
       title: '历史记录',
     },
     resolve: {
-      liveInfo: LiveInfoResolver,
+      liveInfo: CachedLiveInfoResolver,
       messages: HistoryMessageResolver,
       title: LiveRoomTitleResolver,
     },

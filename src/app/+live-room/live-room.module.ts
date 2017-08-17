@@ -14,7 +14,7 @@ import {InputtingComponent} from './timeline/message/inputting.component';
 import {InputtingService} from './timeline/message/inputting.service';
 import {PraisedAnimationDirective} from '../shared/praised-animation/praised-animation.directive';
 import {PraisedAnimationComponent} from '../shared/praised-animation/praised-animation.component';
-import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
+import {CachedLiveInfoResolver} from '../shared/guard/cached-live-info.resolver';
 import {TimelineService} from './timeline/timeline.service';
 import {CommentService} from './comment/comment.service';
 import {MessageApiService} from "../shared/api/message/message.api";
@@ -49,12 +49,6 @@ import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
 import {VideoPlayerModule} from "../shared/video-player/video-player.module";
 import {PayPopupModule} from "../shared/pay-popup/pay-popup.module";
 import {UserInfoCardModule} from "../shared/user-info-card/user-info-card.module";
-import {PayPopupService} from "../shared/pay-popup/pay-popup.service";
-import {PayBridge} from "../shared/bridge/pay.interface";
-import {payServiceFactory} from "../app.factory";
-import {WechatPayService} from "../shared/bridge/pay/wechat-pay.service";
-import {IosPayService} from "../shared/bridge/pay/ios-pay.service";
-import {PcPayService} from "../shared/bridge/pay/pc-pay.service";
 import {BubbleComponent} from "./timeline/message/bubble.component";
 import {FormModule} from "../shared/form/form.module";
 import {LiveRoomTitleResolver} from "../shared/guard/title.resolver";
@@ -116,7 +110,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     MessageApiService,
     ShareApiService,
     CommentApiService,
-    LiveInfoResolver,
+    CachedLiveInfoResolver,
     QuitEditGuard,
     RoleAuthGuard,
     UploadApiService,
@@ -124,12 +118,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     AudioPlayerService,
     LiveRoomService,
     InviteApiService,
-    PayPopupService,
-    WechatPayService,
-    IosPayService,
-    PcPayService,
     LiveRoomTitleResolver,
-    {provide: PayBridge, useFactory: payServiceFactory, deps: [WechatPayService, IosPayService, PcPayService]},
     {provide: HAMMER_GESTURE_CONFIG, useClass: MessageHammerConfig}
   ]
 })
