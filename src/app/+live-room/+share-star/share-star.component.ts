@@ -30,7 +30,7 @@ export class ShareStarComponent implements OnInit {
               private userInfoService: UserInfoService, private s: DomSanitizer) {}
 
   ngOnInit() {
-    this.liveId = this.route.parent.parent.snapshot.params['id'];
+    this.liveId = this.route.parent.snapshot.params['id'];
 
     this.userInfo = this.userInfoService.getUserInfoCache();
 
