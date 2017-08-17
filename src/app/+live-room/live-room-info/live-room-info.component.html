@@ -45,7 +45,7 @@
       class="button button-primary button-square enter-room"
       [disabled]="paidStatus === paidEnums.Paying"
       (click)="go()"
-    >{{btnText}}</button>
+    ><span class="origin-fee" *ngIf="originFee">{{originFee}}</span>{{btnText}}</button>
   </div>
 </div>
 
