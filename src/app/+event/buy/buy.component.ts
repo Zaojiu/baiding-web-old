@@ -119,6 +119,9 @@ export class BuyComponent implements OnInit {
     if (payResult === 'success') {
       this.handlePaymentReuslt('');
       return false;
+    } else if (this.payResult === 'fail') {
+      this.handlePaymentReuslt('fail');
+      return true;
     }
 
     return true;
