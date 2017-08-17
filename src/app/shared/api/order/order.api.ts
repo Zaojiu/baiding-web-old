@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
-import {host} from "../../../../../vue/src/env/environment";
 import {CustomHttp} from "../custom-http.service";
 import {OrderModel} from "./order.model";
+import {host} from "../../../../environments/environment";
 
 @Injectable()
 export class OrderApiService {

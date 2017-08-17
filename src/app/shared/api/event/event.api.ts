@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
-import {appConfig, host} from "../../../../../vue/src/env/environment";
 import {EventModel, EventTicketFeeModel} from "./event.model";
 import {UtilsService} from "../../utils/utils";
 import {WechatConfigService} from "../../wechat/wechat.service";
@@ -8,6 +7,7 @@ import {PayPopupService} from "../../pay-popup/pay-popup.service";
 import {Subscription} from "rxjs/Subscription";
 import {CustomHttp} from "../custom-http.service";
 import {OrderApiService} from "../order/order.api";
+import {appConfig, host} from "../../../../environments/environment";
 
 @Injectable()
 export class EventApiService {
