@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 
 import {VipInfoComponent} from './vip-info.component';
 import {AdminGuard} from "../../shared/guard/admin.guard";
-import {LiveInfoResolver} from "../../shared/guard/live-info.resolver";
+import {CachedLiveInfoResolver} from "../../shared/guard/cached-live-info.resolver";
 
 const route: Routes = [
   {
@@ -15,7 +15,7 @@ const route: Routes = [
       title: '嘉宾信息',
     },
     resolve: {
-      liveInfo: LiveInfoResolver,
+      liveInfo: CachedLiveInfoResolver,
     },
   }
 ];

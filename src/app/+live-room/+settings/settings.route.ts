@@ -1,7 +1,7 @@
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 import {SettingsComponent} from "./settings.component";
-import {LiveInfoResolver} from "../../shared/guard/live-info.resolver";
+import {CachedLiveInfoResolver} from "../../shared/guard/cached-live-info.resolver";
 import {EditInfoComponent} from "./edit-info/edit-info.component";
 import {ViewInfoComponent} from "./view-info/view-info.component";
 import {QuitEditGuard} from "../../shared/guard/quit-edit.guard";
@@ -11,7 +11,7 @@ const route: Routes = [
   {
     path: '',
     resolve: {
-      liveInfo: LiveInfoResolver,
+      liveInfo: CachedLiveInfoResolver,
     },
     data: {
       title: '话题间设置',
@@ -22,7 +22,7 @@ const route: Routes = [
   {
     path: 'view-info', component: ViewInfoComponent,
     resolve: {
-      liveInfo: LiveInfoResolver,
+      liveInfo: CachedLiveInfoResolver,
     },
     data: {
       title: '话题间信息',
@@ -35,7 +35,7 @@ const route: Routes = [
     canActivate: [AdminGuard],
     canDeactivate: [QuitEditGuard],
     resolve: {
-      liveInfo: LiveInfoResolver,
+      liveInfo: CachedLiveInfoResolver,
     },
     data: {
       title: '编辑话题间信息',

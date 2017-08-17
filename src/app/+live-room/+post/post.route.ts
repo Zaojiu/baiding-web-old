@@ -2,13 +2,13 @@ import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
 
 import {PostComponent} from './post.component';
-import {LiveInfoResolver} from "../../shared/guard/live-info.resolver";
+import {CachedLiveInfoResolver} from "../../shared/guard/cached-live-info.resolver";
 
 const route: Routes = [
   {
     path: '', component: PostComponent,
     resolve: {
-      liveInfo: LiveInfoResolver,
+      liveInfo: CachedLiveInfoResolver,
     },
     data: {
       title: '消息推送',

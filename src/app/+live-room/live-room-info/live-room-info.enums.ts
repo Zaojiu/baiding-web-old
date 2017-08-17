@@ -1,5 +1,6 @@
 export enum PaidStatus {
   None = 0,
-  Completed,
+  Paying,
+  Success,
   Failure,
 }

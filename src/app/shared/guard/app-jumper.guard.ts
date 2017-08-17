@@ -55,7 +55,7 @@ export class AppJumperGuard implements CanActivate {
             coverSmallUrl: liveInfo.coverSmallUrl,
             coverThumbnailUrl: liveInfo.coverThumbnailUrl,
             isNeedPay: liveInfo.isNeedPay,
-            totalFee: liveInfo.totalFee,
+            totalFee: liveInfo.totalFee.value,
             publishAt: moment(+liveInfo.createdAt),
           } as MyListModel;
         }

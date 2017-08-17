@@ -11,7 +11,6 @@ import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {PaidStatus} from "./live-room-info.enums";
 import {InviteApiService} from "../../shared/api/invite/invite.api";
 import {AudienceInvitationModel} from "../../shared/api/invite/invite.model";
-import {PayBridge} from "../../shared/bridge/pay.interface";
 import {host} from "../../../environments/environment";
 
 @Component({
@@ -25,14 +24,14 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   isQrcodeShown = false;
   qrcode: string;
   timer: any;
-  paidShown = false;
   paidEnums = PaidStatus;
   paidStatus = PaidStatus.None;
+  paidResult = '';
   inApp = UtilsService.isInApp;
   liveId: string;
   audienceListInvitations: AudienceInvitationModel[];
   isInWechat = UtilsService.isInWechat;
-  lockPayClick = false;
+  btnText = '进入话题间';
   isSubscribeLinkLoading = false;
   isSubscribeLinkError = false;
   booking = false;
@@ -40,19 +39,15 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
               private iosBridgeService: IosBridgeService, private shareService: ShareApiService,
-              private inviteApiService: InviteApiService, private payBridge: PayBridge) {
+              private inviteApiService: InviteApiService) {
   }
 
   ngOnInit() {
     this.liveId = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
-    if (this.liveInfo.paid) this.paidStatus = PaidStatus.Completed;
 
-    let payResult = this.route.snapshot.params['payResult'];
-    if (payResult === 'success') {
-      this.paidShown = true;
-    }
+    this.initPayment();
 
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;
     this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
@@ -70,6 +65,33 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.timer) clearInterval(this.timer);
+  }
+
+  initPayment() {
+    let payResult = this.route.snapshot.params['payResult'];
+    if (payResult === 'success') this.paidStatus = this.paidEnums.Success;
+
+    if (
+      this.liveInfo.isNeedPay &&
+      !this.liveInfo.paid &&
+      this.liveInfo.isAudience(this.userInfo.uid)
+    ) {
+      if (this.userInfo.isMember) {
+        if (this.liveInfo.memberFee.value === 0) {
+          this.btnText = `会员免费 (原价:${this.liveInfo.originFee.toYuan()})`;
+        } else {
+          this.btnText = `会员价: ${this.liveInfo.memberFee.toYuan()}`;
+        }
+      } else {
+        if (this.liveInfo.totalFee.value === 0) {
+          this.btnText = `限时免费 (原价:${this.liveInfo.originFee.toYuan()})`;
+        } else {
+          this.btnText = `支付: ${this.liveInfo.totalFee.toYuan()}`;
+        }
+      }
+    } else {
+      this.btnText = '进入话题间';
+    }
   }
 
   getShareUri(): string {
@@ -116,31 +138,53 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  payLive() {
-    if (this.lockPayClick) return;
+  handlePayResult(result: string) {
+    this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
+      this.liveInfo = liveInfo;
+      this.initPayment();
 
-    this.lockPayClick = true;
-
-    this.payBridge.pay(this.liveId).then(result => {
-      this.paidStatus = this.paidEnums.Completed;
-      this.liveService.getLiveInfo(this.liveId, true);
-      this.paidShown = true;
-    }, (reason) => {
-      if (reason === 'cancel') {
-        this.paidStatus = this.paidEnums.None;
-        this.paidShown = false;
-      } else {
-        if (reason === 'timeout') {
-          this.operationTipsService.popup("支付超时，请重新支付");
-        } else if (reason === 'weixin_js_bridge_not_found') {
-          this.operationTipsService.popup("微信支付初始化失败，请刷新页面重试");
-        }
-
-        this.paidStatus = this.paidEnums.Failure;
-        this.paidShown = true;
+      switch (result) {
+        case '':
+          this.paidStatus = this.paidEnums.Success;
+          this.liveService.getLiveInfo(this.liveId, true);
+          break;
+        case 'cancel':
+          this.paidStatus = this.paidEnums.None;
+          break;
+        case 'weixin_js_bridge_not_found':
+          this.paidResult = '微信支付初始化失败，请刷新页面重试';
+          this.paidStatus = this.paidEnums.Failure;
+          break;
+        case 'timeout':
+          this.paidResult = '支付超时，请重新支付';
+          this.paidStatus = this.paidEnums.Failure;
+          break;
+        case 'closed':
+          this.paidStatus = this.paidEnums.Failure;
+          this.paidResult = '订单已关闭，请重新购买';
+          break;
+        case 'other error':
+          this.paidStatus = this.paidEnums.Failure;
+          this.paidResult = '下单失败，请联系我们';
+          break;
       }
-    }).finally(() => {
-      this.lockPayClick = false
+    });
+  }
+
+  closePayment() {
+    this.paidStatus = this.paidEnums.None;
+    clearInterval(this.timer);
+  }
+
+  payLive() {
+    if (this.paidStatus === this.paidEnums.Paying) return;
+
+    this.paidStatus = this.paidEnums.Paying;
+
+    this.liveService.pay(this.liveId).then(result => {
+      this.handlePayResult(result);
+    }, (reason) => {
+      this.handlePayResult(reason);
     });
   }
 
@@ -165,10 +209,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   closeQrcode() {
     this.isQrcodeShown = false;
-    this.paidShown = false;
-    clearInterval(this.timer);
   }
-
 
   copyToClipboard(text: string) {
     this.iosBridgeService.copyText(text).then(() => {
@@ -196,5 +237,17 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   gotoShareStar() {
     this.router.navigate([`/lives/${this.liveInfo.id}/share-star`]);
+  }
+
+  go() {
+    if (
+      this.liveInfo.isNeedPay &&
+      !this.liveInfo.paid &&
+      this.liveInfo.isAudience(this.userInfo.uid)
+    ) {
+      this.payLive();
+    } else {
+      this.gotoLive();
+    }
   }
 }

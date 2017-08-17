@@ -1,22 +1,34 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {LiveInfoModel, ShareRankingModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus,LivePublishedStatus} from './live.enums';
-import {environment, host} from "../../../../environments/environment";
-import {UtilsService} from "../../utils/utils";
+import {appConfig, environment, host} from "../../../../environments/environment";
+import {UtilsService, Money} from "../../utils/utils";
 import {VideoInfo} from "../../video-player/video-player.model";
 
 import {AnalyticsService, TargetInfo, ObjectType} from "../../analytics/analytics.service"
 import {DomSanitizer} from "@angular/platform-browser";
+import {CustomHttp} from "../custom-http.service";
+import {WechatConfigService} from "../../wechat/wechat.service";
+import {PayPopupService} from "../../pay-popup/pay-popup.service";
+import {Subscription} from "rxjs/Subscription";
+import {OrderApiService} from "../order/order.api";
 
 @Injectable()
 export class LiveService {
-  constructor(private http: Http, private analytics: AnalyticsService, private sanitizer: DomSanitizer) {
+  constructor(
+    private http: CustomHttp,
+    private wechatConfigService: WechatConfigService,
+    private payPopupService: PayPopupService,
+    private orderApiService: OrderApiService,
+    private analytics: AnalyticsService,
+    private sanitizer: DomSanitizer) {
   }
+
+  private payPopupSub: Subscription;
 
   private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
     return this.getLiveInfo(liveId, true, false).then((liveInfo) => {
@@ -101,7 +113,9 @@ export class LiveService {
 
     liveInfo.praised = stream.praised;
     liveInfo.isNeedPay = stream.isNeedPay;
-    liveInfo.totalFee = stream.totalFee;
+    liveInfo.totalFee = new Money(stream.totalFee || 0);
+    liveInfo.memberFee = new Money(stream.memberFee || 0);
+    liveInfo.originFee = new Money(stream.originFee || 0);
     liveInfo.commented = stream.commented;
     liveInfo.niced = stream.niced;
     liveInfo.shared = stream.shared;
@@ -139,9 +153,14 @@ export class LiveService {
   }
 
   getLiveInfo(id: string, needRefresh?: boolean, join = false): Promise<LiveInfoModel> {
-    let lives = StoreService.get('lives') || {};
-    let liveInfoCache = lives[id];
-    if (liveInfoCache && !needRefresh && !join) return Promise.resolve(liveInfoCache);
+    const lives = StoreService.get('lives') || {};
+    if (!needRefresh && !join) {
+      const liveInfoCache = lives[id];
+
+      if (liveInfoCache) {
+        return Promise.resolve(liveInfoCache);
+      }
+    }
 
     let query = {
       join: join,
@@ -496,5 +515,137 @@ export class LiveService {
 
       return data && data.src ? data.src : '';
     });
+  }
+
+  private _wechatPay(liveId: string): Promise<string> {
+    const payUrl = `${host.io}/api/live/objects/${liveId}/pay`;
+
+    return new Promise((resolve, reject) => {
+      this.http.post(payUrl, {"platform": 1}).toPromise().then(res => {
+        let data = res.json();
+        let wxPayReq = data.wxPay.request;
+
+        if (data.isOngoing) {
+          resolve('');
+          return;
+        }
+
+        //hack uiwebview
+        if (UtilsService.isiOS) {
+          let url = location.href;
+
+          location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
+
+          resolve('');
+        }
+
+        if (!(<any>window).WeixinJSBridge) {
+          reject('weixin_js_bridge_not_found');
+        }
+
+        (<any>window).WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            "appId": wxPayReq.appId,     //公众号名称，由商户传入
+            "timeStamp": wxPayReq.timeStamp,         //时间戳，自1970年以来的秒数
+            "nonceStr": wxPayReq.nonceStr, //随机串
+            "package": wxPayReq.package,
+            "signType": wxPayReq.signType,         //微信签名方式：
+            "paySign": wxPayReq.paySign //微信签名
+          },
+          function (res) {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
+              resolve('');
+            } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+              reject('cancel');
+            } else {
+              reject(res.err_msg);
+            }
+          }
+        );
+      }, (err) => {
+        reject('other error');
+      });
+    });
+  }
+
+  wechatPay(liveId: string): Promise<string> {
+    history.pushState({}, '微信支付', appConfig.payAddress);
+
+    return this.wechatConfigService.init().then(() => {
+      return this._wechatPay(liveId);
+    }).finally(() => {
+      history.back();
+    });
+  }
+
+  _pcPay(liveId: string): Promise<string> {
+    const payUrl = `${host.io}/api/live/objects/${liveId}/pay`;
+    const clear = (timer?: any) => {
+      clearInterval(timer);
+      if (this.payPopupSub) this.payPopupSub.unsubscribe();
+      this.payPopupService.switch(false);
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(payUrl, {"platform": 2}).toPromise().then(res => {
+        const data = res.json();
+        const orderNo = data.orderNo;
+
+        if (data.isOngoing) {
+          resolve('');
+          return;
+        }
+
+        this.payPopupService.switch(true);
+        this.payPopupService.setPayUrl(data.wxPay.codeUrl);
+        this.payPopupSub = this.payPopupService.close$.subscribe(() => {
+          reject('cancel');
+          this.payPopupSub.unsubscribe();
+        });
+
+        // TODO check payment status?
+        let count = 0;
+        const timer = setInterval(() => {
+          this.orderApiService.getOrderData(orderNo).then(result => {
+            if (result.isSuccess) {
+              clear(timer);
+              resolve('');
+              return;
+            }
+
+            if (result.isClosed) {
+              clear(timer);
+              resolve('closed');
+              return;
+            }
+
+            if (count > 100) {
+              clear(timer);
+              reject('timeout'); //若不扫码，最后会出现支付失败，叠加在下面
+              return;
+            }
+
+            count++;
+          });
+        }, 3 * 1000);
+      }, (err) => {
+        clear();
+        reject('other error');
+      });
+    });
+  }
+
+  pcPay(liveId: string): Promise<string> {
+    return this._pcPay(liveId);
+  }
+
+  pay(liveId: string): Promise<string> {
+    if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
+      return this.wechatPay(liveId);
+    } else if (UtilsService.isInApp) {
+      // TODO: app payment, 在ios中不能使用微信支付, 付费直播间app中不可点击
+    } else {
+      return this.pcPay(liveId);
+    }
   }
 }

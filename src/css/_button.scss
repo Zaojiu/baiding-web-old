@@ -23,4 +23,8 @@
     border: solid 1px change_color($color-gray3, $alpha: .5);
     color: $color-dark-gray;
   }
+
+  &.button-square {
+    border-radius: 0;
+  }
 }

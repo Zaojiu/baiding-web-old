@@ -29,7 +29,8 @@ export class BuyComponent implements OnInit {
   payResult = '';
 
   constructor(private router: Router, private route: ActivatedRoute,
-              private eventApi: EventApiService, private tips: OperationTipsService) {}
+              private eventApi: EventApiService, private tips: OperationTipsService) {
+  }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -155,23 +156,16 @@ export class BuyComponent implements OnInit {
   pay() {
     this.isPaying = true;
 
-    if (UtilsService.isInWechat && !UtilsService.isWindowsWechat) {
-      this.eventApi.wechatPay(this.id, this.ticketCount, this.ticketSelected.id).then(result => {
-        this.handlePaymentReuslt(result);
-      }, err => {
-        this.handlePaymentReuslt(err);
-      }).finally(() => {
-        this.isPaying = false;
-      });
-    } else {
-      this.eventApi.pcPay(this.id, this.ticketCount, this.ticketSelected.id).then(result => {
-        this.handlePaymentReuslt(result);
-      }, err => {
-        this.handlePaymentReuslt(err);
-      }).finally(() => {
-        this.isPaying = false;
-      });
-    }
+    this.eventApi.pay(this.id,
+      this.ticketCount,
+      this.ticketSelected.id
+    ).then(result => {
+      this.handlePaymentReuslt(result);
+    }, err => {
+      this.handlePaymentReuslt(err);
+    }).finally(() => {
+      this.isPaying = false;
+    });
   }
 
   chooseTicket(ticket: TicketModel) {

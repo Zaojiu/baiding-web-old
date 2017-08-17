@@ -6,7 +6,7 @@ import {LiveInfoModel} from "../api/live/live.model";
 import {host} from "../../../environments/environment";
 
 @Injectable()
-export class LiveInfoResolver implements Resolve<LiveInfoModel> {
+export class CachedLiveInfoResolver implements Resolve<LiveInfoModel> {
   constructor(private liveService: LiveService, private router: Router) {
   }
 
@@ -24,7 +24,7 @@ export class LiveInfoResolver implements Resolve<LiveInfoModel> {
       if (!liveId) return Promise.resolve(null);
     }
 
-    return this.liveService.getLiveInfo(liveId, true).then((res) => {
+    return this.liveService.getLiveInfo(liveId).then((res) => {
       return res
     }, (err) => {
       const to = `${host.self}${state.url}`;

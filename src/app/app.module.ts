@@ -47,7 +47,7 @@ import {PcAudioService} from "./shared/bridge/audio/pc-audio.service";
 import {PcShareService} from "./shared/bridge/share/pc-share.service";
 import {ImageBridge} from "./shared/bridge/image.interface";
 import {WechatImageService} from "./shared/bridge/image/wechat-image.service";
-import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
+import {CachedLiveInfoResolver} from "./shared/guard/cached-live-info.resolver";
 import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 import {CustomHttp} from "./shared/api/custom-http.service";
 import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
@@ -57,6 +57,9 @@ import {AnalyticsService} from "./shared/analytics/analytics.service"
 import {BindMobileGuard} from "./shared/guard/bind-mobile.guard";
 import {TrackJsErrorHandler} from "./shared/error-handler/error-handler.service";
 import {Router} from "@angular/router";
+import {OrderApiService} from "./shared/api/order/order.api";
+import {PayPopupModule} from "./shared/pay-popup/pay-popup.module";
+import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
 
 @NgModule({
   imports: [
@@ -66,6 +69,7 @@ import {Router} from "@angular/router";
     Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
     ImageViewerModule,
     LoadingModule,
+    PayPopupModule,
   ],
   declarations: [
     AppComponent,
@@ -110,6 +114,7 @@ import {Router} from "@angular/router";
       deps: [XHRBackend, RequestOptions, OperationTipsService, Router]
     },
     Title,
+    CachedLiveInfoResolver,
     LiveInfoResolver,
     AuthGuard,
     BindMobileGuard,
@@ -119,6 +124,7 @@ import {Router} from "@angular/router";
     UserInfoService,
     LiveService,
     TalkService,
+    OrderApiService,
     VideoService,
     ImageViewerService,
     TitleService,

@@ -2,6 +2,7 @@ import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {Money} from "../../utils/utils";
 
 export class LiveInfoModel {
   id: string;
@@ -41,7 +42,9 @@ export class LiveInfoModel {
   booked: boolean;
   streamStatus: LiveStreamStatus = LiveStreamStatus.None;
   isNeedPay: boolean; // 是否收费，默认免费
-  totalFee: number; // 价格，单位“分”
+  totalFee: Money; // 价格，单位“分”
+  memberFee: Money; // 会员价，单位“分”
+  originFee: Money;
   paid: boolean; //付费情况
   invited: number;
   alertMessage: string;
