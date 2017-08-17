@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Routes, Router} from '@angular/router';
 
 import {UserInfoService} from '../api/user-info/user-info.service';
-import {AuthBridge} from "../bridge/auth.interface";
 import {LiveService} from "../api/live/live.service";
 import {host} from "../../../environments/environment";
 
@@ -10,7 +9,7 @@ import {host} from "../../../environments/environment";
 export class RoleAuthGuard implements CanActivate {
 
   constructor(private userInfoService: UserInfoService, private liveService: LiveService,
-              private authService: AuthBridge, private router: Router) {
+              private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {

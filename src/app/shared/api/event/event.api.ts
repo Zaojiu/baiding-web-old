@@ -44,10 +44,9 @@ export class EventApiService {
         //hack uiwebview
         if (UtilsService.isiOS) {
           let url = location.href;
-
           location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
-
-          resolve('');
+          resolve('cancel');
+          return;
         }
 
         if (!(<any>window).WeixinJSBridge) {
