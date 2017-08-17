@@ -590,12 +590,13 @@ export class LiveService {
     return new Promise((resolve, reject) => {
       this.http.post(payUrl, {"platform": 2}).toPromise().then(res => {
         const data = res.json();
-        const orderNo = data.orderNo;
 
         if (data.isOngoing) {
           resolve('');
           return;
         }
+
+        const orderNo = data.orderNo;
 
         this.payPopupService.switch(true);
         this.payPopupService.setPayUrl(data.wxPay.codeUrl);
