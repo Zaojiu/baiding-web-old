@@ -211,7 +211,7 @@ export class Money {
     }
 
     if (symbol) {
-      yuanString = `${symbol} ${yuanString}`;
+      yuanString = `${symbol}${yuanString}`;
     }
 
     return yuanString;
