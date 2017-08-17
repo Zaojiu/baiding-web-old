@@ -78,13 +78,19 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     ) {
       if (this.userInfo.isMember) {
         if (this.liveInfo.memberFee.value === 0) {
-          this.btnText = `会员免费 (原价:${this.liveInfo.originFee.toYuan()})`;
+          this.btnText = `会员免费`;
+          if (this.liveInfo.originFee.value && this.liveInfo.originFee.value !== this.liveInfo.memberFee.value) {
+            this.btnText += ` (原价:${this.liveInfo.originFee.toYuan()})`;
+          }
         } else {
           this.btnText = `会员价: ${this.liveInfo.memberFee.toYuan()}`;
         }
       } else {
         if (this.liveInfo.totalFee.value === 0) {
-          this.btnText = `限时免费 (原价:${this.liveInfo.originFee.toYuan()})`;
+          this.btnText = `限时免费`;
+          if (this.liveInfo.originFee.value && this.liveInfo.originFee.value !== this.liveInfo.totalFee.value) {
+            this.btnText += ` (原价:${this.liveInfo.originFee.toYuan()})`;
+          }
         } else {
           this.btnText = `支付: ${this.liveInfo.totalFee.toYuan()}`;
         }
