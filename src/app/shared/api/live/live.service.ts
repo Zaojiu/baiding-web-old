@@ -113,8 +113,9 @@ export class LiveService {
 
     liveInfo.praised = stream.praised;
     liveInfo.isNeedPay = stream.isNeedPay;
-    liveInfo.totalFee = new Money(stream.totalFee);
-    liveInfo.memberFee = new Money(stream.memberFee);
+    liveInfo.totalFee = new Money(stream.totalFee || 0);
+    liveInfo.memberFee = new Money(stream.memberFee || 0);
+    liveInfo.originFee = new Money(stream.originFee || 0);
     liveInfo.commented = stream.commented;
     liveInfo.niced = stream.niced;
     liveInfo.shared = stream.shared;

@@ -28,7 +28,7 @@ class EventTicketModel {
   constructor(ticketData: any) {
     this.id = ticketData ? ticketData.id : '';
     this.name = ticketData ? ticketData.name : '';
-    this.price = ticketData ? new Money(ticketData.price) : null;
+    this.price = ticketData && ticketData.price ? new Money(ticketData.price) : new Money(0);
     this.sellTotal = ticketData ? ticketData.sellTotal : 0;
     this.leftTotal = ticketData ? ticketData.leftTotal : 0;
   }

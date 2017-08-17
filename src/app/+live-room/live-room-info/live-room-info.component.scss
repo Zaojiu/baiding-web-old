@@ -181,6 +181,9 @@
       &.enter-room {
         flex-grow: 1;
         background-color: $color-brand;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       &.turn-on {
@@ -193,6 +196,7 @@
         justify-content: center;
         flex-basis: 40%;
         width: 40%;
+        flex-shrink: 0;
 
         .bi-clock {
           margin-right: 5px;

@@ -44,6 +44,7 @@ export class LiveInfoModel {
   isNeedPay: boolean; // 是否收费，默认免费
   totalFee: Money; // 价格，单位“分”
   memberFee: Money; // 会员价，单位“分”
+  originFee: Money;
   paid: boolean; //付费情况
   invited: number;
   alertMessage: string;
