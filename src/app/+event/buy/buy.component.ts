@@ -136,7 +136,7 @@ export class BuyComponent implements OnInit {
       case 'other error':
         this.isPaymentPopup = false;
         this.isPayResultShow = true;
-        this.payResult = '下单失败，请联系我们';
+        this.payResult = '支付失败，请联系我们';
         break;
     }
   }

@@ -149,13 +149,33 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   handlePayResult(result: string) {
-    switch (result) {
-      case '':
-        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
+    let retryCount = 0;
+    const checkBackendPayment = () => {
+      this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
+        if (liveInfo.paid) {
           this.liveInfo = liveInfo;
           this.paidStatus = this.paidEnums.Success;
           this.initPayment();
-        });
+        } else if (retryCount >= 3) {
+          this.paidStatus = this.paidEnums.Failure;
+          this.paidResult = '支付失败，请联系我们';
+        } else {
+          setTimeout(() => {
+            retryCount++;
+            checkBackendPayment();
+          }, 500);
+        }
+      }, () => {
+        setTimeout(() => {
+          retryCount++;
+          checkBackendPayment();
+        }, 500);
+      });
+    };
+
+    switch (result) {
+      case '':
+        checkBackendPayment();
         break;
       case 'cancel':
         this.paidStatus = this.paidEnums.None;
@@ -170,11 +190,18 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
         break;
       case 'closed':
         this.paidStatus = this.paidEnums.Failure;
-        this.paidResult = '订单已关闭，请重新购买';
+        this.paidResult = '订单已超时，请重新购买';
         break;
       case 'other error':
         this.paidStatus = this.paidEnums.Failure;
-        this.paidResult = '下单失败，请联系我们';
+        this.paidResult = '支付失败，请联系我们';
+        break;
+      case 'already paid':
+        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
+          this.liveInfo = liveInfo;
+        });
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidResult = '您已购买本话题间，无须再次支付';
         break;
     }
   }

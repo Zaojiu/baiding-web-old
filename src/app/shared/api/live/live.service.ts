@@ -16,6 +16,7 @@ import {WechatConfigService} from "../../wechat/wechat.service";
 import {PayPopupService} from "../../pay-popup/pay-popup.service";
 import {Subscription} from "rxjs/Subscription";
 import {OrderApiService} from "../order/order.api";
+import {ApiError} from "../code-map.enum";
 
 @Injectable()
 export class LiveService {
@@ -632,7 +633,13 @@ export class LiveService {
         }, 3 * 1000);
       }, (err) => {
         clear();
-        reject('other error');
+
+        const data = err.json();
+        if (data && data.code === ApiError.ErrAlreadyPaid) {
+          reject('already paid');
+        } else {
+          reject('other error');
+        }
       });
     });
   }
