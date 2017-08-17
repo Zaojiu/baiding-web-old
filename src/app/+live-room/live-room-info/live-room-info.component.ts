@@ -147,36 +147,34 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   handlePayResult(result: string) {
-    this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
-      this.liveInfo = liveInfo;
-      this.initPayment();
-
-      switch (result) {
-        case '':
+    switch (result) {
+      case '':
+        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
+          this.liveInfo = liveInfo;
           this.paidStatus = this.paidEnums.Success;
-          this.liveService.getLiveInfo(this.liveId, true);
-          break;
-        case 'cancel':
-          this.paidStatus = this.paidEnums.None;
-          break;
-        case 'weixin_js_bridge_not_found':
-          this.paidResult = '微信支付初始化失败，请刷新页面重试';
-          this.paidStatus = this.paidEnums.Failure;
-          break;
-        case 'timeout':
-          this.paidResult = '支付超时，请重新支付';
-          this.paidStatus = this.paidEnums.Failure;
-          break;
-        case 'closed':
-          this.paidStatus = this.paidEnums.Failure;
-          this.paidResult = '订单已关闭，请重新购买';
-          break;
-        case 'other error':
-          this.paidStatus = this.paidEnums.Failure;
-          this.paidResult = '下单失败，请联系我们';
-          break;
-      }
-    });
+          this.initPayment();
+        });
+        break;
+      case 'cancel':
+        this.paidStatus = this.paidEnums.None;
+        break;
+      case 'weixin_js_bridge_not_found':
+        this.paidResult = '微信支付初始化失败，请刷新页面重试';
+        this.paidStatus = this.paidEnums.Failure;
+        break;
+      case 'timeout':
+        this.paidResult = '支付超时，请重新支付';
+        this.paidStatus = this.paidEnums.Failure;
+        break;
+      case 'closed':
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidResult = '订单已关闭，请重新购买';
+        break;
+      case 'other error':
+        this.paidStatus = this.paidEnums.Failure;
+        this.paidResult = '下单失败，请联系我们';
+        break;
+    }
   }
 
   closePayment() {
