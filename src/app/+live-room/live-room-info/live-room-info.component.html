@@ -35,11 +35,17 @@
 
   <div class="operation-area">
     <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking" (click)="bookLive()"><i
-      class="bi bi-clock"></i>开播提醒</a>
+      class="bi bi-clock"></i><span *ngIf="!hasPresent">开播提醒</span></a>
     <a class="btn notification disabled" *ngIf="booking"><i
-      class="bi bi-clock"></i>{{liveInfo.booked ? '取消中...' : '订阅中...'}}</a>
+      class="bi bi-clock"></i><span *ngIf="!hasPresent">{{liveInfo.booked ? '取消中...' : '订阅中...'}}</span></a>
     <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking" (click)="unbookLive()"><i
-      class="bi bi-clock"></i>已经开通</a>
+      class="bi bi-clock"></i><span *ngIf="!hasPresent">已经开通</span></a>
+
+    <button
+      class="btn present"
+      *ngIf="hasPresent"
+      (click)="gotoPresent()"
+    ><i class="bi bi-present"></i>请朋友看</button>
 
     <button
       class="button button-primary button-square enter-room"

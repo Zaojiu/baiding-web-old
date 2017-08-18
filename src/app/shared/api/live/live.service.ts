@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
-import {LiveInfoModel, ShareRankingModel, UploadCoverTokenModel} from './live.model';
+import {LiveInfoModel, LiveRoomPresentModel, ShareRankingModel, UploadCoverTokenModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus,LivePublishedStatus} from './live.enums';
@@ -124,6 +124,7 @@ export class LiveService {
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
     liveInfo.booked = currentStreamUser && currentStreamUser.booked;
     liveInfo.paid = currentStreamUser && currentStreamUser.paid;
+    liveInfo.paidType = currentStreamUser && currentStreamUser.paidType;
     liveInfo.invited = currentStreamUser && currentStreamUser.invited;
 
     liveInfo.totalUsers = stream.totalUsers;
@@ -656,5 +657,25 @@ export class LiveService {
     } else {
       return this.pcPay(liveId);
     }
+  }
+
+  presents(liveId: string, fromUid: number): Promise<LiveRoomPresentModel> {
+    const url = `${host.io}/api/live/objects/${liveId}/presents?from=${fromUid}`;
+
+    return this.http.get(url).toPromise().then(res => {
+      const data = res.json();
+      return new LiveRoomPresentModel(data);
+    });
+  }
+
+  receivePresents(liveId: string, fromUid: number): Promise<void> {
+    const url = `${host.io}/api/live/objects/${liveId}/presents`;
+    const data = {
+      from: fromUid,
+    };
+
+    return this.http.post(url, data).toPromise().then(res => {
+      return;
+    });
   }
 }

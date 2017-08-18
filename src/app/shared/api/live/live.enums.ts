@@ -22,3 +22,8 @@ export enum LivePublishedStatus {
   Published = 1,
   Draft
 }
+
+export enum LivePayType {
+  Purchase = 0,
+  Present,
+}

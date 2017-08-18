@@ -283,6 +283,14 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.router.navigate([`/lives/${this.liveInfo.id}/share-star`]);
   }
 
+  get hasPresent(): boolean {
+    return this.liveInfo.isNeedPay && this.liveInfo.paid && !this.liveInfo.isPayByPresent();
+  }
+
+  gotoPresent() {
+    this.router.navigate([`/lives/${this.liveInfo.id}/present`], {queryParams: {fromUid: this.userInfo.uid}});
+  }
+
   go() {
     if (
       this.liveInfo.isNeedPay &&

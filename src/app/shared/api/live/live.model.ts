@@ -1,4 +1,4 @@
-import {LiveStatus, LiveType, LiveStreamStatus} from './live.enums';
+import {LiveStatus, LiveType, LiveStreamStatus, LivePayType} from './live.enums';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {UserAnimEmoji} from '../../praised-animation/praised-animation.model';
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
@@ -46,8 +46,13 @@ export class LiveInfoModel {
   memberFee: Money; // 会员价，单位“分”
   originFee: Money;
   paid: boolean; //付费情况
+  paidType: LivePayType;
   invited: number;
   alertMessage: string;
+
+  isPayByPresent() {
+    return this.paidType === LivePayType.Present;
+  }
 
   isCreated(): boolean {
     return this.status == LiveStatus.Created;
@@ -136,5 +141,37 @@ export class ShareRankingModel {
     this.avatar = sanitizer.bypassSecurityTrustUrl(data.avatar);
     this.username = data.username;
     this.nick = data.nick;
+  }
+}
+
+export class LiveRoomPresentModel {
+  totalPresent: number;
+  leftPresent: number;
+  from: number;
+  takenUsers: UserInfoModel[];
+
+  constructor(data: any) {
+    if (data) {
+      this.totalPresent = data.totalPresent;
+      this.leftPresent = data.leftPresent;
+      this.from = data.from;
+      this.takenUsers = [];
+
+      const userData = data.users || {};
+      if (data.takenUsers && data.takenUsers.length) {
+        data.takenUsers.forEach(takenData => {
+          const takenUid = takenData.to;
+          const takenUser = userData[takenUid];
+          if (takenUser) {
+            const takenUserInfo = new UserInfoModel();
+            takenUserInfo.uid = takenUser.uid;
+            takenUserInfo.avatar = takenUser.avatar;
+            takenUserInfo.username = takenUser.username;
+            takenUserInfo.nick = takenUser.nick;
+            this.takenUsers.push(takenUserInfo);
+          }
+        });
+      }
+    }
   }
 }

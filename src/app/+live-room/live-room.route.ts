@@ -45,6 +45,11 @@ const route: Routes = [
     },
   },
   {
+    path: ':id/present',
+    canActivate: [AuthGuard],
+    loadChildren: 'app/+live-room/+present/present.module#PresentModule',
+  },
+  {
     path: ':id/share-star',
     canActivate: [AuthGuard, BindMobileGuard],
     loadChildren: 'app/+live-room/+share-star/share-star.module#ShareStarModule',
