@@ -12,6 +12,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {SenderApiService, SmsScene} from "../../shared/api/sender/sender.api";
 import {RegexpConst} from "../../shared/utils/regexp";
 import {UtilsService} from "../../shared/utils/utils";
+import {ShareBridge} from "../../shared/bridge/share.interface";
 
 @Component({
   templateUrl: './present.component.html',
@@ -38,7 +39,7 @@ export class PresentComponent implements OnInit {
               private liveApi: LiveService, private userInfoService: UserInfoService,
               private inviteApi: InviteApiService, private sharePopupService: SharePopupService,
               private tipsService: OperationTipsService, private fb: FormBuilder,
-              private senderApiService: SenderApiService) {}
+              private senderApiService: SenderApiService, private shareBridge: ShareBridge) {}
 
   ngOnInit() {
     this.liveId = this.route.snapshot.params['id'];
@@ -85,7 +86,12 @@ export class PresentComponent implements OnInit {
   }
 
   setShareInfo() {
-    // todo: share info
+    this.shareBridge.setShareInfo(
+      `${this.fromUser.nick}花钱请你看直播，前${this.presentInfo.totalPresent}免费，手慢无 #${this.liveInfo.subject}`,
+      `${this.liveInfo.subject}。${this.editors.length}位大咖，诚意分享，干货十足！`,
+      this.liveInfo.coverThumbnailUrl,
+      location.href
+    );
   }
 
   get btnText(): string {
