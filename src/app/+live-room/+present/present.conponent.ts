@@ -88,7 +88,7 @@ export class PresentComponent implements OnInit {
   setShareInfo() {
     this.shareBridge.setShareInfo(
       `${this.fromUser.nick}花钱请你看直播，前${this.presentInfo.totalPresent}免费，手慢无 #${this.liveInfo.subject}`,
-      `${this.liveInfo.subject}。${this.editors.length}位大咖，诚意分享，干货十足！`,
+      this.liveInfo.subject,
       this.liveInfo.coverThumbnailUrl,
       location.href
     );
