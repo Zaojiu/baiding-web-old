@@ -1,0 +1,92 @@
+<bd-loading class="abs-center" *ngIf="isLoading"></bd-loading>
+
+<div class="error-screen abs-center" *ngIf="!isLoading && (!liveInfo || !fromUser || !editors || !presentInfo)">
+  网络错误，请<a href="" (click)="initData(); $event.preventDefault();">重试</a>
+</div>
+
+<div class="present" *ngIf="!isLoading && liveInfo && fromUser && editors && presentInfo">
+  <header>
+    <img class="avatar avatar-round" [src]="fromUser.avatar" alt="头像">
+    <p class="tips">{{fromUser.nick}}花钱请你看</p>
+  </header>
+
+  <div class="card">
+    <div class="content">
+      <img class="cover" [src]="liveInfo.coverSmall11Url" alt="封面">
+      <h1>{{liveInfo.subject}}</h1>
+      <small *ngIf="editors.length">嘉宾: <span *ngFor="let editor of editors">{{editor.name}}</span></small>
+      <button [class]="buttonClass" *ngIf="isMobileBinded" (click)="btnClick()">{{btnText}}</button>
+      <i class="bi bi-zaojiu-logo"></i>
+    </div>
+  </div>
+
+  <footer *ngIf="liveInfo.isNeedPay && presentInfo.totalPresent && isMobileBinded">
+    <p class="tips">限量{{presentInfo.totalPresent}}个名额，{{!presentInfo.takenUsers.length ? '手快有' : presentInfo.takenUsers.length + '人已抢'}}</p>
+    <div class="taken-users" *ngIf="presentInfo.takenUsers.length">
+      <img
+        class="avatar avatar-round avatar-md"
+        *ngFor="let takenUser of presentInfo.takenUsers"
+        [src]="takenUser.avatar"
+        alt="头像"
+      >
+    </div>
+  </footer>
+
+  <footer *ngIf="!isMobileBinded">
+    <div class="mobile-binded-header">
+      <div class="mobile-binded-tips">请先登录造就用户，领取抢鲜看特权</div>
+    </div>
+
+    <form class="main-form" [formGroup]="form" name="form" (submit)="validateAndSubmit()" autofocus-first-invalid-input>
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['phoneNumber'].dirty && form.controls['phoneNumber'].invalid}">
+        <div class="input-group">
+          <input
+            #mobileInput
+            id="phoneNumber"
+            class="phoneNumber"
+            name="phoneNumber"
+            type="text"
+            formControlName="phoneNumber"
+            [(ngModel)]="phoneNumber"
+          >
+          <label class="required">手机号码</label>
+        </div>
+        <p class="helper" *ngIf="form.controls['phoneNumber'].valid || !form.controls['phoneNumber'].dirty">
+          手机号码为11位数字
+        </p>
+        <div *ngIf="form.controls['phoneNumber'].errors">
+          <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.required">请填写手机号码</p>
+          <p class="helper error" *ngIf="form.controls['phoneNumber'].errors.pattern">手机号码格式错误，请重新填写</p>
+        </div>
+      </div>
+      <div class="form-group sms-code-group"
+           [ngClass]="{'has-error': form.controls['smsCode'].dirty && form.controls['smsCode'].invalid}">
+        <div class="input-group">
+          <input
+            #smsCodeInput
+            id="smsCode"
+            class="smsCode"
+            name="smsCode"
+            type="text"
+            formControlName="smsCode"
+            [(ngModel)]="smsCode"
+          >
+          <label class="required">验证码</label>
+          <a class="sms-sender" [ngClass]="{'disabled': !smsBtnAvailable}" href=""
+             (click)="sendSMS(); $event.preventDefault();">{{smsBtnText}}</a>
+        </div>
+        <p class="helper" *ngIf="form.controls['smsCode'].valid || !form.controls['smsCode'].dirty">
+          六位数字验证码
+        </p>
+        <div *ngIf="form.controls['smsCode'].errors">
+          <p class="helper error" *ngIf="form.controls['smsCode'].errors.required">请填写验证码</p>
+          <p class="helper error" *ngIf="form.controls['smsCode'].errors.pattern">手机验证码必须为6位数字</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="button button-primary" [disabled]="isSubmitting">{{!isSubmitting ? '登录' : '登录中...'}}</button>
+      </div>
+    </form>
+  </footer>
+</div>
