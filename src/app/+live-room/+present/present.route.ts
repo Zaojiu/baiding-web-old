@@ -6,6 +6,10 @@ import {PresentComponent} from './present.conponent';
 const route: Routes = [
   {
     path: '',
+    data: {
+      isAsyncShareInfo: true,
+      title: '邀请好友看直播',
+    },
     component: PresentComponent,
   }
 ];
