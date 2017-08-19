@@ -16,17 +16,20 @@ export class TitleService {
   }
 
   private initOnRouteChange() {
+    // hack ga title --------------------------
     let routeCache = null;
-    const pushState = history.pushState;
-    history.pushState = (data: any, title: string, url?: string | null) => {
+    const resetTitle = () => {
       const route = this.getRoute(routeCache);
       const routeData = route.data;
       this.setTitle(routeData);
-
+    };
+    const pushState = history.pushState;
+    history.pushState = (data: any, title: string, url?: string | null) => {
+      resetTitle();
       pushState.call(history, data, title, url);
     };
+    // ----------------------------------------
 
-    let firstRouteChange = false;
     this.router.events.subscribe((e) => {
       if (e instanceof RoutesRecognized) {
         routeCache = e.state.root;
@@ -34,15 +37,9 @@ export class TitleService {
         const route = this.getRoute(routeCache);
         const routeData = route.data;
 
-        // 首次加载时不会触发pushState，需要特殊设置title;
-        if (!firstRouteChange) {
-          firstRouteChange = true;
-          this.setTitle(routeData);
-        }
-
+        this.setTitle(routeData);
         this.setDefaultShareInfo(routeData);
       }
-
     });
   }
 
