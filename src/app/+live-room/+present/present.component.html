@@ -14,8 +14,6 @@
     <div class="content">
       <img class="cover" [src]="liveInfo.coverSmall11Url" alt="封面">
       <h1>{{liveInfo.subject}}</h1>
-      <small>嘉宾: dsdsd</small>
-
       <small *ngIf="editors.length">嘉宾: <span *ngFor="let editor of editors">{{editor.name}}</span></small>
       <button [class]="buttonClass" *ngIf="isMobileBinded" (click)="btnClick()">{{btnText}}</button>
       <i class="bi bi-zaojiu-logo"></i>
