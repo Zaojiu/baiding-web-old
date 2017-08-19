@@ -10,7 +10,7 @@
     <p class="tips">{{fromUser.nick}}花钱请你看</p>
   </header>
 
-  <div class="card">
+  <div class="card" [ngClass]="{'has-big-button': buttonClass === 'big-button'}">
     <div class="content">
       <img class="cover" [src]="liveInfo.coverSmall11Url" alt="封面">
       <h1>{{liveInfo.subject}}</h1>
