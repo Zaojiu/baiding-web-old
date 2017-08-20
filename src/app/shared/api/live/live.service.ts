@@ -573,7 +573,7 @@ export class LiveService {
           }).finally(() => {
             history.back();
           });
-        });
+        }, 100);
 
       }, (err) => {
         reject('fail');
