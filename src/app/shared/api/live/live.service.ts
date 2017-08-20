@@ -518,8 +518,8 @@ export class LiveService {
       return data && data.src ? data.src : '';
     });
   }
-
-  private wechatPay(liveId: string): Promise<string> {
+  
+  private _wechatPay(liveId: string): Promise<string> {
     const payUrl = `${host.io}/api/live/objects/${liveId}/pay`;
 
     return new Promise((resolve, reject) => {
@@ -533,7 +533,7 @@ export class LiveService {
 
         const wxPayReq = data.wxPay.request;
 
-        // hack uiwebview
+        //hack uiwebview
         if (UtilsService.isiOS) {
           const url = location.href;
           location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
@@ -541,43 +541,43 @@ export class LiveService {
           return;
         }
 
-        // for android
-        history.pushState({}, '微信支付', appConfig.payAddress);
+        if (!(<any>window).WeixinJSBridge) {
+          reject('weixin_js_bridge_not_found');
+        }
 
-        setTimeout(() => {
-          this.wechatConfigService.init().then(() => {
-            if (!(<any>window).WeixinJSBridge) {
-              reject('weixin_js_bridge_not_found');
+        (<any>window).WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            "appId": wxPayReq.appId,     //公众号名称，由商户传入
+            "timeStamp": wxPayReq.timeStamp,         //时间戳，自1970年以来的秒数
+            "nonceStr": wxPayReq.nonceStr, //随机串
+            "package": wxPayReq.package,
+            "signType": wxPayReq.signType,         //微信签名方式：
+            "paySign": wxPayReq.paySign //微信签名
+          },
+          function (res) {
+            if (res.err_msg === 'get_brand_wcpay_request:ok') {
+              resolve('');
+            } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+              reject('cancel');
+            } else {
+              reject('fail');
+              throw `wechat pay failed: ${res.err_msg}`;
             }
-
-            (<any>window).WeixinJSBridge.invoke(
-              'getBrandWCPayRequest', {
-                "appId": wxPayReq.appId,     //公众号名称，由商户传入
-                "timeStamp": wxPayReq.timeStamp,         //时间戳，自1970年以来的秒数
-                "nonceStr": wxPayReq.nonceStr, //随机串
-                "package": wxPayReq.package,
-                "signType": wxPayReq.signType,         //微信签名方式：
-                "paySign": wxPayReq.paySign //微信签名
-              },
-              function (res) {
-                if (res.err_msg === 'get_brand_wcpay_request:ok') {
-                  resolve('');
-                } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-                  reject('cancel');
-                } else {
-                  reject('fail');
-                  throw `wechat pay failed: ${res.err_msg}`;
-                }
-              }
-            );
-          }).finally(() => {
-            history.back();
-          });
-        }, 100);
-
+          }
+        );
       }, (err) => {
         reject('fail');
       });
+    });
+  }
+
+  wechatPay(liveId: string): Promise<string> {
+    if (UtilsService.isAndroid) history.pushState({}, '微信支付', appConfig.payAddress);
+
+    return this.wechatConfigService.init().then(() => {
+      return this._wechatPay(liveId);
+    }).finally(() => {
+      if (UtilsService.isAndroid) history.back();
     });
   }
 
