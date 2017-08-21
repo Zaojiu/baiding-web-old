@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import appComp from './components/app.comp.vue';
-import postCommentComp from './components/talks/comments/comments.comp.vue';
 import talksComp from './components/talks/talks.comp.vue';
 
 Vue.use(Router);
@@ -15,6 +14,16 @@ export default new Router({
       component: appComp,
     },
     {
+      path: '/signin',
+      name: 'signin',
+      component: () => System.import('./components/signin/signin.comp.vue'),
+    },
+    {
+      path: '/forget-password',
+      name: 'forgetPassword',
+      component: () => System.import('./components/signin/forget-password.comp.vue'),
+    },
+    {
       path: '/talks/:id',
       component: talksComp,
       children: [
@@ -25,9 +34,9 @@ export default new Router({
         {
           name: 'talks.post-comment',
           path: 'post-comment',
-          component: postCommentComp,
+          component: () => System.import('./components/talks/comments/comments.comp.vue'),
         }
       ]
     }
   ]
-})
+});

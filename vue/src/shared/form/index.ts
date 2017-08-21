@@ -8,7 +8,6 @@ const localeCN = require('vee-validate/dist/locale/zh_CN');
 
 Vue.use(VeeValidate);
 
-
 VeeValidate.Validator.addLocale(localeCN);
 VeeValidate.Validator.setLocale('zh_CN');
 

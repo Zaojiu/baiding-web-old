@@ -58,3 +58,22 @@ export class UserInfoModel {
     return this.member.valid;
   }
 }
+
+export class WechatSigninQrcodeModel {
+  appid: string;
+  redirect_uri: string;
+  state: string;
+  response_type: string;
+  wechat_uri: string;
+  scope: string;
+  self_redirect = false;
+
+  constructor(data: any) {
+    this.appid = data.appid;
+    this.redirect_uri = data.redirect_uri;
+    this.state = data.state;
+    this.response_type = data.response_type;
+    this.wechat_uri = data.wechat_uri;
+    this.scope = data.scope;
+  }
+}
