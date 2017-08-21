@@ -491,7 +491,7 @@
     }
 
     gotoResetPwd() {
-      this.$router.push({path: '/signin/reset-password', query: {redirectTo: this.redirectTo}});
+      this.$router.push({path: '/forget-password', query: {redirectTo: this.redirectTo}});
     }
   }
 </script>

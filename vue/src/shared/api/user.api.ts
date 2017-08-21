@@ -31,7 +31,6 @@ export const getWechatSigninQrcode = async (redirectTo: string): Promise<WechatS
   return new WechatSigninQrcodeModel(res.data);
 };
 
-
 export const signin = async (username: string, code: string, password: string, codeMap?: { [key: number]: string }): Promise<number> => {
   const query = {
     useSms: !!code,
@@ -48,5 +47,22 @@ export const signin = async (username: string, code: string, password: string, c
   }
 
   await getUserInfo(false);
+  return ApiCode.OK;
+};
+
+export const resetPassword = async (mobile: string, code: string, password: string, codeMap?: {[key: number]: string}): Promise<number> => {
+  const url = `${host.io}/api/user/login/reset`;
+  const data = {
+    mobile,
+    password,
+    code,
+  };
+
+  try {
+    await post(url, data, {codeMap: codeMap});
+  } catch (err) {
+    return err.code;
+  }
+
   return ApiCode.OK;
 };
