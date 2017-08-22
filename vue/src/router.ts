@@ -19,6 +19,11 @@ export default new Router({
       component: () => System.import('./components/signin/signin.comp.vue'),
     },
     {
+      path: '/signup',
+      name: 'signup',
+      component: () => System.import('./components/signin/signup.comp.vue'),
+    },
+    {
       path: '/forget-password',
       name: 'forgetPassword',
       component: () => System.import('./components/signin/forget-password.comp.vue'),

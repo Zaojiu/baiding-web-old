@@ -1,8 +1,8 @@
-import autosize from "autosize"
+import _autosize from "autosize"
 
-export default {
+export const autosize = {
   inserted (el: HTMLElement) {
-    autosize(el);
+    _autosize(el);
     $(el).on('input.autosize', function () {
       const e = new Event('autosize:update');
       el.dispatchEvent(e);
@@ -10,6 +10,6 @@ export default {
   },
   unbind (el: HTMLElement) {
     $(el).off('input.autosize');
-    autosize.destroy(el)
+    _autosize.destroy(el)
   }
-}
+};

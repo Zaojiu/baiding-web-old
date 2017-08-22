@@ -1,4 +1,4 @@
-export default {
+export const hasValue = {
   bind (el: HTMLElement) {
     const $el = $(el)
     if ($el.val() !== '') $el.addClass('v-has-value');

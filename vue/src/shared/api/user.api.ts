@@ -1,10 +1,12 @@
-import {ApiError, get, post} from "./xhr";
+import {get, post} from "./xhr";
 import {host} from '../../env/environment'
 import {UserInfoModel, WechatSigninQrcodeModel} from './user.model'
 import {ApiCode} from "./code-map.enum";
 import {AxiosResponse} from "axios";
+import {Store} from "../utils/store";
+import router from '../../router';
 
-export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel | ApiError> => {
+export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel> => {
   const url = `${host.io}/api/user`;
   let res: AxiosResponse;
   try {
@@ -13,7 +15,24 @@ export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel
     throw err;
   }
 
-  return new UserInfoModel(res.data);
+  const userInfo = new UserInfoModel(res.data);
+
+  Store.localStore.set('userInfo', userInfo);
+  
+  return userInfo;
+};
+
+export const getUserInfoCache = async (signinTo?: string): Promise<UserInfoModel> => {
+  const userInfoCache = Store.localStore.get('userInfo');
+
+  console.log(userInfoCache, signinTo);
+
+  if (!userInfoCache) {
+    if (signinTo) router.push({path: '/signin', query: {redirectTo: signinTo || location.href}});
+    throw new Error('empty user info cache');
+  }
+
+  return new UserInfoModel(userInfoCache);
 };
 
 export const getWechatSigninQrcode = async (redirectTo: string): Promise<WechatSigninQrcodeModel | null> => {
@@ -47,6 +66,26 @@ export const signin = async (username: string, code: string, password: string, c
   }
 
   await getUserInfo(false);
+  return ApiCode.OK;
+};
+
+export const signup = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: {[key: number]: string}): Promise<number> => {
+  const url = `${host.io}/api/user/mobile/bind`;
+  const data = {
+    mobile,
+    password,
+    code,
+    realname,
+    company,
+    position,
+  };
+
+  try {
+    await post(url, data, {codeMap: codeMap});
+  } catch (err) {
+    return err.code;
+  }
+
   return ApiCode.OK;
 };
 

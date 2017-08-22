@@ -2,6 +2,7 @@ import axios, {AxiosError, AxiosRequestConfig} from 'axios';
 import router from '../../router';
 import {showTips} from '../../store/tip';
 import {ApiCode, ApiErrorMessage} from "./code-map.enum";
+import {Store} from "../utils/store";
 
 export const defaults = {
   withCredentials: true
@@ -41,6 +42,8 @@ export class ApiError extends Error {
 
 const errorHandler = (err: ApiError, customCodeMap?: { [key: number]: string }) => {
   if (err.isUnauthorized) {
+    Store.localStore.delete('userInfo');
+    showTips(`请登录`);
     router.push({path: '/signin', query: {redirectTo: location.href}});
   } else {
     let message = '';
