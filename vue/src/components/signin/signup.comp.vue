@@ -256,7 +256,6 @@
 
     created() {
       this.userInfo = getUserInfoCache();
-      console.log(this.userInfo);
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');
     }
 
