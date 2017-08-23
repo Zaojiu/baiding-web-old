@@ -65,7 +65,7 @@ const assetsReplacementLoader = 'string-replace-loader?' + JSON.stringify(assets
 const config = {
   entry: {
     'global': thirdPartyLibs,
-    'libs': ['vue', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN'],
+    'libs': ['vue', 'vue-class-component', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN'],
     'shared': sharedFiles,
     'main': './src/main.ts',
   },
@@ -184,7 +184,7 @@ const config = {
       names: ['shared', 'libs', 'global', 'manifest'],
       minChunks: 2,
     }),
-    // new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
+    new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
   ]
 };
 
