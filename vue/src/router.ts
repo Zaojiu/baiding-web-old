@@ -3,6 +3,7 @@ import Router from 'vue-router';
 
 import appComp from './components/app.comp.vue';
 import talksComp from './components/talks/talks.comp.vue';
+import errorComp from './components/error/error.comp.vue';
 
 Vue.use(Router);
 
@@ -42,6 +43,10 @@ export default new Router({
           component: () => System.import('./components/talks/comments/comments.comp.vue'),
         }
       ]
-    }
+    },
+    {
+      path: '/500',
+      component: errorComp,
+    },
   ]
 });

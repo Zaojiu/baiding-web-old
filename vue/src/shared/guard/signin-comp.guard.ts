@@ -20,7 +20,7 @@ export const signinGuard = (redirectTo: string) => {
           return true;
         }
       } else {
-        router.push({path: '/reload', query: {redirectTo: redirectTo}});
+        router.push({path: '/500', query: {redirectTo: to.fullPath}});
         return false;
       }
     }
