@@ -18,14 +18,12 @@ export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel
   const userInfo = new UserInfoModel(res.data);
 
   Store.localStore.set('userInfo', userInfo);
-  
+
   return userInfo;
 };
 
-export const getUserInfoCache = async (signinTo?: string): Promise<UserInfoModel> => {
+export const getUserInfoCache = (signinTo?: string): UserInfoModel => {
   const userInfoCache = Store.localStore.get('userInfo');
-
-  console.log(userInfoCache, signinTo);
 
   if (!userInfoCache) {
     if (signinTo) router.push({path: '/signin', query: {redirectTo: signinTo || location.href}});

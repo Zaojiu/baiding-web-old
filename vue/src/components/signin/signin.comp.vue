@@ -371,7 +371,6 @@
     directives: form,
   })
   export default class SigninComponent extends Vue {
-    id: string;
     phoneNumber = '';
     smsCode = '';
     password = '';

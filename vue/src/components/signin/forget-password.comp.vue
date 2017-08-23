@@ -142,7 +142,6 @@
     directives: form,
   })
   export default class ForgetPasswordComponent extends Vue {
-    id: string;
     phoneNumber = '';
     smsCode = '';
     password = '';

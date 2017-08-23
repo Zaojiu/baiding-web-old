@@ -235,14 +235,13 @@
     directives: form,
   })
   export default class SignupComponent extends Vue {
-    id: string;
     userInfo = getUserInfoCache();
-    phoneNumber: string;
-    smsCode: string;
-    password: string;
-    name: string;
-    company: string;
-    title: string;
+    phoneNumber = '';
+    smsCode = '';
+    password = '';
+    name = '';
+    company = '';
+    title = '';
     smsBtnText = '发送验证码';
     smsBtnAvailable = true;
     isSubmitting = false;
@@ -257,7 +256,14 @@
 
     created() {
       this.userInfo = getUserInfoCache();
+      console.log(this.userInfo);
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');
+    }
+
+    clearError(controlKey: string, errorKey: string) {
+      if (this.$validator.errors.firstByRule(controlKey, errorKey)) {
+        this.$validator.errors.remove(controlKey);
+      }
     }
 
     validateAndSubmit() {
@@ -284,6 +290,9 @@
 
           showTips('绑定手机成功');
           this.$router.push({path: this.redirectTo});
+          break;
+        case ApiCode.ErrSigninInvalidSmsCode:
+          this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
           break;
       }
 
