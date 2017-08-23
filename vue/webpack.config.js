@@ -184,7 +184,7 @@ const config = {
       names: ['shared', 'libs', 'global', 'manifest'],
       minChunks: 2,
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
+    // new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
   ]
 };
 
