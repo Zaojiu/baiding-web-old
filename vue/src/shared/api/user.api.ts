@@ -22,11 +22,10 @@ export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel
   return userInfo;
 };
 
-export const getUserInfoCache = (signinTo?: string): UserInfoModel => {
+export const getUserInfoCache = (): UserInfoModel => {
   const userInfoCache = Store.localStore.get('userInfo');
 
   if (!userInfoCache) {
-    if (signinTo) router.push({path: '/signin', query: {redirectTo: signinTo || location.href}});
     throw new Error('empty user info cache');
   }
 

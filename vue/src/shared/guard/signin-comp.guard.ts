@@ -28,4 +28,4 @@ export const signinGuard = (redirectTo: string) => {
     router.push(redirectTo);
     return false;
   }
-}
+};

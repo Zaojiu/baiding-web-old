@@ -190,7 +190,7 @@
 
   export default {
     beforeRouteEnter (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const guards = [authGuard(absUrl(to.fullPath))];
+      const guards = [authGuard(to.fullPath)];
       beforeRouteEnter(guards, to, from, next);
     },
     directives: form,
