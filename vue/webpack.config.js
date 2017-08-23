@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -36,6 +37,10 @@ thirdPartyLibs = thirdPartyLibs.map(function (scriptPath) {
   return path.resolve(__dirname, scriptPath);
 });
 
+const sharedFiles = [].concat(glob.sync('./src/store/**/*', {nodir: true}), glob.sync('./src/shared/**/*', {nodir: true})).map(function (scriptPath) {
+  return path.resolve(__dirname, scriptPath);
+});
+
 // from angular-cli
 const packageChunkSort = function (packages) {
   return function sort(left, right) {
@@ -59,8 +64,9 @@ const assetsRepalcementOption = {
 const assetsReplacementLoader = 'string-replace-loader?' + JSON.stringify(assetsRepalcementOption);
 const config = {
   entry: {
-    'libs': ['vue', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN'],
     'global': thirdPartyLibs,
+    'libs': ['vue', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN'],
+    'shared': sharedFiles,
     'main': './src/main.ts',
   },
   output: {
@@ -148,13 +154,33 @@ const config = {
     port: 9000,
     host: '0.0.0.0',
     disableHostCheck: true,
+    stats: {
+      // Add chunk information (setting this to `false` allows for a less verbose output)
+      chunks: true,
+      // Add built modules information to chunk information
+      chunkModules: true,
+      // Add the origins of chunks and chunk merging info
+      chunkOrigins: true,
+      // Add built modules information
+      modules: true,
+    },
+  },
+  stats: {
+    // Add chunk information (setting this to `false` allows for a less verbose output)
+    chunks: true,
+    // Add built modules information to chunk information
+    chunkModules: true,
+    // Add the origins of chunks and chunk merging info
+    chunkOrigins: true,
+    // Add built modules information
+    modules: true,
   },
   performance: {
     hints: false
   },
   plugins: [
     new HtmlWebpackPlugin({
-      chunksSortMode: packageChunkSort(['libs', 'global', 'main']),
+      chunksSortMode: packageChunkSort(['manifest', 'global', 'libs', 'shared', 'main']),
       template: path.resolve(__dirname, './src/index.html'),
     }),
     new webpack.NormalModuleReplacementPlugin(
@@ -164,6 +190,10 @@ const config = {
       new RegExp(path.resolve(__dirname, './src/env/environment.ts')
         .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&')), path.resolve(__dirname, "./src/env/environment" + (process.env.NODE_ENV ? '.' + process.env.NODE_ENV : '') + ".ts")
     ),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['shared', 'libs', 'global', 'manifest'],
+      minChunks: 2,
+    }),
     // new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
   ]
 };
@@ -192,10 +222,6 @@ if (isProd) {
     new CopyWebpackPlugin([
       {from: path.resolve(__dirname, './src/assets'), to: path.resolve(__dirname, './dist/assets')},
     ]),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'libs',
-      minChunks: Infinity,
-    })
   ]);
 }
 
