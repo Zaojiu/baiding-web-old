@@ -46,7 +46,13 @@ export default new Router({
     },
     {
       path: '/500',
+      name: 'error',
       component: errorComp,
+    },
+    {
+      path: '/400',
+      name: 'notfound',
+      component: () => System.import('./components/notfound/notfound.comp.vue'),
     },
   ]
 });
