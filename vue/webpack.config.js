@@ -165,16 +165,6 @@ const config = {
       modules: true,
     },
   },
-  stats: {
-    // Add chunk information (setting this to `false` allows for a less verbose output)
-    chunks: true,
-    // Add built modules information to chunk information
-    chunkModules: true,
-    // Add the origins of chunks and chunk merging info
-    chunkOrigins: true,
-    // Add built modules information
-    modules: true,
-  },
   performance: {
     hints: false
   },
