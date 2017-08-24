@@ -15,6 +15,11 @@ export default new Router({
       component: appComp,
     },
     {
+      path: '/lives',
+      name: 'index',
+      component: () => System.import('./components/index/index.comp.vue'),
+    },
+    {
       path: '/signin',
       name: 'signin',
       component: () => System.import('./components/signin/signin.comp.vue'),
