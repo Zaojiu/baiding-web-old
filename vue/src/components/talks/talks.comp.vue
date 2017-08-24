@@ -31,7 +31,8 @@
       </ul>
 
       <div class="tab-content-container" v-show="!(isVideoPlayed && isLandscape)">
-        <div class="tab-content-inner" v-bind:class="{'tab-one-active': tabIndex === 0, 'tab-two-active': tabIndex === 1}">
+        <div class="tab-content-inner"
+             v-bind:class="{'tab-one-active': tabIndex === 0, 'tab-two-active': tabIndex === 1}">
           <div class="tab-content">
             <section class="title">
               <div class="categories" v-if="talkCategories">{{talkCategories}}</div>
@@ -94,8 +95,9 @@
           </div>
 
           <div class="tab-content">
-            <div class="emphasis" v-for="(item, index) in emphasis" v-bind:class="{active: emphasisActiveIndex === index}" @click="emphasisClicked(index);">
-              <div class="start">{{item.startParsed.format('hh小时mm分ss秒', { forceLength: true })}}</div>
+            <div class="emphasis" v-for="(item, index) in emphasis"
+                 v-bind:class="{active: emphasisActiveIndex === index}" @click="emphasisClicked(index);">
+              <div class="start">{{item.startParsed.format('hh小时mm分ss秒', {forceLength: true})}}</div>
               <div class="text">{{item.text}}</div>
               <img class="cover" v-if="item.coverUrl" v-bind:src="item.coverUrl" alt="划重点配图">
             </div>
@@ -614,7 +616,9 @@
 </style>
 
 <script lang="ts">
-  import bdLoading from '../../shared/bd-loading.comp.vue'
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import bdLoading from '../../shared/bd-loading.comp.vue';
   import {
     FETCH_TALK,
     FETCH_TALK_COMMENT,
@@ -624,194 +628,172 @@
     TalkCommentsStore
   } from '../../store/talk'
   import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils'
-  import Vue from "vue";
-  import {ComponentOptions} from "vue";
   import {TalkEmphasisModel, TalkInfoModel} from "../../shared/api/talk.model";
-  import {Location} from "vue-router";
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
 
-  interface TalkComponent extends Vue {
-    id: string;
-    originY: number;
-    isToolbarShow: boolean;
-    isOnScreen: boolean;
-    isVideoPlayed: boolean;
-    isCommentLoading: boolean;
-    talkInfo: TalkInfoModel;
-    emphasis: TalkEmphasisModel[];
-    comments: TalkCommentsStore;
-    isLoading: boolean;
-    talkCategories: string;
-    tabIndex: number;
-    emphasisActiveIndex: number;
-//    liveInfo: LiveInfo
-    isLandscape: boolean;
-    coverUrl: string;
-    defaultCoverUrl: string;
-    player: ZaojiuPlayerInstance;
-    seeking: boolean;
-
-    fetchComments(): void;
-    prepareVideo(): void;
-    gotoComment(id: string, nick: string, content: string): void;
-    touchStart(e: TouchEvent): void;
-    touchMove(e: TouchEvent): void;
-    togglePraise(): void;
-    toggleFavorite(): void;
-    emphasisClicked(): void;
-    isChildrenActived(): boolean;
-  }
-
-  export default {
-    data() {
-      return {
-        id: this.$route.params.id,
-        originY: 0,
-        isToolbarShow: false,
-        isOnScreen: isOnLargeScreen,
-        isVideoPlayed: false,
-        isCommentLoading: true,
-        isLandscape: false,
-        coverUrl: '',
-        defaultCoverUrl: '/assets/img/default-cover.jpg',
-        player: null,
-        tabIndex: 0,
-        emphasisActiveIndex: -1,
-        seeking: false,
-      }
-    },
+  @Component({
     components: {
       bdLoading,
     },
-    computed: {
-      talkInfo() {
-        if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
-        const talkInfo = this.$store.state.talks.info[this.id];
-        if (talkInfo && talkInfo.media.hasVideo) this.prepareVideo();
-        if (talkInfo) this.coverUrl = talkInfo.coverSmallUrl;
-        return talkInfo;
-      },
-      emphasis() {
-        if (!this.$store.state.talks.emphasis[this.id]) this.$store.dispatch(FETCH_TALK_EMPHASIS, this.id);
-        return this.$store.state.talks.emphasis[this.id];
-      },
-//      liveInfo () {
+  })
+  export default class TalkComponent extends Vue {
+    id = '';
+    originY = 0;
+    isToolbarShow = false;
+    isOnScreen = isOnLargeScreen;
+    isVideoPlayed = false;
+    isCommentLoading = true;
+    isLandscape = false;
+    coverUrl = '';
+    defaultCoverUrl = '/assets/img/default-cover.jpg';
+    tabIndex = 0;
+    emphasisActiveIndex = -1;
+    seeking = false;
+    player: ZaojiuPlayerInstance;
+
+    created() {
+      this.id = this.$route.params['id'];
+    }
+
+    get talkInfo(): TalkInfoModel {
+      if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
+      const talkInfo = this.$store.state.talks.info[this.id];
+      if (talkInfo && talkInfo.media.hasVideo) this.prepareVideo();
+      if (talkInfo) this.coverUrl = talkInfo.coverSmallUrl;
+      return talkInfo;
+    }
+
+    get emphasis(): TalkEmphasisModel[] {
+      if (!this.$store.state.talks.emphasis[this.id]) this.$store.dispatch(FETCH_TALK_EMPHASIS, this.id);
+      return this.$store.state.talks.emphasis[this.id];
+    }
+
+    get comments(): TalkCommentsStore {
+      if (!this.$store.state.talks.comments[this.id]) this.fetchComments();
+      return this.$store.state.talks.comments[this.id]
+    }
+
+    get isLoading(): boolean {
+      return this.talkInfo === undefined || this.emphasis === undefined;
+    }
+
+    get talkCategories(): string {
+      if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
+      return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : '';
+    }
+
+//      get liveInfo () {
 //        if (this.talkInfo.parentId) {
 //          this.objectService.getObject(this.talkInfo.parentId).then(liveObject => {
 //            this.liveObject = liveObject;
 //          });
 //        }
 //      },
-      comments() {
-        if (!this.$store.state.talks.comments[this.id]) this.fetchComments();
-        return this.$store.state.talks.comments[this.id]
-      },
-      isLoading() {
-        return this.talkInfo === undefined || this.emphasis === undefined;
-      },
-      talkCategories() {
-        if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
-        return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : '';
-      },
-    },
-    methods: {
-      async fetchComments() {
-        this.isCommentLoading = true;
-        await this.$store.dispatch(FETCH_TALK_COMMENT, this.id);
-        this.isCommentLoading = false;
-      },
-      prepareVideo() {
-        System.import('zaojiu-player').then((player: ZaojiuPlayer) => {
-          this.player = new player({
-            element: 'player',
-            playList: [{
-              src: this.talkInfo.media.mp4_sd,
-              quality: '标清',
-              mimetype: 'video/mp4'
-            }, {
-              src: this.talkInfo.media.mp4_hd,
-              quality: '高清',
-              mimetype: 'video/mp4'
-            }],
-          });
-          this.player.event$.subscribe((e: PlayerEvent) => {
-            switch (e.type) {
-              case 'play':
-              case 'error':
-                this.isVideoPlayed = true;
-                break;
-              case 'timeupdate':
-                if (this.emphasis && this.emphasis.length && !this.seeking) {
-                  this.emphasis.forEach((item, index) => {
-                    const startTime = item.start / 1000;
-                    if (this.player.video.el.currentTime >= startTime) this.emphasisActiveIndex = index;
-                  });
-                }
-                break;
-              case 'seeking':
-                this.seeking = true;
-                break;
-              case 'playing':
-                this.seeking = false;
-                break;
-            }
-          });
-        });
+    async fetchComments() {
+      this.isCommentLoading = true;
+      await this.$store.dispatch(FETCH_TALK_COMMENT, this.id);
+      this.isCommentLoading = false;
+    }
 
-        // 横竖屏polyfill
-        System.import('o9n').then((o9n: any) => {
-          this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
-          o9n.orientation.onchange = (evt: any) => {
-            this.isLandscape = evt.target.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
+    prepareVideo() {
+      System.import('zaojiu-player').then((player: ZaojiuPlayer) => {
+        this.player = new player({
+          element: 'player',
+          playList: [{
+            src: this.talkInfo.media.mp4_sd,
+            quality: '标清',
+            mimetype: 'video/mp4'
+          }, {
+            src: this.talkInfo.media.mp4_hd,
+            quality: '高清',
+            mimetype: 'video/mp4'
+          }],
+        });
+        this.player.event$.subscribe((e: PlayerEvent) => {
+          switch (e.type) {
+            case 'play':
+            case 'error':
+              this.isVideoPlayed = true;
+              break;
+            case 'timeupdate':
+              if (this.emphasis && this.emphasis.length && !this.seeking) {
+                this.emphasis.forEach((item, index) => {
+                  const startTime = item.start / 1000;
+                  if (this.player.video.el.currentTime >= startTime) this.emphasisActiveIndex = index;
+                });
+              }
+              break;
+            case 'seeking':
+              this.seeking = true;
+              break;
+            case 'playing':
+              this.seeking = false;
+              break;
           }
         });
-      },
-      gotoComment(id, nick, content) {
-        const query = {
-          title: encodeURIComponent(this.talkInfo.subject),
-          request: id && nick && content ? encodeURIComponent(JSON.stringify({
-            id: id,
-            nick: nick,
-            content: content
-          })) : null,
-        };
+      });
 
-        this.$router.push({path: `/talks/${this.id}/post-comment`, query: query} as Location);
-      },
-      touchStart(e) {
-        if (!this.$refs.toolBar) return;
-
-        this.originY = e.touches[0].clientY;
-      },
-      touchMove(e) {
-        if (!this.$refs.toolBar) return;
-
-        if (this.originY - e.touches[0].clientY > 10 && this.isToolbarShow) {
-          this.isToolbarShow = false;
-          setTimeout(() => (this.$refs.toolBar as HTMLElement).style.position = 'static', 300);
-        } else if (e.touches[0].clientY - this.originY > 10 && !this.isToolbarShow) {
-          (this.$refs.toolBar as HTMLElement).style.position = 'fixed';
-          this.isToolbarShow = true;
+      // 横竖屏polyfill
+      System.import('o9n').then((o9n: any) => {
+        this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
+        o9n.orientation.onchange = (evt: any) => {
+          this.isLandscape = evt.target.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
         }
-      },
-      togglePraise() {
-        this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id);
-      },
-      toggleFavorite() {
-        this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id);
-      },
-      emphasisClicked(index: number) {
-        this.emphasisActiveIndex = index;
-        const emphasis = this.emphasis[index];
-        const startTime = emphasis.start / 1000;
-        if (this.player) {
-          this.player.video.el.currentTime = startTime;
-          if (this.player.video.el.paused) this.player.video.el.play();
-        }
-      },
-      isChildActived() {
-        return this.$router.currentRoute.name !== 'talks.main';
-      },
+      });
     }
-  } as ComponentOptions<TalkComponent>;
+
+    gotoComment(id: string, nick: string, content: string) {
+      const query: {[key: string]: string} = { title: encodeURIComponent(this.talkInfo.subject) };
+
+      if (id && nick && content) {
+        query['request'] = encodeURIComponent(JSON.stringify({
+          id: id,
+          nick: nick,
+          content: content
+        }));
+      }
+
+      this.$router.push({path: `/talks/${this.id}/post-comment`, query: query});
+    }
+
+    touchStart(e: TouchEvent) {
+      if (!this.$refs['toolBar']) return;
+
+      this.originY = e.touches[0].clientY;
+    }
+
+    touchMove(e: TouchEvent) {
+      if (!this.$refs['toolBar']) return;
+
+      if (this.originY - e.touches[0].clientY > 10 && this.isToolbarShow) {
+        this.isToolbarShow = false;
+        setTimeout(() => (this.$refs['toolBar'] as HTMLElement).style.position = 'static', 300);
+      } else if (e.touches[0].clientY - this.originY > 10 && !this.isToolbarShow) {
+        (this.$refs['toolBar'] as HTMLElement).style.position = 'fixed';
+        this.isToolbarShow = true;
+      }
+    }
+
+    togglePraise() {
+      this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id);
+    }
+
+    toggleFavorite() {
+      this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id);
+    }
+
+    emphasisClicked(index: number) {
+      this.emphasisActiveIndex = index;
+      const emphasis = this.emphasis[index];
+      const startTime = emphasis.start / 1000;
+      if (this.player) {
+        this.player.video.el.currentTime = startTime;
+        if (this.player.video.el.paused) this.player.video.el.play();
+      }
+    }
+
+    isChildActived() {
+      return this.$router.currentRoute.name !== 'talks.main';
+    }
+  }
 </script>

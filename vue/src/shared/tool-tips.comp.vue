@@ -4,7 +4,7 @@
 
 <style lang="scss">
   .operation-tips {
-    position: absolute;
+    position: fixed;
     left: 50%;
     bottom: 80px;
     border-radius: 3px;
@@ -19,12 +19,9 @@
     transition: opacity .5s;
     line-height: 1.5em;
     text-align: center;
-    opacity: 0;
-    transition: all 1s;
 
     &.is-opened {
       opacity: 1;
-      transition: opacity 1s;
     }
   }
 
