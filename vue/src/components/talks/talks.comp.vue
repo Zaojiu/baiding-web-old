@@ -83,12 +83,7 @@
                       class="bi bi-reply-comment"></i>回复</span>
                   </div>
                   <!-- 不要换行，避免出现换行符 -->
-                  <div class="content" v-once>
-                    <div class="quote" v-if="comment.parent"><span
-                      class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}
-                    </div>
-                    {{comment.content}}
-                  </div>
+                  <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
                 </div>
               </div>
 
