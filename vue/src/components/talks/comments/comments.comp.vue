@@ -157,80 +157,72 @@
 </style>
 
 <script lang="ts">
-  import {absUrl, isInApp} from '../../../shared/utils/utils';
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import {isInApp} from '../../../shared/utils/utils';
   import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../../store/talk';
   import {form} from '../../../shared/form';
+  import bdLoading from '../../../shared/bd-loading.comp.vue'
   import {beforeRouteEnter} from '../../../shared/guard/before-route-enter';
   import {authGuard} from '../../../shared/guard/user-auth.guard';
   import {showTips} from '../../../store/tip';
   import {RawLocation, Route} from "vue-router";
-  import Vue from "vue";
-  import {ComponentOptions} from "vue";
   import {ErrorBag} from "vee-validate";
 
-  interface PostCommentComponent extends Vue {
-    id: string;
-    subject: string;
-    replyId: string;
-    replyNick: string;
-    replyContent: string;
-    isInApp: boolean;
-    isSubmitting: boolean;
-    content: string;
+  Component.registerHooks([
+    'beforeRouteEnter',
+  ]);
+
+  @Component({
+    components: {
+      bdLoading,
+    },
+    directives: form
+  })
+  export default class CommentComponent extends Vue {
+    id = '';
+    subject = '';
+    replyId = '';
+    replyNick = '';
+    replyContent = '';
+    isInApp = isInApp;
+    isSubmitting = false;
+    content = '';
     errors: ErrorBag;
 
-    backToTalk(): void;
-  }
-
-  class commentQuery {
-    id: string;
-    nick: string;
-    content: string;
-  }
-
-  export default {
-    beforeRouteEnter (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+    beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
       const guards = [authGuard(to.fullPath)];
       beforeRouteEnter(guards, to, from, next);
-    },
-    directives: form,
-    data () {
-      const data = {
-        id: this.$route.params.id,
-        subject: decodeURIComponent(this.$route.query.title),
-        replyId: '',
-        replyNick: '',
-        replyContent: '',
-        isInApp: isInApp,
-        isSubmitting: false,
-        content: '',
-      };
+    }
 
-      const request = this.$route.query.request;
+    created() {
+      this.id = this.$route.params['id'];
+      this.subject = decodeURIComponent(this.$route.query['title']);
+
+      const request = this.$route.query['request'];
 
       if (request) {
-        const requestObj: commentQuery = JSON.parse(decodeURIComponent(request));
-        data.replyId = requestObj.id;
-        data.replyNick = requestObj.nick;
-        data.replyContent = requestObj.content;
-      }
-
-      return data
-    },
-    methods: {
-      backToTalk () {
-        this.$router.push({path: `/talks/${this.id}`});
-      },
-      async submit () {
-        this.$validator.validateAll();
-        if (this.errors.count()) return;
-
-        this.isSubmitting = true;
-        await this.$store.dispatch(POST_TALK_COMMENT, new PostTalkCommentsPayload(this.id, this.content, this.replyId));
-        this.isSubmitting = false;
-        await showTips('评论成功');
-        this.backToTalk();
+        const requestObj = JSON.parse(decodeURIComponent(request));
+        this.replyId = requestObj.id;
+        this.replyNick = requestObj.nick;
+        this.replyContent = requestObj.content;
       }
     }
-  } as ComponentOptions<PostCommentComponent>;
+
+    backToTalk () {
+      this.$router.push({path: `/talks/${this.id}`});
+    }
+
+    async submit () {
+      this.$validator.validateAll();
+      if (this.errors.count()) return;
+
+      this.isSubmitting = true;
+      await this.$store.dispatch(POST_TALK_COMMENT, new PostTalkCommentsPayload(this.id, this.content, this.replyId));
+      this.isSubmitting = false;
+
+      await showTips('评论成功');
+      this.backToTalk();
+    }
+  };
 </script>
