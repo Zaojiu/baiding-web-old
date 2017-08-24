@@ -15,7 +15,6 @@
       <div class="form-group">
         <div class="input-group" v-if="!replyId">
           <textarea
-            id="content"
             class="content"
             name="content"
             rows="1"
@@ -29,7 +28,6 @@
         </div>
         <div class="input-group" v-else>
           <textarea
-            id="content"
             class="content"
             name="content"
             rows="1"
@@ -112,6 +110,7 @@
       color: rgb(144, 144, 144);
       background-color: rgb(237, 237, 237);
       padding: 20px 15px;
+      margin-bottom: 15px;
 
       .nick {
         margin-right: 6px;
@@ -130,8 +129,18 @@
     .main-form {
       flex-grow: 1;
       overflow: auto;
-      .content {
-        border-bottom: none;
+
+      .form-group {
+        margin-top: 0;
+
+        .input-group {
+          padding-top: 0;
+
+          .content {
+            padding: 0;
+            border-bottom: none;
+          }
+        }
       }
     }
 
