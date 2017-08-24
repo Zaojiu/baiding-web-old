@@ -33,8 +33,6 @@
           <div class="input-group">
             <input
               ref="mobileInput"
-              class="phoneNumber"
-              id="phoneNumber"
               name="phoneNumber"
               v-model="phoneNumber"
               v-validate="{rules: {required: true, regex: regexpMobile}}"
@@ -54,7 +52,6 @@
           <div class="input-group">
             <input
               ref="smsCodeInput"
-              class="smsCode"
               name="smsCode"
               minlength="6"
               maxlength="6"
@@ -79,7 +76,6 @@
              v-bind:class="{'has-error': errors.has('password')}">
           <div class="input-group">
             <input
-              class="password"
               name="password"
               type="password"
               v-model="password"
@@ -350,9 +346,9 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
-  import {regexpMobile, getRelativePath, absUrl} from '../../shared/utils/utils';
+  import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {host} from "../../env/environment";
-  import form from '../../shared/form';
+  import {form} from '../../shared/form';
   import bdLoading from '../../shared/bd-loading.comp.vue';
   import {FETCH_SIGNIN_QRCODE} from '../../store/user';
   import {showTips} from "../../store/tip";
@@ -375,7 +371,6 @@
     directives: form,
   })
   export default class SigninComponent extends Vue {
-    id: string;
     phoneNumber = '';
     smsCode = '';
     password = '';
@@ -389,7 +384,7 @@
 
     beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
       const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
-      const guards = [signinGuard(absUrl(redirectTo))];
+      const guards = [signinGuard(redirectTo)];
       beforeRouteEnter(guards, to, from, next);
     }
 

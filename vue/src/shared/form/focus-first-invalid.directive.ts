@@ -1,4 +1,4 @@
-export default {
+export const focusFirstInvalid = {
   bind (el: HTMLElement) {
     const $el = $(el)
     $el.on('submit.focus-first-invalid', function () {

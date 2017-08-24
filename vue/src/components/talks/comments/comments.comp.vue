@@ -159,9 +159,9 @@
 <script lang="ts">
   import {absUrl, isInApp} from '../../../shared/utils/utils';
   import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../../store/talk';
-  import form from '../../../shared/form';
+  import {form} from '../../../shared/form';
   import {beforeRouteEnter} from '../../../shared/guard/before-route-enter';
-  import userAuth from '../../../shared/guard/user-auth.guard';
+  import {authGuard} from '../../../shared/guard/user-auth.guard';
   import {showTips} from '../../../store/tip';
   import {RawLocation, Route} from "vue-router";
   import Vue from "vue";
@@ -190,7 +190,7 @@
 
   export default {
     beforeRouteEnter (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const guards = [userAuth(absUrl(to.fullPath))];
+      const guards = [authGuard(to.fullPath)];
       beforeRouteEnter(guards, to, from, next);
     },
     directives: form,

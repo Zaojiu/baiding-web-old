@@ -3,6 +3,7 @@ import Router from 'vue-router';
 
 import appComp from './components/app.comp.vue';
 import talksComp from './components/talks/talks.comp.vue';
+import errorComp from './components/error/error.comp.vue';
 
 Vue.use(Router);
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/signin',
       name: 'signin',
       component: () => System.import('./components/signin/signin.comp.vue'),
+    },
+    {
+      path: '/mobile-binded',
+      name: 'mobileBinded',
+      component: () => System.import('./components/signin/mobile-binded.comp.vue'),
     },
     {
       path: '/forget-password',
@@ -37,6 +43,16 @@ export default new Router({
           component: () => System.import('./components/talks/comments/comments.comp.vue'),
         }
       ]
-    }
+    },
+    {
+      path: '/500',
+      name: 'error',
+      component: errorComp,
+    },
+    {
+      path: '/400',
+      name: 'notfound',
+      component: () => System.import('./components/notfound/notfound.comp.vue'),
+    },
   ]
 });

@@ -12,7 +12,7 @@ export enum SmsType {
   Voice,
 }
 
-export const sendSmsByLoginUser = async (mobile: string, scene: SmsScene, type = SmsType.Text) => {
+export const sendSmsByLoginUser = async (mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: { [key: number]: string }) => {
   const url = `${host.io}/api/user/sms`;
   const data = {
     mobile: mobile,
