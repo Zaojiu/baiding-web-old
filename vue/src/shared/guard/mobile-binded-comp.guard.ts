@@ -2,7 +2,7 @@ import {getUserInfoCache} from '../api/user.api'
 import {Route} from "vue-router";
 import router from "../../router";
 
-export const signupGuard = (redirectTo: string) => {
+export const mobileBindedGuard = (redirectTo: string) => {
   return async (to: Route, from: Route): Promise<boolean> => {
     let userInfo;
 

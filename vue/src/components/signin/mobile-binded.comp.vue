@@ -216,7 +216,7 @@
   import {SmsScene, SmsType, sendSmsByLoginUser} from '../../shared/api/sms.api';
   import {showTips} from "../../store/tip";
   import {signup} from '../../shared/api/user.api';
-  import {signupGuard} from '../../shared/guard/signup-comp.guard';
+  import {mobileBindedGuard} from '../../shared/guard/mobile-binded-comp.guard';
   import {authGuard} from '../../shared/guard/user-auth.guard';
   import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
   import bdLoading from '../../shared/bd-loading.comp.vue';
@@ -234,7 +234,7 @@
     },
     directives: form,
   })
-  export default class SignupComponent extends Vue {
+  export default class MobileBindedComponent extends Vue {
     userInfo = getUserInfoCache();
     phoneNumber = '';
     smsCode = '';
@@ -250,7 +250,7 @@
 
     beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
       const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
-      const guards = [authGuard(redirectTo), signupGuard(redirectTo)];
+      const guards = [authGuard(redirectTo), mobileBindedGuard(redirectTo)];
       beforeRouteEnter(guards, to, from, next);
     }
 
