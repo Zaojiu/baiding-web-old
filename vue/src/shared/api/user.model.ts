@@ -110,3 +110,17 @@ export class UserDetailInfoModel {
     this.member = new MemberModel(data.member);
   }
 }
+
+export class UserPublicInfoModel {
+  uid = 0;
+  nick = '';
+  avatar = '';
+
+  constructor(data: any) {
+    if (!data) return;
+
+    this.uid = data.uid;;
+    this.nick = data.nick;
+    this.avatar = data.avatar;
+  }
+}
