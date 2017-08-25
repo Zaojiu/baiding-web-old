@@ -1,8 +1,9 @@
 import {getUserInfoCache} from '../api/user.api'
 import {Route} from "vue-router";
 import router from "../../router";
+import {getRelativePath} from "../utils/utils";
 
-export const mobileBindedGuard = (redirectTo: string) => {
+export const mobileBindedCompGuard = () => {
   return async (to: Route, from: Route): Promise<boolean> => {
     let userInfo;
 
@@ -15,7 +16,10 @@ export const mobileBindedGuard = (redirectTo: string) => {
 
     const isMobileBinded = !!userInfo.mobile.number;
 
-    if (isMobileBinded) router.push(redirectTo);
+    if (isMobileBinded) {
+      const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
+      router.push(redirectTo);
+    }
 
     return !isMobileBinded;
   }

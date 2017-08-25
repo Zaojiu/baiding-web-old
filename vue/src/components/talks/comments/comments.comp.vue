@@ -200,7 +200,7 @@
     errors: ErrorBag;
 
     beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const guards = [authGuard(to.fullPath)];
+      const guards = [authGuard()];
       beforeRouteEnter(guards, to, from, next);
     }
 
