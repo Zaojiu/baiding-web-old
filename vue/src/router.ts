@@ -50,6 +50,11 @@ export default new Router({
       ]
     },
     {
+      path: '/member/activate',
+      name: 'member.activate',
+      component: () => System.import('./components/member/activate.comp.vue'),
+    },
+    {
       path: '/500',
       name: 'error',
       component: errorComp,
