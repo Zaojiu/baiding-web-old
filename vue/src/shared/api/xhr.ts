@@ -3,6 +3,7 @@ import router from '../../router';
 import {showTips} from '../../store/tip';
 import {ApiCode, ApiErrorMessage} from "./code-map.enum";
 import {Store} from "../utils/store";
+import {getRelativePath} from '../utils/utils';
 
 export const defaults = {
   withCredentials: true
@@ -44,7 +45,7 @@ const errorHandler = (err: ApiError, customCodeMap?: { [key: number]: string }) 
   if (err.isUnauthorized) {
     Store.localStore.delete('userInfo');
     showTips(`请登录`);
-    router.push({path: '/signin', query: {redirectTo: location.href}});
+    router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
   } else {
     let message = '';
     const codeMap = Object.assign(ApiErrorMessage, customCodeMap);

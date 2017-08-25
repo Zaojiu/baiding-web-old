@@ -77,3 +77,36 @@ export class WechatSigninQrcodeModel {
     this.scope = data.scope;
   }
 }
+
+export enum UserSex {
+  Unknow = 0,
+  Male,
+  Female,
+}
+
+export class UserDetailInfoModel {
+  uid: number;
+  username: string;
+  nick = '';
+  intro = '';
+  avatar = '';
+  sex = UserSex.Unknow;
+  member: MemberModel;
+  realname: string;
+  company: string;
+  position: string;
+
+  constructor(data: any) {
+    if (data.uid) this.uid = data.uid;
+    if (data.username) this.username = data.username;
+    if (data.nick) this.nick = data.nick;
+    if (data.intro) this.intro = data.intro;
+    if (data.avatar) this.avatar = data.avatar;
+    if (data.sex) this.sex = data.sex;
+    if (data.realname) this.realname = data.realname;
+    if (data.company) this.company = data.company;
+    if (data.position) this.position = data.position;
+
+    this.member = new MemberModel(data.member);
+  }
+}

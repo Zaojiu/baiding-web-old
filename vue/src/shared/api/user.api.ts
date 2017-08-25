@@ -1,6 +1,6 @@
 import {get, post} from "./xhr";
 import {host} from '../../env/environment'
-import {UserInfoModel, WechatSigninQrcodeModel} from './user.model'
+import {UserDetailInfoModel, UserInfoModel, WechatSigninQrcodeModel} from './user.model'
 import {ApiCode} from "./code-map.enum";
 import {AxiosResponse} from "axios";
 import {Store} from "../utils/store";
@@ -30,6 +30,18 @@ export const getUserInfoCache = (): UserInfoModel => {
   }
 
   return new UserInfoModel(userInfoCache);
+};
+
+export const getUserDetailInfo = async (): Promise<UserDetailInfoModel> => {
+  const url = `${host.io}/api/user/detail`;
+  let res: AxiosResponse;
+  try {
+    res = await get(url);
+  } catch (e) {
+    throw e;
+  }
+
+  return new UserDetailInfoModel(res.data);
 };
 
 export const getWechatSigninQrcode = async (redirectTo: string): Promise<WechatSigninQrcodeModel | null> => {
@@ -78,7 +90,7 @@ export const signup = async (mobile: string, code: string, password: string, rea
   };
 
   try {
-    await post(url, data, {codeMap: codeMap});
+    await post(url, data, {codeMap});
   } catch (err) {
     return err.code;
   }
