@@ -2,7 +2,7 @@
   <div class="member-activate">
     <section class="user-section"></section>
 
-    <form class="main-form" name="form" @submit="validateAndSubmit()" v-focus-first-invalid>
+    <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
       <section>
         <h2>会员卡激活</h2>
         <small>仅限实物卡激活</small>
@@ -26,7 +26,6 @@
               name="wechatNumber"
               v-model="wechatNumber"
               v-validate="{rules: {required: true}}"
-              v-focus
               v-has-value
             >
             <label class="required">微信号</label>
