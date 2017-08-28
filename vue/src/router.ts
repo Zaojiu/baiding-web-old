@@ -55,6 +55,46 @@ export default new Router({
       component: () => System.import('./components/member/activate.comp.vue'),
     },
     {
+      path: '/member/intro',
+      name: 'member.intro',
+      component: () => System.import('./components/member/intro.comp.vue'),
+    },
+    {
+      path: '/my',
+      name: 'my',
+      component: () => System.import('./components/my/index.comp.vue'),
+    },
+    {
+      path: '/my/member',
+      name: 'my.member',
+      alias: '/member/info', // compatible with angular
+      component: () => System.import('./components/my/member.comp.vue'),
+      children: [
+        {
+          path: 'rights/:id',
+          name: 'my.member.rights',
+          component: () => System.import('./components/my/member-rights.comp.vue'),
+        },
+      ]
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: () => System.import('./components/order/order.comp.vue'),
+    },
+    {
+      path: '/address',
+      name: 'my.address',
+      component: () => System.import('./components/my/address.comp.vue'),
+      children: [
+        {
+          path: 'edit/:id?',
+          name: 'my.address.edit',
+          component: () => System.import('./components/my/edit-address.comp.vue'),
+        },
+      ]
+    },
+    {
       path: '/500',
       name: 'error',
       component: errorComp,
