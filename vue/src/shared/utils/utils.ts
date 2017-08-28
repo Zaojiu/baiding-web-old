@@ -83,3 +83,30 @@ export const getRelativePath = (path: string, defaultPath: string): string => {
   if (_path === '/' || !_path.startsWith('/')) _path = defaultPath;
   return _path;
 };
+
+export class Money {
+  value: number;
+  ratioToYuan = 100;
+
+  constructor(value: number, ratioToYuan = 100) {
+    this.value = value;
+    this.ratioToYuan = ratioToYuan;
+  }
+
+  toYuan(prefix = '￥', subfix = '', seperator = true, float = 2) {
+    const yuan = this.value / this.ratioToYuan;
+    let yuanString = yuan.toFixed(float);
+
+    if (seperator) {
+      const yuanArr = yuanString.split('.');
+      const int = yuanArr[0];
+      yuanArr[0] = int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      yuanString = yuanArr.join('.');
+    }
+
+    if (prefix) yuanString = `${prefix}${yuanString}`;
+    if (subfix) yuanString = `${yuanString}${subfix}`;
+
+    return yuanString;
+  }
+}
