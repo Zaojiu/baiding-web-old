@@ -247,8 +247,7 @@
       }
 
       showTips('激活会员成功');
-      this.$router.push({path: '/member/info', query: {success: 'true'}});
+      this.$router.push({path: '/my/member'});
     }
   }
-
 </script>
