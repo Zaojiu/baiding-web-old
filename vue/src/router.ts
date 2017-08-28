@@ -88,12 +88,7 @@ export default new Router({
       component: () => System.import('./components/my/ticket.comp.vue'),
     },
     {
-      path: '/order',
-      name: 'order',
-      component: () => System.import('./components/order/order.comp.vue'),
-    },
-    {
-      path: '/address',
+      path: '/my/address',
       name: 'my.address',
       component: () => System.import('./components/my/address.comp.vue'),
       children: [
@@ -103,6 +98,16 @@ export default new Router({
           component: () => System.import('./components/my/edit-address.comp.vue'),
         },
       ]
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: () => System.import('./components/order/order.comp.vue'),
+    },
+    {
+      path: '/event/:id/ticket',
+      name: 'event.ticket',
+      component: () => System.import('./components/event/ticket.comp.vue'),
     },
     {
       path: '/500',
