@@ -32,5 +32,25 @@
 
       return text;
     }
+
+    submit() {
+
+    }
+
+    popupCouponSelector() {
+
+    }
+
+    closeCouponSelector() {
+
+    }
+
+    addCoupon() {
+
+    }
+
+    deleteCoupon() {
+
+    }
   }
 </script>
