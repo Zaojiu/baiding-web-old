@@ -78,6 +78,16 @@ export default new Router({
       ]
     },
     {
+      path: '/my/order',
+      name: 'my.order',
+      component: () => System.import('./components/my/order.comp.vue'),
+    },
+    {
+      path: '/my/ticket',
+      name: 'my.ticket',
+      component: () => System.import('./components/my/ticket.comp.vue'),
+    },
+    {
       path: '/order',
       name: 'order',
       component: () => System.import('./components/order/order.comp.vue'),
