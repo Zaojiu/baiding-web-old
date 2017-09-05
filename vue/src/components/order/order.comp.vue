@@ -1,13 +1,14 @@
 <template>
   <div class="container" @click="closeDiscountSelector()">
-    <div class="invalid-order" v-if="isInvalidOrder">无效订单</div>
-    <bd-loading class="abs-center" v-else-if="isLoading"></bd-loading>
+    <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
+    <div class="invalid-order abs-center" v-else-if="isInvalidOrder">无效订单</div>
     <error class="abs-center" @retry="initData()" v-else-if="isError"></error>
     <div class="order" v-else>
       <div class="old-order" v-if="orderId">
         <div class="order-container">
           <div class="status">
-            <div v-if="order.order.isPending">剩余支付时间：<strong>{{order.order.remainDuration.format('mm:ss', { trim: false })}}</strong></div>
+            <div v-if="order.order.isPending">剩余支付时间：<strong>{{order.order.remainDuration.format('mm:ss', {trim: false})}}</strong>
+            </div>
             <div v-if="order.order.isClosed"><strong>订单已关闭</strong></div>
             <div v-if="order.order.isSuccess"><strong>支付成功</strong></div>
           </div>
@@ -140,6 +141,11 @@
 
 <style lang="scss" scoped>
   .container {
+    .invalid-order {
+      font-size: $font-size-md;
+      color: $color-gray3;
+    }
+
     .order {
       .new-order, .old-order {
         position: relative;
@@ -357,8 +363,10 @@
     routeChange() {
       // TODO: handle pay result;
 
-      this.processParams();
-      this.initData();
+      const isValid = this.processParams();
+      if (isValid) {
+        this.initData();
+      }
     }
 
     processParams() {
@@ -373,6 +381,8 @@
         }
         this.itemsQuery = itemsQuery;
       }
+
+      return !!this.orderId || this.itemsQuery.length;
     }
 
     parseItemsQuery(itemsQueryStr: string): PostOrderObject[] {
@@ -406,8 +416,14 @@
           await this.prepareNewOrder();
         }
       } catch (e) {
-        // TODO: invalid order no
-        this.isError = true;
+        if (e instanceof ApiError &&
+          e.originError.response &&
+          e.originError.response.data.code === ApiCode.ErrNotFound
+        ) {
+          this.isInvalidOrder = true;
+        } else {
+          this.isError = true;
+        }
       } finally {
         this.isLoading = false;
       }
@@ -422,7 +438,7 @@
       await this.checkDiscount();
     }
 
-    async handleError(e: Error|ApiError) {
+    async handleError(e: Error | ApiError) {
       if (e instanceof ApiError) {
         if (e.code === ApiCode.ErrOrderNeedProcessOthers) {
           const oid = e.originError.response && e.originError.response.data.data.orderNo;
