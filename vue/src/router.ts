@@ -25,9 +25,9 @@ export default new Router({
       component: () => System.import('./components/signin/signin.comp.vue'),
     },
     {
-      path: '/mobile-binded',
-      name: 'mobileBinded',
-      component: () => System.import('./components/signin/mobile-binded.comp.vue'),
+      path: '/mobile-bind',
+      name: 'mobileBind',
+      component: () => System.import('./components/signin/mobile-bind.comp.vue'),
     },
     {
       path: '/forget-password',
