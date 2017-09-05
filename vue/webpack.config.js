@@ -60,7 +60,7 @@ const packageChunkSort = function (packages) {
 const assetsRepalcementOption = {
   flags: isProd ? "g" : '',
   search: isProd ? "/assets/" : '',
-  replace: isProd ? publicPath + "/assets/" : ''
+  replace: isProd ?  `${publicPath}assets/` : ''
 };
 const assetsReplacementLoader = 'string-replace-loader?' + JSON.stringify(assetsRepalcementOption);
 const config = {

@@ -10,14 +10,14 @@
       <div class="text">会员有效期: {{userInfo.member.joinAt.format('YYYY年MM月DD日')}}-{{userInfo.member.expiredAt.format('YYYY年MM月DD日')}}</div>
     </div>
     <div class="rights">
-      <div class="right" v-for="right in rights" @click.prevent="gotoRight(right.id)">
+      <div class="right" v-for="right in rights">
         <i class="bi bi-member-right-book" v-if="right.isTypeBook"></i>
         <i class="bi bi-member-right-video" v-else-if="right.isTypeEvent"></i>
         <i class="bi bi-member-right-discount" v-else-if="right.isTypeNormalDiscount"></i>
-        <div class="title">{{right.title}}</div>
-        <div class="detail">
+        <div class="title" @click.prevent="gotoRight(right.id)">{{right.title}}</div>
+        <div class="detail" v-if="userInfo.member.valid">
           <div class="amount">可用权益：<span v-if="right.totalAmount">{{right.availableAmount}}/{{right.totalAmount}}</span><span v-else>0</span></div>
-          <a class="detail-link" href="">查看详情</a>
+          <a class="detail-link" href="" @click.prevent="gotoRight(right.id)">查看详情</a>
         </div>
         <div class="desc" v-if="right.desc">{{right.desc}}</div>
       </div>
@@ -153,6 +153,14 @@
         padding-left: 15px;
         font-size: $font-size-xsm;
         color: #666666;
+        word-break: break-all;
+        white-space: pre-wrap;
+        line-height: 1.5em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
     }
 
