@@ -19,13 +19,13 @@ export class MobileModel {
 
 export class MemberModel {
   valid: boolean;
-  joinAt: Moment|null;
-  expiredAt: Moment|null;
+  joinAt: Moment;
+  expiredAt: Moment;
 
   constructor(member: any) {
     this.valid = member ? member.valid : false;
-    this.joinAt = member ? moment(member.joinAt) : null;
-    this.expiredAt = member ? moment(member.expiredAt) : null;
+    this.joinAt = member ? moment(member.joinAt) : moment.unix(0);
+    this.expiredAt = member ? moment(member.expiredAt) : moment.unix(0);
   }
 }
 
@@ -108,5 +108,19 @@ export class UserDetailInfoModel {
     if (data.position) this.position = data.position;
 
     this.member = new MemberModel(data.member);
+  }
+}
+
+export class UserPublicInfoModel {
+  uid = 0;
+  nick = '';
+  avatar = '';
+
+  constructor(data: any) {
+    if (!data) return;
+
+    this.uid = data.uid;;
+    this.nick = data.nick;
+    this.avatar = data.avatar;
   }
 }

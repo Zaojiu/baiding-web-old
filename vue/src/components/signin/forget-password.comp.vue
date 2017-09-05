@@ -1,7 +1,7 @@
 <template>
   <div class="forget-pwd-container">
     <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
-      <div class="form-group mobile-group" v-bind:class="{'has-error': errors.has('phoneNumber')}">
+      <div class="form-group mobile-group" :class="{'has-error': errors.has('phoneNumber')}">
         <div class="input-group">
           <input
             ref="mobileInput"
@@ -19,7 +19,7 @@
       </div>
 
       <div class="form-group sms-code-group"
-           v-bind:class="{'has-error': errors.has('smsCode')}">
+           :class="{'has-error': errors.has('smsCode')}">
         <div class="input-group">
           <input
             ref="smsCodeInput"
@@ -34,7 +34,7 @@
           <label class="required">验证码</label>
           <a class="sms-sender"
              href=""
-             v-bind:class="{'disabled': !smsBtnAvailable}"
+             :class="{'disabled': !smsBtnAvailable}"
              @click.prevent="sendSMS(); errors.has('phoneNumber') ? $refs.mobileInput.focus() : $refs.smsCodeInput.focus();">{{smsBtnText}}</a>
         </div>
         <p class="helper error" v-if="errors.first('smsCode:required')">请填写验证码</p>
@@ -43,7 +43,7 @@
       </div>
 
       <div class="form-group password-group"
-           v-bind:class="{'has-error': errors.has('password')}">
+           :class="{'has-error': errors.has('password')}">
         <div class="input-group">
           <input
             name="password"
@@ -62,7 +62,7 @@
       </div>
 
       <div class="form-group">
-        <button class="button button-primary" v-bind:disabled="isSubmitting">{{!isSubmitting ? '重置密码' : '重置密码中...'}}</button>
+        <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? '重置密码' : '重置密码中...'}}</button>
       </div>
     </form>
   </div>
@@ -118,10 +118,9 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Component } from 'vue-property-decorator';
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {form} from '../../shared/form';
-  import bdLoading from '../../shared/bd-loading.comp.vue';
   import {showTips} from "../../store/tip";
   import {SigninErrorMessage, ApiCode} from '../../shared/api/code-map.enum';
   import {SmsScene, SmsType, sendSmsByGuest} from '../../shared/api/sms.api';
@@ -136,9 +135,6 @@
   ]);
 
   @Component({
-    components: {
-      bdLoading,
-    },
     directives: form,
   })
   export default class ForgetPasswordComponent extends Vue {

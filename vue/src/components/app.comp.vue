@@ -1,12 +1,14 @@
 <template>
   <div>
     <router-view></router-view>
+    <payment></payment>
+    <modal></modal>
     <tool-tips></tool-tips>
   </div>
 </template>
 
 <style lang="scss">
-  @import "../css/_utils.scss";
+  @import "../css/_utils";
 
   /* Reset */
   html,
@@ -92,19 +94,24 @@
     }
   }
 
-  @import "../css/_hack.scss";
-  @import "../css/_button.scss";
-  @import "../css/_form.scss";
-  @import "../css/_avatar.scss";
-  @import "../css/_article.scss";
+  @import "../css/_hack";
+  @import "../css/_button";
+  @import "../css/_form";
+  @import "../css/_avatar";
+  @import "../css/_article";
+  @import "../css/clickable-block";
 </style>
 
 <script lang="ts">
-  import toolTips from '../shared/tool-tips.comp.vue'
+  import toolTips from '../shared/tool-tips.comp.vue';
+  import payment from '../shared/payment.comp.vue';
+  import modal from '../shared/modal.comp.vue';
 
   export default {
     components: {
       toolTips,
+      payment,
+      modal,
     }
-  };
+  }
 </script>

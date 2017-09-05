@@ -1,5 +1,5 @@
 <template>
-  <div class="operation-tips" v-bind:class="{'is-opened':isOpened}">{{message}}</div>
+  <div class="operation-tips" :class="{'is-opened':isOpened}">{{message}}</div>
 </template>
 
 <style lang="scss">
@@ -28,17 +28,18 @@
 </style>
 
 <script lang="ts">
-  import Vue, {ComponentOptions} from "vue";
+  import Vue from "vue";
+  import {Component} from 'vue-property-decorator';
   import {tipStore} from '../store/tip';
 
-  export default {
-    computed: {
-      isOpened(): boolean {
-        return tipStore.state.errorMessage !== '' && tipStore.state.status;
-      },
-      message(): string {
-        return tipStore.state.errorMessage || '';
-      }
+  @Component
+  export default class ToolTipsComponent extends Vue {
+    get isOpened(): boolean {
+      return tipStore.state.errorMessage !== '' && tipStore.state.status;
     }
-  } as ComponentOptions<Vue>;
+
+    get message(): string {
+      return tipStore.state.errorMessage || '';
+    }
+  }
 </script>

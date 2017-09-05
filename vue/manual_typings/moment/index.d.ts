@@ -58,6 +58,8 @@ interface Duration {
 
   toISOString(): string;
   toJSON(): string;
+
+  format(layout: string, opt: any): string;
 }
 
 interface MomentInput {
@@ -409,6 +411,8 @@ interface Moment {
   isSameOrBefore(b: Moment | string | number | Date | number[], granularity?: string): boolean;
 
   isBetween(a: Moment | string | number | Date | number[], b: Moment | string | number | Date | number[], granularity?: string, inclusivity?: string): boolean;
+
+  isZero(): boolean;
 
   // Deprecated as of 2.8.0.
   lang(language: string): Moment;

@@ -1,14 +1,14 @@
 <template>
   <div class="mobile-bind-container">
     <section class="user-section">
-      <img class="avatar-lg avatar-round" v-bind:src="userInfo.avatar" alt="头像">
+      <img class="avatar-lg avatar-round" :src="userInfo.avatar" alt="头像">
       <div class="nick">{{userInfo.nick}}</div>
     </section>
 
     <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
       <section>
         <h2>手机号码绑定</h2>
-        <div class="form-group mobile-group" v-bind:class="{'has-error': errors.has('phoneNumber')}">
+        <div class="form-group mobile-group" :class="{'has-error': errors.has('phoneNumber')}">
           <div class="input-group">
             <input
               ref="mobileInput"
@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group sms-code-group"
-             v-bind:class="{'has-error': errors.has('smsCode')}">
+             :class="{'has-error': errors.has('smsCode')}">
           <div class="input-group">
             <input
               ref="smsCodeInput"
@@ -42,7 +42,7 @@
             <label class="required">验证码</label>
             <a class="sms-sender"
                href=""
-               v-bind:class="{'disabled': !smsBtnAvailable}"
+               :class="{'disabled': !smsBtnAvailable}"
                @click.prevent="sendSMS(); errors.has('phoneNumber') ? $refs.mobileInput.focus() : $refs.smsCodeInput.focus();">{{smsBtnText}}</a>
           </div>
           <p class="helper" v-if="!errors.has('smsCode')">六位数字验证码</p>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="form-group"
-             v-bind:class="{'has-error': errors.has('password')}">
+             :class="{'has-error': errors.has('password')}">
           <div class="input-group">
             <input
               name="password"
@@ -75,7 +75,7 @@
       <section>
         <h2>直播报名信息</h2>
         <div class="form-group"
-             v-bind:class="{'has-error': errors.has('name')}">
+             :class="{'has-error': errors.has('name')}">
           <div class="input-group">
             <input
               name="name"
@@ -90,7 +90,7 @@
         </div>
 
         <div class="form-group"
-             v-bind:class="{'has-error': errors.has('company')}">
+             :class="{'has-error': errors.has('company')}">
           <div class="input-group">
             <input
               name="company"
@@ -104,7 +104,7 @@
         </div>
 
         <div class="form-group"
-             v-bind:class="{'has-error': errors.has('title')}">
+             :class="{'has-error': errors.has('title')}">
           <div class="input-group">
             <input
               name="title"
@@ -120,7 +120,7 @@
 
       <section class="footer-section">
         <div class="form-group">
-          <button class="button button-primary" v-bind:disabled="isSubmitting">{{!isSubmitting ? '绑定手机号码' : '绑定中...'}}</button>
+          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? '绑定手机号码' : '绑定中...'}}</button>
           <p class="tips">手机号码绑定之后即可观看直播</p>
         </div>
       </section>
@@ -209,7 +209,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Component } from 'vue-property-decorator';
   import {getUserInfo, getUserInfoCache} from '../../shared/api/user.api';
   import {UserInfoModel} from "../../shared/api/user.model";
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
@@ -219,7 +219,6 @@
   import {mobileBindedCompGuard} from '../../shared/guard/mobile-binded-comp.guard';
   import {authGuard} from '../../shared/guard/user-auth.guard';
   import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
-  import bdLoading from '../../shared/bd-loading.comp.vue';
   import {form} from '../../shared/form';
   import {RawLocation, Route} from "vue-router";
   import {ApiCode} from '../../shared/api/code-map.enum';
@@ -229,9 +228,6 @@
   ]);
 
   @Component({
-    components: {
-      bdLoading,
-    },
     directives: form,
   })
   export default class MobileBindedComponent extends Vue {

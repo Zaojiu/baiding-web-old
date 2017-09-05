@@ -1,16 +1,16 @@
 <template>
   <div class="signin-container">
-    <div class="wechat-signin-container" v-bind:class="{'show': mode === 'wechat'}">
+    <div class="wechat-signin-container" :class="{'show': mode === 'wechat'}">
       <div class="qrcode-container">
-        <div class="loading-container" v-bind:class="{show: $store.state.user.qrcodeUrl === undefined}">
+        <div class="loading-container" :class="{show: $store.state.user.qrcodeUrl === undefined}">
           <bd-loading class="loading"></bd-loading>
           二维码加载中...
         </div>
         <div class="retry" v-if="isWechatQrcodeError">二维码加载失败，请<a href="" @click.prevent="getQrcodeUrl()">重试</a>
         </div>
         <iframe
-          v-bind:class="{show: $store.state.user.qrcodeUrl}"
-          v-bind:src="$store.state.user.qrcodeUrl"
+          :class="{show: $store.state.user.qrcodeUrl}"
+          :src="$store.state.user.qrcodeUrl"
           @error="isWechatQrcodeError = true"
           frameborder="0"
         ></iframe>
@@ -20,16 +20,16 @@
 
     <div class="mobile-signin-container"
          ref="mobileSigninContainer"
-         v-bind:class="{'show': mode === 'sms' || mode === 'password', 'hide': mode !== 'sms' && mode !== 'password'}">
+         :class="{'show': mode === 'sms' || mode === 'password', 'hide': mode !== 'sms' && mode !== 'password'}">
       <nav>
-        <a href="" v-bind:class="{active: mode === 'sms'}"
+        <a href="" :class="{active: mode === 'sms'}"
            @click.prevent="switchMode('sms'); $refs.mobileInput.focus();">验证码登录</a>
-        <a href="" v-bind:class="{active: mode === 'password'}"
+        <a href="" :class="{active: mode === 'password'}"
            @click.prevent="switchMode('password'); $refs.mobileInput.focus();">密码登录</a>
       </nav>
 
       <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
-        <div class="form-group mobile-group" v-bind:class="{'has-error': errors.has('phoneNumber')}">
+        <div class="form-group mobile-group" :class="{'has-error': errors.has('phoneNumber')}">
           <div class="input-group">
             <input
               ref="mobileInput"
@@ -48,7 +48,7 @@
 
         <div class="form-group sms-code-group"
              v-if="mode === 'sms'"
-             v-bind:class="{'has-error': errors.has('smsCode')}">
+             :class="{'has-error': errors.has('smsCode')}">
           <div class="input-group">
             <input
               ref="smsCodeInput"
@@ -63,7 +63,7 @@
             <label class="required">验证码</label>
             <a class="sms-sender"
                href=""
-               v-bind:class="{'disabled': !smsBtnAvailable}"
+               :class="{'disabled': !smsBtnAvailable}"
                @click.prevent="sendSMS(); errors.has('phoneNumber') ? $refs.mobileInput.focus() : $refs.smsCodeInput.focus();">{{smsBtnText}}</a>
           </div>
           <p class="helper error" v-if="errors.first('smsCode:required')">请填写验证码</p>
@@ -73,7 +73,7 @@
 
         <div class="form-group password-group"
              v-if="mode === 'password'"
-             v-bind:class="{'has-error': errors.has('password')}">
+             :class="{'has-error': errors.has('password')}">
           <div class="input-group">
             <input
               name="password"
@@ -95,7 +95,7 @@
         </div>
 
         <div class="form-group">
-          <button class="button button-primary" v-bind:disabled="isSubmitting">{{!isSubmitting ? '登录' : '登录中...'}}
+          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? '登录' : '登录中...'}}
           </button>
         </div>
       </form>
@@ -345,11 +345,10 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Component } from 'vue-property-decorator';
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {host} from "../../env/environment";
   import {form} from '../../shared/form';
-  import bdLoading from '../../shared/bd-loading.comp.vue';
   import {FETCH_SIGNIN_QRCODE} from '../../store/user';
   import {showTips} from "../../store/tip";
   import {SigninErrorMessage, ApiCode} from '../../shared/api/code-map.enum';
@@ -365,9 +364,6 @@
   ]);
 
   @Component({
-    components: {
-      bdLoading,
-    },
     directives: form,
   })
   export default class SigninComponent extends Vue {

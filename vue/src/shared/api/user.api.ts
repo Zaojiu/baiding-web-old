@@ -5,6 +5,7 @@ import {ApiCode} from "./code-map.enum";
 import {AxiosResponse} from "axios";
 import {Store} from "../utils/store";
 import router from '../../router';
+import {showTips} from "../../store/tip";
 
 export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel> => {
   const url = `${host.io}/api/user`;
@@ -26,7 +27,8 @@ export const getUserInfoCache = (): UserInfoModel => {
   const userInfoCache = Store.localStore.get('userInfo');
 
   if (!userInfoCache) {
-    throw new Error('empty user info cache');
+    router.push({path: '/signin', query: {redirectTo: location.href}});
+    return new UserInfoModel({});
   }
 
   return new UserInfoModel(userInfoCache);

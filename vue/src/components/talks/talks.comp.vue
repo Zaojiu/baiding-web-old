@@ -2,7 +2,7 @@
   <div>
     <bd-loading class="loading" v-if="isLoading"></bd-loading>
     <div class="main" v-show="!isChildActived()" v-else-if="talkInfo" @touchstart="touchStart" @touchmove="touchMove">
-      <header v-bind:class="{
+      <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
         'played-landscape': isVideoPlayed && isLandscape
@@ -13,7 +13,7 @@
           <img
             class="cover-image"
             alt="话题间封面"
-            v-bind:src="coverUrl"
+            :src="coverUrl"
             @error="coverUrl = defaultCoverUrl"
           >
 
@@ -22,17 +22,17 @@
       </header>
 
       <ul class="tab-nav"
-          v-bind:class="{'stick-under-video': isVideoPlayed && !isLandscape && !isOnScreen}"
+          :class="{'stick-under-video': isVideoPlayed && !isLandscape && !isOnScreen}"
           v-show="!(isVideoPlayed && isLandscape)"
           v-if="emphasis && emphasis.length"
       >
-        <li v-bind:class="{active: tabIndex === 0}" @click="tabIndex = 0">全文</li>
-        <li v-bind:class="{active: tabIndex === 1}" @click="tabIndex = 1">划重点</li>
+        <li :class="{active: tabIndex === 0}" @click="tabIndex = 0">全文</li>
+        <li :class="{active: tabIndex === 1}" @click="tabIndex = 1">划重点</li>
       </ul>
 
       <div class="tab-content-container" v-show="!(isVideoPlayed && isLandscape)">
         <div class="tab-content-inner"
-             v-bind:class="{'tab-one-active': tabIndex === 0, 'tab-two-active': tabIndex === 1}">
+             :class="{'tab-one-active': tabIndex === 0, 'tab-two-active': tabIndex === 1}">
           <div class="tab-content">
             <section class="title">
               <div class="categories" v-if="talkCategories">{{talkCategories}}</div>
@@ -42,7 +42,7 @@
                   <img
                     class="avatar avatar-round avatar-sm"
                     v-if="talkInfo.userInfo"
-                    v-bind:src="talkInfo.userInfo.avatar"
+                    :src="talkInfo.userInfo.avatar"
                     alt="发布人头像"
                   >
                   <img
@@ -72,10 +72,10 @@
               <h2>评论</h2>
 
               <div v-if="comments">
-                <div class="comment" v-for="comment in comments.data" v-bind:key="comment.id">
+                <div class="comment" v-for="comment in comments.data" :key="comment.id">
                   <div class="header" v-once>
                     <div class="author-info">
-                      <img class="avatar avatar-round avatar-sm" v-bind:src="comment.user.avatar" alt="用户头像">
+                      <img class="avatar avatar-round avatar-sm" :src="comment.user.avatar" alt="用户头像">
                       <span class="nick">{{comment.user.nick}}</span>
                       <time>{{comment.createdAt.format('MM月DD日 HH:mm')}}</time>
                     </div>
@@ -96,24 +96,24 @@
 
           <div class="tab-content">
             <div class="emphasis" v-for="(item, index) in emphasis"
-                 v-bind:class="{active: emphasisActiveIndex === index}" @click="emphasisClicked(index);">
+                 :class="{active: emphasisActiveIndex === index}" @click="emphasisClicked(index);">
               <div class="start">{{item.startParsed.format('hh小时mm分ss秒', {forceLength: true})}}</div>
               <div class="text">{{item.text}}</div>
-              <img class="cover" v-if="item.coverUrl" v-bind:src="item.coverUrl" alt="划重点配图">
+              <img class="cover" v-if="item.coverUrl" :src="item.coverUrl" alt="划重点配图">
             </div>
           </div>
         </div>
       </div>
 
       <footer v-show="!(isVideoPlayed && isLandscape)" ref="toolBar"
-              v-bind:class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
+              :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
         <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
         <div class="icon" @click="togglePraise">
-          <i class="bi" v-bind:class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
+          <i class="bi" :class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
         </div>
         <div class="icon" @click="toggleFavorite">
           <i class="bi"
-             v-bind:class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
+             :class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
         </div>
         <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
       </footer>
@@ -617,8 +617,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
-  import bdLoading from '../../shared/bd-loading.comp.vue';
+  import { Component } from 'vue-property-decorator';
   import {
     FETCH_TALK,
     FETCH_TALK_COMMENT,
@@ -626,16 +625,12 @@
     TOGGLE_TALK_FAVORITE,
     FETCH_TALK_EMPHASIS,
     TalkCommentsStore
-  } from '../../store/talk'
-  import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils'
+  } from '../../store/talk';
+  import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils';
   import {TalkEmphasisModel, TalkInfoModel} from "../../shared/api/talk.model";
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
 
-  @Component({
-    components: {
-      bdLoading,
-    },
-  })
+  @Component
   export default class TalkComponent extends Vue {
     id = '';
     originY = 0;

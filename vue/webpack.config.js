@@ -30,6 +30,7 @@ let thirdPartyLibs = [
   './node_modules/jquery/dist/jquery.min.js',
   './node_modules/moment/min/moment.min.js',
   './node_modules/moment-duration-format/lib/moment-duration-format.js',
+  './node_modules/moment-is-zero/index.js',
   './node_modules/moment/locale/zh-cn.js',
   './node_modules/fastclick/lib/fastclick.js',
 ];
@@ -65,7 +66,7 @@ const assetsReplacementLoader = 'string-replace-loader?' + JSON.stringify(assets
 const config = {
   entry: {
     'global': thirdPartyLibs,
-    'libs': ['vue', 'vue-class-component', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN'],
+    'libs': ['vue', 'vue-property-decorator', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN', 'yaqrcode'],
     'shared': sharedFiles,
     'main': './src/main.ts',
   },
