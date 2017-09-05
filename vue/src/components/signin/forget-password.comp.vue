@@ -118,21 +118,13 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {form} from '../../shared/form';
   import {showTips} from "../../store/tip";
   import {SigninErrorMessage, ApiCode} from '../../shared/api/code-map.enum';
   import {SmsScene, SmsType, sendSmsByGuest} from '../../shared/api/sms.api';
   import {resetPassword} from '../../shared/api/user.api';
-  import {signinGuard} from '../../shared/guard/signin-comp.guard';
-  import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
-  import {RawLocation, Route} from "vue-router";
-  import router from "../../router";
-
-  Component.registerHooks([
-    'beforeRouteEnter',
-  ]);
 
   @Component({
     directives: form,
@@ -146,12 +138,6 @@
     isSubmitting = false;
     redirectTo: string;
     regexpMobile = regexpMobile;
-
-    beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
-      const guards = [signinGuard(redirectTo)];
-      beforeRouteEnter(guards, to, from, next);
-    }
 
     created() {
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');

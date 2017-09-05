@@ -167,19 +167,12 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {isInApp} from '../../../shared/utils/utils';
   import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../../store/talk';
   import {form} from '../../../shared/form';
-  import {beforeRouteEnter} from '../../../shared/guard/before-route-enter';
-  import {authGuard} from '../../../shared/guard/user-auth.guard';
   import {showTips} from '../../../store/tip';
-  import {RawLocation, Route} from "vue-router";
   import {ErrorBag} from "vee-validate";
-
-  Component.registerHooks([
-    'beforeRouteEnter',
-  ]);
 
   @Component({
     directives: form
@@ -194,11 +187,6 @@
     isSubmitting = false;
     content = '';
     errors: ErrorBag;
-
-    beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const guards = [authGuard()];
-      beforeRouteEnter(guards, to, from, next);
-    }
 
     created() {
       this.id = this.$route.params['id'];

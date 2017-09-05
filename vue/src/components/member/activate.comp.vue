@@ -170,23 +170,14 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {UserInfoModel} from "../../shared/api/user.model";
   import {getUserInfo, getUserInfoCache, getUserDetailInfo} from "../../shared/api/user.api";
-  import {mobileBindedGuard} from '../../shared/guard/mobile-binded.guard';
-  import {authGuard} from '../../shared/guard/user-auth.guard';
-  import {memberActivateCompGuard} from '../../shared/guard/member-activate-comp.guard';
-  import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
   import {form} from '../../shared/form';
-  import {RawLocation, Route} from "vue-router";
   import {showTips} from "../../store/tip";
   import {activateMember} from "../../shared/api/member.api";
   import {Store} from "../../shared/utils/store";
   import {getRelativePath} from '../../shared/utils/utils';
-
-  Component.registerHooks([
-    'beforeRouteEnter',
-  ]);
 
   @Component({
     directives: form,
@@ -199,11 +190,6 @@
     company = '';
     title = '';
     isSubmitting = false;
-
-    beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const guards = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
-      beforeRouteEnter(guards, to, from, next);
-    }
 
     async created() {
       let userDetailInfo;

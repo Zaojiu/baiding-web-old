@@ -345,7 +345,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {host} from "../../env/environment";
   import {form} from '../../shared/form';
@@ -354,14 +354,6 @@
   import {SigninErrorMessage, ApiCode} from '../../shared/api/code-map.enum';
   import {SmsScene, SmsType, sendSmsByGuest} from '../../shared/api/sms.api';
   import {signin} from '../../shared/api/user.api';
-  import {signinGuard} from '../../shared/guard/signin-comp.guard';
-  import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
-  import {RawLocation, Route} from "vue-router";
-  import router from "../../router";
-
-  Component.registerHooks([
-    'beforeRouteEnter',
-  ]);
 
   @Component({
     directives: form,
@@ -377,12 +369,6 @@
     mode = 'sms';
     isWechatQrcodeError = false;
     regexpMobile = regexpMobile;
-
-    beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
-      const guards = [signinGuard(redirectTo)];
-      beforeRouteEnter(guards, to, from, next);
-    }
 
     created() {
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');

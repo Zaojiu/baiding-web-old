@@ -209,23 +209,15 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {getUserInfo, getUserInfoCache} from '../../shared/api/user.api';
   import {UserInfoModel} from "../../shared/api/user.model";
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {SmsScene, SmsType, sendSmsByLoginUser} from '../../shared/api/sms.api';
   import {showTips} from "../../store/tip";
   import {signup} from '../../shared/api/user.api';
-  import {mobileBindedCompGuard} from '../../shared/guard/mobile-binded-comp.guard';
-  import {authGuard} from '../../shared/guard/user-auth.guard';
-  import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
   import {form} from '../../shared/form';
-  import {RawLocation, Route} from "vue-router";
   import {ApiCode} from '../../shared/api/code-map.enum';
-
-  Component.registerHooks([
-    'beforeRouteEnter',
-  ]);
 
   @Component({
     directives: form,
@@ -243,11 +235,6 @@
     isSubmitting = false;
     redirectTo: string;
     regexpMobile = regexpMobile;
-
-    beforeRouteEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-      const guards = [authGuard(), mobileBindedCompGuard()];
-      beforeRouteEnter(guards, to, from, next);
-    }
 
     created() {
       this.userInfo = getUserInfoCache();
