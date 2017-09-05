@@ -17,6 +17,16 @@
           <li>您将优先获得“在线大师课程”的体验机会。</li>
         </ol>
       </div>
+
+      <div class="block">
+        <h2 class="title">会员须知</h2>
+        <ol class="list">
+          <li>购买之日起自动开通会员身份有效期为一年。</li>
+          <li>有效期内可随时续费延长您的会员身份。</li>
+          <li>会员身份将与您的手机号一对一绑定。</li>
+          <li>我们将不断增加更多有意思的权益和体验给到会员。</li>
+        </ol>
+      </div>
     </div>
     <button class="button button-primary" @click="goMyMember()">{{btnText}}</button>
   </div>

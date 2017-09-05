@@ -1,7 +1,7 @@
 export enum MemberRightType {
   Event = 1, // 造就 会员 - talk
   Book, // 造就 会员 - 赠书
-  NormalDiscount, // 造就 普通 - 折扣
+  NormalDiscount = 9, // 造就 普通 - 折扣
 }
 
 export class MemberRight {
