@@ -1,21 +1,31 @@
 <template>
   <div class="container">
-    <div class="content">
-      <header>
-        <img class="avatar avatar-round avatar-lg" v-bind:src="userInfo.avatar" alt="用户头像">
-      </header>
-      <div class="date"></div>
-      <div class="tips">欢迎加入造就会员</div>
-      <div class="rights" v-for="right in rights">
+    <header>
+      <img class="avatar avatar-round" :src="userInfo.avatar" alt="用户头像">
+      <div class="nick">{{userInfo.nick}}</div>
+    </header>
+    <div class="date" v-if="userInfo.isMember">
+      <div class="inner"></div>
+      <div class="background" :style="{width: progressWidthPrecent + '%'}"></div>
+      <div class="text">会员有效期: {{userInfo.member.joinAt.format('YYYY年MM月DD日')}}-{{userInfo.member.expiredAt.format('YYYY年MM月DD日')}}</div>
+    </div>
+    <div class="rights">
+      <div class="right" v-for="right in rights" @click.prevent="gotoRight(right.id)">
+        <i class="bi bi-member-right-book" v-if="right.isTypeBook"></i>
+        <i class="bi bi-member-right-video" v-else-if="right.isTypeEvent"></i>
+        <i class="bi bi-member-right-discount" v-else-if="right.isTypeNormalDiscount"></i>
         <div class="title">{{right.title}}</div>
-        <div class="desc">{{right.desc}}</div>
-        <div class="used" v-if="right.totalAmount">可用权益：{{right.availableAmount}}/{{right.totalAmount}}</div>
-        <button class="button button-dark-blue" @click="gotoRight(right.id)">查看详情</button>
+        <div class="detail">
+          <div class="amount">可用权益：<span v-if="right.totalAmount">{{right.availableAmount}}/{{right.totalAmount}}</span><span v-else>0</span></div>
+          <a class="detail-link" href="">查看详情</a>
+        </div>
+        <div class="desc" v-if="right.desc">{{right.desc}}</div>
       </div>
     </div>
     <footer>
-      <button class="button button-primary" @click="activate()" v-if="!userInfo.member.valid">实体卡激活</button>
-      <button class="button button-dark-blue" @click="buy()">{{buyBtnText}}</button>
+      <a class="activate-link" href="" @click.prevent="activate()" v-if="!userInfo.isMember">使用激活码开通会员权限</a>
+      <button class="buy-button" @click="buy()" v-if="!userInfo.isMember">{{buyBtnText}}</button>
+      <a class="intro-link" href="" @click.prevent="goIntro()">会员权益说明</a>
     </footer>
     <router-view></router-view>
   </div>
@@ -24,40 +34,212 @@
 <style lang="scss" scoped>
   .container {
     height: 100vh;
-    display: flex;
-    flex-direction: column;
+    overflow: auto;
 
-    .content {
-      flex-grow: 1;
-      overflow: auto;
+    header {
+      background-image: url('/assets/img/my-member-cover.png');
+      background-size: cover;
+      text-align: center;
+      padding: 26px 0 65px;
 
-      .cover {
-        width: 100%;
-        height: auto;
+      .avatar {
+        display: block;
+        height: 77px;
+        width: 77px;
+        object-fit: cover;
+        margin: 0 auto;
+      }
+
+      .nick {
+        margin-top: 5px;
+        font-size: $font-size-sm;
+        color: $color-w;
+        font-weight: bold;
       }
     }
 
-    .button {
-      flex-shrink: 0;
-      border-radius: 0;
+    .date {
+      position: relative;
+      height: 18px;
+      padding: 2px;
+      border: solid 1px #909090;
+      border-radius: 9px;
+      display: flex;
+      margin: 10px 35px 19px;
+
+      .inner {
+        border-radius: 7px;
+        background-color: #909090;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+      }
+
+      .background {
+        position: absolute;
+        right: 2px;
+        border-radius: 7px;
+        background-color: #16178c;
+        height: 12px;
+      }
+
+      .text {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+        font-size: $font-size-xsm;
+        color: $color-w;
+        transform: scale(.78);
+        line-height: 16px;
+      }
+    }
+
+    .date + .rights {
+      .right:first-child {
+        margin-top: 0;
+      }
+    }
+
+    .right {
+      position: relative;
+      margin: 20px 35px;
+      padding-left: 45px;
+
+      &:first-child {
+        margin-top: 40px;
+      }
+
+      &:last-child {
+        margin-bottom: 40px;
+      }
+
+      .bi {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 37px;
+        color: #16178c;
+      }
+
+      .title {
+        padding-left: 15px;
+        padding-bottom: 5px;
+        border-bottom: solid 1px #aaaaaa;
+        font-size: $font-size-md;
+        color: #16178c;
+        line-height: 1em;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .detail {
+        display: flex;
+        justify-content: space-between;
+        padding-left: 15px;
+        padding-top: 8px;
+
+        .amount, .detail-link {
+          font-size: $font-size-xsm;
+          color: #16178c;
+        }
+      }
+
+      .desc {
+        margin-top: 10px;
+        padding-left: 15px;
+        font-size: $font-size-xsm;
+        color: #666666;
+      }
+    }
+
+    footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .activate-link {
+        font-size: $font-size-xsm;
+        color: #16178c;
+      }
+
+      .buy-button {
+        position: relative;
+        background-color: #16178c;
+        height: 30px;
+        line-height: 30px;
+        color: #00ebd8;
+        font-size: $font-size-xsm;
+        border-radius: 15px;
+        padding: 0 20px;
+        margin-top: 24px;
+
+        &:before {
+          position: absolute;
+          width: calc(100% + 6px);
+          height: calc(100% + 6px);
+          content: '';
+          left: 0;
+          top: 0;
+          transform: translateX(-4px) translateY(-4px);
+          border: solid 1px #16178c;
+          border-radius: calc(15px + 6px);
+        }
+      }
+
+      .intro-link {
+        font-size: $font-size-sm;
+        color: #a4a4a7;
+        transform: scale(.83333);
+        margin-top: 40px;
+        margin-bottom: 21px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
     }
   }
 </style>
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Component } from 'vue-property-decorator';
   import {Money} from '../../shared/utils/utils';
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {listMemberRights} from '../../shared/api/member.api';
   import {MemberRight} from "../../shared/api/member.model";
+  import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
+  import {checkOrderFee} from "../../shared/api/order.api";
+
 
   @Component
   export default class MemberComponent extends Vue {
     userInfo = getUserInfoCache();
-    fee = new Money(49900);
+    fee = new Money(49800);
     isLoading = false;
     rights: MemberRight[] = [];
+    memberOrderObject = new PostOrderObject('member-year', OrderObjectType.Member, 1); // hardcode temporary
+
+    get buyBtnText(): string {
+      let text: string;
+
+      if (this.userInfo.isMember) {
+        text = '续费造就会员';
+      } else {
+        text = `购买造就会员 ${this.fee.toYuan('', '元/年')}`;
+      }
+
+      return text;
+    }
+
+    get progressWidthPrecent(): number {
+      const percent = moment().diff(this.userInfo.member.joinAt) / this.userInfo.member.expiredAt.diff(this.userInfo.member.joinAt);
+      return Math.round(percent * 100);
+    }
 
     created() {
       this.initData();
@@ -66,23 +248,17 @@
     async initData() {
       this.isLoading = true;
       this.rights = await listMemberRights();
+      await this.getMemberFee();
       this.isLoading = false;
     }
 
-    get buyBtnText(): string {
-      let text: string;
-
-      if (this.userInfo.isMember) {
-        text = '续费会员';
-      } else {
-        text = `购买会员 ${this.fee.toYuan('', '元/年')}`;
-      }
-
-      return text;
+    async getMemberFee() {
+      const orderFee = await checkOrderFee([this.memberOrderObject]);
+      this.fee = orderFee.totalPrice;
     }
 
     buy() {
-      this.$router.push({path: '/order', query: {items: 'dsdsdsdsd'}});
+      this.$router.push({path: '/order', query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}});
     }
 
     activate() {
@@ -91,6 +267,10 @@
 
     gotoRight(id: string) {
       this.$router.push({path: `/my/member/rights/${id}`});
+    }
+
+    goIntro() {
+      this.$router.push({path: '/member/intro'});
     }
   }
 </script>

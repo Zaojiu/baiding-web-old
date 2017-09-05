@@ -167,11 +167,10 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Component } from 'vue-property-decorator';
   import {isInApp} from '../../../shared/utils/utils';
   import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../../store/talk';
   import {form} from '../../../shared/form';
-  import bdLoading from '../../../shared/bd-loading.comp.vue'
   import {beforeRouteEnter} from '../../../shared/guard/before-route-enter';
   import {authGuard} from '../../../shared/guard/user-auth.guard';
   import {showTips} from '../../../store/tip';
@@ -183,9 +182,6 @@
   ]);
 
   @Component({
-    components: {
-      bdLoading,
-    },
     directives: form
   })
   export default class CommentComponent extends Vue {

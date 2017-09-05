@@ -1,6 +1,6 @@
 import {host} from '../../env/environment';
 import iosBridge from '../ios';
-import {isInApp, isInWechat} from '../utils/utils';
+import {isInWechat} from '../utils/utils';
 
 // TODO: interface define.
 
@@ -15,12 +15,4 @@ export const iosAuth = async (redirectTo: string) => {
   return bridge.callHandler('login', query);
 };
 
-let auth;
-
-if (isInWechat) {
-  auth = wechatAuth;
-} else if (isInApp) {
-  auth = iosAuth;
-}
-
-export default auth;
+export const auth: (redirectTo: string) => void = isInWechat ? wechatAuth : iosAuth;

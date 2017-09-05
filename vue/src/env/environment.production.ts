@@ -4,27 +4,27 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const host = {
-  self: 'http://www.zaojiu.tv',
-  auth: '//auth.zaojiu.tv',
-  io: '//io.zaojiu.tv',
-  assets: 'http://www.zaojiu.tv',
-  weinre: 'http://192.168.2.173:10000',
+  self: '_REPL_SELF_HOST_',
+  auth: '_REPL_AUTH_HOST_',
+  io:  '_REPL_IO_HOST_',
+  assets: '_REPL_ASSETS_HOST_',
+  weinre: '',
 };
 
 export const appConfig = {
   host: host,
-  name: '造就',
-  slogan: '发现最有创造力的思想',
-  lcAppId: 'UGzbb42HlvESeNmziyhOWHsa-gzGzoHsz',
-  lcAppKey: 'dbbAJuix9SThsVPWMkNSAQ9d',
-  wechatLink: 'http://weixin.qq.com/r/OkOrs7fEwOq-rfPQ9xYo',
-  payAddress: '/dev/wxpay/',
-  iosDownloadLink: 'https://a.app.qq.com/o/ioslink.jsp?id=1190044215',
-  iosDownloadPage: 'https://www.zaojiu.com/app',
+  name: '_REPL_SITE_NAME_',
+  slogan: '_REPL_SLOGAN_',
+  lcAppId: '_REPL_LEADCLOUD_ID_',
+  lcAppKey: '_REPL_LEADCLOUD_APP_KEY_',
+  wechatLink: '_REPL_WECHAT_LINK_',
+  payAddress: '_REPL_WECHAT_PAY_ADDRESS_',
+  iosDownloadLink: '_REPL_IOS_DOWNLOAD_LINK_',
+  iosDownloadPage: '_REPL_IOS_DOWNLOAD_PAGE_',
 };
 
 export const environment = {
-  production: false,
-  development: true,
+  production: true,
   config: appConfig,
 };
+

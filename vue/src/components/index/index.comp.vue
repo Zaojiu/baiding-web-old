@@ -7,7 +7,7 @@
       <!--<div class="live-info-block" v-for="liveInfo in livesList" @click="gotoLiveRoomInfo(liveInfo.id)">-->
         <!--<div class="admin-info">-->
           <!--<div class="admin-info-wrapper" @click="gotoInfoCenter(liveInfo.admin.uid)">-->
-            <!--<img class="avatar" v-bind:src="liveInfo.admin.avatar" alt="主持人头像">-->
+            <!--<img class="avatar" :src="liveInfo.admin.avatar" alt="主持人头像">-->
             <!--<span class="nick">{{liveInfo.admin.nick}}</span>-->
           <!--</div>-->
         <!--</div>-->
@@ -24,7 +24,7 @@
         <!--</div>-->
 
         <!--<div class="cover-container">-->
-          <!--<img class="cover" v-bind:src="covers[liveInfo.id]" alt="话题间封面">-->
+          <!--<img class="cover" :src="covers[liveInfo.id]" alt="话题间封面">-->
           <!--&lt;!&ndash;<count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"&ndash;&gt;-->
                       <!--&lt;!&ndash;[countDownStatus]="liveInfo.isCreated()"></count-down>&ndash;&gt;-->
           <!--<span class="live-status living" v-if="liveInfo.isStarted()">直播中</span>-->
@@ -51,7 +51,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Component } from 'vue-property-decorator';
   import {scrollView} from '../../shared/scroll-view/scroll-view.directive';
 
   @Component({

@@ -1,4 +1,4 @@
-import auth from '../auth';
+import {auth} from '../auth';
 import {getUserInfo} from '../api/user.api'
 import {Route} from "vue-router";
 import {host} from "../../env/environment";

@@ -62,7 +62,7 @@ export default new Router({
     {
       path: '/my',
       name: 'my',
-      component: () => System.import('./components/my/index.comp.vue'),
+      component: () => System.import('./components/my/my.comp.vue'),
     },
     {
       path: '/my/member',
@@ -78,13 +78,13 @@ export default new Router({
       ]
     },
     {
-      path: '/my/order',
-      name: 'my.order',
+      path: '/my/orders',
+      name: 'my.orders',
       component: () => System.import('./components/my/order.comp.vue'),
     },
     {
-      path: '/my/ticket',
-      name: 'my.ticket',
+      path: '/my/tickets',
+      name: 'my.tickets',
       component: () => System.import('./components/my/ticket.comp.vue'),
     },
     {
@@ -100,12 +100,12 @@ export default new Router({
       ]
     },
     {
-      path: '/order',
+      path: '/order/:id?',
       name: 'order',
       component: () => System.import('./components/order/order.comp.vue'),
     },
     {
-      path: '/event/:id/ticket',
+      path: '/events/:id/tickets',
       name: 'event.ticket',
       component: () => System.import('./components/event/ticket.comp.vue'),
     },
@@ -119,5 +119,9 @@ export default new Router({
       name: 'notfound',
       component: () => System.import('./components/notfound/notfound.comp.vue'),
     },
+    {
+      path: '*',
+      component: () => System.import('./components/notfound/notfound.comp.vue'),
+    }
   ]
 });

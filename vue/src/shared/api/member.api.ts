@@ -1,8 +1,9 @@
 import {host} from "../../env/environment";
 import {get, post} from "./xhr";
 import {AxiosResponse} from "axios";
-import {MemberRight, MemberRightsCode} from "./member.model";
+import {MemberRight} from "./member.model";
 import {params} from "../utils/utils";
+import {Discount} from "./order.model";
 
 export const activateMember = async (code: string, wechat: string, realname: string, company: string, position: string): Promise<void> => {
   const url = `${host.io}/api/user/member/activate`;
@@ -48,7 +49,7 @@ export const getMemberRight = async (id: string): Promise<MemberRight|null> => {
   return new MemberRight(data);
 };
 
-export const listMemberRightsCode = async (discountId: string, onlyUnused = false, onlyUsed = false): Promise<MemberRightsCode[]> => {
+export const listMemberRightsCode = async (discountId: string, onlyUnused = false, onlyUsed = false): Promise<Discount[]> => {
   const url = `${host.io}/api/wallet/discount/code`;
   const query: {[key: string]: any} = {discountId};
   if (onlyUnused) query['unused'] = true;
@@ -61,11 +62,10 @@ export const listMemberRightsCode = async (discountId: string, onlyUnused = fals
     return [];
   }
 
-  const codes: MemberRightsCode[] = [];
+  const codes: Discount[] = [];
   const data = resp.data && resp.data.result || [];
   const user = resp.data && resp.data.include && resp.data.include.users || {};
-  data.forEach((codeData: any) => codes.push(new MemberRightsCode(codeData, user)));
+  data.forEach((codeData: any) => codes.push(new Discount(codeData, user)));
 
   return codes;
-
 };

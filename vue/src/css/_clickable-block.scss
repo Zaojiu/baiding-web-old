@@ -1,0 +1,35 @@
+.clickable-block {
+  padding: 20px;
+  border-top: solid 1px rgba(200, 199, 204, .5);
+  border-bottom: solid 1px rgba(200, 199, 204, .5);
+  background-color: $color-w;
+  margin-top: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &.group-end {
+    margin-bottom: 10px;
+  }
+
+  .title {
+    color: $color-dark-gray;
+    font-size: $font-size-sm;
+    display: flex;
+    align-items: center;
+    line-height: 1em;
+
+    .bi {
+      margin-right: 10px;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .bi-right-arrow {
+    color: rgb(199, 199, 204);
+    font-size: 13px;
+    height: 16px;
+    line-height: 16px;
+    margin-left: 10px;
+  }
+}

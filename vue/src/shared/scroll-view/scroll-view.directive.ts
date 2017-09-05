@@ -11,13 +11,13 @@ export const scrollView = {
     let isOnTopEventEmited = false;
     let isOnBottomEventEmited = false;
 
-    const checkScrollTop = (needNotify = true) => {
+    const checkScrollTop = (needEmitEvent = true) => {
       const scrollBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
       const isOnTop = el.scrollTop >= 0 && el.scrollTop <= threshold;
       const isOnBottom = scrollBottom >= 0 && scrollBottom <= threshold;
 
-      if (isOnTop && !isOnTopEventEmited) {
-        if (needNotify) onTop();
+      if (isOnTop && !isOnTopEventEmited && onTop) {
+        if (needEmitEvent) onTop();
         isOnTopEventEmited = true;
       }
 
@@ -25,8 +25,8 @@ export const scrollView = {
         isOnTopEventEmited = false;
       }
 
-      if (isOnBottom && !isOnBottomEventEmited) {
-        if (needNotify) onBottom();
+      if (isOnBottom && !isOnBottomEventEmited && onBottom) {
+        if (needEmitEvent) onBottom();
         isOnBottomEventEmited = true;
       }
 

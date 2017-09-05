@@ -6,7 +6,7 @@
       <section>
         <h2>会员卡激活</h2>
         <small>仅限实物卡激活</small>
-        <div class="form-group" v-bind:class="{'has-error': errors.has('memberCode')}">
+        <div class="form-group" :class="{'has-error': errors.has('memberCode')}">
           <div class="input-group">
             <input
               name="memberCode"
@@ -20,7 +20,7 @@
           <p class="helper error" v-if="errors.first('memberCode:required')">请填写会员卡号</p>
         </div>
 
-        <div class="form-group" v-bind:class="{'has-error': errors.has('wechatNumber')}">
+        <div class="form-group" :class="{'has-error': errors.has('wechatNumber')}">
           <div class="input-group">
             <input
               name="wechatNumber"
@@ -34,7 +34,7 @@
         </div>
 
         <div class="form-group"
-             v-bind:class="{'has-error': errors.has('name')}">
+             :class="{'has-error': errors.has('name')}">
           <div class="input-group">
             <input
               name="name"
@@ -49,7 +49,7 @@
         </div>
 
         <div class="form-group"
-             v-bind:class="{'has-error': errors.has('company')}">
+             :class="{'has-error': errors.has('company')}">
           <div class="input-group">
             <input
               name="company"
@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-group"
-             v-bind:class="{'has-error': errors.has('title')}">
+             :class="{'has-error': errors.has('title')}">
           <div class="input-group">
             <input
               name="title"
@@ -79,7 +79,7 @@
 
       <section class="footer-section">
         <div class="form-group">
-          <button class="button button-primary" v-bind:disabled="isSubmitting">{{!isSubmitting ? '激活会员卡' : '激活中...'}}
+          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? '激活会员卡' : '激活中...'}}
           </button>
         </div>
       </section>
@@ -170,14 +170,13 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Component } from 'vue-property-decorator';
   import {UserInfoModel} from "../../shared/api/user.model";
   import {getUserInfo, getUserInfoCache, getUserDetailInfo} from "../../shared/api/user.api";
   import {mobileBindedGuard} from '../../shared/guard/mobile-binded.guard';
   import {authGuard} from '../../shared/guard/user-auth.guard';
   import {memberActivateCompGuard} from '../../shared/guard/member-activate-comp.guard';
   import {beforeRouteEnter} from '../../shared/guard/before-route-enter';
-  import bdLoading from '../../shared/bd-loading.comp.vue';
   import {form} from '../../shared/form';
   import {RawLocation, Route} from "vue-router";
   import {showTips} from "../../store/tip";
@@ -190,9 +189,6 @@
   ]);
 
   @Component({
-    components: {
-      bdLoading,
-    },
     directives: form,
   })
   export default class ActivateComponent extends Vue {

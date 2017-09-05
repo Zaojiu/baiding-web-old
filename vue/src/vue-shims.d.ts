@@ -3,4 +3,9 @@ declare module '*.vue' {
   export default Vue
 }
 
-declare var System: any;
+declare const System: any;
+
+declare function setInterval(callback: (...args: any[]) => void, ms: number, ...args: any[]): number;
+declare function setTimeout(callback: (...args: any[]) => void, ms: number, ...args: any[]): number;
+declare function clearTimeout(timeoutId: number): void;
+declare function clearInterval(intervalId: number): void;

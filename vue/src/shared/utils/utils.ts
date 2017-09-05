@@ -64,8 +64,16 @@ export const parseUrl = (url: string): UrlModel => {
   aEle.href = url;
   return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, +aEle.port, aEle.pathname, aEle.search, aEle.hash)
 };
-export const params = (obj: Object): string => {
-  return Object.keys(obj).map((k: string) => encodeURIComponent(k) + '=' + encodeURIComponent((<any>obj)[k])).join('&')
+export const params = (obj: any): string => {
+  const params: string[] = [];
+  Object.keys(obj).forEach(k => {
+    const v = obj[k];
+    if (`${v}` !== 'undefined') {
+      params.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+    }
+  });
+  if (params.length) return params.join('&');
+  return '';
 };
 export const randomId = (size = 10, dic?: string): string => {
   const defaultDic = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
