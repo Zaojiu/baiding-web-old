@@ -40,14 +40,14 @@ export const closeOrder = async (orderNo: string): Promise<void> => {
   return;
 };
 
-export const checkOrderFee = async (objects: PostOrderObject[], discounts: string[] = [], buy = false): Promise<OrderFee> => {
+export const checkOrderFee = async (objects: PostOrderObject[], discounts: string[] = [], buy = false, needHandleError = true): Promise<OrderFee> => {
   const url = `${host.io}/api/wallet/order/ready`;
   const query = {
     items: objects || [],
     discounts,
     buy,
   };
-  const res = await post(url, query);
+  const res = await post(url, query, {needHandleError});
   return new OrderFee(res.data);
 };
 

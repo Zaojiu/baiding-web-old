@@ -26,6 +26,7 @@ export enum ApiCode {
   ErrOrderDiscountNotAvailable = 400110,
   ErrOrderDiscountNotUsed = 400111,
   ErrOrderDiscountReachLimit = 400112,
+  ErrOrderDiscountCannotUsedWithOther = 400114,
   ErrItemExpiredToken = 20004,
   ErrUnknown = 90000,
 }
@@ -54,6 +55,8 @@ export const ApiErrorMessage: {[key: number]: string} = {
   [ApiCode.ErrOrderUnabledClosed]: '订单已关闭',
   [ApiCode.ErrUserMobileNeedBind]: '请先绑定手机',
   [ApiCode.ErrOrderItemIncorrect]: '订单错误',
+  [ApiCode.ErrOrderDiscountNotUsed]: '优惠券不可用',
+  [ApiCode.ErrOrderDiscountCannotUsedWithOther]: '优惠券不可与其他优惠同时使用',
 };
 
 export const SigninErrorMessage = {
