@@ -443,7 +443,7 @@
         if (e.code === ApiCode.ErrOrderNeedProcessOthers) {
           const oid = e.originError.response && e.originError.response.data.data.orderNo;
           await showModal('您有其他订单未处理', '去处理', false);
-          this.$router.push({path: `/order/${oid}`})
+          this.$router.push({path: `/orders/${oid}`})
         }
       }
     }

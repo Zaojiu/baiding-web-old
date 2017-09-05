@@ -451,7 +451,7 @@
 
     gotoOrder() {
       const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount);
-      this.$router.push({path: '/order', query: {items: encodeURIComponent(JSON.stringify([query]))}});
+      this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([query]))}});
     }
 
     chooseTicket(ticket: EventTicketModel) {

@@ -153,7 +153,7 @@ export default new Router({
       ]
     },
     {
-      path: '/order/:id?',
+      path: '/orders/:id?',
       name: 'order',
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];

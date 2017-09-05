@@ -258,7 +258,7 @@
     }
 
     buy() {
-      this.$router.push({path: '/order', query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}});
+      this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}});
     }
 
     activate() {
