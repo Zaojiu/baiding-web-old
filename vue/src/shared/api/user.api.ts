@@ -23,12 +23,12 @@ export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel
   return userInfo;
 };
 
-export const getUserInfoCache = (): UserInfoModel => {
+export const getUserInfoCache = (needSignin = true): UserInfoModel => {
   const userInfoCache = Store.localStore.get('userInfo');
 
   if (!userInfoCache) {
-    router.push({path: '/signin', query: {redirectTo: location.href}});
-    return new UserInfoModel({});
+    if (needSignin) router.push({path: '/signin', query: {redirectTo: location.href}});
+    throw new Error('user no login');
   }
 
   return new UserInfoModel(userInfoCache);

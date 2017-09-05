@@ -13,7 +13,7 @@ export const mobileBindedGuard = () => {
     }
 
     if (!userInfo.mobile.number) {
-      router.push({path: '/signup', query: {redirectTo: to.fullPath}});
+      router.push({path: '/mobile-bind', query: {redirectTo: to.fullPath}});
       return false;
     }
 

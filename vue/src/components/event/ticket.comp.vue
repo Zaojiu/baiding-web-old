@@ -25,7 +25,7 @@
     </div>
 
     <footer v-if="!isLoading && event && event.meta.tickets.length">
-      <button class="button button-primary" @click="isPaymentPopup = true" :disabled="isPaymentDisabled">{{btnText}}</button>
+      <button class="button button-primary" @click="buy()" :disabled="isPaymentDisabled">{{btnText}}</button>
     </footer>
 
     <div class="payment-popup" v-if="!isLoading && event" :class="{'show': isPaymentPopup}">
@@ -318,6 +318,8 @@
   import {TicketModel} from "../../shared/api/ticket.model";
   import {checkOrderFee} from "../../shared/api/order.api";
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
+  import {getUserInfoCache} from "../../shared/api/user.api";
+  import {UserInfoModel} from "../../shared/api/user.model";
 
   @Component
   export default class EventTicketComponent extends Vue {
@@ -393,6 +395,36 @@
       }
     }
 
+    canBuy(): boolean {
+      let userInfo: UserInfoModel;
+
+      try {
+        userInfo = getUserInfoCache(false);
+      } catch (e) {
+        return false;
+      }
+
+      return !!userInfo.mobile.number;
+    }
+
+    buy() {
+      let userInfo: UserInfoModel;
+
+      try {
+        userInfo = getUserInfoCache(false);
+      } catch (e) {
+        this.$router.push({path: '/signin', query: {redirectTo: this.$route.fullPath}});
+        return;
+      }
+
+      if (!userInfo.mobile.number) {
+        this.$router.push({path: '/mobile-bind', query: {redirectTo: this.$route.fullPath}});
+        return;
+      }
+
+      this.isPaymentPopup = true;
+    }
+
     async initData() {
       this.isLoading = true;
       this.isError = false;
@@ -406,7 +438,7 @@
         this.isLoading = false;
       }
 
-      if (this.event.meta.tickets.length) {
+      if (this.event.meta.tickets.length && this.canBuy()) {
         this.ticketSelected = this.event.meta.tickets[0];
         this.ticketCount = 1;
 
@@ -419,7 +451,7 @@
 
     gotoOrder() {
       const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount);
-      this.$router.push({path: '/order', query: {items: encodeURIComponent(JSON.stringify([query]))}});
+      this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([query]))}});
     }
 
     chooseTicket(ticket: EventTicketModel) {

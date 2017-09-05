@@ -285,7 +285,7 @@
     }
 
     detail(orderNo: string) {
-      this.$router.push({path: `/order/${orderNo}`});
+      this.$router.push({path: `/orders/${orderNo}`});
     }
 
     async onBottom() {

@@ -134,7 +134,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {Money} from '../../shared/utils/utils';
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";

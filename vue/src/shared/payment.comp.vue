@@ -205,7 +205,7 @@
     }
 
     gotoOrder() {
-      this.$router.push({path: '/my/order'});
+      this.$router.push({path: '/my/orders'});
     }
   }
 </script>
