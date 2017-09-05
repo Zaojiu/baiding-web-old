@@ -102,7 +102,7 @@
             </div>
             <div class="row" v-for="discount in orderFee.discounts">
               <span class="title">{{discount.title}}</span>
-              <span class="content"><a href="" @click.prevent="deleteDiscount(discount.code)">删除</a></span>
+              <span class="content"><a href="" @click.prevent="deleteDiscount(discount)">删除</a></span>
             </div>
             <div class="row no-record" v-if="!orderFee.discounts.length">暂无优惠</div>
           </div>
@@ -124,14 +124,15 @@
           <button class="button button-primary" @click="pay()" :disabled="isPaying">提交订单</button>
         </footer>
 
-        <div class="discount-popup" :class="{'show': isDiscountSelectorShow}">
-          <div class="header"><i class="bi bi-close"></i></div>
+        <div class="discount-popup" :class="{'show': isDiscountSelectorShow}" @click.stop>
+          <div class="header"><i class="bi bi-close" @click="closeDiscountSelector()"></i></div>
           <div class="row" v-for="discount in discountCodes">
+            <input type="checkbox" :disabled="!discount.canUse" :checked="isDiscountSelected(discount)" @click="toggleDiscount(discount)">
             <div class="discount-title">
               {{discount.title}}
             </div>
-            <input type="checkbox">
           </div>
+          <div class="row" v-if="!discountCodes.length">暂无可用优惠</div>
           <button class="button button-primary" @click="closeDiscountSelector()">使用优惠</button>
         </div>
       </div>
@@ -322,6 +323,27 @@
         &.show {
           transform: translateY(0);
         }
+
+        .header {
+          text-align: right;
+        }
+
+        .row {
+          display: flex;
+          align-items: center;
+          font-size: $font-size-md;
+          color: $color-dark-gray;
+          padding: 10px 0;
+          border-bottom: solid 1px $color-gray4;
+
+          input {
+            margin-right: 10px;
+          }
+        }
+
+        .button-primary {
+          margin-top: 15px;
+        }
       }
     }
   }
@@ -351,7 +373,6 @@
     isInvalidOrder = false;
     isLoading = false;
     isError = false;
-    isCheckingOrder = false;
     isPaying = false;
     isDiscountSelectorShow = false;
 
@@ -448,10 +469,10 @@
       }
     }
 
-    async checkOrder(discountCodes: string[] = []) {
+    async checkOrder(discountCodes: string[] = [], needHandleError = true) {
       let orderFee: OrderFee;
       try {
-        orderFee = await checkOrderFee(this.itemsQuery, discountCodes, true);
+        orderFee = await checkOrderFee(this.itemsQuery, discountCodes, true, needHandleError);
       } catch (e) {
         // TODO: error handler
         // TODO: 400105 need process other order, need a modal
@@ -549,19 +570,62 @@
       this.isDiscountSelectorShow = false;
     }
 
-    addDiscount() {
-
+    isDiscountSelected(discount: Discount): boolean {
+      return !!this.orderFee.discounts.filter((selectedDiscount) => selectedDiscount.code === discount.code).length;
     }
 
-    deleteDiscount(deletingCode: string) {
-      this.isCheckingOrder = true;
+    checkDiscountCompatity() {
+      this.discountCodes.forEach((discount) => {
+        let sameKind = 0;
 
-      try {
-        const remainCodes = this.orderFee.discounts.map(discount => discount.code).filter(code => code !== deletingCode);
-        this.checkOrder(remainCodes);
-      } finally {
-        this.isCheckingOrder = false;
+        this.orderFee.discounts.forEach((selectedDiscount) => {
+          if (selectedDiscount.kind === discount.kind) sameKind++;
+        });
+
+        const overlaid = !!discount.discount.canOverlay && discount.discount.canOverlay >= sameKind;
+        const hasExclusiveDiscount = !this.isDiscountSelected(discount) && !!this.orderFee.discounts.filter((selectedDiscount) => !selectedDiscount.discount.allowOther).length;
+
+        if (!discount.discount.allowOther) console.log(discount.discount.canOverlay, sameKind, discount.discount.allowOther, this.orderFee.discounts.length);
+
+        discount.canUse = !overlaid && !hasExclusiveDiscount && discount.canUseFromApi;
+      });
+    }
+
+    toggleDiscount(discount: Discount) {
+      if (!this.isDiscountSelected(discount)) {
+        this.addDiscount(discount);
+      } else {
+        this.deleteDiscount(discount);
       }
+    }
+
+    disableDiscountFromApi(discount: Discount) {
+      discount.canUseFromApi = false;
+    }
+
+    async addDiscount(discount: Discount) {
+      const discounts = this.orderFee.discounts.concat(discount);
+      const discountCodes = discounts.map(discount => discount.code);
+
+      this.discountCodes.forEach((discount) => discount.canUse = false);
+      try {
+        await this.checkOrder(discountCodes);
+      } catch (e) {
+        if (e.code !== ApiCode.ErrOrderDiscountNotUsed && e.code !== ApiCode.ErrOrderDiscountCannotUsedWithOther) {
+          this.discountCodes.forEach((discount) => discount.canUse = true);
+          throw e;
+        }
+      }
+
+      this.checkDiscountCompatity();
+    }
+
+    async deleteDiscount(discount: Discount) {
+      const discountCode = discount.code;
+
+      const remainCodes = this.orderFee.discounts.map(_discount => _discount.code).filter(code => code !== discountCode);
+      await this.checkOrder(remainCodes);
+      this.checkDiscountCompatity();
     }
   }
 </script>

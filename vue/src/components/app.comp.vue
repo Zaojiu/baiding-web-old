@@ -34,15 +34,6 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  input, textarea {
-    outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: none;
-    margin: 0;
-  }
-
   button {
     border: none;
     outline: none;

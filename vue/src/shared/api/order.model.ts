@@ -287,16 +287,16 @@ enum DiscountCodeStatus {
   Expired   = 9, // 已过期，或失效
 }
 
-export class DiscountCodeDiscount {
+export class DiscountCodeDetail {
   multiItem: boolean;
-  canOverlay: boolean;
+  canOverlay: number;
   allowOther: boolean;
 
   constructor(data: any) {
     if (!data) return;
 
     this.multiItem = data.multiItem;
-    this.canOverlay = data.canOverlay;
+    this.canOverlay = data.canOverlayN;
     this.allowOther = data.allowOther;
   }
 }
@@ -305,7 +305,7 @@ export class Discount {
   title: string;
   desc: string;
   code: string;
-  discount: DiscountCodeDiscount;
+  discount: DiscountCodeDetail;
   discountId: string;
   owner: UserPublicInfoModel;
   toUser: UserPublicInfoModel;
@@ -318,6 +318,8 @@ export class Discount {
   expiredAt: Moment;
   usedAt: Moment;
   createdAt: Moment;
+  canUse = true;
+  canUseFromApi = true;
 
   constructor(data: any, users: any) {
     this.title = data.detail && data.detail.title;
@@ -325,7 +327,7 @@ export class Discount {
     this.code = data.code;
 
     if (data.detail && data.detail.discount) {
-      this.discount = new DiscountCodeDiscount(data.detail.discount);
+      this.discount = new DiscountCodeDetail(data.detail.discount);
     }
 
     this.discountId = data.discountId;
