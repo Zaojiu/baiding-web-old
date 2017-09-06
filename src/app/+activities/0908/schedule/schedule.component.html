@@ -408,7 +408,7 @@
         <p>罗技、滴滴，这些展位都有什么奥秘？小编带你逛空间</p>
       </div>
     </div>
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[7]] || isLiveSubscribed[ids[7]] || isAllSubscribed"  (click)="bookLive(ids[7])">{{isLiveSubscribed[ids[7]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[7]] || isLiveSubscribed[ids[7]] || isAllSubscribed" (click)="bookLive(ids[7])">{{isLiveSubscribed[ids[7]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <div class="tips">
@@ -422,7 +422,7 @@
 
   <footer>
     <button class="button button-outline" (click)="gotoLink()">互动有奖</button>
-    <button class="button button-primary" (click)="bookAll()">一键预约</button>
+    <button class="button button-primary" [disabled]="isAllSubscribed" (click)="bookAll()">{{isAllSubscribed ? '已预约' : '一键预约'}}</button>
   </footer>
 
   <div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
