@@ -1,0 +1,442 @@
+<div class="schedule">
+  <img class="cover" src="/assets/img/activitity/0908/0908-kv.jpeg" alt="封面图">
+  <h1>
+    <p>造就「REMIX·共享大会」</p>
+    <p>直播节目单</p>
+  </h1>
+
+  <h2>9.8 节目单</h2>
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <small>Session1 打造基础</small>
+        <h3>9:00-11:10</h3>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/gaofeng.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>高丰</span>
+          <small>SODA理事会理事、苏打数据CEO</small>
+        </div>
+        <p>数据应该是自由而免费的</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/lizheng.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>李政</span>
+          <small>WiFi万能钥匙轮值总裁</small>
+        </div>
+        <p>场景化是数据消费的核心</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/konghuawei.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>孔华威</span>
+          <small>上海中科计算技术研究所所长、起点资本合伙人</small>
+        </div>
+        <p>苹果已经落下：比特世界的牛顿定律</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/sunlilin.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>孙立林</span>
+          <small>矩阵元创始人及CEO</small>
+        </div>
+        <p>我要重新定义数字世界的疆界</p>
+      </div>
+    </div>
+
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[0]] || isLiveSubscribed[ids[0]]" (click)="bookLive(ids[0])">{{isLiveSubscribed[ids[0]] ? '已预约' : '预约直播'}}</button>
+  </div>
+
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <small>Session2 第二人生</small>
+        <h3>13:00-15:10</h3>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/zhangqiang.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>张强</span>
+          <small>张强医生集团创始人</small>
+        </div>
+        <p>未来每个人都应该有自己的私人医生</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/yujingyi.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>虞晶怡</span>
+          <small>上海科技大学教授、PLEX VR创始人</small>
+        </div>
+        <p>Live in AR，Think with AI.</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/zhengjie.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>郑杰</span>
+          <small>树兰医疗CEO、OMAHA联盟创始人</small>
+        </div>
+        <p>对于医生而来，你就是一个数据包？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/chengang.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>陈钢</span>
+          <small>WeGene联合创始人兼CTO</small>
+        </div>
+        <p>“基因决定我爱你”，我可以跟你交换基因吗？</p>
+      </div>
+    </div>
+
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[1]] || isLiveSubscribed[ids[1]]" (click)="bookLive(ids[1])">{{isLiveSubscribed[ids[1]] ? '已预约' : '预约直播'}}</button>
+  </div>
+
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <small>Session3 新连接，新冲突</small>
+        <h3>16:10-18:20</h3>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/soul-htite.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>Soul Htite</span>
+          <small>点融网联合创始人兼CEO</small>
+        </div>
+        <p>金融科技的下一个风口是什么？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/jinyiye.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>金亦冶</span>
+          <small>Ping++创始人兼CEO</small>
+        </div>
+        <p>谁会成为虚拟金融世界的入口？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/limaocai.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>李茂材</span>
+          <small>腾讯FiT支付平台研发中心总监</small>
+        </div>
+        <p>我们用区块链技术，解决了儿童走失的难题</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/xiehanjian.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>谢晗剑</span>
+          <small>秘猿科技联合创始人兼CEO、以太坊核心研发团队唯一中国成员</small>
+        </div>
+        <p>为什么说以太坊是虚拟世界最重要的变局？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/haojie.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>郝杰</span>
+          <small>Magma基金合伙人</small>
+        </div>
+        <p>区块链如何重塑经济体，你的诗，和人类的远方</p>
+      </div>
+    </div>
+
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[2]] || isLiveSubscribed[ids[2]]"  (click)="bookLive(ids[2])">{{isLiveSubscribed[ids[2]] ? '已预约' : '预约直播'}}</button>
+  </div>
+
+  <h2>9.9 节目单</h2>
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <small>Session5 向前迈进</small>
+        <h3>9:00-11:10</h3>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/chris-lehane.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>Chris Lehane</span>
+          <small>Airbnb爱彼迎全球资深副总裁、公共政策及公共事务负责人</small>
+        </div>
+        <p>想住别墅还带泳池？我比你更了解你的需求！</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/norman-winarsky.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>Norman Winarsky</span>
+          <small>Siri公司创始人和董事会成员、斯坦福研究院风险投资集团总裁</small>
+        </div>
+        <p>Siri，是如何被创造出来的？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/chenweiye.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>谌伟业</span>
+          <small>阿里巴巴闲鱼创始人、总经理</small>
+        </div>
+        <p>我会做松子鳜鱼，这项技能究竟值多少钱？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/liuweili.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>刘伟力</span>
+          <small>邻趣创始人兼CEO</small>
+        </div>
+        <p>帮你买杯星巴克，这背后交换的是什么能力？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/fanlin.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>范凌</span>
+          <small>特赞创始人及CEO</small>
+        </div>
+        <p>假如审美能力可以被共享</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/zhangwenhao.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>章文嵩</span>
+          <small>滴滴出行高级副总裁、滴滴工程技术委员会主席</small>
+        </div>
+        <p>未来城市的智慧出行</p>
+      </div>
+    </div>
+
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[3]] || isLiveSubscribed[ids[3]]"  (click)="bookLive(ids[3])">{{isLiveSubscribed[ids[3]] ? '已预约' : '预约直播'}}</button>
+  </div>
+
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <small>Session6 未来的回声</small>
+        <h3>13:00-15:10</h3>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/murray-shanahan.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>Murray Shanahan</span>
+          <small>伦敦帝国理工学院认知机器人学系教授，DeepMind资深搜索科学家</small>
+        </div>
+        <p>AlphaGo创造了一个怎样的未来？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/caoyin.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>曹寅</span>
+          <small>能源区块链实验室首席战略官，爱沙尼亚数字国家计划顾问委员会委员</small>
+        </div>
+        <p>爱沙尼亚是如何重新定义「国家」的？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/liaoyu.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>廖宇</span>
+          <small>泰豪科技CTO，泰豪迈能CEO</small>
+        </div>
+        <p>冗余资源，才是共享的驱动力</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/miaoshiming.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>苗世明</span>
+          <small>WABC无障碍艺途创始人</small>
+        </div>
+        <p>公益与公众之间是什么？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/runjiawei.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>闫加伟</span>
+          <small>社邻家创始人，社会创新实践者</small>
+        </div>
+        <p>未来我们真的不需要再买房了</p>
+      </div>
+    </div>
+
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[4]] || isLiveSubscribed[ids[4]]"  (click)="bookLive(ids[4])">{{isLiveSubscribed[ids[4]] ? '已预约' : '预约直播'}}</button>
+  </div>
+
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <small>Session7 无界的时空</small>
+        <h3>16:10-18:20</h3>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/harry-den-hartog.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>Harry Den Hartog</span>
+          <small>建筑师、城市规划师、Urban Language工作室创始人</small>
+        </div>
+        <p>上海，离国际一流的共享型城市还有多远？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/lixiangning.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>李翔宁</span>
+          <small>同济大学建筑与城市规划学院副院长、教授、建筑评论家和策展人</small>
+        </div>
+        <p>人类的建造一定会违背自然么？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/jinjiangbo.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>金江波</span>
+          <small>上海美术学院副院长、教授</small>
+        </div>
+        <p>公共艺术为我们创造了什么？</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/wanghui.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>王辉</span>
+          <small>艺术家</small>
+        </div>
+        <p>当整个世界都变成舞台……</p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/assets/img/activitity/0908/huzhuomin.jpg" alt="嘉宾头像">
+      <div class="content">
+        <div class="nick">
+          <span>胡琢民</span>
+          <small>上海颢汉数字技术有限公司创始人、技术统筹</small>
+        </div>
+        <p>永恒在一刹那里收藏</p>
+      </div>
+    </div>
+
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[5]] || isLiveSubscribed[ids[5]]"  (click)="bookLive(ids[5])">{{isLiveSubscribed[ids[5]] ? '已预约' : '预约直播'}}</button>
+  </div>
+
+  <h2>造就空间</h2>
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <h3>9.8</h3>
+      </div>
+    </div>
+    <div class="row center">
+      <img src="/assets/img/activitity/0908/heibai.jpg" alt="嘉宾头像">
+      <div class="content">
+        <p>沈师傅的照相馆，带你走进黑白胶片之美</p>
+      </div>
+    </div>
+    <div class="row center">
+      <img src="/assets/img/activitity/0908/aotu.jpg" alt="嘉宾头像">
+      <div class="content">
+        <p>奥图码4k产品，我们身边的技术前驱</p>
+      </div>
+    </div>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[6]] || isLiveSubscribed[ids[6]]"  (click)="bookLive(ids[6])">{{isLiveSubscribed[ids[6]] ? '已预约' : '预约直播'}}</button>
+  </div>
+  <div class="block">
+    <div class="time">
+      <div class="content">
+        <h3>9.9</h3>
+      </div>
+    </div>
+    <div class="row center">
+      <img src="/assets/img/activitity/0908/kunqu.jpg" alt="嘉宾头像">
+      <div class="content">
+        <p>昆曲达人演绎唱念做打，现场为观众化妆</p>
+      </div>
+    </div>
+    <div class="row center">
+      <img src="/assets/img/activitity/0908/shaonianshuo.jpg" alt="嘉宾头像">
+      <div class="content">
+        <p>“造就少年说”，小人物也有大声音</p>
+      </div>
+    </div>
+    <div class="row center">
+      <img src="/assets/img/activitity/0908/didi.jpg" alt="嘉宾头像">
+      <div class="content">
+        <p>罗技、滴滴，这些展位都有什么奥秘？小编带你逛空间</p>
+      </div>
+    </div>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[7]] || isLiveSubscribed[ids[7]]"  (click)="bookLive(ids[7])">{{isLiveSubscribed[ids[7]] ? '已预约' : '预约直播'}}</button>
+  </div>
+
+  <div class="tips">
+    <h3>还有这些即将贯穿全场：</h3>
+    <ul>
+      <li>叠境360度环拍、5s成像，照片不只是平面</li>
+      <li>保护孩子的想象力，人人都是小小发明家</li>
+      <li>嘉宾互动交流，线下装置设计，为你呈现“摸得到的演讲”</li>
+    </ul>
+  </div>
+
+  <footer>
+    <button class="button button-outline" (click)="gotoLink()">互动有奖</button>
+    <button class="button button-primary" (click)="bookAll()">一键预约</button>
+  </footer>
+
+  <div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
+    <div class="content" (click)="$event.stopPropagation()">
+      <div class="header">
+        <div class="close" (click)="closeQrcode()"></div>
+        <div class="live-title">扫码关注公众号</div>
+      </div>
+      <div class="qrcode">
+        <div class="qrcode-block">
+          <img class="qrcode-image" [src]="qrcode" alt="订阅二维码">
+        </div>
+        <p>请先关注造就公众号，再进行预约提醒操作</p>
+      </div>
+    </div>
+  </div>
+</div>
