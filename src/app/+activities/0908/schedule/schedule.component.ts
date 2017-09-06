@@ -100,7 +100,7 @@ export class ScheduleComponent implements OnInit {
     let promise = [];
 
     this.ids.forEach(id => {
-      promise.push(this.liveService.bookLive(id));
+      if (!this.isLiveSubscribed[id]) promise.push(this.liveService.bookLive(id));
     });
 
     Promise.all(promise).then(() => {
