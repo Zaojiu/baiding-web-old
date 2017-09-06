@@ -58,7 +58,25 @@ const packageChunkSort = function (packages) {
     return -1;
   };
 };
-
+const vuePostcss = [
+  require('autoprefixer')(),
+  require('cssnano')({
+    preset: ['default', {
+      discardComments: {
+        removeAll: true,
+      },
+    }],
+  })
+];
+if (isProd) {
+  vuePostcss.push(
+    urlrewrite({
+      rules: [
+        {from: /\/assets\//, to: `${publicPath}/assets/`},
+      ]
+    })
+  );
+}
 const assetsRepalcementOption = {
   flags: isProd ? "g" : '',
   search: isProd ? "/assets/" : '',
@@ -83,21 +101,7 @@ const config = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          postcss: [
-            require('autoprefixer')(),
-            require('cssnano')({
-              preset: ['default', {
-                discardComments: {
-                  removeAll: true,
-                },
-              }],
-            }),
-            urlrewrite({
-              rules: [
-                { from: /\/assets\//, to: `${publicPath}/assets/` },
-              ]
-            })
-          ],
+          postcss: vuePostcss,
           preLoaders: {
             scss: "sass-variables-inject-loader?" + cssVariablesPath,
           },

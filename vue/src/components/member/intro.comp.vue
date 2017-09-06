@@ -28,7 +28,7 @@
         </ol>
       </div>
     </div>
-    <button class="button button-primary" @click="goMyMember()">{{btnText}}</button>
+    <button class="button button-primary" @click="buy()">{{btnText}}</button>
   </div>
 </template>
 
@@ -177,8 +177,11 @@
       this.fee = orderFee.totalPrice;
     }
 
-    goMyMember() {
-      this.$router.push({path: '/my/member'});
+    buy() {
+      this.$router.push({
+        path: '/orders',
+        query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}
+      });
     }
   }
 </script>

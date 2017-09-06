@@ -24,7 +24,7 @@
     </div>
     <footer>
       <a class="activate-link" href="" @click.prevent="activate()" v-if="!userInfo.isMember">使用激活码开通会员权限</a>
-      <button class="buy-button" @click="buy()" v-if="!userInfo.isMember">{{buyBtnText}}</button>
+      <button class="buy-button" @click="goIntro()" v-if="!userInfo.isMember">{{buyBtnText}}</button>
       <a class="intro-link" href="" @click.prevent="goIntro()">会员权益说明</a>
     </footer>
     <router-view></router-view>
@@ -223,7 +223,6 @@
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
   import {checkOrderFee} from "../../shared/api/order.api";
 
-
   @Component
   export default class MemberComponent extends Vue {
     userInfo = getUserInfoCache();
@@ -263,10 +262,6 @@
     async getMemberFee() {
       const orderFee = await checkOrderFee([this.memberOrderObject]);
       this.fee = orderFee.totalPrice;
-    }
-
-    buy() {
-      this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}});
     }
 
     activate() {
