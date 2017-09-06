@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {EventApiService} from "../../shared/api/event/event.api";
 import {EventModel} from "../../shared/api/event/event.model";
-import {Money, UtilsService} from "../../shared/utils/utils";
+import {Money} from "../../shared/utils/utils";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {TicketModel} from "../../shared/api/my/my.model";
 

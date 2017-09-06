@@ -14,6 +14,7 @@ const appRoutes: Routes = [
   {path: 'signin', loadChildren: 'app/+signin/signin.module#SigninModule'},
   {path: 'member', loadChildren: 'app/+member/member.module#MemberModule'},
   {path: 'events', loadChildren: 'app/+event/event.module#EventModule'},
+  {path: 'activities', loadChildren: 'app/+activities/activities.module#ActivitiesModule'},
   {path: '', redirectTo: '/lives', pathMatch: 'full'},
   {path: '**', redirectTo: '/404', pathMatch: 'full'},
 ];
