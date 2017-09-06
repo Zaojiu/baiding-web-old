@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[0]] || isLiveSubscribed[ids[0]]" (click)="bookLive(ids[0])">{{isLiveSubscribed[ids[0]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[0]] || isLiveSubscribed[ids[0]] || isAllSubscribed" (click)="bookLive(ids[0])">{{isLiveSubscribed[ids[0]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <div class="block">
@@ -105,7 +105,7 @@
       </div>
     </div>
 
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[1]] || isLiveSubscribed[ids[1]]" (click)="bookLive(ids[1])">{{isLiveSubscribed[ids[1]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[1]] || isLiveSubscribed[ids[1]] || isAllSubscribed" (click)="bookLive(ids[1])">{{isLiveSubscribed[ids[1]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <div class="block">
@@ -166,7 +166,7 @@
       </div>
     </div>
 
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[2]] || isLiveSubscribed[ids[2]]"  (click)="bookLive(ids[2])">{{isLiveSubscribed[ids[2]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[2]] || isLiveSubscribed[ids[2]] || isAllSubscribed"  (click)="bookLive(ids[2])">{{isLiveSubscribed[ids[2]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <h2>9.9 节目单</h2>
@@ -238,7 +238,7 @@
       </div>
     </div>
 
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[3]] || isLiveSubscribed[ids[3]]"  (click)="bookLive(ids[3])">{{isLiveSubscribed[ids[3]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[3]] || isLiveSubscribed[ids[3]] || isAllSubscribed"  (click)="bookLive(ids[3])">{{isLiveSubscribed[ids[3]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <div class="block">
@@ -299,7 +299,7 @@
       </div>
     </div>
 
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[4]] || isLiveSubscribed[ids[4]]"  (click)="bookLive(ids[4])">{{isLiveSubscribed[ids[4]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[4]] || isLiveSubscribed[ids[4]] || isAllSubscribed"  (click)="bookLive(ids[4])">{{isLiveSubscribed[ids[4]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <div class="block">
@@ -360,7 +360,7 @@
       </div>
     </div>
 
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[5]] || isLiveSubscribed[ids[5]]"  (click)="bookLive(ids[5])">{{isLiveSubscribed[ids[5]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[5]] || isLiveSubscribed[ids[5]] || isAllSubscribed"  (click)="bookLive(ids[5])">{{isLiveSubscribed[ids[5]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <h2>造就空间</h2>
@@ -382,7 +382,7 @@
         <p>奥图码4k产品，我们身边的技术前驱</p>
       </div>
     </div>
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[6]] || isLiveSubscribed[ids[6]]"  (click)="bookLive(ids[6])">{{isLiveSubscribed[ids[6]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[6]] || isLiveSubscribed[ids[6]] || isAllSubscribed"  (click)="bookLive(ids[6])">{{isLiveSubscribed[ids[6]] ? '已预约' : '预约直播'}}</button>
   </div>
   <div class="block">
     <div class="time">
@@ -408,7 +408,7 @@
         <p>罗技、滴滴，这些展位都有什么奥秘？小编带你逛空间</p>
       </div>
     </div>
-    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[7]] || isLiveSubscribed[ids[7]]"  (click)="bookLive(ids[7])">{{isLiveSubscribed[ids[7]] ? '已预约' : '预约直播'}}</button>
+    <button class="button button-primary" [disabled]="isLiveBtnPending[ids[7]] || isLiveSubscribed[ids[7]] || isAllSubscribed"  (click)="bookLive(ids[7])">{{isLiveSubscribed[ids[7]] ? '已预约' : '预约直播'}}</button>
   </div>
 
   <div class="tips">
