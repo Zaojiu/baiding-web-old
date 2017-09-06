@@ -132,7 +132,7 @@
               {{discount.title}}
             </div>
           </div>
-          <div class="row" v-if="!discountCodes.length">暂无可用优惠</div>
+          <div class="row no-discounts" v-if="!discountCodes.length">暂无可用优惠</div>
           <button class="button button-primary" @click="closeDiscountSelector()">使用优惠</button>
         </div>
       </div>
@@ -336,6 +336,11 @@
           padding: 10px 0;
           border-bottom: solid 1px $color-gray4;
 
+          &.no-discounts {
+            color: $color-gray3;
+            text-align: center;
+          }
+
           input {
             margin-right: 10px;
           }
@@ -459,7 +464,7 @@
       await this.checkDiscount();
     }
 
-    async handleError(e: Error | ApiError) {
+    async handleOtherOrder(e: Error | ApiError) {
       if (e instanceof ApiError) {
         if (e.code === ApiCode.ErrOrderNeedProcessOthers) {
           const oid = e.originError.response && e.originError.response.data.data.orderNo;
@@ -474,9 +479,8 @@
       try {
         orderFee = await checkOrderFee(this.itemsQuery, discountCodes, true, needHandleError);
       } catch (e) {
+        this.handleOtherOrder(e);
         // TODO: error handler
-        // TODO: 400105 need process other order, need a modal
-        this.handleError(e);
         // TODO: items error
         // TODO: discount error
         throw e;
@@ -486,11 +490,7 @@
     }
 
     async checkDiscount() {
-      try {
-        this.discountCodes = await listDiscountCode(this.itemsQuery);
-      } catch (e) {
-        // TODO: error handler
-      }
+      this.discountCodes = await listDiscountCode(this.itemsQuery);
     }
 
     isMemberOrder(): boolean {
@@ -551,7 +551,7 @@
           showTips('订单未支付');
           this.$router.push({path: '/my/orders'});
         } else {
-
+          this.handleOtherOrder(e);
         }
         // TODO: error handler
         throw e;

@@ -4,6 +4,7 @@ const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const urlrewrite = require('postcss-urlrewrite');
 
 const extractCss = new ExtractTextPlugin('[name].[chunkhash].css');
 const isProd = process.env.NODE_ENV === 'production';
@@ -91,16 +92,19 @@ const config = {
                 },
               }],
             }),
+            urlrewrite({
+              rules: [
+                { from: /\/assets\//, to: `${publicPath}/assets/` },
+              ]
+            })
           ],
           preLoaders: {
             scss: "sass-variables-inject-loader?" + cssVariablesPath,
           },
           postLoaders: {
             ts: assetsReplacementLoader,
-            scss: assetsReplacementLoader,
             html: assetsReplacementLoader,
           },
-          extractCSS: isProd,
           preserveWhitespace: false,
         },
       },
@@ -140,6 +144,20 @@ const config = {
         enforce: 'post',
         test: /\.(ts|js|scss|css)$/,
         loader: assetsReplacementLoader,
+        exclude: /node_modules/,
+      },
+      {
+        enforce: 'post',
+        test: /\.html$/,
+        use: [
+          assetsReplacementLoader,
+          {
+            loader: 'html-loader',
+            options: {
+              minimize: true
+            }
+          },
+        ],
         exclude: /node_modules/,
       }
     ],
