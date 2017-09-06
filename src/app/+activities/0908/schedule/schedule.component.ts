@@ -112,6 +112,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   gotoLink() {
-    location.href = '/lives';
+    location.href = 'http://mp.weixin.qq.com/s/qMMyKlheFO_opeTh-5eHXw';
   }
 }
