@@ -337,8 +337,8 @@
           border-bottom: solid 1px $color-gray4;
 
           &.no-discounts {
+            justify-content: center;
             color: $color-gray3;
-            text-align: center;
           }
 
           input {

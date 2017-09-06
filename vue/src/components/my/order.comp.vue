@@ -35,7 +35,7 @@
       </div>
       <bd-loading class="footer-loading" v-if="isFooterLoading"></bd-loading>
       <div class="no-more-record" v-else-if="isOnLatest">到底啦~</div>
-      <div class="no-record" v-if="orders.length === 0">暂无订单</div>
+      <div class="no-record" v-if="!orders.length">暂无订单</div>
     </div>
   </div>
 </template>
@@ -181,6 +181,11 @@
       .no-more-record {
         background-color: $color-gray4;
         padding: 5px 0 15px;
+      }
+
+      .no-record {
+        padding: 20px;
+        text-align: center;
       }
     }
   }

@@ -32,8 +32,8 @@
           </ul>
         </div>
       </div>
-      <div class="no-more-record">到底啦~</div>
-      <div class="no-record" v-if="tickets.length === 0">暂无可用票券</div>
+      <div class="no-more-record" v-if="tickets.length">到底啦~</div>
+      <div class="no-record" v-else="tickets.length === 0">暂无可用票券</div>
     </div>
   </div>
 </template>
