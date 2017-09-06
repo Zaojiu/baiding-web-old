@@ -160,8 +160,6 @@ const pcPay = async (orderNo: string): Promise<void> => {
 export const pay = async (orderNo: string): Promise<void> => {
   if (isInWechat && !isWindowsWechat) {
     await wechatPay(orderNo);
-  } else if (isInApp) {
-    // TODO: app payment, 在ios中不能使用微信支付, 付费直播间app中不可点击
   } else {
     await pcPay(orderNo);
   }
