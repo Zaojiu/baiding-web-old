@@ -27,6 +27,7 @@ export class ScheduleComponent implements OnInit {
   isLiveBtnPending: {[key: string]: boolean} = {};
   isLiveSubscribed: {[key: string]: boolean} = {};
   isQrcodeShown = false;
+  assetsHost = environment.config.host.assets;
   timer: any;
   qrcode: string;
 
