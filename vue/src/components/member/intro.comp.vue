@@ -28,7 +28,7 @@
         </ol>
       </div>
     </div>
-    <button class="button button-primary" @click="buy()">{{btnText}}</button>
+    <button class="button button-primary" @click="userInfo.isMember ? goMyMember() : buy()">{{btnText}}</button>
   </div>
 </template>
 
@@ -175,6 +175,10 @@
     async getMemberFee() {
       const orderFee = await checkOrderFee([this.memberOrderObject]);
       this.fee = orderFee.totalPrice;
+    }
+
+    goMyMember() {
+      this.$router.push({path: '/my/member'});
     }
 
     buy() {
