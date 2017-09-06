@@ -33,6 +33,7 @@ let thirdPartyLibs = [
   './node_modules/moment-is-zero/index.js',
   './node_modules/moment/locale/zh-cn.js',
   './node_modules/fastclick/lib/fastclick.js',
+  "./node_modules/weixin-js-sdk/index.original.js"
 ];
 thirdPartyLibs = thirdPartyLibs.map(function (scriptPath) {
   return path.resolve(__dirname, scriptPath);
@@ -60,7 +61,7 @@ const packageChunkSort = function (packages) {
 const assetsRepalcementOption = {
   flags: isProd ? "g" : '',
   search: isProd ? "/assets/" : '',
-  replace: isProd ?  `${publicPath}assets/` : ''
+  replace: isProd ? `${publicPath}/assets/` : '',
 };
 const assetsReplacementLoader = 'string-replace-loader?' + JSON.stringify(assetsRepalcementOption);
 const config = {
@@ -73,7 +74,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: '[name].[chunkhash].js',
-    publicPath: isProd ? publicPath : '/',
+    publicPath: isProd ? `${publicPath}/` : '/',
   },
   module: {
     rules: [

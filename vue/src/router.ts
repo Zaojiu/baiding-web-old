@@ -14,7 +14,7 @@ import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
 
 Vue.use(Router);
 
-export default new Router({
+export const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -29,6 +29,9 @@ export default new Router({
     {
       path: '/signin',
       name: 'signin',
+      meta: {
+        title: '登录',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
         const guards = [signinGuard(redirectTo)];
@@ -39,6 +42,9 @@ export default new Router({
     {
       path: '/mobile-bind',
       name: 'mobileBind',
+      meta: {
+        title: '绑定手机',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedCompGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -48,6 +54,9 @@ export default new Router({
     {
       path: '/forget-password',
       name: 'forgetPassword',
+      meta: {
+        title: '忘记密码',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
         const guards = [signinGuard(redirectTo)];
@@ -66,6 +75,9 @@ export default new Router({
         {
           name: 'talks.post-comment',
           path: 'post-comment',
+          meta: {
+            title: '发表评论',
+          },
           beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
             const guards = [authGuard()];
             beforeRouteEnter(guards, to, from, next);
@@ -77,6 +89,9 @@ export default new Router({
     {
       path: '/member/activate',
       name: 'member.activate',
+      meta: {
+        title: '激活会员',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -86,6 +101,9 @@ export default new Router({
     {
       path: '/member/intro',
       name: 'member.intro',
+      meta: {
+        title: '造就会员',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -95,6 +113,9 @@ export default new Router({
     {
       path: '/my',
       name: 'my',
+      meta: {
+        title: '我的',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -104,6 +125,9 @@ export default new Router({
     {
       path: '/my/member',
       name: 'my.member',
+      meta: {
+        title: '我的会员',
+      },
       alias: '/member/info', // compatible with angular
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];
@@ -113,6 +137,9 @@ export default new Router({
       children: [
         {
           path: 'rights/:id',
+          meta: {
+            title: '会员权益',
+          },
           name: 'my.member.rights',
           component: () => System.import('./components/my/member-rights.comp.vue'),
         },
@@ -121,6 +148,9 @@ export default new Router({
     {
       path: '/my/orders',
       name: 'my.orders',
+      meta: {
+        title: '我的订单',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -130,6 +160,9 @@ export default new Router({
     {
       path: '/my/tickets',
       name: 'my.tickets',
+      meta: {
+        title: '我的票券',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -139,6 +172,9 @@ export default new Router({
     {
       path: '/my/address',
       name: 'my.address',
+      meta: {
+        title: '收货地址',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -155,6 +191,9 @@ export default new Router({
     {
       path: '/orders/:id?',
       name: 'order',
+      meta: {
+        title: '订单',
+      },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
@@ -164,6 +203,9 @@ export default new Router({
     {
       path: '/events/:id/tickets',
       name: 'event.ticket',
+      meta: {
+        title: '购票',
+      },
       component: () => System.import('./components/event/ticket.comp.vue'),
     },
     {
@@ -181,4 +223,11 @@ export default new Router({
       component: () => System.import('./components/notfound/notfound.comp.vue'),
     }
   ]
+});
+
+export default router;
+
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title}-造就` || '造就';
+  next()
 });
