@@ -49,6 +49,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.userInfo = this.userInfoService.getUserInfoCache();
 
     this.initPayment();
+    this.handlePaymentRedirect();
 
     this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;
     this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
@@ -68,18 +69,21 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     if (this.timer) clearInterval(this.timer);
   }
 
-  initPayment() {
-    const payResult = this.route.snapshot.params['payResult'];
-    switch (payResult) {
-      case 'success':
-        this.paidStatus = this.paidEnums.Success;
-        break;
-      case 'fail':
-        this.paidStatus = this.paidEnums.Failure;
-        this.paidResult = '支付失败，请联系我们';
-        break;
+  handlePaymentRedirect() {
+    const payResult = this.route.snapshot.queryParams['payResult'];
+    if (payResult) {
+      if (payResult === 'success') {
+        this.handlePayResult('');
+      } else if (payResult === 'cancel') {
+        this.handlePayResult('cancel');
+      } else {
+        this.handlePayResult('fail');
+        console.error(decodeURIComponent(payResult));
+      }
     }
+  }
 
+  initPayment() {
     this.originFee = '';
 
     if (
@@ -158,33 +162,13 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   handlePayResult(result: string) {
-    let retryCount = 0;
-    const checkBackendPayment = () => {
-      this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
-        if (liveInfo.paid) {
+    switch (result) {
+      case '':
+        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
           this.liveInfo = liveInfo;
           this.paidStatus = this.paidEnums.Success;
           this.initPayment();
-        } else if (retryCount >= 3) {
-          this.paidStatus = this.paidEnums.Failure;
-          this.paidResult = '支付失败，请联系我们';
-        } else {
-          setTimeout(() => {
-            retryCount++;
-            checkBackendPayment();
-          }, 500);
-        }
-      }, () => {
-        setTimeout(() => {
-          retryCount++;
-          checkBackendPayment();
-        }, 500);
-      });
-    };
-
-    switch (result) {
-      case '':
-        checkBackendPayment();
+        });
         break;
       case 'cancel':
         this.paidStatus = this.paidEnums.None;
