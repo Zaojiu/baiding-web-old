@@ -4,11 +4,11 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const host = {
-  self: 'http://www.zaojiu.tv',
-  auth: '//auth.zaojiu.tv',
-  io: '//io.zaojiu.tv',
-  assets: 'http://www.zaojiu.tv',
-  weinre: 'http://192.168.2.173:10000',
+  self: 'http://www.baidingchat.com',
+  auth: '//auth.baidingchat.com',
+  io: '//io.baidingchat.com',
+  assets: 'http://www.baidingchat.com',
+  weinre: 'http://192.168.1.203:10000',
 };
 
 export const appConfig = {

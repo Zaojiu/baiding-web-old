@@ -221,7 +221,7 @@
       try {
         await activateMember(this.memberCode, this.wechatNumber, this.name, this.company, this.title);
         Store.localStore.delete('userInfo');
-        await getUserInfo(false);
+        await getUserInfo();
       } catch (e) {
         throw e;
       } finally {

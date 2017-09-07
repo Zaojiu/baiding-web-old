@@ -48,7 +48,7 @@ const errorHandler = (err: ApiError, customCodeMap?: { [key: number]: string }) 
     router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
   } else {
     let message = '';
-    const codeMap = Object.assign(ApiErrorMessage, customCodeMap);
+    const codeMap = Object.assign({}, ApiErrorMessage, customCodeMap);
     const customMessage = codeMap[err.code];
 
     if (customMessage) {
@@ -81,18 +81,18 @@ const interceptor = (error: AxiosError, config?: Config) => {
 };
 
 export const get = async (url: string, config?: Config) => {
-  const _config = Object.assign(defaults, config);
+  const _config = Object.assign({}, defaults, config);
   return axios.get(url, _config).catch(res => interceptor(res, _config));
 };
 export const post = async (url: string, data?: any, config?: Config) => {
-  const _config = Object.assign(defaults, config);
+  const _config = Object.assign({}, defaults, config);
   return axios.post(url, data, _config).catch(res => interceptor(res, _config));
 };
 export const put = async (url: string, data?: any, config?: Config) => {
-  const _config = Object.assign(defaults, config);
+  const _config = Object.assign({}, defaults, config);
   return axios.put(url, data, _config).catch(res => interceptor(res, _config));
 };
 export const del = async (url: string, config?: Config) => {
-  const _config = Object.assign(defaults, config);
+  const _config = Object.assign({}, defaults, config);
   return axios.delete(url, _config).catch(res => interceptor(res, _config));
 };

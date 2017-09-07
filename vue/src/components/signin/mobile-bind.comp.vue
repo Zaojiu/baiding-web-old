@@ -259,25 +259,29 @@
       this.isSubmitting = true;
       showTips('绑定中...');
 
-      const code = await signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title);
-      switch (code) {
-        case ApiCode.OK:
-          try {
-            getUserInfo(false);
-          } catch (e) {
-            location.reload();
-            return;
-          }
-
-          showTips('绑定手机成功');
-          this.$router.push({path: this.redirectTo});
-          break;
-        case ApiCode.ErrSigninInvalidSmsCode:
-          this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
-          break;
+      try {
+        await signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title);
+      } catch (e) {
+        const code = e.code;
+        switch (code) {
+          case ApiCode.ErrSigninInvalidSmsCode:
+            this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
+            break;
+        }
+        throw e;
+      } finally {
+        this.isSubmitting = false;
       }
 
-      this.isSubmitting = false;
+      try {
+        getUserInfo(false);
+      } catch (e) {
+        location.reload();
+        return;
+      }
+
+      showTips('绑定手机成功');
+      this.$router.push({path: this.redirectTo});
     }
 
     sendSMS() {

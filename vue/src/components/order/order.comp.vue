@@ -506,7 +506,7 @@
       showTips('支付成功');
 
       if (this.isMemberOrder()) {
-        await getUserInfo(false);
+        await getUserInfo();
         this.$router.push({path: '/my/member'});
       } else if (this.isEventOrder) {
         this.$router.push({path: '/my/tickets'});

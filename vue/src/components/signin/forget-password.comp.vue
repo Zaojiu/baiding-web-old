@@ -161,18 +161,22 @@
       this.isSubmitting = true;
       showTips('重置密码中...');
 
-      const code = await resetPassword(this.phoneNumber, this.smsCode, this.password, SigninErrorMessage);
-      switch (code) {
-        case ApiCode.OK:
-          showTips('重置密码成功，请重新登录');
-          this.$router.push({path: '/signin', query: {redirectTo: this.redirectTo}});
-          break;
-        case ApiCode.ErrSigninInvalidSmsCode:
-          this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
-          break;
+      try {
+        await resetPassword(this.phoneNumber, this.smsCode, this.password, SigninErrorMessage);
+      } catch (e) {
+        const code = e.code;
+        switch (code) {
+          case ApiCode.ErrSigninInvalidSmsCode:
+            this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
+            break;
+        }
+        throw e;
+      } finally {
+        this.isSubmitting = false;
       }
 
-      this.isSubmitting = false;
+      showTips('重置密码成功，请重新登录');
+      this.$router.push({path: '/signin', query: {redirectTo: this.redirectTo}});
     }
 
     async sendSMS() {

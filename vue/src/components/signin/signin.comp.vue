@@ -417,21 +417,29 @@
       this.isSubmitting = true;
       showTips('登录中...');
 
-      const code = await signin(this.phoneNumber, this.smsCode, this.password, SigninErrorMessage);
-      switch (code) {
-        case ApiCode.OK:
-          showTips('登录成功');
-          this.$router.push({path: this.redirectTo});
-          break;
-        case ApiCode.ErrSigninInvalidSmsCode:
-          this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
-          break;
-        case ApiCode.ErrSigninInvalidPassword:
-          this.$validator.errors.add('password', 'wrong password', 'wrongpassword');
-          break;
+      const errorMessage = Object.assign({}, {
+        [ApiCode.ErrSigninInvalidPassword]: this.smsCode ? '验证码错误' : '密码错误'
+      }, SigninErrorMessage);
+
+      try {
+        const code = await signin(this.phoneNumber, this.smsCode, this.password, errorMessage);
+      } catch (e) {
+        const code = e.code;
+        switch (code) {
+          case ApiCode.ErrSigninInvalidSmsCode:
+            this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
+            break;
+          case ApiCode.ErrSigninInvalidPassword:
+            this.$validator.errors.add('password', 'wrong password', 'wrongpassword');
+            break;
+        }
+        throw e;
+      } finally {
+        this.isSubmitting = false;
       }
 
-      this.isSubmitting = false;
+      showTips('登录成功');
+      this.$router.push({path: this.redirectTo});
     }
 
     async sendSMS() {
