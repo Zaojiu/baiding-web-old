@@ -102,7 +102,8 @@
             </div>
             <div class="row" v-for="discount in orderFee.discounts">
               <span class="title">{{discount.title}}</span>
-              <span class="content"><a href="" :class="{disabled: isDiscountDeleting[discount.code]}" @click.prevent="deleteSelectedDiscount(discount)">删除</a></span>
+              <span class="content"><a href="" :class="{disabled: isDiscountDeleting[discount.code]}"
+                                       @click.prevent="deleteSelectedDiscount(discount)">删除</a></span>
             </div>
             <div class="row no-record" v-if="!orderFee.discounts.length">暂无优惠</div>
           </div>
@@ -127,7 +128,8 @@
         <div class="discount-popup" :class="{'show': isDiscountSelectorShow}" @click.stop>
           <div class="header"><i class="bi bi-close" @click="closeDiscountSelector()"></i></div>
           <div class="row" v-for="discount in discountCodes">
-            <input type="checkbox" :disabled="!discount.canUse" :checked="isDiscountSelected(discount)" @click="toggleDiscount(discount)">
+            <input type="checkbox" :disabled="!discount.canUse" :checked="isDiscountSelected(discount)"
+                   @click="toggleDiscount(discount)">
             <div class="discount-title">
               {{discount.title}}
             </div>
@@ -361,7 +363,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {Money} from '../../shared/utils/utils';
+  import {Money, parseUrl} from '../../shared/utils/utils';
   import {getUserInfo, getUserInfoCache} from "../../shared/api/user.api";
   import {OrderObject, PostOrderObject, OrderFee, Discount, Order} from "../../shared/api/order.model";
   import {checkOrderFee, listDiscountCode, createOrder, getOrder} from '../../shared/api/order.api';
@@ -386,7 +388,7 @@
     isDiscountSelectorShow = false;
     selectedDiscount: Discount[] = [];
     isApplyingDiscount = false;
-    isDiscountDeleting: {[key: string]: boolean} = {};
+    isDiscountDeleting: { [key: string]: boolean } = {};
 
     created() {
       const isContinue = this.handlePayResultForRedirect();
@@ -402,7 +404,8 @@
     }
 
     handlePayResultForRedirect() {
-      const payResult = this.$route.query['payResult'];
+      const query = this.$route.query;
+      const payResult = query['payResult'];
 
       if (!payResult) return true;
 
@@ -411,7 +414,7 @@
       if (id) {
         if (payResult === 'success') {
           showTips('支付成功');
-          this.$router.replace({path: '/my/orders'});
+          this.handleSuccessfulPayResult(query['orderType'], true);
         } else if (payResult === 'cancel') {
           showTips('订单未支付');
           this.$router.replace({path: `/orders/${id}`});
@@ -423,17 +426,32 @@
       } else {
         if (payResult === 'success') {
           showTips('支付成功');
+          this.handleSuccessfulPayResult(query['orderType'], true);
         } else if (payResult === 'cancel') {
           showTips('订单未支付');
+          this.$router.replace({path: '/my/orders'});
         } else {
           showTips('支付失败，请重试');
+          this.$router.replace({path: '/my/orders'});
           console.error(decodeURIComponent(payResult));
         }
-
-        this.$router.replace({path: '/my/orders'});
       }
 
       return false;
+    }
+
+    async handleSuccessfulPayResult(orderType: string, useReplace = false) {
+      setPaymentNone();
+      showTips('支付成功');
+
+      if (orderType === 'member') {
+        await getUserInfo();
+        useReplace ? this.$router.replace({path: '/my/member'}) : this.$router.push({path: '/my/member'});
+      } else if (orderType === 'event') {
+        useReplace ? this.$router.replace({path: '/my/tickets'}) : this.$router.push({path: '/my/tickets'});
+      } else {
+        useReplace ? this.$router.replace({path: '/my/orders'}) : this.$router.push({path: '/my/tickets'});
+      }
     }
 
     processParams() {
@@ -534,26 +552,14 @@
       this.discountCodes = await listDiscountCode(this.itemsQuery);
     }
 
-    isMemberOrder(): boolean {
-      return this.orderId ? this.order.hasMemberItem : this.orderFee.hasMemberItem;
-    }
-
-    isEventOrder(): boolean {
-      return this.orderId ? this.order.hasEventItem : this.orderFee.hasEventItem;
-    }
-
-    async processPayResult() {
-      setPaymentNone();
-      showTips('支付成功');
-
-      if (this.isMemberOrder()) {
-        await getUserInfo();
-        this.$router.push({path: '/my/member'});
-      } else if (this.isEventOrder) {
-        this.$router.push({path: '/my/tickets'});
-      } else {
-        this.$router.push({path: '/my/orders'});
+    getOrderType(): string {
+      if (this.orderId ? this.order.hasMemberItem : this.orderFee.hasMemberItem) {
+        return 'member'
+      } else if (this.orderId ? this.order.hasEventItem : this.orderFee.hasEventItem){
+        return 'event';
       }
+
+      return '';
     }
 
     pay() {
@@ -568,7 +574,7 @@
       this.isPaying = true;
 
       try {
-        await pay(this.orderId);
+        await pay(this.orderId, this.getBackToUrl());
       } catch (e) {
         throw e;
         // TODO: error handler
@@ -576,7 +582,7 @@
         this.isPaying = false;
       }
 
-      await this.processPayResult();
+      await this.handleSuccessfulPayResult(this.getOrderType());
     }
 
     async payNewOrder() {
@@ -586,7 +592,7 @@
 
       try {
         const orderMeta = await createOrder(this.itemsQuery, discountCode);
-        await pay(orderMeta.orderNo);
+        await pay(orderMeta.orderNo, this.getBackToUrl());
       } catch (e) {
         if (e === 'cancel') {
           showTips('订单未支付');
@@ -600,7 +606,13 @@
         this.isPaying = false;
       }
 
-      this.processPayResult();
+      await this.handleSuccessfulPayResult(this.getOrderType());
+    }
+
+    getBackToUrl(): string {
+      const urlObj = parseUrl(location.href);
+      urlObj.search['orderType'] = this.getOrderType();
+      return urlObj.toString();
     }
 
     popupDiscountSelector() {
