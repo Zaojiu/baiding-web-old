@@ -1,7 +1,6 @@
 import {get, post} from "./xhr";
 import {host} from '../../env/environment'
 import {UserDetailInfoModel, UserInfoModel, WechatSigninQrcodeModel} from './user.model'
-import {ApiCode} from "./code-map.enum";
 import {AxiosResponse} from "axios";
 import {Store} from "../utils/store";
 import router from '../../router';

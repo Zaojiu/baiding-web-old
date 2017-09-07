@@ -274,7 +274,7 @@
       }
 
       try {
-        getUserInfo(false);
+        await getUserInfo(false);
       } catch (e) {
         location.reload();
         return;
