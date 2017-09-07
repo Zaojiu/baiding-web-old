@@ -13,7 +13,7 @@ export class OrderApiService {
     const url = `${host.io}/api/wallet/order/${oid}`;
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
-      return new OrderModel(data);
+      return new OrderModel(data.order);
     });
   }
 }

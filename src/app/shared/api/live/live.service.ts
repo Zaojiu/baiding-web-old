@@ -518,7 +518,7 @@ export class LiveService {
       return data && data.src ? data.src : '';
     });
   }
-  
+
   private _wechatPay(liveId: string): Promise<string> {
     const payUrl = `${host.io}/api/live/objects/${liveId}/pay`;
 
@@ -610,14 +610,14 @@ export class LiveService {
         // TODO check payment status?
         let count = 0;
         const timer = setInterval(() => {
-          this.orderApiService.getOrderData(orderNo).then(result => {
-            if (result.isSuccess) {
+          this.orderApiService.getOrderData(orderNo).then(order => {
+            if (order.isSuccess) {
               clear(timer);
               resolve('');
               return;
             }
 
-            if (result.isClosed) {
+            if (order.isClosed) {
               clear(timer);
               resolve('closed');
               return;
