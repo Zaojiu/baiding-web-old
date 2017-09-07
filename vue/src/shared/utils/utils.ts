@@ -1,5 +1,7 @@
 import {sampleSize} from 'lodash';
 import {host} from "../../env/environment";
+import {router} from "../../router";
+import {showTips} from "../../store/tip";
 
 declare const DocumentTouch: any;
 
@@ -118,3 +120,18 @@ export class Money {
     return yuanString;
   }
 }
+
+export const setTitle = (title: string) => {
+  document.title = title;
+
+  // for ios wechat
+  let i = document.createElement('iframe');
+  i.src = '/assets/img/transparent-pixel-min.png';
+  i.style.display = 'none';
+  i.onload = function () {
+    setTimeout(() => {
+      i.remove();
+    });
+  };
+  document.body.appendChild(i);
+};

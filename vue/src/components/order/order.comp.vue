@@ -102,7 +102,7 @@
             </div>
             <div class="row" v-for="discount in orderFee.discounts">
               <span class="title">{{discount.title}}</span>
-              <span class="content"><a href="" @click.prevent="deleteDiscount(discount)">删除</a></span>
+              <span class="content"><a href="" :class="{disabled: isDiscountDeleting[discount.code]}" @click.prevent="deleteSelectedDiscount(discount)">删除</a></span>
             </div>
             <div class="row no-record" v-if="!orderFee.discounts.length">暂无优惠</div>
           </div>
@@ -133,7 +133,7 @@
             </div>
           </div>
           <div class="row no-discounts" v-if="!discountCodes.length">暂无可用优惠</div>
-          <button class="button button-primary" @click="closeDiscountSelector()">使用优惠</button>
+          <button class="button button-primary" :disabled="isApplyingDiscount" @click="useDiscount()">使用优惠</button>
         </div>
       </div>
     </div>
@@ -281,8 +281,12 @@
         .row {
           align-items: center;
 
-          .discount-selector {
+          .discount-selector, a {
             color: $color-brand;
+
+            &.disabled {
+              opacity: .5;
+            }
           }
         }
       }
@@ -380,19 +384,56 @@
     isError = false;
     isPaying = false;
     isDiscountSelectorShow = false;
+    selectedDiscount: Discount[] = [];
+    isApplyingDiscount = false;
+    isDiscountDeleting: {[key: string]: boolean} = {};
 
     created() {
-      this.routeChange();
+      const isContinue = this.handlePayResultForRedirect();
+      if (isContinue) this.routeChange();
     }
 
-    @Watch('$route.params.id')
+    @Watch('$route')
     routeChange() {
-      // TODO: handle pay result;
-
       const isValid = this.processParams();
       if (isValid) {
         this.initData();
       }
+    }
+
+    handlePayResultForRedirect() {
+      const payResult = this.$route.query['payResult'];
+
+      if (!payResult) return true;
+
+      const id = this.$route.params['id'];
+
+      if (id) {
+        if (payResult === 'success') {
+          showTips('支付成功');
+          this.$router.replace({path: '/my/orders'});
+        } else if (payResult === 'cancel') {
+          showTips('订单未支付');
+          this.$router.replace({path: `/orders/${id}`});
+        } else {
+          showTips('支付失败，请重试');
+          this.$router.replace({path: `/orders/${id}`});
+          console.error(decodeURIComponent(payResult));
+        }
+      } else {
+        if (payResult === 'success') {
+          showTips('支付成功');
+        } else if (payResult === 'cancel') {
+          showTips('订单未支付');
+        } else {
+          showTips('支付失败，请重试');
+          console.error(decodeURIComponent(payResult));
+        }
+
+        this.$router.replace({path: '/my/orders'});
+      }
+
+      return false;
     }
 
     processParams() {
@@ -564,28 +605,47 @@
 
     popupDiscountSelector() {
       this.isDiscountSelectorShow = true;
+      this.selectedDiscount = (<Discount[]>[]).concat(this.orderFee.discounts);
+      this.checkDiscountCompatity();
     }
 
     closeDiscountSelector() {
       this.isDiscountSelectorShow = false;
     }
 
+    async useDiscount() {
+      if (!this.selectedDiscount.length) {
+        this.closeDiscountSelector();
+        return;
+      }
+
+      this.isApplyingDiscount = true;
+
+      const discountCodes = this.selectedDiscount.map(discount => discount.code);
+
+      try {
+        await this.checkOrder(discountCodes);
+      } finally {
+        this.isApplyingDiscount = false;
+      }
+
+      this.closeDiscountSelector();
+    }
+
     isDiscountSelected(discount: Discount): boolean {
-      return !!this.orderFee.discounts.filter((selectedDiscount) => selectedDiscount.code === discount.code).length;
+      return !!this.selectedDiscount.filter((selectedDiscount) => selectedDiscount.code === discount.code).length;
     }
 
     checkDiscountCompatity() {
       this.discountCodes.forEach((discount) => {
         let sameKind = 0;
 
-        this.orderFee.discounts.forEach((selectedDiscount) => {
-          if (selectedDiscount.kind === discount.kind) sameKind++;
+        this.selectedDiscount.forEach((selectedDiscount) => {
+          if (selectedDiscount.code !== discount.code && selectedDiscount.kind === discount.kind) sameKind++;
         });
 
-        const overlaid = !!discount.discount.canOverlay && discount.discount.canOverlay >= sameKind;
-        const hasExclusiveDiscount = !this.isDiscountSelected(discount) && !!this.orderFee.discounts.filter((selectedDiscount) => !selectedDiscount.discount.allowOther).length;
-
-        if (!discount.discount.allowOther) console.log(discount.discount.canOverlay, sameKind, discount.discount.allowOther, this.orderFee.discounts.length);
+        const overlaid = !!discount.discount.canOverlay && discount.discount.canOverlay <= sameKind;
+        const hasExclusiveDiscount = !this.isDiscountSelected(discount) && !!this.selectedDiscount.filter((selectedDiscount) => !selectedDiscount.discount.allowOther).length;
 
         discount.canUse = !overlaid && !hasExclusiveDiscount && discount.canUseFromApi;
       });
@@ -599,33 +659,31 @@
       }
     }
 
-    disableDiscountFromApi(discount: Discount) {
-      discount.canUseFromApi = false;
-    }
-
     async addDiscount(discount: Discount) {
-      const discounts = this.orderFee.discounts.concat(discount);
-      const discountCodes = discounts.map(discount => discount.code);
-
-      this.discountCodes.forEach((discount) => discount.canUse = false);
-      try {
-        await this.checkOrder(discountCodes);
-      } catch (e) {
-        if (e.code !== ApiCode.ErrOrderDiscountNotUsed && e.code !== ApiCode.ErrOrderDiscountCannotUsedWithOther) {
-          this.discountCodes.forEach((discount) => discount.canUse = true);
-          throw e;
-        }
-      }
-
+      const has = !!this.selectedDiscount.filter((_discount) => _discount.code = discount.code).length;
+      if (!has) this.selectedDiscount.push(discount);
       this.checkDiscountCompatity();
     }
 
     async deleteDiscount(discount: Discount) {
-      const discountCode = discount.code;
-
-      const remainCodes = this.orderFee.discounts.map(_discount => _discount.code).filter(code => code !== discountCode);
-      await this.checkOrder(remainCodes);
+      const index = this.selectedDiscount.findIndex((_discount: Discount) => _discount.code === discount.code);
+      this.selectedDiscount.splice(index, 1);
       this.checkDiscountCompatity();
+    }
+
+    async deleteSelectedDiscount(discount: Discount) {
+      if (this.isDiscountDeleting[discount.code]) return;
+
+      const discountCode = discount.code;
+      const remainCodes = this.orderFee.discounts.map(_discount => _discount.code).filter(code => code !== discountCode);
+
+      this.isDiscountDeleting[discount.code] = true;
+
+      try {
+        await this.checkOrder(remainCodes);
+      } finally {
+        this.isDiscountDeleting[discount.code] = false;
+      }
     }
   }
 </script>

@@ -236,6 +236,7 @@ export class Order {
         items.push(new OrderObject(itemData));
       });
     }
+
     this.items = items;
 
     const discounts: Discount[] = [];
@@ -244,6 +245,7 @@ export class Order {
         discounts.push(new Discount(discountData, {}));
       });
     }
+
     this.discounts = discounts;
 
     this.order = new OrderMeta(data.order);

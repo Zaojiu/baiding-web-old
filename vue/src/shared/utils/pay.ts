@@ -1,14 +1,13 @@
-import {isAndroid, isInApp, isInWechat, isiOS, isWindowsWechat} from "./utils";
+import {isInWechat, isWindowsWechat} from "./utils";
 import {appConfig, host} from "../../env/environment";
 import {post} from "../api/xhr";
-import {wechat} from "./wechat";
 import {
   paymentStore, PayStatus, setPaymentFail, setPaymentNone, setPaymentPaying, setPaymentSuccess,
 } from "../../store/payment";
 import {getOrder} from "../api/order.api";
 import {AxiosResponse} from "axios";
 import {ApiCode} from "../api/code-map.enum";
-import router from "../../router";
+import {router} from "../../router";
 
 let pcRejecter: ((reason: string) => void)|null;
 let timer: any;
@@ -31,12 +30,14 @@ const payResult = router.currentRoute.query['payResult'];
 if (payResult) {
   if (payResult === 'success') {
     setPaymentSuccess();
+  } else if (payResult === 'cancel') {
+    setPaymentNone();
   } else {
     setPaymentFail(payResult);
   }
 }
 
-const _wechatPay = async (orderNo: string): Promise<void> => {
+const wechatPay = async (orderNo: string): Promise<void> => {
   const payUrl = `${host.io}/api/wallet/order/${orderNo}/pay`;
 
   let resp: AxiosResponse;
@@ -59,46 +60,8 @@ const _wechatPay = async (orderNo: string): Promise<void> => {
 
   const wxPayReq = data.wxPay.request;
 
-  //hack uiwebview
-  if (isiOS) {
-    const url = location.href;
-    location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
-    throw new Error('cancel');
-  }
-
-  if (!(<any>window).WeixinJSBridge) {
-    const reason = 'weixin_js_bridge_not_found';
-    setPaymentFail(reason);
-    throw new Error(reason);
-  }
-
-  try {
-    await wechat.pay(wxPayReq);
-  } catch (e) {
-    if (e === 'cancel') {
-      setPaymentNone();
-    } else {
-      setPaymentFail(e);
-    }
-
-    throw e;
-  }
-
-  setPaymentSuccess();
-  return;
-};
-
-const wechatPay = async (orderNo: string): Promise<void> => {
-  if (isAndroid) history.pushState({}, '微信支付', appConfig.payAddress);
-
-  try {
-    await wechat.init();
-    await _wechatPay(orderNo);
-  } finally {
-    if (isAndroid) history.back();
-  }
-
-  return;
+  const url = location.href;
+  location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
 };
 
 const pcPay = async (orderNo: string): Promise<void> => {
@@ -159,10 +122,10 @@ const pcPay = async (orderNo: string): Promise<void> => {
 
 export const pay = async (orderNo: string): Promise<void> => {
   if (isInWechat && !isWindowsWechat) {
-    await wechatPay(orderNo);
+    wechatPay(orderNo);
+    // wechat pay change location and never resolve
+    return new Promise<void>((resolve, reject) => {});
   } else {
-    await pcPay(orderNo);
+    return pcPay(orderNo);
   }
-
-  return;
 };

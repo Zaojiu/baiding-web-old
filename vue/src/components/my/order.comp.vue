@@ -193,7 +193,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
   import {scrollView} from '../../shared/scroll-view/scroll-view.directive';
   import {Order, OrderStatus} from '../../shared/api/order.model';
   import {listOrders, getOrder, closeOrder} from '../../shared/api/order.api';
@@ -218,7 +218,33 @@
     isFooterLoading = false;
 
     created() {
+      const isContinue = this.handlePayResultForRedirect();
+      if (isContinue) this.initData();
+    }
+
+    @Watch('$route')
+    routeChange() {
       this.initData();
+    }
+
+    handlePayResultForRedirect() {
+      const payResult = this.$route.query['payResult'];
+
+      if (!payResult) return true;
+
+      if (payResult === 'success') {
+        showTips('支付成功');
+        this.$router.replace({path: '/my/orders'});
+      } else if (payResult === 'cancel') {
+        showTips('订单未支付');
+        this.$router.replace({path: '/my/orders'});
+      } else {
+        showTips('支付失败，请重试');
+        this.$router.replace({path: '/my/orders'});
+        console.error(decodeURIComponent(payResult));
+      }
+
+      return false;
     }
 
     async initData() {
