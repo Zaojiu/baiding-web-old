@@ -36,7 +36,6 @@ Thumbs.db
 
 # config
 /src/env/environment.development.ts
-/src/env/environment.production.ts
 hack/Dockerfile
 /dist
 
