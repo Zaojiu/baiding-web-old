@@ -57,9 +57,9 @@ export const ApiErrorMessage: {[key: number]: string} = {
   [ApiCode.ErrOrderItemIncorrect]: '订单错误',
   [ApiCode.ErrOrderDiscountNotUsed]: '优惠券不可用',
   [ApiCode.ErrOrderDiscountCannotUsedWithOther]: '优惠券不可与其他优惠同时使用',
+  [ApiCode.ErrSigninInvalidPassword]: '手机号不存在或验证码错误',
 };
 
 export const SigninErrorMessage = {
   [ApiCode.ErrNotFound]: '手机号不存在',
-  [ApiCode.ErrSigninInvalidPassword]: '手机号不存在或验证码错误',
 };

@@ -55,7 +55,7 @@
         <bd-loading v-if="isAmoutLoading"></bd-loading>
         <span v-if="!isAmoutLoading">{{amount.toYuan()}}</span>
       </div>
-      <button class="button button-primary" @click="gotoOrder()">立即支付</button>
+      <button class="button button-primary" @click="gotoOrder()">立即购买</button>
     </div>
   </div>
 </template>

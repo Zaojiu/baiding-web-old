@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -83,6 +84,29 @@ const assetsRepalcementOption = {
   replace: isProd ? `${publicPath}/assets/` : '',
 };
 const assetsReplacementLoader = 'string-replace-loader?' + JSON.stringify(assetsRepalcementOption);
+const plugins = [
+  new HtmlWebpackPlugin({
+    chunksSortMode: packageChunkSort(['manifest', 'global', 'libs', 'shared', 'main']),
+    template: path.resolve(__dirname, './src/index.html'),
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    names: ['shared', 'libs', 'global', 'manifest'],
+    minChunks: 2,
+  }),
+  // new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
+];
+const envFilePath = path.resolve(__dirname, "./src/env/environment" + (process.env.NODE_ENV ? '.' + process.env.NODE_ENV : '') + ".ts");
+if (fs.existsSync(envFilePath)) {
+  plugins.push(new webpack.NormalModuleReplacementPlugin(
+    // This plugin is responsible for swapping the environment files.
+    // Since it takes a RegExp as first parameter, we need to escape the path.
+    // See https://webpack.github.io/docs/list-of-plugins.html#normalmodulereplacementplugin
+    new RegExp(
+      path.resolve(__dirname, './src/env/environment.ts').replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&')),
+      envFilePath,
+    )
+  );
+}
 const config = {
   entry: {
     'global': thirdPartyLibs,
@@ -192,24 +216,7 @@ const config = {
   performance: {
     hints: false
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      chunksSortMode: packageChunkSort(['manifest', 'global', 'libs', 'shared', 'main']),
-      template: path.resolve(__dirname, './src/index.html'),
-    }),
-    new webpack.NormalModuleReplacementPlugin(
-      // This plugin is responsible for swapping the environment files.
-      // Since it takes a RegExp as first parameter, we need to escape the path.
-      // See https://webpack.github.io/docs/list-of-plugins.html#normalmodulereplacementplugin
-      new RegExp(path.resolve(__dirname, './src/env/environment.ts')
-        .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&')), path.resolve(__dirname, "./src/env/environment" + (process.env.NODE_ENV ? '.' + process.env.NODE_ENV : '') + ".ts")
-    ),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['shared', 'libs', 'global', 'manifest'],
-      minChunks: 2,
-    }),
-    // new webpack.optimize.ModuleConcatenationPlugin(), // module concatenation: https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5
-  ]
+  plugins: plugins,
 };
 
 if (isProd) {

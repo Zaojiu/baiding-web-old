@@ -9,15 +9,6 @@
     position: relative;
     padding-top: 14px;
 
-    input, textarea {
-      outline: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      border: none;
-      margin: 0;
-    }
-
     input.v-has-value + label,
     input:focus + label,
     input[type="text"].v-has-value + label,
@@ -76,6 +67,15 @@
         top: 5px;
       }
     }
+  }
+
+  input, textarea {
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    margin: 0;
   }
 
   input, input[type="text"], input[type="number"], input[type="password"], input[type="datetime-local"], input[type="tel"], textarea {

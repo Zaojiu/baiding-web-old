@@ -126,30 +126,6 @@ class Wechat {
   closeWindow() {
     wx.closeWindow();
   }
-
-  pay(wxPayReq: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      (<any>window).WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', {
-          "appId": wxPayReq.appId,     //公众号名称，由商户传入
-          "timeStamp": wxPayReq.timeStamp,         //时间戳，自1970年以来的秒数
-          "nonceStr": wxPayReq.nonceStr, //随机串
-          "package": wxPayReq.package,
-          "signType": wxPayReq.signType,         //微信签名方式：
-          "paySign": wxPayReq.paySign //微信签名
-        },
-        function (res: any) {
-          if (res.err_msg === 'get_brand_wcpay_request:ok') {
-            resolve();
-          } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-            reject('cancel');
-          } else {
-            reject(`wechat pay failed: ${res.err_msg}`);
-          }
-        }
-      );
-    });
-  }
 }
 
 export const wechat = new Wechat();

@@ -12,7 +12,7 @@ export enum SmsType {
   Voice,
 }
 
-export const sendSmsByLoginUser = async (mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: { [key: number]: string }) => {
+export const sendSmsByLoginUser = async (mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: { [key: number]: string }): Promise<void> => {
   const url = `${host.io}/api/user/sms`;
   const data = {
     mobile: mobile,
@@ -20,10 +20,12 @@ export const sendSmsByLoginUser = async (mobile: string, scene: SmsScene, type =
     type: type,
   };
 
-  return await post(url, data);
+  await post(url, data);
+
+  return;
 };
 
-export const sendSmsByGuest = async (mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: { [key: number]: string }) => {
+export const sendSmsByGuest = async (mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: { [key: number]: string }): Promise<void> => {
   const url = `${host.io}/api/user/login/sms`;
   const data = {
     mobile: mobile,
@@ -31,5 +33,7 @@ export const sendSmsByGuest = async (mobile: string, scene: SmsScene, type = Sms
     type: type,
   };
 
-  return await post(url, data, {codeMap: codeMap});
+  await post(url, data, {codeMap: codeMap});
+
+  return;
 };

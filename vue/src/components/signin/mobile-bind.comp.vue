@@ -259,28 +259,32 @@
       this.isSubmitting = true;
       showTips('绑定中...');
 
-      const code = await signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title);
-      switch (code) {
-        case ApiCode.OK:
-          try {
-            getUserInfo(false);
-          } catch (e) {
-            location.reload();
-            return;
-          }
-
-          showTips('绑定手机成功');
-          this.$router.push({path: this.redirectTo});
-          break;
-        case ApiCode.ErrSigninInvalidSmsCode:
-          this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
-          break;
+      try {
+        await signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title);
+      } catch (e) {
+        const code = e.code;
+        switch (code) {
+          case ApiCode.ErrSigninInvalidSmsCode:
+            this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
+            break;
+        }
+        throw e;
+      } finally {
+        this.isSubmitting = false;
       }
 
-      this.isSubmitting = false;
+      try {
+        await getUserInfo(false);
+      } catch (e) {
+        location.reload();
+        return;
+      }
+
+      showTips('绑定手机成功');
+      this.$router.push({path: this.redirectTo});
     }
 
-    sendSMS() {
+    async sendSMS() {
       const isMobileValid = !this.$validator.errors.has('phoneNumber');
 
       if (!isMobileValid) showTips('请填写正确的手机号码再发送验证码');
@@ -290,7 +294,7 @@
       this.smsBtnAvailable = false;
 
       try {
-        sendSmsByLoginUser(this.phoneNumber, SmsScene.BindMobile)
+        await sendSmsByLoginUser(this.phoneNumber, SmsScene.BindMobile)
       } catch (e) {
         this.smsBtnAvailable = true;
         throw e;

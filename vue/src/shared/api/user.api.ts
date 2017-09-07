@@ -1,11 +1,9 @@
 import {get, post} from "./xhr";
 import {host} from '../../env/environment'
 import {UserDetailInfoModel, UserInfoModel, WechatSigninQrcodeModel} from './user.model'
-import {ApiCode} from "./code-map.enum";
 import {AxiosResponse} from "axios";
 import {Store} from "../utils/store";
 import router from '../../router';
-import {showTips} from "../../store/tip";
 
 export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel> => {
   const url = `${host.io}/api/user`;
@@ -61,7 +59,7 @@ export const getWechatSigninQrcode = async (redirectTo: string): Promise<WechatS
   return new WechatSigninQrcodeModel(res.data);
 };
 
-export const signin = async (username: string, code: string, password: string, codeMap?: { [key: number]: string }): Promise<number> => {
+export const signin = async (username: string, code: string, password: string, codeMap?: { [key: number]: string }): Promise<void> => {
   const query = {
     useSms: !!code,
   };
@@ -70,17 +68,12 @@ export const signin = async (username: string, code: string, password: string, c
   if (code) data['code'] = code;
   if (password) data['password'] = password;
 
-  try {
-    await post(url, data, {codeMap: codeMap});
-  } catch (err) {
-    return err.code;
-  }
-
-  await getUserInfo(false);
-  return ApiCode.OK;
+  await post(url, data, {codeMap: codeMap});
+  await getUserInfo();
+  return;
 };
 
-export const signup = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: {[key: number]: string}): Promise<number> => {
+export const signup = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: {[key: number]: string}): Promise<void> => {
   const url = `${host.io}/api/user/mobile/bind`;
   const data = {
     mobile,
@@ -91,16 +84,11 @@ export const signup = async (mobile: string, code: string, password: string, rea
     position,
   };
 
-  try {
-    await post(url, data, {codeMap});
-  } catch (err) {
-    return err.code;
-  }
-
-  return ApiCode.OK;
+  await post(url, data, {codeMap});
+  return;
 };
 
-export const resetPassword = async (mobile: string, code: string, password: string, codeMap?: {[key: number]: string}): Promise<number> => {
+export const resetPassword = async (mobile: string, code: string, password: string, codeMap?: {[key: number]: string}): Promise<void> => {
   const url = `${host.io}/api/user/login/reset`;
   const data = {
     mobile,
@@ -108,11 +96,6 @@ export const resetPassword = async (mobile: string, code: string, password: stri
     code,
   };
 
-  try {
-    await post(url, data, {codeMap: codeMap});
-  } catch (err) {
-    return err.code;
-  }
-
-  return ApiCode.OK;
+  await post(url, data, {codeMap: codeMap});
+  return;
 };

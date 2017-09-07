@@ -8,7 +8,7 @@ import {authGuard} from "./shared/guard/user-auth.guard";
 import {beforeRouteEnter} from "./shared/guard/before-route-enter";
 import {mobileBindedGuard} from "./shared/guard/mobile-binded.guard";
 import {memberActivateCompGuard} from "./shared/guard/member-activate-comp.guard";
-import {getRelativePath} from "./shared/utils/utils";
+import {getRelativePath, setTitle} from "./shared/utils/utils";
 import {signinGuard} from "./shared/guard/signin-comp.guard";
 import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
 
@@ -190,7 +190,7 @@ export const router = new Router({
     },
     {
       path: '/orders/:id?',
-      name: 'order',
+      name: 'orders',
       meta: {
         title: '订单',
       },
@@ -228,6 +228,7 @@ export const router = new Router({
 export default router;
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title}-造就` || '造就';
+  const title = to.meta.title ? `${to.meta.title}-造就` : '造就';
+  setTitle(title);
   next()
 });
