@@ -284,7 +284,7 @@
       this.$router.push({path: this.redirectTo});
     }
 
-    sendSMS() {
+    async sendSMS() {
       const isMobileValid = !this.$validator.errors.has('phoneNumber');
 
       if (!isMobileValid) showTips('请填写正确的手机号码再发送验证码');
@@ -294,7 +294,7 @@
       this.smsBtnAvailable = false;
 
       try {
-        sendSmsByLoginUser(this.phoneNumber, SmsScene.BindMobile)
+        await sendSmsByLoginUser(this.phoneNumber, SmsScene.BindMobile)
       } catch (e) {
         this.smsBtnAvailable = true;
         throw e;
