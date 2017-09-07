@@ -14,7 +14,7 @@
         <i class="bi bi-member-right-book" v-if="right.isTypeBook"></i>
         <i class="bi bi-member-right-video" v-else-if="right.isTypeEvent"></i>
         <i class="bi bi-member-right-discount" v-else-if="right.isTypeNormalDiscount"></i>
-        <div class="title" @click.prevent="gotoRight(right.id)">{{right.title}}</div>
+        <div class="title" @click.prevent="userInfo.member.valid ? gotoRight(right.id) : true">{{right.title}}</div>
         <div class="detail" v-if="userInfo.member.valid">
           <div class="amount">可用权益：<span v-if="right.totalAmount">{{right.availableAmount}}/{{right.totalAmount}}</span><span v-else>0</span></div>
           <a class="detail-link" href="" @click.prevent="gotoRight(right.id)">查看详情</a>

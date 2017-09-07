@@ -37,7 +37,7 @@ if (payResult) {
   }
 }
 
-const wechatPay = async (orderNo: string): Promise<void> => {
+const wechatPay = async (orderNo: string, redirectTo?: string): Promise<void> => {
   const payUrl = `${host.io}/api/wallet/order/${orderNo}/pay`;
 
   let resp: AxiosResponse;
@@ -60,8 +60,8 @@ const wechatPay = async (orderNo: string): Promise<void> => {
 
   const wxPayReq = data.wxPay.request;
 
-  const url = location.href;
-  location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(url)}`;
+  const backto = redirectTo || location.href;
+  location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(backto)}`;
 };
 
 const pcPay = async (orderNo: string): Promise<void> => {
@@ -120,9 +120,9 @@ const pcPay = async (orderNo: string): Promise<void> => {
   });
 };
 
-export const pay = async (orderNo: string): Promise<void> => {
+export const pay = async (orderNo: string, redirectTo?: string): Promise<void> => {
   if (isInWechat && !isWindowsWechat) {
-    wechatPay(orderNo);
+    await wechatPay(orderNo, redirectTo);
     // wechat pay change location and never resolve
     return new Promise<void>((resolve, reject) => {});
   } else {

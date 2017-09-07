@@ -1,29 +1,7 @@
 import {sampleSize} from 'lodash';
 import {host} from "../../env/environment";
-import {router} from "../../router";
-import {showTips} from "../../store/tip";
 
 declare const DocumentTouch: any;
-
-export class UrlModel {
-  protocol: string;
-  host: string;
-  hostname: string;
-  port: number;
-  pathname: string;
-  search: string;
-  hash: string;
-
-  constructor(protocol: string, host: string, hostname: string, port: number, pathname: string, search: string, hash: string) {
-    this.protocol = protocol;
-    this.host = host;
-    this.hostname = hostname;
-    this.port = port;
-    this.pathname = pathname;
-    this.search = search;
-    this.hash = hash;
-  }
-}
 
 export const isInWechat = /micromessenger/i.test(navigator.userAgent);
 export const isiOS = /iPhone|iPad/i.test(navigator.userAgent);
@@ -61,11 +39,6 @@ export const parseAt = (content: string, needHeightLight = false): string => {
 export const resetWindowScroll = (): void => {
   setTimeout(() => document.body.scrollTop = document.body.scrollHeight, 800);
 };
-export const parseUrl = (url: string): UrlModel => {
-  const aEle = document.createElement('a');
-  aEle.href = url;
-  return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, +aEle.port, aEle.pathname, aEle.search, aEle.hash)
-};
 export const params = (obj: any): string => {
   const params: string[] = [];
   Object.keys(obj).forEach(k => {
@@ -76,6 +49,42 @@ export const params = (obj: any): string => {
   });
   if (params.length) return params.join('&');
   return '';
+};
+export class UrlModel {
+  protocol: string;
+  host: string;
+  hostname: string;
+  port: string;
+  pathname: string;
+  search: {[key: string]: string};
+  hash: string;
+
+  constructor(protocol: string, host: string, hostname: string, port: string, pathname: string, search: {[key: string]: string}, hash: string) {
+    this.protocol = protocol;
+    this.host = host;
+    this.hostname = hostname;
+    this.port = port;
+    this.pathname = pathname;
+    this.search = search;
+    this.hash = hash;
+  }
+
+  toString(): string {
+    const searchStr = params(this.search);
+    return `${this.protocol}//${this.hostname}${this.port ? ':' + this.port : ''}${this.pathname}${searchStr ? '?' + searchStr : ''}${this.hash}`;
+  }
+}
+export const parseUrl = (url: string): UrlModel => {
+  const aEle = document.createElement('a');
+  aEle.href = url;
+  const queryStr = aEle.search.replace('?', '');
+  const queryArr = queryStr ? queryStr.split('&') : [];
+  const queryObj: {[key: string]: string} = {};
+  queryArr.forEach(function(kv) {
+    const kvArr = kv.split('=');
+    queryObj[kvArr[0]] = kvArr[1];
+  });
+  return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, aEle.port, aEle.pathname, queryObj, aEle.hash)
 };
 export const randomId = (size = 10, dic?: string): string => {
   const defaultDic = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
