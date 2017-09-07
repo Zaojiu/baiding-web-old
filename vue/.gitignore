@@ -35,8 +35,8 @@ testem.log
 Thumbs.db
 
 # config
-/src/environments/environment.development.ts
-/src/environments/environment.production.ts
+/src/env/environment.development.ts
+/src/env/environment.production.ts
 hack/Dockerfile
 /dist
 
