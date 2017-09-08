@@ -18,7 +18,6 @@ const route: Routes = [
   {
     path: ':uid',
     component: InfoCenterComponent,
-    canActivate: [AuthGuard, BindMobileGuard],
     resolve: {
       title: UserNickResolver,
     },
