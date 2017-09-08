@@ -132,7 +132,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   get isSelf(): boolean {
-    return this.currentUserInfo.uid === this.uid;
+    return this.currentUserInfo && this.currentUserInfo.uid === this.uid;
   }
 
   goToEdit() {
@@ -158,7 +158,7 @@ export class InfoCenterComponent implements OnInit, OnDestroy {
   }
 
   gotoLiveRoom(liveId: string) {
-    if (this.pageUserInfo.uid === this.currentUserInfo.uid) {
+    if (this.currentUserInfo && this.pageUserInfo.uid === this.currentUserInfo.uid) {
       this.router.navigate(([`/lives/${liveId}`]));
     } else {
       this.router.navigate(([`/lives/${liveId}/info`]));
