@@ -28,7 +28,7 @@
         </ol>
       </div>
     </div>
-    <button class="button button-primary" @click="userInfo.isMember ? goMyMember() : buy()">{{btnText}}</button>
+    <button class="button button-primary" @click="btnClick()">{{btnText}}</button>
   </div>
 </template>
 
@@ -147,23 +147,27 @@
   import {Component} from 'vue-property-decorator';
   import {Money} from '../../shared/utils/utils';
   import {getUserInfoCache} from "../../shared/api/user.api";
+  import {UserInfoModel} from '../../shared/api/user.model';
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
   import {checkOrderFee} from "../../shared/api/order.api";
 
   @Component
   export default class IntroComponent extends Vue {
-    userInfo = getUserInfoCache();
+    userInfo: UserInfoModel|null = null;
     fee = new Money(49800);
     memberOrderObject = new PostOrderObject('member-year', OrderObjectType.Member, 1); // hardcode temporary
 
     created() {
-      this.getMemberFee();
+      try {
+        this.userInfo = getUserInfoCache(false);
+      } catch (e) {
+      }
     }
 
     get btnText(): string {
       let text: string;
 
-      if (this.userInfo.isMember) {
+      if (this.userInfo && this.userInfo.isMember) {
         text = '已是会员，查看我的权益';
       } else {
         text = `购买造就会员 ${this.fee.toYuan('', '元/年')}`;
@@ -172,9 +176,12 @@
       return text;
     }
 
-    async getMemberFee() {
-      const orderFee = await checkOrderFee([this.memberOrderObject]);
-      this.fee = orderFee.totalPrice;
+    btnClick() {
+      if (this.userInfo && this.userInfo.isMember) {
+        this.goMyMember();
+      } else {
+        this.buy();
+      }
     }
 
     goMyMember() {
@@ -182,6 +189,11 @@
     }
 
     buy() {
+      if (!this.userInfo) {
+        this.userInfo = getUserInfoCache();
+        return;
+      }
+
       this.$router.push({
         path: '/orders',
         query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}

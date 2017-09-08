@@ -104,10 +104,6 @@ export const router = new Router({
       meta: {
         title: '造就会员',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-        const guards = [authGuard()];
-        beforeRouteEnter(guards, to, from, next);
-      },
       component: () => System.import('./components/member/intro.comp.vue'),
     },
     {
