@@ -9,17 +9,15 @@ export class BindMobileGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const to = `${host.self}${state.url}`;
-    const userInfo = this.userInfoService.getUserInfoCache(to);
+    return this.userInfoService.getUserInfo().then(userInfo => {
+      if (!userInfo.mobile.number) {
+        this.router.navigate([`/signup`], {queryParams: {redirectTo: to}});
+        return false;
+      }
 
-    if (!userInfo) return false;
-
-    if (!userInfo.mobile.number) {
-      this.router.navigate([`/signup`], {queryParams: {redirectTo: to}});
-      return false;
-    }
-
-    return true;
+      return true;
+    });
   }
 }

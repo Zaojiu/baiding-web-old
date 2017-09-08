@@ -8,16 +8,14 @@ export class SignupGuard implements CanActivate {
   constructor(private userInfoService: UserInfoService, private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const userInfo = this.userInfoService.getUserInfoCache(state.url);
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    return this.userInfoService.getUserInfo().then(userInfo => {
+      if (userInfo.mobile.number) {
+        if (!this.router.navigated) this.router.navigate(['/lives']);
+        return false;
+      }
 
-    if (!userInfo) return false;
-
-    if (userInfo.mobile.number) {
-      this.router.navigate(['/lives']);
-      return false;
-    }
-
-    return true;
+      return true;
+    });
   }
 }
