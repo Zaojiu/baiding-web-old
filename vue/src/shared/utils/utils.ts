@@ -1,4 +1,5 @@
 import {host} from "../../env/environment";
+import {Position} from "vue-router/types/router";
 
 declare const DocumentTouch: any;
 
@@ -146,4 +147,19 @@ export const setTitle = (title: string) => {
     });
   };
   document.body.appendChild(i);
+};
+
+export const removeHTML = (htmlStr: string): string => {
+  return htmlStr.replace(/<(?:.|\n)*?>/gm, '')
+};
+
+export let scrollPosition: Position | { selector: string, offset?: Position } | void;
+
+export const setScrollPosition = (selector?: string, x?: number, y?: number) => {
+  if (selector) {
+    scrollPosition = {selector};
+  } else if (x && y) {
+    scrollPosition = {x, y};
+  }
+  setTimeout(() => scrollPosition = undefined);
 };

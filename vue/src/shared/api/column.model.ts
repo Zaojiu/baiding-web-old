@@ -1,34 +1,47 @@
-import {Speaker} from "./speaker.model";
-import {Money} from "./money.model";
+import {SpeakerModel} from "./speaker.model";
+import {Money} from "../utils/utils";
+
+export class ColumnUserInfo {
+  paid: boolean;
+  paidAt: string;
+  paidAtParsed: Moment;
+  praised: boolean;
+  shared: boolean;
+
+  constructor(data: any) {
+    if (!data) return;
+
+    this.paid = data.paid;
+    this.paidAt = data.paidAt;
+    this.paidAtParsed = moment(data.paidAt);
+    this.praised = data.praised;
+    this.shared = data.shared;
+  }
+}
 
 export enum ColumnStatus {
   Unpublish = 0,
   Publish,
 }
 
-export class ColumnUserInfo {
-  isPaid: boolean;
-  paidAt: string;
-  paidAtParsed: Moment;
-  praised: boolean;
-  shared: boolean;
-
-  constructor(isPaid: boolean, paidAt: string, praised: boolean, shared: boolean) {
-    this.isPaid = isPaid;
-    this.paidAt = paidAt;
-    this.paidAtParsed = moment(paidAt);
-    this.praised = praised;
-    this.shared = shared;
-  }
-}
-
 export class Column {
   id: string;
-  speaker: Speaker | null;
+  coverUrl: string;
+  coverSmallUrl: string;
+  coverThumbnailUrl: string;
+  cover169Url: string;
+  coverSmall169Url: string;
+  coverThumbnail169Url: string;
+  cover11Url: string;
+  coverSmall11Url: string;
+  coverThumbnail11Url: string;
+  speaker: SpeakerModel;
   subject: string;
   desc: string;
-  detail: string;
-  totalFee: Money;
+  content: string;
+  totalFee: Money; // 价格，单位“分”
+  memberFee: Money; // 会员价，单位“分”
+  originFee: Money; // 原价，单位分
   isNeedPay: boolean;
   subscribedTotal: number;
   totalVol: number;
@@ -40,32 +53,46 @@ export class Column {
   createdAtParsed: Moment;
   updatedAt: string;
   updatedAtParsed: Moment;
-
   currentUserInfo: ColumnUserInfo | null;
 
-  constructor(id: string, speaker: Speaker | null, subject: string,
-              desc: string, detail: string, totalFee: number,
-              isNeedPay: boolean, subscribedTotal: number, totalVol: number,
-              currentVol: number, status: ColumnStatus,
-              publishAt: string, createdAt: string, updatedAt: string, currentUserInfo: ColumnUserInfo | null) {
-    this.id = id;
-    this.speaker = speaker;
-    this.subject = subject;
-    this.desc = desc;
-    this.detail = detail;
-    this.totalFee = new Money(totalFee);
-    this.isNeedPay = isNeedPay;
-    this.subscribedTotal = subscribedTotal;
-    this.totalVol = totalVol;
-    this.currentVol = currentVol;
-    this.status = status;
-    this.publishAt = publishAt;
-    this.publishAtParsed = moment(publishAt);
-    this.createdAt = createdAt;
-    this.createdAtParsed = moment(createdAt);
-    this.updatedAt = updatedAt;
-    this.updatedAtParsed = moment(updatedAt);
-    this.currentUserInfo = currentUserInfo;
+  constructor(data: any) {
+    if (!data) return;
+
+    this.id = data.id;
+
+    this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverThumbnailUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.cover169Url = `${data.coverUrl}~16-9?updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverSmall169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverThumbnail169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.cover11Url = `${data.coverUrl}~1-1?updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverSmall11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.coverThumbnail11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+
+    this.speaker = new SpeakerModel(data.speaker);
+    this.subject =  data.subject;
+    this.desc =  data.desc;
+    this.content =  data.detail;
+    this.totalFee = new Money(data.totalFee);
+    this.memberFee = new Money(data.memberFee);
+    this.originFee = new Money(data.originFee);
+    this.isNeedPay = data.isNeedPay;
+    this.subscribedTotal = data.subscribedTotal;
+    this.totalVol = data.totalVol;
+    this.currentVol = data.currentVol;
+    this.status = data.status;
+    this.publishAt = data.publishAt;
+    this.publishAtParsed = moment(data.publishAt);
+    this.createdAt = data.createdAt;
+    this.createdAtParsed = moment(data.createdAt);
+    this.updatedAt = data.updatedAt;
+    this.updatedAtParsed = moment(data.updatedAt);
+    this.currentUserInfo = data.current_user_info ? new ColumnUserInfo(data.current_user_info) : null;
+  }
+
+  get paid(): boolean {
+    return !this.isNeedPay || (!!this.currentUserInfo && this.currentUserInfo.paid);
   }
 }
 
@@ -94,10 +121,16 @@ export class ColumnItem {
   type: ColumnItemType;
   subject: string;
   desc: string;
+  coverUrl: string;
+  duration: Duration;
+  totalFee: Money; // 价格，单位“分”
+  memberFee: Money; // 会员价，单位“分”
+  originFee: Money; // 原价，单位分
   payType: ColumnItemPayType;
   status: ColumnItemStatus;
   viewTotal: number;
   commentTotal: number;
+  praisedTotal: number;
   publishAt: string;
   publishAtParsed: Moment;
   createdAt: string;
@@ -105,25 +138,51 @@ export class ColumnItem {
   updatedAt: string;
   updatedAtParsed: Moment;
 
-  constructor(id: string, columnId: string, vol: number, type: ColumnItemType, subject: string,
-              desc: string, payType: ColumnItemPayType, status: ColumnItemStatus, viewTotal: number,
-              commentTotal: number, publishAt: string, createdAt: string, updatedAt: string) {
-    this.id = id;
-    this.columnId = columnId;
-    this.vol = vol;
-    this.type = type;
-    this.subject = subject;
-    this.desc = desc;
-    this.payType = payType;
-    this.status = status;
-    this.viewTotal = viewTotal;
-    this.commentTotal = commentTotal;
-    this.publishAt = publishAt;
-    this.publishAtParsed = moment(publishAt);
-    this.createdAt = createdAt;
-    this.createdAtParsed = moment(createdAt);
-    this.updatedAt = updatedAt;
-    this.updatedAtParsed = moment(updatedAt);
+  constructor(data: any) {
+    if (!data) return;
+
+    this.id = data.id;
+    this.columnId = data.columnId;
+    this.vol = data.vol;
+    this.type = data.type;
+    this.subject = data.subject;
+    this.desc = data.desc;
+    this.coverUrl = data.coverUrl;
+    this.duration = moment.duration(data.duration);
+    this.totalFee = new Money(data.totalFee);
+    this.memberFee = new Money(data.memberFee);
+    this.originFee = new Money(data.originFee);
+    this.payType = data.payType;
+    this.status = data.status;
+    this.viewTotal = data.viewTotal;
+    this.commentTotal = data.commentTotal;
+    this.praisedTotal = data.praisedTotal;
+    this.publishAt = data.publishAt;
+    this.publishAtParsed = moment(data.publishAt);
+    this.createdAt = data.createdAt;
+    this.createdAtParsed = moment(data.createdAt);
+    this.updatedAt = data.updatedAt;
+    this.updatedAtParsed = moment(data.updatedAt);
+  }
+
+  get isTypePost(): boolean {
+    return this.type === ColumnItemType.Post;
+  }
+
+  get isTypeVideo(): boolean {
+    return this.type === ColumnItemType.Video;
+  }
+
+  get isTypeAudio(): boolean {
+    return this.type === ColumnItemType.Audio;
+  }
+
+  get isStatusNotReady(): boolean {
+    return this.status === ColumnItemStatus.NotReady;
+  }
+
+  get isStatusReady(): boolean {
+    return this.status === ColumnItemStatus.Ready;
   }
 }
 
@@ -132,16 +191,12 @@ export class ColumnItemContent extends ColumnItem {
   audioUrl: string;
   videoUrl: string;
 
-  constructor(id: string, columnId: string, vol: number, type: ColumnItemType, subject: string,
-              desc: string, payType: ColumnItemPayType, status: ColumnItemStatus, viewTotal: number,
-              commentTotal: number, publishAt: string, createdAt: string, updatedAt: string,
-              content: string, audioUrl: string, videoUrl: string) {
+  constructor(data: any) {
+    super(data);
 
-    super(id, columnId, vol, type, subject, desc, payType, status, viewTotal, commentTotal, publishAt, createdAt, updatedAt);
-
-    this.content = content;
-    this.audioUrl = audioUrl;
-    this.videoUrl = videoUrl;
+    this.content = data.content;
+    this.audioUrl = data.audioUrl;
+    this.videoUrl = data.videoUrl;
   }
 }
 
@@ -151,10 +206,12 @@ export class ColumnItemDetail {
   prev: ColumnItemContent | null;
   next: ColumnItemContent | null;
 
-  constructor(column: Column, current: ColumnItemContent, prev: ColumnItemContent | null, next: ColumnItemContent | null) {
-    this.column = column;
-    this.current = current;
-    this.prev = prev;
-    this.next = next;
+  constructor(data: any) {
+    if (!data) return;
+
+    this.column = new Column(data.column);
+    this.prev = data.pre ? new ColumnItemContent(data.pre) : null;
+    this.next = data.next ? new ColumnItemContent(data.next) : null;
+    this.current = new ColumnItemContent(data.item);
   }
 }

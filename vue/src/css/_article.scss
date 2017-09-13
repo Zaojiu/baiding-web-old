@@ -1,4 +1,19 @@
 .article-content {
+  &.no-margin {
+    p {
+      margin: 0;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
   i {
     font-weight:inherit;
   }

@@ -4,16 +4,12 @@ import {params} from '../utils/utils';
 import {del, get, post} from "./xhr";
 import {AxiosResponse} from "axios";
 
-export const getTalkInfo = async (id: string) => {
+export const getTalkInfo = async (id: string): Promise<TalkInfoModel> => {
   const url = `${host.io}/api/live/objects/${id}`;
-  let res: AxiosResponse;
-  try {
-    res = await get(url);
-  } catch (e) {
-    return null;
-  }
+  const resp = await get(url);
+  const data = resp.data;
 
-  return new TalkInfoModel(res.data.object, res.data.users, res.data.speakers, res.data.categories, res.data.tags, res.data.currentUserInfo)
+  return new TalkInfoModel(data);
 };
 
 export const listTalkComments = async (id: string, size = 20, marker = '', sorts = ['-createdAt']): Promise<TalkCommentModel[]> => {
@@ -23,13 +19,7 @@ export const listTalkComments = async (id: string, size = 20, marker = '', sorts
     sorts: sorts.join(',')
   };
   const url = `${host.io}/api/live/objects/${id}/comments?${params(query)}`;
-  let res: AxiosResponse;
-  try {
-    res = await get(url);
-  } catch (e) {
-    return [];
-  }
-
+  const res = await get(url);
   const result = res.data.result;
   const users = res.data.include ? res.data.include.users : null;
   const comments = [];
@@ -98,7 +88,7 @@ export const unpraise = async (id: string) => {
   return;
 };
 
-export const getTalkEmphasis = async (id: string): Promise<TalkEmphasisModel[]> => {
+export const listTalkEmphasis = async (id: string): Promise<TalkEmphasisModel[]> => {
   const url = `${host.io}/api/live/media/${id}/cues?size=1000`;
   let res: AxiosResponse;
   try {
