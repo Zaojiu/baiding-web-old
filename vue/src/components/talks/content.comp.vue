@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <bd-loading class="loading" v-if="isLoading"></bd-loading>
-    <div class="main" v-show="!isChildActived()" v-else-if="talkInfo" @touchstart="touchStart" @touchmove="touchMove">
+  <div class="container">
+    <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
+    <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
+    <div class="main" v-else v-show="!isChildActived()" @touchstart="touchStart" @touchmove="touchMove">
       <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
@@ -17,7 +18,7 @@
             @error="coverUrl = defaultCoverUrl"
           >
 
-          <div class="big-play" v-if="talkInfo.media.hasVideo">视频 {{talkInfo.media.duration.format('mm’ss’’')}}</div>
+          <div class="big-play" v-if="talkInfo.media.hasVideo">视频 {{talkInfo.media.duration.format('mm’ss“')}}</div>
         </div>
       </header>
 
@@ -35,31 +36,23 @@
              :class="{'tab-one-active': tabIndex === 0, 'tab-two-active': tabIndex === 1}">
           <div class="tab-content">
             <section class="title">
-              <div class="categories" v-if="talkCategories">{{talkCategories}}</div>
+              <div class="categories" v-if="formatedCategories">{{formatedCategories}}</div>
               <h1>{{talkInfo.subject}}</h1>
               <div class="talk-info">
-                <div class="publisher-info">
+                <div class="author-info">
                   <img
                     class="avatar avatar-round avatar-sm"
-                    v-if="talkInfo.userInfo"
-                    :src="talkInfo.userInfo.avatar"
+                    :src="talkInfo.userInfo && talkInfo.userInfo.avatar || '/assets/img/zaojiu-logo.jpg'"
                     alt="发布人头像"
                   >
-                  <img
-                    class="avatar avatar-round avatar-sm"
-                    src="/assets/img/zaojiu-logo.jpg"
-                    alt="发布人头像"
-                    v-else
-                  >
-                  <span class="nick" v-if="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
-                  <span class="nick" v-else>造就</span>
+                  <span class="nick">{{talkInfo.userInfo && talkInfo.userInfo.nick ? talkInfo.userInfo.nick : '造就'}}</span>
                 </div>
 
-                <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
+                <time>{{talkInfo.publishAtParsed.format('YYYY年MM月DD日')}}</time>
               </div>
             </section>
 
-            <section class="article talk-article"
+            <section class="article article-content"
                      v-html="talkInfo.content" v-once></section>
 
             <section class="info" v-if="talkInfo.tags && talkInfo.tags.length">
@@ -72,12 +65,12 @@
               <h2>评论</h2>
 
               <div v-if="comments">
-                <div class="comment" v-for="comment in comments.data" :key="comment.id">
+                <div class="comment" v-for="comment in comments" :key="comment.id">
                   <div class="header" v-once>
                     <div class="author-info">
                       <img class="avatar avatar-round avatar-sm" :src="comment.user.avatar" alt="用户头像">
                       <span class="nick">{{comment.user.nick}}</span>
-                      <time>{{comment.createdAt.format('MM月DD日 HH:mm')}}</time>
+                      <time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>
                     </div>
                     <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)"> <i
                       class="bi bi-reply-comment"></i>回复</span>
@@ -88,9 +81,10 @@
               </div>
 
               <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
-              <div class="no-comments" v-else-if="!comments.data.length"><i class="bi bi-no-comment"></i> 暂无评论</div>
-              <div class="no-more-comments" v-else-if="!comments.hasMore">到底咯~</div>
-              <div class="more-comments" v-else @click="fetchComments">加载更多评论</div>
+              <error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>
+              <div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>
+              <div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>
+              <div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>
             </section>
           </div>
 
@@ -108,23 +102,23 @@
       <footer v-show="!(isVideoPlayed && isLandscape)" ref="toolBar"
               :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
         <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
-        <div class="icon" @click="togglePraise">
-          <i class="bi" :class="{'bi-thumbsup': !talkInfo.isPraised, 'bi-thumbsup-fill': talkInfo.isPraised}"></i>{{talkInfo.praiseTotal}}
+        <div class="icon" @click="togglePraise()" :class="{'active': talkInfo.isPraised}">
+          <i class="bi bi-praise"></i>{{talkInfo.praiseTotal}}
         </div>
-        <div class="icon" @click="toggleFavorite">
-          <i class="bi"
-             :class="{'bi-bookmark': !talkInfo.isFavorited, 'bi-bookmark-fill': talkInfo.isFavorited}"></i>
+        <div class="icon" @click="toggleFavorite()" :class="{'active': talkInfo.isFavorited}">
+          <i class="bi bi-favorite"></i>
         </div>
-        <div class="icon" @click="gotoComment"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
+        <div class="icon" @click="gotoComment()">
+          <i class="bi bi-comment2"></i>
+        </div>
       </footer>
     </div>
-    <div class="no-content" v-else>无效文章</div>
 
     <router-view></router-view>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .main {
     header {
       position: relative;
@@ -150,7 +144,7 @@
         transition: height .5s;
       }
 
-      @media (max-width: 1022px) and (orientation: landscape) {
+      @media (max-width: 1024px) and (orientation: landscape) {
         .video-container {
           .video {
             &:before {
@@ -302,7 +296,7 @@
 
       h1 {
         font-size: 24px;
-        line-height: 1.3em;
+        line-height: 1.25em;
         color: $color-b;
         padding-bottom: 15px;
         font-weight: 500;
@@ -313,8 +307,9 @@
         display: flex;
         align-items: center;
         overflow: hidden;
+        margin-bottom: 24px;
 
-        .publisher-info {
+        .author-info {
           flex-grow: 1;
           overflow: hidden;
           display: flex;
@@ -345,8 +340,10 @@
     }
 
     .article {
-      padding: 0 20px;
       text-align: justify;
+      font-size: $font-size-md;
+      line-height: 1.75;
+      color: $color-dark-gray;
     }
 
     .info {
@@ -468,12 +465,14 @@
           color: $color-dark-gray;
           line-height: 1.57em;
           white-space: pre-wrap;
+          word-break: break-all;
 
           .quote {
             background-color: rgb(237, 237, 237);
             padding: 10px;
             margin-bottom: 6px;
             white-space: pre-wrap;
+            word-break: break-all;
 
             .nick {
               font-weight: bold;
@@ -483,7 +482,7 @@
         }
       }
 
-      .no-comments, .more-comments, .comment-loading, .no-more-comments {
+      .no-comments, .more-comments, .comment-loading, .comment-error, .no-more-comments {
         height: 100px;
         display: flex;
         align-items: center;
@@ -557,12 +556,12 @@
       display: flex;
       height: 46px;
       background-color: rgb(10, 10, 23);
-      max-width: 1022px;
+      max-width: 1024px;
       width: 100%;
 
       .icon {
         line-height: 1em;
-        font-size: 14px;
+        font-size: $font-size-sm;
         color: $color-w;
         display: flex;
         align-items: center;
@@ -576,13 +575,24 @@
           padding-right: 24px;
         }
 
-        .bi {
-          font-size: 21px;
-          margin-right: 4px;
+        &.active {
+          color: $color-brand;
         }
 
-        .bi-bookmark-fill, .bi-thumbsup-fill, .bi-comment-fill {
-          color: $color-brand;
+        .bi {
+          margin-right: 5px;
+        }
+
+        .bi-praise {
+          font-size: $font-size-lg;
+        }
+
+        .bi-favorite {
+          font-size: $font-size-lg;
+        }
+
+        .bi-comment2 {
+          font-size: $font-size-md;
         }
       }
 
@@ -595,49 +605,25 @@
       }
     }
   }
-
-  .loading, .no-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .no-content {
-    font-size: 16px;
-    color: $color-gray;
-    line-height: 1em;
-  }
-
 </style>
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
-  import {
-    FETCH_TALK,
-    FETCH_TALK_COMMENT,
-    TOGGLE_TALK_PRAISE,
-    TOGGLE_TALK_FAVORITE,
-    FETCH_TALK_EMPHASIS,
-    TalkCommentsStore
-  } from '../../store/talk';
-  import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils';
-  import {TalkEmphasisModel, TalkInfoModel} from "../../shared/api/talk.model";
+  import { Component, Watch } from 'vue-property-decorator';
+  import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition} from '../../shared/utils/utils';
+  import {TalkCommentModel, TalkEmphasisModel, TalkInfoModel} from "../../shared/api/talk.model";
+  import {getTalkInfo, listTalkComments, listTalkEmphasis, praise, unpraise, favorite, unfavorite} from '../../shared/api/talk.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
 
+  const TALK_COMMENT_COUNT = 20;
+
   @Component
-  export default class TalkComponent extends Vue {
+  export default class ContentComponent extends Vue {
     id = '';
     originY = 0;
     isToolbarShow = false;
     isOnScreen = isOnLargeScreen;
     isVideoPlayed = false;
-    isCommentLoading = true;
     isLandscape = false;
     coverUrl = '';
     defaultCoverUrl = '/assets/img/default-cover.jpg';
@@ -645,36 +631,51 @@
     emphasisActiveIndex = -1;
     seeking = false;
     player: ZaojiuPlayerInstance;
+    talkInfo = new TalkInfoModel({});
+    isLoading = false;
+    isError = false;
+    comments: TalkCommentModel[] = [];
+    isCommentLoading = false;
+    isCommentError = false;
+    isCommentOnLatest = false;
+    emphasis: TalkEmphasisModel[] = [];
 
     created() {
       this.id = this.$route.params['id'];
+
+      this.initData();
+      this.fetchComments();
+      this.fetchEmphasis();
     }
 
-    get talkInfo(): TalkInfoModel {
-      if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
-      const talkInfo = this.$store.state.talks.info[this.id];
-      if (talkInfo && talkInfo.media.hasVideo) this.prepareVideo();
-      if (talkInfo) this.coverUrl = talkInfo.coverSmallUrl;
-      return talkInfo;
+    @Watch('$route.name')
+    refreshComments() {
+      if (this.$route.name === 'talks.main') {
+        this.comments = [];
+        this.fetchComments();
+        setScrollPosition('#comments');
+      }
     }
 
-    get emphasis(): TalkEmphasisModel[] {
-      if (!this.$store.state.talks.emphasis[this.id]) this.$store.dispatch(FETCH_TALK_EMPHASIS, this.id);
-      return this.$store.state.talks.emphasis[this.id];
+    async initData() {
+      this.isLoading = true;
+      this.isError = false;
+
+      try {
+        this.talkInfo = await getTalkInfo(this.id);
+      } catch (e) {
+        this.isError = true;
+        throw e;
+      } finally {
+        this.isLoading = false;
+      }
+
+      if (this.talkInfo.media.hasVideo) this.prepareVideo();
+      this.coverUrl = this.talkInfo.coverSmall11Url;
     }
 
-    get comments(): TalkCommentsStore {
-      if (!this.$store.state.talks.comments[this.id]) this.fetchComments();
-      return this.$store.state.talks.comments[this.id]
-    }
-
-    get isLoading(): boolean {
-      return this.talkInfo === undefined || this.emphasis === undefined;
-    }
-
-    get talkCategories(): string {
-      if (!this.$store.state.talks.info[this.id]) this.$store.dispatch(FETCH_TALK, this.id);
-      return this.$store.state.talks.info[this.id].categories.length > 0 ? this.$store.state.talks.info[this.id].categories.join(' | ') : '';
+    get formatedCategories(): string {
+      return this.talkInfo.categories.length > 0 ? this.talkInfo.categories.join(' | ') : '';
     }
 
 //      get liveInfo () {
@@ -684,10 +685,44 @@
 //          });
 //        }
 //      },
+
+    async fetchEmphasis() {
+      this.emphasis = await listTalkEmphasis(this.id);
+    }
+
     async fetchComments() {
       this.isCommentLoading = true;
-      await this.$store.dispatch(FETCH_TALK_COMMENT, this.id);
-      this.isCommentLoading = false;
+      this.isCommentError = false;
+
+      try {
+        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length-1].createdAt}` : '';
+        const comments = await listTalkComments(this.id, TALK_COMMENT_COUNT+1, lastMarker);
+        let isCommentOnLatest = true;
+        if (comments.length === TALK_COMMENT_COUNT+1) {
+          isCommentOnLatest = false;
+          comments.pop();
+        }
+        this.comments.push(...comments);
+        this.isCommentOnLatest = isCommentOnLatest;
+      } catch (e) {
+        this.isCommentError = true;
+        throw e;
+      } finally {
+        this.isCommentLoading = false;
+      }
+    }
+
+    async togglePraise() {
+      this.talkInfo.isPraised = !this.talkInfo.isPraised;
+      this.talkInfo.praiseTotal = this.talkInfo.isPraised ? this.talkInfo.praiseTotal + 1 : this.talkInfo.praiseTotal - 1;
+      const promise = this.talkInfo.isPraised ? praise(this.id) : unpraise(this.id);
+      await promise;
+    }
+
+    async toggleFavorite() {
+      this.talkInfo.isFavorited = !this.talkInfo.isFavorited;
+      const promise = this.talkInfo.isFavorited ? favorite(this.id) : unfavorite(this.id);
+      await promise;
     }
 
     prepareVideo() {
@@ -767,14 +802,6 @@
         (this.$refs['toolBar'] as HTMLElement).style.position = 'fixed';
         this.isToolbarShow = true;
       }
-    }
-
-    togglePraise() {
-      this.$store.dispatch(TOGGLE_TALK_PRAISE, this.id);
-    }
-
-    toggleFavorite() {
-      this.$store.dispatch(TOGGLE_TALK_FAVORITE, this.id);
     }
 
     emphasisClicked(index: number) {

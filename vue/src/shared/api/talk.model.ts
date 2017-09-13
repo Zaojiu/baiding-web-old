@@ -98,35 +98,47 @@ export class TalkInfoModel {
   content: string;
   media: TalkInfoMediaModel;
 
-  publishAt: Moment;
-  createdAt: Moment;
-  updatedAt: Moment;
+  publishAtParsed: Moment;
+  publishAt: string;
+  createdAtParsed: Moment;
+  createdAt: string;
+  updatedAtParsed: Moment;
+  updatedAt: string;
 
-  constructor(data: any, users: any, speakers: any, categories: any, tags: any, currentUserInfo: any) {
-    this.id = data.id;
-    if (users && data.uid) this.userInfo = users[data.uid];
-    this.subject = data.subject;
-    this.desc = data.desc;
-    this.coverUrl = `${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverThumbnailUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+  constructor(data: any) {
+    if (!data) return;
 
-    this.cover169Url = `${data.coverUrl}~16-9?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmall169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverThumbnail169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    const object = data.object || {};
+    const users = data.users || {};
+    const speakers = data.speakers || [];
+    const categories = data.categories || [];
+    const tags = data.tags || [];
+    const currentUserInfo = data.currentUserInfo || {};
 
-    this.cover11Url = `${data.coverUrl}~1-1?updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverSmall11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
-    this.coverThumbnail11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+data.updatedAt)}`;
+    this.id = object.id;
+    if (users && object.uid) this.userInfo = users[object.uid];
+    this.subject = object.subject;
+    this.desc = object.desc;
+    this.coverUrl = `${object.coverUrl}?updatedAt=${Math.round(+object.updatedAt)}`;
+    this.coverSmallUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+    this.coverThumbnailUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
 
-    this.isNeedPay = data.isNeedPay;
-    this.totalFee = data.totalFee;
-    this.praiseTotal = data.praiseTotal;
+    this.cover169Url = `${object.coverUrl}~16-9?updatedAt=${Math.round(+object.updatedAt)}`;
+    this.coverSmall169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+    this.coverThumbnail169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+
+    this.cover11Url = `${object.coverUrl}~1-1?updatedAt=${Math.round(+object.updatedAt)}`;
+    this.coverSmall11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+    this.coverThumbnail11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+
+    this.isNeedPay = object.isNeedPay;
+    this.totalFee = object.totalFee;
+    this.praiseTotal = object.praiseTotal;
     if (currentUserInfo) this.isPraised = currentUserInfo.praised;
-    this.commentTotal = data.commentTotal;
+    this.commentTotal = object.commentTotal;
     if (currentUserInfo) this.isFavorited = !!currentUserInfo.favoritedAt;
-    this.shareTotal = data.shared;
-    this.totalUsers = data.totalUsers;
+    this.shareTotal = object.shared;
+    this.totalUsers = object.totalUsers;
     this.latestPraisedUsers = [];
     this.latestUsers = [];
     this.refLink = [];
@@ -134,33 +146,33 @@ export class TalkInfoModel {
     this.tags = [];
     this.categories = [];
 
-    if (data.latestPraisedUids) {
-      data.latestPraisedUids.forEach((uid: number) => {
+    if (object.latestPraisedUids) {
+      object.latestPraisedUids.forEach((uid: number) => {
         const user = users[uid];
         if (user) this.latestPraisedUsers.push(user)
       })
     }
 
-    if (data.latestUserUids) {
-      data.latestUserUids.forEach((uid: number) => {
+    if (object.latestUserUids) {
+      object.latestUserUids.forEach((uid: number) => {
         const user = users[uid];
         if (user) this.latestUsers.push(user)
       })
     }
 
-    this.content = data.meta && data.meta.content ? data.meta.content : ''
-    this.isOriginal = data.meta && data.meta.isOriginal ? data.meta.isOriginal : true
-    // data.meta.mp4暂不添加, 因为有的视频是mov
-    this.media = data.meta ? new TalkInfoMediaModel(data.meta.mp3, '', data.meta.mp4SD, data.meta.mp4HD, data.meta.preview, data.meta.duration) : new TalkInfoMediaModel()
+    this.content = object.meta && object.meta.content ? object.meta.content : ''
+    this.isOriginal = object.meta && object.meta.isOriginal ? object.meta.isOriginal : true
+    // object.meta.mp4暂不添加, 因为有的视频是mov
+    this.media = object.meta ? new TalkInfoMediaModel(object.meta.mp3, '', object.meta.mp4SD, object.meta.mp4HD, object.meta.preview, object.meta.duration) : new TalkInfoMediaModel()
 
-    if (data.meta && data.meta.refLink && data.meta.refLink.length) {
-      for (const item of data.meta.refLink) {
+    if (object.meta && object.meta.refLink && object.meta.refLink.length) {
+      for (const item of object.meta.refLink) {
         this.refLink.push(new TalkInfoRefModel(item.link, item.title))
       }
     }
 
-    if (data.meta && data.meta.speakersId && data.meta.speakersId.length && speakers) {
-      for (const id of data.meta.speakersId) {
+    if (object.meta && object.meta.speakersId && object.meta.speakersId.length && speakers) {
+      for (const id of object.meta.speakersId) {
         const speaker = speakers[id];
         if (speaker) this.speaker.push(new TalkInfoSpeakerModel(speaker.id, speaker.uid, speaker.subject, speaker.desc, speaker.coverUrl))
       }
@@ -186,21 +198,24 @@ export class TalkInfoModel {
       }
     }
 
-    this.createdAt = moment(+data.createdAt / 1e6)
-    this.updatedAt = moment(+data.updatedAt / 1e6)
-    this.publishAt = moment(data.publishAt)
+    this.createdAtParsed = moment(+object.createdAt / 1e6);
+    this.createdAt = object.createdAt;
+    this.updatedAtParsed = moment(+object.updatedAt / 1e6);
+    this.updatedAt = object.updatedAt;
+    this.publishAtParsed = moment(object.publishAt);
+    this.publishAt = object.publishAt;
   }
 }
 
 export class TalkCommentParentModel {
   user: UserInfoModel;
   content: string;
-  createdAt: Moment;
+  createdAtParsed: Moment;
 
-  constructor(userInfo: UserInfoModel, content: string, createdAt: Moment) {
+  constructor(userInfo: UserInfoModel, content: string, createdAtParsed: Moment) {
     this.user = userInfo;
     this.content = content;
-    this.createdAt = createdAt;
+    this.createdAtParsed = createdAtParsed;
   }
 }
 
@@ -210,22 +225,23 @@ export class TalkCommentModel {
   parent: TalkCommentParentModel;
   toUsers: UserInfoModel[] = [];
   content: string;
-  createdAt: Moment;
-  originCreatedAt: string;
+  createdAtParsed: Moment;
+  createdAt: string;
 
   constructor(data: any, users: any) {
     this.id = data.id;
     if (users) this.user = users[data.uid];
-    if (data.parent && users) this.parent = new TalkCommentParentModel(users[data.parent.uid], data.parent.content, this.createdAt = moment(+data.parent.createdAt / 1e6));
+    if (data.parent && users) {
+      this.parent = new TalkCommentParentModel(users[data.parent.uid], data.parent.content, moment(+data.parent.createdAt / 1e6));
+    }
     if (data.toUids) {
       for (let uid of data.toUsers) {
         this.toUsers.push(users[uid]);
       }
     }
     this.content = data.content;
-    this.createdAt = moment(+data.createdAt / 1e6);
-    this.originCreatedAt = data.createdAt;
-
+    this.createdAtParsed = moment(+data.createdAt / 1e6);
+    this.createdAt = data.createdAt;
   }
 }
 

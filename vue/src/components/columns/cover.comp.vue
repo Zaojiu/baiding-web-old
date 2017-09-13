@@ -1,0 +1,424 @@
+<template>
+  <div class="container">
+    <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
+    <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
+    <div class="columns" v-else>
+      <div class="cover" v-once>
+        <img :src="columnInfo.cover169Url" alt="专栏封面">
+      </div>
+
+      <header class="block" v-once>
+        <h1 class="title">{{columnInfo.subject}}</h1>
+        <p class="period">共{{columnInfo.totalVol}}期</p>
+        <div class="info">
+          <img class="avatar avatar-round avatar-lg" :src="columnInfo.speaker.coverUrl" alt="嘉宾头像">
+          <div class="intro">
+            <strong class="nick">{{columnInfo.speaker.subject}}</strong>
+            <p class="content">{{columnInfo.speaker.title}}</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="columns-intro block">
+        <div class="head">
+          <h2>专栏简介</h2>
+          <a href="" @click.prevent="toggleCollape()">{{isIntroCollape ? '折叠' : '展开'}}</a>
+        </div>
+        <div class="intro article-content no-margin" @click.prevent="toggleCollape()" v-bind:class="{'collaped': isIntroCollape}" v-html="columnInfo.content"></div>
+      </section>
+
+      <section class="columns-list block">
+        <div class="head">
+          <h2>专栏列表</h2>
+          <span>{{columnInfo.currentVol}}/{{columnInfo.totalVol}}</span>
+        </div>
+        <ul class="list">
+          <li v-for="item in items" :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !item.paid}">
+            <div class="item-detail">
+              <h3 class="item-title">{{getColumnItemIndex(item)}}{{item.subject}}</h3>
+              <p class="item-intro">{{item.desc}}</p>
+              <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
+            </div>
+            <div class="operation-area">
+              <i class="bi bi-paper3" v-if="item.isTypePost"></i>
+              <i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>
+              <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
+              <span class="duration" v-if="getColumnItemDuration(item)">{{getColumnItemDuration(item)}}</span>
+              <span class="tips" v-if="item.isNeedPay">收费</span>
+              <span class="tips" v-else-if="item.isStatusNotReady">制作中</span>
+              <span class="tips" v-else-if="item.isTypePost">试读</span>
+              <span class="tips" v-else-if="item.isTypeAudio">试听</span>
+              <span class="tips" v-else-if="item.isTypeVideo">试看</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <footer>
+        <button class="button button-outline" v-if="false">赠送给好友</button>
+        <button class="button button-primary"><span class="origin-fee" v-if="originFee">{{originFee}}</span>{{btnText}}</button>
+      </footer>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+  .columns {
+    background-color: rgb(251, 251, 251);
+
+    .cover {
+      position: relative;
+
+      &:before {
+        content: "";
+        display: block;
+        padding-top: 56.2%;
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .block {
+      padding: 20px 15px;
+      box-shadow: 0 2px 2px rgb(236, 236, 236);
+      margin-bottom: 10px;
+      background-color: $color-w;
+
+      &.no-border {
+        box-shadow: none;
+        margin-bottom: 0;
+      }
+
+      .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+
+        h2 {
+          font-size: $font-size-lg;
+          color: $color-dark-gray;
+          font-weight: normal;
+        }
+
+        a, span {
+          flex-shrink: 0;
+          font-size: $font-size-sm;
+          color: $color-dark-gray;
+        }
+
+        a {
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    header {
+      .title {
+        font-size: $font-size-xxlg;
+        color: $color-dark-gray;
+        line-height: 1.25em;
+        margin-bottom: 15px;
+      }
+
+      .period {
+        font-size: $font-size-sm;
+        color: $color-gray3;
+        margin-bottom: 20px;
+      }
+
+      .info {
+        display: flex;
+
+        .avatar {
+          flex-shrink: 0;
+          margin-right: 10px;
+        }
+
+        .intro {
+          .nick {
+            display: block;
+            font-size: $font-size-sm;
+            color: $color-dark-gray;
+            margin-bottom: 5px;
+          }
+
+          .content {
+            font-size: $font-size-sm;
+            color: $color-gray3;
+            line-height: 1.57em;
+            word-break: break-all;
+            white-space: pre-wrap;
+            text-align: justify;
+          }
+        }
+      }
+    }
+
+    .columns-intro {
+      .intro {
+        font-size: $font-size-md;
+        color: $color-gray3;
+        line-height: 1.75em;
+        max-height: 100000px;
+        transition: max-height .3s;
+        overflow: hidden;
+
+        &.collaped {
+          max-height: 300px;
+        }
+      }
+    }
+
+    .columns-list {
+      box-shadow: none;
+      margin-bottom: 50px;
+
+      .head {
+        margin-bottom: 20px;
+      }
+
+      .list {
+        li {
+          padding-bottom: 20px;
+          border-bottom: solid 1px rgb(236, 236, 236);
+          margin-bottom: 20px;
+          display: flex;
+          align-items: center;
+
+          &:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+          }
+
+          &.need-pay {
+            .item-detail {
+              .item-title {
+                color: $color-gray3;
+              }
+            }
+
+            .operation-area {
+              .bi, .duration {
+                color: $color-gray3;
+              }
+            }
+          }
+
+          &.not-ready {
+            .item-detail {
+              .item-title, .item-intro, time {
+                color: #c8c8c8;
+              }
+            }
+
+            .operation-area {
+              .bi, .duration, .tips {
+                color: #c8c8c8;
+              }
+            }
+          }
+
+          .item-detail {
+            flex-grow: 1;
+            overflow: hidden;
+
+            .item-title {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              font-size: $font-size-md;
+              color: $color-dark-gray;
+              margin-bottom: 5px;
+            }
+
+            .item-intro {
+              overflow: hidden;
+              display: -webkit-box;
+              text-overflow: ellipsis;
+              -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical;
+              white-space: pre-wrap;
+              text-align: justify;
+              line-height: 1.5em;
+              font-size: $font-size-sm;
+              color: $color-gray3;
+              margin-right: 10px;
+              margin-bottom: 5px;
+            }
+
+            time {
+              color: $color-gray3;
+              font-size: $font-size-xsm;
+              line-height: 1em;
+            }
+          }
+
+          .operation-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .bi {
+              margin-bottom: 7px;
+              font-size: 22px;
+              color: $color-dark-gray;
+            }
+
+            .duration, .tips {
+              font-size: $font-size-xsm;
+              line-height: 1em;
+            }
+
+            .duration {
+              margin-bottom: 12px;
+              color: $color-dark-gray;
+            }
+
+            .tips {
+              color: $color-gray3;
+            }
+          }
+        }
+      }
+    }
+
+    footer {
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      background-color: $color-w;
+      display: flex;
+
+      .button {
+        border-radius: 0;
+        height: 50px;
+        line-height: 50px;
+      }
+
+      .button-primary {
+        flex-grow: 1;
+      }
+
+      .button-outline {
+        width: 40%;
+      }
+    }
+  }
+</style>
+
+<script lang="ts">
+  import Vue from "vue";
+  import {Component} from 'vue-property-decorator';
+  import {getColumnInfo, listColumnItems} from '../../shared/api/column.api';
+  import {getUserInfoCache} from '../../shared/api/user.api';
+  import {Column, ColumnItem} from '../../shared/api/column.model';
+  import {UserInfoModel} from "../../shared/api/user.model";
+  import padStart from 'lodash/padStart';
+
+  @Component
+  export default class CoverComponent extends Vue {
+    id = '';
+    columnInfo = new Column({});
+    userInfo: UserInfoModel | null = null;
+    isLoading = false;
+    isError = false;
+    isIntroCollape = true;
+    items: ColumnItem[] = [];
+
+    created() {
+      this.id = this.$route.params['id'];
+      try {
+        this.userInfo = getUserInfoCache(false);
+      } catch (e) {
+      }
+
+      this.initData();
+    }
+
+    async initData() {
+      this.isLoading = true;
+      this.isError = false;
+
+      try {
+        this.columnInfo = await getColumnInfo(this.id);
+        this.items = await listColumnItems(this.id);
+      } catch(e) {
+        this.isError = true;
+      } finally {
+        this.isLoading = false;
+      }
+    }
+
+    get isLogin(): boolean {
+      return !!this.userInfo;
+    }
+
+    get btnText(): string {
+      if (this.columnInfo && this.columnInfo.isNeedPay) {
+        if (!this.columnInfo.currentUserInfo) {
+          // 未登录
+          return `支付: ${this.columnInfo.totalFee.toYuan()}`;
+        } else if (!this.columnInfo.currentUserInfo.paid) {
+          // 已登录，未付费
+          if (this.userInfo && this.userInfo.isMember) {
+            if (this.columnInfo.memberFee.value === 0) {
+              return `会员免费`;
+            } else {
+              return `会员价: ${this.columnInfo.memberFee.toYuan()}`;
+            }
+          } else {
+            if (this.columnInfo.totalFee.value === 0) {
+              return `限时免费`;
+            } else {
+              return `支付: ${this.columnInfo.totalFee.toYuan()}`;
+            }
+          }
+        } else {
+          // 已付费
+          return '阅读专栏';
+        }
+      } else {
+        return '阅读专栏';
+      }
+    }
+
+    get originFee(): string {
+      if (this.columnInfo.originFee.value && this.columnInfo.originFee.value !== this.columnInfo.totalFee.value) {
+        return this.columnInfo.originFee.toYuan();
+      }
+
+      return '';
+    }
+
+    getColumnItemIndex(item: ColumnItem): string {
+      const index = this.items.findIndex(_item => _item.id === item.id);
+      return index !== -1 ? padStart(`${index+1}`, 3, '0') + ' | ' : '';
+    }
+
+    getColumnItemDuration(item: ColumnItem): string {
+      if (item.isTypeAudio || item.isTypeVideo) {
+        return item.duration.format('mm‘ss“', {trim: false});
+      } else {
+        return '';
+      }
+    }
+
+    toggleCollape() {
+      this.isIntroCollape=!this.isIntroCollape;
+    }
+
+  }
+</script>

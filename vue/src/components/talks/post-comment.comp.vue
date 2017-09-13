@@ -2,8 +2,7 @@
   <form name="postComment" class="post-comment" @submit.prevent="submit" v-focus-first-invalid>
     <header v-if="!isInApp"><i class="bi bi-close" @click="backToTalk()"></i>
       <div class="header_title"></div>
-      <button class="header_reply" v-if="replyId">回复</button>
-      <button class="header_reply" v-else>发表</button>
+      <button class="header_reply" :disabled="isSubmitting">{{replyId ? '回复' : '发表'}}</button>
     </header>
 
     <div class="reply" v-if="replyId">
@@ -13,7 +12,7 @@
 
     <div class="main-form">
       <div class="form-group">
-        <div class="input-group" v-if="!replyId">
+        <div class="input-group">
           <textarea
             class="content"
             name="content"
@@ -23,20 +22,7 @@
             v-focus
             v-has-value
             v-model="content"
-            placeholder="关于这篇文章你有什么想法？"
-          ></textarea>
-        </div>
-        <div class="input-group" v-else>
-          <textarea
-            class="content"
-            name="content"
-            rows="1"
-            v-validate="'required'"
-            v-autosize
-            v-focus
-            v-has-value
-            v-model="content"
-            placeholder="回复你此刻的想法"
+            :placeholder="replyId ? '回复你此刻的想法' : '关于这篇文章你有什么想法？'"
           ></textarea>
         </div>
       </div>
@@ -44,7 +30,7 @@
   </form>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .post-comment {
     position: absolute;
     top: 0;
@@ -123,6 +109,8 @@
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+        white-space: pre-wrap;
+        word-break: break-all;
       }
     }
 
@@ -168,16 +156,16 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import {isInApp} from '../../../shared/utils/utils';
-  import {POST_TALK_COMMENT, PostTalkCommentsPayload} from '../../../store/talk';
-  import {form} from '../../../shared/form';
-  import {showTips} from '../../../store/tip';
+  import {isInApp} from '../../shared/utils/utils';
+  import {form} from '../../shared/form';
+  import {showTips} from '../../store/tip';
   import {ErrorBag} from "vee-validate";
+  import {postTalkComment} from '../../shared/api/talk.api';
 
   @Component({
     directives: form
   })
-  export default class CommentComponent extends Vue {
+  export default class PostCommentComponent extends Vue {
     id = '';
     subject = '';
     replyId = '';
@@ -211,8 +199,12 @@
       if (this.errors.count()) return;
 
       this.isSubmitting = true;
-      await this.$store.dispatch(POST_TALK_COMMENT, new PostTalkCommentsPayload(this.id, this.content, this.replyId));
-      this.isSubmitting = false;
+
+      try {
+        await postTalkComment(this.id, this.content, this.replyId);
+      } finally {
+        this.isSubmitting = false;
+      }
 
       await showTips('评论成功');
       this.backToTalk();

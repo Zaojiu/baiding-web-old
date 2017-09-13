@@ -49,6 +49,11 @@
     line-height: 1em;
   }
 
+  ul, ol, li {
+    list-style: none;
+    padding-left: 0;
+  }
+
   .bi {
     /* 避免before之后有一个空行 */
     display: inline-flex;
@@ -90,7 +95,7 @@
   @import "../css/_form";
   @import "../css/_avatar";
   @import "../css/_article";
-  @import "../css/clickable-block";
+  @import "../css/_clickable-block";
 </style>
 
 <script lang="ts">

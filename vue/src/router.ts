@@ -2,13 +2,13 @@ import Vue from 'vue';
 import Router, {RawLocation, Route} from 'vue-router';
 
 import appComp from './components/app.comp.vue';
-import talksComp from './components/talks/talks.comp.vue';
+import talksComp from './components/talks/content.comp.vue';
 import errorComp from './components/error/error.comp.vue';
 import {authGuard} from "./shared/guard/user-auth.guard";
 import {beforeRouteEnter} from "./shared/guard/before-route-enter";
 import {mobileBindedGuard} from "./shared/guard/mobile-binded.guard";
 import {memberActivateCompGuard} from "./shared/guard/member-activate-comp.guard";
-import {getRelativePath, setTitle} from "./shared/utils/utils";
+import {getRelativePath, scrollPosition, setTitle} from "./shared/utils/utils";
 import {signinGuard} from "./shared/guard/signin-comp.guard";
 import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
 
@@ -16,6 +16,9 @@ Vue.use(Router);
 
 export const router = new Router({
   mode: 'history',
+  scrollBehavior() {
+    return scrollPosition;
+  },
   routes: [
     {
       path: '/',
@@ -82,7 +85,7 @@ export const router = new Router({
             const guards = [authGuard()];
             beforeRouteEnter(guards, to, from, next);
           },
-          component: () => System.import('./components/talks/comments/comments.comp.vue'),
+          component: () => System.import('./components/talks/post-comment.comp.vue'),
         }
       ]
     },
@@ -203,6 +206,24 @@ export const router = new Router({
         title: '购票',
       },
       component: () => System.import('./components/event/ticket.comp.vue'),
+    },
+    {
+      path: '/columns',
+      name: 'column',
+      meta: {
+        title: '专栏',
+      },
+      component: () => System.import('./components/columns/list.comp.vue'),
+    },
+    {
+      path: '/columns/:id',
+      name: 'column.content',
+      component: () => System.import('./components/columns/cover.comp.vue'),
+    },
+    {
+      path: '/columns/:id/items/:itemId',
+      name: 'column.content',
+      component: () => System.import('./components/columns/cover.comp.vue'),
     },
     {
       path: '/500',
