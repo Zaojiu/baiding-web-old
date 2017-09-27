@@ -45,7 +45,7 @@
         <div class="item-count">
           <div class="adjuster">
             <span class="increase" @click="ticketSelected.leftTotal > ticketCount ? ticketCount=ticketCount+1 : true"></span>
-            <input class="count-input" type="number" v-model.number="ticketCount">
+            <input class="count-input" type="number" placeholder="数量" step="1" min="1" :max="ticketSelected.leftTotal" v-model.number="ticketCount">
             <span class="decrease" @click="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
           </div>
           <p class="error" v-if="isTicketCountError">输入数量错误，请输入大于0的整数</p>
@@ -318,6 +318,7 @@
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from "../../shared/api/user.model";
+  import {showTips} from '../../store/tip';
 
   @Component
   export default class EventTicketComponent extends Vue {
@@ -448,6 +449,14 @@
     }
 
     gotoOrder() {
+      if (!this.ticketSelected || !this.ticketSelected.id) {
+        showTips('请选择购票类型');
+        return;
+      } else if (this.ticketCount < 1) {
+        showTips('购票数量错误');
+        return;
+      }
+
       const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount);
       this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([query]))}});
     }
