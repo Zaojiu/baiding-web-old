@@ -5,12 +5,7 @@
     }
 
     img {
-      display: block;
       max-width: 100%;
-      height: auto;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
     }
   }
 
@@ -32,11 +27,7 @@
   }
 
   img {
-    display: block;
     max-width: calc(100% + 20px + 20px);
     height: auto;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
   }
 }
