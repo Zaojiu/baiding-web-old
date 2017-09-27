@@ -33,22 +33,18 @@
           <span>{{columnInfo.currentVol}}/{{columnInfo.totalVol}}</span>
         </div>
         <ul class="list">
-          <li v-for="item in items" :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !item.paid}">
+          <li v-for="item in items" :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && (item.isPayTypeColumn && !columnInfo.paid) || (item.isPayTypeSingle && !item.paid)}">
             <div class="item-detail">
               <h3 class="item-title">{{getColumnItemIndex(item)}}{{item.subject}}</h3>
               <p class="item-intro">{{item.desc}}</p>
               <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </div>
-            <div class="operation-area">
+            <div class="operation-area" @click="go(item)">
               <i class="bi bi-paper3" v-if="item.isTypePost"></i>
               <i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>
               <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
               <span class="duration" v-if="getColumnItemDuration(item)">{{getColumnItemDuration(item)}}</span>
-              <span class="tips" v-if="item.isNeedPay">收费</span>
-              <span class="tips" v-else-if="item.isStatusNotReady">制作中</span>
-              <span class="tips" v-else-if="item.isTypePost">试读</span>
-              <span class="tips" v-else-if="item.isTypeAudio">试听</span>
-              <span class="tips" v-else-if="item.isTypeVideo">试看</span>
+              <span class="tips">{{itemBtnText(item)}}</span>
             </div>
           </li>
         </ul>
@@ -56,7 +52,7 @@
 
       <footer>
         <button class="button button-outline" v-if="false">赠送给好友</button>
-        <button class="button button-primary"><span class="origin-fee" v-if="originFee">{{originFee}}</span>{{btnText}}</button>
+        <button class="button button-primary" @click="go()" :disabled="isPaying"><span class="origin-fee" v-if="originFee">{{originFee}}</span>{{btnText}}</button>
       </footer>
     </div>
   </div>
@@ -64,7 +60,7 @@
 
 <style lang="scss" scoped>
   .columns {
-    background-color: rgb(251, 251, 251);
+    background-color: $color-gray5;
 
     .cover {
       position: relative;
@@ -270,6 +266,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 40px;
 
             .bi {
               margin-bottom: 7px;
@@ -327,6 +324,14 @@
   import {Column, ColumnItem} from '../../shared/api/column.model';
   import {UserInfoModel} from "../../shared/api/user.model";
   import padStart from 'lodash/padStart';
+  import {Store} from "../../shared/utils/store";
+  import {createOrder} from '../../shared/api/order.api';
+  import {pay} from '../../shared/utils/pay';
+  import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
+  import {ApiError} from '../../shared/api/xhr';
+  import {ApiCode, ApiErrorMessage} from '../../shared/api/code-map.enum';
+  import {showTips} from '../../store/tip';
+  import {setPaymentNone} from "../../store/payment";
 
   @Component
   export default class CoverComponent extends Vue {
@@ -337,15 +342,19 @@
     isError = false;
     isIntroCollape = true;
     items: ColumnItem[] = [];
+    isPaying = false;
 
     created() {
       this.id = this.$route.params['id'];
+
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       }
 
-      this.initData();
+      if (this.handlePayResultForRedirect) {
+        this.initData();
+      }
     }
 
     async initData() {
@@ -362,11 +371,27 @@
       }
     }
 
+    handlePayResultForRedirect() {
+      const payResult = this.$route.query['payResult'];
+
+      if (!payResult) return true;
+
+      if (payResult === 'success') this.handlePaySuccess();
+
+      this.$router.replace({path: `/columns/${this.id}`});
+
+      return false;
+    }
+
     get isLogin(): boolean {
       return !!this.userInfo;
     }
 
     get btnText(): string {
+      const latestViewedColumnItem: {[key: string]: string} = Store.localStore.get('latestViewedColumnItem') || {};
+      const latestViewedItemId = latestViewedColumnItem[this.id] || '';
+      const latestViewedItem = this.items.find((item) => item.id === latestViewedItemId);
+
       if (this.columnInfo && this.columnInfo.isNeedPay) {
         if (!this.columnInfo.currentUserInfo) {
           // 未登录
@@ -387,11 +412,18 @@
             }
           }
         } else {
-          // 已付费
-          return '阅读专栏';
+          if (latestViewedItem) {
+            return `继续阅读 ${this.getColumnItemIndex(latestViewedItem, false)}`;
+          } else {
+            return '阅读专栏';
+          }
         }
       } else {
-        return '阅读专栏';
+        if (latestViewedItem) {
+          return `继续阅读 ${this.getColumnItemIndex(latestViewedItem, false)}`;
+        } else {
+          return '阅读专栏';
+        }
       }
     }
 
@@ -403,9 +435,27 @@
       return '';
     }
 
-    getColumnItemIndex(item: ColumnItem): string {
+    itemBtnText(item: ColumnItem): string {
+      if (item.isStatusNotReady) {
+        return '制作中';
+      } else if ((item.isPayTypeColumn && !this.columnInfo.paid) || (item.isPayTypeSingle && !item.paid)) {
+        return '收费';
+      } else {
+        if (item.isTypeVideo) {
+          return item.isPayTypeFree ? '试看' : '观看';
+        } else if (item.isTypeAudio) {
+          return item.isPayTypeFree ? '试听' : '收听';
+        } else if (item.isTypePost) {
+          return item.isPayTypeFree ? '试读' : '阅读';
+        }
+      }
+
+      return '进入';
+    }
+
+    getColumnItemIndex(item: ColumnItem, withSuffix = true): string {
       const index = this.items.findIndex(_item => _item.id === item.id);
-      return index !== -1 ? padStart(`${index+1}`, 3, '0') + ' | ' : '';
+      return index !== -1 ? padStart(`${index+1}`, 3, '0') + (withSuffix ? ' | ' : '') : '';
     }
 
     getColumnItemDuration(item: ColumnItem): string {
@@ -420,5 +470,92 @@
       this.isIntroCollape=!this.isIntroCollape;
     }
 
+    go(item?: ColumnItem) {
+      if (item && item.isStatusNotReady) return;
+
+      const checkLogin = (to: string) => {
+        // 未登录
+        if (!this.isLogin) {
+          this.$router.push({path: '/signin', query: {redirectTo: to}});
+          return false;
+        }
+
+        return true;
+      };
+
+      if (item) {
+        // ready and paid or free item
+        if (
+          item.isStatusReady &&
+          (
+            (item.isPayTypeColumn && this.columnInfo.paid) ||
+            (item.isPayTypeSingle && item.paid) ||
+            item.isPayTypeFree
+          )
+        ) {
+          const to = `/columns/${this.id}/items/${item.id}`;
+          if (checkLogin(to)) this.$router.push({path: to});
+        }
+      } else {
+        const latestViewedColumnItem: {[key: string]: string} = Store.localStore.get('latestViewedColumnItem') || {};
+        const latestViewedItemId = latestViewedColumnItem[this.id] || '';
+        const latestViewedItem = this.items.find((item) => item.id === latestViewedItemId);
+
+        if (this.columnInfo.paid) {
+          let to = '';
+
+          if (latestViewedItem) {
+            to = `/columns/${this.id}/items/${latestViewedItem.id}`;
+          } else if (this.items.length) {
+            to = `/columns/${this.id}/items/${this.items[0].id}`;
+          }
+
+          if (checkLogin(to)) this.$router.push({path: to});
+        } else {
+          if (!checkLogin(this.$route.fullPath)) return;
+
+          this.createOrder();
+        }
+      }
+    }
+
+    async createOrder() {
+      if (this.isPaying) return;
+
+      this.isPaying = true;
+      const orderQuery = new PostOrderObject(this.id, OrderObjectType.Column, 1);
+
+      try {
+        const orderMeta = await createOrder([orderQuery], [], false);
+        this.pay(orderMeta.orderNo);
+      } catch(e) {
+        if (e instanceof ApiError) {
+          const code = e.code;
+
+          if (code === ApiCode.ErrOrderNeedProcessOthers) {
+            const oldOrderNum = e.originError.response && e.originError.response.data.data.orderNo;
+            this.pay(oldOrderNum);
+          } else {
+            const errMessage = ApiErrorMessage[code] || `未知错误: ${code}`;
+            showTips(errMessage);
+          }
+
+          throw e;
+        }
+      } finally {
+        this.isPaying = false;
+      }
+    }
+
+    async pay(orderNo: string) {
+      await pay(orderNo);
+      this.handlePaySuccess();
+    }
+
+    handlePaySuccess() {
+      setPaymentNone();
+      showTips('支付成功');
+      this.initData();
+    }
   }
 </script>

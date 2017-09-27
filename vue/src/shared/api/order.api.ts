@@ -24,13 +24,13 @@ export const getOrder = async (orderNo: string, showItems = true, showDiscounts 
   return new Order(res.data);
 };
 
-export const createOrder = async (objects: PostOrderObject[], discounts: string[] = []): Promise<OrderMeta> => {
+export const createOrder = async (objects: PostOrderObject[], discounts: string[] = [], needHandleError = true): Promise<OrderMeta> => {
   const url = `${host.io}/api/wallet/order`;
   const data = {
     items: objects || [],
     discounts,
   };
-  const res = await post(url, data);
+  const res = await post(url, data, {needHandleError: needHandleError});
   return new OrderMeta(res.data);
 };
 

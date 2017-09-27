@@ -8,6 +8,7 @@ export enum OrderObjectType {
   Talk,           // 付费-文章
   Event,          // 付费-活动-售票🎫
   Member,         // 付费-会员资格
+  Column,         // 付费-专栏
 }
 
 export class PostOrderObject {

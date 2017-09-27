@@ -82,7 +82,7 @@ export const router = new Router({
             title: '发表评论',
           },
           beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
-            const guards = [authGuard()];
+            const guards = [authGuard(), mobileBindedGuard()];
             beforeRouteEnter(guards, to, from, next);
           },
           component: () => System.import('./components/talks/post-comment.comp.vue'),
@@ -217,13 +217,30 @@ export const router = new Router({
     },
     {
       path: '/columns/:id',
-      name: 'column.content',
+      name: 'column.cover',
       component: () => System.import('./components/columns/cover.comp.vue'),
     },
     {
       path: '/columns/:id/items/:itemId',
-      name: 'column.item.content',
-      component: () => System.import('./components/columns/cover.comp.vue'),
+      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+        const guards = [authGuard(), mobileBindedGuard()];
+        beforeRouteEnter(guards, to, from, next);
+      },
+      component: () => System.import('./components/columns/content.comp.vue'),
+      children: [
+        {
+          name: 'column.item.main',
+          path: ''
+        },
+        {
+          name: 'column.item.post-comment',
+          path: 'post-comment',
+          meta: {
+            title: '发表评论',
+          },
+          component: () => System.import('./components/columns/post-comment.comp.vue'),
+        }
+      ]
     },
     {
       path: '/500',

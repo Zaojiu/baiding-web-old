@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   $spinkit-spinner-margin: 0 auto !default;
   $spinkit-size: 17px !default;
   $spinkit-spinner-color: $color-brand !default;

@@ -110,7 +110,7 @@ if (fs.existsSync(envFilePath)) {
 const config = {
   entry: {
     'global': thirdPartyLibs,
-    'libs': ['vue', 'vue-property-decorator', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN', 'yaqrcode', 'lodash'],
+    'libs': ['vue', 'vue-property-decorator', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN', 'yaqrcode', 'lodash', 'zaojiu-player'],
     'shared': sharedFiles,
     'main': './src/main.ts',
   },
