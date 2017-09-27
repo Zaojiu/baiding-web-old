@@ -44,9 +44,9 @@
         </div>
         <div class="item-count">
           <div class="adjuster">
-            <span class="increase" @click="ticketSelected.leftTotal > ticketCount ? ticketCount=ticketCount+1 : true"></span>
-            <input class="count-input" type="number" placeholder="数量" step="1" min="1" :max="ticketSelected.leftTotal" v-model.number="ticketCount">
             <span class="decrease" @click="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
+            <input class="count-input" type="number" placeholder="数量" step="1" min="1" :max="ticketSelected.leftTotal" v-model.number="ticketCount">
+            <span class="increase" @click="ticketSelected.leftTotal > ticketCount ? ticketCount=ticketCount+1 : true"></span>
           </div>
           <p class="error" v-if="isTicketCountError">输入数量错误，请输入大于0的整数</p>
         </div>
