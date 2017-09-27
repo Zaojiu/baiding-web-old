@@ -8,7 +8,7 @@ export const host = {
   auth: '//auth.zaojiu.tv',
   io: '//io.zaojiu.tv',
   assets: 'http://www.zaojiu.tv',
-  weinre: 'http://192.168.2.173:10000',
+  weinre: 'http://192.168.1.203:10000',
 };
 
 export const appConfig = {

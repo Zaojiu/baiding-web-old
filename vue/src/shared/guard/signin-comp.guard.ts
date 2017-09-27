@@ -14,7 +14,7 @@ export const signinGuard = (redirectTo: string) => {
     } catch (err) {
       if (err.isUnauthorized) {
         if (isInApp || isInWechat) {
-          auth(`${host.self}${redirectTo}`);
+          auth(`${host.self}/signin?redirectTo=${encodeURIComponent(redirectTo)}`);
           return false;
         } else {
           return true;

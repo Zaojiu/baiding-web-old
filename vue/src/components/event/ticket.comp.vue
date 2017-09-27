@@ -342,6 +342,12 @@
       this.checkFee(val);
     }
 
+    @Watch('$route.name')
+    refreshData() {
+      this.id = this.$route.params['id'];
+      this.initData();
+    }
+
     created() {
       this.id = this.$route.params['id'];
       this.initData();
