@@ -286,6 +286,7 @@
     }
 
     .article {
+      margin: 20px;
       text-align: justify;
       font-size: $font-size-md;
       line-height: 1.75;

@@ -8,23 +8,20 @@
       @playing="isAudioPlaying = true"
       @ended="isAudioPlaying = false; resetProgressBar()"
       @pause="isAudioPlaying = false"
-      @canplay="log('canplay')"
-      @emptied="log('emptied')"
-      @waiting="log('waiting')"
-      @stalled="log('stalled')"
-      @suspend="log('suspend')"
-      @progress="log('progress'); resetBuffer();"
-      @loadeddata="log('loadeddata'); isAudioLoading = false; resetBuffer();"
-      @loadstart="log('loadstart'); isAudioLoading = true"
-      @loadedmetadata="log('loadedmetadata'); isAudioLoading = false; timeupdate"
-      @timeupdate="log('timeupdate'); timeupdate"
+      @canplay="isAudioLoading = false;"
+      @waiting="isAudioLoading = true"
+      @progress="resetBuffer();"
+      @loadeddata="isAudioLoading = false; resetBuffer();"
+      @loadstart="isAudioLoading = true"
+      @loadedmetadata="isAudioLoading = false; timeupdate"
+      @timeupdate="timeupdate"
       @seeking="seeking = true"
       @seeked="seeked"
       @reset="resetProgressBar()"
     ></audio>
     <div class="cover" @click="togglePlay">
       <img :src="audioCover" @error="audioCover = '/assets/img/default-cover.jpg'" alt="封面">
-      <div class="loading" v-if="isAudioLoading"><circle-loading class="abs-center"></circle-loading></div>
+      <div class="loading" v-if="isAudioLoading"><circle-loading class="loading-icon"></circle-loading></div>
       <i class="bi bi-pause" v-else-if="isAudioPlaying"></i>
       <i class="bi bi-play-fill" v-else></i>
     </div>
@@ -78,14 +75,23 @@
         top: 0;
         bottom: 0;
         background-color: rgba(0, 0, 0, .3);
+
+        .loading-icon {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translateX(-50%) translateY(-50%);
+        }
       }
 
-      .bi {
+      .bi-pause, .bi-play-fill {
         position: absolute;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
+        color: $color-w;
+        font-size: 18px;
         background-color: rgba(0, 0, 0, .3);
 
         &:before {
@@ -93,8 +99,6 @@
           left: 50%;
           top: 50%;
           transform: translateX(-50%) translateY(-50%);
-          color: $color-w;
-          font-size: 18px;
         }
       }
     }
@@ -113,7 +117,17 @@
         bottom: -40px;
         background-size: cover;
         background-position: center;
-        filter: blur(15px) brightness(70%);
+        filter: blur(30px);
+
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(10, 10, 10, .4);
+        }
       }
 
       .duration, .control, .remain {
@@ -395,10 +409,6 @@
       } else {
         this.seeking = false;
       }
-    }
-
-    log(data: any) {
-      console.log(data);
     }
 
     togglePlay() {
