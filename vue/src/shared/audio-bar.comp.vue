@@ -111,13 +111,13 @@
 
       .background-image {
         position: absolute;
-        left: -40px;
-        right: -40px;
-        top: -40px;
-        bottom: -40px;
+        left: -50px;
+        right: -50px;
+        top: -50px;
+        bottom: -50px;
         background-size: cover;
         background-position: center;
-        filter: blur(30px);
+        filter: blur(40px);
 
         &:before {
           content: '';
@@ -126,7 +126,7 @@
           top: 0;
           right: 0;
           bottom: 0;
-          background-color: rgba(10, 10, 10, .4);
+          background-color: rgba(10, 10, 10, .5);
         }
       }
 
