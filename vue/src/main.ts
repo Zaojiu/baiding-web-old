@@ -1,3 +1,4 @@
+import './shared/utils/weinre';
 import './shared/utils/polyfill';
 import './shared/icons.font.js';
 
