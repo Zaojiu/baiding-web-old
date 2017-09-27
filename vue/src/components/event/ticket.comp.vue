@@ -99,8 +99,6 @@
         font-size: $font-size-sm;
         color: $color-dark-gray;
         line-height: 1.71em;
-        word-break: break-all;
-        white-space: pre-wrap;
       }
 
       .speaker {
@@ -379,7 +377,7 @@
     }
 
     checkDate(event: EventModel, timer = 0) {
-      if (moment().isBefore(event.meta.startAtParsed)) {
+      if (moment().isBefore(event.meta.applyStartAtParsed)) {
         this.isPaymentDisabled = true;
         this.btnText = '未开始售票';
       } else {
@@ -387,7 +385,7 @@
         this.btnText = '购买门票';
       }
 
-      if (moment().isAfter(event.meta.endAtParsed)) {
+      if (moment().isAfter(event.meta.applyEndAtParsed)) {
         this.isPaymentDisabled = true;
         this.btnText = '已结束售票';
         this.isPaymentPopup = false;
