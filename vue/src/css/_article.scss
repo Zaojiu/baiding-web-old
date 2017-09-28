@@ -17,6 +17,10 @@
     margin: 1em 0;
     white-space: pre-wrap;
     word-break: break-all;
+    line-height: 1.75em;
+    text-align: justify;
+    font-size: $font-size-md;
+    color: $color-dark-gray;
 
     &:first-child {
       margin-top: 0;
@@ -36,7 +40,7 @@
   }
 
   img {
-    max-width: calc(100% + 20px + 20px);
+    max-width: 100%;
     height: auto;
   }
 }

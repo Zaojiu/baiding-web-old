@@ -341,10 +341,7 @@
     }
 
     .article {
-      text-align: justify;
-      font-size: $font-size-md;
-      line-height: 1.75;
-      color: $color-dark-gray;
+      margin: 0 20px;
     }
 
     .info {
