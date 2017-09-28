@@ -17,7 +17,7 @@
     border-bottom: solid 1px $color-gray4;
 
     .bi-zaojiu-logo {
-      font-size: $font-size-lg;
+      font-size: 26px;
       color: $color-dark-gray;
     }
 

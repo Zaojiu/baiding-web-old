@@ -4,7 +4,7 @@
     <div class="invalid-order abs-center" v-else-if="isInvalidOrder">无效订单</div>
     <error class="abs-center" @retry="initData()" v-else-if="isError"></error>
     <div class="order" v-else>
-      <top-nav></top-nav>
+      <top-nav class="top-nav"></top-nav>
 
       <div class="old-order" v-if="orderId">
         <div class="order-container">
@@ -154,9 +154,17 @@
     }
 
     .order {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+
+      .top-nav {
+        flex-shrink: 0;
+      }
+
       .new-order, .old-order {
         position: relative;
-        height: 100vh;
+        flex-grow: 1;
         overflow: hidden;
         display: flex;
         flex-direction: column;
