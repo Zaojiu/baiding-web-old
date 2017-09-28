@@ -1,5 +1,5 @@
 <template>
-  <div class="error-screen" v-else-if="!right">
+  <div class="error-screen">
     网络错误，请<a href="" @click.prevent="$emit('retry')">重试</a>
   </div>
 </template>

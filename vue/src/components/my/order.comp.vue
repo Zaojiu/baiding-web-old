@@ -3,6 +3,8 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="orders" v-scroll-view="{onBottom: onBottom}" v-else>
+      <top-nav></top-nav>
+
       <div class="order" v-for="order in orders">
         <div class="header">
           <span class="order-no">订单编号: <strong>{{order.order.orderNo}}</strong></span>

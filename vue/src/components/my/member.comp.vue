@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <top-nav></top-nav>
+
     <header>
       <img class="avatar avatar-round" :src="userInfo.avatar" alt="用户头像">
       <div class="nick">{{userInfo.nick}}</div>
