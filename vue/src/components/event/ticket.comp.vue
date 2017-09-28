@@ -6,7 +6,7 @@
       <img class="cover" :src="event.coverUrl" alt="头图">
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>
-        <div class="desc article-content" v-html="event.content"></div>
+        <div class="desc article-content" v-html="event.meta.content"></div>
       </div>
       <div class="speaker block" v-for="speaker in event.meta.speakers">
         <img class="avatar avatar-round" :src="speaker.coverUrl" alt="嘉宾头像">
