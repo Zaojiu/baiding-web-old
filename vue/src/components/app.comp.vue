@@ -1,6 +1,7 @@
 <template>
   <div>
     <router-view></router-view>
+    <share-popup></share-popup>
     <payment></payment>
     <modal></modal>
     <tool-tips></tool-tips>
@@ -102,12 +103,14 @@
   import toolTips from '../shared/tool-tips.comp.vue';
   import payment from '../shared/payment.comp.vue';
   import modal from '../shared/modal.comp.vue';
+  import sharePopup from '../shared/share-popup.comp.vue';
 
   export default {
     components: {
       toolTips,
       payment,
       modal,
+      sharePopup,
     }
   }
 </script>

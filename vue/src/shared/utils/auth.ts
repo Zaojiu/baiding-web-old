@@ -1,6 +1,6 @@
 import {host} from '../../env/environment';
-import iosBridge from '../ios';
-import {isInWechat} from '../utils/utils';
+import {isInWechat} from './utils';
+import {callHandler, initIOS} from "./ios";
 
 export const wechatAuth = (redirectTo: string) => {
   redirectTo = redirectTo || location.href;
@@ -9,8 +9,8 @@ export const wechatAuth = (redirectTo: string) => {
 
 export const iosAuth = async (redirectTo: string) => {
   const query = redirectTo ? {to: redirectTo} : null;
-  const bridge = await iosBridge.getInstant();
-  return bridge.callHandler('login', query);
+  await initIOS();
+  return callHandler('login', query);
 };
 
 export const auth: (redirectTo: string) => void = isInWechat ? wechatAuth : iosAuth;
