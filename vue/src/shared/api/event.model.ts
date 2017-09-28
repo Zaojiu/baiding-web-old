@@ -22,6 +22,7 @@ export class EventTicketModel {
 }
 
 class EventMetaModel {
+  content: string;
   startAt: string;
   startAtParsed: Moment;
   endAt: string;
@@ -38,6 +39,7 @@ class EventMetaModel {
   tickets: EventTicketModel[];
 
   constructor(eventMetaData: any) {
+    this.content = eventMetaData ? eventMetaData.content : '';
     this.startAt = eventMetaData ? eventMetaData.startAt : '';
     this.startAtParsed = eventMetaData ? moment(eventMetaData.startAt) : moment();
     this.endAt = eventMetaData ? eventMetaData.endAt : '';
