@@ -3,6 +3,7 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="event" v-else @click="isPaymentPopup = false">
+      <top-nav></top-nav>
       <img class="cover" :src="event.coverUrl" alt="头图">
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>

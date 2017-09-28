@@ -160,7 +160,7 @@ export class TalkInfoModel {
       })
     }
 
-    this.content = object.meta && object.meta.content ? object.meta.content : ''
+    this.content = object.meta && object.meta.content ? object.meta.content : '';
     this.isOriginal = object.meta && object.meta.isOriginal ? object.meta.isOriginal : true
     // object.meta.mp4暂不添加, 因为有的视频是mov
     this.media = object.meta ? new TalkInfoMediaModel(object.meta.mp3, '', object.meta.mp4SD, object.meta.mp4HD, object.meta.preview, object.meta.duration) : new TalkInfoMediaModel()

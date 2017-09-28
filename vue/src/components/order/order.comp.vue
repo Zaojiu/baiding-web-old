@@ -4,6 +4,8 @@
     <div class="invalid-order abs-center" v-else-if="isInvalidOrder">无效订单</div>
     <error class="abs-center" @retry="initData()" v-else-if="isError"></error>
     <div class="order" v-else>
+      <top-nav></top-nav>
+
       <div class="old-order" v-if="orderId">
         <div class="order-container">
           <div class="status">

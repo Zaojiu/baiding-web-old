@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <top-nav></top-nav>
+
     <div class="content">
       <div class="cover">
         <img src="/assets/img/member-intro-cover.png" alt="会员头图">

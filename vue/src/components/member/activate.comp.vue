@@ -1,5 +1,7 @@
 <template>
   <div class="member-activate">
+    <top-nav></top-nav>
+
     <section class="user-section"></section>
 
     <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>

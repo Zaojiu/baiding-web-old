@@ -3,6 +3,8 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div v-else>
+      <top-nav></top-nav>
+
       <div class="block" v-for="ticket in tickets">
         <div class="ticket-info">
           <img class="cover" :src="ticket.event.coverUrl" alt="头图">
