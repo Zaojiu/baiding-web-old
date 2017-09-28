@@ -3,6 +3,7 @@ import {Position} from "vue-router/types/router";
 
 declare const DocumentTouch: any;
 
+export const hasMouseEvent = ('onmousedown' in document);
 export const isInWechat = /micromessenger/i.test(navigator.userAgent);
 export const isiOS = /iPhone|iPad/i.test(navigator.userAgent);
 export const isInApp = /zaojiuliveapp/i.test(navigator.userAgent);
@@ -20,6 +21,7 @@ export const regexpUsername = /^[a-z][a-z0-9-]{3,18}[a-z0-9]$/;
 export const regexpMobile = /^1[0-9]{10}$/;
 export const regexpPhone = /^((086-)?0[0-9]{2,3}-[0-9]{7,8}\;)*((086-)?0[0-9]{2,3}-[0-9]{7,8})$/;
 export const regexpPhoneOrMobile = /(^((086-)?0[0-9]{2,3}-[0-9]{7,8}\;)*((086-)?0[0-9]{2,3}-[0-9]{7,8})$)||(^(13\d|14[57]|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/;
+
 export const parseAt = (content: string, needHeightLight = false): string => {
   const patt = /(@.+?)(\((.+?)\)){1}/g
   let result = null;
@@ -35,9 +37,11 @@ export const parseAt = (content: string, needHeightLight = false): string => {
 
   return _content
 };
+
 export const resetWindowScroll = (): void => {
   setTimeout(() => document.body.scrollTop = document.body.scrollHeight, 800);
 };
+
 export const params = (obj: any): string => {
   const params: string[] = [];
   Object.keys(obj).forEach(k => {
@@ -49,6 +53,7 @@ export const params = (obj: any): string => {
   if (params.length) return params.join('&');
   return '';
 };
+
 export const serializeObj = (source: string): { [key: string]: string } => {
   const kvArr = source.split('&');
   const target: { [key: string]: string } = {};
@@ -58,6 +63,7 @@ export const serializeObj = (source: string): { [key: string]: string } => {
   }
   return target;
 };
+
 export class UrlModel {
   protocol: string;
   host: string;
@@ -82,6 +88,7 @@ export class UrlModel {
     return `${this.protocol}//${this.hostname}${this.port ? ':' + this.port : ''}${this.pathname}${searchStr ? '?' + searchStr : ''}${this.hash}`;
   }
 }
+
 export const parseUrl = (url: string): UrlModel => {
   const aEle = document.createElement('a');
   aEle.href = url;
@@ -94,6 +101,7 @@ export const parseUrl = (url: string): UrlModel => {
   });
   return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, aEle.port, aEle.pathname, queryObj, aEle.hash)
 };
+
 export const randomId = (size = 10, dict = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'): string => {
   const dictArr = dict.split('');
   let str = '';
@@ -102,6 +110,7 @@ export const randomId = (size = 10, dict = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJ
   }
   return str;
 };
+
 export const absUrl = (path: string, query?: {[key: string]: string}): string => {
   let url = `${location.protocol}//${location.hostname}${path}`;
   if (query) url += `?${params(query)}`;
@@ -171,12 +180,14 @@ export const setScrollPosition = (selector?: string, x?: number, y?: number) => 
   }
   setTimeout(() => scrollPosition = undefined);
 };
+
 export const parsePercent = (percent: number): number => {
   if (percent > 1) percent = 1;
   if (percent < 0) percent = 0;
 
   return parseFloat(percent.toFixed(2));
 };
+
 export const readCookie = (name: string): string => {
   const nameEQ = encodeURIComponent(name) + "=";
   const ca = document.cookie.split(';');

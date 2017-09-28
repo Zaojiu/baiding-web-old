@@ -2,7 +2,7 @@
   <div class="operation-tips" :class="{'is-opened':isOpened}">{{message}}</div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .operation-tips {
     position: fixed;
     left: 50%;

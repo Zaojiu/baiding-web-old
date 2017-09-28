@@ -9,7 +9,7 @@
         'played': isVideoPlayed,
         'played-landscape': isVideoPlayed && isLandscape
       }">
-        <div class="player" id="player" @click="isVideoPlayed = true;"></div>
+        <div class="player" id="player" @click="talkInfo.media.hasVideo ? isVideoPlayed = true : false"></div>
 
         <div class="live-cover" v-if="!isVideoPlayed">
           <img
@@ -341,10 +341,7 @@
     }
 
     .article {
-      text-align: justify;
-      font-size: $font-size-md;
-      line-height: 1.75;
-      color: $color-dark-gray;
+      margin: 0 20px;
     }
 
     .info {
@@ -611,12 +608,12 @@
 <script lang="ts">
   import Vue from 'vue';
   import { Component, Watch } from 'vue-property-decorator';
-  import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition} from '../../shared/utils/utils';
+  import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition, setTitle} from '../../shared/utils/utils';
   import {TalkCommentModel, TalkEmphasisModel, TalkInfoModel} from "../../shared/api/talk.model";
   import {getTalkInfo, listTalkComments, listTalkEmphasis, praise, unpraise, favorite, unfavorite} from '../../shared/api/talk.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
 
-  const TALK_COMMENT_COUNT = 20;
+  const COMMENT_COUNT = 20;
 
   @Component
   export default class ContentComponent extends Vue {
@@ -655,6 +652,7 @@
         this.comments = [];
         this.fetchComments();
         setScrollPosition('#comments');
+        setTitle(this.talkInfo.subject);
       }
     }
 
@@ -673,10 +671,15 @@
 
       if (this.talkInfo.media.hasVideo) this.prepareVideo();
       this.coverUrl = this.talkInfo.coverSmall11Url;
+      if (!this.isChildActived()) setTitle(this.talkInfo.subject);
     }
 
     get formatedCategories(): string {
       return this.talkInfo.categories.length > 0 ? this.talkInfo.categories.join(' | ') : '';
+    }
+
+    isChildActived(): boolean {
+      return this.$router.currentRoute.name !== 'talks.main';
     }
 
 //      get liveInfo () {
@@ -697,9 +700,9 @@
 
       try {
         const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length-1].createdAt}` : '';
-        const comments = await listTalkComments(this.id, TALK_COMMENT_COUNT+1, lastMarker);
+        const comments = await listTalkComments(this.id, COMMENT_COUNT+1, lastMarker);
         let isCommentOnLatest = true;
-        if (comments.length === TALK_COMMENT_COUNT+1) {
+        if (comments.length === COMMENT_COUNT+1) {
           isCommentOnLatest = false;
           comments.pop();
         }
@@ -813,10 +816,6 @@
         this.player.video.el.currentTime = startTime;
         if (this.player.video.el.paused) this.player.video.el.play();
       }
-    }
-
-    isChildActived() {
-      return this.$router.currentRoute.name !== 'talks.main';
     }
   }
 </script>
