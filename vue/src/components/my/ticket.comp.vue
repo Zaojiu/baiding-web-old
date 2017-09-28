@@ -59,6 +59,7 @@
 
     .ticket-info {
       display: flex;
+      padding: 0 20px;
 
       .cover {
         flex-shrink: 0;
@@ -71,7 +72,7 @@
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        padding: 0 15px;
+        padding-left: 15px;
 
         .subject {
           font-size: $font-size-sm;

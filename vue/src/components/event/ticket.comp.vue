@@ -318,7 +318,7 @@
   import {TicketModel} from "../../shared/api/ticket.model";
   import {checkOrderFee} from "../../shared/api/order.api";
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
-  import {getUserInfoCache} from "../../shared/api/user.api";
+  import {getUserInfo, getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from "../../shared/api/user.model";
   import {showTips} from '../../store/tip';
   import {setShareInfo} from '../../shared/utils/share';
@@ -373,6 +373,10 @@
       } finally {
         this.isLoading = false;
       }
+
+      try {
+        await getUserInfo(false);
+      } catch (e) {}
 
       this.setShareInfo();
 

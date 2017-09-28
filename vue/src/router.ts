@@ -113,7 +113,7 @@ export const router = new Router({
       path: '/my',
       name: 'my',
       meta: {
-        title: '我的',
+        title: '个人中心',
       },
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
         const guards = [authGuard(), mobileBindedGuard()];
