@@ -144,6 +144,8 @@
 
 <style lang="scss" scoped>
   .container {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
     .invalid-order {
       font-size: $font-size-md;
       color: $color-gray3;

@@ -20,7 +20,6 @@ export const regexpUsername = /^[a-z][a-z0-9-]{3,18}[a-z0-9]$/;
 export const regexpMobile = /^1[0-9]{10}$/;
 export const regexpPhone = /^((086-)?0[0-9]{2,3}-[0-9]{7,8}\;)*((086-)?0[0-9]{2,3}-[0-9]{7,8})$/;
 export const regexpPhoneOrMobile = /(^((086-)?0[0-9]{2,3}-[0-9]{7,8}\;)*((086-)?0[0-9]{2,3}-[0-9]{7,8})$)||(^(13\d|14[57]|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/;
-
 export const parseAt = (content: string, needHeightLight = false): string => {
   const patt = /(@.+?)(\((.+?)\)){1}/g
   let result = null;
@@ -49,6 +48,15 @@ export const params = (obj: any): string => {
   });
   if (params.length) return params.join('&');
   return '';
+};
+export const serializeObj = (source: string): { [key: string]: string } => {
+  const kvArr = source.split('&');
+  const target: { [key: string]: string } = {};
+  for (let kv of kvArr) {
+    const kvPair = kv.split('=');
+    if (kvPair.length === 2) target[decodeURIComponent(kvPair[0])] = decodeURIComponent(kvPair[1]);
+  }
+  return target;
 };
 export class UrlModel {
   protocol: string;
@@ -162,4 +170,20 @@ export const setScrollPosition = (selector?: string, x?: number, y?: number) => 
     scrollPosition = {x, y};
   }
   setTimeout(() => scrollPosition = undefined);
+};
+export const parsePercent = (percent: number): number => {
+  if (percent > 1) percent = 1;
+  if (percent < 0) percent = 0;
+
+  return parseFloat(percent.toFixed(2));
+};
+export const readCookie = (name: string): string => {
+  const nameEQ = encodeURIComponent(name) + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+  }
+  return '';
 };

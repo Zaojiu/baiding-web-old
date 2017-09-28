@@ -3,8 +3,6 @@ import {post} from "../api/xhr";
 import {AxiosResponse} from "axios";
 import {showTips} from "../../store/tip";
 import router from "../../router";
-import {RawLocation, Route} from "vue-router";
-import Vue from "vue";
 
 declare const wx: any;
 
@@ -17,115 +15,104 @@ class WechatConfigModel {
   jsApiList: string[];
 }
 
-class Wechat {
-  private cachedConfig: WechatConfigModel;
+let cachedConfig: WechatConfigModel;
+let needResign = true;
+let onVoicePlayEnd: () => void;
+let autoCompleteResolver: (localId: string) => void;
+let autoCompleteRejecter: (reason: string) => void;
+
+router.afterEach((to, from) => {
   needResign = true;
-  onVoicePlayEnd: () => void;
-  autoCompleteResolver: (localId: string) => void;
-  autoCompleteRejecter: (reason: string) => void;
+});
 
-  constructor() {
-    router.beforeEach((to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
-      this.needResign = true;
-      next();
+const getConfig = async (): Promise<WechatConfigModel> => {
+  let resp: AxiosResponse;
+  try {
+    resp = await post(`${host.io}/api/wechat/signature/config`, null);
+  } catch (e) {
+    throw e;
+  }
+
+  return resp.data;
+};
+
+const configWechat = async (needRefresh = false) => {
+  if (cachedConfig && !needRefresh) {
+    console.log('cache wechat config: ', cachedConfig);
+    wx.config(cachedConfig);
+    return;
+  }
+
+  let config: WechatConfigModel;
+  try {
+    config = await getConfig();
+  } catch (e) {
+    throw e;
+  }
+
+  config.jsApiList = [
+    'startRecord',
+    'stopRecord',
+    'onVoiceRecordEnd',
+    'playVoice',
+    'pauseVoice',
+    'stopVoice',
+    'onVoicePlayEnd',
+    'uploadVoice',
+    'downloadVoice',
+    'translateVoice',
+    'onMenuShareTimeline',
+    'onMenuShareAppMessage',
+    'onMenuShareQQ',
+    'onMenuShareWeibo',
+    'onMenuShareQZone',
+    'chooseImage',
+    'uploadImage',
+  ];
+  config.debug = false;
+
+  console.log('new wechat config: ', config);
+
+  wx.config(config);
+  cachedConfig = config;
+};
+
+export const initWechat = async (): Promise<void> => {
+  console.log('wechat init');
+
+  if (!needResign) return Promise.resolve();
+
+  return new Promise<void>((resolve, reject) => {
+    wx.error((err: any) => {
+      console.log('wx err:', err);
+      showTips('微信初始化失败, 请刷新页面');
+      throw new Error(err && err.errMsg ? err.errMsg : err);
     });
-  }
 
-  private async getConfig(): Promise<WechatConfigModel> {
-    let resp: AxiosResponse;
-    try {
-      resp = await post(`${host.io}/api/wechat/signature/config`, null);
-    } catch (e) {
-      throw e;
-    }
+    wx.ready(() => {
+      console.log('wechat ready');
 
-    return resp.data;
-  }
-
-  private async configWechat(needRefresh = false) {
-    if (this.cachedConfig && !needRefresh) {
-      console.log('cache wechat config: ', this.cachedConfig);
-      wx.config(this.cachedConfig);
-      return;
-    }
-
-    let config: WechatConfigModel;
-    try {
-      config = await this.getConfig();
-    } catch (e) {
-      throw e;
-    }
-
-    config.jsApiList = [
-      'startRecord',
-      'stopRecord',
-      'onVoiceRecordEnd',
-      'playVoice',
-      'pauseVoice',
-      'stopVoice',
-      'onVoicePlayEnd',
-      'uploadVoice',
-      'downloadVoice',
-      'translateVoice',
-      'onMenuShareTimeline',
-      'onMenuShareAppMessage',
-      'onMenuShareQQ',
-      'onMenuShareWeibo',
-      'onMenuShareQZone',
-      'chooseImage',
-      'uploadImage',
-    ];
-    config.debug = false;
-
-    console.log('new wechat config: ', config);
-
-    wx.config(config);
-    this.cachedConfig = config;
-  }
-
-  async init(): Promise<void> {
-    console.log('wechat init');
-
-    if (!this.needResign) return Promise.resolve();
-
-    return new Promise<void>((resolve, reject) => {
-      wx.error((err: any) => {
-        console.log('wx err:', err);
-        showTips('微信初始化失败, 请刷新页面');
-        throw new Error(err && err.errMsg ? err.errMsg : err);
+      wx.onVoiceRecordEnd({
+        // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+        complete: (res: any) => {
+          if (autoCompleteResolver) autoCompleteResolver(res.localId);
+        },
+        fail: (reason: any) => {
+          if (autoCompleteRejecter) autoCompleteRejecter(reason);
+        }
       });
 
-      wx.ready(() => {
-        console.log('wechat ready');
-
-        wx.onVoiceRecordEnd({
-          // 录音时间超过一分钟没有停止的时候会执行 complete 回调
-          complete: (res: any) => {
-            if (this.autoCompleteResolver) this.autoCompleteResolver(res.localId);
-          },
-          fail: (reason: any) => {
-            if (this.autoCompleteRejecter) this.autoCompleteRejecter(reason);
-          }
-        });
-
-        wx.onVoicePlayEnd({
-          success: (res: any) => {
-            if (this.onVoicePlayEnd) this.onVoicePlayEnd();
-          }
-        });
-
-        resolve();
+      wx.onVoicePlayEnd({
+        success: (res: any) => {
+          if (onVoicePlayEnd) onVoicePlayEnd();
+        }
       });
 
-      console.log('config wechat at init');
-      this.configWechat(true);
-      this.needResign = false;
+      resolve();
     });
-  }
 
-  closeWindow() {
-    wx.closeWindow();
-  }
-}
-
-export const wechat = new Wechat();
+    console.log('config wechat at init');
+    configWechat(true);
+    needResign = false;
+  });
+};

@@ -68,6 +68,7 @@
     background-color: rgb(251, 251, 251);
 
     .event {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       height: calc(100vh - 60px);
       overflow: auto;
 
@@ -319,6 +320,8 @@
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from "../../shared/api/user.model";
   import {showTips} from '../../store/tip';
+  import {setShareInfo} from '../../shared/utils/share';
+  import {host} from "../../env/environment";
 
   @Component
   export default class EventTicketComponent extends Vue {
@@ -346,17 +349,15 @@
     refreshData() {
       this.id = this.$route.params['id'];
       this.initData();
-      this.setShareInfo();
     }
 
     created() {
       this.id = this.$route.params['id'];
       this.initData();
-      this.setShareInfo();
     }
 
     setShareInfo() {
-
+      setShareInfo(this.event.subject, this.event.desc, this.event.cover11Url, `${host.self}${this.$route.fullPath}`);
     }
 
     async initData() {
@@ -371,6 +372,8 @@
       } finally {
         this.isLoading = false;
       }
+
+      this.setShareInfo();
 
       if (this.event.meta.tickets.length && this.canBuy()) {
         this.ticketSelected = this.event.meta.tickets[0];

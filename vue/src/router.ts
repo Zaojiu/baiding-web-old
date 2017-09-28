@@ -222,7 +222,7 @@ export const router = new Router({
     },
     {
       path: '/columns/:id/items/:itemId',
-      name: 'column.content',
+      name: 'column.item.content',
       component: () => System.import('./components/columns/cover.comp.vue'),
     },
     {
@@ -231,7 +231,7 @@ export const router = new Router({
       component: errorComp,
     },
     {
-      path: '/400',
+      path: '/404',
       name: 'notfound',
       component: () => System.import('./components/notfound/notfound.comp.vue'),
     },
@@ -244,8 +244,7 @@ export const router = new Router({
 
 export default router;
 
-router.beforeEach((to, from, next) => {
+router.afterEach((to, from) => {
   const title = to.meta.title ? `${to.meta.title}-造就` : '造就';
   setTitle(title);
-  next()
 });

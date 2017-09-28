@@ -10,14 +10,16 @@ export class EventTicketModel {
   sellTotal: number;
   leftTotal: number;
 
-  constructor(ticketData: any) {
-    this.id = ticketData ? ticketData.id : '';
-    this.name = ticketData ? ticketData.name : '';
-    this.totalFee = ticketData && ticketData.totalFee ? new Money(ticketData.totalFee) : new Money(0);
-    this.memberFee = ticketData && ticketData.memberFee ? new Money(ticketData.memberFee) : new Money(0);
-    this.originFee = ticketData && ticketData.originFee ? new Money(ticketData.originFee) : new Money(0);
-    this.sellTotal = ticketData ? ticketData.sellTotal : 0;
-    this.leftTotal = ticketData ? ticketData.leftTotal : 0;
+  constructor(data: any) {
+    if (!data) return;
+
+    this.id = data.id;
+    this.name = data.name;
+    this.totalFee = data.totalFee ? new Money(data.totalFee) : new Money(0);
+    this.memberFee = data.memberFee ? new Money(data.memberFee) : new Money(0);
+    this.originFee = data.originFee ? new Money(data.originFee) : new Money(0);
+    this.sellTotal = data.sellTotal;
+    this.leftTotal = data.leftTotal;
   }
 }
 
@@ -38,28 +40,30 @@ class EventMetaModel {
   speakers: SpeakerModel[];
   tickets: EventTicketModel[];
 
-  constructor(eventMetaData: any) {
-    this.content = eventMetaData ? eventMetaData.content : '';
-    this.startAt = eventMetaData ? eventMetaData.startAt : '';
-    this.startAtParsed = eventMetaData ? moment(eventMetaData.startAt) : moment();
-    this.endAt = eventMetaData ? eventMetaData.endAt : '';
-    this.endAtParsed = eventMetaData ? moment(eventMetaData.endAt) : moment();
-    this.applyStartAt = eventMetaData ? eventMetaData.applyStartAt : '';
-    this.applyStartAtParsed = eventMetaData ? moment(eventMetaData.applyStartAt) : moment();
-    this.applyEndAt = eventMetaData ? eventMetaData.applyEndAt : '';
-    this.applyEndAtParsed = eventMetaData ? moment(eventMetaData.applyEndAt) : moment();
-    this.province = eventMetaData ? eventMetaData.province : '';
-    this.city = eventMetaData ? eventMetaData.city : '';
-    this.address = eventMetaData ? eventMetaData.address : '';
-    this.location = eventMetaData ? eventMetaData.location : '';
+  constructor(data: any) {
+    if (!data) return;
+
+    this.content = data.content;
+    this.startAt = data.startAt;
+    this.startAtParsed = moment(data.startAt);
+    this.endAt = data.endAt;
+    this.endAtParsed = moment(data.endAt);
+    this.applyStartAt = data.applyStartAt;
+    this.applyStartAtParsed = moment(data.applyStartAt);
+    this.applyEndAt = data.applyEndAt;
+    this.applyEndAtParsed = moment(data.applyEndAt);
+    this.province = data.province;
+    this.city = data.city;
+    this.address = data.address;
+    this.location = data.location;
     this.speakers = [];
-    const speakersData = eventMetaData && eventMetaData.speakers ? eventMetaData.speakers : [];
+    const speakersData = data && data.speakers ? data.speakers : [];
     speakersData.forEach((speaker: any) => {
       this.speakers.push(new SpeakerModel(speaker));
     });
 
     this.tickets = [];
-    const ticketsData = eventMetaData && eventMetaData.tickets ? eventMetaData.tickets : [];
+    const ticketsData = data && data.tickets ? data.tickets : [];
     ticketsData.forEach((ticket: any) => {
       this.tickets.push(new EventTicketModel(ticket));
     });
@@ -71,13 +75,34 @@ export class EventModel {
   subject: string;
   desc: string;
   coverUrl: string;
+  coverSmallUrl: string;
+  coverThumbnailUrl: string;
+  cover169Url: string;
+  coverSmall169Url: string;
+  coverThumbnail169Url: string;
+  cover11Url: string;
+  coverSmall11Url: string;
+  coverThumbnail11Url: string;
   meta: EventMetaModel;
 
-  constructor(eventData: any) {
-    this.id = eventData ? eventData.id : '';
-    this.subject = eventData ? eventData.subject : '';
-    this.desc = eventData ? eventData.desc : '';
-    this.coverUrl = eventData ? eventData.coverUrl : '';
-    this.meta = new EventMetaModel(eventData.meta);
+  constructor(data: any) {
+    if (!data) return;
+
+    this.id = data.id;
+    this.subject = data.subject;
+    this.desc = data.desc;
+    this.coverUrl = data.coverUrl;
+    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
+    this.coverThumbnailUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
+
+    this.cover169Url = `${data.coverUrl}~16-9`;
+    this.coverSmall169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
+    this.coverThumbnail169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
+
+    this.cover11Url = `${data.coverUrl}~1-1`;
+    this.coverSmall11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
+    this.coverThumbnail11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
+
+    this.meta = new EventMetaModel(data.meta);
   }
 }

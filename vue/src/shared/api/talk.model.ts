@@ -119,17 +119,17 @@ export class TalkInfoModel {
     if (users && object.uid) this.userInfo = users[object.uid];
     this.subject = object.subject;
     this.desc = object.desc;
-    this.coverUrl = `${object.coverUrl}?updatedAt=${Math.round(+object.updatedAt)}`;
-    this.coverSmallUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
-    this.coverThumbnailUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+    this.coverUrl = object.coverUrl;
+    this.coverSmallUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
+    this.coverThumbnailUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
 
-    this.cover169Url = `${object.coverUrl}~16-9?updatedAt=${Math.round(+object.updatedAt)}`;
-    this.coverSmall169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
-    this.coverThumbnail169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+    this.cover169Url = `${object.coverUrl}~16-9`;
+    this.coverSmall169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
+    this.coverThumbnail169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
 
-    this.cover11Url = `${object.coverUrl}~1-1?updatedAt=${Math.round(+object.updatedAt)}`;
-    this.coverSmall11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
-    this.coverThumbnail11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+object.updatedAt)}`;
+    this.cover11Url = `${object.coverUrl}~1-1`;
+    this.coverSmall11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
+    this.coverThumbnail11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
 
     this.isNeedPay = object.isNeedPay;
     this.totalFee = object.totalFee;
