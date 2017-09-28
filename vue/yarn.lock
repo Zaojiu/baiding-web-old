@@ -1773,7 +1773,7 @@ html-entities@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
 
-html-loader@^0.5.1:
+html-loader@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/html-loader/-/html-loader-0.5.1.tgz#4f1e8396a1ea6ab42bedc987dfac058070861ebe"
   dependencies:
@@ -3188,7 +3188,7 @@ postcss-unique-selectors@^2.0.2:
     postcss "^5.0.4"
     uniqs "^2.0.0"
 
-postcss-urlrewrite@^0.2.2:
+postcss-urlrewrite@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/postcss-urlrewrite/-/postcss-urlrewrite-0.2.2.tgz#bad53f4de04bc0812f278733314bd3062ed36bd4"
   dependencies:
