@@ -6,7 +6,7 @@
       <img class="cover" :src="event.coverUrl" alt="头图">
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>
-        <div class="desc article-content" v-html="event.desc"></div>
+        <div class="desc article-content" v-html="event.content"></div>
       </div>
       <div class="speaker block" v-for="speaker in event.meta.speakers">
         <img class="avatar avatar-round" :src="speaker.coverUrl" alt="嘉宾头像">
@@ -346,11 +346,41 @@
     refreshData() {
       this.id = this.$route.params['id'];
       this.initData();
+      this.setShareInfo();
     }
 
     created() {
       this.id = this.$route.params['id'];
       this.initData();
+      this.setShareInfo();
+    }
+
+    setShareInfo() {
+
+    }
+
+    async initData() {
+      this.isLoading = true;
+      this.isError = false;
+
+      try {
+        this.event = await getEvent(this.id);
+      } catch (e) {
+        this.isError = true;
+        throw e;
+      } finally {
+        this.isLoading = false;
+      }
+
+      if (this.event.meta.tickets.length && this.canBuy()) {
+        this.ticketSelected = this.event.meta.tickets[0];
+        this.ticketCount = 1;
+
+        this.checkDate(this.event);
+        const timer = setInterval(() => {
+          this.checkDate(this.event, timer);
+        }, 3000);
+      }
     }
 
     checkTicketCount() {
@@ -428,30 +458,6 @@
       }
 
       this.isPaymentPopup = true;
-    }
-
-    async initData() {
-      this.isLoading = true;
-      this.isError = false;
-
-      try {
-        this.event = await getEvent(this.id);
-      } catch (e) {
-        this.isError = true;
-        throw e;
-      } finally {
-        this.isLoading = false;
-      }
-
-      if (this.event.meta.tickets.length && this.canBuy()) {
-        this.ticketSelected = this.event.meta.tickets[0];
-        this.ticketCount = 1;
-
-        this.checkDate(this.event);
-        const timer = setInterval(() => {
-          this.checkDate(this.event, timer);
-        }, 3000);
-      }
     }
 
     gotoOrder() {
