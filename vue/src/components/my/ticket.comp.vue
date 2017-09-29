@@ -27,7 +27,7 @@
             <li>手机号: <span class="text-bold">{{ticket.mobile || '暂无'}}</span></li>
             <li v-if="ticket.event.meta.startAt">时间: <span
               class="text">{{ticket.event.meta.startAtParsed.format('YYYY年M月D日 HH:mm')}}<span
-              v-if="ticket.event.meta.endAt"> - {{ticket.event.meta.endAtParsed.format('YYYY年M月D日 HH:mm').replace(ticket.event.meta.startAtParsed.format('YYYY-MM-DD'), '')}}</span></span>
+              v-if="ticket.event.meta.endAt"> - {{ticket.event.meta.endAtParsed.format('YYYY年M月D日 HH:mm').replace(ticket.event.meta.startAtParsed.format('YYYY年M月D日'), '')}}</span></span>
             </li>
             <li v-if="ticket.event.meta.address">地点: <span class="text"><span
               v-if="ticket.event.meta.city">{{ticket.event.meta.city}} </span>{{ticket.event.meta.address}}</span></li>
