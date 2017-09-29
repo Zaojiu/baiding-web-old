@@ -6,7 +6,7 @@
       <top-nav class="top-nav"></top-nav>
 
       <div class="block" v-for="ticket in tickets">
-        <div class="ticket-info">
+        <div class="ticket-info" @click="gotoEvent(ticket)">
           <img class="cover" :src="ticket.event.cover11Url" alt="头图">
           <div class="content">
             <strong class="subject">{{ticket.event.subject}}</strong>
@@ -230,6 +230,10 @@
       if (!result.marker) this.isOnLatest = true;
 
       this.marker = result.marker;
+    }
+
+    gotoEvent(ticket: TicketModel) {
+      this.$router.push({path: `/events/${ticket.event.id}/tickets`});
     }
   }
 </script>

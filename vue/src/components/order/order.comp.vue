@@ -101,17 +101,17 @@
             </div>
           </div>
 
-          <div class="discount block">
+          <div class="discount block" v-if="discountCodes.length">
             <div class="row">
               <span class="title">优惠</span>
-              <a class="discount-selector" href="" v-if="discountCodes.length" @click.prevent.stop="popupDiscountSelector()">选取优惠</a>
+              <a class="discount-selector" href="" @click.prevent.stop="popupDiscountSelector()">选取优惠</a>
             </div>
             <div class="row" v-for="discount in orderFee.discounts">
               <span class="title">{{discount.title}}</span>
               <span class="content"><a href="" :class="{disabled: isDiscountDeleting[discount.code]}"
                                        @click.prevent="deleteSelectedDiscount(discount)">删除</a></span>
             </div>
-            <div class="row no-record" v-if="!orderFee.discounts.length">暂无优惠</div>
+            <div class="row no-record" v-if="!orderFee.discounts.length">请选取优惠</div>
           </div>
 
           <div class="amount block">
@@ -133,11 +133,13 @@
 
         <div class="discount-popup" :class="{'show': isDiscountSelectorShow}" @click.stop>
           <div class="header"><i class="bi bi-close" @click="closeDiscountSelector()"></i></div>
-          <div class="row" v-for="discount in discountCodes">
-            <input type="checkbox" :disabled="!discount.canUse" :checked="isDiscountSelected(discount)"
-                   @click="toggleDiscount(discount)">
-            <div class="discount-title">
-              {{discount.title}}
+          <div class="wrapper">
+            <div class="row" v-for="discount in discountCodes">
+              <input type="checkbox" :disabled="!discount.canUse" :checked="isDiscountSelected(discount)"
+                     @click="toggleDiscount(discount)">
+              <div class="discount-title">
+                {{discount.title}}
+              </div>
             </div>
           </div>
           <div class="row no-discounts" v-if="!discountCodes.length">暂无可用优惠</div>
@@ -194,6 +196,10 @@
           .title {
             flex-grow: 1;
             font-weight: bold;
+
+            &.title-small {
+              font-size: $font-size-sm;
+            }
           }
 
           .content {
@@ -250,10 +256,6 @@
           -webkit-line-clamp: 1;
           -webkit-box-orient: vertical;
           margin-bottom: 5px;
-
-          &.title-small {
-            font-size: $font-size-sm;
-          }
         }
 
         .desc {
@@ -360,6 +362,11 @@
 
         .header {
           text-align: right;
+        }
+
+        .wrapper {
+          max-height: 50vh;
+          overflow-y: auto;
         }
 
         .row {
