@@ -17,7 +17,7 @@
       </div>
       <div class="location block" v-if="event.meta.startAt || event.meta.address">
         <p v-if="event.meta.startAt">
-          时间：<span>{{event.meta.startAtParsed.format('YYYY-MM-DD HH:mm:ss')}}</span><span v-if="event.meta.endAt"> - {{event.meta.endAtParsed.format('YYYY-MM-DD HH:mm:ss').replace(event.meta.startAtParsed.format('YYYY-MM-DD'), '')}}</span>
+          时间：<span>{{event.meta.startAtParsed.format('YYYY年M月D日 HH:mm')}}</span><span v-if="event.meta.endAt"> - {{event.meta.endAtParsed.format('YYYY年M月D日 HH:mm').replace(event.meta.startAtParsed.format('YYYY年M月D日'), '')}}</span>
         </p>
         <p class="address" v-if="event.meta.address">
           地点：<span v-if="event.meta.city">{{event.meta.city}} </span>{{event.meta.address}}
