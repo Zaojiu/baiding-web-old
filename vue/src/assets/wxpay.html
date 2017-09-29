@@ -74,20 +74,6 @@
       document.getElementById('invalid').style.display = 'flex';
     };
 
-    try {
-      req = location.search.split('&')[0].split('=')[1];
-      backto = decodeURIComponent(location.search.split('&')[1].split('=')[1]);
-      document.getElementById('backtoLink').setAttribute('href', backto);
-      wxPayReq = JSON.parse(decodeURIComponent(req));
-    } catch (e) {
-      showInvalidBlock();
-      throw e;
-    }
-
-    if (backto.indexOf(location.protocol + '//' + location.host) === -1) {
-      showInvalidBlock();
-    }
-
     var getBackLink = function (result) {
       var aEle = document.createElement('a');
       aEle.href = backto;
@@ -99,7 +85,7 @@
         queryObj[kvArr[0]] = kvArr[1];
       });
 
-      queryObj['payResult'] = result;
+      if (result) queryObj['payResult'] = result;
 
       var queryResultArr = [];
       var queryResultStr = '';
@@ -116,6 +102,21 @@
 
       return aEle.href;
     };
+
+    try {
+      req = location.search.split('&')[0].split('=')[1];
+      backto = getBackLink();
+      wxPayReq = JSON.parse(decodeURIComponent(req));
+    } catch (e) {
+      showInvalidBlock();
+      throw e;
+    }
+
+    if (backto.indexOf(location.protocol + '//' + location.host) === -1) {
+      showInvalidBlock();
+    }
+
+    document.getElementById('backtoLink').setAttribute('href', backto);
 
     function onBridgeReady(){
       WeixinJSBridge.invoke(
