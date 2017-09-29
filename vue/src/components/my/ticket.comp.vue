@@ -7,7 +7,7 @@
 
       <div class="block" v-for="ticket in tickets">
         <div class="ticket-info">
-          <img class="cover" :src="ticket.event.coverUrl" alt="头图">
+          <img class="cover" :src="ticket.event.cover11Url" alt="头图">
           <div class="content">
             <strong class="subject">{{ticket.event.subject}}</strong>
             <div class="row">
