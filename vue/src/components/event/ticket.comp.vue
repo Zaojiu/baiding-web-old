@@ -40,7 +40,7 @@
       </div>
       <div class="amount">
         <bd-loading v-if="isAmoutLoading"></bd-loading>
-        <span v-if="!isAmoutLoading">{{amount.toYuan()}}</span>
+        <span v-if="!isAmoutLoading">{{isMember() ? '会员价: ' : ''}}{{amount.toYuan()}}</span>
       </div>
       <button class="button button-primary" @click="gotoOrder()">立即购买</button>
     </div>
@@ -77,7 +77,6 @@
         margin: 20px;
         font-size: $font-size-xlg;
         color: $color-b;
-        font-weight: normal;
         line-height: 1.25em;
         word-break: break-all;
       }
@@ -163,7 +162,7 @@
       right: 0;
       background-color: $color-w;
       box-shadow: 0 0 2px $color-gray3;
-      transform: translateY(100%);
+      transform: translateY(101%);
       transition: transform .3s;
       padding: 20px;
 
@@ -434,6 +433,18 @@
       }
 
       return !!userInfo.mobile.number;
+    }
+
+    isMember(): boolean {
+      let userInfo: UserInfoModel;
+
+      try {
+        userInfo = getUserInfoCache(false);
+      } catch (e) {
+        return false;
+      }
+
+      return userInfo.member.valid;
     }
 
     buy() {

@@ -3,7 +3,7 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div v-else>
-      <top-nav></top-nav>
+      <top-nav class="top-nav"></top-nav>
 
       <div class="block" v-for="ticket in tickets">
         <div class="ticket-info">
@@ -11,7 +11,7 @@
           <div class="content">
             <strong class="subject">{{ticket.event.subject}}</strong>
             <div class="row">
-              <span class="type">门票</span>
+              <span class="type">{{ticket.typeHumanize}}</span>
               <small class="time">{{ticket.applyAtParsed.format('MM/DD HH:mm:ss')}}</small>
             </div>
           </div>
@@ -23,11 +23,11 @@
             <span class="tips">检票时，请出示票号或手机号</span>
           </div>
           <ul>
-            <li>票号: <span class="text">{{ticket.ticketNo || '暂无'}}</span></li>
-            <li>手机号: <span class="text">{{ticket.mobile || '暂无'}}</span></li>
+            <li>票号: <span class="text-bold">{{ticket.ticketNo || '暂无'}}</span></li>
+            <li>手机号: <span class="text-bold">{{ticket.mobile || '暂无'}}</span></li>
             <li v-if="ticket.event.meta.startAt">时间: <span
-              class="text">{{ticket.event.meta.startAtParsed.format('YYYY-MM-DD HH:mm:ss')}}<span
-              v-if="ticket.event.meta.endAt"> - {{ticket.event.meta.endAtParsed.format('YYYY-MM-DD HH:mm:ss').replace(ticket.event.meta.startAtParsed.format('YYYY-MM-DD'), '')}}</span></span>
+              class="text">{{ticket.event.meta.startAtParsed.format('YYYY年M月D日 HH:mm')}}<span
+              v-if="ticket.event.meta.endAt"> - {{ticket.event.meta.endAtParsed.format('YYYY年M月D日 HH:mm').replace(ticket.event.meta.startAtParsed.format('YYYY-MM-DD'), '')}}</span></span>
             </li>
             <li v-if="ticket.event.meta.address">地点: <span class="text"><span
               v-if="ticket.event.meta.city">{{ticket.event.meta.city}} </span>{{ticket.event.meta.address}}</span></li>
@@ -55,6 +55,10 @@
       padding-top: 20px;
       border-bottom: solid 10px $color-gray4;
       overflow: hidden;
+    }
+
+    .top-nav + .block {
+      border-top: solid 10px $color-gray4;
     }
 
     .ticket-info {
@@ -153,12 +157,12 @@
         li {
           list-style: none;
           font-size: $font-size-md;
-          line-height: 1.5em;
-          margin-top: 10px;
-        }
+          line-height: 1.3em;
+          margin-top: 8px;
 
-        li:first-child .text {
-          font-weight: bold;
+          .text-bold {
+            font-weight: bold;
+          }
         }
       }
     }

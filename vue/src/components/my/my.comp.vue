@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img class="avatar-lg avatar-round avatar" :src="userInfo.avatar" alt="用户头像">
+    <img class="avatar-round avatar" :src="userInfo.avatar" alt="用户头像">
     <div class="nick">{{userInfo.nick}}</div>
 
     <div class="clickable-block group-end" @click="gotoMyOrder()">
@@ -22,7 +22,7 @@
     <div class="clickable-block group-end" @click="gotoMyMember()">
       <div class="title">
         <i class="bi bi-people2"></i>
-        我的会员
+        会员
       </div>
       <i class="bi bi-right-arrow"></i>
     </div>
@@ -37,6 +37,8 @@
 
     .avatar {
       display: block;
+      width: 100px;
+      height: 100px;
       margin: 40px auto 0;
     }
 
