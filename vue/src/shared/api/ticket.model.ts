@@ -38,7 +38,7 @@ export class TicketModel {
   }
 
   get isUsed(): boolean {
-    return this.signedInAtParsed.isZero()  && this.signedInAtParsed.isSameOrBefore(moment());
+    return !this.signedInAtParsed.isZero() && this.signedInAtParsed.isSameOrBefore(moment());
   }
 
   get isUnused(): boolean {

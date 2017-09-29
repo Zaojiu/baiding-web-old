@@ -9,10 +9,10 @@
       <div class="old-order" v-if="orderId">
         <div class="order-container">
           <div class="status">
-            <div v-if="order.order.isPending">剩余支付时间：<strong>{{order.order.remainDuration.format('mm:ss', {trim: false})}}</strong>
+            <div v-if="order.isPending">剩余支付时间：<strong>{{order.order.remainDuration.format('mm:ss', {trim: false})}}</strong>
             </div>
-            <div v-if="order.order.isClosed"><strong>订单已关闭</strong></div>
-            <div v-if="order.order.isSuccess"><strong>支付成功</strong></div>
+            <div v-if="order.isClosed"><strong>订单已关闭</strong></div>
+            <div class="status-success" v-if="order.isSuccess"><strong>支付成功</strong></div>
           </div>
 
           <div class="block">
@@ -50,7 +50,7 @@
               <span class="title">优惠金额</span>
               <span class="content">{{order.order.totalDiscountAmount.toYuan()}}</span>
             </div>
-            <div class="row" v-if="!order.order.isPending">
+            <div class="row" v-if="!order.isPending">
               <span class="title">合计</span>
               <span class="content">{{order.order.totalDiscountedFee.toYuan()}}</span>
             </div>
@@ -58,21 +58,25 @@
 
           <div class="time block">
             <div class="row">
-              <span class="title">订单编号</span>
+              <span class="title title-small">订单编号</span>
               <span class="content">{{order.order.orderNo}}</span>
             </div>
             <div class="row">
-              <span class="title">创建时间</span>
+              <span class="title title-small">创建时间</span>
               <span class="content">{{order.order.createdAt.format('YYYY-MM-DD HH:mm:ss')}}</span>
             </div>
-            <div class="row" v-if="order.order.isSuccess">
-              <span class="title">付款时间</span>
+            <div class="row" v-if="order.isSuccess">
+              <span class="title title-small">付款时间</span>
               <span class="content">{{order.order.finishedAt.format('YYYY-MM-DD HH:mm:ss')}}</span>
             </div>
           </div>
         </div>
 
-        <footer v-if="order.order.isPending">
+        <footer v-if="order.isSuccess && order.hasEventItem">
+          <button class="button button-primary" @click="gotoMyTicket()">查看票券</button>
+        </footer>
+
+        <footer v-if="order.isPending">
           <div class="fee">合计: {{order.order.totalDiscountedFee.toYuan()}}</div>
           <button class="button button-primary" v-if="order.isPending" @click="pay()" :disabled="isPaying">立即支付</button>
         </footer>
@@ -100,7 +104,7 @@
           <div class="discount block">
             <div class="row">
               <span class="title">优惠</span>
-              <a class="discount-selector" href="" @click.prevent.stop="popupDiscountSelector()">选取优惠</a>
+              <a class="discount-selector" href="" v-if="discountCodes.length" @click.prevent.stop="popupDiscountSelector()">选取优惠</a>
             </div>
             <div class="row" v-for="discount in orderFee.discounts">
               <span class="title">{{discount.title}}</span>
@@ -124,7 +128,7 @@
 
         <footer>
           <div class="fee">合计: {{orderFee.totalDiscountedFee.toYuan()}}</div>
-          <button class="button button-primary" @click="pay()" :disabled="isPaying">提交订单</button>
+          <button class="button button-primary button-block" @click="pay()" :disabled="isPaying">提交订单</button>
         </footer>
 
         <div class="discount-popup" :class="{'show': isDiscountSelectorShow}" @click.stop>
@@ -208,6 +212,10 @@
         color: $color-dark-gray;
         text-align: center;
         font-size: $font-size-md;
+
+        .status-success {
+          color: #3da838;
+        }
       }
 
       .item {
@@ -242,6 +250,10 @@
           -webkit-line-clamp: 1;
           -webkit-box-orient: vertical;
           margin-bottom: 5px;
+
+          &.title-small {
+            font-size: $font-size-sm;
+          }
         }
 
         .desc {
@@ -324,6 +336,10 @@
           height: 100%;
           padding: 0 20px;
           width: auto;
+
+          &.button-block {
+            width: 100%;
+          }
         }
       }
 
@@ -334,7 +350,7 @@
         right: 0;
         background-color: $color-w;
         box-shadow: 0 0 2px $color-gray3;
-        transform: translateY(100%);
+        transform: translateY(101%);
         transition: transform .3s;
         padding: 15px;
 
@@ -708,6 +724,10 @@
       } finally {
         this.isDiscountDeleting[discount.code] = false;
       }
+    }
+
+    gotoMyTicket() {
+      this.$router.push({path: '/my/tickets'});
     }
   }
 </script>

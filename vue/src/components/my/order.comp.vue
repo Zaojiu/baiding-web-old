@@ -3,9 +3,9 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="orders" v-scroll-view="{onBottom: onBottom}" v-else>
-      <top-nav></top-nav>
+      <top-nav class="top-nav"></top-nav>
 
-      <div class="order" v-for="order in orders">
+      <div class="order" v-for="order in orders" @click="detail(order.order.orderNo)">
         <div class="header">
           <span class="order-no">订单编号: <strong>{{order.order.orderNo}}</strong></span>
           <span class="order-status" :class="{pending: order.order.isPending, closed: order.order.isClosed, success: order.order.isSuccess}">{{order.order.statusHumanize}}</span>
@@ -30,9 +30,9 @@
 
         <div class="footer">
           <span class="fee">合计: <strong>{{order.order.totalDiscountedFee.toYuan()}}</strong></span>
-          <button class="button button-outline" v-if="order.isPending" @click="cancel(order.order.orderNo)" :disabled="isCanceling[order.order.orderNo]">取消</button>
-          <button class="button button-outline" @click="detail(order.order.orderNo)">详情</button>
-          <button class="button button-primary" v-if="order.isPending" @click="pay(order)" :disabled="isPaying[order.order.orderNo]">支付</button>
+          <button class="button button-outline" v-if="order.isPending" @click.stop="cancel(order.order.orderNo)" :disabled="isCanceling[order.order.orderNo]">取消</button>
+          <button class="button button-outline" @click.stop="detail(order.order.orderNo)">详情</button>
+          <button class="button button-primary" v-if="order.isPending" @click.stop="pay(order)" :disabled="isPaying[order.order.orderNo]">支付</button>
         </div>
       </div>
       <bd-loading class="footer-loading" v-if="isFooterLoading"></bd-loading>
@@ -47,6 +47,10 @@
     .orders {
       height: 100vh;
       overflow: auto;
+
+      .top-nav + .order {
+        border-top: solid 10px $color-gray4;
+      }
 
       .order {
         border-bottom: solid 10px $color-gray4;
@@ -68,6 +72,10 @@
             flex-shrink: 0;
             font-size: $font-size-sm;
             color: $color-gray3;
+
+            &.success {
+              color: #32a534;
+            }
           }
         }
 

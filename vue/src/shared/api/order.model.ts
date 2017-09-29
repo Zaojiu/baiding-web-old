@@ -59,8 +59,8 @@ export class OrderObject {
 
     this.orderNo = data.orderNo;
     this.subject = data.subject;
-    this.desc = data.detail.desc;
-    this.cover = data.detail.cover || '/assets/img/default-cover.jpg';
+    this.desc = data.detail && data.detail.desc;
+    this.cover = data.detail && data.detail.cover ? data.detail.cover : '/assets/img/default-cover.jpg';
     this.objectType = data.objectType;
     this.objectId = data.objectId;
     this.discountedFee = new Money(data.discountedFee);
