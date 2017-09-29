@@ -1,6 +1,5 @@
 import {host} from '../../env/environment';
 import {get, post, del} from "./xhr";
-import {AxiosResponse} from "axios";
 import {Discount, Order, OrderFee, OrderMeta, PostOrderObject} from "./order.model";
 import {params} from "../utils/utils";
 
