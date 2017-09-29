@@ -40,7 +40,7 @@
       </div>
       <div class="amount">
         <bd-loading v-if="isAmoutLoading"></bd-loading>
-        <span v-if="!isAmoutLoading">{{isMember() ? '会员价: ' : ''}}{{amount.toYuan()}}</span>
+        <span v-if="!isAmoutLoading">{{amount.toYuan()}}</span>
       </div>
       <button class="button button-primary" @click="gotoOrder()">立即购买</button>
     </div>
@@ -433,18 +433,6 @@
       }
 
       return !!userInfo.mobile.number;
-    }
-
-    isMember(): boolean {
-      let userInfo: UserInfoModel;
-
-      try {
-        userInfo = getUserInfoCache(false);
-      } catch (e) {
-        return false;
-      }
-
-      return userInfo.member.valid;
     }
 
     buy() {
