@@ -8,6 +8,7 @@ enum TicketStatus {
 
 export class TicketModel {
   id: string;
+  ticketId: string;
   ticketNo: string;
   status: TicketStatus;
   eventId: string;
@@ -23,6 +24,7 @@ export class TicketModel {
     if (!data) return;
 
     this.id = data.id;
+    this.ticketId = data.ticketId;
     this.ticketNo = data.ticketNo;
     this.status = data.status;
     this.eventId = data.eventId;
@@ -41,5 +43,13 @@ export class TicketModel {
 
   get isUnused(): boolean {
     return !this.isUsed;
+  }
+
+  get typeHumanize(): string {
+    let type = '门票';
+    this.event.meta.tickets.forEach(ticket => {
+      if (ticket.id === this.ticketId) type = ticket.name;
+    });
+    return type;
   }
 }

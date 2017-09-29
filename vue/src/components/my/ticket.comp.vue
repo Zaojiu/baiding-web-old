@@ -11,7 +11,7 @@
           <div class="content">
             <strong class="subject">{{ticket.event.subject}}</strong>
             <div class="row">
-              <span class="type">门票</span>
+              <span class="type">{{ticket.typeHumanize}}</span>
               <small class="time">{{ticket.applyAtParsed.format('MM/DD HH:mm:ss')}}</small>
             </div>
           </div>
