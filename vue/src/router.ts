@@ -125,7 +125,7 @@ export const router = new Router({
       path: '/my/member',
       name: 'my.member',
       meta: {
-        title: '我的会员',
+        title: '会员',
       },
       alias: '/member/info', // compatible with angular
       beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {

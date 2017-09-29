@@ -73,7 +73,7 @@
         </div>
 
         <footer v-if="order.isSuccess && order.hasEventItem">
-          <button class="button button-primary" @click="gotoMyTicket()">查看票券</button>
+          <button class="button button-primary button-block" @click="gotoMyTicket()">查看票券</button>
         </footer>
 
         <footer v-if="order.isPending">
@@ -128,7 +128,7 @@
 
         <footer>
           <div class="fee">合计: {{orderFee.totalDiscountedFee.toYuan()}}</div>
-          <button class="button button-primary button-block" @click="pay()" :disabled="isPaying">提交订单</button>
+          <button class="button button-primary" @click="pay()" :disabled="isPaying">提交订单</button>
         </footer>
 
         <div class="discount-popup" :class="{'show': isDiscountSelectorShow}" @click.stop>
