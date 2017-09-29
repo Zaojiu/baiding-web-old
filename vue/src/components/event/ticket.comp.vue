@@ -9,20 +9,6 @@
         <h1 class="subject">{{event.subject}}</h1>
         <div class="desc article-content" v-html="event.meta.content"></div>
       </div>
-      <div class="speaker block" v-for="speaker in event.meta.speakers">
-        <img class="avatar avatar-round" :src="speaker.coverUrl" alt="嘉宾头像">
-        <h2 class="nick">{{speaker.subject}}</h2>
-        <div class="title" v-html="speaker.title" v-if="speaker.title"></div>
-        <div class="desc" v-html="speaker.desc" v-if="speaker.desc"></div>
-      </div>
-      <div class="location block" v-if="event.meta.startAt || event.meta.address">
-        <p v-if="event.meta.startAt">
-          时间：<span>{{event.meta.startAtParsed.format('YYYY年M月D日 HH:mm')}}</span><span v-if="event.meta.endAt"> - {{event.meta.endAtParsed.format('YYYY年M月D日 HH:mm').replace(event.meta.startAtParsed.format('YYYY年M月D日'), '')}}</span>
-        </p>
-        <p class="address" v-if="event.meta.address">
-          地点：<span v-if="event.meta.city">{{event.meta.city}} </span>{{event.meta.address}}
-        </p>
-      </div>
     </div>
 
     <footer v-if="!isLoading && event && event.meta.tickets.length">
