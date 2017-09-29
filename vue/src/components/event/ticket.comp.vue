@@ -4,7 +4,7 @@
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="event" v-else @click="isPaymentPopup = false">
       <top-nav></top-nav>
-      <img class="cover" :src="event.coverUrl" alt="头图">
+      <img class="cover" :src="event.cover11Url" alt="头图">
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>
         <div class="desc article-content" v-html="event.meta.content"></div>
