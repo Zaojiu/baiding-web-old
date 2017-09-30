@@ -1,6 +1,6 @@
 <template>
   <div class="modal" v-if="isOpened" @click="close()">
-    <div class="content" @click.prevent>
+    <div class="content" @click.stop>
       <div class="body" v-html="content"></div>
       <div class="footer">
         <div class="button" @click="close()" v-if="hasCancelBtn">{{cancelText}}</div>

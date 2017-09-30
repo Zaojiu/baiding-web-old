@@ -1,7 +1,7 @@
 import Vuex, {Commit} from "vuex";
 
-let rejecter: (() => void)|null;
-let resolver: (() => void)|null;
+let rejecter: (() => void) | null;
+let resolver: (() => void) | null;
 
 export enum ModalPopupStatus {
   Popup = 'popup',
@@ -69,7 +69,12 @@ modalStore.subscribe((mutation, state) => {
   }
 });
 
-export const showModal = (content: string, confirmText = '确定', hasCancelBtn = true, cancelText = '取消', link = '', target = '_blank'): Promise<void> => {
+export const showModal = (content: string,
+                          confirmText = '确定',
+                          hasCancelBtn = true,
+                          cancelText = '取消',
+                          link = '',
+                          target = '_blank'): Promise<void> => {
   const option = new ModalOption();
   option.content = content;
   option.cancelText = cancelText;
