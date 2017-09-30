@@ -95,17 +95,17 @@ export class LiveService {
     liveInfo.isDraft = stream.isDraft;
 
     // TODO: need to fix live cover ratio, maybe?
-    liveInfo.coverUrl = encodeURI(`${stream.coverUrl}?updatedAt=${Math.round(+liveInfo.updatedAt)}`);
-    liveInfo.coverSmallUrl = encodeURI(stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+liveInfo.updatedAt)}` : `${host.assets}/assets/img/default-cover.jpg`);
-    liveInfo.coverThumbnailUrl = encodeURI(stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+liveInfo.updatedAt)}` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
+    liveInfo.coverUrl = encodeURI(stream.coverUrl);
+    liveInfo.coverSmallUrl = encodeURI(stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1/strip` : `${host.assets}/assets/img/default-cover.jpg`);
+    liveInfo.coverThumbnailUrl = encodeURI(stream.coverUrl ? `${stream.coverUrl}?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
 
-    liveInfo.cover169Url = encodeURI(`${stream.coverUrl}~16-9?updatedAt=${Math.round(+liveInfo.updatedAt)}`);
-    liveInfo.coverSmall169Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+liveInfo.updatedAt)}` : `${host.assets}/assets/img/default-cover.jpg`);
-    liveInfo.coverThumbnail169Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+liveInfo.updatedAt)}` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
+    liveInfo.cover169Url = encodeURI(`${stream.coverUrl}~16-9`);
+    liveInfo.coverSmall169Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1/strip` : `${host.assets}/assets/img/default-cover.jpg`);
+    liveInfo.coverThumbnail169Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
 
-    liveInfo.cover11Url = encodeURI(`${stream.coverUrl}~1-1?updatedAt=${Math.round(+liveInfo.updatedAt)}`);
-    liveInfo.coverSmall11Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+liveInfo.updatedAt)}` : `${host.assets}/assets/img/default-cover.jpg`);
-    liveInfo.coverThumbnail11Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+liveInfo.updatedAt)}` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
+    liveInfo.cover11Url = encodeURI(`${stream.coverUrl}~1-1`);
+    liveInfo.coverSmall11Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1/strip` : `${host.assets}/assets/img/default-cover.jpg`);
+    liveInfo.coverThumbnail11Url = encodeURI(stream.coverUrl ? `${stream.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
 
     if (stream.meta.status === 'created') liveInfo.status = LiveStatus.Created;
     if (stream.meta.status === 'canceled') liveInfo.status = LiveStatus.Canceled;
