@@ -119,17 +119,19 @@ export class TalkInfoModel {
     if (users && object.uid) this.userInfo = users[object.uid];
     this.subject = object.subject;
     this.desc = object.desc;
-    this.coverUrl = object.coverUrl;
-    this.coverSmallUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
-    this.coverThumbnailUrl = `${object.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
 
-    this.cover169Url = `${object.coverUrl}~16-9`;
-    this.coverSmall169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
-    this.coverThumbnail169Url = `${object.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
+    const coverUrl = object.coverUrl;
+    this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
+    this.coverSmallUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnailUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
 
-    this.cover11Url = `${object.coverUrl}~1-1`;
-    this.coverSmall11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
-    this.coverThumbnail11Url = `${object.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
+    this.cover169Url = coverUrl ? encodeURI(`${coverUrl}~16-9`) : '/assets/img/default-cover.jpg';
+    this.coverSmall169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnail169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+
+    this.cover11Url = coverUrl ? encodeURI(`${coverUrl}~1-1`) : '/assets/img/default-cover.jpg';
+    this.coverSmall11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnail11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
 
     this.isNeedPay = object.isNeedPay;
     this.totalFee = object.totalFee;
@@ -258,7 +260,7 @@ export class TalkEmphasisModel {
   constructor(id: string, mediaId: string, start: number,  duration: number,text: string, coverUrl: string, createdAt: string) {
     this.id = id;
     this.mediaId = mediaId;
-    this.coverUrl = coverUrl;
+    this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
     this.createdAt = createdAt;
     this.duration = duration;
     this.start = start;

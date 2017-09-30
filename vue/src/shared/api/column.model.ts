@@ -64,20 +64,22 @@ export class Column {
   constructor(data: any, currentUserInfo?: any) {
     if (!data) return;
 
+    const coverUrl = data.coverUrl;
+
     this.id = data.id;
-    this.coverUrl = data.coverUrl;
-    this.coverSmallUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
-    this.coverThumbnailUrl = `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
-    this.cover169Url = `${data.coverUrl}~16-9`;
-    this.coverSmall169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
-    this.coverThumbnail169Url = `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
-    this.cover11Url = `${data.coverUrl}~1-1`;
-    this.coverSmall11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`;
-    this.coverThumbnail11Url = `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`;
+    this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
+    this.coverSmallUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnailUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.cover169Url = coverUrl ? encodeURI(`${coverUrl}~16-9`) : '/assets/img/default-cover.jpg';
+    this.coverSmall169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnail169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.cover11Url = coverUrl ? encodeURI(`${coverUrl}~1-1`) : '/assets/img/default-cover.jpg';
+    this.coverSmall11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnail11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.speaker = new SpeakerModel(data.speaker);
-    this.subject =  data.subject;
-    this.desc =  data.desc;
-    this.content =  data.content;
+    this.subject = data.subject;
+    this.desc = data.desc;
+    this.content = data.content;
     this.totalFee = new Money(data.totalFee);
     this.memberFee = new Money(data.memberFee);
     this.originFee = new Money(data.originFee);
@@ -92,17 +94,6 @@ export class Column {
     this.createdAtParsed = moment(data.createdAt);
     this.updatedAt = data.updatedAt;
     this.updatedAtParsed = moment(data.updatedAt);
-
-    this.coverUrl = data.coverUrl ? `${data.coverUrl}?updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.cover169Url = data.coverUrl ? `${data.coverUrl}~16-9?updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverSmall169Url = data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnail169Url = data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.cover11Url = data.coverUrl ? `${data.coverUrl}~1-1?updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverSmall11Url = data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnail11Url = data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-
     this.currentUserInfo = currentUserInfo ? new ColumnUserInfo(currentUserInfo) : new ColumnUserInfo({});
   }
 
@@ -164,12 +155,23 @@ export class ColumnItem {
   constructor(data: any) {
     if (!data) return;
 
+    const coverUrl = data.coverUrl;
+
     this.id = data.id;
     this.columnId = data.columnId;
     this.vol = data.vol;
     this.type = data.type;
     this.subject = data.subject;
     this.desc = data.desc;
+    this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
+    this.coverSmallUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnailUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.cover169Url = coverUrl ? encodeURI(`${coverUrl}~16-9`) : '/assets/img/default-cover.jpg';
+    this.coverSmall169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnail169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.cover11Url = coverUrl ? encodeURI(`${coverUrl}~1-1`) : '/assets/img/default-cover.jpg';
+    this.coverSmall11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
+    this.coverThumbnail11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.duration = moment.duration(data.duration);
     this.totalFee = new Money(data.totalFee);
     this.memberFee = new Money(data.memberFee);
@@ -185,16 +187,6 @@ export class ColumnItem {
     this.createdAtParsed = moment(data.createdAt);
     this.updatedAt = data.updatedAt;
     this.updatedAtParsed = moment(data.updatedAt);
-
-    this.coverUrl = data.coverUrl ? `${data.coverUrl}?updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverSmallUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnailUrl = data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.cover169Url = data.coverUrl ? `${data.coverUrl}~16-9?updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverSmall169Url = data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnail169Url = data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.cover11Url = data.coverUrl ? `${data.coverUrl}~1-1?updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverSmall11Url = data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
-    this.coverThumbnail11Url = data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1&updatedAt=${Math.round(+this.updatedAtParsed.unix())}` : '/assets/img/default-cover.jpg';
   }
 
   get isTypePost(): boolean {

@@ -114,17 +114,17 @@ export class TalkInfoModel {
     }
     this.subject = data.subject;
     this.desc = data.desc;
-    this.coverUrl = encodeURI(`${data.coverUrl}?updatedAt=${Math.round(+data.updatedAt)}`);
-    this.coverSmallUrl = encodeURI(`${data.coverUrl}?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`); // for ios 375 * 3
-    this.coverThumbnailUrl = encodeURI(data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
+    this.coverUrl = encodeURI(data.coverUrl);
+    this.coverSmallUrl = encodeURI(`${data.coverUrl}?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip`); // for ios 375 * 3
+    this.coverThumbnailUrl = encodeURI(data.coverUrl ? `${data.coverUrl}?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
 
-    this.cover169Url = encodeURI(`${data.coverUrl}~16-9?updatedAt=${Math.round(+data.updatedAt)}`);
-    this.coverSmall169Url = encodeURI(`${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`); // for ios 375 * 3
-    this.coverThumbnail169Url = encodeURI(data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
+    this.cover169Url = encodeURI(`${data.coverUrl}~16-9`);
+    this.coverSmall169Url = encodeURI(`${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip`); // for ios 375 * 3
+    this.coverThumbnail169Url = encodeURI(data.coverUrl ? `${data.coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
 
-    this.cover11Url = encodeURI(`${data.coverUrl}~1-1?updatedAt=${Math.round(+data.updatedAt)}`);
-    this.coverSmall11Url = encodeURI(`${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip&updatedAt=${Math.round(+data.updatedAt)}`); // for ios 375 * 3
-    this.coverThumbnail11Url = encodeURI(data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip&updatedAt=${Math.round(+data.updatedAt)}` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
+    this.cover11Url = encodeURI(`${data.coverUrl}~1-1`);
+    this.coverSmall11Url = encodeURI(`${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/1125x>/format/jpg/interlace/1/strip`); // for ios 375 * 3
+    this.coverThumbnail11Url = encodeURI(data.coverUrl ? `${data.coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip` : `${host.assets}/assets/img/zaojiu-logo.jpg`);
 
     this.isNeedPay = data.isNeedPay;
     this.totalFee = data.totalFee;
