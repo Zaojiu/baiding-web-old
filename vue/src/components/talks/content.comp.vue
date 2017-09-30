@@ -4,6 +4,7 @@
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="main" v-else v-show="!isChildActived()" @touchstart="touchStart" @touchmove="touchMove">
       <top-nav v-if="!(isVideoPlayed && isLandscape)"></top-nav>
+      <app-download-tips class="app-download-tips" v-if="isAppDownloadTipsShow && !(isVideoPlayed && isLandscape)" @close="isAppDownloadTipsShow = false"></app-download-tips>
       <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
@@ -121,6 +122,15 @@
 
 <style lang="scss" scoped>
   .main {
+    position: relative;
+
+    .app-download-tips {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
     header {
       position: relative;
 
@@ -612,10 +622,15 @@
   import {TalkCommentModel, TalkEmphasisModel, TalkInfoModel} from "../../shared/api/talk.model";
   import {getTalkInfo, listTalkComments, listTalkEmphasis, praise, unpraise, favorite, unfavorite} from '../../shared/api/talk.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
+  import appDownloadTips from '../../shared/app-download-tips.comp.vue';
 
   const COMMENT_COUNT = 20;
 
-  @Component
+  @Component({
+    components: {
+      appDownloadTips: appDownloadTips,
+    }
+  })
   export default class ContentComponent extends Vue {
     id = '';
     originY = 0;
@@ -637,6 +652,7 @@
     isCommentError = false;
     isCommentOnLatest = false;
     emphasis: TalkEmphasisModel[] = [];
+    isAppDownloadTipsShow = true;
 
     created() {
       this.id = this.$route.params['id'];
