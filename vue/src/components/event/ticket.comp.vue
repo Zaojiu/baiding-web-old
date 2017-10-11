@@ -2,6 +2,7 @@
   <div class="container">
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
+    <error class="abs-center" v-else-if="isNotFound">无此活动</error>
     <div class="event" v-else @click="isPaymentPopup = false">
       <top-nav></top-nav>
       <img class="cover" :src="event.cover169Url" alt="头图">
@@ -11,11 +12,11 @@
       </div>
     </div>
 
-    <footer v-if="!isLoading && event && event.meta.tickets.length">
+    <footer v-if="!isLoading && !isError && !isNotFound && event.meta.tickets.length">
       <button class="button button-primary" @click="buy()" :disabled="isPaymentDisabled">{{btnText}}</button>
     </footer>
 
-    <div class="payment-popup" v-if="!isLoading && event" :class="{'show': isPaymentPopup}">
+    <div class="payment-popup" v-if="!isLoading && !isError && !isNotFound" :class="{'show': isPaymentPopup}">
       <div class="header">
         <div class="subject">{{event.subject}}</div>
         <i class="bi bi-close" @click="isPaymentPopup = false"></i>
@@ -308,6 +309,8 @@
   import {showTips} from '../../store/tip';
   import {setShareInfo} from '../../shared/utils/share';
   import {host} from "../../env/environment";
+  import {ApiError} from '../../shared/api/xhr';
+  import {ApiCode} from '../../shared/api/code-map.enum';
 
   @Component
   export default class EventTicketComponent extends Vue {
@@ -315,6 +318,7 @@
     event = new EventModel({});
     isLoading = false;
     isError = false;
+    isNotFound = false;
     btnText = '购买门票';
     isPaymentDisabled = false;
     isPaymentPopup = false;
@@ -353,7 +357,11 @@
       try {
         this.event = await getEvent(this.id);
       } catch (e) {
-        this.isError = true;
+        if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
+          this.isNotFound = true;
+        } else {
+          this.isError = true;
+        }
         throw e;
       } finally {
         this.isLoading = false;

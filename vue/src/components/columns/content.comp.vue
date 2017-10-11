@@ -597,7 +597,6 @@
   import {Store} from "../../shared/utils/store";
   import audioBar from "../../shared/audio-bar.comp.vue";
 
-
   const COMMENT_COUNT = 20;
 
   @Component({
