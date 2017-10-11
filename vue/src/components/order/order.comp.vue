@@ -135,11 +135,8 @@
           <div class="header"><i class="bi bi-close" @click="closeDiscountSelector()"></i></div>
           <div class="wrapper">
             <div class="row" v-for="discount in discountCodes">
-              <input type="checkbox" :disabled="!discount.canUse" :checked="isDiscountSelected(discount)"
-                     @click="toggleDiscount(discount)">
-              <div class="discount-title">
-                {{discount.title}}
-              </div>
+              <input type="checkbox" v-model="selectedDiscount" :id="discount.code" :value="discount" :disabled="!discount.canUse">
+              <label :for="discount.code" class="discount-title">{{discount.title}}</label>
             </div>
           </div>
           <div class="row no-discounts" v-if="!discountCodes.length">暂无可用优惠</div>
@@ -376,6 +373,10 @@
           color: $color-dark-gray;
           padding: 10px 0;
           border-bottom: solid 1px $color-gray4;
+
+          .discount-title {
+            flex-grow: 1;
+          }
 
           &.no-discounts {
             justify-content: center;
@@ -652,8 +653,6 @@
 
     popupDiscountSelector() {
       this.isDiscountSelectorShow = true;
-      this.selectedDiscount = (<Discount[]>[]).concat(this.orderFee.discounts);
-      this.checkDiscountCompatity();
     }
 
     closeDiscountSelector() {
@@ -661,11 +660,6 @@
     }
 
     async useDiscount() {
-      if (!this.selectedDiscount.length) {
-        this.closeDiscountSelector();
-        return;
-      }
-
       this.isApplyingDiscount = true;
 
       const discountCodes = this.selectedDiscount.map(discount => discount.code);
@@ -680,41 +674,26 @@
     }
 
     isDiscountSelected(discount: Discount): boolean {
-      return !!this.selectedDiscount.filter((selectedDiscount) => selectedDiscount.code === discount.code).length;
+      return !!this.selectedDiscount.find((selectedDiscount) => selectedDiscount.code === discount.code);
     }
 
     checkDiscountCompatity() {
       this.discountCodes.forEach((discount) => {
-        let sameKind = 0;
+        let sameId = 0;
 
         this.selectedDiscount.forEach((selectedDiscount) => {
-          if (selectedDiscount.code !== discount.code && selectedDiscount.kind === discount.kind) sameKind++;
+          if (selectedDiscount.code !== discount.code && selectedDiscount.discountId === discount.discountId) sameId++;
         });
 
-        const overlaid = !!discount.discount.canOverlay && discount.discount.canOverlay <= sameKind;
-        const hasExclusiveDiscount = !this.isDiscountSelected(discount) && !!this.selectedDiscount.filter((selectedDiscount) => !selectedDiscount.discount.allowOther).length;
+        const overlaid = !!discount.discount.canOverlay && discount.discount.canOverlay <= sameId;
+        const hasExclusiveDiscount = !this.isDiscountSelected(discount) && !!this.selectedDiscount.filter((selectedDiscount) => !selectedDiscount.discount.allowOther).length && !discount.discount.allowOther;
 
         discount.canUse = !overlaid && !hasExclusiveDiscount && discount.canUseFromApi;
       });
     }
 
-    toggleDiscount(discount: Discount) {
-      if (!this.isDiscountSelected(discount)) {
-        this.addDiscount(discount);
-      } else {
-        this.deleteDiscount(discount);
-      }
-    }
-
-    async addDiscount(discount: Discount) {
-      const has = !!this.selectedDiscount.filter((_discount) => _discount.code = discount.code).length;
-      if (!has) this.selectedDiscount.push(discount);
-      this.checkDiscountCompatity();
-    }
-
-    async deleteDiscount(discount: Discount) {
-      const index = this.selectedDiscount.findIndex((_discount: Discount) => _discount.code === discount.code);
-      this.selectedDiscount.splice(index, 1);
+    @Watch('selectedDiscount')
+    onSelectedDiscountChanged(val: Discount[]) {
       this.checkDiscountCompatity();
     }
 
@@ -731,6 +710,9 @@
       } finally {
         this.isDiscountDeleting[discount.code] = false;
       }
+
+      const index = this.selectedDiscount.findIndex(selectedDiscount => selectedDiscount.code === discount.code);
+      if (index !== -1) this.selectedDiscount.splice(index, 1);
     }
 
     gotoMyTicket() {

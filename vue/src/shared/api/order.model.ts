@@ -294,6 +294,7 @@ export class DiscountCodeDetail {
   multiItem: boolean;
   canOverlay: number;
   allowOther: boolean;
+  crossItem: boolean;
 
   constructor(data: any) {
     if (!data) return;
@@ -301,6 +302,7 @@ export class DiscountCodeDetail {
     this.multiItem = data.multiItem;
     this.canOverlay = data.canOverlayN;
     this.allowOther = data.allowOther;
+    this.crossItem = data.crossItem;
   }
 }
 
