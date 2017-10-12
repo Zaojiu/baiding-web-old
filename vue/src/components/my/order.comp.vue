@@ -211,6 +211,10 @@
   import {pay} from '../../shared/utils/pay';
   import {setPaymentNone} from '../../store/payment';
   import {getUserInfo} from "../../shared/api/user.api";
+  import {UserInfoModel} from "../../shared/api/user.model";
+  import {getUserInfoCache} from '../../shared/api/user.api';
+  import {appConfig} from '../../env/environment';
+  import {showQrcode} from '../../store/qrcode';
 
   @Component({
     directives: {
@@ -244,6 +248,7 @@
 
       if (payResult === 'success') {
         showTips('支付成功');
+        this.checkSubscription();
         this.$router.replace({path: '/my/orders'});
       } else if (payResult === 'cancel') {
         showTips('订单未支付');
@@ -307,6 +312,7 @@
     async processPayResult(order: Order) {
       setPaymentNone();
       showTips('支付成功');
+      this.checkSubscription();
       this.refreshOrder(order.order.orderNo);
     }
 
@@ -341,6 +347,13 @@
         this.last = result.last;
       } finally {
         this.isFooterLoading = false;
+      }
+    }
+
+    checkSubscription() {
+      const userInfo = getUserInfoCache();
+      if (!userInfo.isSubscribed) {
+        showQrcode(appConfig.wechatLink, '<p>扫码关注公众号</p><p>获取最新活动信息</p>');
       }
     }
   }

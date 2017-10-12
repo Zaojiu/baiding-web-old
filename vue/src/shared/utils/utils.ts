@@ -42,12 +42,16 @@ export const resetWindowScroll = (): void => {
   setTimeout(() => document.body.scrollTop = document.body.scrollHeight, 800);
 };
 
-export const params = (obj: any): string => {
+export const params = (obj: any, encode = true): string => {
   const params: string[] = [];
   Object.keys(obj).forEach(k => {
     const v = obj[k];
     if (`${v}` !== 'undefined') {
-      params.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+      if (encode) {
+        params.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
+      } else {
+        params.push(`${k}=${v}`);
+      }
     }
   });
   if (params.length) return params.join('&');
@@ -84,7 +88,7 @@ export class UrlModel {
   }
 
   toString(): string {
-    const searchStr = params(this.search);
+    const searchStr = params(this.search, false);
     return `${this.protocol}//${this.hostname}${this.port ? ':' + this.port : ''}${this.pathname}${searchStr ? '?' + searchStr : ''}${this.hash}`;
   }
 }
