@@ -2,6 +2,7 @@
   <div>
     <router-view></router-view>
     <share-popup></share-popup>
+    <qrcode></qrcode>
     <payment></payment>
     <modal></modal>
     <tool-tips></tool-tips>
@@ -104,10 +105,12 @@
   import payment from '../shared/payment.comp.vue';
   import modal from '../shared/modal.comp.vue';
   import sharePopup from '../shared/share-popup.comp.vue';
+  import qrcode from '../shared/qrcode.comp.vue';
 
   export default {
     components: {
       toolTips,
+      qrcode,
       payment,
       modal,
       sharePopup,

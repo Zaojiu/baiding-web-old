@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
+    <error class="abs-center" v-else-if="isNotFound">无此专栏</error>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="columns" v-else>
       <div class="cover" v-once>
@@ -343,6 +344,7 @@
     isIntroCollape = true;
     items: ColumnItem[] = [];
     isPaying = false;
+    isNotFound = false;
 
     created() {
       this.id = this.$route.params['id'];
@@ -365,7 +367,12 @@
         this.columnInfo = await getColumnInfo(this.id);
         this.items = await listColumnItems(this.id);
       } catch(e) {
-        this.isError = true;
+        if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
+          this.isNotFound = true;
+        } else {
+          this.isError = true;
+        }
+        throw e;
       } finally {
         this.isLoading = false;
       }

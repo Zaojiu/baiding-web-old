@@ -67,16 +67,16 @@
     无效请求
   </div>
   <script>
-    var req, backto,wxPayReq;
+    var req, backto, backtoParse, wxPayReq;
 
     var showInvalidBlock = function () {
       document.getElementById('paying').style.display = 'none';
       document.getElementById('invalid').style.display = 'flex';
     };
 
-    var getBackLink = function (result) {
+    var getBackLink = function (url, result) {
       var aEle = document.createElement('a');
-      aEle.href = backto;
+      aEle.href = url;
       var queryStr = aEle.search.replace('?', '');
       var queryArr = queryStr ? queryStr.split('&') : [];
       var queryObj = {};
@@ -92,7 +92,7 @@
       Object.keys(queryObj).forEach(k => {
         const v = queryObj[k];
         if (`${v}` !== 'undefined') {
-          queryResultArr.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+          queryResultArr.push(k + '=' + v);
         }
       });
 
@@ -105,18 +105,22 @@
 
     try {
       req = location.search.split('&')[0].split('=')[1];
-      backto = getBackLink();
+      backto = decodeURIComponent(location.search.split('&')[1].split('=')[1]);
+      backtoLink = getBackLink(backto);
       wxPayReq = JSON.parse(decodeURIComponent(req));
     } catch (e) {
       showInvalidBlock();
       throw e;
     }
 
-    if (backto.indexOf(location.protocol + '//' + location.host) === -1) {
+    if (backtoLink.indexOf(location.protocol + '//' + location.host) === -1) {
       showInvalidBlock();
     }
 
-    document.getElementById('backtoLink').setAttribute('href', backto);
+    document.getElementById('backtoLink').addEventListener('click', function (e) {
+      location.replace(backtoLink);
+      e.preventDefault();
+    }, false);
 
     function onBridgeReady(){
       WeixinJSBridge.invoke(
@@ -130,11 +134,11 @@
         },
         function(res){
           if(res.err_msg === "get_brand_wcpay_request:ok") {
-            location.href = getBackLink('success');
+            location.replace(getBackLink(backto, 'success'));
           } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-            location.href = getBackLink('cancel');
+            location.replace(getBackLink(backto, 'cancel'));
           } else {
-            location.href = getBackLink(`wechat pay failed: ${res.err_msg}`);
+            location.replace(getBackLink(backto, `wechat pay failed: ${res.err_msg}`));
           }
         }
       );

@@ -9,7 +9,8 @@
       <div class="old-order" v-if="orderId">
         <div class="order-container">
           <div class="status">
-            <div v-if="order.isPending">剩余支付时间：<strong>{{order.order.remainDuration.format('mm:ss', {trim: false})}}</strong>
+            <div v-if="order.isPending">
+              剩余支付时间：<strong>{{order.order.remainDuration.format('mm:ss', {trim: false})}}</strong>
             </div>
             <div v-if="order.isClosed"><strong>订单已关闭</strong></div>
             <div class="status-success" v-if="order.isSuccess"><strong>支付成功</strong></div>
@@ -135,7 +136,8 @@
           <div class="header"><i class="bi bi-close" @click="closeDiscountSelector()"></i></div>
           <div class="wrapper">
             <div class="row" v-for="discount in discountCodes">
-              <input type="checkbox" v-model="selectedDiscount" :id="discount.code" :value="discount" :disabled="!discount.canUse">
+              <input type="checkbox" v-model="selectedDiscount" :id="discount.code" :value="discount"
+                     :disabled="!discount.canUse">
               <label :for="discount.code" class="discount-title">{{discount.title}}</label>
             </div>
           </div>
@@ -409,6 +411,9 @@
   import {ApiError} from '../../shared/api/xhr';
   import {ApiCode} from '../../shared/api/code-map.enum';
   import {showModal} from '../../store/modal';
+  import {UserInfoModel} from "../../shared/api/user.model";
+  import {showQrcode} from '../../store/qrcode';
+  import {appConfig} from '../../env/environment';
 
   @Component
   export default class OrderComponent extends Vue {
@@ -440,37 +445,30 @@
     }
 
     handlePayResultForRedirect() {
+      const id = this.$route.params['id'];
       const query = this.$route.query;
       const payResult = query['payResult'];
 
       if (!payResult) return true;
 
-      const id = this.$route.params['id'];
-
-      if (id) {
-        if (payResult === 'success') {
-          showTips('支付成功');
-          this.handleSuccessfulPayResult(query['orderType'], true);
-        } else if (payResult === 'cancel') {
-          showTips('订单未支付');
+      if (payResult === 'success') {
+        showTips('支付成功');
+        this.handleSuccessfulPayResult(query['orderType'], true);
+      } else if (payResult === 'cancel') {
+        showTips('订单未支付');
+        if (id) {
           this.$router.replace({path: `/orders/${id}`});
         } else {
-          showTips('支付失败，请重试');
-          this.$router.replace({path: `/orders/${id}`});
-          console.error(decodeURIComponent(payResult));
+          this.$router.replace({path: '/my/orders'});
         }
       } else {
-        if (payResult === 'success') {
-          showTips('支付成功');
-          this.handleSuccessfulPayResult(query['orderType'], true);
-        } else if (payResult === 'cancel') {
-          showTips('订单未支付');
-          this.$router.replace({path: '/my/orders'});
+        showTips('支付失败，请重试');
+        if (id) {
+          this.$router.replace({path: `/orders/${id}`});
         } else {
-          showTips('支付失败，请重试');
           this.$router.replace({path: '/my/orders'});
-          console.error(decodeURIComponent(payResult));
         }
+        console.error(decodeURIComponent(payResult));
       }
 
       return false;
@@ -488,6 +486,9 @@
       } else {
         useReplace ? this.$router.replace({path: '/my/orders'}) : this.$router.push({path: '/my/tickets'});
       }
+
+      const userInfo = getUserInfoCache();
+      if (!userInfo.isSubscribed) showQrcode(appConfig.wechatLink, '<p>扫码关注公众号</p><p>获取最新活动信息</p>');
     }
 
     processParams() {
@@ -591,7 +592,7 @@
     getOrderType(): string {
       if (this.orderId ? this.order.hasMemberItem : this.orderFee.hasMemberItem) {
         return 'member'
-      } else if (this.orderId ? this.order.hasEventItem : this.orderFee.hasEventItem){
+      } else if (this.orderId ? this.order.hasEventItem : this.orderFee.hasEventItem) {
         return 'event';
       }
 
