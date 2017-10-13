@@ -1,5 +1,5 @@
 <div class="info-center"
-     *ngIf="pageUserInfo && currentUserInfo && !isLoading"
+     *ngIf="pageUserInfo && !isLoading"
 >
   <div class="self-intro">
     <div class="background">
@@ -91,7 +91,7 @@
 
           <div
             class="operation-area"
-            *ngIf="(liveInfo.latestUsers.length > 0) || liveInfo.isAdmin(currentUserInfo.uid)"
+            *ngIf="(liveInfo.latestUsers.length > 0) || (currentUserInfo && liveInfo.isAdmin(currentUserInfo.uid))"
           >
             <div class="people-count" *ngIf="liveInfo.latestUsers.length > 0">
               <img class="avatar" alt="" *ngFor="let audience of liveInfo.latestUsers" [src]="audience.avatar">
@@ -101,13 +101,13 @@
             </div>
 
             <div class="btn"
-                 *ngIf="!liveInfo.isClosed() && liveInfo.isAdmin(currentUserInfo.uid) && isSelf"
+                 *ngIf="!liveInfo.isClosed() && currentUserInfo && liveInfo.isAdmin(currentUserInfo.uid) && isSelf"
                  (click)="gotoVipInfo(liveInfo.id)">
               <i class="bi bi-invite"></i>
               邀请
             </div>
             <div class="btn"
-                 *ngIf="liveInfo.isCreated() && liveInfo.isAdmin(currentUserInfo.uid) && isSelf"
+                 *ngIf="liveInfo.isCreated() && currentUserInfo && liveInfo.isAdmin(currentUserInfo.uid) && isSelf"
                  (click)="goEditLiveRoom(liveInfo.id)">
               <i class="bi bi-edit"></i>
               编辑
@@ -203,4 +203,4 @@
 
 <hamburger-menu class="hamburger-menu" *ngIf="!isInApp"></hamburger-menu>
 
-<bd-loading class="loading" *ngIf="!pageUserInfo || !currentUserInfo || isLoading"></bd-loading>
+<bd-loading class="loading" *ngIf="!pageUserInfo || isLoading"></bd-loading>
