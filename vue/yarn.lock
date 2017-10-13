@@ -4608,9 +4608,9 @@ yallist@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
 
-"yaqrcode@git://github.com/duxiaofeng-github/node-yaqrcode.git":
+"yaqrcode@git://github.com/duxiaofeng-github/node-yaqrcode.git#5b1b9695384c92678ddf8ab56c51bb455dc37ec9":
   version "0.2.1"
-  resolved "git://github.com/duxiaofeng-github/node-yaqrcode.git#883cf36c68f4e61b54163ff1e484510e812264c9"
+  resolved "git://github.com/duxiaofeng-github/node-yaqrcode.git#5b1b9695384c92678ddf8ab56c51bb455dc37ec9"
 
 yargs-parser@^4.2.0:
   version "4.2.1"

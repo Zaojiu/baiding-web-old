@@ -26,7 +26,7 @@
     "vuex": "2.3.1",
     "vuex-router-sync": "4.2.0",
     "weixin-js-sdk": "1.2.0",
-    "yaqrcode": "git://github.com/duxiaofeng-github/node-yaqrcode.git",
+    "yaqrcode": "git://github.com/duxiaofeng-github/node-yaqrcode.git#5b1b9695384c92678ddf8ab56c51bb455dc37ec9",
     "zaojiu-player": "2.0.10"
   },
   "devDependencies": {
