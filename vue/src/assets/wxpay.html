@@ -227,6 +227,7 @@
           location.replace(getBackLink(backto, 'cancel'));
         } else {
           location.replace(getBackLink(backto, 'wechat pay failed: ' + res.err_msg));
+          throw new Error(res.err_msg);
         }
       });
     }
