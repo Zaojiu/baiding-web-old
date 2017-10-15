@@ -14,8 +14,96 @@
   <meta name="msapplication-navbutton-color" content="#000"><!-- Windows Phone -->
 
   <title>微信支付</title>
+
+  <!-- for trackjs: must put in head tag -->
+  <script type="text/javascript">
+    var token = '_REPL_TRACKJS_TOKEN_';
+    if (token.indexOf('_REPL_') != 0) {
+      window._trackJs = { token: token };
+    }
+  </script>
+  <script type="text/javascript" src="https://oe5u0e10o.qnssl.com/trackjs.com/tracker.js"></script>
+  <script type="text/javascript">
+    function readCookie(name) {
+      var nameEQ = encodeURIComponent(name) + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') {
+          c = c.substring(1, c.length);
+        }if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      }
+      return '';
+    }
+    function serializeObj(source) {
+      var kvArr = source.split('&');
+      var target = {};
+      for (var _iterator = kvArr, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+        var _ref;
+
+        if (_isArray) {
+          if (_i >= _iterator.length) break;
+          _ref = _iterator[_i++];
+        } else {
+          _i = _iterator.next();
+          if (_i.done) break;
+          _ref = _i.value;
+        }
+
+        var kv = _ref;
+
+        var kvPair = kv.split('=');
+        if (kvPair.length === 2) target[decodeURIComponent(kvPair[0])] = decodeURIComponent(kvPair[1]);
+      }
+      return target;
+    }
+
+    var userCookie = readCookie('_cur_user');
+    var userObj = serializeObj(userCookie);
+    var uid = userObj['uid'];
+    var sessCookie = readCookie('_sess');
+    var sessObj = serializeObj(sessCookie);
+    var sessId = sessObj['v'];
+    if (window.trackJs && uid) window.trackJs.configure({ userId: uid });
+    if (window.trackJs && sessId) window.trackJs.configure({ sessionId: sessId });
+  </script>
+
+  <!-- for ga: must put in head tag -->
+  <script type="text/javascript">
+    var dataLayer = dataLayer || [];
+    var gaid = '_REPL_GAID_';
+    if (gaid.indexOf('_REPL_') == 0) {
+      gaid = 'UA-85677719-1';
+    }
+    dataLayer.push({
+      'gaid': gaid,
+      'version': ''
+    });
+  </script>
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(), event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TZQHFKM');
+  </script>
+  <!-- End Google Tag Manager -->
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZQHFKM"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
   <style>
     .paying {
       width: 100vw;
@@ -67,7 +155,7 @@
     无效请求
   </div>
   <script>
-    var req, backto, backtoParse, wxPayReq;
+    var req, backto, backtoLink, wxPayReq;
 
     var showInvalidBlock = function () {
       document.getElementById('paying').style.display = 'none';
@@ -80,21 +168,23 @@
       var queryStr = aEle.search.replace('?', '');
       var queryArr = queryStr ? queryStr.split('&') : [];
       var queryObj = {};
-      queryArr.forEach(function(kv) {
+
+      for (var i=0; i<queryArr.length; i++) {
+        var kv = queryArr[i];
         var kvArr = kv.split('=');
         queryObj[kvArr[0]] = kvArr[1];
-      });
+      }
 
       if (result) queryObj['payResult'] = result;
 
       var queryResultArr = [];
       var queryResultStr = '';
-      Object.keys(queryObj).forEach(k => {
-        const v = queryObj[k];
-        if (`${v}` !== 'undefined') {
+      for (var k in queryObj) {
+        var v = queryObj[k];
+        if ('' + v !== 'undefined') {
           queryResultArr.push(k + '=' + v);
         }
-      });
+      }
 
       if (queryResultArr.length) queryResultStr = queryResultArr.join('&');
 
@@ -122,36 +212,34 @@
       e.preventDefault();
     }, false);
 
-    function onBridgeReady(){
-      WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', {
-          "appId": wxPayReq.appId,     //公众号名称，由商户传入
-          "timeStamp": wxPayReq.timeStamp,         //时间戳，自1970年以来的秒数
-          "nonceStr": wxPayReq.nonceStr, //随机串
-          "package": wxPayReq.package,
-          "signType": wxPayReq.signType,         //微信签名方式：
-          "paySign": wxPayReq.paySign //微信签名
-        },
-        function(res){
-          if(res.err_msg === "get_brand_wcpay_request:ok") {
-            location.replace(getBackLink(backto, 'success'));
-          } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-            location.replace(getBackLink(backto, 'cancel'));
-          } else {
-            location.replace(getBackLink(backto, `wechat pay failed: ${res.err_msg}`));
-          }
+    function onBridgeReady() {
+      WeixinJSBridge.invoke('getBrandWCPayRequest', {
+        "appId": wxPayReq.appId, //公众号名称，由商户传入
+        "timeStamp": wxPayReq.timeStamp, //时间戳，自1970年以来的秒数
+        "nonceStr": wxPayReq.nonceStr, //随机串
+        "package": wxPayReq.package,
+        "signType": wxPayReq.signType, //微信签名方式：
+        "paySign": wxPayReq.paySign //微信签名
+      }, function (res) {
+        if (res.err_msg === "get_brand_wcpay_request:ok") {
+          location.replace(getBackLink(backto, 'success'));
+        } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+          location.replace(getBackLink(backto, 'cancel'));
+        } else {
+          location.replace(getBackLink(backto, 'wechat pay failed: ' + res.err_msg));
+          throw new Error(res.err_msg);
         }
-      );
+      });
     }
 
-    if (typeof WeixinJSBridge === "undefined"){
-      if( document.addEventListener ){
+    if (typeof WeixinJSBridge === "undefined") {
+      if (document.addEventListener) {
         document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-      }else if (document.attachEvent){
+      } else if (document.attachEvent) {
         document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
         document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
       }
-    }else{
+    } else {
       onBridgeReady();
     }
   </script>
