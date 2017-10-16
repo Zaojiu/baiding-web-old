@@ -8,6 +8,7 @@
   display: none;
   z-index: 4;
   flex-direction: column-reverse;
+  -webkit-box-pack: end; // for old ios browser
   padding: 10px;
 
   &.is-popup {
