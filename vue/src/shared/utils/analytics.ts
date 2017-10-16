@@ -159,7 +159,7 @@ const collectCommonValues = (event: EventType): any => {
 
 const collectPerformanceValues = (): any => {
   const params: {[key: string]: number} = {};
-  const t = window.performance.timing;
+  const t = window.performance && window.performance.timing;
   if (!t) {
     return params
   }
@@ -182,7 +182,7 @@ const collectPerformanceValues = (): any => {
 };
 
 const sendRequest = async (event: EventType, params: any) => {
-  let values = Object.assign(collectCommonValues(event), params);
+  let values = _.assign(collectCommonValues(event), params);
 
   updateNetworkType();
 
@@ -216,12 +216,12 @@ export const eventPageview = () => {
 };
 
 export const eventPraise = (obj?: TargetInfo) => {
-  const params = Object.assign({}, obj);
+  const params = _.assign({}, obj);
   sendRequest(EventType.Praise, params)
 };
 
 export const eventFavorite = (obj?: TargetInfo) => {
-  const params = Object.assign({}, obj);
+  const params = _.assign({}, obj);
   sendRequest(EventType.Favorite, params);
 };
 
@@ -233,20 +233,20 @@ export const eventShare = (platform: SharePlatform) => {
 };
 
 export const eventMediaPlay = (media: MediaInfo, bufferDur: number) => {
-  const params = Object.assign({
+  const params = _.assign({
     bufferDur: bufferDur,
   }, media);
   sendRequest(EventType.MediaPlay, params)
 };
 
 export const eventMediaBuffer = (media: MediaInfo) => {
-  const params = Object.assign({
+  const params = _.assign({
   }, media);
   sendRequest(EventType.MediaBuffer, params)
 };
 
 export const eventMediaSeek = (media: MediaInfo, from: number, to: number, dur: number) => {
-  const params = Object.assign({
+  const params = _.assign({
     seekFrom: from,
     seekTo: to,
     seekDur: dur,
@@ -255,6 +255,6 @@ export const eventMediaSeek = (media: MediaInfo, from: number, to: number, dur: 
 };
 
 export const eventOnline = (media: MediaInfo, online: OnlineInfo) => {
-  const params = Object.assign({}, media, online);
+  const params = _.assign({}, media, online);
   sendRequest(EventType.Online, params)
 };

@@ -124,7 +124,7 @@ export const absUrl = (path: string, query?: {[key: string]: string}): string =>
 export const getRelativePath = (path: string, defaultPath: string): string => {
   let _path = path || defaultPath;
   _path = _path.replace(host.self, '');
-  if (_path === '/' || !_path.startsWith('/')) _path = defaultPath;
+  if (_path === '/' || !_.startsWith(_path,'/')) _path = defaultPath;
   return _path;
 };
 

@@ -417,7 +417,7 @@
       this.isSubmitting = true;
       showTips('登录中...');
 
-      const errorMessage = Object.assign({}, {
+      const errorMessage = _.assign({}, {
         [ApiCode.ErrSigninInvalidPassword]: this.smsCode ? '验证码错误' : '密码错误'
       }, SigninErrorMessage);
 
