@@ -11,6 +11,7 @@
   .top-nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     height: 50px;
     padding: 0 15px;
     background-color: $color-w;
