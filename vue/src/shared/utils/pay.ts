@@ -8,6 +8,7 @@ import {getOrder} from "../api/order.api";
 import {AxiosResponse} from "axios";
 import {ApiCode} from "../api/code-map.enum";
 import {router} from "../../router";
+import {showTips} from "../../store/tip";
 
 let pcRejecter: ((reason: string) => void)|null;
 let timer: any;
@@ -29,10 +30,13 @@ paymentStore.subscribe((mutation, state) => {
 const payResult = router.currentRoute.query['payResult'];
 if (payResult) {
   if (payResult === 'success') {
+    showTips('支付成功');
     setPaymentSuccess();
   } else if (payResult === 'cancel') {
+    showTips('取消支付');
     setPaymentNone();
   } else {
+    showTips('支付失败');
     setPaymentFail(payResult);
   }
 }

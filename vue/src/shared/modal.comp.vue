@@ -32,10 +32,10 @@
       background-color: $color-w;
       padding: 0;
       text-align: center;
-      width: calc(100% - 50px);
+      min-width: 20%;
 
       .body {
-        padding: 20px;
+        padding: 30px;
         color: $color-dark-gray;
         font-size: 16px;
       }

@@ -247,14 +247,11 @@
       if (!payResult) return true;
 
       if (payResult === 'success') {
-        showTips('支付成功');
         this.checkSubscription();
         this.$router.replace({path: '/my/orders'});
       } else if (payResult === 'cancel') {
-        showTips('订单未支付');
         this.$router.replace({path: '/my/orders'});
       } else {
-        showTips('支付失败，请重试');
         this.$router.replace({path: '/my/orders'});
         console.error(decodeURIComponent(payResult));
       }
@@ -309,13 +306,6 @@
       this.refreshOrder(orderNo);
     }
 
-    async processPayResult(order: Order) {
-      setPaymentNone();
-      showTips('支付成功');
-      this.checkSubscription();
-      this.refreshOrder(order.order.orderNo);
-    }
-
     async pay(order: Order) {
       this.isPaying[order.order.orderNo] = true;
 
@@ -328,7 +318,7 @@
         this.isPaying[order.order.orderNo] = false;
       }
 
-      await this.processPayResult(order);
+      this.$router.push({path: '/my/orders', params: {payResult: 'success'}});
     }
 
     detail(orderNo: string) {

@@ -220,12 +220,6 @@ export class ColumnItem {
   get isPayTypeFree(): boolean {
     return this.payType === ColumnItemPayType.Free;
   }
-
-  get paid(): boolean {
-    // return this.isPayTypeSingle && (this.currentUserInfo && this.currentUserInfo.paid);
-    // TODO: single paid
-    return true;
-  }
 }
 
 export class ColumnItemUserInfo {
@@ -279,6 +273,10 @@ export class ColumnItemDetail {
     this.prev = data.pre ? new ColumnItemContent(data.pre) : null;
     this.next = data.next ? new ColumnItemContent(data.next) : null;
     this.current = new ColumnItemContent(data.item, data.item_user_info);
+  }
+
+  get paid(): boolean {
+    return this.column.paid;
   }
 }
 
