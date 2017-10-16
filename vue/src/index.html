@@ -127,6 +127,7 @@
       position: absolute;
       top: 40%;
       left: 50%;
+      -webkit-transform: translateX(-50%) translateY(-50%);
       transform: translateX(-50%) translateY(-50%);
     }
 
@@ -135,6 +136,7 @@
       top: 125%;
       left: 50%;
       text-align: center;
+      -webkit-transform: translateX(-50%) translateY(-50%);
       transform: translateX(-50%) translateY(-50%);
       font-size: 16px;
       width: 193px;
@@ -148,6 +150,7 @@
       position: absolute;
       top: 250%;
       left: 50%;
+      -webkit-transform: translateX(-50%) translateY(-50%);
       transform: translateX(-50%) translateY(-50%);
     }
 
@@ -174,9 +177,11 @@
 
     @keyframes sk-three-bounce {
       0%, 80%, 100% {
+        -webkit-transform: scale(0);
         transform: scale(0);
       }
       40% {
+        -webkit-transform: scale(1);
         transform: scale(1);
       }
     }
@@ -234,7 +239,6 @@
       padding-top: 100px;
       text-align: center;
     }
-
   </style>
 
   <!--[if lt IE 9]>
