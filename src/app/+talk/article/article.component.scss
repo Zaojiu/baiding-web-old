@@ -42,6 +42,7 @@
       right: 0;
       display: flex;
       flex-direction: column-reverse;
+      -webkit-box-pack: end; // for old ios browser
       pointer-events: none;
 
       .mask {
@@ -311,12 +312,14 @@
         color: $color-dark-gray;
         line-height: 1.57em;
         white-space: pre-wrap;
+        word-break: break-all;
 
         .quote {
           background-color: rgb(237, 237, 237);
           padding: 10px;
           margin-bottom: 6px;
           white-space: pre-wrap;
+          word-break: break-all;
 
           .nick {
             font-weight: bold;

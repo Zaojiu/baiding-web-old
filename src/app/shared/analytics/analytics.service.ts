@@ -283,7 +283,7 @@ export class AnalyticsService {
 
   private collectPerformanceValues(): any {
     var params = {}
-    let t = window.performance.timing
+    let t = window.performance && window.performance.timing;
     if (!t) {
       return params
     }
