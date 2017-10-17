@@ -462,18 +462,21 @@
           this.$router.replace({path: '/my/orders'});
         }
         this.checkSubscription();
+        showTips('支付成功');
       } else if (payResult === 'cancel') {
         if (id) {
           this.$router.replace({path: `/orders/${id}`});
         } else {
           this.$router.replace({path: '/my/orders'});
         }
+        showTips('订单未支付');
       } else {
         if (id) {
           this.$router.replace({path: `/orders/${id}`});
         } else {
           this.$router.replace({path: '/my/orders'});
         }
+        showTips('支付失败，请重试');
         console.error(decodeURIComponent(payResult));
       }
 
@@ -622,7 +625,7 @@
 
       const payResult = 'success';
       const orderType = this.getOrderType();
-      this.$router.push({path: `/orders/${this.orderId}`, params: {payResult, orderType}});
+      this.$router.push({path: `/orders/${this.orderId}`, query: {payResult, orderType}});
     }
 
     async payNewOrder() {
@@ -647,7 +650,7 @@
 
       const payResult = 'success';
       const orderType = this.getOrderType();
-      this.$router.push({path: `/orders/${this.orderId}`, params: {payResult, orderType}});
+      this.$router.push({path: `/orders/${this.orderId}`, query: {payResult, orderType}});
     }
 
     getBackToUrl(): string {
