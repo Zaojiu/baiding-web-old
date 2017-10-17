@@ -1,3 +1,5 @@
 import setPrototypeOf from 'setprototypeof';
 
-Object.setPrototypeOf = setPrototypeOf;
+if (!Object.setPrototypeOf) {
+  Object.setPrototypeOf = setPrototypeOf;
+}

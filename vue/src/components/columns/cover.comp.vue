@@ -360,7 +360,7 @@
 
     @Watch('$route')
     routeChange() {
-      if (this.handlePayResultForRedirect()) {
+      if (!this.fromPaymentResult()) {
         this.initData();
       }
     }
@@ -384,13 +384,14 @@
       }
     }
 
-    handlePayResultForRedirect() {
+    fromPaymentResult() {
       const payResult = this.$route.query['payResult'];
 
-      if (!payResult) return true;
+      if (!payResult) return false;
 
       if (payResult === 'success') {
         showTips('支付成功');
+        setPaymentNone();
       } else if (payResult === 'cancel') {
         showTips('订单未支付');
       } else {
@@ -398,9 +399,9 @@
         console.error(decodeURIComponent(payResult));
       }
 
-      this.$router.replace({path: `/columns/${this.id}`});
+      this.$router.back();
 
-      return false;
+      return true;
     }
 
     get isLogin(): boolean {
@@ -562,7 +563,7 @@
 
     async pay(orderNo: string) {
       await pay(orderNo);
-      this.$router.push({path: `/columns/${this.id}`, params: {payResult: 'success'}});
+      this.$router.push({path: `/columns/${this.id}`, query: {payResult: 'success'}});
     }
   }
 </script>

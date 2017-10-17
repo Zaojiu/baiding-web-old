@@ -261,7 +261,10 @@ export const router = new Router({
 
 export default router;
 
+export let preRoute: Route;
+
 router.afterEach((to, from) => {
+  preRoute = from;
   const title = to.meta.title ? `${to.meta.title}-造就` : '造就';
   setTitle(title);
 });

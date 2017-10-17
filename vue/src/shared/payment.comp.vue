@@ -206,6 +206,7 @@
 
     gotoOrder() {
       this.$router.push({path: '/my/orders'});
+      setPaymentNone();
     }
   }
 </script>

@@ -1,6 +1,8 @@
 interface Store {
   set(key: string, value: any);
+
   get(key: string): any;
+
   delete(key: string);
 }
 
@@ -22,7 +24,10 @@ class MemoryStore implements Store {
 
 class LocalStore implements Store {
   set(key: string, value: any) {
-    localStorage.setItem(key, JSON.stringify(value) || 'null');
+    try {
+      localStorage.setItem(key, JSON.stringify(value) || 'null');
+    } catch (e) {
+    }
   }
 
   get(key: string): any {
@@ -38,7 +43,8 @@ export class StoreService {
   static memoryStore: Store = new MemoryStore();
   static localStore: Store = new LocalStore();
 
-  constructor () {}
+  constructor() {
+  }
 
   static set(key: string, value: any) {
     StoreService.memoryStore.set(key, value);

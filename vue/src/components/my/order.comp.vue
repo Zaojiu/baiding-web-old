@@ -248,13 +248,16 @@
 
       if (payResult === 'success') {
         this.checkSubscription();
-        this.$router.replace({path: '/my/orders'});
+        showTips('支付成功');
       } else if (payResult === 'cancel') {
-        this.$router.replace({path: '/my/orders'});
+        showTips('订单未支付');
       } else {
-        this.$router.replace({path: '/my/orders'});
+        showTips('支付失败，请重试');
         console.error(decodeURIComponent(payResult));
       }
+
+      this.$router.back();
+
 
       return false;
     }
@@ -318,7 +321,7 @@
         this.isPaying[order.order.orderNo] = false;
       }
 
-      this.$router.push({path: '/my/orders', params: {payResult: 'success'}});
+      this.$router.push({path: '/my/orders', query: {payResult: 'success'}});
     }
 
     detail(orderNo: string) {

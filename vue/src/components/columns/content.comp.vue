@@ -63,34 +63,35 @@
         </div>
       </div>
 
-      <div id="comments" class="comments block">
-        <h2>评论</h2>
+      <!--<div id="comments" class="comments block">-->
+        <!--<h2>评论</h2>-->
 
-        <div v-if="comments">
-          <div class="comment" v-for="comment in comments" :key="comment.id">
-            <div class="header" v-once>
-              <div class="author-info">
-                <img class="avatar avatar-round avatar-sm" :src="comment.user.avatar" alt="用户头像">
-                <span class="nick">{{comment.user.nick}}</span>
-                <time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>
-              </div>
-              <div class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">
-                <i class="bi bi-reply-comment"></i>回复
-              </div>
-            </div>
-            <!-- 不要换行，避免出现换行符 -->
-            <div class="comment-content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
-          </div>
-        </div>
+        <!--<div v-if="comments">-->
+          <!--<div class="comment" v-for="comment in comments" :key="comment.id">-->
+            <!--<div class="header" v-once>-->
+              <!--<div class="author-info">-->
+                <!--<img class="avatar avatar-round avatar-sm" :src="comment.user.avatar" alt="用户头像">-->
+                <!--<span class="nick">{{comment.user.nick}}</span>-->
+                <!--<time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>-->
+              <!--</div>-->
+              <!--<div class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">-->
+                <!--<i class="bi bi-reply-comment"></i>回复-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; 不要换行，避免出现换行符 &ndash;&gt;-->
+            <!--<div class="comment-content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>-->
+          <!--</div>-->
+        <!--</div>-->
 
-        <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
-        <error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>
-        <div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>
-        <div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>
-        <div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>
-      </div>
+        <!--<bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>-->
+        <!--<error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>-->
+        <!--<div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>-->
+        <!--<div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>-->
+        <!--<div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>-->
+      <!--</div>-->
 
       <footer
+        id="toolBar"
         class="tool-bar"
         style="position:fixed; bottom:0;"
         v-show="!(isVideoPlayed && isLandscape)"
@@ -101,9 +102,9 @@
         <div class="icon" @click="togglePraise()" :class="{'active': itemInfo.current.currentUserInfo.praised}">
           <i class="bi bi-praise"></i>{{itemInfo.current.praisedTotal}}
         </div>
-        <div class="icon" @click="gotoComment()">
-          <i class="bi bi-comment2"></i>
-        </div>
+        <!--<div class="icon" @click="gotoComment()">-->
+          <!--<i class="bi bi-comment2"></i>-->
+        <!--</div>-->
       </footer>
 
       <footer class="payment" v-show="!(isVideoPlayed && isLandscape)" v-if="!itemInfo.column.paid">
@@ -122,6 +123,7 @@
   .main {
     position: relative;
     background-color: $color-gray5;
+    padding-bottom: 46px;
 
     .block {
       box-shadow: 0 2px 2px rgb(236, 236, 236);
@@ -401,7 +403,7 @@
       }
     }
 
-    .comments {
+    /* .comments {
       padding: 15px 15px 65px;
       box-shadow: none;
       margin-bottom: 0;
@@ -508,7 +510,7 @@
         color: $color-dark-gray;
         font-size: 14px;
       }
-    }
+    } */
 
     .tool-bar {
       display: flex;
@@ -592,9 +594,9 @@
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
   import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition, setTitle} from '../../shared/utils/utils';
-  import {getColumnItemDetail, listComments, praise, unpraise} from '../../shared/api/column.api';
+  import {getColumnItemDetail, praise, unpraise} from '../../shared/api/column.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
-  import {ColumnItemDetail, ColumnItemContent, ColumnItemCommentModel} from "../../shared/api/column.model";
+  import {ColumnItemDetail, ColumnItemContent} from "../../shared/api/column.model";
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {Store} from "../../shared/utils/store";
   import {OrderObjectType, PostOrderObject} from '../../shared/api/order.model';
@@ -604,8 +606,10 @@
   import {pay} from '../../shared/utils/pay';
   import audioBar from "../../shared/audio-bar.comp.vue";
   import {showTips} from '../../store/tip';
+  import {setPaymentNone} from "../../store/payment";
+  import {preRoute} from '../../router';
 
-  const COMMENT_COUNT = 20;
+//  const COMMENT_COUNT = 20;
 
   @Component({
     components: {
@@ -627,10 +631,10 @@
     itemInfo = new ColumnItemDetail({});
     isLoading = false;
     isError = false;
-    comments: ColumnItemCommentModel[] = [];
-    isCommentLoading = false;
-    isCommentError = false;
-    isCommentOnLatest = false;
+//    comments: ColumnItemCommentModel[] = [];
+//    isCommentLoading = false;
+//    isCommentError = false;
+//    isCommentOnLatest = false;
     userInfo = getUserInfoCache();
     isPaying = false;
 
@@ -640,13 +644,24 @@
       this.itemChanged();
     }
 
-    handlePayResultForRedirect() {
+    @Watch('$route')
+    itemChanged() {
+      this.id = this.$route.params['itemId'];
+      if (!this.fromPaymentResult()) {
+        this.initData();
+//        this.initComments();
+        this.setViewedColumnItem();
+      }
+    }
+
+    fromPaymentResult() {
       const payResult = this.$route.query['payResult'];
 
-      if (!payResult) return true;
+      if (!payResult) return false;
 
       if (payResult === 'success') {
         showTips('支付成功');
+        setPaymentNone();
       } else if (payResult === 'cancel') {
         showTips('订单未支付');
       } else {
@@ -654,29 +669,9 @@
         console.error(decodeURIComponent(payResult));
       }
 
-      this.$router.replace({path: `/columns/${this.id}`});
+      this.$router.back();
 
-      return false;
-    }
-
-    @Watch('$route')
-    itemChanged() {
-      this.id = this.$route.params['itemId'];
-      if (this.handlePayResultForRedirect()) {
-        this.initData();
-        this.comments = [];
-        this.fetchComments();
-        this.setViewedColumnItem();
-      }
-    }
-
-    @Watch('$route.name')
-    refreshComments() {
-      if (this.$route.name === 'column.item.main' && this.$route.params['itemId'] === this.id) {
-        this.comments = [];
-        this.fetchComments();
-        setScrollPosition('#comments');
-      }
+      return true;
     }
 
     get originFee(): string {
@@ -753,27 +748,32 @@
       if (!this.isChildActived()) setTitle(this.itemInfo.current.subject);
     }
 
-    async fetchComments() {
-      this.isCommentLoading = true;
-      this.isCommentError = false;
-
-      try {
-        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
-        const comments = await listComments(this.id, COMMENT_COUNT + 1, lastMarker);
-        let isCommentOnLatest = true;
-        if (comments.length === COMMENT_COUNT + 1) {
-          isCommentOnLatest = false;
-          comments.pop();
-        }
-        this.comments.push(...comments);
-        this.isCommentOnLatest = isCommentOnLatest;
-      } catch (e) {
-        this.isCommentError = true;
-        throw e;
-      } finally {
-        this.isCommentLoading = false;
-      }
-    }
+//    async initComments() {
+//      this.comments = [];
+//      await this.fetchComments();
+//    }
+//
+//    async fetchComments() {
+//      this.isCommentLoading = true;
+//      this.isCommentError = false;
+//
+//      try {
+//        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
+//        const comments = await listComments(this.id, COMMENT_COUNT + 1, lastMarker);
+//        let isCommentOnLatest = true;
+//        if (comments.length === COMMENT_COUNT + 1) {
+//          isCommentOnLatest = false;
+//          comments.pop();
+//        }
+//        this.comments.push(...comments);
+//        this.isCommentOnLatest = isCommentOnLatest;
+//      } catch (e) {
+//        this.isCommentError = true;
+//        throw e;
+//      } finally {
+//        this.isCommentLoading = false;
+//      }
+//    }
 
     async togglePraise() {
       this.itemInfo.current.currentUserInfo.praised = !this.itemInfo.current.currentUserInfo.praised;
@@ -868,7 +868,7 @@
       if (this.isPaying) return;
 
       this.isPaying = true;
-      const orderQuery = new PostOrderObject(this.id, OrderObjectType.Column, 1);
+      const orderQuery = new PostOrderObject(this.columnId, OrderObjectType.Column, 1);
 
       try {
         const orderMeta = await createOrder([orderQuery], [], false);
@@ -894,7 +894,7 @@
 
     async pay(orderNo: string) {
       await pay(orderNo);
-      this.$router.push({path: `/columns/${this.columnId}/items/${this.id}`, params: {payResult: 'success'}});
+      this.$router.push({path: `/columns/${this.columnId}/items/${this.id}`, query: {payResult: 'success'}});
     }
   }
 </script>
