@@ -1,0 +1,16 @@
+{
+  "name": "@types/setprototypeof",
+  "version": "1.0.28",
+  "description": "TypeScript definitions for FastClick v1.0.3",
+  "license": "MIT",
+  "author": "Shinnosuke Watanabe <https://github.com/shinnn>",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/DefinitelyTyped/DefinitelyTyped.git"
+  },
+  "scripts": {},
+  "dependencies": {},
+  "typings": "index.d.ts",
+  "typesPublisherContentHash": "aaa7f4e9f45064427361d90706e300e4f2a60e7511aaed89e83b026444d6ae7f"
+}

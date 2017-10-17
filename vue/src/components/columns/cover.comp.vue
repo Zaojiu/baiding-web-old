@@ -34,7 +34,7 @@
           <span>{{columnInfo.currentVol}}/{{columnInfo.totalVol}}</span>
         </div>
         <ul class="list">
-          <li v-for="item in items" :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && (item.isPayTypeColumn && !columnInfo.paid) || (item.isPayTypeSingle && !item.paid)}">
+          <li v-for="item in items" :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !columnInfo.paid}">
             <div class="item-detail">
               <h3 class="item-title">{{getColumnItemIndex(item)}}{{item.subject}}</h3>
               <p class="item-intro">{{item.desc}}</p>
@@ -296,6 +296,7 @@
     footer {
       position: fixed;
       width: 100%;
+      max-width: 1024px;
       bottom: 0;
       background-color: $color-w;
       display: flex;
@@ -319,7 +320,7 @@
 
 <script lang="ts">
   import Vue from "vue";
-  import {Component} from 'vue-property-decorator';
+  import {Component,Watch} from 'vue-property-decorator';
   import {getColumnInfo, listColumnItems} from '../../shared/api/column.api';
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {Column, ColumnItem} from '../../shared/api/column.model';
@@ -354,7 +355,12 @@
       } catch (e) {
       }
 
-      if (this.handlePayResultForRedirect) {
+      this.routeChange();
+    }
+
+    @Watch('$route')
+    routeChange() {
+      if (this.handlePayResultForRedirect()) {
         this.initData();
       }
     }
@@ -383,7 +389,14 @@
 
       if (!payResult) return true;
 
-      if (payResult === 'success') this.handlePaySuccess();
+      if (payResult === 'success') {
+        showTips('支付成功');
+      } else if (payResult === 'cancel') {
+        showTips('订单未支付');
+      } else {
+        showTips('支付失败，请重试');
+        console.error(decodeURIComponent(payResult));
+      }
 
       this.$router.replace({path: `/columns/${this.id}`});
 
@@ -445,7 +458,7 @@
     itemBtnText(item: ColumnItem): string {
       if (item.isStatusNotReady) {
         return '制作中';
-      } else if ((item.isPayTypeColumn && !this.columnInfo.paid) || (item.isPayTypeSingle && !item.paid)) {
+      } else if (item.isPayTypeColumn && !this.columnInfo.paid) { // TODO: payTypeSingle
         return '收费';
       } else {
         if (item.isTypeVideo) {
@@ -492,14 +505,7 @@
 
       if (item) {
         // ready and paid or free item
-        if (
-          item.isStatusReady &&
-          (
-            (item.isPayTypeColumn && this.columnInfo.paid) ||
-            (item.isPayTypeSingle && item.paid) ||
-            item.isPayTypeFree
-          )
-        ) {
+        if (item.isStatusReady && (item.isPayTypeFree || (item.isPayTypeColumn && this.columnInfo.paid))) {
           const to = `/columns/${this.id}/items/${item.id}`;
           if (checkLogin(to)) this.$router.push({path: to});
         }
@@ -534,7 +540,7 @@
 
       try {
         const orderMeta = await createOrder([orderQuery], [], false);
-        this.pay(orderMeta.orderNo);
+        await this.pay(orderMeta.orderNo);
       } catch(e) {
         if (e instanceof ApiError) {
           const code = e.code;
@@ -556,13 +562,7 @@
 
     async pay(orderNo: string) {
       await pay(orderNo);
-      this.handlePaySuccess();
-    }
-
-    handlePaySuccess() {
-      setPaymentNone();
-      showTips('支付成功');
-      this.initData();
+      this.$router.push({path: `/columns/${this.id}`, params: {payResult: 'success'}});
     }
   }
 </script>

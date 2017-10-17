@@ -30,6 +30,7 @@ if (isProd) {
 
 let thirdPartyLibs = [
   './node_modules/jquery/dist/jquery.min.js',
+  './node_modules/lodash/lodash.min.js',
   './node_modules/moment/min/moment.min.js',
   './node_modules/moment-duration-format/lib/moment-duration-format.js',
   './node_modules/moment-is-zero/index.js',
@@ -110,7 +111,7 @@ if (fs.existsSync(envFilePath)) {
 const config = {
   entry: {
     'global': thirdPartyLibs,
-    'libs': ['vue', 'vue-property-decorator', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN', 'yaqrcode', 'lodash', 'zaojiu-player'],
+    'libs': ['vue', 'vue-property-decorator', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN', 'yaqrcode', 'zaojiu-player'],
     'shared': sharedFiles,
     'main': './src/main.ts',
   },

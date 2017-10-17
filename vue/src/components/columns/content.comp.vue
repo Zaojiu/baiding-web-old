@@ -49,14 +49,14 @@
           <div class="item" v-if="itemInfo.prev" @click="gotoRelativeItem(itemInfo.prev)">
             <div class="item-cover">
               <img :src="itemInfo.prev.cover169Url" alt="专栏图片">
-              <span class="text">上一篇</span>
+              <span class="text">{{prevBtnText}}</span>
             </div>
             <p class="item-title">{{itemInfo.prev.subject}}</p>
           </div>
           <div class="item" v-if="itemInfo.next" @click="gotoRelativeItem(itemInfo.next)">
             <div class="item-cover">
               <img :src="itemInfo.next.cover169Url" alt="专栏图片">
-              <span class="text">下一篇</span>
+              <span class="text">{{nextBtnText}}</span>
             </div>
             <p class="item-title">{{itemInfo.next.subject}}</p>
           </div>
@@ -108,7 +108,7 @@
 
       <footer class="payment" v-show="!(isVideoPlayed && isLandscape)" v-if="!itemInfo.column.paid">
         <button class="button button-outline" v-if="false">赠送给好友</button>
-        <button class="button button-primary" @click="pay()"><span class="origin-fee"
+        <button class="button button-primary" @click="createOrder()" :disabled="isPaying"><span class="origin-fee"
                                                                    v-if="originFee">{{originFee}}</span>{{btnText}}
         </button>
       </footer>
@@ -179,6 +179,7 @@
         right: 0;
         display: flex;
         flex-direction: column-reverse;
+        -webkit-box-pack: end; // for old ios browser
         pointer-events: none;
 
         .cover-thumbnail-wrapper {
@@ -565,6 +566,7 @@
     .payment {
       position: fixed;
       width: 100%;
+      max-width: 1024px;
       bottom: 0;
       background-color: $color-w;
       display: flex;
@@ -592,10 +594,16 @@
   import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition, setTitle} from '../../shared/utils/utils';
   import {getColumnItemDetail, listComments, praise, unpraise} from '../../shared/api/column.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
-  import {ColumnItemDetail, ColumnItemCommentModel} from "../../shared/api/column.model";
+  import {ColumnItemDetail, ColumnItemContent, ColumnItemCommentModel} from "../../shared/api/column.model";
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {Store} from "../../shared/utils/store";
+  import {OrderObjectType, PostOrderObject} from '../../shared/api/order.model';
+  import {createOrder} from '../../shared/api/order.api';
+  import {ApiError} from '../../shared/api/xhr';
+  import {ApiCode, ApiErrorMessage} from '../../shared/api/code-map.enum';
+  import {pay} from '../../shared/utils/pay';
   import audioBar from "../../shared/audio-bar.comp.vue";
+  import {showTips} from '../../store/tip';
 
   const COMMENT_COUNT = 20;
 
@@ -624,21 +632,47 @@
     isCommentError = false;
     isCommentOnLatest = false;
     userInfo = getUserInfoCache();
+    isPaying = false;
 
     created() {
       this.columnId = this.$route.params['id'];
-      this.id = this.$route.params['itemId'];
 
-      this.setViewedColumnItem();
-      this.initData();
-      this.fetchComments();
+      this.itemChanged();
+    }
+
+    handlePayResultForRedirect() {
+      const payResult = this.$route.query['payResult'];
+
+      if (!payResult) return true;
+
+      if (payResult === 'success') {
+        showTips('支付成功');
+      } else if (payResult === 'cancel') {
+        showTips('订单未支付');
+      } else {
+        showTips('支付失败，请重试');
+        console.error(decodeURIComponent(payResult));
+      }
+
+      this.$router.replace({path: `/columns/${this.id}`});
+
+      return false;
+    }
+
+    @Watch('$route')
+    itemChanged() {
+      this.id = this.$route.params['itemId'];
+      if (this.handlePayResultForRedirect()) {
+        this.initData();
+        this.comments = [];
+        this.fetchComments();
+        this.setViewedColumnItem();
+      }
     }
 
     @Watch('$route.name')
     refreshComments() {
-      if (this.$route.name === 'column.item.main') {
-        this.columnId = this.$route.params['id'];
-        this.id = this.$route.params['itemId'];
+      if (this.$route.name === 'column.item.main' && this.$route.params['itemId'] === this.id) {
         this.comments = [];
         this.fetchComments();
         setScrollPosition('#comments');
@@ -665,6 +699,32 @@
           return `限时免费`;
         } else {
           return `支付: ${this.itemInfo.column.totalFee.toYuan()}`;
+        }
+      }
+    }
+
+    get prevBtnText() {
+      const item = this.itemInfo.prev;
+      if (item) {
+        if (item.isStatusNotReady) {
+          return '制作中';
+        } else if (!this.itemInfo.column.paid) {
+          return '付费看上篇';
+        } else {
+          return '上一篇';
+        }
+      }
+    }
+
+    get nextBtnText() {
+      const item = this.itemInfo.next;
+      if (item) {
+        if (item.isStatusNotReady) {
+          return '制作中';
+        } else if (!this.itemInfo.column.paid) {
+          return '付费看下篇';
+        } else {
+          return '下一篇';
         }
       }
     }
@@ -798,12 +858,43 @@
       return this.$router.currentRoute.name !== 'column.item.main';
     }
 
-    gotoRelativeItem(item: ColumnItemDetail) {
-      // TODO: 判断收费，是否ready
+    gotoRelativeItem(item: ColumnItemContent) {
+      if (item.isStatusReady && this.itemInfo.column.paid) {
+        this.$router.push({path: `/columns/${item.columnId}/items/${item.id}`});
+      }
     }
 
-    pay() {
-      // TODO: 专栏付费
+    async createOrder() {
+      if (this.isPaying) return;
+
+      this.isPaying = true;
+      const orderQuery = new PostOrderObject(this.id, OrderObjectType.Column, 1);
+
+      try {
+        const orderMeta = await createOrder([orderQuery], [], false);
+        await this.pay(orderMeta.orderNo);
+      } catch(e) {
+        if (e instanceof ApiError) {
+          const code = e.code;
+
+          if (code === ApiCode.ErrOrderNeedProcessOthers) {
+            const oldOrderNum = e.originError.response && e.originError.response.data.data.orderNo;
+            this.pay(oldOrderNum);
+          } else {
+            const errMessage = ApiErrorMessage[code] || `未知错误: ${code}`;
+            showTips(errMessage);
+          }
+
+          throw e;
+        }
+      } finally {
+        this.isPaying = false;
+      }
+    }
+
+    async pay(orderNo: string) {
+      await pay(orderNo);
+      this.$router.push({path: `/columns/${this.columnId}/items/${this.id}`, params: {payResult: 'success'}});
     }
   }
 </script>

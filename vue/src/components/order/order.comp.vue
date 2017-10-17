@@ -444,25 +444,31 @@
       }
     }
 
-    handlePayResultForRedirect() {
+    async handlePayResultForRedirect() {
       const id = this.$route.params['id'];
       const query = this.$route.query;
       const payResult = query['payResult'];
+      const orderType = query['orderType'];
 
       if (!payResult) return true;
 
       if (payResult === 'success') {
-        showTips('支付成功');
-        this.handleSuccessfulPayResult(query['orderType'], true);
+        if (orderType === 'member') {
+          await getUserInfo();
+          this.$router.replace({path: '/my/member'});
+        } else if (orderType === 'event') {
+          this.$router.replace({path: '/my/tickets'});
+        } else {
+          this.$router.replace({path: '/my/orders'});
+        }
+        this.checkSubscription();
       } else if (payResult === 'cancel') {
-        showTips('订单未支付');
         if (id) {
           this.$router.replace({path: `/orders/${id}`});
         } else {
           this.$router.replace({path: '/my/orders'});
         }
       } else {
-        showTips('支付失败，请重试');
         if (id) {
           this.$router.replace({path: `/orders/${id}`});
         } else {
@@ -474,21 +480,11 @@
       return false;
     }
 
-    async handleSuccessfulPayResult(orderType: string, useReplace = false) {
-      setPaymentNone();
-      showTips('支付成功');
-
-      if (orderType === 'member') {
-        await getUserInfo();
-        useReplace ? this.$router.replace({path: '/my/member'}) : this.$router.push({path: '/my/member'});
-      } else if (orderType === 'event') {
-        useReplace ? this.$router.replace({path: '/my/tickets'}) : this.$router.push({path: '/my/tickets'});
-      } else {
-        useReplace ? this.$router.replace({path: '/my/orders'}) : this.$router.push({path: '/my/tickets'});
-      }
-
+    checkSubscription() {
       const userInfo = getUserInfoCache();
-      if (!userInfo.isSubscribed) showQrcode(appConfig.wechatLink, '<p>扫码关注公众号</p><p>获取最新活动信息</p>');
+      if (!userInfo.isSubscribed) {
+        showQrcode(appConfig.wechatLink, '<p>扫码关注公众号</p><p>获取最新活动信息</p>');
+      }
     }
 
     processParams() {
@@ -613,13 +609,20 @@
       try {
         await pay(this.orderId, this.getBackToUrl());
       } catch (e) {
+        if (e === 'cancel') {
+          showTips('订单未支付');
+          this.$router.push({path: '/my/orders'});
+        } else {
+          this.handleOtherOrder(e);
+        }
         throw e;
-        // TODO: error handler
       } finally {
         this.isPaying = false;
       }
 
-      await this.handleSuccessfulPayResult(this.getOrderType());
+      const payResult = 'success';
+      const orderType = this.getOrderType();
+      this.$router.push({path: `/orders/${this.orderId}`, params: {payResult, orderType}});
     }
 
     async payNewOrder() {
@@ -637,13 +640,14 @@
         } else {
           this.handleOtherOrder(e);
         }
-        // TODO: error handler
         throw e;
       } finally {
         this.isPaying = false;
       }
 
-      await this.handleSuccessfulPayResult(this.getOrderType());
+      const payResult = 'success';
+      const orderType = this.getOrderType();
+      this.$router.push({path: `/orders/${this.orderId}`, params: {payResult, orderType}});
     }
 
     getBackToUrl(): string {
