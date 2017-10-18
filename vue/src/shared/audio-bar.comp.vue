@@ -13,10 +13,10 @@
       @progress="resetBuffer();"
       @loadeddata="isAudioLoading = false; resetBuffer();"
       @loadstart="isAudioLoading = true"
-      @loadedmetadata="isAudioLoading = false; timeupdate"
-      @timeupdate="timeupdate"
+      @loadedmetadata="isAudioLoading = false; timeupdate();"
+      @timeupdate="timeupdate()"
       @seeking="seeking = true"
-      @seeked="seeked"
+      @seeked="seeked()"
       @reset="resetProgressBar()"
     ></audio>
     <div class="cover" @click="togglePlay">
