@@ -43,7 +43,7 @@
 
         <audio-bar class="audio-bar" v-if="itemInfo.current.isTypeAudio" :audioUrl="itemInfo.current.audioUrl" :audioCover="itemInfo.current.cover11Url"></audio-bar>
 
-        <div class="article article-content" v-html="itemInfo.current.content" v-once></div>
+        <div class="article article-content" v-html="itemInfo.current.content"></div>
 
         <div class="relative-items" v-if="itemInfo.prev || itemInfo.next">
           <div class="item" v-if="itemInfo.prev" @click="gotoRelativeItem(itemInfo.prev)">
