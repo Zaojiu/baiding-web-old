@@ -4,11 +4,11 @@ import router from "../../router";
 import {getRelativePath} from "../utils/utils";
 
 export const mobileBindedCompGuard = () => {
-  return async (to: Route, from: Route): Promise<boolean> => {
+  return (to: Route, from: Route): Promise<boolean> => {
     let userInfo;
 
     try {
-      userInfo = await getUserInfoCache();
+      userInfo = getUserInfoCache();
     } catch (err) {
       router.push({path: '/signin', query: {redirectTo: to.fullPath}});
       return false;

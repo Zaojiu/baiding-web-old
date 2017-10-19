@@ -7,22 +7,14 @@ import router from '../../router';
 
 export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel> => {
   const url = `${host.io}/api/user`;
-  let res: AxiosResponse;
-  try {
-    res = await get(url, {needHandleError: needHandleError});
-  } catch (err) {
-    throw err;
-  }
-
+  const res = await get(url, {needHandleError: needHandleError});
   const userInfo = new UserInfoModel(res.data);
-
-  Store.localStore.set('userInfo', userInfo);
-
+  Store.memoryStore.set('userInfo', userInfo);
   return userInfo;
 };
 
 export const getUserInfoCache = (needSignin = true): UserInfoModel => {
-  const userInfoCache = Store.localStore.get('userInfo');
+  const userInfoCache = Store.memoryStore.get('userInfo');
 
   if (!userInfoCache) {
     if (needSignin) router.push({path: '/signin', query: {redirectTo: location.href}});
@@ -31,6 +23,11 @@ export const getUserInfoCache = (needSignin = true): UserInfoModel => {
 
   return new UserInfoModel(userInfoCache);
 };
+
+export const refreshUserInfo = async (needHandleError = false): Promise<UserInfoModel> => {
+  Store.memoryStore.delete('userInfo');
+  return getUserInfo(needHandleError);
+}
 
 export const getUserDetailInfo = async (): Promise<UserDetailInfoModel> => {
   const url = `${host.io}/api/user/detail`;

@@ -402,7 +402,7 @@
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
   import {Money, parseUrl} from '../../shared/utils/utils';
-  import {getUserInfo, getUserInfoCache} from "../../shared/api/user.api";
+  import {refreshUserInfo, getUserInfoCache} from "../../shared/api/user.api";
   import {OrderObject, PostOrderObject, OrderFee, Discount, Order} from "../../shared/api/order.model";
   import {checkOrderFee, listDiscountCode, createOrder, getOrder} from '../../shared/api/order.api';
   import {pay} from '../../shared/utils/pay';
@@ -454,7 +454,7 @@
 
       if (payResult === 'success') {
         if (orderType === 'member') {
-          await getUserInfo();
+          await refreshUserInfo();
           this.$router.replace({path: '/my/member'});
         } else if (orderType === 'event') {
           this.$router.replace({path: '/my/tickets'});

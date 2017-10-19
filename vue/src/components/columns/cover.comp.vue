@@ -333,7 +333,7 @@
   import Vue from "vue";
   import {Component,Watch} from 'vue-property-decorator';
   import {getColumnInfo, listColumnItems} from '../../shared/api/column.api';
-  import {getUserInfo} from '../../shared/api/user.api';
+  import {getUserInfoCache} from '../../shared/api/user.api';
   import {Column, ColumnItem} from '../../shared/api/column.model';
   import {UserInfoModel} from "../../shared/api/user.model";
   import padStart from 'lodash/padStart';
@@ -359,11 +359,11 @@
     isPaying = false;
     isNotFound = false;
 
-    async created() {
+    created() {
       this.id = this.$route.params['id'];
 
       try {
-        this.userInfo = await getUserInfo(false);
+        this.userInfo = getUserInfoCache(false);
       } catch (e) {
       }
 
@@ -414,10 +414,6 @@
       this.$router.back();
 
       return true;
-    }
-
-    get isLogin(): boolean {
-      return !!this.userInfo;
     }
 
     get btnText(): string {
@@ -508,7 +504,7 @@
 
       const checkLogin = (to: string) => {
         // 未登录
-        if (!this.isLogin) {
+        if (!this.userInfo) {
           this.$router.push({path: '/signin', query: {redirectTo: to}});
           return false;
         }
@@ -562,7 +558,7 @@
             const oldOrderNum = e.originError.response && e.originError.response.data.data.orderNo;
             this.pay(oldOrderNum);
           } else if (e.isUnauthorized) {
-            Store.localStore.delete('userInfo');
+            Store.memoryStore.delete('userInfo');
             showTips(`请登录`);
             this.$router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
           } else {
