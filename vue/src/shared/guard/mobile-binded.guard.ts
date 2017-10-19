@@ -7,8 +7,9 @@ export const mobileBindedGuard = () => {
     let userInfo;
 
     try {
-      userInfo = getUserInfoCache();
+      userInfo = getUserInfoCache(false);
     } catch (err) {
+      router.push({path: '/signin', query: {redirectTo: to.fullPath}});
       return false;
     }
 
