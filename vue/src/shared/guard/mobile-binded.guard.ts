@@ -3,11 +3,11 @@ import {Route} from "vue-router";
 import router from "../../router";
 
 export const mobileBindedGuard = () => {
-  return async (to: Route, from: Route): Promise<boolean> => {
+  return (to: Route, from: Route): boolean => {
     let userInfo;
 
     try {
-      userInfo = await getUserInfoCache();
+      userInfo = getUserInfoCache();
     } catch (err) {
       return false;
     }

@@ -174,7 +174,7 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import {UserInfoModel} from "../../shared/api/user.model";
-  import {getUserInfo, getUserInfoCache, getUserDetailInfo} from "../../shared/api/user.api";
+  import {refreshUserInfo, getUserInfoCache, getUserDetailInfo} from "../../shared/api/user.api";
   import {form} from '../../shared/form';
   import {showTips} from "../../store/tip";
   import {activateMember} from "../../shared/api/member.api";
@@ -222,8 +222,8 @@
 
       try {
         await activateMember(this.memberCode, this.wechatNumber, this.name, this.company, this.title);
-        Store.localStore.delete('userInfo');
-        await getUserInfo();
+        Store.memoryStore.delete('userInfo');
+        await refreshUserInfo();
       } catch (e) {
         throw e;
       } finally {

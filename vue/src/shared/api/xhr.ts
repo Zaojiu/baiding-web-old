@@ -43,7 +43,7 @@ export class ApiError extends Error {
 
 const errorHandler = (err: ApiError, customCodeMap?: { [key: number]: string }) => {
   if (err.isUnauthorized) {
-    Store.localStore.delete('userInfo');
+    Store.memoryStore.delete('userInfo');
     showTips(`请登录`);
     router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
   } else {

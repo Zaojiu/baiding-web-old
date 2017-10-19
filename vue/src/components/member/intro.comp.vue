@@ -148,7 +148,7 @@
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
   import {Money} from '../../shared/utils/utils';
-  import {getUserInfo, getUserInfoCache} from "../../shared/api/user.api";
+  import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
   import {checkOrderFee} from "../../shared/api/order.api";
@@ -159,9 +159,9 @@
     fee = new Money(49800);
     memberOrderObject = new PostOrderObject('member-year', OrderObjectType.Member, 1); // hardcode temporary
 
-    async created() {
+    created() {
       try {
-        this.userInfo = await getUserInfo(false);
+        this.userInfo = getUserInfoCache(false);
       } catch (e) {
       }
     }
@@ -192,9 +192,11 @@
 
     async buy() {
       if (!this.userInfo) {
-        this.userInfo = await getUserInfo();
-        if (this.userInfo.isMember) return;
+        this.$router.push({path: '/signin', query: {redirectTo: `/member/intro`}});
+        return;
       }
+
+      if (this.userInfo.isMember) return;
 
       this.$router.push({
         path: '/orders',

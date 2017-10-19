@@ -210,7 +210,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import {getUserInfo, getUserInfoCache} from '../../shared/api/user.api';
+  import {refreshUserInfo, getUserInfoCache} from '../../shared/api/user.api';
   import {UserInfoModel} from "../../shared/api/user.model";
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {SmsScene, SmsType, sendSmsByLoginUser} from '../../shared/api/sms.api';
@@ -274,7 +274,7 @@
       }
 
       try {
-        await getUserInfo(false);
+        await refreshUserInfo();
       } catch (e) {
         location.reload();
         return;

@@ -210,7 +210,6 @@
   import {showTips} from '../../store/tip';
   import {pay} from '../../shared/utils/pay';
   import {setPaymentNone} from '../../store/payment';
-  import {getUserInfo} from "../../shared/api/user.api";
   import {UserInfoModel} from "../../shared/api/user.model";
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {appConfig} from '../../env/environment';

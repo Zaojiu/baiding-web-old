@@ -10,6 +10,7 @@ import { store } from './store'
 import topNav from './shared/top-nav.comp.vue';
 import error from './shared/error.comp.vue';
 import bdLoading from './shared/bd-loading.comp.vue';
+import {getUserInfo} from "./shared/api/user.api";
 
 sync(store, router);
 
@@ -23,4 +24,12 @@ Vue.component('top-nav', topNav);
 Vue.component('bd-loading', bdLoading);
 Vue.component('error', error);
 
-app.$mount('#app');
+(async () => {
+  try {
+    await getUserInfo(false);
+  } catch (e) {
+  } finally {
+    app.$mount('#app');
+  }
+})();
+
