@@ -26,8 +26,8 @@ export const router = new Router({
     },
     {
       path: '/lives',
-      name: 'index',
-      component: () => System.import('./components/index/index.comp.vue'),
+      name: 'lives',
+      component: () => System.import('./components/lives/lives.comp.vue'),
     },
     {
       path: '/signin',

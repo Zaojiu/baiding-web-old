@@ -309,6 +309,15 @@
 
       .button-primary {
         flex-grow: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: bold;
+
+        .origin-fee {
+          font-weight: normal;
+          text-decoration: line-through;
+          padding-right: 10px;
+        }
       }
 
       .button-outline {
@@ -463,11 +472,11 @@
         return '收费';
       } else {
         if (item.isTypeVideo) {
-          return item.isPayTypeFree ? '试看' : '观看';
+          return item.isPayTypeFree && !this.columnInfo.paid ? '试看' : '观看';
         } else if (item.isTypeAudio) {
-          return item.isPayTypeFree ? '试听' : '收听';
+          return item.isPayTypeFree && !this.columnInfo.paid ? '试听' : '收听';
         } else if (item.isTypePost) {
-          return item.isPayTypeFree ? '试读' : '阅读';
+          return item.isPayTypeFree && !this.columnInfo.paid ? '试读' : '阅读';
         }
       }
 
@@ -540,7 +549,7 @@
       const orderQuery = new PostOrderObject(this.id, OrderObjectType.Column, 1);
 
       try {
-        const orderMeta = await createOrder([orderQuery], [], false);
+        const orderMeta = await createOrder([orderQuery], []);
         await this.pay(orderMeta.orderNo);
       } catch(e) {
         if (e instanceof ApiError) {

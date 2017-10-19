@@ -31,13 +31,20 @@ class LocalStore implements StoreInterface {
   }
 
   get(key: string): any {
-    const str = localStorage.getItem(key);
+    let str: any;
+    try {
+      str = localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
     if (typeof str !== 'string') return null;
     return JSON.parse(str);
   }
 
   delete(key: string) {
-    localStorage.removeItem(key);
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {}
   }
 }
 
