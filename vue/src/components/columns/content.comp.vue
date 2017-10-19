@@ -871,7 +871,7 @@
       const orderQuery = new PostOrderObject(this.columnId, OrderObjectType.Column, 1);
 
       try {
-        const orderMeta = await createOrder([orderQuery], []);
+        const orderMeta = await createOrder([orderQuery], [], false);
         await this.pay(orderMeta.orderNo);
       } catch(e) {
         if (e instanceof ApiError) {

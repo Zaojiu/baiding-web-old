@@ -343,6 +343,7 @@
   import {ApiCode, ApiErrorMessage} from '../../shared/api/code-map.enum';
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from "../../store/payment";
+  import {getRelativePath} from '../../shared/utils/utils';
 
   @Component
   export default class CoverComponent extends Vue {
@@ -549,7 +550,7 @@
       const orderQuery = new PostOrderObject(this.id, OrderObjectType.Column, 1);
 
       try {
-        const orderMeta = await createOrder([orderQuery], []);
+        const orderMeta = await createOrder([orderQuery], [], false);
         await this.pay(orderMeta.orderNo);
       } catch(e) {
         if (e instanceof ApiError) {
@@ -558,6 +559,10 @@
           if (code === ApiCode.ErrOrderNeedProcessOthers) {
             const oldOrderNum = e.originError.response && e.originError.response.data.data.orderNo;
             this.pay(oldOrderNum);
+          } else if (e.isUnauthorized) {
+            Store.localStore.delete('userInfo');
+            showTips(`请登录`);
+            this.$router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
           } else {
             const errMessage = ApiErrorMessage[code] || `未知错误: ${code}`;
             showTips(errMessage);

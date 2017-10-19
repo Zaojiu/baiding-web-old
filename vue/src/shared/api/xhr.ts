@@ -29,7 +29,7 @@ export class ApiError extends Error {
   }
 
   get isUnauthorized(): boolean {
-    return this.code === ApiCode.ErrUnauthorized || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrNeedToLogin;
+    return this.code === ApiCode.ErrUnauthorized || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrExpiredToken;
   }
 
   get is4xx(): boolean {

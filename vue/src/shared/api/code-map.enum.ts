@@ -3,6 +3,7 @@ export enum ApiCode {
   ErrNeedToLogin = 401,
   ErrNotFound = 404,
   ErrUnauthorized = 20001,
+  ErrExpiredToken = 20004,
   ErrSigninEmptyPassword = 20100,
   ErrSigninInvalidPassword = 20101,
   ErrSigninInvalidSmsCode = 20102,
@@ -27,7 +28,6 @@ export enum ApiCode {
   ErrOrderDiscountNotUsed = 400111,
   ErrOrderDiscountReachLimit = 400112,
   ErrOrderDiscountCannotUsedWithOther = 400114,
-  ErrItemExpiredToken = 20004,
   ErrUnknown = 90000,
 }
 
