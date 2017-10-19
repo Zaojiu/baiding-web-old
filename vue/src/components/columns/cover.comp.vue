@@ -331,7 +331,7 @@
   import Vue from "vue";
   import {Component,Watch} from 'vue-property-decorator';
   import {getColumnInfo, listColumnItems} from '../../shared/api/column.api';
-  import {getUserInfoCache} from '../../shared/api/user.api';
+  import {getUserInfo} from '../../shared/api/user.api';
   import {Column, ColumnItem} from '../../shared/api/column.model';
   import {UserInfoModel} from "../../shared/api/user.model";
   import padStart from 'lodash/padStart';
@@ -357,11 +357,11 @@
     isPaying = false;
     isNotFound = false;
 
-    created() {
+    async created() {
       this.id = this.$route.params['id'];
 
       try {
-        this.userInfo = getUserInfoCache(false);
+        this.userInfo = await getUserInfo(false);
       } catch (e) {
       }
 
