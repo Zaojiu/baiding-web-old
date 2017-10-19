@@ -3,7 +3,7 @@ import {Route} from "vue-router";
 import router from "../../router";
 
 export const mobileBindedGuard = () => {
-  return (to: Route, from: Route): Promise<boolean> => {
+  return (to: Route, from: Route): boolean => {
     let userInfo;
 
     try {

@@ -4,7 +4,7 @@ import router from "../../router";
 import {getRelativePath} from "../utils/utils";
 
 export const mobileBindedCompGuard = () => {
-  return (to: Route, from: Route): Promise<boolean> => {
+  return (to: Route, from: Route): boolean => {
     let userInfo;
 
     try {
