@@ -20,6 +20,7 @@ export const signinGuard = (redirectTo: string) => {
           return true;
         }
       } else {
+        console.error(err);
         router.push({path: '/500', query: {redirectTo: to.fullPath}});
         return false;
       }

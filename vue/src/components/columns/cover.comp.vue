@@ -4,6 +4,8 @@
     <error class="abs-center" v-else-if="isNotFound">无此专栏</error>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="columns" v-else>
+      <top-nav></top-nav>
+
       <div class="cover" v-once>
         <img :src="columnInfo.cover169Url" alt="专栏封面">
       </div>
@@ -309,6 +311,15 @@
 
       .button-primary {
         flex-grow: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: bold;
+
+        .origin-fee {
+          font-weight: normal;
+          text-decoration: line-through;
+          padding-right: 10px;
+        }
       }
 
       .button-outline {
@@ -322,7 +333,7 @@
   import Vue from "vue";
   import {Component,Watch} from 'vue-property-decorator';
   import {getColumnInfo, listColumnItems} from '../../shared/api/column.api';
-  import {getUserInfoCache} from '../../shared/api/user.api';
+  import {getUserInfo} from '../../shared/api/user.api';
   import {Column, ColumnItem} from '../../shared/api/column.model';
   import {UserInfoModel} from "../../shared/api/user.model";
   import padStart from 'lodash/padStart';
@@ -334,6 +345,7 @@
   import {ApiCode, ApiErrorMessage} from '../../shared/api/code-map.enum';
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from "../../store/payment";
+  import {getRelativePath} from '../../shared/utils/utils';
 
   @Component
   export default class CoverComponent extends Vue {
@@ -347,11 +359,11 @@
     isPaying = false;
     isNotFound = false;
 
-    created() {
+    async created() {
       this.id = this.$route.params['id'];
 
       try {
-        this.userInfo = getUserInfoCache(false);
+        this.userInfo = await getUserInfo(false);
       } catch (e) {
       }
 
@@ -463,11 +475,11 @@
         return '收费';
       } else {
         if (item.isTypeVideo) {
-          return item.isPayTypeFree ? '试看' : '观看';
+          return item.isPayTypeFree && !this.columnInfo.paid ? '试看' : '观看';
         } else if (item.isTypeAudio) {
-          return item.isPayTypeFree ? '试听' : '收听';
+          return item.isPayTypeFree && !this.columnInfo.paid ? '试听' : '收听';
         } else if (item.isTypePost) {
-          return item.isPayTypeFree ? '试读' : '阅读';
+          return item.isPayTypeFree && !this.columnInfo.paid ? '试读' : '阅读';
         }
       }
 
@@ -549,6 +561,10 @@
           if (code === ApiCode.ErrOrderNeedProcessOthers) {
             const oldOrderNum = e.originError.response && e.originError.response.data.data.orderNo;
             this.pay(oldOrderNum);
+          } else if (e.isUnauthorized) {
+            Store.localStore.delete('userInfo');
+            showTips(`请登录`);
+            this.$router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
           } else {
             const errMessage = ApiErrorMessage[code] || `未知错误: ${code}`;
             showTips(errMessage);
