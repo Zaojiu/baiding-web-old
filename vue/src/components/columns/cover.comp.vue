@@ -4,6 +4,8 @@
     <error class="abs-center" v-else-if="isNotFound">无此专栏</error>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="columns" v-else>
+      <top-nav></top-nav>
+
       <div class="cover" v-once>
         <img :src="columnInfo.cover169Url" alt="专栏封面">
       </div>

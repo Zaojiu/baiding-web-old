@@ -3,6 +3,8 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="main" v-else v-show="!isChildActived()" @touchstart="touchStart" @touchmove="touchMove">
+      <top-nav v-if="!(isVideoPlayed && isLandscape)"></top-nav>
+
       <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
