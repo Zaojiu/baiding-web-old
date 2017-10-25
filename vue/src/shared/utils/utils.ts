@@ -155,21 +155,6 @@ export class Money {
   }
 }
 
-export const setTitle = (title: string) => {
-  document.title = title;
-
-  // for ios wechat
-  let i = document.createElement('iframe');
-  i.src = '/assets/img/transparent-pixel-min.png';
-  i.style.display = 'none';
-  i.onload = function () {
-    setTimeout(() => {
-      i.remove();
-    });
-  };
-  document.body.appendChild(i);
-};
-
 export const removeHTML = (htmlStr: string): string => {
   return htmlStr.replace(/<(?:.|\n)*?>/gm, '')
 };

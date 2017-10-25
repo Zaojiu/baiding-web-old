@@ -628,12 +628,13 @@
 <script lang="ts">
   import Vue from 'vue';
   import { Component, Watch } from 'vue-property-decorator';
-  import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition, setTitle} from '../../shared/utils/utils';
+  import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition} from '../../shared/utils/utils';
   import {TalkCommentModel, TalkEmphasisModel, TalkInfoModel} from "../../shared/api/talk.model";
   import {getTalkInfo, listTalkComments, listTalkEmphasis, praise, unpraise, favorite, unfavorite} from '../../shared/api/talk.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
   import audioBar from '../../shared/audio-bar.comp.vue';
+  import {setTitle} from '../../shared/utils/title';
 
   const COMMENT_COUNT = 20;
 

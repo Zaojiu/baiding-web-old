@@ -95,6 +95,11 @@ export class MediaInfo {
 export class TargetInfo {
   targetId: string;
   targetType: ObjectType;
+
+  constructor(id: string, type: ObjectType) {
+    this.targetId = id;
+    this.targetType = type;
+  }
 }
 
 export class OnlineInfo {

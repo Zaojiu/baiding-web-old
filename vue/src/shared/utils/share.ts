@@ -1,15 +1,18 @@
 import {isInApp, isInWechat} from './utils';
-import {initWechat} from "./wechat";
-import {eventShare, SharePlatform} from "./analytics";
 import {callHandler, initIOS} from "./ios";
 import {showSharePopup} from "../../store/share";
+import {environment, host} from "../../env/environment";
+import {afterEach} from "../../hooks";
 
 declare const wx: any;
 
 let _title = '', _desc = '', _cover = '', _link = '';
 
 export const wechatSetShareInfo = async (title: string, desc: string, cover: string, link: string) => {
-  await initWechat();
+  _title = title;
+  _desc = desc;
+  _cover = cover;
+  _link = link;
 
   if (desc.length > 19) desc = `${desc.slice(0, 18)}...`;
 
@@ -18,7 +21,6 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      eventShare(SharePlatform.wechatTimeline);
     },
     cancel: () => {
     }
@@ -30,7 +32,6 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      eventShare(SharePlatform.wechatFriend);
     },
     cancel: () => {
     }
@@ -42,7 +43,6 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      eventShare(SharePlatform.qq);
     },
     cancel: () => {
     }
@@ -54,7 +54,6 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      eventShare(SharePlatform.weibo);
     },
     cancel: () => {
     }
@@ -66,13 +65,11 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      eventShare(SharePlatform.qzone);
     },
     cancel: () => {
     }
   })
 };
-
 
 export const iosSetShareInfo = async (title: string, desc: string, cover: string, link: string) => {
   _title = title;
@@ -131,3 +128,25 @@ if (isInWechat) {
 }
 
 export const share = _share;
+
+export const setDefaultShareInfo = (shareTitle?: string, shareDesc?: string, shareCover?: string, shareLink?: string, isInheritShareInfo?: boolean) => {
+  shareTitle = shareTitle || environment.config.name;
+  shareDesc = shareDesc || environment.config.slogan;
+  shareCover = shareCover || `${host.assets}/assets/img/zaojiu-logo.jpg`;
+  shareLink = shareLink || `${host.self}/lives`; // 默认分享首页地址
+
+  if (isInheritShareInfo && _title && _desc && _cover && _link) {
+    setShareInfo(_title, _desc, _cover, _link);
+  } else {
+    setShareInfo(shareTitle, shareDesc, shareCover, shareLink);
+  }
+};
+
+afterEach((to, from) => {
+  const shareTitle = to.meta.shareTitle;
+  const shareDesc = to.meta.shareDesc;
+  const shareCover = to.meta.shareCover;
+  const shareLink = to.meta.shareLink;
+  const isInheritShareInfo = !!to.meta.isInheritShareInfo;
+  setDefaultShareInfo(shareTitle, shareDesc, shareCover, shareLink, isInheritShareInfo);
+});

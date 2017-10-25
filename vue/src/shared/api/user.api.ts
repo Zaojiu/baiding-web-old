@@ -3,7 +3,7 @@ import {host} from '../../env/environment'
 import {UserDetailInfoModel, UserInfoModel, WechatSigninQrcodeModel} from './user.model'
 import {AxiosResponse} from "axios";
 import {Store} from "../utils/store";
-import router from '../../router';
+import {router} from '../../router';
 
 export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel> => {
   const url = `${host.io}/api/user`;

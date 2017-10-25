@@ -3,7 +3,7 @@ import {getUserInfo} from '../api/user.api'
 import {Route} from "vue-router";
 import {host} from "../../env/environment";
 import {getRelativePath, isInApp, isInWechat} from "../utils/utils";
-import router from "../../router";
+import {router} from "../../router";
 
 export const signinGuard = (redirectTo: string) => {
   return async (to: Route, from: Route): Promise<boolean> => {
