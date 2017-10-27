@@ -87,7 +87,7 @@
 <div class="live-room-alert-message" *ngIf="alertMessage && isAlertMessageShown">
   <div class="live-room-alert-message-container">
     <p class="live-room-alert-message-title">话题间参与须知</p>
-    <p class="live-room-alert-message-content">{{alertMessage}}</p>
+    <p class="live-room-alert-message-content" [innerHTML]="alertMessage"></p>
     <div class="close" (click)="closeAlert()"></div>
   </div>
 </div>

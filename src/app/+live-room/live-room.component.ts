@@ -14,7 +14,7 @@ import {MessageApiService} from "../shared/api/message/message.api";
 import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.model";
 import {UtilsService} from "../shared/utils/utils";
 import {appConfig, host} from "../../environments/environment";
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {TimelineComponent} from "./timeline/timeline.component";
 import {VideoService} from "../shared/video-player/video-player.service";
@@ -56,7 +56,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isAndroid = UtilsService.isAndroid;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
   private onlineService: OnlineService;
-  alertMessage: string;
+  alertMessage: SafeHtml;
   isAlertMessageShown = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
@@ -76,7 +76,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
     const alertMessageCache = StoreService.localStore.get('alertMessageCache') || {};
     if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
-      this.alertMessage = this.liveInfo.alertMessage;
+      this.alertMessage = this.sanitizer.bypassSecurityTrustHtml(this.liveInfo.alertMessage);
       this.isAlertMessageShown = true;
     }
 
