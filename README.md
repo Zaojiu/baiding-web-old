@@ -66,3 +66,24 @@ ps：如果没有安装 `node/npm` 那么也可以使用 `./hack/run.sh <command
 6. 如有表单，检查表单项验证逻辑。是否必填，必填为空，提交是否可通过（正向）。非必填项置空，提交是否可通过（反向）。
    
 以上测试，需要同时在ios、安卓、pc端同时进行。避免js、css、html兼容性问题。
+
+# 发布构建HACK
+
+zone.js包里面的geolocation在微信里面不兼容，需要注释掉
+
+```bash
+➜  zone.js git:(dev) grep -n patchPrototype **/*.js
+dist/zone.js:811:function patchPrototype(prototype, fnNames) {
+dist/zone.js:1602:    // patchPrototype(_global['navigator'].geolocation, ['getCurrentPosition', 'watchPosition']);
+```
+
+angular 构建时需要修复
+```
+➜  models git:(dev) ✗ grep 'url=false' **/*.js
+webpack-build-common.js:                { test: /\.font\.(js|json)$/, loader: "style!css?url=false!fontgen" }
+```
+
+以上修改需要同步到docker里面，比如
+```
+docker cp node_modules/angular-cli/models/webpack-build-common.js <docker id>:/root/zaojiu/baiding-web/node_modules/angular-cli/models/
+```
