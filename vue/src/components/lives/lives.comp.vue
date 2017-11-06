@@ -53,11 +53,15 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {scrollView} from '../../shared/scroll-view/scroll-view.directive';
   import {setDefaultShareInfo} from '../../shared/utils/share';
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {appConfig} from "../../env/environment";
+  import {LiveInfoModel} from "../../shared/api/lives.model";
+  import {listNow} from '../../shared/api/lives.api';
+
+  const LOAD_SIZE = 20;
 
   @Component({
     directives: {
@@ -65,33 +69,45 @@
     },
   })
   export default class LivesComponent extends Vue {
-//    lives: LiveInfoModel[] = [];
-//
-//
-//    created() {
-//      this.setShareInfo();
-//    }
-//
-//    setShareInfo() {
-//      let userInfo;
-//      try {
-//        userInfo = getUserInfoCache(false);
-//      } catch (e) {}
-//
-//      const shareTitle = `${userInfo ? userInfo.nick : '我'}正在使用${appConfig.name}，发现更多经验分享`
-//      setDefaultShareInfo(shareTitle);
-//    }
-//
-//    onTop() {
-//    }
-//
-//    onBottom() {
-//      if (this.livesList.length !== 0 && !this.isOnLatest) {
-//        let lastId = this.livesList[this.livesList.length - 1].id;
-//        this.getLists(lastId, this.loadSize).finally(() => {
-//          this.scroller.hideFootLoading();
-//        });
-//      }
-//    }
+    lives: LiveInfoModel[] = [];
+    isOnLatest = false;
+    isLoadingShown = false;
+
+    created() {
+      this.setShareInfo();
+    }
+
+    setShareInfo() {
+      let userInfo;
+      try {
+        userInfo = getUserInfoCache(false);
+      } catch (e) {}
+
+      const shareTitle = `${userInfo ? userInfo.nick : '我'}正在使用${appConfig.name}，发现更多经验分享`
+      setDefaultShareInfo(shareTitle);
+    }
+
+    async getLists(markerId: string, size: number): Promise<LiveInfoModel[]> {
+      const lives = await listNow(markerId, size + 1);
+
+      if (lives.length < size + 1) {
+        this.isOnLatest = true;
+      } else {
+        lives.pop();
+      }
+
+      this.lives.push(lives);
+
+      return lives;
+    }
+
+    async onBottom() {
+      if (this.lives.length !== 0 && !this.isOnLatest) {
+        let lastId = this.lives[this.lives.length - 1].id;
+        this.isLoadingShown = true;
+        await this.getLists(lastId, LOAD_SIZE);
+        this.isLoadingShown = false;
+      }
+    }
   }
 </script>

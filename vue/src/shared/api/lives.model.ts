@@ -1,5 +1,5 @@
 import {UserInfoModel} from "./user.model";
-import {Money} from "../utils/utils";
+import {Money, transformTime} from "../utils/utils";
 
 export enum LiveStatus {
   Null = 0,
@@ -232,6 +232,33 @@ export class LiveInfoModel {
 
   get isStreamDone(): boolean {
     return this.streamStatus === LiveStreamStatus.Done;
+  }
+
+  get relativeTime(): string {
+    let timePrased = '';
+
+    if (this.isCreated) {
+      const dayStr = moment(this.expectStartAt).calendar(moment(), {
+        sameDay: '[今天] HH:mm:ss',
+        nextDay: '[明天] HH:mm:ss',
+        nextWeek: 'YYYY-MM-DD HH:mm:ss',
+        lastDay: 'YYYY-MM-DD HH:mm:ss',
+        lastWeek: 'YYYY-MM-DD HH:mm:ss',
+        sameElse: 'YYYY-MM-DD HH:mm:ss'
+      });
+
+      timePrased = `开始时间 ${dayStr}`;
+    } else if (this.isStarted) {
+      const diffSec = moment(new Date().getTime()).diff(moment(this.expectStartAt)) / 1000;
+      const dayStr = transformTime(diffSec, 1);
+      timePrased = `已进行 ${dayStr}天${transformTime(diffSec, 2)}小时${transformTime(diffSec, 3)}分${transformTime(diffSec, 4)}秒`;
+    } else if (this.isClosed) {
+      timePrased = `已于${moment(this.closedAt).format('YYYY-MM-DD HH:mm:ss')}结束`;
+    } else {
+      timePrased = '未知状态';
+    }
+
+    return timePrased;
   }
 
   isAdmin(uid: number): boolean {

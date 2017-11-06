@@ -1,5 +1,6 @@
 import {host} from "../../env/environment";
 import {Position} from "vue-router/types/router";
+import {LiveInfoModel} from "../api/lives.model";
 
 declare const DocumentTouch: any;
 
@@ -186,4 +187,35 @@ export const readCookie = (name: string): string => {
     if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
   }
   return '';
+};
+
+export const transformTime = (durationSecond: number, index: number): string => {
+  let fixDigest = (num: string) => {
+    if (num.length === 1) return `0${num}`;
+    return num;
+  };
+
+  if (durationSecond <= 0) return '00';
+
+  // 适用格式 天：小时：分：秒
+  let d = Math.floor(durationSecond / (24 * 60 * 60));
+  let h = Math.floor(durationSecond % (24 * 60 * 60) / (60 * 60));
+  let m = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) / 60);
+  let s = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) % 60);
+
+  if (index === 1) return d ? fixDigest(d.toString()) : '';
+  if (index === 2) return fixDigest(h.toString());
+  if (index === 3) return fixDigest(m.toString());
+  if (index === 4) return fixDigest(s.toString());
+
+  // 适用格式 小时：分：秒
+  let _h = Math.floor(durationSecond / (60 * 60));
+  let _m = Math.floor(durationSecond % (60 * 60) / 60);
+  let _s = Math.floor(durationSecond % (60 * 60) % 60);
+
+  if (index === 5) return fixDigest(_h.toString());
+  if (index === 6) return fixDigest(_m.toString());
+  if (index === 7) return fixDigest(_s.toString());
+
+  return '无效时间';
 };
