@@ -1,0 +1,46 @@
+<div class="audio-bar">
+  <audio
+    #audio
+    class="audio"
+    preload="metadata"
+    [src]="audioUrl"
+    (playing)="isAudioPlaying = true"
+    (ended)="isAudioPlaying = false; resetProgressBar()"
+    (pause)="isAudioPlaying = false"
+    (canplay)="isAudioLoading = false;"
+    (waiting)="isAudioLoading = true"
+    (progress)="resetBuffer();"
+    (loadeddata)="isAudioLoading = false; resetBuffer();"
+    (loadstart)="isAudioLoading = true"
+    (loadedmetadata)="isAudioLoading = false; timeupdate();"
+    (timeupdate)="timeupdate()"
+    (seeking)="seeking = true"
+    (seeked)="seeked()"
+    (reset)="resetProgressBar()"
+  ></audio>
+  <div class="cover" (click)="togglePlay()">
+    <img [src]="audioCover" (error)="audioCover = '/assets/img/default-cover.jpg'" alt="封面">
+    <div class="loading" *ngIf="isAudioLoading"><circle-loading class="loading-icon"></circle-loading></div>
+    <i class="bi bi-pause" *ngIf="!isAudioLoading && isAudioPlaying"></i>
+    <i class="bi bi-play-fill" *ngIf="!isAudioLoading && !isAudioPlaying"></i>
+  </div>
+  <div class="bar">
+    <div class="background-image" [style]="{'background-image': 'url(' + audioCover + ')'}"></div>
+    <div class="duration">{{duration.format('mm:ss', {trim: false})}}</div>
+    <div
+      class="control"
+      #control
+      (mousedown)="mouseDown()"
+      (touchstart)="touchStart()"
+      (touchmove)="cursorMoveHandler()"
+      (touchend)="cursorUpHandler()"
+    >
+      <div class="background">
+        <div class="buffer" #buffer></div>
+        <div class="current" #current></div>
+        <div class="cursor" #cursor></div>
+      </div>
+    </div>
+    <div class="remain">-{{remain.format('mm:ss', {trim: false})}}</div>
+  </div>
+</div>

@@ -35,6 +35,8 @@ export class UtilsService {
   static isOnLargeScreen = matchMedia && matchMedia('(min-width: 1024px)').matches;
   static isChrome = /Chrome/i.test(navigator.userAgent);
   static isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
+  static hasMouseEvent = ('onmousedown' in document);
+
 
   static get isViewportLandscape(): boolean {
     return matchMedia && matchMedia('(orientation: landscape)').matches;
@@ -158,7 +160,7 @@ export class UtilsService {
     return timePrased;
   }
 
-  static  transform(durationSecond: number, index: number): string {
+  static transform(durationSecond: number, index: number): string {
     let fixDigest = (num: string) => {
       if (num.length === 1) return `0${num}`;
       return num;
@@ -188,6 +190,13 @@ export class UtilsService {
 
     return '无效时间';
   }
+
+  static parsePercent(percent: number): number {
+    if (percent > 1) percent = 1;
+    if (percent < 0) percent = 0;
+
+    return parseFloat(percent.toFixed(2));
+  };
 }
 
 export class Money {

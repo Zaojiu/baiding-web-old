@@ -1,0 +1,156 @@
+.audio-bar {
+  display: flex;
+  height: 44px;
+  user-select: none;
+
+  .cover {
+    flex-shrink: 0;
+    position: relative;
+    width: 44px;
+    height: 44px;
+
+    img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .loading {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, .3);
+
+      .loading-icon {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+      }
+    }
+
+    .bi-pause, .bi-play-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      color: $color-w;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, .3);
+
+      &:before {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+      }
+    }
+  }
+
+  .bar {
+    position: relative;
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+
+    .background-image {
+      position: absolute;
+      left: -50px;
+      right: -50px;
+      top: -50px;
+      bottom: -50px;
+      background-size: cover;
+      background-position: center;
+      filter: blur(40px);
+
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(10, 10, 10, .5);
+      }
+    }
+
+    .duration, .control, .remain {
+      position: relative;
+    }
+
+    .duration, .remain {
+      flex-shrink: 0;
+      font-size: 12px;
+      color: $color-w;
+      line-height: 44px;
+      text-align: center;
+    }
+
+    .duration {
+      margin-left: 10px;
+    }
+
+    .remain {
+      margin-right: 10px;
+    }
+
+    .control {
+      margin-left: 10px;
+      margin-right: 10px;
+      flex-grow: 1;
+
+      .background {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 3px;
+        transform: translateY(-50%);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        background-color: #d5d5d5;
+        cursor: pointer;
+      }
+
+      .buffer {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        background-color: #A8B4B3;
+        pointer-events: none;
+      }
+
+      .current {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        background-color: $color-brand;
+        pointer-events: none;
+      }
+
+      .cursor {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 8px;
+        height: 15px;
+        transform: translateX(-50%) translateY(-50%);
+        background-color: $color-w;
+        box-shadow: 0 0 2px rgba(0, 0, 0, .5);
+      }
+    }
+  }
+
+  .audio {
+    display: none;
+  }
+}
