@@ -54,6 +54,8 @@ declare interface TcPlayerVideo {
   el: TcPlayerVideoElement;
   playState: string;
   seekState: string;
+
+  pause(): void;
 }
 
 declare interface TcPlayerVideoSource {

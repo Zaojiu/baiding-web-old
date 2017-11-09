@@ -1,10 +1,9 @@
 .circle-loading {
   .bi-loading {
+    display: flex;
     overflow: hidden;
 
     &:before {
-      font-size: 28px;
-      color: $color-w;
       animation: loading-rotate 1.2s linear infinite;
     }
   }

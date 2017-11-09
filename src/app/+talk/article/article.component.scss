@@ -12,6 +12,7 @@
     &.sticky {
       position: sticky;
       top: 0;
+      z-index: 1;
     }
 
     &.mobile-landscape {
@@ -23,7 +24,7 @@
     &:before {
       content: "";
       display: block;
-      padding-top: 100%;
+      padding-top: 56.25%;
     }
 
     .download-tips {
@@ -90,15 +91,6 @@
       -webkit-box-pack: end; // for old ios browser
       pointer-events: none;
 
-      .mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, .4);
-      }
-
       .cover-image {
         position: absolute;
         top: 0;
@@ -108,55 +100,6 @@
         object-fit: cover;
         text-indent: -10000px;
         transition: opacity 2.5s;
-      }
-
-      h1 {
-        position: relative;
-        font-size: 26px;
-        line-height: 1.3em;
-        color: $color-w;
-        padding-left: 24px;
-        padding-right: 24px;
-        padding-bottom: 15px;
-        font-weight: normal;
-      }
-
-      .talk-info {
-        position: relative;
-        display: flex;
-        padding-left: 24px;
-        padding-right: 24px;
-        padding-bottom: 24px;
-        align-items: center;
-        overflow: hidden;
-
-        .publisher-info {
-          flex-grow: 1;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-
-          .avatar {
-            flex-shrink: 0;
-            margin-right: 6px;
-          }
-
-          .nick {
-            flex-grow: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-size: 16px;
-            color: $color-w;
-            line-height: 1em;
-          }
-        }
-
-        time {
-          font-size: 12px;
-          color: $color-w;
-          line-height: 1em;
-        }
       }
 
       .bi-play-fill {
@@ -182,9 +125,37 @@
     }
   }
 
+  .talk-info {
+    margin: 20px;
+
+    h1 {
+      font-size: $font-size-xxlg;
+      font-weight: bold;
+      line-height: 1.36em;
+      color: $color-dark-gray2;
+      margin-bottom: 10px;
+    }
+
+    time {
+      display: block;
+      font-size: $font-size-xsm;
+      color: $color-gray5;
+      line-height: 1em;
+    }
+  }
+
+  .single-player {
+    display: block;
+    margin: 20px;
+  }
+
   .article {
-    padding: 15px;
+    margin: 20px;
     text-align: justify;
+    
+    /deep/ *:first-child {
+      padding-top: 0;
+    }
   }
 
   .info {

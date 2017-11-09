@@ -4,36 +4,35 @@
     class="audio"
     preload="metadata"
     [src]="audioUrl"
-    (playing)="isAudioPlaying = true"
-    (ended)="isAudioPlaying = false; resetProgressBar()"
-    (pause)="isAudioPlaying = false"
-    (canplay)="isAudioLoading = false;"
-    (waiting)="isAudioLoading = true"
-    (progress)="resetBuffer();"
-    (loadeddata)="isAudioLoading = false; resetBuffer();"
-    (loadstart)="isAudioLoading = true"
-    (loadedmetadata)="isAudioLoading = false; timeupdate();"
-    (timeupdate)="timeupdate()"
-    (seeking)="seeking = true"
-    (seeked)="seeked()"
-    (reset)="resetProgressBar()"
+    (play)="isAudioPlaying = true; emitEvent($event.type, $event);"
+    (playing)="isAudioPlaying = true; emitEvent($event.type, $event);"
+    (ended)="isAudioPlaying = false; resetProgressBar(); emitEvent($event.type, $event);"
+    (pause)="isAudioPlaying = false; emitEvent($event.type, $event);"
+    (canplay)="isAudioLoading = false; emitEvent($event.type, $event);"
+    (waiting)="isAudioLoading = true; emitEvent($event.type, $event);"
+    (progress)="resetBuffer(); emitEvent($event.type, $event);"
+    (loadeddata)="isAudioLoading = false; resetBuffer(); emitEvent($event.type, $event);"
+    (loadstart)="isAudioLoading = true; emitEvent($event.type, $event);"
+    (loadedmetadata)="isAudioLoading = false; timeupdate(); emitEvent($event.type, $event);"
+    (timeupdate)="timeupdate(); emitEvent($event.type, $event);"
+    (seeking)="seeking = true; emitEvent($event.type, $event);"
+    (seeked)="seeked(); emitEvent($event.type, $event);"
+    (reset)="resetProgressBar(); emitEvent($event.type, $event);"
   ></audio>
-  <div class="cover" (click)="togglePlay()">
-    <img [src]="audioCover" (error)="audioCover = '/assets/img/default-cover.jpg'" alt="封面">
-    <div class="loading" *ngIf="isAudioLoading"><circle-loading class="loading-icon"></circle-loading></div>
+  <div class="play-btn" (click)="togglePlay()">
+    <circle-loading class="loading" *ngIf="isAudioLoading"></circle-loading>
     <i class="bi bi-pause" *ngIf="!isAudioLoading && isAudioPlaying"></i>
     <i class="bi bi-play-fill" *ngIf="!isAudioLoading && !isAudioPlaying"></i>
   </div>
   <div class="bar">
-    <div class="background-image" [style]="{'background-image': 'url(' + audioCover + ')'}"></div>
-    <div class="duration">{{duration.format('mm:ss', {trim: false})}}</div>
+    <!--<div class="duration">{{duration.format('mm:ss', {trim: false})}}</div>-->
     <div
       class="control"
       #control
-      (mousedown)="mouseDown()"
-      (touchstart)="touchStart()"
-      (touchmove)="cursorMoveHandler()"
-      (touchend)="cursorUpHandler()"
+      (mousedown)="mouseDown($event)"
+      (touchstart)="touchStart($event)"
+      (touchmove)="cursorMoveHandler($event)"
+      (touchend)="cursorUpHandler($event)"
     >
       <div class="background">
         <div class="buffer" #buffer></div>

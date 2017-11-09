@@ -1,4 +1,4 @@
-import {Input, OnInit, OnDestroy, ViewChild, ElementRef, Component} from '@angular/core';
+import {Input, OnInit, OnDestroy, ViewChild, ElementRef, Component, Output, EventEmitter} from '@angular/core';
 import {UtilsService} from '../utils/utils';
 
 @Component({
@@ -9,6 +9,7 @@ import {UtilsService} from '../utils/utils';
 export class SinglePlayerComponent implements OnInit, OnDestroy {
   @Input() audioUrl: string;
   @Input() audioCover: string;
+  @Output() event = new EventEmitter<{type: string, data: any}>();
   isAudioPlaying = false;
   isAudioLoading = false;
   duration = moment.duration(0);
@@ -30,19 +31,19 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (UtilsService.hasMouseEvent && !UtilsService.isiOS && !UtilsService.isAndroid) {
-      document.removeEventListener('mousemove', this.cursorMoveHandler, false);
-      document.removeEventListener('mouseup', this.cursorUpHandler, false);
+      document.removeEventListener('mousemove', this.cursorMoveHandler.bind(this), false);
+      document.removeEventListener('mouseup', this.cursorUpHandler.bind(this), false);
     }
   }
 
   initEvent() {
     if (UtilsService.hasMouseEvent && !UtilsService.isiOS && !UtilsService.isAndroid) {
-      document.addEventListener('mousemove', this.cursorMoveHandler, false);
+      document.addEventListener('mousemove', this.cursorMoveHandler.bind(this), false);
       document.addEventListener('mouseup', this.cursorUpHandler, false);
     }
   }
 
-  private backgroundDown(e: TouchEvent | MouseEvent) {
+  backgroundDown(e: TouchEvent | MouseEvent) {
     const controlEl = this.control.nativeElement as HTMLElement;
 
     let offsetX: number;
@@ -59,7 +60,7 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     this.resetCurrentTime(percent);
   }
 
-  private cursorDown(e: TouchEvent | MouseEvent) {
+  cursorDown(e: TouchEvent | MouseEvent) {
     const target = this.getTouchTarget(e as TouchEvent);
     const cursorEl = this.cursor.nativeElement as HTMLElement;
     this.mouseDownOrigin = (e instanceof MouseEvent) ? (e as MouseEvent).x : (target ? target.pageX : 0);
@@ -67,7 +68,7 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     this.isMouseDown = true;
   }
 
-  private cursorMove(e: TouchEvent | MouseEvent) {
+  cursorMove(e: TouchEvent | MouseEvent) {
     const target = this.getTouchTarget(e as TouchEvent);
     if (this.isMouseDown) {
       const mouseX = (e instanceof MouseEvent) ? (e as MouseEvent).x : (target ? target.pageX : 0);
@@ -77,7 +78,7 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private cursorUp(e: TouchEvent | MouseEvent) {
+  cursorUp(e: TouchEvent | MouseEvent) {
     const target = this.getTouchTarget(e as TouchEvent);
     if (this.isMouseDown) {
       const mouseX = (e instanceof MouseEvent) ? (e as MouseEvent).x : (target ? target.pageX : 0);
@@ -88,7 +89,7 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private caclulateOffsetX(eventX: number): number {
+  caclulateOffsetX(eventX: number): number {
     const controlEl = this.control.nativeElement as HTMLElement;
     const progressBarWidth = controlEl.getBoundingClientRect().width;
     let offsetX = eventX - this.mouseDownOrigin;
@@ -98,16 +99,7 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     return offsetX / progressBarWidth;
   }
 
-  resetCursor(percent: number) {
-    percent = UtilsService.parsePercent(percent);
-
-    const cursorEl = this.cursor.nativeElement as HTMLElement;
-    const currentEl = this.current.nativeElement as HTMLElement;
-    cursorEl.style.left = `${percent * 100}%`;
-    currentEl.style.width = `${percent * 100}%`;
-  }
-
-  private resetCurrentTime(percent: number) {
+  resetCurrentTime(percent: number) {
     percent = UtilsService.parsePercent(percent);
 
     const audioEl = this.audio.nativeElement as HTMLAudioElement;
@@ -117,7 +109,7 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getTouchTarget(e: TouchEvent): Touch|null {
+  getTouchTarget(e: TouchEvent): Touch|null {
     if (!e || !(e.touches && e.targetTouches && e.changedTouches)) return null;
 
     if (e.touches && e.touches.length) {
@@ -135,6 +127,15 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     return null;
   };
 
+  resetCursor(percent: number) {
+    percent = UtilsService.parsePercent(percent);
+
+    const cursorEl = this.cursor.nativeElement as HTMLElement;
+    const currentEl = this.current.nativeElement as HTMLElement;
+    cursorEl.style.left = `${percent * 100}%`;
+    currentEl.style.width = `${percent * 100}%`;
+  }
+
   resetBuffer() {
     const audioEl = this.audio.nativeElement as HTMLAudioElement;
     const bufferEl = this.buffer.nativeElement as HTMLElement;
@@ -148,7 +149,7 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
       const end = audioEl.buffered.end(lastBufferIndex);
       bufferEl.style.width = `${end / duration * 100}%`;
     }
-  };
+  }
 
   timeupdate() {
     if (!this.seeking) {
@@ -212,5 +213,9 @@ export class SinglePlayerComponent implements OnInit, OnDestroy {
     } else {
       audioEl.pause();
     }
+  }
+
+  emitEvent(type: string, data: any) {
+    this.event.emit({type: type, data: data});
   }
 }

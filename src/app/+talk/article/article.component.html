@@ -20,26 +20,28 @@
     <div class="live-cover" *ngIf="isVideoCoverShown">
       <img
         class="cover-image"
-        [src]="talkInfo.coverSmall11Url" alt="文章封面"
+        [src]="talkInfo.coverSmall169Url" alt="文章封面"
         (error)="resetDefaultBackground()"
       >
 
-      <div class="mask"></div>
-
       <i class="bi bi-play-fill" *ngIf="videoInfo && videoInfo.hasVideo"></i>
-
-      <div class="talk-info">
-        <div class="publisher-info">
-          <img class="avatar avatar-round avatar-md" *ngIf="talkInfo.userInfo" [src]="talkInfo.userInfo.avatar" alt="发布人头像">
-          <span class="nick" *ngIf="talkInfo.userInfo">{{talkInfo.userInfo.nick}}</span>
-        </div>
-
-        <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
-      </div>
-
-      <h1>{{talkInfo.subject}}</h1>
     </div>
   </header>
+
+  <div class="talk-info">
+    <h1>{{talkInfo.subject}}</h1>
+    <time>{{talkInfo.publishAt.format('YYYY年MM月DD日')}}</time>
+  </div>
+
+  <single-player
+    class="single-player"
+    [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen}"
+    #audioPlayer
+    *ngIf="talkInfo.media && talkInfo.media.mp3"
+    [audioCover]="talkInfo.coverSmall11Url"
+    [audioUrl]="talkInfo.media.mp3"
+    (event)="onAudioEvent($event)"
+  ></single-player>
 
   <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}" [innerHtml]="talkInfo.safeContent"></section>
 
