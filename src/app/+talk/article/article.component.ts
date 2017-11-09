@@ -56,7 +56,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isVideoCoverShown = true;
   liveObject: ObjectModel;
   isiOS = UtilsService.isiOS;
-  isDownloadTipsShow = true;
+  isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
