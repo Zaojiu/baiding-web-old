@@ -15,18 +15,9 @@
     ></video-player>
 
     <div class="live-cover" *ngIf="isVideoCoverShown">
-      <img [src]="liveInfo.coverSmallUrl" alt="话题间封面">
+      <live-cover [liveInfo]="liveInfo"></live-cover>
 
-      <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-      <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
-
-      <count-down
-        class="count-down"
-        [expectStartAt]="liveInfo.expectStartAt"
-        [countDownStatus]="liveInfo.isCreated()"
-      ></count-down>
-
-      <i class="bi bi-play-fill"></i>
+      <i class="bi bi-play-fill" *ngIf="!liveInfo.isCreated()"></i>
     </div>
   </div>
 </div>

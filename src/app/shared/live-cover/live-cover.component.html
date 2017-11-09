@@ -1,0 +1,9 @@
+<div class="cover-container">
+  <img class="cover" [src]="coverUrl" alt="话题间封面">
+  <div class="status">
+    <span class="live-status living" *ngIf="liveInfo.isStarted()">直播中</span>
+    <span class="live-status" *ngIf="liveInfo.isClosed()">已结束</span>
+    <span class="live-type text" *ngIf="liveInfo.isTypeText()" [ngClass]="{'living': liveInfo.isStarted()}">文字</span>
+  </div>
+  <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
+</div>

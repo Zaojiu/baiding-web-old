@@ -1,7 +1,5 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {LiveInfoModel} from '../../shared/api/live/live.model';
-import {UtilsService} from '../../shared/utils/utils';
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {Component, Input} from '@angular/core';
+import {LiveInfoModel} from '../api/live/live.model';
 
 @Component({
   selector: 'live-room-info-upper',
@@ -9,28 +7,9 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
   styleUrls: ['./live-room-info-upper.component.scss'],
 })
 
-export class LiveRoomInfoUpperComponent implements OnInit,OnDestroy {
-  liveId: string;
+export class LiveRoomInfoUpperComponent {
   @Input() liveInfo: LiveInfoModel;
-  timeNow = UtilsService.now.toString();
-  timer: any;
-  coverUrl: SafeUrl;
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor() {
   }
-
-  ngOnInit() {
-    this.timer = setInterval(()=> {
-      this.timeNow = UtilsService.now.toString();
-    }, 1000);
-
-    this.coverUrl = this.sanitizer.bypassSecurityTrustUrl(this.liveInfo.coverSmallUrl);
-  }
-
-  ngOnDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-  }
-
 }

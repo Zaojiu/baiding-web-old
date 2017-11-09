@@ -144,13 +144,13 @@ export class UtilsService {
         sameElse: 'YYYY-MM-DD HH:mm:ss'
       });
 
-      timePrased = `开始时间 ${dayStr}`;
+      timePrased = `将于 ${dayStr} 开始`;
     } else if (liveInfo.isStarted()) {
       let diffSec = moment(new Date().getTime()).diff(moment(liveInfo.expectStartAt)) / 1000;
       let dayStr = this.transform(diffSec, 1);
       timePrased = `已进行 ${dayStr}天${this.transform(diffSec, 2)}小时${this.transform(diffSec, 3)}分${this.transform(diffSec, 4)}秒`;
     } else if (liveInfo.isClosed()) {
-      timePrased = `已于${moment(liveInfo.closedAt).format('YYYY-MM-DD HH:mm:ss')}结束`;
+      timePrased = `已于 ${moment(liveInfo.closedAt).format('YYYY-MM-DD HH:mm:ss')} 结束`;
     } else {
       timePrased = '未知状态';
     }

@@ -1,64 +1,16 @@
-.info-status-wrapper-countdown {
-  display: inline-flex;
-  padding: 5px 5px 2px;
-  background-color: rgba(239, 239, 239, .9);
+.countdown {
+  display: flex;
+  justify-content: center;
+  padding: 9px;
+  font-size: $font-size-xsm;
+  color: $color-w;
+  background-color: rgba(51, 51, 51, .8);
 
-  .item {
-    position: relative;
+  .digital {
     display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    margin-left: 11px;
-
-    &:first-child {
-      margin-left: 0;
-
-      &:before, &:after {
-        display: none;
-      }
-    }
-
-    &:before, &:after {
-      position: absolute;
-      content: "";
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background-color: $color-b;
-      left: -7px;
-      top: 3px;
-    }
-
-    &:after {
-      top: 14px;
-    }
-
-    .time {
-      display: flex;
-      height: 20px;
-
-      .digital {
-        width: 14px;
-        height: 100%;
-        margin-left: 3px;
-        border-radius: 4px;
-        background-color: $color-b;
-        color: $color-w;
-        text-align: center;
-
-        &:first-child {
-          margin-left: 0;
-        }
-      }
-    }
-
-    .word {
-      text-align: center;
-      color: $color-dark-gray;
-      font-size: 12px;
-      transform: scale(.8);
-      line-height: 1em;
-    }
+    align-items: center;
+    margin: 0 6px;
+    color: $color-brand2;
   }
 }
 

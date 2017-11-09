@@ -1,32 +1,22 @@
-<div class="info-status-wrapper-countdown" *ngIf="countDownStatus && display && daysArr">
-  <div class="item">
-    <div class="time">
-      <div class="digital" *ngFor="let day of daysArr">{{day}}</div>
-    </div>
-    <div class="word">Days</div>
+<div class="countdown" *ngIf="countDownStatus && display && daysArr">
+  距直播开始
+  <div class="digital">
+    <span *ngFor="let day of daysArr">{{day}}</span>
   </div>
-
-  <div class="item">
-    <div class="time">
-      <div class="digital">{{hrs1}}</div>
-      <div class="digital">{{hrs2}}</div>
-    </div>
-    <div class="word">Hours</div>
+  天
+  <div class="digital">
+    <span>{{hrs1}}</span>
+    <span>{{hrs2}}</span>
   </div>
-
-  <div class="item">
-    <div class="time">
-      <div class="digital">{{mins1}}</div>
-      <div class="digital">{{mins2}}</div>
-    </div>
-    <div class="word">Mins</div>
+  小时
+  <div class="digital">
+    <span>{{mins1}}</span>
+    <span>{{mins2}}</span>
   </div>
-
-  <div class="item">
-    <div class="time">
-      <div class="digital">{{secs1}}</div>
-      <div class="digital">{{secs2}}</div>
-    </div>
-    <div class="word">Secs</div>
+  分
+  <div class="digital">
+    <span>{{secs1}}</span>
+    <span>{{secs2}}</span>
   </div>
+  秒
 </div>
