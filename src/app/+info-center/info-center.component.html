@@ -52,14 +52,7 @@
 
             <div class="live-desc">{{liveInfo.desc}}</div>
 
-            <div class="live-cover">
-              <img [src]="covers[liveInfo.id]" alt="">
-              <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-              <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
-              <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
-                          [countDownStatus]="liveInfo.isCreated()"></count-down>
-              <i class="bi bi-stamp" *ngIf="liveInfo.isVip(pageUserInfo.uid)"></i>
-            </div>
+            <live-cover class="live-cover" [liveInfo]="liveInfo"></live-cover>
 
             <div class="invited-people">
               <span class="vip-label">嘉宾</span>
@@ -146,13 +139,7 @@
 
             <div class="live-desc">{{liveInfo.desc}}</div>
 
-            <div class="live-cover">
-              <img [src]="covers[liveInfo.id]" alt="">
-              <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-              <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
-              <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
-                          [countDownStatus]="liveInfo.isCreated()"></count-down>
-            </div>
+            <live-cover class="live-cover" [liveInfo]="liveInfo"></live-cover>
 
             <div class="invited-people">
               <span class="vip-label">嘉宾</span>

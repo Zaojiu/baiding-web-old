@@ -14,6 +14,7 @@ import {CountDownModule} from "../shared/countdown/countdown.module";
 import {HamburgerMenuModule} from "../shared/hamburger-menu/hamburger-menu.module";
 import {FormModule} from "../shared/form/form.module";
 import {UserNickResolver} from "../shared/guard/title.resolver";
+import {LiveCoverModule} from "../shared/live-cover/live-cover.module";
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import {UserNickResolver} from "../shared/guard/title.resolver";
     LoadingModule,
     CountDownModule,
     HamburgerMenuModule,
+    LiveCoverModule,
   ],
   declarations: [
     InfoCenterComponent,

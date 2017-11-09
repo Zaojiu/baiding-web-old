@@ -1,24 +1,14 @@
 <div class="live-room-info-upper">
-  <div class="live-cover">
-    <img [src]="coverUrl" alt="">
-    <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt" [countDownStatus]="liveInfo.isCreated()"></count-down>
-  </div>
-
-  <div class="info-status-wrapper">
-    <div class="indicator living" *ngIf="liveInfo.isStarted()">进行中</div>
-    <div class="indicator closed" *ngIf="liveInfo.isClosed()">已结束</div>
-  </div>
+  <live-cover [liveInfo]="liveInfo"></live-cover>
 
   <div class="article">
+    <div class="title">{{liveInfo.subject}}</div>
 
     <div class="talent">
-      <img class="talent-avatar" [src]="liveInfo.admin.avatar" alt="">
-      <div class="talent-info">{{liveInfo.admin.nick}} / {{liveInfo.admin | role : liveInfo}}</div>
+      <img class="avatar avatar-sm avatar-round" [src]="liveInfo.admin.avatar" alt="支持人头像">
+      <div class="info">{{liveInfo.admin.nick}} / {{liveInfo.admin | role : liveInfo}}</div>
     </div>
-
-    <div class="title">{{liveInfo.subject}}</div>
 
     <div class="words">{{liveInfo.desc}}</div>
   </div>
-
 </div>
