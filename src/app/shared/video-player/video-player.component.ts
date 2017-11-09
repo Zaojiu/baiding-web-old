@@ -172,4 +172,8 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
 
     this.onEvents.emit(msg);
   }
+
+  pause() {
+    this.player.video.pause();
+  }
 }

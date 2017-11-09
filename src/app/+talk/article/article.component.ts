@@ -25,6 +25,7 @@ import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {ModalLink} from "../../shared/modal/modal.model";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ModalService} from "../../shared/modal/modal.service";
+import {SinglePlayerComponent} from "../../shared/audio-player/single-player.component";
 
 @Component({
   templateUrl: './article.component.html',
@@ -60,6 +61,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
+  @ViewChild('audioPlayer') audioPlayer: SinglePlayerComponent;
   private onlineService: OnlineService;
 
   constructor(private route: ActivatedRoute, private router: Router,
@@ -132,6 +134,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.talkInfo.coverUrl = `${host.assets}/assets/img/default-cover.jpg`;
     this.talkInfo.coverSmallUrl = `${host.assets}/assets/img/default-cover.jpg`;
     this.talkInfo.coverThumbnailUrl = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.cover11Url = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.coverSmall11Url = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.coverThumbnail11Url = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.cover169Url = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.coverSmall169Url = `${host.assets}/assets/img/default-cover.jpg`;
+    this.talkInfo.coverThumbnail169Url = `${host.assets}/assets/img/default-cover.jpg`;
   }
 
   ngOnDestroy() {
@@ -317,10 +325,22 @@ export class ArticleComponent implements OnInit, OnDestroy {
   onVideoEvent(e: TcPlayerOptionListenerMsg) {
     if (e.type === 'play' || e.type === 'error') {
       this.isVideoCoverShown = false;
+
+      if (this.audioPlayer && this.audioPlayer.isAudioPlaying) {
+        this.audioPlayer.togglePlay();
+      }
     }
 
     if (e.type === 'load' && this.videoOption.isAutoPlay) {
       this.isVideoCoverShown = false;
+    }
+  }
+
+  onAudioEvent(e: {type: string, data: any}) {
+    if (e.type === 'play') {
+      if (this.player && this.player.isPlaying()) {
+        this.player.pause();
+      }
     }
   }
 

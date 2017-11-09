@@ -1,0 +1,19 @@
+.circle-loading {
+  .bi-loading {
+    display: flex;
+    overflow: hidden;
+
+    &:before {
+      animation: loading-rotate 1.2s linear infinite;
+    }
+  }
+}
+
+@keyframes loading-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

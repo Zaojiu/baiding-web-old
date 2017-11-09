@@ -6,6 +6,7 @@ import {VideoPlayerModule} from "../../shared/video-player/video-player.module";
 import {LoadingModule} from "../../shared/bd-loading/bd-loading.module";
 import {RouterModule} from "@angular/router";
 import {ObjectService} from "../../shared/api/object/object.api";
+import {AudioPlayerModule} from "../../shared/audio-player/audio-player.module";
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import {ObjectService} from "../../shared/api/object/object.api";
     CommonModule,
     VideoPlayerModule,
     LoadingModule,
+    AudioPlayerModule,
   ],
   declarations: [
     ArticleComponent,
