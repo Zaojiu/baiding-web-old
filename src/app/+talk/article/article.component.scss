@@ -107,13 +107,14 @@
         left: 50%;
         top: 50%;
         transform: translateX(-50%) translateY(-50%);
-        font-size: 30px;
+        font-size: 20px;
         color: $color-w;
         pointer-events: none;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.7);
+        border: solid 2px $color-w;
         border-radius: 50%;
-        height: 70px;
-        width: 70px;
+        height: 60px;
+        width: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -152,7 +153,7 @@
   .article {
     margin: 20px;
     text-align: justify;
-    
+
     /deep/ *:first-child {
       padding-top: 0;
     }
