@@ -24,7 +24,7 @@
     <p class="tips">限量{{presentInfo.totalPresent}}个名额，{{!presentInfo.takenUsers.length ? '手快有' : presentInfo.takenUsers.length + '人已抢'}}</p>
     <div class="taken-users" *ngIf="presentInfo.takenUsers.length">
       <img
-        class="avatar avatar-round avatar-md"
+        class="avatar avatar-round avatar-35"
         *ngFor="let takenUser of presentInfo.takenUsers"
         [src]="takenUser.avatar"
         alt="头像"

@@ -150,6 +150,39 @@
     margin: 20px;
   }
 
+  .speaker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px 20px 20px;
+    padding: 20px;
+    border-radius: 8px;
+    border: solid 1px rgb(237, 237, 242);
+    background-color: rgb(250, 250, 250);
+
+    .avatar {
+      margin-top: -50px;
+      margin-bottom: 15px;
+    }
+
+    .name {
+      font-size: $font-size-xlg;
+      color: $color-dark-gray2;
+      font-weight: normal;
+      line-height: 1.3em;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .desc {
+      font-size: $font-size-sm;
+      color: $color-gray5;
+      line-height: 1.7em;
+      text-align: justify;
+      margin-bottom: -5px;
+    }
+  }
+
   .article {
     margin: 20px;
     text-align: justify;

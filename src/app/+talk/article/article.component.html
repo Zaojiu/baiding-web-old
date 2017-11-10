@@ -43,6 +43,12 @@
     (event)="onAudioEvent($event)"
   ></single-player>
 
+  <div class="speaker" *ngFor="let speaker of talkInfo.speaker">
+    <img class="avatar avatar-60 avatar-round" [src]="speaker.avatar" [alt]="speaker.name">
+    <strong class="name">{{speaker.name}}</strong>
+    <p class="desc">{{speaker.desc}}</p>
+  </div>
+
   <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}" [innerHtml]="talkInfo.safeContent"></section>
 
   <section class="info" *ngIf="talkInfo.categories.length || talkInfo.tags.length" [ngClass]="{hidden: !isOnScreen && isLandscape}">
@@ -72,7 +78,7 @@
     <div class="comment" *ngFor="let comment of comments">
       <div class="header">
         <div class="author-info">
-          <img class="avatar avatar-round avatar-sm" [src]="comment.user.avatar" alt="用户头像">
+          <img class="avatar avatar-round avatar-25" [src]="comment.user.avatar" alt="用户头像">
           <span class="nick">{{comment.user.nick}}</span>
           <time>{{comment.createdAt.format('YYYY年MM月DD日 HH:mm')}}</time>
         </div>
