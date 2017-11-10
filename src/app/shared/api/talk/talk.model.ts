@@ -46,14 +46,14 @@ export class TalkInfoSpeakerModel {
   id: string;
   uid: number;
   name: string;
-  title: string;
+  desc: string;
   avatar: string;
 
-  constructor(id = '', uid = 0, name = '', title = '', avatar = '') {
+  constructor(id = '', uid = 0, name = '', desc = '', avatar = '') {
     this.id = id;
     this.uid = uid;
     this.name = name;
-    this.title = title;
+    this.desc = desc;
     this.avatar = avatar;
   }
 }
