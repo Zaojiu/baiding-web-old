@@ -54,7 +54,7 @@
 
       .nick {
         margin-top: 5px;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-w;
         font-weight: bold;
       }
@@ -93,7 +93,7 @@
         right: 0;
         bottom: 0;
         text-align: center;
-        font-size: $font-size-xsm;
+        font-size: $font-size-12;
         color: $color-w;
         transform: scale(.78);
         line-height: 16px;
@@ -131,7 +131,7 @@
         padding-left: 15px;
         padding-bottom: 5px;
         border-bottom: solid 1px #aaaaaa;
-        font-size: $font-size-md;
+        font-size: $font-size-16;
         color: #16178c;
         line-height: 1em;
         white-space: nowrap;
@@ -145,7 +145,7 @@
         padding-top: 8px;
 
         .amount, .detail-link {
-          font-size: $font-size-xsm;
+          font-size: $font-size-12;
           color: #16178c;
         }
       }
@@ -153,7 +153,7 @@
       .desc {
         margin-top: 10px;
         padding-left: 15px;
-        font-size: $font-size-xsm;
+        font-size: $font-size-12;
         color: #666666;
         word-break: break-all;
         white-space: pre-wrap;
@@ -172,7 +172,7 @@
       align-items: center;
 
       .activate-link {
-        font-size: $font-size-xsm;
+        font-size: $font-size-12;
         color: #16178c;
       }
 
@@ -182,7 +182,7 @@
         height: 30px;
         line-height: 30px;
         color: #00ebd8;
-        font-size: $font-size-xsm;
+        font-size: $font-size-12;
         border-radius: 15px;
         padding: 0 20px;
         margin-top: 24px;
@@ -201,7 +201,7 @@
       }
 
       .intro-link {
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: #a4a4a7;
         transform: scale(.83333);
         margin-top: 40px;

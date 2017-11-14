@@ -76,7 +76,7 @@
 
       .subject {
         margin: 20px;
-        font-size: $font-size-xlg;
+        font-size: $font-size-20;
         color: $color-b;
         line-height: 1.25em;
         word-break: break-all;
@@ -84,7 +84,7 @@
 
       .desc {
         margin: 20px;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-dark-gray;
         line-height: 1.71em;
       }
@@ -101,14 +101,14 @@
         }
 
         .nick {
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
           font-weight: normal;
           color: $color-dark-gray;
           margin-bottom: 5px;
         }
 
         .title {
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           color: $color-gray3;
           line-height: 1.5em;
           word-break: break-all;
@@ -120,7 +120,7 @@
           margin: 0 auto;
           text-align: left;
           padding: 20px;
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           color: $color-dark-gray;
           line-height: 1.7em;
           word-break: break-all;
@@ -132,7 +132,7 @@
       .location {
         text-align: center;
         padding: 20px;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-dark-gray;
         box-shadow: none;
         margin-bottom: 0;
@@ -180,7 +180,7 @@
 
         .subject {
           flex-grow: 1;
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           color: $color-b;
           word-break: break-all;
           line-height: 1.5em;
@@ -202,7 +202,7 @@
         .item-name {
           .ticket {
             display: inline-block;
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-dark-gray;
             border: solid 1px $color-gray3;
             border-radius: 3px;
@@ -271,7 +271,7 @@
               width: 60px;
               border: solid 1px $color-gray3;
               border-radius: 3px;
-              font-size: $font-size-lg;
+              font-size: $font-size-18;
               color: $color-dark-gray;
               padding: 5px;
             }
@@ -289,7 +289,7 @@
         height: 28px;
         margin-top: 23px;
         margin-bottom: 27px;
-        font-size: $font-size-xlg;
+        font-size: $font-size-20;
         text-align: right;
       }
     }

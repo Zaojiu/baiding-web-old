@@ -31,7 +31,7 @@
           <div class="talk-info">
             <div class="author-info">
               <img
-                class="avatar avatar-round avatar-sm"
+                class="avatar avatar-round avatar-25"
                 :src="itemInfo.column.speaker && itemInfo.column.speaker.coverUrl || '/assets/img/zaojiu-logo.jpg'"
                 alt="发布人头像"
               >
@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <audio-bar class="audio-bar" v-if="itemInfo.current.isTypeAudio" :audioUrl="itemInfo.current.audioUrl" :audioCover="itemInfo.current.cover11Url"></audio-bar>
+        <audio-bar class="audio-bar" v-if="itemInfo.current.isTypeAudio" :audioUrl="itemInfo.current.audioUrl"></audio-bar>
 
         <div class="article article-content" v-html="itemInfo.current.content"></div>
 
@@ -72,7 +72,7 @@
           <!--<div class="comment" v-for="comment in comments" :key="comment.id">-->
             <!--<div class="header" v-once>-->
               <!--<div class="author-info">-->
-                <!--<img class="avatar avatar-round avatar-sm" :src="comment.user.avatar" alt="用户头像">-->
+                <!--<img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">-->
                 <!--<span class="nick">{{comment.user.nick}}</span>-->
                 <!--<time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>-->
               <!--</div>-->
@@ -387,13 +387,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: $font-size-lg;
+            font-size: $font-size-18;
             color: $color-w;
           }
         }
 
         .item-title {
-          font-size: $font-size-md;
+          font-size: $font-size-16;
           color: $color-gray3;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -523,7 +523,7 @@
 
       .icon {
         line-height: 1em;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-w;
         display: flex;
         align-items: center;
@@ -546,15 +546,15 @@
         }
 
         .bi-praise {
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
         }
 
         .bi-favorite {
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
         }
 
         .bi-comment2 {
-          font-size: $font-size-md;
+          font-size: $font-size-16;
         }
       }
 

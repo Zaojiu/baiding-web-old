@@ -143,7 +143,7 @@
       justify-content: space-between;
 
       a {
-        font-size: $font-size-xxlg;
+        font-size: $font-size-24;
         color: $color-gray3;
         line-height: 1em;
         text-decoration: none;
@@ -203,7 +203,7 @@
           top: 0;
           color: $color-brand;
           text-decoration: none;
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           padding: 24px 0 8px;
 
           &.disabled {
@@ -225,7 +225,7 @@
       h2 {
         position: relative;
         color: $color-dark-gray;
-        font-size: $font-size-lg;
+        font-size: $font-size-18;
         text-align: center;
         font-weight: normal;
 
@@ -257,7 +257,7 @@
           align-items: center;
           margin-top: 30px;
           color: $color-gray3;
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
 
           .bi-wechat {
             font-size: 50px;
@@ -302,7 +302,7 @@
         align-items: center;
         opacity: 0;
         transition: opacity .3s;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-gray;
 
         &.show {
@@ -316,7 +316,7 @@
 
       .retry {
         white-space: nowrap;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-dark-gray;
 
         a {

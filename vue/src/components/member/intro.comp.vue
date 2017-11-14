@@ -99,7 +99,7 @@
         }
 
         .title, ol {
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           color: $color-w;
         }
 
@@ -124,7 +124,7 @@
       line-height: 53px;
       background-color: #16178c;
       color: #01dfd3;
-      font-size: $font-size-sm;
+      font-size: $font-size-14;
       font-weight: bold;
 
       &:before {

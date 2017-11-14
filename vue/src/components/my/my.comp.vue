@@ -44,7 +44,7 @@
 
     .nick {
       color: $color-dark-gray;
-      font-size: $font-size-md;
+      font-size: $font-size-16;
       text-align: center;
       margin: 15px 0 40px;
     }

@@ -34,7 +34,7 @@
       }
 
       .tips {
-        font-size: $font-size-md;
+        font-size: $font-size-16;
         color: $color-dark-gray;
         margin-top: 15px;
         line-height: 1.5em;

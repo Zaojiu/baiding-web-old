@@ -5,29 +5,28 @@
       ref="audio"
       :src="audioUrl"
       preload="metadata"
-      @playing="isAudioPlaying = true"
-      @ended="isAudioPlaying = false; resetProgressBar()"
-      @pause="isAudioPlaying = false"
-      @canplay="isAudioLoading = false;"
-      @waiting="isAudioLoading = true"
-      @progress="resetBuffer();"
-      @loadeddata="isAudioLoading = false; resetBuffer();"
-      @loadstart="isAudioLoading = true"
-      @loadedmetadata="isAudioLoading = false; timeupdate();"
-      @timeupdate="timeupdate()"
-      @seeking="seeking = true"
-      @seeked="seeked()"
-      @reset="resetProgressBar()"
+      @play="isAudioPlaying = true; $emit($event.type, $event)"
+      @playing="isAudioPlaying = true; $emit($event.type, $event)"
+      @ended="isAudioPlaying = false; resetProgressBar(); $emit($event.type, $event)"
+      @pause="isAudioPlaying = false; $emit($event.type, $event)"
+      @canplay="isAudioLoading = false; $emit($event.type, $event)"
+      @waiting="isAudioLoading = true; $emit($event.type, $event)"
+      @progress="resetBuffer(); $emit($event.type, $event)"
+      @loadeddata="isAudioLoading = false; resetBuffer(); $emit($event.type, $event)"
+      @loadstart="isAudioLoading = true; $emit($event.type, $event)"
+      @loadedmetadata="isAudioLoading = false; timeupdate(); $emit($event.type, $event)"
+      @timeupdate="timeupdate(); $emit($event.type, $event)"
+      @seeking="seeking = true; $emit($event.type, $event)"
+      @seeked="seeked(); $emit($event.type, $event)"
+      @reset="resetProgressBar(); $emit($event.type, $event)"
     ></audio>
-    <div class="cover" @click="togglePlay">
-      <img :src="audioCover" @error="audioCover = '/assets/img/default-cover.jpg'" alt="封面">
-      <div class="loading" v-if="isAudioLoading"><circle-loading class="loading-icon"></circle-loading></div>
+    <div class="play-btn" @click="togglePlay">
+      <circle-loading class="loading" v-if="isAudioLoading"></circle-loading>
       <i class="bi bi-pause" v-else-if="isAudioPlaying"></i>
       <i class="bi bi-play-fill" v-else></i>
     </div>
     <div class="bar">
-      <div class="background-image" :style="{'background-image': 'url(' + audioCover + ')'}"></div>
-      <div class="duration">{{duration.format('mm:ss', {trim: false})}}</div>
+      <!--<div class="duration">{{duration.format('mm:ss', {trim: false})}}</div>-->
       <div
         class="control"
         ref="control"
@@ -50,56 +49,36 @@
 <style lang="scss" scoped>
   .audio-bar {
     display: flex;
-    height: 44px;
+    height: 56px;
+    border-radius: 8px;
+    border: solid 1px rgb(237, 237, 242);
+    background-color: rgb(250, 250, 250);
     user-select: none;
 
-    .cover {
+    .play-btn {
       flex-shrink: 0;
       position: relative;
-      width: 44px;
-      height: 44px;
-
-      img {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-      }
+      width: 36px;
+      height: 36px;
+      margin: 10px;
+      background-color: $color-brand2;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       .loading {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, .3);
-
-        .loading-icon {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translateX(-50%) translateY(-50%);
-        }
+        font-size: 19px;
+        color: $color-w;
       }
 
       .bi-pause, .bi-play-fill {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
+        font-size: 12px;
         color: $color-w;
-        font-size: 18px;
-        background-color: rgba(0, 0, 0, .3);
+      }
 
-        &:before {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translateX(-50%) translateY(-50%);
-        }
+      .bi-play-fill {
+        margin-left: 2px;
       }
     }
 
@@ -109,27 +88,6 @@
       overflow: hidden;
       display: flex;
 
-      .background-image {
-        position: absolute;
-        left: -50px;
-        right: -50px;
-        top: -50px;
-        bottom: -50px;
-        background-size: cover;
-        background-position: center;
-        filter: blur(40px);
-
-        &:before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(10, 10, 10, .5);
-        }
-      }
-
       .duration, .control, .remain {
         position: relative;
       }
@@ -137,8 +95,8 @@
       .duration, .remain {
         flex-shrink: 0;
         font-size: 12px;
-        color: $color-w;
-        line-height: 44px;
+        color: $color-gray6;
+        line-height: 54px;
         text-align: center;
       }
 
@@ -161,9 +119,10 @@
           right: 0;
           top: 50%;
           height: 3px;
+          border-radius: 2px;
           transform: translateY(-50%);
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-          background-color: #d5d5d5;
+          background-color: rgb(216, 216, 216);
           cursor: pointer;
         }
 
@@ -183,7 +142,7 @@
           bottom: 0;
           left: 0;
           width: 0;
-          background-color: $color-brand;
+          background-color: $color-brand2;
           pointer-events: none;
         }
 
@@ -191,11 +150,12 @@
           position: absolute;
           left: 0;
           top: 50%;
-          width: 8px;
-          height: 15px;
-          transform: translateX(-50%) translateY(-50%);
+          width: 16px;
+          height: 16px;
+          transform: translateX(-50%) translateY(-51%);
           background-color: $color-w;
-          box-shadow: 0 0 2px rgba(0, 0, 0, .5);
+          border-radius: 50%;
+          box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
         }
       }
     }
@@ -213,14 +173,13 @@
   import {hasMouseEvent, parsePercent, isiOS, isAndroid} from './utils/utils';
 
   @Component({
-    props: ['audioUrl', 'audioCover'],
+    props: ['audioUrl'],
     components: {
       circleLoading: circleLoading,
     },
   })
   export default class AudioBarComponent extends Vue {
     audioUrl: string;
-    audioCover: string;
     isAudioPlaying = false;
     isAudioLoading = false;
     duration = moment.duration(0);
@@ -319,7 +278,7 @@
 
       const audioEl = this.$refs['audio'] as HTMLAudioElement;
 
-      if (audioEl.duration) {
+      if (audioEl && audioEl.duration) {
         audioEl.currentTime = audioEl.duration * percent;
       }
     }
@@ -344,6 +303,9 @@
 
     resetBuffer() {
       const audioEl = this.$refs['audio'] as HTMLAudioElement;
+
+      if (!audioEl) return;
+
       const bufferEl = this.$refs['buffer'] as HTMLElement;
       const lastBufferIndex = audioEl.buffered.length - 1;
       const duration = audioEl.duration;
@@ -360,6 +322,8 @@
     timeupdate() {
       if (!this.seeking) {
         const audioEl = this.$refs['audio'] as HTMLAudioElement;
+
+        if (!audioEl) return;
 
         this.isAudioLoading = false;
         this.duration = moment.duration(audioEl.duration * 1000);
@@ -413,6 +377,8 @@
 
     togglePlay() {
       const audioEl = this.$refs['audio'] as HTMLAudioElement;
+
+      if (!audioEl) return;
 
       if (audioEl.paused) {
         audioEl.play();

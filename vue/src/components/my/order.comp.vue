@@ -63,14 +63,14 @@
 
           .order-no {
             flex-grow: 1;
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-dark-gray;
             white-space: nowrap;
           }
 
           .order-status {
             flex-shrink: 0;
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-gray3;
 
             &.success {
@@ -98,7 +98,7 @@
 
           .title {
             color: $color-dark-gray;
-            font-size: $font-size-lg;
+            font-size: $font-size-18;
             word-break: break-all;
             white-space: pre-wrap;
             text-overflow: ellipsis;
@@ -111,7 +111,7 @@
 
           .desc {
             color: $color-gray3;
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             word-break: break-all;
             white-space: pre-wrap;
             line-height: 1.5em;
@@ -131,12 +131,12 @@
 
               .fee {
                 color: $color-danger;
-                font-size: $font-size-lg;
+                font-size: $font-size-18;
               }
 
               .price {
                 color: $color-gray3;
-                font-size: $font-size-sm;
+                font-size: $font-size-14;
                 text-decoration: line-through;
                 padding-left: 5px;
               }
@@ -145,7 +145,7 @@
             .amount {
               flex-shrink: 0;
               color: $color-gray3;
-              font-size: $font-size-sm;
+              font-size: $font-size-14;
             }
           }
         }

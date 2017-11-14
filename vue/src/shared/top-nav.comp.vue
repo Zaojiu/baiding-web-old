@@ -25,7 +25,7 @@
     .link {
       display: flex;
       align-items: center;
-      font-size: $font-size-sm;
+      font-size: $font-size-14;
       color: $color-dark-gray;
 
       .avatar {

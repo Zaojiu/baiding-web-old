@@ -102,7 +102,7 @@
           top: 0;
           color: $color-brand;
           text-decoration: none;
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           padding: 24px 0 8px;
 
           &.disabled {

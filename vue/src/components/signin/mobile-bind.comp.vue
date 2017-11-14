@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-bind-container">
     <section class="user-section">
-      <img class="avatar-lg avatar-round" :src="userInfo.avatar" alt="头像">
+      <img class="avatar-45 avatar-round" :src="userInfo.avatar" alt="头像">
       <div class="nick">{{userInfo.nick}}</div>
     </section>
 
@@ -135,7 +135,7 @@
       border-bottom: solid 10px #f8f8f8;
 
       h2 {
-        font-size: $font-size-lg;
+        font-size: $font-size-18;
         color: $color-dark-gray;
         text-align: center;
         line-height: 1em;
@@ -165,7 +165,7 @@
 
     .nick {
       margin-top: 10px;
-      font-size: $font-size-xlg;
+      font-size: $font-size-20;
       color: $color-dark-gray;
     }
 
@@ -188,7 +188,7 @@
         top: 0;
         color: $color-brand;
         text-decoration: none;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         padding: 24px 0 8px;
 
         &.disabled {
