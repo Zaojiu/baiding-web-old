@@ -137,7 +137,7 @@
           }
 
           .result {
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-gray3;
             padding: 0 20px;
             word-break: break-all;

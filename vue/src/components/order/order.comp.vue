@@ -154,7 +154,7 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
     .invalid-order {
-      font-size: $font-size-md;
+      font-size: $font-size-16;
       color: $color-gray3;
     }
 
@@ -197,7 +197,7 @@
             font-weight: bold;
 
             &.title-small {
-              font-size: $font-size-sm;
+              font-size: $font-size-14;
             }
           }
 
@@ -216,7 +216,7 @@
         background-color: $color-gray4;
         color: $color-dark-gray;
         text-align: center;
-        font-size: $font-size-md;
+        font-size: $font-size-16;
 
         .status-success {
           color: #3da838;
@@ -246,7 +246,7 @@
 
         .title {
           color: $color-dark-gray;
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
           word-break: break-all;
           white-space: pre-wrap;
           text-overflow: ellipsis;
@@ -259,7 +259,7 @@
 
         .desc {
           color: $color-gray3;
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           word-break: break-all;
           white-space: pre-wrap;
           line-height: 1.5em;
@@ -279,12 +279,12 @@
 
             .fee {
               color: $color-danger;
-              font-size: $font-size-lg;
+              font-size: $font-size-18;
             }
 
             .price {
               color: $color-gray3;
-              font-size: $font-size-sm;
+              font-size: $font-size-14;
               text-decoration: line-through;
               padding-left: 5px;
             }
@@ -293,7 +293,7 @@
           .amount {
             flex-shrink: 0;
             color: $color-gray3;
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
           }
         }
       }
@@ -301,7 +301,7 @@
       .no-record {
         justify-content: center;
         color: $color-gray3;
-        font-size: $font-size-md;
+        font-size: $font-size-16;
       }
 
       .discount {
@@ -328,7 +328,7 @@
           line-height: 60px;
           padding: 0 20px;
           color: $color-w;
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
           font-weight: bold;
         }
 
@@ -371,7 +371,7 @@
         .row {
           display: flex;
           align-items: center;
-          font-size: $font-size-md;
+          font-size: $font-size-16;
           color: $color-dark-gray;
           padding: 10px 0;
           border-bottom: solid 1px $color-gray4;

@@ -76,7 +76,7 @@
       }
 
       h1 {
-        font-size: $font-size-xsm;
+        font-size: $font-size-12;
         color: #16178c;
         margin-top: 10px;
         text-align: center;
@@ -89,7 +89,7 @@
         background-color: #16178c;
 
         &, h2 {
-          font-size: $font-size-xsm;
+          font-size: $font-size-12;
           color: $color-w;
         }
 
@@ -136,7 +136,7 @@
             }
 
             small {
-              font-size: $font-size-xsm;
+              font-size: $font-size-12;
               color: $color-w;
               margin-top: 2px;
               transform: scale(.9);
@@ -200,7 +200,7 @@
         display: block;
         margin-top: 44px;
         text-align: center;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: #a4a4a7;
         transform: scale(.83333);
       }

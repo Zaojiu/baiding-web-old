@@ -79,7 +79,7 @@
         padding-left: 15px;
 
         .subject {
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           color: $color-b;
           word-break: break-all;
           white-space: pre-wrap;
@@ -99,7 +99,7 @@
 
           .type {
             flex-shrink: 0;
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-dark-gray;
             border-radius: 5px;
             padding: 4px 10px;
@@ -109,14 +109,14 @@
           }
 
           .time {
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-gray3;
           }
         }
 
         .amount {
           line-height: 1em;
-          font-size: $font-size-md;
+          font-size: $font-size-16;
           color: $color-dark-gray;
         }
       }
@@ -134,7 +134,7 @@
         margin-bottom: 12px;
 
         .status {
-          font-size: $font-size-md;
+          font-size: $font-size-16;
           font-weight: bold;
 
           &.unused {
@@ -147,7 +147,7 @@
         }
 
         .tips {
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           color: $color-b;
           font-weight: bold;
         }
@@ -156,7 +156,7 @@
       ul {
         li {
           list-style: none;
-          font-size: $font-size-md;
+          font-size: $font-size-16;
           line-height: 1.3em;
           margin-top: 8px;
 

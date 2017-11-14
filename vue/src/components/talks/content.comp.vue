@@ -37,25 +37,27 @@
         <div class="tab-content-inner"
              :class="{'tab-one-active': tabIndex === 0, 'tab-two-active': tabIndex === 1}">
           <div class="tab-content">
-            <section class="title">
+            <section class="talk-info">
               <div class="categories" v-if="formatedCategories">{{formatedCategories}}</div>
               <h1>{{talkInfo.subject}}</h1>
-              <div class="talk-info">
-                <div class="author-info">
-                  <img
-                    class="avatar avatar-round avatar-sm"
-                    :src="talkInfo.userInfo && talkInfo.userInfo.avatar || '/assets/img/zaojiu-logo.jpg'"
-                    alt="发布人头像"
-                  >
-                  <span class="nick">{{talkInfo.userInfo && talkInfo.userInfo.nick ? talkInfo.userInfo.nick : '造就'}}</span>
-                </div>
-
-                <time>{{talkInfo.publishAtParsed.format('YYYY年MM月DD日')}}</time>
-              </div>
+              <time>{{talkInfo.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </section>
 
-            <section class="article article-content"
-                     v-html="talkInfo.content" v-once></section>
+            <audio-bar
+              class="audio-bar"
+              ref="audioPlayer"
+              v-if="talkInfo.media && talkInfo.media.mp3"
+              :audioUrl="talkInfo.media.mp3"
+              @play="onAudioEvent($event)"
+            ></audio-bar>
+
+            <div class="speaker" v-for="speaker in talkInfo.speaker">
+              <img class="avatar avatar-60 avatar-round" :src="speaker.avatar" :alt="speaker.name">
+              <strong class="name">{{speaker.name}}</strong>
+              <p class="desc">{{speaker.desc}}</p>
+            </div>
+
+            <section class="article article-content" v-html="talkInfo.content" v-once></section>
 
             <section class="info" v-if="talkInfo.tags && talkInfo.tags.length">
               <div class="tags">
@@ -70,7 +72,7 @@
                 <div class="comment" v-for="comment in comments" :key="comment.id">
                   <div class="header" v-once>
                     <div class="author-info">
-                      <img class="avatar avatar-round avatar-sm" :src="comment.user.avatar" alt="用户头像">
+                      <img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">
                       <span class="nick">{{comment.user.nick}}</span>
                       <time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>
                     </div>
@@ -252,7 +254,7 @@
         align-items: center;
         justify-content: center;
         color: $color-gray3;
-        font-size: $font-size-md;
+        font-size: $font-size-16;
 
         &.active {
           color: $color-dark-gray;
@@ -295,8 +297,12 @@
       }
     }
 
-    .title {
-      padding: 20px 15px 0px 15px;
+    .audio-bar {
+      margin: 20px;
+    }
+
+    .talk-info {
+      margin: 20px;
 
       .categories {
         margin-bottom: 15px;
@@ -306,47 +312,51 @@
       }
 
       h1 {
-        font-size: 24px;
-        line-height: 1.25em;
-        color: $color-b;
-        padding-bottom: 15px;
-        font-weight: 500;
-        word-break: break-all;
+        font-size: $font-size-22;
+        font-weight: bold;
+        line-height: 1.36em;
+        color: $color-dark-gray2;
+        margin-bottom: 10px;
       }
 
-      .talk-info {
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        margin-bottom: 24px;
+      time {
+        display: block;
+        font-size: $font-size-12;
+        color: $color-gray6;
+        line-height: 1em;
+      }
+    }
 
-        .author-info {
-          flex-grow: 1;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
+    .speaker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 50px 20px 20px;
+      padding: 20px;
+      border-radius: 8px;
+      border: solid 1px rgb(237, 237, 242);
+      background-color: rgb(250, 250, 250);
 
-          .avatar {
-            flex-shrink: 0;
-            margin-right: 5px;
-          }
+      .avatar {
+        margin-top: -50px;
+        margin-bottom: 15px;
+      }
 
-          .nick {
-            flex-grow: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-size: 16px;
-            color: $color-dark-gray;
-            line-height: 1em;
-          }
-        }
+      .name {
+        font-size: $font-size-20;
+        color: $color-dark-gray2;
+        font-weight: normal;
+        line-height: 1.3em;
+        text-align: center;
+        margin-bottom: 5px;
+      }
 
-        time {
-          font-size: 14px;
-          color: rgb(144, 144, 144);
-          line-height: 1em;
-        }
+      .desc {
+        font-size: $font-size-14;
+        color: $color-gray6;
+        line-height: 1.7em;
+        text-align: justify;
+        margin-bottom: -5px;
       }
     }
 
@@ -528,14 +538,14 @@
       }
 
       .start {
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-gray3;
         font-weight: bold;
         margin-bottom: 10px;
       }
 
       .text {
-        font-size: $font-size-md;
+        font-size: $font-size-16;
         color: $color-gray3;
         word-break: break-all;
         white-space: pre-wrap;
@@ -569,7 +579,7 @@
 
       .icon {
         line-height: 1em;
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-w;
         display: flex;
         align-items: center;
@@ -592,15 +602,15 @@
         }
 
         .bi-praise {
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
         }
 
         .bi-favorite {
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
         }
 
         .bi-comment2 {
-          font-size: $font-size-md;
+          font-size: $font-size-16;
         }
       }
 
@@ -623,12 +633,14 @@
   import {getTalkInfo, listTalkComments, listTalkEmphasis, praise, unpraise, favorite, unfavorite} from '../../shared/api/talk.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
+  import audioBar from '../../shared/audio-bar.comp.vue';
 
   const COMMENT_COUNT = 20;
 
   @Component({
     components: {
       appDownloadTips: appDownloadTips,
+      audioBar: audioBar,
     }
   })
   export default class ContentComponent extends Vue {
@@ -762,6 +774,8 @@
         this.player.event$.subscribe((e: PlayerEvent) => {
           switch (e.type) {
             case 'play':
+              (this.$refs['audioPlayer'] as any).togglePlay();
+              break;
             case 'error':
               this.isVideoPlayed = true;
               break;
@@ -832,6 +846,10 @@
         this.player.video.el.currentTime = startTime;
         if (this.player.video.el.paused) this.player.video.el.play();
       }
+    }
+
+    onAudioEvent() {
+      this.player.video.el.pause();
     }
   }
 </script>

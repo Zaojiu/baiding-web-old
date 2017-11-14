@@ -14,7 +14,7 @@
         <h1 class="title">{{columnInfo.subject}}</h1>
         <p class="period">共{{columnInfo.totalVol}}期</p>
         <div class="info">
-          <img class="avatar avatar-round avatar-lg" :src="columnInfo.speaker.coverUrl" alt="嘉宾头像">
+          <img class="avatar avatar-round avatar-45" :src="columnInfo.speaker.coverUrl" alt="嘉宾头像">
           <div class="intro">
             <strong class="nick">{{columnInfo.speaker.subject}}</strong>
             <p class="content">{{columnInfo.speaker.title}}</p>
@@ -102,14 +102,14 @@
         margin-bottom: 15px;
 
         h2 {
-          font-size: $font-size-lg;
+          font-size: $font-size-18;
           color: $color-dark-gray;
           font-weight: normal;
         }
 
         a, span {
           flex-shrink: 0;
-          font-size: $font-size-sm;
+          font-size: $font-size-14;
           color: $color-dark-gray;
         }
 
@@ -125,14 +125,14 @@
 
     header {
       .title {
-        font-size: $font-size-xxlg;
+        font-size: $font-size-24;
         color: $color-dark-gray;
         line-height: 1.25em;
         margin-bottom: 15px;
       }
 
       .period {
-        font-size: $font-size-sm;
+        font-size: $font-size-14;
         color: $color-gray3;
         margin-bottom: 20px;
       }
@@ -148,13 +148,13 @@
         .intro {
           .nick {
             display: block;
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-dark-gray;
             margin-bottom: 5px;
           }
 
           .content {
-            font-size: $font-size-sm;
+            font-size: $font-size-14;
             color: $color-gray3;
             line-height: 1.57em;
             word-break: break-all;
@@ -167,7 +167,7 @@
 
     .columns-intro {
       .intro {
-        font-size: $font-size-md;
+        font-size: $font-size-16;
         color: $color-gray3;
         line-height: 1.75em;
         max-height: 100000px;
@@ -238,7 +238,7 @@
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              font-size: $font-size-md;
+              font-size: $font-size-16;
               color: $color-dark-gray;
               margin-bottom: 5px;
             }
@@ -252,7 +252,7 @@
               white-space: pre-wrap;
               text-align: justify;
               line-height: 1.5em;
-              font-size: $font-size-sm;
+              font-size: $font-size-14;
               color: $color-gray3;
               margin-right: 10px;
               margin-bottom: 5px;
@@ -260,7 +260,7 @@
 
             time {
               color: $color-gray3;
-              font-size: $font-size-xsm;
+              font-size: $font-size-12;
               line-height: 1em;
             }
           }
@@ -278,7 +278,7 @@
             }
 
             .duration, .tips {
-              font-size: $font-size-xsm;
+              font-size: $font-size-12;
               line-height: 1em;
             }
 
