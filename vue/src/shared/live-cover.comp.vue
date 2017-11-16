@@ -6,7 +6,7 @@
       <span class="live-status" v-if="liveInfo.isClosed">已结束</span>
       <span class="live-type text" v-if="liveInfo.isTypeText" :class="{'living': liveInfo.isStarted}">文字</span>
     </div>
-    <!--<count-down class="count-down" :expectStartAt="liveInfo.expectStartAt" :countDownStatus="liveInfo.isCreated"></count-down>-->
+    <count-down class="count-down" :expectStartAt="liveInfo.expectStartAt" :countDownStatus="liveInfo.isCreated"></count-down>
   </div>
 </template>
 
@@ -83,10 +83,12 @@
   import {Component} from 'vue-property-decorator';
   import {LiveInfoModel} from './api/lives.model';
   import {now} from './utils/utils';
+  import countDown from './count-down.comp.vue';
 
   @Component({
     props: ['liveInfo'],
     components: {
+      countDown: countDown,
     },
   })
   export default class LiveCoverComponent extends Vue {
