@@ -1,5 +1,6 @@
 import {host} from "../../env/environment";
 import {Position} from "vue-router/types/router";
+import {LiveInfoModel} from "../api/lives.model";
 
 declare const DocumentTouch: any;
 
@@ -155,21 +156,6 @@ export class Money {
   }
 }
 
-export const setTitle = (title: string) => {
-  document.title = title;
-
-  // for ios wechat
-  let i = document.createElement('iframe');
-  i.src = '/assets/img/transparent-pixel-min.png';
-  i.style.display = 'none';
-  i.onload = function () {
-    setTimeout(() => {
-      i.remove();
-    });
-  };
-  document.body.appendChild(i);
-};
-
 export const removeHTML = (htmlStr: string): string => {
   return htmlStr.replace(/<(?:.|\n)*?>/gm, '')
 };
@@ -201,4 +187,62 @@ export const readCookie = (name: string): string => {
     if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
   }
   return '';
+};
+
+export const transformTime = (durationSecond: number, index: number): string => {
+  let fixDigest = (num: string) => {
+    if (num.length === 1) return `0${num}`;
+    return num;
+  };
+
+  if (durationSecond <= 0) return '00';
+
+  // 适用格式 天：小时：分：秒
+  let d = Math.floor(durationSecond / (24 * 60 * 60));
+  let h = Math.floor(durationSecond % (24 * 60 * 60) / (60 * 60));
+  let m = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) / 60);
+  let s = Math.floor(durationSecond % (24 * 60 * 60) % (60 * 60) % 60);
+
+  if (index === 1) return d ? fixDigest(d.toString()) : '';
+  if (index === 2) return fixDigest(h.toString());
+  if (index === 3) return fixDigest(m.toString());
+  if (index === 4) return fixDigest(s.toString());
+
+  // 适用格式 小时：分：秒
+  let _h = Math.floor(durationSecond / (60 * 60));
+  let _m = Math.floor(durationSecond % (60 * 60) / 60);
+  let _s = Math.floor(durationSecond % (60 * 60) % 60);
+
+  if (index === 5) return fixDigest(_h.toString());
+  if (index === 6) return fixDigest(_m.toString());
+  if (index === 7) return fixDigest(_s.toString());
+
+  return '无效时间';
+};
+
+export const praseLiveTime = (liveInfo: LiveInfoModel): string => {
+  let timePrased = '';
+
+  if (liveInfo.isCreated) {
+    let dayStr = moment(liveInfo.expectStartAt).calendar(moment(), {
+      sameDay: '[今天] HH:mm:ss',
+      nextDay: '[明天] HH:mm:ss',
+      nextWeek: 'YYYY-MM-DD HH:mm:ss',
+      lastDay: 'YYYY-MM-DD HH:mm:ss',
+      lastWeek: 'YYYY-MM-DD HH:mm:ss',
+      sameElse: 'YYYY-MM-DD HH:mm:ss'
+    });
+
+    timePrased = `将于 ${dayStr} 开始`;
+  } else if (liveInfo.isStarted) {
+    let diffSec = moment(new Date().getTime()).diff(moment(liveInfo.expectStartAt)) / 1000;
+    let dayStr = transformTime(diffSec, 1);
+    timePrased = `已进行 ${dayStr}天${transformTime(diffSec, 2)}小时${transformTime(diffSec, 3)}分${transformTime(diffSec, 4)}秒`;
+  } else if (liveInfo.isClosed) {
+    timePrased = `已于 ${moment(liveInfo.closedAt).format('YYYY-MM-DD HH:mm:ss')} 结束`;
+  } else {
+    timePrased = '未知状态';
+  }
+
+  return timePrased;
 };

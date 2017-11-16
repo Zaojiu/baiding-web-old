@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Router, {RawLocation, Route} from 'vue-router';
+import Router, {Route} from 'vue-router';
 
 import appComp from './components/app.comp.vue';
 import talksComp from './components/talks/content.comp.vue';
@@ -8,9 +8,10 @@ import {authGuard} from "./shared/guard/user-auth.guard";
 import {beforeRouteEnter} from "./shared/guard/before-route-enter";
 import {mobileBindedGuard} from "./shared/guard/mobile-binded.guard";
 import {memberActivateCompGuard} from "./shared/guard/member-activate-comp.guard";
-import {getRelativePath, scrollPosition, setTitle} from "./shared/utils/utils";
+import {getRelativePath, scrollPosition} from "./shared/utils/utils";
 import {signinGuard} from "./shared/guard/signin-comp.guard";
 import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
+import {afterHooks, beforeHooks} from "./hooks";
 
 Vue.use(Router);
 
@@ -35,7 +36,7 @@ export const router = new Router({
       meta: {
         title: '登录',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
         const guards = [signinGuard(redirectTo)];
         beforeRouteEnter(guards, to, from, next);
@@ -48,7 +49,7 @@ export const router = new Router({
       meta: {
         title: '绑定手机',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedCompGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -60,7 +61,7 @@ export const router = new Router({
       meta: {
         title: '忘记密码',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
         const guards = [signinGuard(redirectTo)];
         beforeRouteEnter(guards, to, from, next);
@@ -81,7 +82,7 @@ export const router = new Router({
           meta: {
             title: '发表评论',
           },
-          beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+          beforeEnter(to, from, next) {
             const guards = [authGuard(), mobileBindedGuard()];
             beforeRouteEnter(guards, to, from, next);
           },
@@ -95,7 +96,7 @@ export const router = new Router({
       meta: {
         title: '激活会员',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -115,7 +116,7 @@ export const router = new Router({
       meta: {
         title: '个人中心',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -128,7 +129,7 @@ export const router = new Router({
         title: '会员',
       },
       alias: '/member/info', // compatible with angular
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -150,7 +151,7 @@ export const router = new Router({
       meta: {
         title: '我的订单',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -162,7 +163,7 @@ export const router = new Router({
       meta: {
         title: '我的票券',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -174,7 +175,7 @@ export const router = new Router({
       meta: {
         title: '收货地址',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -193,7 +194,7 @@ export const router = new Router({
       meta: {
         title: '订单',
       },
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -222,7 +223,7 @@ export const router = new Router({
     },
     {
       path: '/columns/:id/items/:itemId',
-      beforeEnter(to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) {
+      beforeEnter(to, from, next) {
         const guards = [authGuard(), mobileBindedGuard()];
         beforeRouteEnter(guards, to, from, next);
       },
@@ -259,12 +260,20 @@ export const router = new Router({
   ]
 });
 
-export default router;
-
 export let preRoute: Route;
 
 router.afterEach((to, from) => {
   preRoute = from;
-  const title = to.meta.title ? `${to.meta.title}-造就` : '造就';
-  setTitle(title);
+
+  if (afterHooks.length) {
+    afterHooks.forEach(hook => hook(to, from));
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (beforeHooks.length) {
+    beforeHooks.forEach(hook => hook(to, from, next));
+  } else {
+    next();
+  }
 });

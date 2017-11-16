@@ -2,7 +2,7 @@ import {host} from "../../env/environment";
 import {post} from "../api/xhr";
 import {AxiosResponse} from "axios";
 import {showTips} from "../../store/tip";
-import router from "../../router";
+import {afterEach} from "../../hooks";
 
 declare const wx: any;
 
@@ -21,9 +21,7 @@ let onVoicePlayEnd: () => void;
 let autoCompleteResolver: (localId: string) => void;
 let autoCompleteRejecter: (reason: string) => void;
 
-router.afterEach((to, from) => {
-  needResign = true;
-});
+afterEach((to, from) => needResign = true);
 
 const getConfig = async (): Promise<WechatConfigModel> => {
   let resp: AxiosResponse;

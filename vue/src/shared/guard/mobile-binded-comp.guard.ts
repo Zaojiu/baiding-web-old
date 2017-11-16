@@ -1,6 +1,6 @@
 import {getUserInfoCache} from '../api/user.api'
 import {Route} from "vue-router";
-import router from "../../router";
+import {router} from "../../router";
 import {getRelativePath} from "../utils/utils";
 
 export const mobileBindedCompGuard = () => {

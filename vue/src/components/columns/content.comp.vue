@@ -595,7 +595,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition, setTitle} from '../../shared/utils/utils';
+  import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils';
   import {getColumnItemDetail, praise, unpraise} from '../../shared/api/column.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
   import {ColumnItemDetail, ColumnItemContent} from "../../shared/api/column.model";
@@ -609,7 +609,7 @@
   import audioBar from "../../shared/audio-bar.comp.vue";
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from "../../store/payment";
-  import {preRoute} from '../../router';
+  import {setTitle} from '../../shared/utils/title';
 
 //  const COMMENT_COUNT = 20;
 

@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosRequestConfig} from 'axios';
-import router from '../../router';
+import {router} from '../../router';
 import {showTips} from '../../store/tip';
 import {ApiCode, ApiErrorMessage} from "./code-map.enum";
 import {Store} from "../utils/store";
