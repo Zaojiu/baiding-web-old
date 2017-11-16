@@ -256,15 +256,12 @@
     width: 260px;
     overflow: hidden;
     background-color: $color-w;
-    padding-bottom: 10px;
 
     .header {
       position: relative;
       overflow: hidden;
       background-color: $color-brand;
       text-align: center;
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
 
       .close {
         position: absolute;
@@ -295,7 +292,7 @@
       }
 
       .live-title {
-        margin: 40px 20px 20px;
+        margin: 40px 20px 30px;
         color: $color-w;
         word-break: break-all;
         font-size: 18px;
