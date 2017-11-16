@@ -5,6 +5,7 @@ export enum SmsScene {
   Login = 1,
   ResetPassword,
   BindMobile,
+  Signup,
 }
 
 export enum SmsType {
