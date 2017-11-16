@@ -219,7 +219,7 @@ export class PresentComponent implements OnInit {
     this.isSubmitting = true;
     this.tipsService.popup('登录中...');
 
-    this.userInfoService.signup(this.phoneNumber, this.smsCode, UtilsService.randomId(32), '', '', '').then(() => {
+    this.userInfoService.bindMobile(this.phoneNumber, this.smsCode, UtilsService.randomId(32), '', '', '').then(() => {
       return this.userInfoService.getUserInfo();
     }).then((userInfo) => {
       this.userInfo = userInfo;

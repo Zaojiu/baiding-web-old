@@ -79,7 +79,7 @@ export class SignupComponent implements OnInit {
     this.isSubmitting = true;
     this.tipsService.popup('绑定中...');
 
-    this.userInfoService.signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title).then(() => {
+    this.userInfoService.bindMobile(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title).then(() => {
       return this.userInfoService.getUserInfo();
     }).then(() => {
       this.tipsService.popup('绑定手机成功');

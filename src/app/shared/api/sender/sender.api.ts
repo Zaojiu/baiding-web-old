@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import {host} from "../../../../environments/environment";
@@ -9,6 +8,7 @@ export enum SmsScene {
   Login = 1,
   ResetPassword,
   BindMobile,
+  Signup,
 }
 
 export enum SmsType {
