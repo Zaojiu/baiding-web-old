@@ -219,3 +219,30 @@ export const transformTime = (durationSecond: number, index: number): string => 
 
   return '无效时间';
 };
+
+export const praseLiveTime = (liveInfo: LiveInfoModel): string => {
+  let timePrased = '';
+
+  if (liveInfo.isCreated) {
+    let dayStr = moment(liveInfo.expectStartAt).calendar(moment(), {
+      sameDay: '[今天] HH:mm:ss',
+      nextDay: '[明天] HH:mm:ss',
+      nextWeek: 'YYYY-MM-DD HH:mm:ss',
+      lastDay: 'YYYY-MM-DD HH:mm:ss',
+      lastWeek: 'YYYY-MM-DD HH:mm:ss',
+      sameElse: 'YYYY-MM-DD HH:mm:ss'
+    });
+
+    timePrased = `将于 ${dayStr} 开始`;
+  } else if (liveInfo.isStarted) {
+    let diffSec = moment(new Date().getTime()).diff(moment(liveInfo.expectStartAt)) / 1000;
+    let dayStr = transformTime(diffSec, 1);
+    timePrased = `已进行 ${dayStr}天${transformTime(diffSec, 2)}小时${transformTime(diffSec, 3)}分${transformTime(diffSec, 4)}秒`;
+  } else if (liveInfo.isClosed) {
+    timePrased = `已于 ${moment(liveInfo.closedAt).format('YYYY-MM-DD HH:mm:ss')} 结束`;
+  } else {
+    timePrased = '未知状态';
+  }
+
+  return timePrased;
+};

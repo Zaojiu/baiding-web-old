@@ -136,23 +136,19 @@ export const listBookedLiveInfo = async (lastId = '', size = 20): Promise<LiveIn
   return lives;
 };
 
-export const listNow = async (markerId: string, size = 20): Promise<LiveInfoModel[]> => {
-  const query = {
-    size,
-    marker: markerId,
-  };
+export const listNow = async (markerId?: string, size = 20): Promise<LiveInfoModel[]> => {
+  const query: {[key: string]: any} = {size};
+  if (markerId) query.marker = markerId;
+
   const url = `${host.io}/api/live/now/streams?${params(query)}`;
   const resp = await get(url);
-  const data = resp.data;
-  const livesData = data.result;
+  const data = resp.data || {};
+  const livesData = data.result ? data.result : [];
+  const usersData = data.include && data.include.users ? data.include.users : {};
   const lives: LiveInfoModel[] = [];
 
-  if (livesData) {
-    const usersData = data.include.users;
-
-    for (let liveInfo of livesData) {
-      lives.push(new LiveInfoModel(liveInfo, usersData));
-    }
+  for (let liveInfo of livesData) {
+    lives.push(new LiveInfoModel(liveInfo, usersData));
   }
 
   return lives;
