@@ -403,7 +403,7 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {Money, parseUrl} from '../../shared/utils/utils';
   import {refreshUserInfo, getUserInfoCache} from "../../shared/api/user.api";
-  import {OrderObject, PostOrderObject, OrderFee, Discount, Order} from "../../shared/api/order.model";
+  import {OrderObject, PostOrderObject, OrderFee, Discount, Order, OrderMeta} from "../../shared/api/order.model";
   import {checkOrderFee, listDiscountCode, createOrder, getOrder} from '../../shared/api/order.api';
   import {pay} from '../../shared/utils/pay';
   import {showTips} from '../../store/tip';
@@ -633,8 +633,9 @@
 
       const discountCode = this.orderFee.discounts.map(discount => discount.code);
 
+      let orderMeta: OrderMeta;
       try {
-        const orderMeta = await createOrder(this.itemsQuery, discountCode);
+        orderMeta = await createOrder(this.itemsQuery, discountCode);
         await pay(orderMeta.orderNo, this.getBackToUrl());
       } catch (e) {
         if (e === 'cancel') {
@@ -650,7 +651,7 @@
 
       const payResult = 'success';
       const orderType = this.getOrderType();
-      this.$router.push({path: `/orders/${this.orderId}`, query: {payResult, orderType}});
+      this.$router.push({path: `/orders/${orderMeta.orderNo}`, query: {payResult, orderType}});
     }
 
     getBackToUrl(): string {
