@@ -25,7 +25,7 @@ function docker_init(){
     fi
 
     command="docker pull 297951292/node-with-yarn:latest && rm -rf node_modules package-lock.json yarn.lock && docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
-                      297951292/node-with-yarn:latest $childCommand"
+                      297951292/node-with-yarn:latest /bin/bash -c \"$childCommand\""
     docker_killrm
     eval $command
 }
