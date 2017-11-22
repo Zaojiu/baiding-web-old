@@ -57,6 +57,10 @@ export class UserInfoModel {
   get isMember(): boolean {
     return this.member.valid;
   }
+
+  get isMobileBinded(): boolean {
+    return this.mobile && !!this.mobile.number;
+  }
 }
 
 export class WechatSigninQrcodeModel {

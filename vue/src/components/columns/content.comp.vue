@@ -605,7 +605,7 @@
   import {createOrder} from '../../shared/api/order.api';
   import {ApiError} from '../../shared/api/xhr';
   import {ApiCode, ApiErrorMessage} from '../../shared/api/code-map.enum';
-  import {pay} from '../../shared/utils/pay';
+  import {pay} from '../../shared/api/pay.api';
   import audioBar from "../../shared/audio-bar.comp.vue";
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from "../../store/payment";
@@ -866,7 +866,17 @@
       }
     }
 
+    checkMobileBind() {
+      if (!this.userInfo.isMobileBinded) {
+        this.$router.push({path: '/mobile-bind', query: {redirectTo: this.$route.fullPath}});
+        return false;
+      }
+
+      return true;
+    }
+
     async createOrder() {
+      if (!this.checkMobileBind) return;
       if (this.isPaying) return;
 
       this.isPaying = true;

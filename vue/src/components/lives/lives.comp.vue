@@ -4,7 +4,7 @@
     v-scroll-view="{onBottom: onBottom}"
   >
     <div class="main-list">
-      <div class="live-info-block" v-for="liveInfo in lives" @click="gotoLiveRoomInfo(liveInfo.id)">
+      <div class="live-info-block" v-for="liveInfo in lives" @click="gotoLiveInfo(liveInfo.id)">
         <live-cover :liveInfo="liveInfo"></live-cover>
 
         <div class="info">
@@ -175,6 +175,10 @@
 
       const lastId = this.lives[this.lives.length - 1].id;
       this.loadLives(lastId);
+    }
+
+    gotoLiveInfo(liveId: string) {
+      this.$router.push({path: `/lives/${liveId}/info`});
     }
   }
 </script>

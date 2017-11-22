@@ -32,3 +32,17 @@ export const callHandler = (...args: any[]) => {
 
   jsBridge.callHandler(...args);
 };
+
+export const copyText = (text: string): Promise<any> => {
+  return new Promise<any>((resolve, reject) => {
+    initIOS().then(() => {
+      callHandler('copyText', {
+        title: text,
+      }, (result: any) => {
+        resolve(result);
+      }, (err: any) => {
+        reject(err);
+      });
+    });
+  });
+};

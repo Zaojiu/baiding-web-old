@@ -31,6 +31,22 @@ export enum LivePayType {
   Present,
 }
 
+export class LiveInviteeInfoModel {
+  id: string;
+  name: string;
+  desc: string;
+  title: string;
+  avatar: string;
+
+  constructor(data: any, users?: any) {
+    this.id = data.id;
+    this.name = data.name;
+    this.title = data.title;
+    this.avatar = data.avatar;
+    this.desc = data.desc;
+  }
+}
+
 export class LiveInfoModel {
   id: string;
   subject: string;
@@ -50,7 +66,7 @@ export class LiveInfoModel {
   owner: UserInfoModel;
   admin: UserInfoModel;
   editors: UserInfoModel[];
-  invitedEditors: UserInfoModel[];
+  invitees: UserInfoModel[];
   latestUsers: UserInfoModel[]; // 话题间观众
 
   praised: number;
@@ -120,9 +136,9 @@ export class LiveInfoModel {
       });
     }
 
-    this.invitedEditors = [];
+    this.invitees = [];
     if (data.meta.invitedEditors) {
-      this.invitedEditors = data.meta.invitedEditors;
+      this.invitees = data.meta.invitedEditors;
     }
 
     this.latestUsers = [];
@@ -284,6 +300,16 @@ export class LiveInfoModel {
 
   isAudience(uid: number): boolean {
     return !this.isEditor(uid);
+  }
+
+  role(uid: number): string {
+    if (uid === this.admin.uid) return '主持人';
+
+    for (let editor of this.editors) {
+      if (uid === editor.uid) return '嘉宾';
+    }
+
+    return '观众';
   }
 }
 

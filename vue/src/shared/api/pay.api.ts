@@ -1,12 +1,12 @@
-import {isInWechat, isWindowsWechat} from "./utils";
+import {isInWechat, isWindowsWechat} from "../utils/utils";
 import {appConfig, host} from "../../env/environment";
-import {post} from "../api/xhr";
+import {post} from "./xhr";
 import {
   paymentStore, PayStatus, setPaymentFail, setPaymentNone, setPaymentPaying, setPaymentSuccess,
 } from "../../store/payment";
-import {getOrder} from "../api/order.api";
+import {getOrder} from "./order.api";
 import {AxiosResponse} from "axios";
-import {ApiCode} from "../api/code-map.enum";
+import {ApiCode} from "./code-map.enum";
 import {router} from "../../router";
 import {showTips} from "../../store/tip";
 

@@ -208,7 +208,7 @@
   import {Order, OrderStatus} from '../../shared/api/order.model';
   import {listOrders, getOrder, closeOrder} from '../../shared/api/order.api';
   import {showTips} from '../../store/tip';
-  import {pay} from '../../shared/utils/pay';
+  import {pay} from '../../shared/api/pay.api';
   import {setPaymentNone} from '../../store/payment';
   import {UserInfoModel} from "../../shared/api/user.model";
   import {getUserInfoCache} from '../../shared/api/user.api';

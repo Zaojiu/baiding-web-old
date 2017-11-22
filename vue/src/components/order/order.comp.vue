@@ -405,7 +405,7 @@
   import {refreshUserInfo, getUserInfoCache} from "../../shared/api/user.api";
   import {OrderObject, PostOrderObject, OrderFee, Discount, Order, OrderMeta} from "../../shared/api/order.model";
   import {checkOrderFee, listDiscountCode, createOrder, getOrder} from '../../shared/api/order.api';
-  import {pay} from '../../shared/utils/pay';
+  import {pay} from '../../shared/api/pay.api';
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from '../../store/payment';
   import {ApiError} from '../../shared/api/xhr';
