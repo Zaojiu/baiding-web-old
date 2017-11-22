@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
-import {LiveInfoModel, LiveRoomPresentModel, ShareRankingModel, UploadCoverTokenModel} from './live.model';
+import {LiveInfoModel, LiveRoomPresentModel, ShareRankingModel, UploadCoverTokenModel, LiveInviteeInfoModel} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
 import {LiveStatus, LiveType, LiveStreamStatus,LivePublishedStatus} from './live.enums';
@@ -32,7 +32,7 @@ export class LiveService {
   private payPopupSub: Subscription;
 
   private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
-    return this.getLiveInfo(liveId, true, false).then((liveInfo) => {
+    return this.getLiveInfo(liveId, true).then((liveInfo) => {
       return liveInfo;
     });
   }
@@ -71,9 +71,11 @@ export class LiveService {
       });
     }
 
-    liveInfo.invitedEditors = [];
+    liveInfo.invitees = [];
     if (stream.meta.invitedEditors) {
-      liveInfo.invitedEditors = stream.meta.invitedEditors;
+      stream.meta.invitedEditors.forEach((invitee) => {
+        liveInfo.invitees.push(new LiveInviteeInfoModel(invitee));
+      });
     }
 
     liveInfo.latestUsers = [];
@@ -154,9 +156,9 @@ export class LiveService {
     return liveInfo;
   }
 
-  getLiveInfo(id: string, needRefresh?: boolean, join = false): Promise<LiveInfoModel> {
+  getLiveInfo(id: string, needRefresh?: boolean): Promise<LiveInfoModel> {
     const lives = StoreService.get('lives') || {};
-    if (!needRefresh && !join) {
+    if (!needRefresh) {
       const liveInfoCache = lives[id];
 
       if (liveInfoCache) {
@@ -164,21 +166,23 @@ export class LiveService {
       }
     }
 
-    let query = {
-      join: join,
-    };
-
-    const url = `${environment.config.host.io}/api/live/streams/${id}?${$.param(query)}`;
+    const url = `${environment.config.host.io}/api/live/objects/${id}/info`;
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
-      const liveInfo = this.parseLiveInfo(data.stream, data.users, data.currentStreamUser);
-      return liveInfo;
+      return this.parseLiveInfo(data.object, data.users, data.currentUserInfo);
     });
   }
 
   getLiveInfoCache(id: string): LiveInfoModel {
     let lives = StoreService.get('lives') || {};
     return lives[id];
+  }
+
+  joinLive(id: string): Promise<void> {
+    const url = `${environment.config.host.io}/api/live/streams/${id}?join=true`;
+    return this.http.get(url).toPromise().then(() => {
+      return;
+    });
   }
 
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {

@@ -56,21 +56,24 @@ export const getWechatSigninQrcode = async (redirectTo: string): Promise<WechatS
   return new WechatSigninQrcodeModel(res.data);
 };
 
-export const signin = async (username: string, code: string, password: string, codeMap?: { [key: number]: string }): Promise<void> => {
-  const query = {
-    useSms: !!code,
-  };
-  const url = `${host.io}/api/user/login?${$.param(query)}`;
-  const data: { [key: string]: string } = {username};
-  if (code) data['code'] = code;
-  if (password) data['password'] = password;
-
+export const signin = async (username: string, password: string, codeMap?: { [key: number]: string }): Promise<void> => {
+  const url = `${host.io}/api/user/login`;
+  const data: { [key: string]: string } = {username, password};
   await post(url, data, {codeMap: codeMap});
   await getUserInfo();
   return;
 };
 
-export const signup = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: {[key: number]: string}): Promise<void> => {
+export const signup = async (mobile: string, code: string, codeMap?: { [key: number]: string }): Promise<void> => {
+  const url = `${host.io}/api/user/login_or_register?useSms=true`;
+  const data: { [key: string]: string } = {mobile, code};
+  if (code) data['code'] = code;
+  await post(url, data, {codeMap: codeMap});
+  await getUserInfo();
+  return;
+};
+
+export const bindMobile = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: {[key: number]: string}): Promise<void> => {
   const url = `${host.io}/api/user/mobile/bind`;
   const data = {
     mobile,

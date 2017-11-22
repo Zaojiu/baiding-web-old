@@ -2,18 +2,18 @@
   <div class="content">
     <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
 
-    <div class="editors-container" *ngIf="audienceListInvitations && audienceListInvitations.length!==0">
+    <div class="editors-container" *ngIf="liveInfo.invitees.length">
       <div class="introduce">嘉宾介绍</div>
       <div class="editors-wrapper invisible-scrollbar">
-        <div class="editors" *ngFor="let speaker of audienceListInvitations">
+        <div class="editors" *ngFor="let invitee of liveInfo.invitees">
           <div class="avatar-wrapper">
-            <img class="editor-avatar" *ngIf="speaker.avatar_url" [src]="speaker.avatar_url">
-            <i class="bi bi-people2" *ngIf="!speaker.avatar_url"></i>
+            <img class="editor-avatar" *ngIf="invitee.avatar" [src]="invitee.avatar">
+            <i class="bi bi-people2" *ngIf="!invitee.avatar"></i>
           </div>
           <div class="words-wrapper">
             <div class="words-align-center">
-              <span class="editor-name">{{speaker.name}}</span>
-              <div class="editor-intro">{{speaker.title}}</div>
+              <span class="editor-name">{{invitee.name}}</span>
+              <div class="editor-intro">{{invitee.title}}</div>
             </div>
           </div>
         </div>
@@ -34,11 +34,11 @@
   </div>
 
   <div class="operation-area">
-    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking" (click)="bookLive()"><i
+    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat" (click)="bookLive()"><i
       class="bi bi-clock"></i><span *ngIf="!hasPresent">开播提醒</span></a>
-    <a class="btn notification disabled" *ngIf="booking"><i
+    <a class="btn notification disabled" *ngIf="booking && isInWechat"><i
       class="bi bi-clock"></i><span *ngIf="!hasPresent">{{liveInfo.booked ? '取消中...' : '订阅中...'}}</span></a>
-    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking" (click)="unbookLive()"><i
+    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat" (click)="unbookLive()"><i
       class="bi bi-clock"></i><span *ngIf="!hasPresent">已经开通</span></a>
 
     <button
@@ -116,17 +116,17 @@
         支付成功
       </div>
     </div>
-    <div class="paid-review" *ngIf="!liveInfo.isCreated()" (click)="gotoLive()">
+    <div class="paid-review" *ngIf="!liveInfo.isCreated() || !isInWechat" (click)="gotoLive()">
       <p>进入话题间 观看视频</p>
       <i class="bi bi-paid-review"></i>
     </div>
-    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && !liveInfo.booked">
+    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && isInWechat && !liveInfo.booked">
       <p>请点击底部开播提醒按钮</p>
       <div class="failure-reason">
         <i class="bi bi-paid-bell"></i>
       </div>
     </div>
-    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && liveInfo.booked">
+    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && isInWechat && liveInfo.booked">
       <p>开播提醒已开通</p>
       <i class="bi bi-paid-bell"></i>
       <p>开播提醒已经开通</p>

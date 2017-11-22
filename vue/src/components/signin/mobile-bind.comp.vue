@@ -215,7 +215,7 @@
   import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
   import {SmsScene, SmsType, sendSmsByLoginUser} from '../../shared/api/sms.api';
   import {showTips} from "../../store/tip";
-  import {signup} from '../../shared/api/user.api';
+  import {bindMobile} from '../../shared/api/user.api';
   import {form} from '../../shared/form';
   import {ApiCode} from '../../shared/api/code-map.enum';
 
@@ -260,7 +260,7 @@
       showTips('绑定中...');
 
       try {
-        await signup(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title);
+        await bindMobile(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title);
       } catch (e) {
         const code = e.code;
         switch (code) {

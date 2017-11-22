@@ -353,7 +353,7 @@
   import {showTips} from "../../store/tip";
   import {SigninErrorMessage, ApiCode} from '../../shared/api/code-map.enum';
   import {SmsScene, SmsType, sendSmsByGuest} from '../../shared/api/sms.api';
-  import {signin} from '../../shared/api/user.api';
+  import {signin, signup} from '../../shared/api/user.api';
 
   @Component({
     directives: form,
@@ -421,8 +421,11 @@
         [ApiCode.ErrSigninInvalidPassword]: this.smsCode ? '验证码错误' : '密码错误'
       }, SigninErrorMessage);
 
+      let promise = signup(this.phoneNumber, this.smsCode, errorMessage);
+      if (this.mode === 'password') promise = signin(this.phoneNumber, this.password, errorMessage);
+
       try {
-        const code = await signin(this.phoneNumber, this.smsCode, this.password, errorMessage);
+        const code = await promise;
       } catch (e) {
         const code = e.code;
         switch (code) {
@@ -452,7 +455,7 @@
       this.smsBtnAvailable = false;
 
       try {
-        await sendSmsByGuest(this.phoneNumber, SmsScene.Login, SmsType.Text, SigninErrorMessage);
+        await sendSmsByGuest(this.phoneNumber, SmsScene.Signup, SmsType.Text, SigninErrorMessage);
       } catch (e) {
         this.smsBtnAvailable = true;
         throw e;
