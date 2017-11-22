@@ -8,7 +8,8 @@
           <div class="icon">
             <i class="bi bi-paid"></i>
           </div>
-          微信扫码进行支付
+          <span v-if="qrcodeSrc">微信扫码进行支付</span>
+          <span v-else>请在微信客户端进行支付</span>
         </div>
         <div class="tips" v-else-if="isStatusSuccess">
           <div class="icon">
@@ -24,7 +25,10 @@
         </div>
       </div>
       <div class="body">
-        <img class="qrcode-image" v-if="isStatusPaying" :src="qrcodeSrc" alt="二维码">
+        <div v-if="isStatusPaying">
+          <img class="qrcode-image" v-if="qrcodeSrc" :src="qrcodeSrc" alt="二维码">
+          <i class="bi bi-wechat2" v-else></i>
+        </div>
         <div class="success" v-else-if="isStatusSuccess">
           <button class="button button-primary" @click="gotoOrder()">查看我的订单</button>
           <button class="button button-outline" @click="close()">关闭</button>
@@ -128,6 +132,12 @@
           margin: 20px auto;
         }
 
+        .bi-wechat2 {
+          font-size: 100px;
+          color: $color-gray2;
+          margin: 40px 0;
+        }
+
         .fail {
           .bi-failure-face {
             display: flex;
@@ -166,7 +176,11 @@
   @Component
   export default class PaymentCompoent extends Vue {
     get qrcodeSrc(): string {
-      return yaqrcode(paymentStore.state.qrcodeUrl, {size: 150});
+      if (paymentStore.state.qrcodeUrl) {
+        return yaqrcode(paymentStore.state.qrcodeUrl, {size: 150});
+      }
+
+      return '';
     }
 
     get isStatusNone(): boolean {

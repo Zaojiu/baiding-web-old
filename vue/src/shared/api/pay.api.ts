@@ -1,14 +1,13 @@
-import {isInWechat, isWindowsWechat} from "../utils/utils";
+import {isInApp, isInWechat, isWindowsWechat} from "../utils/utils";
 import {appConfig, host} from "../../env/environment";
 import {post} from "./xhr";
-import {
-  paymentStore, PayStatus, setPaymentFail, setPaymentNone, setPaymentPaying, setPaymentSuccess,
-} from "../../store/payment";
+import {paymentStore, PayStatus, setPaymentFail, setPaymentNone, setPaymentPaying, setPaymentSuccess} from "../../store/payment";
 import {getOrder} from "./order.api";
 import {AxiosResponse} from "axios";
 import {ApiCode} from "./code-map.enum";
 import {router} from "../../router";
 import {showTips} from "../../store/tip";
+import {pay as iosPayBridge} from "../utils/ios";
 
 let pcRejecter: ((reason: string) => void)|null;
 let timer: any;
@@ -127,9 +126,77 @@ const pcPay = async (orderNo: string): Promise<void> => {
   });
 };
 
+const iosPay = async (orderNo: string): Promise<void> => {
+  const payUrl = `${host.io}/api/wallet/order/${orderNo}/pay`;
+
+  let resp: AxiosResponse;
+  try {
+    resp = await post(payUrl, {"platform": 1});
+  } catch (e) {
+    const data = e.data;
+    if (data && data.code === ApiCode.ErrAlreadyPaid) {
+      setPaymentFail('already paid');
+      throw new Error('already paid');
+    } else {
+      setPaymentFail(e);
+      throw e;
+    }
+  }
+
+  const data = resp.data;
+
+  if (data.isOngoing) return;
+
+  const wxPayReq = {
+    prepayid: data.wxPay.request.package.replace('prepay_id=', ''),
+    noncestr: data.wxPay.request.nonceStr,
+    timestamp: data.wxPay.request.timeStamp,
+    sign: data.wxPay.request.paySign,
+  };
+
+  iosPayBridge(wxPayReq);
+
+  // ios pay never resolve
+  setPaymentPaying('');
+
+  return new Promise<void>((resolve, reject) => {
+    pcRejecter = reject;
+
+    let count = 0;
+    timer = setInterval(async () => {
+      const order = await getOrder(orderNo, false);
+
+      if (order.isSuccess) {
+        clear();
+        resolve();
+        setPaymentSuccess();
+        return;
+      }
+
+      if (order.isClosed) {
+        clear();
+        reject('closed');
+        setPaymentFail('closed');
+        return;
+      }
+
+      if (count > 100) {
+        clear();
+        reject('timeout');
+        setPaymentFail('timeout');
+        return;
+      }
+
+      count++;
+    }, 3 * 1000);
+  });
+};
+
 export const pay = async (orderNo: string, redirectTo?: string): Promise<void> => {
   if (isInWechat && !isWindowsWechat) {
     return wechatPay(orderNo, redirectTo);
+  } else if (isInApp) {
+    return iosPay(orderNo);
   } else {
     return pcPay(orderNo);
   }
