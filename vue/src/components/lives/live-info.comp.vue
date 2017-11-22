@@ -797,7 +797,7 @@
         return true;
       }
 
-      this.$router.push({path: '/signup', query: {redirectTo: `/lives/${this.liveId}/info`}});
+      this.$router.push({path: '/mobile-bind', query: {redirectTo: `/lives/${this.liveId}/info`}});
       return false;
     }
 
