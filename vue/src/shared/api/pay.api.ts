@@ -147,9 +147,49 @@ const iosPay = async (orderNo: string): Promise<void> => {
 
   if (data.isOngoing) return;
 
-  const wxPayReq = data.wxPay.request;
-  
-  return iosPayBridge(wxPayReq);
+  const wxPayReq = {
+    prepayid: data.wxPay.request.package.replace('prepay_id=', ''),
+    noncestr: data.wxPay.request.nonceStr,
+    timestamp: data.wxPay.request.timeStamp,
+    sign: data.wxPay.request.paySign,
+  };
+
+  iosPayBridge(wxPayReq);
+
+  // ios pay never resolve
+  setPaymentPaying('');
+
+  return new Promise<void>((resolve, reject) => {
+    pcRejecter = reject;
+
+    let count = 0;
+    timer = setInterval(async () => {
+      const order = await getOrder(orderNo, false);
+
+      if (order.isSuccess) {
+        clear();
+        resolve();
+        setPaymentSuccess();
+        return;
+      }
+
+      if (order.isClosed) {
+        clear();
+        reject('closed');
+        setPaymentFail('closed');
+        return;
+      }
+
+      if (count > 100) {
+        clear();
+        reject('timeout');
+        setPaymentFail('timeout');
+        return;
+      }
+
+      count++;
+    }, 3 * 1000);
+  });
 };
 
 export const pay = async (orderNo: string, redirectTo?: string): Promise<void> => {
