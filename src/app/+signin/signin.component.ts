@@ -101,8 +101,12 @@ export class SigninComponent implements OnInit {
 
     const codeMap = this.smsCode ? SigninErrorMessage : null;
 
-    let promise = this.userInfoService.signup(this.phoneNumber, this.smsCode, codeMap);
-    if (this.mode === 'password') promise = this.userInfoService.signin(this.phoneNumber, this.password, codeMap);
+    let promise;
+    if (this.mode === 'password') {
+      promise = this.userInfoService.signin(this.phoneNumber, this.password, codeMap);
+    } else {
+      promise = this.userInfoService.signup(this.phoneNumber, this.smsCode, codeMap)
+    }
 
     promise.then(() => {
       this.tipsService.popup('登录成功');
