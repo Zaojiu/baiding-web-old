@@ -148,7 +148,7 @@ const iosPay = async (orderNo: string): Promise<void> => {
   if (data.isOngoing) return;
 
   const wxPayReq = data.wxPay.request;
-
+  
   return iosPayBridge(wxPayReq);
 };
 
