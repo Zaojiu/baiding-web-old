@@ -16,15 +16,15 @@ function docker_dev(){
         297951292/node-with-yarn:latest /bin/bash -c "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --progress"
 }
 
-function docker_install(){
-    childCommand="npm install"
+function docker_init(){
+    childCommand="yarn install --verbose"
     proxy=""
 
     if [[ $3 == "source" && $4 != "" ]]; then
-        childCommand="npm config set registry $4 && npm install"
+        childCommand="npm config set registry $4 && yarn install --verbose"
     fi
 
-    command="docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+    command="docker pull 297951292/node-with-yarn:latest && rm -rf node_modules package-lock.json yarn.lock && docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
                       297951292/node-with-yarn:latest /bin/bash -c \"$childCommand\""
     docker_killrm
     eval $command
@@ -39,7 +39,7 @@ function docker_prod(){
 function docker_build(){
     docker_killrm
     docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
-        297951292/node-with-yarn:latest /bin/bash -c "yarn install --verbose && rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --progress --hide-modules --display-optimization-bailout"
+        297951292/node-with-yarn:latest /bin/bash -c "rm -rf node_modules package-lock.json yarn.lock && yarn install --verbose && rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --progress --hide-modules --display-optimization-bailout"
 }
 
 for target in $@; do
@@ -56,8 +56,8 @@ for target in $@; do
         docker.bash)
             docker_bash
             ;;
-        docker.install)
-            docker_install $2 $3 $4 $5
+        docker.init)
+            docker_init $2 $3 $4 $5
             ;;
     esac
 done

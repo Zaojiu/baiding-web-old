@@ -8,7 +8,7 @@
     "prod": "./hack/run.sh docker.prod",
     "build": "./hack/run.sh docker.build",
     "bash": "./hack/run.sh docker.bash",
-    "install": "./hack/run.sh docker.install"
+    "init": "./hack/run.sh docker.init"
   },
   "dependencies": {
     "autosize": "3.0.21",
