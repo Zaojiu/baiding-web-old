@@ -46,3 +46,15 @@ export const copyText = (text: string): Promise<any> => {
     });
   });
 };
+
+export const pay = (wxPayRequests: any): Promise<any> => {
+  return new Promise<any>((resolve, reject) => {
+    initIOS().then(() => {
+      callHandler('pay', wxPayRequests, (result: any) => {
+        resolve(result);
+      }, (err: any) => {
+        reject(err);
+      });
+    });
+  });
+};
