@@ -12,12 +12,11 @@ const cacheLiveInfo = (id: string, liveInfo: LiveInfoModel) => {
   Store.localStore.set('liveInfo', liveInfoCache);
 };
 
-export const getLiveInfo = async (id: string, join = false): Promise<LiveInfoModel> => {
-  const query = {join};
-  const url = `${host.io}/api/live/streams/${id}?${params(query)}`;
+export const getLiveInfo = async (id: string): Promise<LiveInfoModel> => {
+  const url = `${host.io}/api/live/objects/${id}/info`;
   const resp = await get(url);
   const data = resp.data;
-  const liveInfo = new LiveInfoModel(data.stream, data.users, data.currentStreamUser);
+  const liveInfo = new LiveInfoModel(data.object, data.users, data.currentUserInfo);
 
   cacheLiveInfo(id, liveInfo);
 
@@ -25,7 +24,7 @@ export const getLiveInfo = async (id: string, join = false): Promise<LiveInfoMod
 };
 
 export const refreshLiveInfo = (liveId: string): Promise<LiveInfoModel> => {
-  return getLiveInfo(liveId, false);
+  return getLiveInfo(liveId);
 };
 
 export const getLiveInfoCache = (id: string): LiveInfoModel|null => {
@@ -40,6 +39,12 @@ export const getLiveInfoCache = (id: string): LiveInfoModel|null => {
   }
 
   return null;
+};
+
+export const joinLive = async (id: string): Promise<void> => {
+  const url = `${host.io}/api/live/streams/${id}?join=true`;
+  await get(url);
+  return;
 };
 
 export const listLiveInfo = async (uid: number, marker = '', size = 20, sorts = ['-createdAt']): Promise<LiveInfoModel[]> => {

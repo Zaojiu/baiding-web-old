@@ -421,11 +421,12 @@
         [ApiCode.ErrSigninInvalidPassword]: this.smsCode ? '验证码错误' : '密码错误'
       }, SigninErrorMessage);
 
-      let promise = signup(this.phoneNumber, this.smsCode, errorMessage);
-      if (this.mode === 'password') promise = signin(this.phoneNumber, this.password, errorMessage);
-
       try {
-        const code = await promise;
+        if (this.mode === 'password') {
+          await signin(this.phoneNumber, this.password, errorMessage);
+        } else {
+          await signup(this.phoneNumber, this.smsCode, errorMessage);
+        }
       } catch (e) {
         const code = e.code;
         switch (code) {

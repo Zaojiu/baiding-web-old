@@ -339,7 +339,7 @@
   import padStart from 'lodash/padStart';
   import {Store} from "../../shared/utils/store";
   import {createOrder} from '../../shared/api/order.api';
-  import {pay} from '../../shared/utils/pay';
+  import {pay} from '../../shared/api/pay.api';
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
   import {ApiError} from '../../shared/api/xhr';
   import {ApiCode, ApiErrorMessage} from '../../shared/api/code-map.enum';
@@ -512,6 +512,16 @@
         return true;
       };
 
+      const checkMobileBinded = (to: string) => {
+        // 未绑定手机
+        if (this.userInfo && this.userInfo.isMobileBinded) {
+          return true;
+        }
+
+        this.$router.push({path: '/mobile-bind', query: {redirectTo: to}});
+        return false;
+      };
+
       if (item) {
         // ready and paid or free item
         if (item.isStatusReady && (item.isPayTypeFree || (item.isPayTypeColumn && this.columnInfo.paid))) {
@@ -534,9 +544,9 @@
 
           if (checkLogin(to)) this.$router.push({path: to});
         } else {
-          if (!checkLogin(this.$route.fullPath)) return;
-
-          this.createOrder();
+          if (checkLogin(this.$route.fullPath) && checkMobileBinded(this.$route.fullPath)) {
+            this.createOrder();
+          }
         }
       }
     }
