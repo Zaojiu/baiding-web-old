@@ -4,13 +4,13 @@
       <div class="content">
         <live-intro class="live-intro-component" :liveInfo="liveInfo"></live-intro>
 
-        <div class="editors-container" v-if="invitees && invitees.length">
+        <div class="editors-container" v-if="liveInfo.invitees.length">
           <div class="title">嘉宾介绍</div>
           <div class="editors-scroller invisible-scrollbar">
-            <div class="editors" v-for="invitee in invitees">
+            <div class="editors" v-for="invitee in liveInfo.invitees">
               <div class="avatar-wrapper">
-                <img class="editor-avatar" v-if="invitee.avatar_url" :src="invitee.avatar_url">
-                <i class="bi bi-people2" v-if="!invitee.avatar_url"></i>
+                <img class="editor-avatar" v-if="invitee.avatar" :src="invitee.avatar">
+                <i class="bi bi-people2" v-if="!invitee.avatar"></i>
               </div>
               <div class="words-wrapper">
                 <div class="words-align-center">
@@ -36,16 +36,16 @@
       </div>
 
       <div class="operation-area">
-        <a class="btn notification" v-if="!liveInfo.booked && liveInfo.isCreated && !booking" @click="bookLive()"><i
-          class="bi bi-clock"></i><span v-if="!hasPresent">开播提醒</span></a>
-        <a class="btn notification disabled" v-if="booking"><i
-          class="bi bi-clock"></i><span v-if="!hasPresent">{{liveInfo.booked ? '取消中...' : '订阅中...'}}</span></a>
-        <a class="btn notification turn-on" v-if="liveInfo.booked && liveInfo.isCreated && !booking" @click="unbookLive()"><i
-          class="bi bi-clock"></i><span v-if="!hasPresent">已经开通</span></a>
+        <a class="btn notification" v-if="!liveInfo.booked && liveInfo.isCreated && !booking && isInWechat" @click="bookLive()"><i
+          class="bi bi-clock"></i><span v-if="!hasPresent()">开播提醒</span></a>
+        <a class="btn notification disabled" v-if="booking && isInWechat"><i
+          class="bi bi-clock"></i><span v-if="!hasPresent()">{{liveInfo.booked ? '取消中...' : '订阅中...'}}</span></a>
+        <a class="btn notification turn-on" v-if="liveInfo.booked && liveInfo.isCreated && !booking && isInWechat" @click="unbookLive()"><i
+          class="bi bi-clock"></i><span v-if="!hasPresent()">已经开通</span></a>
 
         <button
           class="btn present"
-          v-if="hasPresent"
+          v-if="hasPresent()"
           @click="gotoPresent()"
         ><i class="bi bi-present"></i>请朋友看</button>
 
@@ -117,17 +117,17 @@
             支付成功
           </div>
         </div>
-        <div class="paid-review" v-if="!liveInfo.isCreated" @click="gotoLive()">
+        <div class="paid-review" v-if="!liveInfo.isCreated || !isInWechat" @click="gotoLive()">
           <p>进入话题间 观看视频</p>
           <i class="bi bi-paid-review"></i>
         </div>
-        <div class="success-wrapper" v-if="liveInfo.isCreated && !liveInfo.booked">
+        <div class="success-wrapper" v-if="liveInfo.isCreated && isInWechat && !liveInfo.booked">
           <p>请点击底部开播提醒按钮</p>
           <div class="failure-reason">
             <i class="bi bi-paid-bell"></i>
           </div>
         </div>
-        <div class="success-wrapper" v-if="liveInfo.isCreated && liveInfo.booked">
+        <div class="success-wrapper" v-if="liveInfo.isCreated && isInWechat && liveInfo.booked">
           <p>开播提醒已开通</p>
           <i class="bi bi-paid-bell"></i>
           <p>开播提醒已经开通</p>
@@ -587,8 +587,6 @@
   import {isInApp, isInWechat} from '../../shared/utils/utils';
   import {getUserInfoCache, getUserInfo} from '../../shared/api/user.api';
   import {setDefaultShareInfo} from '../../shared/utils/share';
-  import {InviteePublicModel} from "../../shared/api/invite.model";
-  import {listInviteePublicInfo} from '../../shared/api/invite.api';
   import {showTips} from '../../store/tip';
   import {createOrder} from '../../shared/api/order.api';
   import {OrderObjectType, PostOrderObject} from '../../shared/api/order.model';
@@ -612,7 +610,6 @@
     liveId: string;
     liveInfo: LiveInfoModel;
     userInfo: UserInfoModel;
-    invitees: InviteePublicModel[] = [];
     isQrcodeShown = false;
     qrcode: string;
     timer: any;
@@ -653,10 +650,6 @@
         this.getSubscribeLink();
         this.setShareInfo();
       }
-    }
-
-    async getInviteePublicInfo() {
-      this.invitees = await listInviteePublicInfo(this.liveId);
     }
 
     setShareInfo() {
@@ -714,6 +707,7 @@
       if (
         this.liveInfo.isNeedPay &&
         !this.liveInfo.paid &&
+        this.userInfo &&
         this.liveInfo.isAudience(this.userInfo.uid)
       ) {
         if (this.userInfo.isMember) {
@@ -743,6 +737,8 @@
     }
 
     async bookLive() {
+      if (!this.checkLogin()) return;
+
       if (this.booking) return;
 
       this.booking = true;
@@ -769,6 +765,8 @@
     }
 
     async unbookLive() {
+      if (!this.checkLogin()) return;
+
       if (this.booking) return;
 
       this.booking = true;
@@ -785,7 +783,29 @@
       this.payStatus = PayStatus.None;
     }
 
+    checkLogin() {
+      if (!this.userInfo) {
+        this.$router.push({path: '/signin', query: {redirectTo: `/lives/${this.liveId}/info`}});
+        return false;
+      }
+
+      return true;
+    }
+
+    checkMobileBinded() {
+      if (this.userInfo && this.userInfo.isMobileBinded) {
+        return true;
+      }
+
+      this.$router.push({path: '/signup', query: {redirectTo: `/lives/${this.liveId}/info`}});
+      return false;
+    }
+
     async payLive() {
+      if (!this.checkLogin()) return;
+
+      if (!this.checkMobileBinded()) return;
+
       if (this.isPaying) return;
 
       this.isPaying = true;
@@ -829,6 +849,8 @@
     }
 
     showQrcode() {
+      if (!this.checkLogin()) return;
+
       this.isQrcodeShown = true;
 
       // 轮询用户是否已订阅公众号
@@ -873,15 +895,19 @@
       this.$router.push({path: `/lives/${this.liveInfo.id}/share-star`});
     }
 
-    get hasPresent(): boolean {
+    hasPresent(): boolean {
       return this.liveInfo.isNeedPay && this.liveInfo.paid && !this.liveInfo.isPayByPresent;
     }
 
     gotoPresent() {
+      if (!this.checkLogin()) return;
+
       this.$router.push({path: `/lives/${this.liveInfo.id}/present`, query: {fromUid: `${this.userInfo.uid}`}});
     }
 
     go() {
+      if (!this.checkLogin()) return;
+
       if (
         this.liveInfo.isNeedPay &&
         !this.liveInfo.paid &&

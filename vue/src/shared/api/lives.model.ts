@@ -38,11 +38,11 @@ export class LiveInviteeInfoModel {
   title: string;
   avatar: string;
 
-  constructor(data: any, users?: any) {
+  constructor(data: any) {
     this.id = data.id;
     this.name = data.name;
     this.title = data.title;
-    this.avatar = data.avatar;
+    this.avatar = data.avatar_url;
     this.desc = data.desc;
   }
 }
@@ -66,7 +66,7 @@ export class LiveInfoModel {
   owner: UserInfoModel;
   admin: UserInfoModel;
   editors: UserInfoModel[];
-  invitees: UserInfoModel[];
+  invitees: LiveInviteeInfoModel[];
   latestUsers: UserInfoModel[]; // 话题间观众
 
   praised: number;
@@ -137,9 +137,9 @@ export class LiveInfoModel {
     }
 
     this.invitees = [];
-    if (data.meta.invitedEditors) {
-      this.invitees = data.meta.invitedEditors;
-    }
+    data.meta.invitedEditors.forEach((invitee: any) => {
+      this.invitees.push(new LiveInviteeInfoModel(invitee));
+    });
 
     this.latestUsers = [];
     if (data.latestUserUids) {

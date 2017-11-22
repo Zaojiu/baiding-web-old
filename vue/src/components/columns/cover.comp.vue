@@ -514,12 +514,12 @@
 
       const checkMobileBinded = (to: string) => {
         // 未绑定手机
-        if (this.userInfo && !this.userInfo.isMobileBinded) {
-          this.$router.push({path: '/mobile-bind', query: {redirectTo: to}});
-          return false;
+        if (this.userInfo && this.userInfo.isMobileBinded) {
+          return true;
         }
 
-        return true;
+        this.$router.push({path: '/mobile-bind', query: {redirectTo: to}});
+        return false;
       };
 
       if (item) {

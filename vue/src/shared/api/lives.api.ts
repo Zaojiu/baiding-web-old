@@ -41,6 +41,12 @@ export const getLiveInfoCache = (id: string): LiveInfoModel|null => {
   return null;
 };
 
+export const joinLive = async (id: string): Promise<void> => {
+  const url = `${host.io}/api/live/streams/${id}?join=true`;
+  await get(url);
+  return;
+};
+
 export const listLiveInfo = async (uid: number, marker = '', size = 20, sorts = ['-createdAt']): Promise<LiveInfoModel[]> => {
   const query = {
     createdAt: marker,
