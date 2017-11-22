@@ -32,6 +32,10 @@ export class ApiError extends Error {
     return this.code === ApiCode.ErrUnauthorized || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrExpiredToken;
   }
 
+  get isNeedBindMobile(): boolean {
+    return this.code === ApiCode.ErrUserMobileNeedBind;
+  }
+
   get is4xx(): boolean {
     return this.code >= 400 && this.code < 500;
   }
@@ -46,6 +50,9 @@ const errorHandler = (err: ApiError, customCodeMap?: { [key: number]: string }) 
     Store.memoryStore.delete('userInfo');
     showTips(`请登录`);
     router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
+  } else if (err.isNeedBindMobile) {
+    showTips(`请先绑定手机`);
+    router.push({path: '/mobile-bind', query: {redirectTo: getRelativePath(location.href, '/lives')}});
   } else {
     let message = '';
     const codeMap = _.assign({}, ApiErrorMessage, customCodeMap);
