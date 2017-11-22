@@ -37,7 +37,6 @@ const route: Routes = [
   },
   {
     path: ':id/info',
-    canActivate: [AuthGuard],
     component: LiveRoomInfoComponent,
     resolve: {
       liveInfo: LiveInfoResolver,

@@ -231,10 +231,10 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   joinLiveRoom(): Promise<void> {
-    return this.liveService.getLiveInfo(this.id, true, true).then(liveInfo => { // 发送加入话题间的请求。
+    return this.liveService.getLiveInfo(this.id, true).then(liveInfo => { // 发送加入话题间的请求。
       this.liveInfo = liveInfo;
       this.isJoin = true;
-      return;
+      return this.liveService.joinLive(this.id);
     });
   }
 

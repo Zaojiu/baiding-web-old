@@ -23,7 +23,7 @@ export class LiveInfoModel {
   owner: UserInfoModel;
   admin: UserInfoModel;
   editors: UserInfoModel[]; //后端新增字段 avatar_url,title //TODO
-  invitedEditors: UserInfoModel[];
+  invitees: LiveInviteeInfoModel[];
   latestUsers: UserInfoModel[]; // 话题间观众
   praised: number;
   commented: number;
@@ -175,3 +175,20 @@ export class LiveRoomPresentModel {
     }
   }
 }
+
+export class LiveInviteeInfoModel {
+  id: string;
+  name: string;
+  desc: string;
+  title: string;
+  avatar: string;
+
+  constructor(data: any) {
+    this.id = data.id;
+    this.name = data.name;
+    this.title = data.title;
+    this.avatar = data.avatar_url;
+    this.desc = data.desc;
+  }
+}
+

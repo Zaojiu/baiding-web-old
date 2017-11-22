@@ -9,8 +9,6 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 import {UtilsService} from "../../shared/utils/utils";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {PaidStatus} from "./live-room-info.enums";
-import {InviteApiService} from "../../shared/api/invite/invite.api";
-import {AudienceInvitationModel} from "../../shared/api/invite/invite.model";
 import {host} from "../../../environments/environment";
 
 @Component({
@@ -29,7 +27,6 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   paidResult = '';
   inApp = UtilsService.isInApp;
   liveId: string;
-  audienceListInvitations: AudienceInvitationModel[];
   isInWechat = UtilsService.isInWechat;
   btnText = '进入话题间';
   isSubscribeLinkLoading = false;
@@ -39,8 +36,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
-              private iosBridgeService: IosBridgeService, private shareService: ShareApiService,
-              private inviteApiService: InviteApiService) {
+              private iosBridgeService: IosBridgeService, private shareService: ShareApiService) {
   }
 
   ngOnInit() {
@@ -51,16 +47,12 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.initPayment();
     this.handlePaymentRedirect();
 
-    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你参加#${this.liveInfo.subject}#直播分享`;
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo ? this.userInfo.nick : '我'}邀请你参加#${this.liveInfo.subject}#直播分享`;
     this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
     this.route.snapshot.data['shareLink'] = this.getShareUri();
 
     // this.shareService.accessSharedByRoute(this.route);
-
-    this.inviteApiService.audienceListInvitations(this.liveId).then((res) => {
-      this.audienceListInvitations = res;
-    });
 
     this.getSubscribeLink();
   }
@@ -89,6 +81,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     if (
       this.liveInfo.isNeedPay &&
       !this.liveInfo.paid &&
+      this.userInfo &&
       this.liveInfo.isAudience(this.userInfo.uid)
     ) {
       if (this.userInfo.isMember) {
@@ -125,6 +118,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   bookLive() {
+    if (!this.checkLogin()) return;
+
     if (this.booking) return;
 
     this.booking = true;
@@ -204,7 +199,26 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
   }
 
+  checkLogin() {
+    if (!this.userInfo) {
+      this.router.navigate([`/signin`], {queryParams: {redirectTo: `/lives/${this.liveId}/info`}});
+      return false;
+    }
+
+    return true;
+  }
+
+  checkMobileBinded() {
+    if (this.userInfo && !this.userInfo.mobile.number) {
+      this.router.navigate([`/signup`], {queryParams: {redirectTo: `/lives/${this.liveId}/info`}});
+      return false;
+    }
+
+    return true;
+  }
+
   payLive() {
+    if (!this.checkMobileBinded()) return;
     if (this.paidStatus === this.paidEnums.Paying) return;
 
     this.paidStatus = this.paidEnums.Paying;
@@ -221,6 +235,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   showQrcode() {
+    if (!this.checkLogin()) return;
+
     this.isQrcodeShown = true;
 
     // 轮询用户是否已订阅公众号
@@ -272,10 +288,14 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   gotoPresent() {
+    if (!this.checkLogin()) return;
+
     this.router.navigate([`/lives/${this.liveInfo.id}/present`], {queryParams: {fromUid: this.userInfo.uid}});
   }
 
   go() {
+    if (!this.checkLogin()) return;
+
     if (
       this.liveInfo.isNeedPay &&
       !this.liveInfo.paid &&
