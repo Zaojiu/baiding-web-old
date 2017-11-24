@@ -23,7 +23,11 @@ npm run build
 
 ## 安装后端
 后端需要安装golang，mongo，mysql，redis等工具，mongo，mysql推荐使用brew安装，launchrocket进行管理。
+
 `brew install mongo`
+
 `brew install mysql`
+
 `brew install redis`
+
 `brew cask install launchrocket`
