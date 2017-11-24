@@ -13,7 +13,7 @@ npm run init
 
 安装失败，可能是网络不行，需要代理翻墙。
 
-npm run install -- proxy http://shadowsocks ip:port source https://registry.npmjs.org/
+npm run init -- proxy http://shadowsocks ip:port source https://registry.npmjs.org/
 
 # serve dev mode with hot reload at localhost:9000
 npm run dev
