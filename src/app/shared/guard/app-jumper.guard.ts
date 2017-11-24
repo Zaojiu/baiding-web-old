@@ -4,11 +4,9 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route}
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {LiveService} from "../api/live/live.service";
 import {LiveInfoModel} from "../api/live/live.model";
-import {UserInfoModel} from "../api/user-info/user-info.model";
 import {LiveRoomComponent} from "../../+live-room/live-room.component";
 import {UtilsService} from "../utils/utils";
 import {IosBridgeService} from "../ios-bridge/ios-bridge.service";
-import {AuthBridge} from "../bridge/auth.interface";
 import {ArticleComponent} from "../../+talk/article/article.component";
 import {TalkService} from "../api/talk/talk.api";
 import {StoreService} from "../store/store.service";

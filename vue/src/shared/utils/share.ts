@@ -2,7 +2,7 @@ import {isInApp, isInWechat} from './utils';
 import {callHandler, initIOS} from "./ios";
 import {showSharePopup} from "../../store/share";
 import {environment, host} from "../../env/environment";
-import {afterEach} from "../../hooks";
+import {appendAfterEachHook} from "../../hooks";
 
 declare const wx: any;
 
@@ -142,7 +142,7 @@ export const setDefaultShareInfo = (shareTitle?: string, shareDesc?: string, sha
   }
 };
 
-afterEach((to, from) => {
+appendAfterEachHook((to, from) => {
   const shareTitle = to.meta.shareTitle;
   const shareDesc = to.meta.shareDesc;
   const shareCover = to.meta.shareCover;

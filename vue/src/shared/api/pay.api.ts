@@ -8,6 +8,8 @@ import {ApiCode} from "./code-map.enum";
 import {router} from "../../router";
 import {showTips} from "../../store/tip";
 import {pay as iosPayBridge} from "../utils/ios";
+import {PayPlatform} from "./pay.enum";
+
 
 let pcRejecter: ((reason: string) => void)|null;
 let timer: any;
@@ -45,7 +47,7 @@ const wechatPay = async (orderNo: string, redirectTo?: string): Promise<void> =>
 
   let resp: AxiosResponse;
   try {
-    resp = await post(payUrl, {"platform": 1});
+    resp = await post(payUrl, {"platform": PayPlatform.Wechat});
   } catch (e) {
     const data = e.data;
     if (data && data.code === ApiCode.ErrAlreadyPaid) {
@@ -75,7 +77,7 @@ const pcPay = async (orderNo: string): Promise<void> => {
 
   let resp: AxiosResponse;
   try {
-    resp = await post(payUrl, {"platform": 2});
+    resp = await post(payUrl, {"platform": PayPlatform.Pc});
   } catch (e) {
     const data = e.data;
     if (data && data.code === ApiCode.ErrAlreadyPaid) {
@@ -131,7 +133,7 @@ const iosPay = async (orderNo: string): Promise<void> => {
 
   let resp: AxiosResponse;
   try {
-    resp = await post(payUrl, {"platform": 1});
+    resp = await post(payUrl, {"platform": PayPlatform.Ios});
   } catch (e) {
     const data = e.data;
     if (data && data.code === ApiCode.ErrAlreadyPaid) {
@@ -148,7 +150,7 @@ const iosPay = async (orderNo: string): Promise<void> => {
   if (data.isOngoing) return;
 
   const wxPayReq = {
-    prepayid: data.wxPay.request.package.replace('prepay_id=', ''),
+    prepayid: data.wxPay.request.prepay_id,
     noncestr: data.wxPay.request.nonceStr,
     timestamp: data.wxPay.request.timeStamp,
     sign: data.wxPay.request.paySign,
