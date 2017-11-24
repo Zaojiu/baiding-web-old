@@ -255,7 +255,43 @@ vue项目目前没有跑单测，后面如果有需要，可以使用 [ava](http
 ## 其他技术要点
 
 ### 支付
+目前只有微信支付，在 `zaojiu/baiding-web/vue/src/shared/api/pay.api.ts` 中调用 pay 函数支付，具体详情及处理，可以参见order.comp.vue组件中对支付的处理。
 
 ### 与IOS通信
+与ios通信，使用的是 [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)，核心代码在 `zaojiu/baiding-web/vue/src/shared/utils/ios.ts`，前端和ios约定，我们约定第一个参数是字符串类型方法名，第二个参数是需要传给ios的变量，第三个参数是成功回调，第四个参数是失败回调。具体参考里面的pay方法。
+
+### 通知IOS Push页面
+ios中页面跳转，`zaojiu/baiding-web/vue/src/shared/utils/ios.ts` 中的 `launchIosWebviewInterceptor函数` 会在路由里全局拦截页面跳转，并通知ios打开一个新的webview。
 
 ### 微信js-sdk操作
+目前与微信的交互有以下这些api:
+```
+[
+	'startRecord',
+	'stopRecord',
+	'onVoiceRecordEnd',
+	'playVoice',
+	'pauseVoice',
+	'stopVoice',
+	'onVoicePlayEnd',
+	'uploadVoice',
+	'downloadVoice',
+	'translateVoice',
+	'onMenuShareTimeline',
+	'onMenuShareAppMessage',
+	'onMenuShareQQ',
+	'onMenuShareWeibo',
+	'onMenuShareQZone',
+	'chooseImage',
+	'uploadImage'
+]
+```
+具体的文档参见：[微信js-sdk](http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3)
+
+### angular迁移vue
+
+目前白丁前端中同时使用了angular2和vue，新的功能往vue加，老的angular2尽快迁移到vue，目前anuglar项目(`zaojiu/baiding-web`目录下)剩下 `/my/histories` 、 `/my/favories` 、 `/info-center` 及 `/lives` 和 lives下的子路由。
+
+其中 `/lives/apply` 、`/lives/:id/history` 、`/lives/:id/settings` 可以干掉，hamburger-menu组件也可以干掉，settings中的功能迁移到直播间，点击打开设置键盘即可，跟主持人的键盘保持一致。
+
+迁移完毕后，就可以把angular代码删除，然后把vue目录下的代码放到baiding-web目录下。
