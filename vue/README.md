@@ -9,7 +9,11 @@
 vue项目构建依赖docker，查阅 https://www.docker.com ，安装完成后，命令行运行docker --help，检查是否安装成功。
 
 # install dependencies
-npm run install( -- proxy http://shadowsocks ip:port source https://registry.npmjs.org/)
+npm run init
+
+安装失败，可能是网络不行，需要代理翻墙。
+
+npm run install -- proxy http://shadowsocks ip:port source https://registry.npmjs.org/
 
 # serve dev mode with hot reload at localhost:9000
 npm run dev
