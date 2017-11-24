@@ -26,7 +26,7 @@ npm run build
 ```
 
 ## 安装后端
-后端需要安装golang，mongo，mysql，redis等工具，mongo，mysql推荐使用brew安装，launchrocket进行管理。
+在本地搭建后端服务，需要安装golang，mongo，mysql，redis等工具，mongo，mysql推荐使用brew安装，launchrocket进行管理。
 
 `brew install mongo`
 
@@ -35,3 +35,18 @@ npm run build
 `brew install redis`
 
 `brew cask install launchrocket`
+
+安装完成后，需要运行四个基础后端服务，进入后端项目baiding-server运行。
+
+`cd zaojiu/baiding-server`
+
+`export BAIDING_NGINX_DOMAIN=zaojiu.tv`
+
+`make nginx`
+
+另起一个窗口
+
+`cd zaojiu/baiding-server`
+
+`make `
+
