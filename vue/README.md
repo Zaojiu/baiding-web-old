@@ -25,6 +25,180 @@ npm run prod
 npm run build
 ```
 
+## 配置前端
+
+前端配置在 `zaojiu/baiding-web/vue/src/env/` 中，`environment.ts` 是默认的配置，`environment.production.ts`是线上配置，其中只有一些字符串占位符，如果需要增加新配置，请在`environment.production.ts`中加入一个配置，使用 `_REPL_xxx` 来占位，并且把 `_REPL_xxx` 及其真实的值通知后端同学配上。
+
+可以加入一个`environment.dev.ts`，来加入开发配置，`environment.dev.ts`会被忽略，不入库。
+
+## 目录结构
+
+```
+├── README.md
+├── hack
+│   └── run.sh 启动脚本
+├── manual_typings 手动添加的typescript对其他库的声明文件
+│   ├── fastclick
+│   │   ├── index.d.ts
+│   │   └── package.json
+│   ├── moment
+│   │   ├── index.d.ts
+│   │   └── package.json
+│   └── setprototypeof
+│       ├── index.d.ts
+│       └── package.json
+├── package.json
+├── src
+│   ├── assets public文件
+│   │   ├── favicon.ico
+│   │   ├── icon 图标svg，新图标加入目录后，<i class="bi-图标文件名"></i> 来使用
+│   │   ├── img
+│   │   └── wxpay.html
+│   ├── components
+│   │   ├── app.comp.vue 主组件
+│   │   ├── columns 专栏
+│   │   ├── error 通用错误处理页面
+│   │   ├── event 活动购票
+│   │   ├── lives 直播
+│   │   ├── member 会员
+│   │   ├── my 个人中心
+│   │   ├── notfound 通用404页面
+│   │   ├── order 下单
+│   │   ├── signin 登录
+│   │   └── talks 文章
+│   ├── css
+│   │   ├── _article.scss
+│   │   ├── _avatar.scss
+│   │   ├── _button.scss
+│   │   ├── _clickable-block.scss
+│   │   ├── _form.scss
+│   │   ├── _hack.scss
+│   │   ├── _utils.scss
+│   │   └── _variables.scss sass变量
+│   ├── env 配置
+│   │   ├── environment.production.ts 线上配置
+│   │   ├── environment.dev.ts 开发配置 
+│   │   └── environment.ts 默认配置
+│   ├── hooks.ts 全局钩子，使用appendBeforeEachHook、appendAfterEachHook来给路由添加全局钩子，这里面加的函数，在每个页面跳转时都会被运行。
+│   ├── index.html 主html
+│   ├── main.ts 主入口
+│   ├── router.ts 主路由
+│   ├── shared
+│   │   ├── api api文件夹，请把api及其model添加在此
+│   │   │   ├── code-map.enum.ts
+│   │   │   ├── column.api.ts
+│   │   │   ├── column.model.ts
+│   │   │   ├── event.api.ts
+│   │   │   ├── event.model.ts
+│   │   │   ├── lives.api.ts
+│   │   │   ├── lives.model.ts
+│   │   │   ├── member.api.ts
+│   │   │   ├── member.model.ts
+│   │   │   ├── order.api.ts
+│   │   │   ├── order.model.ts
+│   │   │   ├── pay.api.ts
+│   │   │   ├── pay.enum.ts
+│   │   │   ├── sms.api.ts
+│   │   │   ├── speaker.model.ts
+│   │   │   ├── talk.api.ts
+│   │   │   ├── talk.model.ts
+│   │   │   ├── ticket.api.ts
+│   │   │   ├── ticket.model.ts
+│   │   │   ├── upload.api.ts
+│   │   │   ├── upload.model.ts
+│   │   │   ├── user.api.ts
+│   │   │   ├── user.model.ts
+│   │   │   ├── video.model.ts
+│   │   │   └── xhr.ts http请求对象的封面，里面会拦截错误，做一些默认tips或者跳转登录等操作
+│   │   ├── app-download-tips.comp.vue
+│   │   ├── audio-bar.comp.vue
+│   │   ├── bd-loading.comp.vue
+│   │   ├── circle-loading.comp.vue
+│   │   ├── count-down.comp.vue
+│   │   ├── error.comp.vue
+│   │   ├── form
+│   │   │   ├── autosize.directive.ts 给textarea添加此directive可以让textarea高度自适应文字。
+│   │   │   ├── focus-first-invalid.directive.ts 给form添加让form出错时自动focus出错的输入框
+│   │   │   ├── focus.directive.ts
+│   │   │   ├── has-value.directive.ts
+│   │   │   └── index.ts
+│   │   ├── guard
+│   │   │   ├── member-activate-comp.guard.ts
+│   │   │   ├── mobile-binded-comp.guard.ts
+│   │   │   ├── mobile-binded.guard.ts
+│   │   │   ├── route-task.ts 路由任务，在进入路由前，执行某些任务，可以是guard（守卫，angular2的概念，做路由权限检查），可以是resolver（同样是angular2概念，在进入路由前获取数据注入组件）
+│   │   │   ├── signin-comp.guard.ts
+│   │   │   └── user-auth.guard.ts
+│   │   ├── icons.font.js svg转iconfont的文件，在webpack中使用，具体参见[webfonts-loader](https://www.npmjs.com/package/webfonts-loader)
+│   │   ├── live-cover.comp.vue
+│   │   ├── live-intro.comp.vue
+│   │   ├── modal.comp.vue
+│   │   ├── payment.comp.vue 支付遮罩提示组件
+│   │   ├── qrcode.comp.vue
+│   │   ├── resolver
+│   │   │   └── live-info.resolver.ts
+│   │   ├── scroll-view
+│   │   │   └── scroll-view.directive.ts
+│   │   ├── share-popup.comp.vue
+│   │   ├── tool-tips.comp.vue
+│   │   ├── top-nav.comp.vue
+│   │   └── utils
+│   │       ├── analytics.ts
+│   │       ├── auth.ts 鉴权核心文件
+│   │       ├── ios.ts 与ios通信的核心文件
+│   │       ├── polyfill.ts polyfill文件，对浏览器做兼容的，具体可以google polyfill和ponyfill是干嘛的
+│   │       ├── promise-polyfill.ts
+│   │       ├── setPrototypeOf-polyfill.ts
+│   │       ├── share.ts 设置app和微信分享
+│   │       ├── store.ts 内存和localstorage封装
+│   │       ├── title.ts 设置页面标题
+│   │       ├── utils.ts 各种通用工具函数
+│   │       ├── wechat.ts 微信初始化文件
+│   │       └── weinre.ts 远程调试工具，用来在ios微信中作调试，可在配置文件中的host.weinre配上你的weinre client地址，然后页面地址后加上?debug=weinre开启调试。[weinre教程](https://github.com/nupthale/weinre)
+│   ├── store vuex文件夹
+│   │   ├── index.ts 
+│   │   ├── modal.ts 全局弹窗
+│   │   ├── payment.ts 全局支付提示弹窗
+│   │   ├── qrcode.ts 全局二维码弹窗
+│   │   ├── share.ts 全局分享二维码弹窗
+│   │   ├── tip.ts 全局底部小tips
+│   │   └── user.ts 本来想做来存储全局用户信息，但后面感觉不好，废弃，请使用api中的getUserInfo及getUserInfoCache
+│   └── vue-shims.d.ts
+├── tsconfig.json
+├── webpack-shims.d.ts
+└── webpack.config.js
+
+```
+
+## 前端构建
+
+目前前端构建使用webpack作为构建器，其中做了代码分离，js压缩、postcss和css压缩等。具体参见 `zaojiu/baiding-web/vue/webpack.config.js`。
+
+其中thirdPartyLibs数组，是全局共用第三方库，适合放jquery、momentjs、lodash等这些第三方工具。
+
+
+```
+entry: {
+	'global': thirdPartyLibs,
+	'libs': ...,
+	'shared': sharedFiles,
+	'main': './src/main.ts',
+},
+```
+global，暴露在全局(window)的第三方库。
+
+libs，非暴露在全局(window)的第三方库，通过ts的import引入，为了避免代码里面多次引入，所以抽离在一个文件中，复用一个文件，也利于缓存。
+
+shared，用于vue项目内的共享组件、api等，理由同上，他们单独打包在shared.js中。
+
+main，主入口，执行app mount操作。
+
+组件文件，现在全部使用lazy load，按需加载，具体可以查看 `zaojiu/baiding-web/vue/src/router.ts`。
+
+## 前端单测
+
+vue项目目前没有跑单测，后面如果有需要，可以使用 [ava](https://github.com/avajs/ava) 等单测工具去测试。
+
 ## 安装后端
 在本地搭建后端服务，需要安装golang，mongo，mysql，redis等工具，mongo，mysql推荐使用brew安装，launchrocket进行管理。
 
@@ -36,7 +210,13 @@ npm run build
 
 `brew cask install launchrocket`
 
-安装完成后，需要运行四个基础后端服务，进入后端项目baiding-server运行。
+## 配置后端服务
+
+后端服务的配置文件，里面有各种域名的配置，数据库地址配置等。在zaojiu/baiding-server/hack/conf/中，如果需要添加开发配置，请复制各个.ini文件，并加上前缀.dev.ini。
+
+## 安装完成后，需要运行四个基础后端服务。
+
+启动nginx，负责api请求分发，export BAIDING_NGINX_DOMAIN=zaojiu.tv，设置nginx代理zaojiu.tv这个域名。
 
 `cd zaojiu/baiding-server`
 
@@ -44,9 +224,74 @@ npm run build
 
 `make nginx`
 
-另起一个窗口
+---
+
+使用charles或者修改/etc/hosts文件，把io.zaojiu.tv/auth.zaojiu.tv/www.zaojiu.tv三个域名指向127.0.0.1，由上一步的nginx去代理分发到前端或者后端服务。
+
+---
+
+另起一个窗口，启动accountd服务，用于对应api域名auth.zaojiu.com。
 
 `cd zaojiu/baiding-server`
 
-`make `
+`make accountd`
 
+---
+
+另起一个窗口，启动lived服务，用于对应api域名io.zaojiu.com。
+
+`cd zaojiu/baiding-server`
+
+`make lived`
+
+---
+
+另起一个窗口，启动wechatd服务，用于微信签名等。
+
+`cd zaojiu/baiding-server`
+
+`make wechatd`
+
+## 其他技术要点
+
+### 支付
+目前只有微信支付，在 `zaojiu/baiding-web/vue/src/shared/api/pay.api.ts` 中调用 pay 函数支付，具体详情及处理，可以参见order.comp.vue组件中对支付的处理。
+
+### 与IOS通信
+与ios通信，使用的是 [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)，核心代码在 `zaojiu/baiding-web/vue/src/shared/utils/ios.ts`，前端和ios约定，我们约定第一个参数是字符串类型方法名，第二个参数是需要传给ios的变量，第三个参数是成功回调，第四个参数是失败回调。具体参考里面的pay方法。
+
+### 通知IOS Push页面
+ios中页面跳转，`zaojiu/baiding-web/vue/src/shared/utils/ios.ts` 中的 `launchIosWebviewInterceptor函数` 会在路由里全局拦截页面跳转，并通知ios打开一个新的webview。
+
+### 微信js-sdk操作
+目前与微信的交互有以下这些api:
+```
+[
+	'startRecord',
+	'stopRecord',
+	'onVoiceRecordEnd',
+	'playVoice',
+	'pauseVoice',
+	'stopVoice',
+	'onVoicePlayEnd',
+	'uploadVoice',
+	'downloadVoice',
+	'translateVoice',
+	'onMenuShareTimeline',
+	'onMenuShareAppMessage',
+	'onMenuShareQQ',
+	'onMenuShareWeibo',
+	'onMenuShareQZone',
+	'chooseImage',
+	'uploadImage'
+]
+```
+具体的文档参见：[微信js-sdk](http://qydev.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1JS-SDK%E6%8E%A5%E5%8F%A3)
+
+### angular迁移vue
+
+目前白丁前端中同时使用了angular2和vue，新的功能往vue加，老的angular2尽快迁移到vue，目前anuglar项目(`zaojiu/baiding-web`目录下)剩下 `/my/histories` 、 `/my/favories` 、 `/info-center` 及 `/lives` 和 lives下的子路由。
+
+其中 `/lives/apply` 、`/lives/:id/history` 、`/lives/:id/settings` 可以干掉，hamburger-menu组件也可以干掉，settings中的功能迁移到直播间，点击打开设置键盘即可，跟主持人的键盘保持一致。
+
+迁移完毕后，就可以把angular代码删除，然后把vue目录下的代码放到baiding-web目录下。
