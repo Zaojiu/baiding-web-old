@@ -2,7 +2,7 @@ import {host} from "../../env/environment";
 import {post} from "../api/xhr";
 import {AxiosResponse} from "axios";
 import {showTips} from "../../store/tip";
-import {afterEach} from "../../hooks";
+import {appendAfterEachHook} from "../../hooks";
 
 declare const wx: any;
 
@@ -21,7 +21,7 @@ let onVoicePlayEnd: () => void;
 let autoCompleteResolver: (localId: string) => void;
 let autoCompleteRejecter: (reason: string) => void;
 
-afterEach((to, from) => needResign = true);
+appendAfterEachHook((to, from) => needResign = true);
 
 const getConfig = async (): Promise<WechatConfigModel> => {
   let resp: AxiosResponse;

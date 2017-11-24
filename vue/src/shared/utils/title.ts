@@ -1,4 +1,4 @@
-import {afterEach} from "../../hooks";
+import {appendAfterEachHook} from "../../hooks";
 
 export const setTitle = (title: string) => {
   document.title = title;
@@ -15,7 +15,7 @@ export const setTitle = (title: string) => {
   document.body.appendChild(i);
 };
 
-afterEach((to, from) => {
+appendAfterEachHook((to, from) => {
   const title = to.meta.title ? `${to.meta.title}-造就` : '造就';
   setTitle(title);
 });

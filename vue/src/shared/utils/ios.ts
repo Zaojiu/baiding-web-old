@@ -1,3 +1,5 @@
+import {appendBeforeEachHook} from "../../hooks";
+
 declare const window: any;
 
 let jsBridge: any;
@@ -57,4 +59,8 @@ export const pay = (wxPayRequests: any): Promise<any> => {
       });
     });
   });
+};
+
+export const launchIosWebviewInterceptor = () => {
+
 };
