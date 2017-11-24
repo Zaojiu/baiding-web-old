@@ -1,10 +1,13 @@
 # baiding-web-vue
 
-> A Vue.js project with TypeScript
+> 白丁新版前端项目库，使用vue+ts，依赖等文件请参考package.json。
 
-## init
+## 安装前端
 
 ``` bash
+# install docker
+vue项目依赖docker，查阅 https://www.docker.com ，安装完成后，命令行运行docker --help，检查是否安装成功。
+
 # install dependencies
 npm run install( -- proxy http://shadowsocks ip:port source https://registry.npmjs.org/)
 
@@ -17,3 +20,10 @@ npm run prod
 # build for production
 npm run build
 ```
+
+## 安装后端
+后端需要安装golang，mongo，mysql，redis等工具，mongo，mysql推荐使用brew安装，launchrocket进行管理。
+`brew install mongo`
+`brew install mysql`
+`brew install redis`
+`brew cask install launchrocket`
