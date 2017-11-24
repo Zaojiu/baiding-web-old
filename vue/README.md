@@ -6,7 +6,7 @@
 
 ``` bash
 # install docker
-vue项目依赖docker，查阅 https://www.docker.com ，安装完成后，命令行运行docker --help，检查是否安装成功。
+vue项目构建依赖docker，查阅 https://www.docker.com ，安装完成后，命令行运行docker --help，检查是否安装成功。
 
 # install dependencies
 npm run install( -- proxy http://shadowsocks ip:port source https://registry.npmjs.org/)
