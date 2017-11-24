@@ -150,7 +150,9 @@ const iosPay = async (orderNo: string): Promise<void> => {
   if (data.isOngoing) return;
 
   const wxPayReq = {
-    prepayid: data.wxPay.request.prepay_id,
+    appid: data.wxPay.request.appId,
+    partnerid: data.wxPay.request.mchId,
+    prepayid: data.wxPay.request.prepayId,
     noncestr: data.wxPay.request.nonceStr,
     timestamp: data.wxPay.request.timeStamp,
     sign: data.wxPay.request.paySign,
