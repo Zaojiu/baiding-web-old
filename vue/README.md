@@ -185,13 +185,13 @@ entry: {
 	'main': './src/main.ts',
 },
 ```
-global，暴露在全局(window)的第三方库。
+* global，暴露在全局(window)的第三方库。
 
-libs，非暴露在全局(window)的第三方库，通过ts的import引入，为了避免代码里面多次引入，所以抽离在一个文件中，复用一个文件，也利于缓存。
+* libs，非暴露在全局(window)的第三方库，通过ts的import引入，为了避免代码里面多次引入，所以抽离在一个文件中，复用一个文件，也利于缓存。
 
-shared，用于vue项目内的共享组件、api等，理由同上，他们单独打包在shared.js中。
+* shared，用于vue项目内的共享组件、api等，理由同上，他们单独打包在shared.js中。
 
-main，主入口，执行app mount操作。
+* main，主入口，执行app mount操作。
 
 组件文件，现在全部使用lazy load，按需加载，具体可以查看 `zaojiu/baiding-web/vue/src/router.ts`。
 
