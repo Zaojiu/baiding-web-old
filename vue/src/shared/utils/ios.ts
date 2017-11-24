@@ -60,7 +60,3 @@ export const pay = (wxPayRequests: any): Promise<any> => {
     });
   });
 };
-
-export const launchIosWebviewInterceptor = () => {
-
-};
