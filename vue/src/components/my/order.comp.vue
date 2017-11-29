@@ -45,8 +45,7 @@
 <style lang="scss" scoped>
   .container {
     .orders {
-      height: 100vh;
-      overflow: auto;
+      overflow: hidden;
 
       .top-nav + .order {
         border-top: solid 10px $color-gray4;

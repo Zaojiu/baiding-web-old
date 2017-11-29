@@ -33,8 +33,10 @@
         <div class="item-count">
           <div class="adjuster">
             <span class="decrease" @click="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
-            <input class="count-input" type="number" placeholder="数量" step="1" min="1" :max="ticketSelected.leftTotal" v-model.number="ticketCount">
-            <span class="increase" @click="ticketSelected.leftTotal > ticketCount ? ticketCount=ticketCount+1 : true"></span>
+            <input class="count-input" type="number" placeholder="数量" step="1" min="1" :max="ticketSelected.leftTotal"
+                   v-model.number="ticketCount">
+            <span class="increase"
+                  @click="ticketSelected.leftTotal > ticketCount ? ticketCount=ticketCount+1 : true"></span>
           </div>
           <p class="error" v-if="isTicketCountError">输入数量错误，请输入大于0的整数</p>
         </div>
@@ -49,6 +51,7 @@
 </template>
 
 <style lang="scss" scoped>
+
   .container {
     position: relative;
     height: 100vh;
@@ -147,6 +150,7 @@
       height: 60px;
       border-top: solid 1px rgb(239, 239, 239);
       background-color: $color-w;
+      button: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -298,7 +302,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component, Watch } from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
   import {getEvent} from "../../shared/api/event.api";
   import {EventModel, EventTicketModel} from "../../shared/api/event.model";
   import {Money} from "../../shared/utils/utils";
