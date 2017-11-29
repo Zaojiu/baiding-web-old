@@ -3,7 +3,7 @@ import {get, post, del} from "./xhr";
 import {Discount, Order, OrderFee, OrderMeta, PostOrderObject} from "./order.model";
 import {params} from "../utils/utils";
 
-export const listOrders = async (showItems = true, last?: string): Promise<{orders: Order[],last: string}> => {
+export const listOrders = async (showItems = true, last?: string): Promise<{ orders: Order[], last: string }> => {
   const url = `${host.io}/api/wallet/order`;
   const query = {showItems, last};
   const resp = await get(`${url}?${params(query)}`);

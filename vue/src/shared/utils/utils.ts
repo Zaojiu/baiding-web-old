@@ -15,6 +15,7 @@ export const isChrome = /Chrome/i.test(navigator.userAgent);
 export const isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
 export const now = (): number => Math.floor((new Date()).getTime() / 1000);
 export const isViewportLandscape = (): boolean => {
+  // 检测设备是否为横屏
   return window.matchMedia && matchMedia('(orientation: landscape)').matches;
 };
 export const regexpEmail = /^[a-z0-9_]+(\.?[a-z0-9-_])*?@([a-zA-Z0-9]([a-zA-Z0-9\-]*?[a-zA-Z0-9])?\.)+[a-zA-Z]{2,20}$/i;
@@ -24,7 +25,7 @@ export const regexpPhone = /^((086-)?0[0-9]{2,3}-[0-9]{7,8}\;)*((086-)?0[0-9]{2,
 export const regexpPhoneOrMobile = /(^((086-)?0[0-9]{2,3}-[0-9]{7,8}\;)*((086-)?0[0-9]{2,3}-[0-9]{7,8})$)||(^(13\d|14[57]|15[^4,\D]|17[13678]|18\d)\d{8}|170[^346,\D]\d{7})$/;
 
 export const parseAt = (content: string, needHeightLight = false): string => {
-  const patt = /(@.+?)(\((.+?)\)){1}/g
+  const patt = /(@.+?)(\((.+?)\)){1}/g;
   let result = null;
   let _content = content;
 
@@ -32,11 +33,11 @@ export const parseAt = (content: string, needHeightLight = false): string => {
     if (needHeightLight) {
       _content = _content.replace(result[0], `<span class="highlight">${result[1]}</span>`)
     } else {
-      _content = _content.replace(result[0], result[1])
+      _content = _content.replace(result[0], result[1]);
     }
   }
 
-  return _content
+  return _content;
 };
 
 export const resetWindowScroll = (): void => {
@@ -55,7 +56,7 @@ export const params = (obj: any, encode = true): string => {
       }
     }
   });
-  if (params.length) return params.join('&');
+  if (params.length) { return params.join('&'); }
   return '';
 };
 
@@ -64,7 +65,7 @@ export const serializeObj = (source: string): { [key: string]: string } => {
   const target: { [key: string]: string } = {};
   for (let kv of kvArr) {
     const kvPair = kv.split('=');
-    if (kvPair.length === 2) target[decodeURIComponent(kvPair[0])] = decodeURIComponent(kvPair[1]);
+    if (kvPair.length === 2) { target[decodeURIComponent(kvPair[0])] = decodeURIComponent(kvPair[1]); }
   }
   return target;
 };
@@ -104,9 +105,10 @@ export const parseUrl = (url: string): UrlModel => {
     const kvArr = kv.split('=');
     queryObj[kvArr[0]] = kvArr[1];
   });
-  return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, aEle.port, aEle.pathname, queryObj, aEle.hash)
+  return new UrlModel(aEle.protocol, aEle.host, aEle.hostname, aEle.port, aEle.pathname, queryObj, aEle.hash);
 };
 
+// 从字典库中随机生成特定位数的字符串
 export const randomId = (size = 10, dict = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'): string => {
   const dictArr = dict.split('');
   let str = '';
@@ -118,14 +120,14 @@ export const randomId = (size = 10, dict = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJ
 
 export const absUrl = (path: string, query?: {[key: string]: string}): string => {
   let url = `${location.protocol}//${location.hostname}${path}`;
-  if (query) url += `?${params(query)}`;
+  if (query) { url += `?${params(query)}`; }
   return url;
 };
 
 export const getRelativePath = (path: string, defaultPath: string): string => {
   let _path = path || defaultPath;
   _path = _path.replace(host.self, '');
-  if (_path === '/' || !_.startsWith(_path,'/')) _path = defaultPath;
+  if (_path === '/' || !_.startsWith(_path,'/')) { _path = defaultPath; }
   return _path;
 };
 
@@ -149,15 +151,15 @@ export class Money {
       yuanString = yuanArr.join('.');
     }
 
-    if (prefix) yuanString = `${prefix}${yuanString}`;
-    if (subfix) yuanString = `${yuanString}${subfix}`;
+    if (prefix) { yuanString = `${prefix}${yuanString}`; }
+    if (subfix) { yuanString = `${yuanString}${subfix}`; }
 
     return yuanString;
   }
 }
 
 export const removeHTML = (htmlStr: string): string => {
-  return htmlStr.replace(/<(?:.|\n)*?>/gm, '')
+  return htmlStr.replace(/<(?:.|\n)*?>/gm, '');
 };
 
 export let scrollPosition: Position | { selector: string, offset?: Position } | void;

@@ -2,11 +2,11 @@ import './shared/utils/weinre';
 import './shared/utils/polyfill';
 import './shared/icons.font.js';
 
-import Vue, {ComponentOptions} from 'vue'
-import {router} from './router'
-import {sync} from 'vuex-router-sync'
-import {store} from './store'
-import appComp from './components/app.comp.vue'
+import Vue, {ComponentOptions} from 'vue';
+import {router} from './router';
+import {sync} from 'vuex-router-sync';
+import {store} from './store';
+import appComp from './components/app.comp.vue';
 import topNav from './shared/top-nav.comp.vue';
 import error from './shared/error.comp.vue';
 import bdLoading from './shared/bd-loading.comp.vue';

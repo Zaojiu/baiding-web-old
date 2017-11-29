@@ -9,7 +9,9 @@
     <div class="date" v-if="userInfo.isMember">
       <div class="inner"></div>
       <div class="background" :style="{width: progressWidthPrecent + '%'}"></div>
-      <div class="text">会员有效期: {{userInfo.member.joinAt.format('YYYY年MM月DD日')}}-{{userInfo.member.expiredAt.format('YYYY年MM月DD日')}}</div>
+      <div class="text">
+        会员有效期: {{userInfo.member.joinAt.format('YYYY年MM月DD日')}}-{{userInfo.member.expiredAt.format('YYYY年MM月DD日')}}
+      </div>
     </div>
     <div class="rights">
       <div class="right" v-for="right in rights">
@@ -18,16 +20,17 @@
         <i class="bi bi-member-right-discount" v-else-if="right.isTypeNormalDiscount"></i>
         <div class="title" @click.prevent="userInfo.member.valid ? gotoRight(right.id) : true">{{right.title}}</div>
         <div class="detail" v-if="userInfo.member.valid">
-          <div class="amount">可用权益：<span v-if="right.totalAmount">{{right.availableAmount}}/{{right.totalAmount}}</span><span v-else>0</span></div>
+          <div class="amount">可用权益：<span v-if="right.totalAmount">{{right.availableAmount}}/{{right.totalAmount}}</span><span
+            v-else>0</span></div>
           <a class="detail-link" href="" @click.prevent="gotoRight(right.id)">查看详情</a>
         </div>
         <div class="desc" v-if="right.desc">{{right.desc}}</div>
       </div>
     </div>
     <footer>
-      <a class="activate-link" href="" @click.prevent="activate()" v-if="!userInfo.isMember">使用激活码开通会员权限</a>
-      <button class="buy-button" @click="goIntro()" v-if="!userInfo.isMember">{{buyBtnText}}</button>
-      <a class="intro-link" href="" @click.prevent="goIntro()">会员权益说明</a>
+      <a class="activate-link" href="" @click.prevent="activate()" v-if="!userInfo.isMember&&!isApp">使用激活码开通会员权限</a>
+      <button class="buy-button" @click="goIntro()" v-if="!userInfo.isMember&&!isApp">{{buyBtnText}}</button>
+      <a class="intro-link" href="" @click.prevent="goIntro()" v-if="!isApp">会员权益说明</a>
     </footer>
     <router-view></router-view>
   </div>
@@ -35,14 +38,13 @@
 
 <style lang="scss" scoped>
   .container {
-    height: 100vh;
-    overflow: auto;
+    overflow: hidden;
 
     header {
       background-image: url('/assets/img/my-member-cover.png');
-      background-size: cover;
+      background-size: 100% 100%;
       text-align: center;
-      padding: 26px 0 65px;
+      padding: 26px 0 68px;
 
       .avatar {
         display: block;
@@ -96,7 +98,6 @@
         font-size: $font-size-12;
         color: $color-w;
         transform: scale(.78);
-        line-height: 16px;
       }
     }
 
@@ -217,8 +218,8 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
-  import {Money} from '../../shared/utils/utils';
+  import {Component} from 'vue-property-decorator';
+  import {Money,isInApp} from '../../shared/utils/utils';
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {listMemberRights} from '../../shared/api/member.api';
   import {MemberRight} from "../../shared/api/member.model";
@@ -232,6 +233,7 @@
     isLoading = false;
     rights: MemberRight[] = [];
     memberOrderObject = new PostOrderObject('member-year', OrderObjectType.Member, 1); // hardcode temporary
+    isApp = isInApp;//判断是否在app环境
 
     get buyBtnText(): string {
       let text: string;

@@ -2,7 +2,7 @@
   <div class="container">
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
-    <div v-else>
+    <div style="height: 100%" v-else>
       <top-nav class="top-nav"></top-nav>
 
       <div class="block" v-for="ticket in tickets">
@@ -42,8 +42,7 @@
 
 <style lang="scss" scoped>
   .container {
-    overflow: hidden;
-
+    overflow: auto;
     .loading, .error {
       display: block;
       background-color: $color-w;

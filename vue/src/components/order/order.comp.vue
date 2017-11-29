@@ -110,7 +110,7 @@
             <div class="row" v-for="discount in orderFee.discounts">
               <span class="title">{{discount.title}}</span>
               <span class="content"><a href="" :class="{disabled: isDiscountDeleting[discount.code]}"
-                                       @click.prevent="deleteSelectedDiscount(discount)">删除</a></span>
+                                       @click.prevent="deleteSelectedDiscount(discount)">移除</a></span>
             </div>
             <div class="row no-record" v-if="!orderFee.discounts.length">请选取优惠</div>
           </div>
@@ -152,7 +152,6 @@
 <style lang="scss" scoped>
   .container {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
     .invalid-order {
       font-size: $font-size-16;
       color: $color-gray3;
@@ -421,14 +420,14 @@
     order: Order = new Order({});
     itemsQuery: PostOrderObject[] = [];
     orderFee: OrderFee = new OrderFee({});
-    discountCodes: Discount[] = [];
+    discountCodes: Discount[] = [];//折扣列表
     isInvalidOrder = false;
     isLoading = false;
     isError = false;
     isPaying = false;
-    isDiscountSelectorShow = false;
-    selectedDiscount: Discount[] = [];
-    isApplyingDiscount = false;
+    isDiscountSelectorShow = false;//控制优惠活动面板的显示
+    selectedDiscount: Discount[] = [];//选择的优惠
+    isApplyingDiscount = false;//控制是否正在使用优惠，控制'使用优惠'按钮状态
     isDiscountDeleting: { [key: string]: boolean } = {};
 
     created() {
@@ -585,7 +584,13 @@
     }
 
     async checkDiscount() {
+      //获取当前有的优惠活动
       this.discountCodes = await listDiscountCode(this.itemsQuery);
+      //如果有优惠活动，则默认选中第一条优惠
+      if (this.discountCodes.length > 0) {
+        this.selectedDiscount.push(this.discountCodes[0]);
+        this.useDiscountFirst();
+      }
     }
 
     getOrderType(): string {
@@ -608,7 +613,6 @@
 
     async payOldOrder() {
       this.isPaying = true;
-
       try {
         await pay(this.orderId, this.getBackToUrl());
       } catch (e) {
@@ -668,6 +672,20 @@
       this.isDiscountSelectorShow = false;
     }
 
+    //选择第一个优惠
+    async useDiscountFirst() {
+      this.isApplyingDiscount = true;
+
+      const discountCodes = this.selectedDiscount.map(discount => discount.code);
+
+      try {
+        await this.checkOrder(discountCodes);
+      } finally {
+        this.isApplyingDiscount = false;
+      }
+    }
+
+    //选择优惠
     async useDiscount() {
       this.isApplyingDiscount = true;
 
@@ -682,6 +700,7 @@
       this.closeDiscountSelector();
     }
 
+    //判断该优惠是否已经使用
     isDiscountSelected(discount: Discount): boolean {
       return !!this.selectedDiscount.find((selectedDiscount) => selectedDiscount.code === discount.code);
     }
