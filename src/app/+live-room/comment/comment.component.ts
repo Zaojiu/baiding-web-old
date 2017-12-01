@@ -37,7 +37,6 @@ export class CommentComponent implements OnInit, OnDestroy {
   unreadCount = 0;
   commentType = CommentType;
   eventSub: Subscription;
-
   constructor(private commentService: CommentService, private router: Router,
               private commentApiService: CommentApiService, private sanitizer: DomSanitizer,
               private timelineService: TimelineService, private tooltips: OperationTipsService) {

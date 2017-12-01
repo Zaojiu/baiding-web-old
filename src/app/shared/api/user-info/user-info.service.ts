@@ -32,9 +32,9 @@ export class UserInfoService {
 
   parseUserInfo(data: any): UserInfoModel {
     let info = new UserInfoModel();
-    info.nick = data.nick;
-    info.username = data.username;
-    info.avatar = data.avatar;
+    info.nick = data.nick || '未设置';
+    info.username = data.username || '';
+    info.avatar = data.avatar || encodeURI('../../../assets/img/user-default.png');
     info.uid = data.uid;
     info.permissions = new PermissionModel;
     info.permissions.publish = data.permissions ? data.permissions.publish : false;
@@ -44,7 +44,7 @@ export class UserInfoService {
     info.mobile.updatedAt = data.mobile && data.mobile.updatedAt ? data.mobile.updatedAt : '';
     info.member = new MemberModel();
     info.member.valid = data.member ? data.member.valid : false;
-    info.member.joinAt = data.member? moment(data.member.joinAt) : null;
+    info.member.joinAt = data.member ? moment(data.member.joinAt) : null;
     info.member.expiredAt = data.member ? moment(data.member.expiredAt) : null;
 
     return info;

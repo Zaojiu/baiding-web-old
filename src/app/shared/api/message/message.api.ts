@@ -53,7 +53,6 @@ export class MessageApiService {
           messages.push(message);
         }
       }
-
       return messages;
     });
   }
@@ -77,13 +76,31 @@ export class MessageApiService {
 
     let message = new MessageModel();
 
-    if (!data) return message;
+    if (!data) {
+      return message;
+    }
 
     message.id = data.id;
     message.parentId = data.parentId;
     message.isReceived = true;
-    message.user = users[data.uid];
+    if (users[data.uid]) {
+      let forUser = JSON.parse(JSON.stringify(users[data.uid]));
+      message.user = forUser;
+      if (!forUser.avatar) {
+        message.user.avatar = encodeURI('../../../assets/img/user-default.png');
+      }
+      if (!forUser.nick) {
+        message.user.nick = '未设置';
+      }
+    } else {
+      let newUser = new UserInfoModel();
+      newUser.uid = data.uid;
+      newUser.avatar = encodeURI('../../../assets/img/user-default.png');
+      newUser.nick = '未设置';
+      message.user = newUser;
+    }
     message.content = data.content;
+    message.createdAt = data.createdAt;
     if (message.content) {
       let contentParsed = UtilsService.parseAt(message.content);
       contentParsed = UtilsService.parseLink(contentParsed);
@@ -151,7 +168,16 @@ export class MessageApiService {
     for (let uid of data.latestPraisedUids) {
       let user = users[uid];
       message.praisedAvatars = message.praisedAvatars || [];
-      message.praisedAvatars.push(user);
+      if (user) {
+        let copyUser = JSON.parse(JSON.stringify(user));
+        if (!user.avatar) {
+          copyUser.avatar = encodeURI('../../../assets/img/user-default.png');
+        }
+        if (!user.nick) {
+          copyUser.nick = '未设置';
+        }
+        message.praisedAvatars.push(copyUser);
+      }
     }
 
     message.replies = [];
@@ -159,8 +185,6 @@ export class MessageApiService {
     if (data.parentMessage) {
       message.parentMessage = this.parseMessage(data.parentMessage, users);
     }
-
-    message.createdAt = data.createdAt;
     message.createdAtParsed = moment(+message.createdAt / 1e6);
 
     return message;
