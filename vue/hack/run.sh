@@ -1,6 +1,7 @@
 #!/bin/bash
 
 NODE_IMAGE="node:9.2.0"
+port=9010
 
 function docker_killrm(){
     docker rm -f baiding-web-vue
@@ -8,13 +9,13 @@ function docker_killrm(){
 
 function docker_bash(){
     docker_killrm
-    docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+    docker run -it --name baiding-web-vue -p $port:$port -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
         $NODE_IMAGE /bin/bash
 }
 
 function docker_dev(){
     docker_killrm
-    docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+    docker run -it --name baiding-web-vue -p $port:$port -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
         $NODE_IMAGE /bin/bash -c "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --progress"
 }
 
@@ -26,7 +27,7 @@ function docker_init(){
         childCommand="npm config set registry $4 && npm install --verbose"
     fi
 
-    command="docker pull $NODE_IMAGE && rm -rf node_modules package-lock.json yarn.lock && docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+    command="docker pull $NODE_IMAGE && rm -rf node_modules package-lock.json yarn.lock && docker run -it --name baiding-web-vue -p $port:$port -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
                       $NODE_IMAGE /bin/bash -c \"$childCommand\""
     docker_killrm
     eval $command
@@ -34,13 +35,13 @@ function docker_init(){
 
 function docker_prod(){
     docker_killrm
-    docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+    docker run -it --name baiding-web-vue -p $port:$port -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
         $NODE_IMAGE /bin/bash -c "NODE_ENV=production ./node_modules/.bin/webpack-dev-server --progress"
 }
 
 function docker_build(){
     docker_killrm
-    docker run -it --name baiding-web-vue -p 9000:9000 -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+    docker run -it --name baiding-web-vue -p $port:$port -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
         $NODE_IMAGE /bin/bash -c "rm -rf node_modules package-lock.json yarn.lock && npm install --verbose && rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --progress --hide-modules --display-optimization-bailout"
 }
 
