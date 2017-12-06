@@ -27,6 +27,11 @@
         </div>
       </div>
     </div>
+
+    <footer>
+      <button @click="submit()">提交</button>
+    </footer>
+
   </form>
 </template>
 

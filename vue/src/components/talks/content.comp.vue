@@ -20,7 +20,7 @@
             @error="coverUrl = defaultCoverUrl"
           >
 
-          <div class="big-play" v-if="talkInfo.media.hasVideo">视频 {{talkInfo.media.duration.format('mm’ss“')}}</div>
+          <div class="big-play" v-if="talkInfo.media.hasVideo"></div>
         </div>
       </header>
 
@@ -54,7 +54,8 @@
             <div class="speaker" v-for="speaker in talkInfo.speaker">
               <img class="avatar avatar-60 avatar-round" :src="speaker.avatar" :alt="speaker.name">
               <strong class="name">{{speaker.name}}</strong>
-              <p class="desc">{{speaker.desc}}</p>
+              <p class="desc">{{speaker.title}}</p>
+              <p class="public-no">造就第23位演讲者</p>
             </div>
 
             <section class="article article-content" v-html="talkInfo.content" v-once></section>
@@ -105,15 +106,18 @@
 
       <footer v-show="!(isVideoPlayed && isLandscape)" ref="toolBar"
               :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
-        <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
+        <!--<div class="icon view">{{talkInfo.totalUsers}}人看过</div>-->
         <div class="icon" @click="togglePraise()" :class="{'active': talkInfo.isPraised}">
-          <i class="bi bi-praise"></i>{{talkInfo.praiseTotal}}
+          <div class="font-content"><i class="bi bi-new-praise"></i></div>
+          <div><span>点赞 {{talkInfo.praiseTotal}}</span></div>
         </div>
         <div class="icon" @click="toggleFavorite()" :class="{'active': talkInfo.isFavorited}">
-          <i class="bi bi-favorite"></i>
+          <div class="font-content"><i class="bi bi-new-favorite"></i></div>
+          <div><span>收藏 100</span></div>
         </div>
         <div class="icon" @click="gotoComment()">
-          <i class="bi bi-comment2"></i>
+          <div class="font-content"><i class="bi bi-new-comment"></i></div>
+          <div><span>评论 {{talkInfo.commentTotal}}</span></div>
         </div>
       </footer>
     </div>
@@ -153,7 +157,7 @@
       &:before {
         content: "";
         display: block;
-        height: 100vw;
+        height: 240px;
         transition: height .5s;
       }
 
@@ -221,7 +225,8 @@
           left: 50%;
           top: 50%;
           transform: translateX(-50%) translateY(-50%);
-          background: url("/assets/icon/big-play.svg") center top no-repeat;
+          background: url("/assets/icon/new-big-play.svg") center top no-repeat;
+          background-size: 80% 80%;
           pointer-events: none;
           min-width: 66px;
           padding-top: 74px;
@@ -331,24 +336,21 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 50px 20px 20px;
+      margin: 60px 20px 20px;
       padding: 20px;
       border-radius: 8px;
       border: solid 1px rgb(237, 237, 242);
       background-color: rgb(250, 250, 250);
-
       .avatar {
         margin-top: -50px;
-        margin-bottom: 15px;
+        margin-bottom: 13px;
       }
 
       .name {
         font-size: $font-size-20;
         color: $color-dark-gray2;
-        font-weight: normal;
-        line-height: 1.3em;
         text-align: center;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
       }
 
       .desc {
@@ -357,6 +359,12 @@
         line-height: 1.7em;
         text-align: justify;
         margin-bottom: -5px;
+      }
+      .public-no{
+        font-size: $font-size-14;
+        color: $color-gray6;
+        text-align: justify;
+        padding: 22px 0 7px 0;
       }
     }
 
@@ -566,31 +574,38 @@
     }
 
     .footer-hide {
-      bottom: -46px;
+      bottom: -50px;
       transition: bottom 0.3s ease;
     }
 
     footer {
       display: flex;
-      height: 46px;
+      height: 50px;
       background-color: rgb(10, 10, 23);
       max-width: 1024px;
       width: 100%;
 
       .icon {
+        flex:1;
         line-height: 1em;
         font-size: $font-size-14;
         color: $color-w;
         display: flex;
-        align-items: center;
-        padding-left: 15px;
-
-        &:first-child {
-          padding-left: 24px;
+        flex-direction: column;
+        div{
+          text-align: center;
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          span{
+            font-size: 12px;
+          }
         }
-
-        &:last-child {
-          padding-right: 24px;
+        .font-content{
+          flex: 3;
+          font-size: 20px;
         }
 
         &.active {
@@ -598,7 +613,7 @@
         }
 
         .bi {
-          margin-right: 5px;
+          margin-top: 3px;
         }
 
         .bi-praise {

@@ -77,7 +77,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.userInfo = this.userInfoService.getUserInfoCache();
     this.talkInfo = this.route.snapshot.data['talkInfo'];
-
     if (!this.talkInfo) return;
 
     this.init();

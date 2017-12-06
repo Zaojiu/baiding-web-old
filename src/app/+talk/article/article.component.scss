@@ -101,29 +101,21 @@
         text-indent: -10000px;
         transition: opacity 2.5s;
       }
-
-      .bi-play-fill {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        font-size: 20px;
-        color: $color-w;
-        pointer-events: none;
-        background-color: rgba(0, 0, 0, 0.7);
-        border: solid 2px $color-w;
-        border-radius: 50%;
-        height: 60px;
-        width: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:before {
-          transform: translateX(3px);
-        }
-      }
     }
+  }
+
+  .blur-box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    color: #31405e;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border-radius: 30px;
+    background: url(../../../assets/img/paly-fill-new.png)no-repeat;
+    background-size: 100% 100%;
   }
 
   .talk-info {
@@ -405,28 +397,34 @@
     width: 100%;
 
     .icon {
-      color: $color-w;
+      flex: 1;
       line-height: 1em;
       font-size: 14px;
+      color: $color-w;
       display: flex;
-      align-items: center;
-      padding-left: 15px;
+      flex-direction: column;
+      div {
+        text-align: center;
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        span {
+          font-size: 12px;
+        }
+      }
+      .font-content {
+        flex: 3;
+        font-size: 20px;
+      }
 
       &.activate {
         color: $color-brand;
       }
 
-      &:first-child {
-        padding-left: 24px;
-      }
-
-      &:last-child {
-        padding-right: 24px;
-      }
-
       .bi {
-        font-size: 20px;
-        margin-right: 5px;
+        margin-top: 3px;
       }
     }
 
