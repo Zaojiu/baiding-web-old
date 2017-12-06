@@ -1,9 +1,9 @@
 #!/bin/bash
 
 NODE_IMAGE="node:9.2.0"
+
 host_port=9000
 docker_port=9000
-
 
 function docker_killrm(){
     docker rm -f baiding-web-vue
@@ -43,8 +43,8 @@ function docker_prod(){
 
 function docker_build(){
     docker_killrm
-    docker run -it --name baiding-web-vue -p $host_port:$docker_port -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
-        $NODE_IMAGE /bin/bash -c "rm -rf node_modules package-lock.json yarn.lock && npm install --verbose && rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --progress --hide-modules --display-optimization-bailout"
+    docker run -it --name baiding-web-vue -p $port:$port -v `pwd`:/baiding-web-vue -w /baiding-web-vue \
+        $NODE_IMAGE /bin/bash -c "rm -rf package-lock.json yarn.lock && npm install --verbose && rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --progress --hide-modules --display-optimization-bailout"
 }
 
 for target in $@; do
