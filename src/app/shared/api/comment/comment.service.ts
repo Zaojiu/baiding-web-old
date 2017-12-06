@@ -25,15 +25,8 @@ export class CommentApiService {
     comment.id = data.id;
     if (users[data.uid]) {
       comment.user = users[data.uid] as UserInfoModel;
-      if (!users[data.uid].avatar) {
-        comment.user.avatar = encodeURI('../../../assets/img/user-default.png');
-      }
     } else {
-      let user: UserInfoModel  =  new UserInfoModel();
-      user.uid = data.uid;
-      user.nick = '';
-      user.avatar = encodeURI('../../../assets/img/user-default.png');
-      comment.user = user;
+      throw new Error('users[data.uid] not find!');
     }
     comment.msgId = data.msgId;
     comment.type = CommentType.Text;

@@ -84,20 +84,9 @@ export class MessageApiService {
     message.parentId = data.parentId;
     message.isReceived = true;
     if (users[data.uid]) {
-      let forUser = JSON.parse(JSON.stringify(users[data.uid]));
-      message.user = forUser;
-      if (!forUser.avatar) {
-        message.user.avatar = encodeURI('../../../assets/img/user-default.png');
-      }
-      if (!forUser.nick) {
-        message.user.nick = '未设置';
-      }
+      message.user = users[data.uid];
     } else {
-      let newUser = new UserInfoModel();
-      newUser.uid = data.uid;
-      newUser.avatar = encodeURI('../../../assets/img/user-default.png');
-      newUser.nick = '未设置';
-      message.user = newUser;
+      throw new Error('users[data.uid not find!');
     }
     message.content = data.content;
     message.createdAt = data.createdAt;
@@ -169,14 +158,7 @@ export class MessageApiService {
       let user = users[uid];
       message.praisedAvatars = message.praisedAvatars || [];
       if (user) {
-        let copyUser = JSON.parse(JSON.stringify(user));
-        if (!user.avatar) {
-          copyUser.avatar = encodeURI('../../../assets/img/user-default.png');
-        }
-        if (!user.nick) {
-          copyUser.nick = '未设置';
-        }
-        message.praisedAvatars.push(copyUser);
+        message.praisedAvatars.push(user);
       }
     }
 

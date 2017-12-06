@@ -168,12 +168,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
       if (message.id === praisedUser.msgId) {
         let userAnim = new UserAnimEmoji;
         userAnim.user = praisedUser.user;
-        if (!praisedUser.user.avatar) {
-          userAnim.user.avatar = encodeURI('../../../assets/img/user-default.png');
-        }
-        if (!praisedUser.user.nick) {
-          userAnim.user.nick = '未设置';
-        }
         message.pushPraisedUser(userAnim, praisedUser.praised, praisedUser.num);
       }
     }

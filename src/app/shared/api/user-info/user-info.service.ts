@@ -32,9 +32,9 @@ export class UserInfoService {
 
   parseUserInfo(data: any): UserInfoModel {
     let info = new UserInfoModel();
-    info.nick = data.nick || '未设置';
+    info.nick = data.nick;
     info.username = data.username || '';
-    info.avatar = data.avatar || encodeURI('../../../assets/img/user-default.png');
+    info.avatar = data.avatar;
     info.uid = data.uid;
     info.permissions = new PermissionModel;
     info.permissions.publish = data.permissions ? data.permissions.publish : false;
