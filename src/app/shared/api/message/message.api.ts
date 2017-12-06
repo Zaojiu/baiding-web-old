@@ -83,10 +83,12 @@ export class MessageApiService {
     message.id = data.id;
     message.parentId = data.parentId;
     message.isReceived = true;
-    if (users[data.uid]) {
-      message.user = users[data.uid];
-    } else {
-      throw new Error('users[data.uid not find!');
+    if (data.uid !== 0) {
+      if (users[data.uid]) {
+        message.user = users[data.uid];
+      } else {
+        throw new Error('users[data.uid not find!');
+      }
     }
     message.content = data.content;
     message.createdAt = data.createdAt;
