@@ -264,7 +264,6 @@ export class ScrollerDirective implements OnInit, DoCheck, AfterViewInit {
 
     this.data.splice(0, this.data.length, ...data);
     this.setDataToCache();
-
     this.calculateHash();
     // this.checkTouch();
     this.checkDataOverflow();

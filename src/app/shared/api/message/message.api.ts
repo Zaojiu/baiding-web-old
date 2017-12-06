@@ -53,7 +53,6 @@ export class MessageApiService {
           messages.push(message);
         }
       }
-
       return messages;
     });
   }
@@ -77,13 +76,20 @@ export class MessageApiService {
 
     let message = new MessageModel();
 
-    if (!data) return message;
+    if (!data) {
+      return message;
+    }
 
     message.id = data.id;
     message.parentId = data.parentId;
     message.isReceived = true;
-    message.user = users[data.uid];
+    if (users[data.uid]) {
+      message.user = users[data.uid];
+    } else {
+      throw new Error('users[data.uid not find!');
+    }
     message.content = data.content;
+    message.createdAt = data.createdAt;
     if (message.content) {
       let contentParsed = UtilsService.parseAt(message.content);
       contentParsed = UtilsService.parseLink(contentParsed);
@@ -151,7 +157,9 @@ export class MessageApiService {
     for (let uid of data.latestPraisedUids) {
       let user = users[uid];
       message.praisedAvatars = message.praisedAvatars || [];
-      message.praisedAvatars.push(user);
+      if (user) {
+        message.praisedAvatars.push(user);
+      }
     }
 
     message.replies = [];
@@ -159,8 +167,6 @@ export class MessageApiService {
     if (data.parentMessage) {
       message.parentMessage = this.parseMessage(data.parentMessage, users);
     }
-
-    message.createdAt = data.createdAt;
     message.createdAtParsed = moment(+message.createdAt / 1e6);
 
     return message;

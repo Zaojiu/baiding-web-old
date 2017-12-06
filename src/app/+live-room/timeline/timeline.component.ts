@@ -8,18 +8,18 @@ import {TimelineService} from './timeline.service';
 import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {LiveInfoModel} from '../../shared/api/live/live.model';
 import {MqPraisedUser, MqEvent, EventType} from '../../shared/mq/mq.service';
-import {MessageApiService} from "../../shared/api/message/message.api";
-import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
-import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
-import {ScrollerPosition} from "../../shared/scroller/scroller.enums";
+import {MessageApiService} from '../../shared/api/message/message.api';
+import {ScrollerDirective} from '../../shared/scroller/scroller.directive';
+import {ScrollerEventModel} from '../../shared/scroller/scroller.model';
+import {ScrollerPosition} from '../../shared/scroller/scroller.enums';
 import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {AudioPlayerService} from '../../shared/audio-player/audio-player.service';
 import {InputtingService} from './message/inputting.service';
 
 import {InputtingComponent} from './message/inputting.component';
-import {HackMessages} from "./hack-messages";
-import {LiveRoomService} from "../live-room.service";
-import {UtilsService} from "../../shared/utils/utils";
+import {HackMessages} from './hack-messages';
+import {LiveRoomService} from '../live-room.service';
+import {UtilsService} from '../../shared/utils/utils';
 
 @Component({
   selector: 'timeline',
@@ -159,13 +159,16 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   onReceivedPraises(praisedUser: MqPraisedUser) {
-    if (praisedUser.user.uid == this.userInfo.uid) return;
-
+    // 点赞的人和自己是同一个人
+    if (praisedUser.user.uid === this.userInfo.uid) {
+      return;
+    }
     for (let message of this.messages) {
-      if (message.id == praisedUser.msgId) {
+      // 找到点赞的消息
+      if (message.id === praisedUser.msgId) {
         let userAnim = new UserAnimEmoji;
         userAnim.user = praisedUser.user;
-        message.pushPraisedUser(userAnim, praisedUser.praised, praisedUser.num)
+        message.pushPraisedUser(userAnim, praisedUser.praised, praisedUser.num);
       }
     }
   }
@@ -173,7 +176,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   onReceiveMessages(message: MessageModel) {
     for (let idx in this.messages) {
       if (this.messages[idx].id == message.id) {
-        return
+        return;
       }
     }
     this.scroller.appendData([message]);
@@ -236,9 +239,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
 
       if (messages.length >= 11) messages.pop();
-
       this.scroller.resetData(messages);
-
       this.isOnOldest = true;
       this.isOnLatest = false;
       this.isOnBottom = false;
@@ -290,11 +291,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
       } else {
         messages.shift();
       }
-
       this.scroller.prependData(messages);
 
-      if (messages.length === 0) this.isOnOldest = true;
-
+      if (messages.length === 0) {
+        this.isOnOldest = true;
+      }
       return;
     }).finally(() => {
       setTimeout(() => this.isLoading = false, 2000);
@@ -322,18 +323,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
         });
       } else if (e.position == ScrollerPosition.OnBottom) {
         let lastMessage = this.findLastAvailableMessage(this.messages);
-
         if (!lastMessage) {
           this.scroller.hideFootLoading();
           return;
         }
-
         this.getNextMessages(`$gt${lastMessage.createdAt}`, 10, ['createdAt']).finally(() => {
           this.scroller.hideFootLoading();
         });
       }
     }
-
     this.isOnBottom = e.position === ScrollerPosition.OnBottom;
 
     this.timelineService.triggerScroll(e);

@@ -6,7 +6,7 @@ import {PostCommentModel, CommentType} from './comment.model';
 import {UserInfoService} from '../user-info/user-info.service';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {CommentModel} from './comment.model';
-import {environment} from "../../../../environments/environment";
+import {environment} from '../../../../environments/environment';
 
 declare var $: any;
 
@@ -16,13 +16,18 @@ export class CommentApiService {
   }
 
   parseComment(data: any, users: any): CommentModel {
-    const comment = new CommentModel()
+    const comment = new CommentModel();
     const currentUserInfo = this.userInfoService.getUserInfoCache();
 
-    if (!data) return comment;
-
+    if (!data) {
+      return comment;
+    }
     comment.id = data.id;
-    comment.user = users[data.uid] as UserInfoModel;
+    if (users[data.uid]) {
+      comment.user = users[data.uid] as UserInfoModel;
+    } else {
+      throw new Error('users[data.uid] not find!');
+    }
     comment.msgId = data.msgId;
     comment.type = CommentType.Text;
     comment.content = data.content;
@@ -40,7 +45,7 @@ export class CommentApiService {
       }
     }
 
-    return comment
+    return comment;
   }
 
   parseResponseComment(data: any): CommentModel {
@@ -57,12 +62,12 @@ export class CommentApiService {
     comment.createdAt = data.createdAt;
     comment.createdAtParsed = moment(+comment.createdAt / 1e6);
 
-    return comment
+    return comment;
   }
 
   postComment(liveId: string, content: string, toUsers: UserInfoModel[] = []): Promise<CommentModel> {
-    let headers = new Headers({'Content-Type': 'application/json'})
-    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments`
+    let headers = new Headers({'Content-Type': 'application/json'});
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments`;
     let comment = new PostCommentModel();
     comment.content = content;
     comment.toUids = [];
@@ -86,7 +91,7 @@ export class CommentApiService {
   }
 
   getComment(liveId: string, commentId: string): Promise<CommentModel> {
-    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments/${commentId}`
+    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments/${commentId}`;
 
     return this.http.get(url).toPromise()
       .then(res => {
@@ -107,7 +112,6 @@ export class CommentApiService {
     if (toUids.length) query.toUids = toUids.join(',');
 
     const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments?${$.param(query)}`;
-
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let comments: CommentModel[] = [];

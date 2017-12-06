@@ -106,8 +106,9 @@ export class MessageModel {
   }
 
   getPraisedAvatars(currentUser: UserInfoModel) {
-    let avatars = this.praisedAvatars.filter((item, index) => item.uid != currentUser.uid);
-
+    let avatars = this.praisedAvatars.filter((item, index) => {
+      return item && item.uid !== currentUser.uid;
+    });
     if (this.hadPraised) {
       avatars = avatars.slice(0, 4);
       avatars.push(currentUser);
@@ -115,10 +116,10 @@ export class MessageModel {
       avatars = avatars.slice(0, 5);
     }
 
-    return avatars
+    return avatars;
   }
 
-  pushPraisedUser(userAnim: UserAnimEmoji, praised: boolean, num: number) {
+    pushPraisedUser(userAnim: UserAnimEmoji, praised: boolean, num: number) {
     if (!praised) {
       this.praisedAmount += 1;
       this.praisedAvatars.unshift(userAnim.user);
@@ -144,7 +145,7 @@ export class MessageModel {
 
 export class PostPraiseModel {
   praised: boolean;
-  num: number
+  num: number;
 }
 
 export class PostImageMessageModel {
@@ -173,7 +174,7 @@ export class PostMessageModel {
   audio: PostAudioMessageModel;
   image: PostImageMessageModel;
   nice: PostNiceMessageModel;
-  originMessage: MessageModel|ReplyMessageModel;
+  originMessage: MessageModel | ReplyMessageModel;
 }
 
 export class UploadTokenModel {

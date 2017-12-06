@@ -19,6 +19,9 @@ export class MqEvent {
   info: any;
 }
 
+/*
+点赞用户，点赞的哪个消息，是否点赞，点赞的次数
+* */
 export class MqPraisedUser {
   user: UserInfoModel;
   msgId: string;
