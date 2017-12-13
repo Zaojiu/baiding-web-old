@@ -23,8 +23,8 @@
         [src]="talkInfo.coverSmall169Url" alt="文章封面"
         (error)="resetDefaultBackground()"
       >
-
-      <i class="bi bi-play-fill" *ngIf="videoInfo && videoInfo.hasVideo"></i>
+      <div class="blur-box" *ngIf="videoInfo && videoInfo.hasVideo">
+      </div>
     </div>
   </header>
 
@@ -95,10 +95,18 @@
   </section>
 
   <footer *ngIf="talkInfo" [ngClass]="{hidden: !isOnScreen && isLandscape}" #toolBar>
-    <div class="icon view">{{talkInfo.totalUsers}}人看过</div>
-    <div class="icon" [ngClass]="{'activate': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()"><i class="bi bi-thumbsup"></i>{{talkInfo.praiseTotal}}</div>
-    <div class="icon" [ngClass]="{'activate': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()"><i class="bi bi-favorite"></i></div>
-    <div class="icon" (click)="gotoComment()"><i class="bi bi-comment"></i>{{talkInfo.commentTotal}}</div>
+    <div class="icon" [ngClass]="{'activate': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()">
+      <div class="font-content"><i class="bi bi-new-praise"></i></div>
+      <div><span>点赞 {{talkInfo.praiseTotal}}</span></div>
+    </div>
+    <div class="icon" [ngClass]="{'activate': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()">
+      <div class="font-content"><i class="bi bi-new-favorite"></i></div>
+      <div><span>收藏 {{talkInfo.favoriteTotal}}</span></div>
+    </div>
+    <div class="icon" (click)="gotoComment()">
+      <div class="font-content"><i class="bi bi-new-comment"></i></div>
+      <div><span>评论 {{talkInfo.commentTotal}}</span></div>
+    </div>
   </footer>
 </div>
 

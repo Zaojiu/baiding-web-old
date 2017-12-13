@@ -83,6 +83,7 @@ export class TalkInfoModel {
   isNeedPay: string;
   totalFee: number;
   praiseTotal: number;
+  favoriteTotal: number;
   isPraised: boolean;
   commentTotal: number;
   isFavorited: boolean;
@@ -136,6 +137,7 @@ export class TalkInfoModel {
     this.isNeedPay = object.isNeedPay;
     this.totalFee = object.totalFee;
     this.praiseTotal = object.praiseTotal;
+    this.favoriteTotal = object.favoriteTotal;
     if (currentUserInfo) this.isPraised = currentUserInfo.praised;
     this.commentTotal = object.commentTotal;
     if (currentUserInfo) this.isFavorited = !!currentUserInfo.favoritedAt;
@@ -176,7 +178,7 @@ export class TalkInfoModel {
     if (object.meta && object.meta.speakersId && object.meta.speakersId.length && speakers) {
       for (const id of object.meta.speakersId) {
         const speaker = speakers[id];
-        if (speaker) this.speaker.push(new TalkInfoSpeakerModel(speaker.id, speaker.uid, speaker.subject, speaker.desc, speaker.coverUrl))
+        if (speaker) this.speaker.push(new TalkInfoSpeakerModel(speaker.id, speaker.uid, speaker.subject, speaker.desc, speaker.coverUrl));
       }
     }
 
