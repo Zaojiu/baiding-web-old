@@ -108,6 +108,7 @@ export class TalkInfoModel {
 
   constructor(data: any) {
     if (!data) return;
+
     const object = data.object || {};
     const users = data.users || {};
     const speakers = data.speakers || [];

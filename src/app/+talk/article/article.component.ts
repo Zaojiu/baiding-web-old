@@ -212,11 +212,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     this.talkInfo.isFavorited = true;
     this.isFavoriting = true;
+    this.talkInfo.favoriteTotal += 1;
 
     this.talkApiService.favorite(this.id).then(() => {
       this.talkApiService.getTalkInfo(this.id, true);
     }, () => {
       this.isFavoriting = false;
+      this.talkInfo.favoriteTotal -= 1;
     }).finally(() => {
       this.isFavoriting = false;
     });
@@ -229,11 +231,13 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     this.talkInfo.isFavorited = false;
     this.isFavoriting = true;
+    this.talkInfo.favoriteTotal > 0 ? this.talkInfo.favoriteTotal -= 1 : 0;
 
     this.talkApiService.unfavorite(this.id).then(() => {
       this.talkApiService.getTalkInfo(this.id, true);
     }, () => {
       this.talkInfo.isFavorited = true;
+      this.talkInfo.favoriteTotal += 1;
     }).finally(() => {
       this.isFavoriting = false;
     });

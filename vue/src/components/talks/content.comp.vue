@@ -55,7 +55,6 @@
               <img class="avatar avatar-60 avatar-round" :src="speaker.avatar" :alt="speaker.name">
               <strong class="name">{{speaker.name}}</strong>
               <p class="desc">{{speaker.title}}</p>
-              <p class="public-no">造就第23位演讲者</p>
             </div>
 
             <section class="article article-content" v-html="talkInfo.content" v-once></section>
@@ -106,14 +105,13 @@
 
       <footer v-show="!(isVideoPlayed && isLandscape)" ref="toolBar"
               :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
-        <!--<div class="icon view">{{talkInfo.totalUsers}}人看过</div>-->
         <div class="icon" @click="togglePraise()" :class="{'active': talkInfo.isPraised}">
           <div class="font-content"><i class="bi bi-new-praise"></i></div>
           <div><span>点赞 {{talkInfo.praiseTotal}}</span></div>
         </div>
         <div class="icon" @click="toggleFavorite()" :class="{'active': talkInfo.isFavorited}">
           <div class="font-content"><i class="bi bi-new-favorite"></i></div>
-          <div><span>收藏 100</span></div>
+          <div><span>收藏 {{talkInfo.favoriteTotal}}</span></div>
         </div>
         <div class="icon" @click="gotoComment()">
           <div class="font-content"><i class="bi bi-new-comment"></i></div>
@@ -359,12 +357,6 @@
         line-height: 1.7em;
         text-align: justify;
         margin-bottom: -5px;
-      }
-      .public-no{
-        font-size: $font-size-14;
-        color: $color-gray6;
-        text-align: justify;
-        padding: 22px 0 7px 0;
       }
     }
 

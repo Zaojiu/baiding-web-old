@@ -20,6 +20,7 @@ export class TalkService {
     const url = `${environment.config.host.io}/api/live/objects/${id}`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
+
       let talkInfo = new TalkInfoModel(data.object, data.users, data.speakers, data.categories, data.tags, data.currentUserInfo, this.sanitizer);
 
       let talks = StoreService.get('talks') || {};

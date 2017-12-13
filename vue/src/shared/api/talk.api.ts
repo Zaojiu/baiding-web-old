@@ -8,6 +8,7 @@ export const getTalkInfo = async (id: string): Promise<TalkInfoModel> => {
   const url = `${host.io}/api/live/objects/${id}`;
   const resp = await get(url);
   const data = resp.data;
+
   return new TalkInfoModel(data);
 };
 
