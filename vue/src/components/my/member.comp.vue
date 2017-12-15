@@ -44,12 +44,13 @@
       background-image: url('/assets/img/my-member-cover.png');
       background-size: 100% 100%;
       text-align: center;
-      padding: 26px 0 68px;
+      height: 50vw;
+      padding-top: 26px;
 
       .avatar {
         display: block;
-        height: 77px;
-        width: 77px;
+        height: 67px;
+        width: 67px;
         object-fit: cover;
         margin: 0 auto;
       }
