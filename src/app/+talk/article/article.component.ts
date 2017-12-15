@@ -58,6 +58,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   liveObject: ObjectModel;
   isiOS = UtilsService.isiOS;
   isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
+  isNewApp: boolean;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
@@ -73,12 +74,11 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.markOnline();
-
+    this.isNewApp = UtilsService.isNewAppVersion('2.1.4');
     this.id = this.route.snapshot.params['id'];
     this.userInfo = this.userInfoService.getUserInfoCache();
     this.talkInfo = this.route.snapshot.data['talkInfo'];
     if (!this.talkInfo) return;
-
     this.init();
   }
 
