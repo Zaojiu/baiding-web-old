@@ -23,8 +23,7 @@
         [src]="talkInfo.coverSmall169Url" alt="文章封面"
         (error)="resetDefaultBackground()"
       >
-      <div class="blur-box" *ngIf="videoInfo && videoInfo.hasVideo">
-      </div>
+      <i class="bi bi-play-fill" *ngIf="videoInfo && videoInfo.hasVideo"></i>
     </div>
   </header>
 
