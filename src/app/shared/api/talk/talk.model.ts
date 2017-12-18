@@ -167,7 +167,8 @@ export class TalkInfoModel {
     if (data.meta && data.meta.speakersId && data.meta.speakersId.length && speakers) {
       for (let id of data.meta.speakersId) {
         let speaker = speakers[id] as any;
-        if (speaker) this.speaker.push(new TalkInfoSpeakerModel(speaker.id, speaker.uid, speaker.subject, speaker.desc, speaker.coverUrl));
+        let cover11Url = `${speaker.coverUrl}~1-1`;
+        if (speaker) this.speaker.push(new TalkInfoSpeakerModel(speaker.id, speaker.uid, speaker.subject, speaker.desc, cover11Url));
       }
     }
 
