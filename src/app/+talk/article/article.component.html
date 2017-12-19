@@ -1,5 +1,5 @@
 <div class="main" #main *ngIf="talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)" #container>
-  <header [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen, 'mobile-landscape': !isOnScreen && isLandscape}">
+  <header *ngIf="!isNewApp" [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen, 'mobile-landscape': !isOnScreen && isLandscape}">
     <video-player
       class="video-player"
       [videoInfo]="videoInfo"
@@ -93,7 +93,7 @@
     <div class="no-more-comments" *ngIf="!isCommentLoading && comments.length && !hasMoreComments">到底咯~</div>
   </section>
 
-  <footer *ngIf="talkInfo" [ngClass]="{hidden: !isOnScreen && isLandscape}" #toolBar>
+  <footer *ngIf="talkInfo && !isNewApp" [ngClass]="{hidden: !isOnScreen && isLandscape}" #toolBar>
     <div class="icon" [ngClass]="{'activate': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()">
       <div class="font-content"><i class="bi bi-new-praise"></i></div>
       <div><span>点赞 {{talkInfo.praiseTotal}}</span></div>

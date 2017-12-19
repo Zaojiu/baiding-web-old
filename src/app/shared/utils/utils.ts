@@ -37,6 +37,23 @@ export class UtilsService {
   static isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
   static hasMouseEvent = ('onmousedown' in document);
 
+  static isNewAppVersion(oldVersion: string): boolean {
+    let userAgent = navigator.userAgent;
+    let matched = userAgent.match(/ZaoJiu\/([0-9.]+)/);
+    if (matched && matched.length > 1) {
+      let version = matched[1];
+      let oldVersionNum = oldVersion.split('.');
+      let currentVersionNum = version.split('.');
+      for (let i = 0; i < currentVersionNum.length; i++) {
+        if (currentVersionNum[i] === oldVersionNum[i]) {
+          continue;
+        }
+        return currentVersionNum[i] > oldVersionNum[i];
+      }
+    } else {
+      return false;
+    }
+  }
 
   static get isViewportLandscape(): boolean {
     return matchMedia && matchMedia('(orientation: landscape)').matches;
