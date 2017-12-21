@@ -373,12 +373,12 @@
       }
 
       this.setShareInfo();
+      this.checkDate(this.event);
 
       if (this.event.meta.tickets.length && this.canBuy()) {
         this.ticketSelected = this.event.meta.tickets[0];
         this.ticketCount = 1;
 
-        this.checkDate(this.event);
         const timer = setInterval(() => {
           this.checkDate(this.event, timer);
         }, 3000);
