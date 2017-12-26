@@ -3,6 +3,7 @@ import Router, {Route} from 'vue-router';
 
 import appComp from './components/app.comp.vue';
 import talksComp from './components/talks/content.comp.vue';
+import topic_post from './components/topic_post/topic_post.comp.vue';
 import errorComp from './components/error/error.comp.vue';
 import {authGuard} from "./shared/guard/user-auth.guard";
 import {execRouteTask} from "./shared/guard/route-task";
@@ -97,6 +98,16 @@ export const router = new Router({
             execRouteTask(tasks, to, from, next);
           },
           component: () => System.import('./components/talks/post-comment.comp.vue'),
+        }
+      ]
+    },
+    {
+      path: '/topic_post/:id',
+      component: topic_post,
+      children: [
+        {
+          name: 'topic_post.main',
+          path: ''
         }
       ]
     },
