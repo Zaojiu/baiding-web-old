@@ -81,6 +81,17 @@ export class IosBridgeService {
     }
   }
 
+  // 收藏页面的讲者点击后跳转到原生讲者详情
+  gotoSpeaker(id: string) {
+    if (this.hasInit) {
+      this.bridge.callHandler('pushSpeaker', id);
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('pushSpeaker', id);
+      });
+    }
+  }
+
   copyText(text: string) {
     return new Promise((resolve, reject) => {
       if (this.hasInit) {

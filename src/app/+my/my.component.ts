@@ -3,6 +3,8 @@ import {MyApiService} from "../shared/api/my/my.api";
 import {ActivatedRoute, UrlSegment, Router} from "@angular/router";
 import {MyListModel} from "../shared/api/my/my.model";
 import {ListViewModel, ListViewResult} from "../shared/list-view/list-view.model";
+import {UtilsService} from '../shared/utils/utils';
+import {IosBridgeService} from '../shared/ios-bridge/ios-bridge.service';
 import {Subscription} from "rxjs";
 
 @Component({
@@ -13,8 +15,12 @@ import {Subscription} from "rxjs";
 export class MyComponent implements OnInit, OnDestroy {
   loader: (size: number, marker?: string) => Promise<ListViewResult>;
   urlSub: Subscription;
-
-  constructor(private myService: MyApiService, private route: ActivatedRoute, private router: Router) {}
+  isInApp = UtilsService.isInApp;
+  constructor(private myService: MyApiService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private iosBridge: IosBridgeService) {
+  }
 
   ngOnInit() {
     this.urlSub = this.route.url.subscribe(url => this.resetLoader(url));
@@ -38,8 +44,6 @@ export class MyComponent implements OnInit, OnDestroy {
         return loader(size, marker).then(result => {
           let list: ListViewModel[] = [];
           for (let item of result.result) {
-            if (item.isSpeaker()) continue; // TODO: 之后有speaker页面, 再移除此代码
-
             list.push(new ListViewModel(item.id, item.coverSmallUrl, item.subject, item.desc, () => this.goto(item)));
           }
           return new ListViewResult(list, result.marker, result.hasMore);
@@ -54,7 +58,11 @@ export class MyComponent implements OnInit, OnDestroy {
     } else if (item.isTalk()) {
       this.router.navigate([`/talks/${item.id}`]);
     } else if (item.isSpeaker()) {
-      this.router.navigate([`/speakers/${item.id}`]);
+      if (this.isInApp) {
+        this.iosBridge.gotoSpeaker(item.id);
+      } else {
+        return;
+      }
     }
   }
 }
