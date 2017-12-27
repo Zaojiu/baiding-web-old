@@ -57,6 +57,12 @@ export class MyComponent implements OnInit, OnDestroy {
       this.router.navigate([`/lives/${item.id}`]);
     } else if (item.isTalk()) {
       this.router.navigate([`/talks/${item.id}`]);
+    } else if (item.isTopicPost()) {
+      if (this.isInApp) {
+        this.iosBridge.gotoTopicPost(item.id);
+      } else {
+        this.router.navigate([`/topic-post/${item.id}`]);
+      }
     } else if (item.isSpeaker()) {
       if (this.isInApp) {
         this.iosBridge.gotoSpeaker(item.id);

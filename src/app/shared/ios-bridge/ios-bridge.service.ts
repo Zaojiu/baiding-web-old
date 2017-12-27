@@ -92,6 +92,17 @@ export class IosBridgeService {
     }
   }
 
+  // 收藏页面的长图大文点击后跳转
+  gotoTopicPost(id: string) {
+    if (this.hasInit) {
+      this.bridge.callHandler('pushTopic', id);
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('pushTopic', id);
+      });
+    }
+  }
+
   copyText(text: string) {
     return new Promise((resolve, reject) => {
       if (this.hasInit) {

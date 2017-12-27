@@ -48,6 +48,9 @@ export class MyListModel {
       case 4:
         this.type = ResourceType.Speaker;
         break;
+      case 7:
+        this.type = ResourceType.TopicPost;
+        break;
       default:
         this.type = ResourceType.Unknown;
     }
@@ -80,6 +83,10 @@ export class MyListModel {
 
   isSpeaker(): boolean {
     return this.type === ResourceType.Speaker;
+  }
+
+  isTopicPost(): boolean {
+    return this.type === ResourceType.TopicPost;
   }
 }
 
