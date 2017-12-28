@@ -284,15 +284,34 @@ export class ArticleComponent implements OnInit, OnDestroy {
   gotoComment(id?: string, nick?: string, content?: string) {
     let uriTree = this.router.createUrlTree([`/talks/${this.id}/post-comment`]);
     let path = this.router.serializeUrl(uriTree);
-    if (!this.checkSignIn(`${host.self}${path}`)) return;
-
     let queryParams: any = {title: this.talkInfo.subject};
-
-    if (id && nick && content) {
-      queryParams.request = JSON.stringify({id: id, nick: nick, content: content});
+    // 判断是否在app中
+    if (!UtilsService.isInApp) {
+      // web判断是否登录
+      if (!this.checkSignIn(`${host.self}${path}`)) {
+        return;
+      }
+      // 判断是否为回复
+      if (id && nick && content) {
+        queryParams.request = JSON.stringify({id: id, nick: nick, content: content});
+      }
+      this.router.navigate([`/talks/${this.id}/post-comment`], {queryParams: queryParams});
+    } else {
+      // 判断是否为回复
+      if (id && nick && content) {
+        this.iosBridge.gotoTalksComment(JSON.stringify({
+          title: this.talkInfo.subject,
+          query: {
+            id: id,
+            nick: nick,
+            content: content,
+          }
+        }));
+      } else {
+        // 在app中非回复评论由native控制
+        return;
+      }
     }
-
-    this.router.navigate([`/talks/${this.id}/post-comment`], {queryParams: queryParams});
   }
 
   touchStart(e: TouchEvent) {
@@ -339,7 +358,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     }
   }
 
-  onAudioEvent(e: {type: string, data: any}) {
+  onAudioEvent(e: { type: string, data: any }) {
     if (e.type === 'play') {
       if (this.player && this.player.isPlaying()) {
         this.player.pause();
