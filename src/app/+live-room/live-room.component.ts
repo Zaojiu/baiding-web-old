@@ -58,6 +58,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   private onlineService: OnlineService;
   alertMessage: SafeHtml;
   isAlertMessageShown = false;
+  themeElem = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -73,6 +74,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
+    if (this.liveInfo.themeCss) {
+      this.themeElem = UtilsService.insertStyleElemIntoHead(this.id, this.liveInfo.themeCss);
+    }
 
     const alertMessageCache = StoreService.localStore.get('alertMessageCache') || {};
     if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
@@ -145,6 +149,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.themeElem != null) {
+      this.themeElem.remove();
+    }
     if (this.eventSub) this.eventSub.unsubscribe();
 
     if (this.videoVisableSub) this.videoVisableSub.unsubscribe();
