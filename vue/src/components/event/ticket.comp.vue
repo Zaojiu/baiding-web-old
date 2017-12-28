@@ -305,9 +305,10 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {getEvent} from "../../shared/api/event.api";
   import {EventModel, EventTicketModel} from "../../shared/api/event.model";
-  import {Money} from "../../shared/utils/utils";
+  import {Money,isInWechat} from "../../shared/utils/utils";
   import {TicketModel} from "../../shared/api/ticket.model";
   import {checkOrderFee} from "../../shared/api/order.api";
+  import {initWechat} from "../../shared/utils/wechat";
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from "../../shared/api/user.model";
@@ -358,7 +359,9 @@
     async initData() {
       this.isLoading = true;
       this.isError = false;
-
+      if(isInWechat){
+        initWechat();
+      }
       try {
         this.event = await getEvent(this.id);
       } catch (e) {
