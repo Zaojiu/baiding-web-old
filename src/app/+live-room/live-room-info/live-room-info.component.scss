@@ -179,8 +179,9 @@
       background-color: rgb(37, 37, 37);
 
       &.enter-room {
+        background-color:red !important;//hack-gy
         flex-grow: 1;
-        background-color: $color-brand;
+        //background-color: $color-brand;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

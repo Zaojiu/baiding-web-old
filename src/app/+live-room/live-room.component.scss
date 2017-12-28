@@ -22,7 +22,8 @@
   right: 0;
   background-color: rgba(0, 0, 0, .5);
   color: $color-w;
-  display: flex;
+  //display: flex;
+  display: none;//hack-gy
   width: 100%;
   z-index: 2;
   align-items: center;

@@ -7,12 +7,14 @@
   background-color: $color-dark-gray;
 
   &.opened {
-    background-color: $color-brand;
+    //background-color: $color-brand;hack-gy
+    background-color: red;
 
     .people-count-wrapper {
       .toggler {
         .toggler-inner {
-          color: $color-brand;
+          //color: $color-brand;
+          color:red;
         }
       }
     }
