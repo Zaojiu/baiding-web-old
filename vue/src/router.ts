@@ -14,6 +14,8 @@ import {signinGuard} from "./shared/guard/signin-comp.guard";
 import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
 import {afterHooks, beforeHooks} from "./hooks";
 import {liveInfoResolver} from "./shared/resolver/live-info.resolver";
+import memberContainer from './components/my/member/container.comp.vue';
+import memberContent from './components/my/member/content.comp.vue';
 
 Vue.use(Router);
 
@@ -142,6 +144,41 @@ export const router = new Router({
         title: '造就会员',
       },
       component: () => System.import('./components/member/intro.comp.vue'),
+    },
+    {
+      path: '/new-member',
+      name: 'new-member.main',
+      meta: {
+        title: '造就新会员',
+      },
+      children: [
+        {
+          path: 'card',
+          name: 'new-member.card',
+          component: memberContent,
+        },
+        {
+          path: 'action',
+          name: 'new-member.action',
+          component: memberContent,
+        },
+        {
+          name: 'new-member.video',
+          path: 'video',
+          component: memberContent
+        },
+        {
+          name: 'new-member.course',
+          path: 'course',
+          component: memberContent,
+        },
+        {
+          name: 'new-member.download',
+          path: 'download',
+          component: memberContent
+        },
+      ],
+      component: memberContainer,
     },
     {
       path: '/my',
