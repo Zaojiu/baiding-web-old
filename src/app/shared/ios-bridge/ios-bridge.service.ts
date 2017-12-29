@@ -91,6 +91,16 @@ export class IosBridgeService {
       });
     }
   }
+  // app 中回复评论跳转到评论编辑
+  gotoTalksComment(param: string) {
+    if (this.hasInit) {
+      this.bridge.callHandler('pushComment', param);
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('pushComment', param);
+      });
+    }
+  }
 
   // 收藏页面的长图大文点击后跳转
   gotoTopicPost(id: string) {
