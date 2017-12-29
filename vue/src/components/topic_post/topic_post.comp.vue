@@ -26,7 +26,32 @@
               <time>{{talkInfo.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </section>
             <section class="article article-content" v-html="talkInfo.content" v-once></section>
-            <div class="bot-footer">没有更多了</div>
+
+            <section id="comments" class="comments">
+              <h2>评论</h2>
+
+              <div v-if="comments">
+                <div class="comment" v-for="comment in comments" :key="comment.id">
+                  <div class="header" v-once>
+                    <div class="author-info">
+                      <img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">
+                      <span class="nick">{{comment.user.nick}}</span>
+                      <time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>
+                    </div>
+                    <span class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)"> <i
+                      class="bi bi-reply-comment"></i>回复</span>
+                  </div>
+                  <!-- 不要换行，避免出现换行符 -->
+                  <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
+                </div>
+              </div>
+
+              <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
+              <error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>
+              <div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>
+              <div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>
+              <div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>
+            </section>
           </div>
         </div>
       </div>
@@ -48,6 +73,7 @@
     }
     .long-img {
       width: 100vw;
+      height: 137.5vw;
     }
     .tab-content-container {
       overflow: hidden;
@@ -189,12 +215,112 @@
         }
       }
     }
-    .bot-footer{
-      font-size: 14px;
-      line-height: 16px;
-      margin: 36px auto;
-      text-align: center;
-      color:rgb(166,166,166);
+    .comments {
+      margin-top: 50px;
+      padding: 0 15px;
+
+      h2 {
+        font-size: 18px;
+        line-height: 1em;
+        color: $color-dark-gray;
+        font-weight: normal;
+      }
+
+      .comment {
+        margin-top: 20px;
+
+        .header {
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          margin-bottom: 6px;
+
+          .author-info {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+
+            .avatar {
+              flex-shrink: 0;
+              margin-right: 6px;
+            }
+
+            .nick {
+              font-size: 14px;
+              color: $color-dark-gray;
+              line-height: 1em;
+              font-weight: bold;
+            }
+
+            time {
+              margin-left: 8px;
+              flex-shrink: 0;
+              font-size: 12px;
+              color: rgb(144, 144, 144);
+              line-height: 1em;
+            }
+          }
+
+          .reply {
+            line-height: 1em;
+            padding: 5px;
+            font-size: 12px;
+            color: $color-gray;
+
+            .bi-reply-comment {
+              margin-right: 5px;
+            }
+          }
+        }
+
+        .content {
+          margin-left: 31px;
+          font-size: 14px;
+          color: $color-dark-gray;
+          line-height: 1.57em;
+          white-space: pre-wrap;
+          word-break: break-all;
+
+          .quote {
+            background-color: rgb(237, 237, 237);
+            padding: 10px;
+            margin-bottom: 6px;
+            white-space: pre-wrap;
+            word-break: break-all;
+
+            .nick {
+              font-weight: bold;
+              margin-right: 6px;
+            }
+          }
+        }
+      }
+
+      .no-comments, .more-comments, .comment-loading, .comment-error, .no-more-comments {
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .bi-no-comment {
+          font-size: 16px;
+          margin-right: 8px;
+        }
+      }
+
+      .no-comments, .no-more-comments {
+        color: $color-gray;
+      }
+
+      .no-comments {
+        font-size: 16px;
+      }
+
+      .more-comments {
+        color: $color-dark-gray;
+        font-size: 14px;
+      }
     }
   }
 
@@ -203,14 +329,15 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {TalkInfoModel} from "../../shared/api/talk.model";
-  import {
-    getTalkInfo
-  } from '../../shared/api/talk.api';
+  import {TalkInfoModel, TalkCommentModel, TalkEmphasisModel} from "../../shared/api/talk.model";
+  import {setScrollPosition} from '../../shared/utils/utils';
+  import {getTalkInfo, listTalkComments} from '../../shared/api/talk.api';
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
   import {setTitle} from '../../shared/utils/title';
   import {callHandler, initIOS} from "../../shared/utils/ios";
   import {isInApp} from '../../shared/utils/utils';
+
+  const COMMENT_COUNT = 20;
 
   @Component({
     components: {
@@ -228,12 +355,17 @@
     isAppDownloadTipsShow = true;
     contentDom: any;
     isContentChange = false;
+    comments: TalkCommentModel[] = [];
+    isCommentLoading = false;
+    isCommentError = false;
+    isCommentOnLatest = false;
     isInApp: boolean;
 
     created() {
       this.id = this.$route.params['id'];
       this.isInApp = isInApp;
       this.initData();
+      this.fetchComments();
     }
 
     mounted() {
@@ -248,6 +380,9 @@
     @Watch('$route.name')
     refreshComments() {
       if (this.$route.name === 'topic_post.main') {
+        this.comments = [];
+        this.fetchComments();
+        setScrollPosition('#comments');
         setTitle(this.talkInfo.subject);
       }
     }
@@ -270,6 +405,28 @@
       if (!this.isChildActived()) setTitle(this.talkInfo.subject);
     }
 
+    async fetchComments() {
+      this.isCommentLoading = true;
+      this.isCommentError = false;
+
+      try {
+        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length-1].createdAt}` : '';
+        const comments = await listTalkComments(this.id, COMMENT_COUNT+1, lastMarker);
+        let isCommentOnLatest = true;
+        if (comments.length === COMMENT_COUNT+1) {
+          isCommentOnLatest = false;
+          comments.pop();
+        }
+        this.comments.push(...comments);
+        this.isCommentOnLatest = isCommentOnLatest;
+      } catch (e) {
+        this.isCommentError = true;
+        throw e;
+      } finally {
+        this.isCommentLoading = false;
+      }
+    }
+
     get formatedCategories(): string {
       return this.talkInfo.categories.length > 0 ? this.talkInfo.categories.join(' | ') : '';
     }
@@ -289,6 +446,34 @@
       await initIOS();
       callHandler('changeTop', status);
     };
+
+    nativeToComment = async (query:string) => {
+      await initIOS();
+      callHandler('pushComment', query);
+    };
+
+    gotoComment(id: string, nick: string, content: string) {
+      const query: {[key: string]: string} = { title: encodeURIComponent(this.talkInfo.subject) };
+      if (id && nick && content) {
+        query['request'] = encodeURIComponent(JSON.stringify({
+          id: id,
+          nick: nick,
+          content: content
+        }));
+      }
+      if (this.isInApp){
+        this.nativeToComment(JSON.stringify({
+          title:this.talkInfo.subject,
+          query:{
+            id: id,
+            nick: nick,
+            content: content,
+          }
+        }));
+      } else {
+        this.$router.push({path: `/topic_post/${this.id}/post-comment`, query: query});
+      }
+    }
 
     handelScroll() {
       let statusChange = this.visibleY();

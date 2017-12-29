@@ -108,6 +108,18 @@ export const router = new Router({
         {
           name: 'topic_post.main',
           path: ''
+        },
+        {
+          name: 'topic_post.post-comment',
+          path: 'post-comment',
+          meta: {
+            title: '发表评论',
+          },
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import('./components/topic_post/post-comment.comp.vue'),
         }
       ]
     },
