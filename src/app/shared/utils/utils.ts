@@ -214,6 +214,20 @@ export class UtilsService {
 
     return parseFloat(percent.toFixed(2));
   };
+
+  static insertStyleElemIntoHead(id, cssText): HTMLStyleElement {
+
+    var style = document.createElement('style'),  //创建一个style元素
+      head = document.head || document.getElementsByTagName('head')[0]; //获取head元素
+    style.type = 'text/css'; //这里必须显示设置style元素的type属性为text/css，否则在ie中不起作用
+    style.id = id;
+
+    //w3c浏览器中只要创建文本节点插入到style元素中就行了
+    var textNode = document.createTextNode(cssText);
+    style.appendChild(textNode);
+    head.appendChild(style); //把创建的style元素插入到head中
+    return style;
+  }
 }
 
 export class Money {

@@ -1,10 +1,16 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
-import {LiveInfoModel, LiveRoomPresentModel, ShareRankingModel, UploadCoverTokenModel, LiveInviteeInfoModel} from './live.model';
+import {
+  LiveInfoModel,
+  LiveRoomPresentModel,
+  ShareRankingModel,
+  UploadCoverTokenModel,
+  LiveInviteeInfoModel
+} from './live.model';
 import {UserInfoModel} from '../user-info/user-info.model';
 import {StoreService} from '../../store/store.service';
-import {LiveStatus, LiveType, LiveStreamStatus,LivePublishedStatus} from './live.enums';
+import {LiveStatus, LiveType, LiveStreamStatus, LivePublishedStatus} from './live.enums';
 import {appConfig, environment, host} from "../../../../environments/environment";
 import {UtilsService, Money} from "../../utils/utils";
 import {VideoInfo} from "../../video-player/video-player.model";
@@ -20,13 +26,12 @@ import {ApiError} from "../code-map.enum";
 
 @Injectable()
 export class LiveService {
-  constructor(
-    private http: CustomHttp,
-    private wechatConfigService: WechatConfigService,
-    private payPopupService: PayPopupService,
-    private orderApiService: OrderApiService,
-    private analytics: AnalyticsService,
-    private sanitizer: DomSanitizer) {
+  constructor(private http: CustomHttp,
+              private wechatConfigService: WechatConfigService,
+              private payPopupService: PayPopupService,
+              private orderApiService: OrderApiService,
+              private analytics: AnalyticsService,
+              private sanitizer: DomSanitizer) {
   }
 
   private payPopupSub: Subscription;
@@ -88,6 +93,7 @@ export class LiveService {
       });
     }
 
+    liveInfo.themeCss = stream.meta.themeCss;
     liveInfo.expectStartAt = stream.meta.expectStartAt;
     liveInfo.expectDuration = stream.meta.expectDuration;
     liveInfo.startedAt = stream.meta.startedAt;

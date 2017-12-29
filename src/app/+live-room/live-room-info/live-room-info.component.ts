@@ -33,6 +33,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   isSubscribeLinkError = false;
   booking = false;
   originFee: string;
+  themeElem = null;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
@@ -43,6 +44,9 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.liveId = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
+    if (this.liveInfo.themeCss) {
+      this.themeElem = UtilsService.insertStyleElemIntoHead(this.liveId, this.liveInfo.themeCss);
+    }
 
     this.initPayment();
     this.handlePaymentRedirect();
@@ -59,6 +63,9 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.timer) clearInterval(this.timer);
+    if (this.themeElem) {
+      this.themeElem.remove();
+    }
   }
 
   handlePaymentRedirect() {
@@ -79,8 +86,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.originFee = '';
 
     if (
-      this.liveInfo.isNeedPay &&
-      !this.liveInfo.paid &&
+      this.liveInfo.isNeedPay && !this.liveInfo.paid &&
       this.userInfo &&
       this.liveInfo.isAudience(this.userInfo.uid)
     ) {
@@ -297,8 +303,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     if (!this.checkLogin()) return;
 
     if (
-      this.liveInfo.isNeedPay &&
-      !this.liveInfo.paid &&
+      this.liveInfo.isNeedPay && !this.liveInfo.paid &&
       this.liveInfo.isAudience(this.userInfo.uid)
     ) {
       this.payLive();
