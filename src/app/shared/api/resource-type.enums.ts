@@ -3,4 +3,5 @@ export enum ResourceType {
   Live,
   Talk,
   Speaker,
+  TopicPost = 7,
 }
