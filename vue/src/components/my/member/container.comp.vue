@@ -29,18 +29,37 @@
 </template>
 
 <style lang="scss" scoped>
+
   .member-activate {
     background-color: rgb(36, 36, 36);
     overflow: hidden;
     .member-page {
       height: 100vh;
-      padding-bottom: 77px;
       h1 {
         padding: 12px 20px;
         color: rgb(242, 242, 242);
         line-height: 28px;
         font-size: 30px;
       }
+      @media (max-width: 386px) {
+        .nav{
+          font-size: 14px !important;
+        }
+      }
+      @media (max-width: 366px) {
+        .nav{
+          li{
+            margin-right: 10px !important;
+          }
+        }
+      }
+
+      @media (max-width: 356px) {
+        .nav{
+          font-size: 12px !important;
+        }
+      }
+
       .nav {
         padding: 0 20px;
         font-size: 15px;
@@ -52,8 +71,7 @@
         li {
           margin-right: 12px;
           color: rgb(242, 242, 242);
-          flex-direction: row;
-          padding: 16px 0;
+          line-height: 44px;
           position: relative;
           text-align: center;
         }
@@ -79,11 +97,12 @@
       .submargin {
         padding: 24px 20px;
       }
+
       .web-height {
-        height: calc(100vh - 104px);
+        height: calc(100vh - 146px);
       }
       .app-height {
-        height: calc(100vh - 154px);
+        height: calc(100vh - 96px);
       }
     }
     footer {
@@ -96,7 +115,7 @@
       padding: 15px;
       button {
         width: 100%;
-        height: 47px;
+        height: 48px;
         background: linear-gradient(rgb(204, 169, 104), rgb(154, 120, 58));
         color: #fff;
         font-size: 18px;
@@ -193,6 +212,8 @@
     touchStart(e: TouchEvent) {
       this.originX = e.touches[0].clientX;
       this.originY = e.touches[0].clientY;
+      this.moveClientX = e.touches[0].clientX;
+      this.moveClientY = e.touches[0].clientY;
     }
 
     touchMove(e: TouchEvent) {

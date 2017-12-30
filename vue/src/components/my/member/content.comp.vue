@@ -10,6 +10,8 @@
       <span>查看专属视频</span><i class="bi bi-member-video-enter"></i>
     </div>
     <p v-if="showRemarks">注：会员九折优惠和现金券福利不可同享</p>
+    <p class="ps" v-if="isMember">您是造就会员，欢迎回来</p>
+    <p v-else class="ps">您还不是造就会员</p>
   </div>
 </template>
 
@@ -76,6 +78,9 @@
       color: rgb(128, 128, 128);
       font-size: 13px;
       line-height: 16px;
+    }
+    .ps{
+      color:#d6ad60;
     }
   }
 </style>
