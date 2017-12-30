@@ -3,7 +3,6 @@ import {appendBeforeEachHook} from "../../hooks";
 declare const window: any;
 
 let jsBridge: any;
-
 export const initIOS = (): Promise<void> => {
   if (jsBridge) return Promise.resolve();
 
