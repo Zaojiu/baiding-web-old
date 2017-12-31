@@ -147,11 +147,15 @@ export const router = new Router({
     },
     {
       path: '/new-member',
-      name: 'new-member.main',
       meta: {
         title: '造就新会员',
       },
       children: [
+        {
+          path: '',
+          name: 'new-member.main',
+          redirect: 'action'
+        },
         {
           path: 'card',
           name: 'new-member.card',
