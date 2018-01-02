@@ -1,4 +1,4 @@
-import {NgModule} from "@angular/core";
+import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
 import {LiveRoomComponent} from './live-room.component';
@@ -6,9 +6,10 @@ import {AuthGuard} from '../shared/guard/auth.guard';
 import {CachedLiveInfoResolver} from '../shared/guard/cached-live-info.resolver';
 import {LiveInfoResolver} from '../shared/guard/live-info.resolver';
 import {LiveRoomTitleResolver} from '../shared/guard/title.resolver';
-import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
-import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
-import {BindMobileGuard} from "../shared/guard/bind-mobile.guard";
+import {LiveRoomInfoComponent} from './live-room-info/live-room-info.component';
+import {LiveRoomInfoRedBookComponent} from './live-room-redBook/live-room-info.component';
+import {RoleAuthGuard} from '../shared/guard/role-auth.guard';
+import {BindMobileGuard} from '../shared/guard/bind-mobile.guard';
 
 const route: Routes = [
   {
@@ -38,6 +39,14 @@ const route: Routes = [
   {
     path: ':id/info',
     component: LiveRoomInfoComponent,
+    resolve: {
+      liveInfo: LiveInfoResolver,
+      title: LiveRoomTitleResolver,
+    },
+  },
+  {
+    path: ':id/red-book-info',
+    component: LiveRoomInfoRedBookComponent,
     resolve: {
       liveInfo: LiveInfoResolver,
       title: LiveRoomTitleResolver,

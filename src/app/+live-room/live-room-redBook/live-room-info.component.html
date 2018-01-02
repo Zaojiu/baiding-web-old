@@ -1,0 +1,102 @@
+<div class="live-room-info">
+  <div class="content">
+    <div class="bg-cover">
+      <img
+        alt="背景图"
+        src="https://og9s6vxbs.qnssl.com/redbook/redbook-bg.png">
+    </div>
+    <article class="red-book-player">
+      <img class="live-cover" src="https://og9s6vxbs.qnssl.com/redbook/reb-book-live-cover.png"/>
+      <i class="bi bi-play-fill"></i>
+    </article>
+    <footer>
+      <div class="reb-book-btn" (click)="bookLive()" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat">
+        <img src="https://og9s6vxbs.qnssl.com/redbook/reb-book-tip.png?t=2">
+      </div>
+      <div class="reb-book-btn" (click)="go()" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat">
+        <img src="https://og9s6vxbs.qnssl.com/redbook/red-book-enter.png?t=2">
+      </div>
+      <p>已开启直播提醒，直播开始时你会收到提醒</p>
+    </footer>
+  </div>
+</div>
+
+<div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
+  <div class="content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <div class="close" (click)="closeQrcode()"></div>
+      <div class="live-title">{{liveInfo.subject}}</div>
+      <count-down class="count-down" [expectStartAt]="liveInfo.expectStartAt"
+                  [countDownStatus]="liveInfo.isCreated()"></count-down>
+    </div>
+    <div class="qrcode">
+      <div class="qrcode-block">
+        <img *ngIf="!isSubscribeLinkLoading && !isSubscribeLinkError" class="qrcode-image" [src]="qrcode" alt="订阅二维码">
+        <div *ngIf="isSubscribeLinkLoading">二维码加载中...</div>
+        <div *ngIf="isSubscribeLinkError">二维码加载失败，请<a class="retry-link" href="" (click)="getSubscribeLink(); $event.preventDefault();">重试</a></div>
+      </div>
+      <p *ngIf="isInWechat">长按二维码订阅话题间</p>
+      <p *ngIf="!isInWechat">使用微信扫描二维码订阅话题间</p>
+      <p>开播会通知你</p>
+    </div>
+  </div>
+</div>
+
+<div
+  class="qrcode-background"
+  *ngIf="paidStatus===paidEnums.Failure"
+  (click)="closePayment()"
+>
+  <div class="content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <div class="close" (click)="closePayment()"></div>
+      <div class="live-title">
+        <div class="paid-tick">
+          <i class="bi bi-unpaid"></i>
+        </div>
+        支付失败
+      </div>
+    </div>
+    <div class="failure-reason-wrapper">
+      <p>失败原因</p>
+      <div class="failure-reason">
+        <i class="bi bi-failure-face"></i>
+      </div>
+      <p>{{paidResult}}</p>
+    </div>
+  </div>
+</div>
+
+<div
+  class="qrcode-background"
+  *ngIf="paidStatus===paidEnums.Success"
+  (click)="closePayment()"
+>
+  <div class="content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <div class="close" (click)="closePayment()"></div>
+      <div class="live-title">
+        <div class="paid-tick">
+          <i class="bi bi-paid"></i>
+        </div>
+        支付成功
+      </div>
+    </div>
+    <div class="paid-review" *ngIf="!liveInfo.isCreated() || !isInWechat" (click)="gotoLive()">
+      <p>进入话题间 观看视频</p>
+      <i class="bi bi-paid-review"></i>
+    </div>
+    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && isInWechat && !liveInfo.booked">
+      <p>请点击底部开播提醒按钮</p>
+      <div class="failure-reason">
+        <i class="bi bi-paid-bell"></i>
+      </div>
+    </div>
+    <div class="success-wrapper" *ngIf="liveInfo.isCreated() && isInWechat && liveInfo.booked">
+      <p>开播提醒已开通</p>
+      <i class="bi bi-paid-bell"></i>
+      <p>开播提醒已经开通</p>
+      <p>点击底部开播按钮，即可取消</p>
+    </div>
+  </div>
+</div>

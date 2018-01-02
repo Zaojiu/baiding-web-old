@@ -26,6 +26,7 @@ import {LoadingModule} from "../shared/bd-loading/bd-loading.module";
 import {AudioPlayerModule} from "../shared/audio-player/audio-player.module";
 import {ImageViewerModule} from "../shared/image-viewer/image-viewer.module";
 import {LiveRoomInfoComponent} from "./live-room-info/live-room-info.component";
+import {LiveRoomInfoRedBookComponent} from './live-room-redBook/live-room-info.component';
 import {BeginnerGuideComponent} from "./beginner-guide/beginner-guide.component";
 import {TopBarComponent} from "./top-bar/top-bar.component";
 import {TopBarSwitchBtnModule} from "../shared/topbar-switch-btn/topbar-switch-btn.module";
@@ -102,6 +103,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     PraisedAnimationDirective,
     PraisedAnimationComponent,
     LiveRoomInfoComponent,
+    LiveRoomInfoRedBookComponent,
     TopBarComponent,
     BeginnerGuideComponent,
     RecorderComponent,
