@@ -151,6 +151,7 @@
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
+  import {isInApp} from "../../shared/utils/utils";
   import {checkOrderFee} from "../../shared/api/order.api";
 
   @Component
@@ -187,7 +188,11 @@
     }
 
     goMyMember() {
-      this.$router.push({path: '/my/member'});
+      if(isInApp){
+        this.$router.push({path: '/new-member/card?login=1'});
+      }else{
+        this.$router.push({path: '/new-member/card'});
+      }
     }
 
     async buy() {

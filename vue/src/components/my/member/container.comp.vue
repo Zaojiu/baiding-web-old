@@ -130,20 +130,21 @@
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
   import {getUserInfoCache} from "../../../shared/api/user.api";
+  import {UserInfoModel} from '../../../shared/api/user.model'
   import {isInApp} from "../../../shared/utils/utils";
 
   @Component({})
   export default class ActivateComponent extends Vue {
-    navIndex: number;
-    userInfo = getUserInfoCache();
+    navIndex=1;
+    userInfo: UserInfoModel;
     isCard = false;
-    isMember: boolean;
+    isMember = false;
     isInApp: boolean;
     originX: number;
     moveClientX: number;
     originY: number;
     moveClientY: number;
-    openBtn: boolean;
+    openBtn = false;
 
     @Watch('$route.name')
     setNavIndex() {
@@ -151,10 +152,13 @@
     }
 
     created() {
-      this.isMember = false;
       if (isInApp) {
-        let subject = this.$route.query['member'];
-        this.isMember = (subject === '1');
+        let subject = this.$route.query['login'];
+        if(subject === '1'){
+          this.userInfo = getUserInfoCache(false);
+        }
+      } else {
+        this.userInfo = getUserInfoCache(false);
       }
       this.init();
     }
@@ -163,9 +167,10 @@
       this.navIndex = 1;
       this.isInApp = isInApp;
       this.isCard = false;
-      this.openBtn = false;
       if (this.userInfo) {
         this.isMember = this.userInfo.member.valid;
+      }else{
+        this.isMember = false;
       }
       switch (this.$route.name) {
         case "new-member.card":
