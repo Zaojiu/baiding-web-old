@@ -15,9 +15,18 @@
     position: relative;
     font-size: 0;
     .bg-cover {
-      width: 100vw;
+      width: 100%;
       img {
         width: 100%;
+      }
+    }
+
+    @media screen and (min-width: 1024px){
+      .red-book-player{
+        top:1500px !important;
+      }
+      footer{
+        top:2100px !important;
       }
     }
 
@@ -28,7 +37,6 @@
       margin: 0 20px;
       border: 2px solid #000;
       width: calc(100% - 40px);
-      height: 190px;
       .live-cover {
         height: 100%;
         width: 100%;
@@ -59,12 +67,11 @@
     footer {
       width: 100%;
       position: absolute;
-      top: 199vw;
+      top: 201vw;
       left: 0;
       padding: 0 36px;
       .reb-book-btn {
         cursor: pointer;
-        height: 80px;
         width: 100%;
         img {
           width: 100%;

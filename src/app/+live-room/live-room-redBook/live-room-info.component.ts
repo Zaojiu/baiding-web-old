@@ -55,7 +55,6 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
     this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
     this.route.snapshot.data['shareLink'] = this.getShareUri();
-
     // this.shareService.accessSharedByRoute(this.route);
 
     this.getSubscribeLink();
@@ -118,7 +117,7 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
 
   getShareUri(): string {
     let shareQuery = this.shareService.makeShareQuery('streams', this.liveInfo.id);
-    let uriTree = this.router.createUrlTree([`/lives/${this.liveInfo.id}/info`], {queryParams: shareQuery});
+    let uriTree = this.router.createUrlTree([`/lives/${this.liveInfo.id}/red-book-info`], {queryParams: shareQuery});
     let path = this.router.serializeUrl(uriTree);
     return `${host.self}${path}`;
   }
