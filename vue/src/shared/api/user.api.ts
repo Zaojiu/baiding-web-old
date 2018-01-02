@@ -15,7 +15,6 @@ export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel
 
 export const getUserInfoCache = (needSignin = true): UserInfoModel => {
   const userInfoCache = Store.memoryStore.get('userInfo');
-
   if (!userInfoCache) {
     if (needSignin) router.push({path: '/signin', query: {redirectTo: location.href}});
     throw new Error('user no login');
