@@ -454,7 +454,7 @@
       if (payResult === 'success') {
         if (orderType === 'member') {
           await refreshUserInfo();
-          this.$router.replace({path: '/my/member'});
+          this.$router.replace({path: '/new-member/action'});
         } else if (orderType === 'event') {
           this.$router.replace({path: '/my/tickets'});
         } else {
@@ -555,7 +555,9 @@
 
     async prepareNewOrder() {
       await this.checkOrder();
-      await this.checkDiscount();
+      if (this.itemsQuery[0].objectType !== 5){
+        await this.checkDiscount();
+      }
     }
 
     async handleOtherOrder(e: Error | ApiError) {
