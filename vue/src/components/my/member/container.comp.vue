@@ -144,7 +144,7 @@
     moveClientX: number;
     originY: number;
     moveClientY: number;
-    openBtn = false;
+    openBtn = true;
 
     @Watch('$route.name')
     setNavIndex() {
