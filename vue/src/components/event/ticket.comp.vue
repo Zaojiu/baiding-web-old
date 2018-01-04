@@ -359,9 +359,6 @@
     async initData() {
       this.isLoading = true;
       this.isError = false;
-      if(isInWechat){
-        initWechat();
-      }
       try {
         this.event = await getEvent(this.id);
       } catch (e) {
@@ -374,7 +371,9 @@
       } finally {
         this.isLoading = false;
       }
-
+      if(isInWechat){
+        await initWechat();
+      }
       this.setShareInfo();
       this.checkDate(this.event);
 
