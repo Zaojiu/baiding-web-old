@@ -4,7 +4,7 @@
       <img :src="item"/>
     </div>
     <ul v-if="listText.length">
-      <li v-for=" text in listText "><span></span>{{text}}</li>
+      <li v-for=" text in listText "><span class="dot"></span><span>{{text}}</span></li>
     </ul>
     <div v-if="showVideoBtn && isMember" class="gold-btn" @click="goToVideo()">
       <span>查看专属视频</span><i class="bi bi-member-video-enter"></i>
@@ -35,13 +35,16 @@
         line-height: 24px;
         color: rgb(217, 217, 217);
         font-weight: bold;
-        span {
+        .dot {
           display: inline-block;
           height: 8px;
           width: 8px;
           border-radius: 4px;
           background-color: rgb(217, 217, 217);
           margin-right: 8px;
+        }
+        span{
+          vertical-align: middle;
         }
       }
     }

@@ -13,7 +13,13 @@
         </ul>
       </nav>
       <section class="member-content"
-               :class="{submargin:isCard,'web-height':!isInApp,'app-height':isInApp}"
+               :class="{
+                  'submargin':isCard,
+                  'web-btn-show':!isInApp&&(openBtn&&!isMember),
+                  'web-btn-hide':!isInApp&&(!openBtn||isMember),
+                  'app-btn-show':isInApp&&(openBtn&&!isMember),
+                  'app-btn-hide':isInApp&&(!openBtn||isMember),
+          }"
                @touchstart="touchStart"
                @touchmove="touchMove"
                @touchend="touchEnd">
@@ -98,10 +104,16 @@
         padding: 24px 20px;
       }
 
-      .web-height {
+      .web-btn-show {
+        height: calc(100vh - 224px);
+      }
+      .web-btn-hide {
         height: calc(100vh - 146px);
       }
-      .app-height {
+      .app-btn-show {
+        height: calc(100vh - 174px);
+      }
+      .app-btn-hide {
         height: calc(100vh - 96px);
       }
     }
