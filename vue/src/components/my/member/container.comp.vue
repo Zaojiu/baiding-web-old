@@ -42,20 +42,20 @@
         font-size: 30px;
       }
       @media (max-width: 386px) {
-        .nav{
+        .nav {
           font-size: 14px !important;
         }
       }
       @media (max-width: 366px) {
-        .nav{
-          li{
+        .nav {
+          li {
             margin-right: 10px !important;
           }
         }
       }
 
       @media (max-width: 356px) {
-        .nav{
+        .nav {
           font-size: 12px !important;
         }
       }
@@ -132,14 +132,16 @@
   import {getUserInfoCache} from "../../../shared/api/user.api";
   import {UserInfoModel} from '../../../shared/api/user.model'
   import {isInApp} from "../../../shared/utils/utils";
+  import {PostOrderObject, OrderObjectType} from "../../../shared/api/order.model";
 
   @Component({})
   export default class ActivateComponent extends Vue {
-    navIndex=1;
+    navIndex = 1;
     userInfo: UserInfoModel;
+    memberOrderObject = new PostOrderObject('member-year', OrderObjectType.Member, 1);
     isCard = false;
     isMember = false;
-    isInApp: boolean;
+    isInApp = false;
     originX: number;
     moveClientX: number;
     originY: number;
@@ -154,7 +156,7 @@
     created() {
       if (isInApp) {
         let subject = this.$route.query['login'];
-        if(subject === '1'){
+        if (subject === '1') {
           this.userInfo = getUserInfoCache(false);
         }
       } else {
@@ -169,7 +171,7 @@
       this.isCard = false;
       if (this.userInfo) {
         this.isMember = this.userInfo.member.valid;
-      }else{
+      } else {
         this.isMember = false;
       }
       switch (this.$route.name) {
@@ -257,8 +259,18 @@
       }
     }
 
-    goIntro() {
-      this.$router.push({path: '/member/intro'});
+    async goIntro() {
+      this.userInfo = getUserInfoCache();
+      if (this.userInfo && this.userInfo.member.valid){
+        return;
+      }
+
+      if (this.userInfo && !this.userInfo.member.valid) {
+        this.$router.push({
+          path: '/orders',
+          query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}
+        });
+      }
     }
   }
 </script>
