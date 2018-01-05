@@ -133,9 +133,9 @@
             'https://og9s6vxbs.qnssl.com/member/member-action.png'
           ];
           this.listText = [
-            '享受早鸟优惠 9 折票价',
-            '提前 1 至 3 天开放兑换和购买通道',
-            '兑换或购买后获赠抵用现金券 （可微信或微博分享）'
+            '享受早鸟优惠线下活动 9 折票价',
+            '提前 1 至 3 天开放兑换和购买线下活动通道',
+            '兑换或购买后获赠线下活动抵用现金券 （可微信或微博分享）'
           ];
           break;
         case "new-member.video":
