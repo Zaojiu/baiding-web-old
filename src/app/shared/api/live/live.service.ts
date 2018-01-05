@@ -94,6 +94,7 @@ export class LiveService {
     }
 
     liveInfo.themeCss = stream.meta.themeCss;
+    liveInfo.disableComment = stream.meta.disableComment;
     liveInfo.expectStartAt = stream.meta.expectStartAt;
     liveInfo.expectDuration = stream.meta.expectDuration;
     liveInfo.startedAt = stream.meta.startedAt;
