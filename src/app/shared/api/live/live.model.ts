@@ -50,6 +50,7 @@ export class LiveInfoModel {
   invited: number;
   alertMessage: string;
   themeCss: string;
+  disableComment: boolean;
 
   isPayByPresent() {
     return this.paidType === LivePayType.Present;

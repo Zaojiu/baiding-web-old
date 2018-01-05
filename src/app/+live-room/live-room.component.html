@@ -43,6 +43,7 @@
   </div>
 
   <comments
+    *ngIf="!liveInfo.disableComment"
     class="comments"
     [ngClass]="{'hidden': !isCommentOpened}"
     [streamId]="id"
@@ -59,7 +60,7 @@
   </div>
 
   <audience-tool-bar
-    *ngIf="liveInfo.isAudience(userInfo.uid)"
+    *ngIf="liveInfo.isAudience(userInfo.uid)&&!liveInfo.disableComment"
     class="audience-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"
