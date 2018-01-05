@@ -46,11 +46,18 @@ const route: Routes = [
   },
   {
     path: ':id/red-book-info',
+    canActivate: [AuthGuard, BindMobileGuard],
     component: LiveRoomInfoRedBookComponent,
     resolve: {
       liveInfo: LiveInfoResolver,
       title: LiveRoomTitleResolver,
     },
+    data: {
+      isAsyncShareInfo: true,
+    },
+    children: [
+      {path: '', canActivate: [RoleAuthGuard]},
+    ]
   },
   {
     path: ':id/present',

@@ -14,6 +14,78 @@
     overflow: auto;
     position: relative;
     font-size: 0;
+
+    .video-container {
+      position: absolute;
+      top:0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      flex-direction: column;
+      background-color: $color-b;
+      //height: 250px;
+      z-index: 20;
+
+      .video {
+        position: relative;
+        overflow: hidden;
+
+        &.mobile-landscape {
+          &:before {
+            padding-top: 100vh;
+          }
+        }
+
+        &:before {
+          content: "";
+          display: block;
+          padding-top: 56.25%;
+        }
+
+        .video-player {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+        }
+
+        .live-cover {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          pointer-events: none;
+
+          .bi-play-fill {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 20px;
+            color: $color-w;
+            pointer-events: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: solid 2px $color-w;
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:before {
+              transform: translateX(3px);
+            }
+          }
+        }
+
+      }
+    }
+
     .bg-cover {
       width: 100%;
       img {
@@ -35,8 +107,74 @@
       top: 144vw;
       left: 0;
       margin: 0 20px;
-      border: 2px solid #000;
+      border: 4px solid #000;
       width: calc(100% - 40px);
+
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      flex-direction: column;
+      background-color: $color-b;
+      //height: 250px;
+      z-index: 20;
+
+      .video {
+        position: relative;
+        overflow: hidden;
+
+        &.mobile-landscape {
+          &:before {
+            padding-top: 100vh;
+          }
+        }
+
+        &:before {
+          content: "";
+          display: block;
+          padding-top: 56.25%;
+        }
+
+        .video-player {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+        }
+
+        .live-cover {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          pointer-events: none;
+
+          .bi-play-fill {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 20px;
+            color: $color-w;
+            pointer-events: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: solid 2px $color-w;
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:before {
+              transform: translateX(3px);
+            }
+          }
+        }
+
+      }
+
       .live-cover {
         height: 100%;
         width: 100%;
@@ -87,77 +225,6 @@
     }
   }
 
-  .operation-area {
-    flex-shrink: 0;
-    display: flex;
-
-    .btn, .button {
-      text-align: center;
-      height: 49px;
-      line-height: 49px;
-      font-size: 17px;
-      color: $color-w;
-      background-color: rgb(37, 37, 37);
-
-      &.enter-room {
-        flex-grow: 1;
-        background-color: $color-brand;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-weight: bold;
-
-        .origin-fee {
-          font-weight: normal;
-          text-decoration: line-through;
-          padding-right: 10px;
-        }
-      }
-
-      &.present {
-        flex-shrink: 0;
-        padding: 0 15px;
-
-        &:nth-child(2) {
-          border-top: solid 1px $color-brand;
-          border-bottom: solid 1px $color-brand;
-          color: $color-brand;
-          background-color: $color-w;
-        }
-
-        .bi-present {
-          margin-top: -5px;
-          margin-right: 5px;
-          font-size: 18px;
-        }
-      }
-
-      &.turn-on {
-        color: $color-brand;
-      }
-
-      &.notification {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        max-width: 40%;
-        flex-shrink: 0;
-        padding: 0 15px;
-
-        .bi-clock {
-          font-size: 20px;
-        }
-
-        span {
-          margin-left: 5px;
-        }
-
-        &.disabled {
-          color: rgba(255, 255, 255, .3);
-        }
-      }
-    }
-  }
 }
 
 .qrcode-background {
