@@ -9,6 +9,7 @@ import {LiveRoomTitleResolver} from '../shared/guard/title.resolver';
 import {LiveRoomInfoComponent} from './live-room-info/live-room-info.component';
 import {LiveRoomInfoRedBookComponent} from './live-room-redBook/live-room-info.component';
 import {RoleAuthGuard} from '../shared/guard/role-auth.guard';
+import {RoleAuthGuardRedBook} from '../shared/guard/role-auth-redbook.guard';
 import {BindMobileGuard} from '../shared/guard/bind-mobile.guard';
 
 const route: Routes = [
@@ -46,7 +47,6 @@ const route: Routes = [
   },
   {
     path: ':id/red-book-info',
-    canActivate: [AuthGuard, BindMobileGuard],
     component: LiveRoomInfoRedBookComponent,
     resolve: {
       liveInfo: LiveInfoResolver,
@@ -56,7 +56,7 @@ const route: Routes = [
       isAsyncShareInfo: true,
     },
     children: [
-      {path: '', canActivate: [RoleAuthGuard]},
+      {path: '', canActivate: [RoleAuthGuardRedBook]},
     ]
   },
   {

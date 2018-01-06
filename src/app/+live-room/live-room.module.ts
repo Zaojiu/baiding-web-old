@@ -47,6 +47,7 @@ import {InviteApiService} from "../shared/api/invite/invite.api";
 import {CommentInputModule} from "../shared/comment-input/comment-input.module";
 import {AtKeyBoardModule} from "../shared/at-keyboard/at-keyboard.module";
 import {RoleAuthGuard} from "../shared/guard/role-auth.guard";
+import {RoleAuthGuardRedBook} from "../shared/guard/role-auth-redbook.guard";
 import {VideoPlayerModule} from "../shared/video-player/video-player.module";
 import {PayPopupModule} from "../shared/pay-popup/pay-popup.module";
 import {UserInfoCardModule} from "../shared/user-info-card/user-info-card.module";
@@ -117,6 +118,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CachedLiveInfoResolver,
     QuitEditGuard,
     RoleAuthGuard,
+    RoleAuthGuardRedBook,
     UploadApiService,
     InputtingService,
     AudioPlayerService,

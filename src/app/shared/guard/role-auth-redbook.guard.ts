@@ -6,7 +6,7 @@ import {LiveService} from "../api/live/live.service";
 import {host} from "../../../environments/environment";
 
 @Injectable()
-export class RoleAuthGuard implements CanActivate {
+export class RoleAuthGuardRedBook implements CanActivate {
 
   constructor(private userInfoService: UserInfoService, private liveService: LiveService,
               private router: Router) {
@@ -16,14 +16,6 @@ export class RoleAuthGuard implements CanActivate {
     const liveId = route.parent.params['id'];
 
     return this.liveService.getLiveInfo(liveId).then(liveInfo => {
-      const userInfo = this.userInfoService.getUserInfoCache(state.url);
-      if (!userInfo) return false;
-
-      if (liveInfo.isAudience(userInfo.uid) && liveInfo.isNeedPay && !liveInfo.paid) {
-        this.router.navigate([`/lives/${liveId}/info`]);
-        return false;
-      }
-
       return true;
     }, (err) => {
       const to = `${host.self}${state.url}`;

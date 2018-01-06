@@ -75,7 +75,6 @@ export class LiveService {
         }
       });
     }
-
     liveInfo.invitees = [];
     if (stream.meta.invitedEditors) {
       stream.meta.invitedEditors.forEach((invitee) => {
@@ -172,7 +171,6 @@ export class LiveService {
         return Promise.resolve(liveInfoCache);
       }
     }
-
     const url = `${environment.config.host.io}/api/live/objects/${id}/info`;
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
@@ -191,7 +189,6 @@ export class LiveService {
       return;
     });
   }
-
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
     let data: { [key: string]: string } = {
       subject: subject,
