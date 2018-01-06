@@ -10,7 +10,6 @@ import {UtilsService} from '../../shared/utils/utils';
 import {IosBridgeService} from '../../shared/ios-bridge/ios-bridge.service';
 import {PaidStatus} from './live-room-info.enums';
 import {appConfig, host} from '../../../environments/environment';
-import {TimelineComponent} from '../timeline/timeline.component';
 import {VideoInfo, VideoPlayerOption} from '../../shared/video-player/video-player.model';
 import {AnalyticsService, MediaInfo, OnlineParams, OnlineService} from '../../shared/analytics/analytics.service';
 import {VideoPlayerComponent} from '../../shared/video-player/video-player.component';
@@ -18,7 +17,6 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Subscription} from 'rxjs/Subscription';
 import {StoreService} from '../../shared/store/store.service';
 import {EventType, MqEvent} from '../../shared/mq/mq.service';
-import {UserAnimEmoji} from '../../shared/praised-animation/praised-animation.model';
 import {MessageApiService} from '../../shared/api/message/message.api';
 import {VideoService} from '../../shared/video-player/video-player.service';
 import {TimelineService} from '../timeline/timeline.service';
@@ -61,7 +59,6 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
   videoVisableSub: Subscription;
   isLiveRoomVisable: boolean;
   hasGlobalPopup: boolean;
-  @ViewChild('timeline') timeline: TimelineComponent;
   isLandscape = false;
   isOnLargeScreen = UtilsService.isOnLargeScreen;
   isiOS = UtilsService.isiOS;
@@ -73,7 +70,7 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
-              private iosBridgeService: IosBridgeService, private shareService: ShareApiService, // 1
+              private iosBridgeService: IosBridgeService, private shareService: ShareApiService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
               private messageApiService: MessageApiService,
               private sanitizer: DomSanitizer,
@@ -85,14 +82,10 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
     this.liveId = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
-    this.initPayment();
-    this.handlePaymentRedirect();
-
-    this.route.snapshot.data['shareTitle'] = `${this.userInfo ? this.userInfo.nick : '我'}邀请你参加#${this.liveInfo.subject}#直播分享`;
+    this.route.snapshot.data['shareTitle'] = `我邀请你参加#${this.liveInfo.subject}#直播分享`;
     this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
     this.route.snapshot.data['shareLink'] = this.getShareUri();
-
     this.getSubscribeLink();
 
     this.id = this.route.snapshot.params['id'];
@@ -106,7 +99,7 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
     this.setShareInfo();
 
     this.joinLiveRoom().then(() => {
-      if (this.liveInfo.isTypeVideo()) {
+     if (this.liveInfo.isTypeVideo()) {
         this.fetchStream();
 
         if (this.isiOS || this.isAndroid) {
@@ -134,19 +127,10 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
         this.operationTipsService.popup('直播已结束');
         this.refreshLiveInfo().then(() => {
           this.getStreamInfo(false);
-          this.timeline.checkHistoryTips();
+          // this.timeline.checkHistoryTips();
         });
       }
 
-      if (evt.event === EventType.LivePraise) {
-        if (evt.info.user.uid === this.userInfo.uid) {
-          return;
-        }
-        let userAnim = new UserAnimEmoji;
-        userAnim.emoji = evt.info.emoji;
-        userAnim.user = new UserInfoModel;
-        this.liveInfo.praisedAnimations.push(userAnim);
-      }
     });
 
     // 为了防止各种神奇浏览器的神奇播放器总是在最顶层, 打开子页面的时候, 把视频销毁
@@ -187,54 +171,6 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
 
     if (this.onlineService) {
       this.onlineService.destroy();
-    }
-  }
-
-  handlePaymentRedirect() {
-    const payResult = this.route.snapshot.queryParams['payResult'];
-    if (payResult) {
-      if (payResult === 'success') {
-        this.handlePayResult('');
-      } else if (payResult === 'cancel') {
-        this.handlePayResult('cancel');
-      } else {
-        this.handlePayResult('fail');
-        console.error(decodeURIComponent(payResult));
-      }
-    }
-  }
-
-  initPayment() {
-    this.originFee = '';
-
-    if (
-      this.liveInfo.isNeedPay && !this.liveInfo.paid &&
-      this.userInfo &&
-      this.liveInfo.isAudience(this.userInfo.uid)
-    ) {
-      if (this.userInfo.isMember) {
-        if (this.liveInfo.memberFee.value === 0) {
-          this.btnText = `会员免费`;
-        } else {
-          this.btnText = `会员价: ${this.liveInfo.memberFee.toYuan()}`;
-        }
-
-        if (this.liveInfo.originFee.value && this.liveInfo.originFee.value !== this.liveInfo.memberFee.value) {
-          this.originFee = this.liveInfo.originFee.toYuan();
-        }
-      } else {
-        if (this.liveInfo.totalFee.value === 0) {
-          this.btnText = `限时免费`;
-        } else {
-          this.btnText = `支付: ${this.liveInfo.totalFee.toYuan()}`;
-        }
-
-        if (this.liveInfo.originFee.value && this.liveInfo.originFee.value !== this.liveInfo.totalFee.value) {
-          this.originFee = this.liveInfo.originFee.toYuan();
-        }
-      }
-    } else {
-      this.btnText = '进入话题间';
     }
   }
 
@@ -290,44 +226,6 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
     });
   }
 
-  handlePayResult(result: string) {
-    switch (result) {
-      case '':
-        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
-          this.liveInfo = liveInfo;
-          this.paidStatus = this.paidEnums.Success;
-          this.initPayment();
-        });
-        break;
-      case 'cancel':
-        this.paidStatus = this.paidEnums.None;
-        break;
-      case 'weixin_js_bridge_not_found':
-        this.paidResult = '微信支付初始化失败，请刷新页面重试';
-        this.paidStatus = this.paidEnums.Failure;
-        break;
-      case 'timeout':
-        this.paidResult = '支付超时，请重新支付';
-        this.paidStatus = this.paidEnums.Failure;
-        break;
-      case 'closed':
-        this.paidStatus = this.paidEnums.Failure;
-        this.paidResult = '订单已超时，请重新购买';
-        break;
-      case 'already paid':
-        this.liveService.getLiveInfo(this.liveId, true).then(liveInfo => {
-          this.liveInfo = liveInfo;
-        });
-        this.paidStatus = this.paidEnums.Failure;
-        this.paidResult = '您已购买本话题间，无须再次支付';
-        break;
-      case 'fail':
-        this.paidStatus = this.paidEnums.Failure;
-        this.paidResult = '支付失败，请联系我们';
-        break;
-    }
-  }
-
   closePayment() {
     this.paidStatus = this.paidEnums.None;
     clearInterval(this.timer);
@@ -335,39 +233,20 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
 
   checkLogin() {
     if (!this.userInfo) {
-      this.router.navigate([`/signin`], {queryParams: {redirectTo: `/lives/${this.liveId}/info`}});
+      this.router.navigate([`/signin`], {queryParams: {redirectTo: `/lives/${this.liveId}/red-book-info`}});
       return false;
     }
 
     return true;
   }
-
   checkMobileBinded() {
     if (this.userInfo && !this.userInfo.mobile.number) {
-      this.router.navigate([`/signup`], {queryParams: {redirectTo: `/lives/${this.liveId}/info`}});
+      this.router.navigate([`/signup`], {queryParams: {redirectTo: `/lives/${this.liveId}/red-book-info`}});
       return false;
     }
 
     return true;
   }
-
-  payLive() {
-    if (!this.checkMobileBinded()) {
-      return;
-    }
-    if (this.paidStatus === this.paidEnums.Paying) {
-      return;
-    }
-
-    this.paidStatus = this.paidEnums.Paying;
-
-    this.liveService.pay(this.liveId).then(result => {
-      this.handlePayResult(result);
-    }, (reason) => {
-      this.handlePayResult(reason);
-    });
-  }
-
   gotoLive() {
     this.router.navigate([`/lives/${this.liveInfo.id}`]);
   }
@@ -437,15 +316,7 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
     if (!this.checkLogin()) {
       return;
     }
-
-    if (
-      this.liveInfo.isNeedPay && !this.liveInfo.paid &&
-      this.liveInfo.isAudience(this.userInfo.uid)
-    ) {
-      this.payLive();
-    } else {
-      this.gotoLive();
-    }
+    this.gotoLive();
   }
 
   markOnline() {
@@ -480,7 +351,7 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
   }
 
   setShareInfo() {
-    let shareTitle = `${this.userInfo.nick}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
+    let shareTitle = `大家正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
     let shareDesc = this.liveInfo.desc;
     let shareCover = this.liveInfo.coverThumbnailUrl;
     let shareUrl = this.getShareUri();
@@ -508,7 +379,13 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
     return this.liveService.getLiveInfo(this.id, true).then(liveInfo => { // 发送加入话题间的请求。
       this.liveInfo = liveInfo;
       this.isJoin = true;
-      return this.liveService.joinLive(this.id);
+      if (this.userInfo) {
+        return this.liveService.joinLive(this.id);
+      } else {
+        return new Promise((resolve, reject) => {
+          resolve();
+        });
+      }
     });
   }
 
@@ -540,12 +417,14 @@ export class LiveRoomInfoRedBookComponent implements OnInit, OnDestroy {
     if (this.isVideoLoadError) {
       this.operationTipsService.popup('视频源加载错误, 请重试');
       this.fetchStream();
-    } else if (!this.videoInfo) {
+    } else {
       if (this.isVideoLoading) {
         this.operationTipsService.popup('视频源加载中, 请稍后播放');
       } else if (this.liveInfo.isCreated()) {
         this.operationTipsService.popup('直播尚未开始');
-      } else {
+      } else if (this.liveInfo.isClosed()) {
+        this.operationTipsService.popup('直播已结束');
+      }else {
         this.operationTipsService.popup('暂无视频源');
       }
     }

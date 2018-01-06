@@ -26,7 +26,7 @@
       <div class="reb-book-btn" (click)="bookLive()" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking">
         <img src="https://og9s6vxbs.qnssl.com/redbook/reb-book-tip.png?t=2">
       </div>
-      <div class="reb-book-btn" (click)="go()" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking">
+      <div class="reb-book-btn" (click)="go()" *ngIf="(liveInfo.booked&&liveInfo.isCreated()&&!booking)||(liveInfo.isStarted()&&!booking)">
         <img src="https://og9s6vxbs.qnssl.com/redbook/red-book-enter.png?t=2">
       </div>
       <p>已开启直播提醒，直播开始时你会收到提醒</p>
