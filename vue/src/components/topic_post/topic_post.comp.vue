@@ -82,10 +82,6 @@
         white-space: nowrap;
         transition: transform .3s;
 
-        .tab-content {
-          font-size: 0;
-        }
-
         &.tab-one-active {
           transform: translateX(0);
         }
@@ -133,6 +129,7 @@
       margin: 0 auto 24px auto;
       .sub-content-cover {
         position: relative;
+        font-size: 0;
         > .footer {
           position: absolute;
           bottom: 0;
