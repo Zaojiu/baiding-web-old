@@ -424,6 +424,9 @@
       } else {
         this.isPaymentDisabled = false;
         this.btnText = '购买门票';
+        if (event.isForMember) {
+          this.btnText = '购买门票（会员专享）'
+        }
       }
 
       if (moment().isAfter(event.meta.applyEndAtParsed)) {
@@ -453,6 +456,11 @@
         userInfo = getUserInfoCache(false);
       } catch (e) {
         this.$router.push({path: '/signin', query: {redirectTo: this.$route.fullPath}});
+        return;
+      }
+
+      if (this.event.isForMember && !userInfo.member.valid) {
+        showTips('您还不是造就会员');
         return;
       }
 
