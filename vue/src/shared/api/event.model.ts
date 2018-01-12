@@ -83,7 +83,9 @@ export class EventModel {
   cover11Url: string;
   coverSmall11Url: string;
   coverThumbnail11Url: string;
+  isForMember: boolean;
   meta: EventMetaModel;
+  updatedAt: string;
 
   constructor(data: any) {
     if (!data) return;
@@ -93,10 +95,12 @@ export class EventModel {
     this.id = data.id;
     this.subject = data.subject;
     this.desc = data.desc;
+    this.updatedAt = data.updatedAt;
+    this.isForMember = data.isForMember;
     this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
     this.coverSmallUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.coverThumbnailUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
-    this.cover169Url = coverUrl ? encodeURI(`${coverUrl}~16-9`) : '/assets/img/default-cover.jpg';
+    this.cover169Url = coverUrl ? encodeURI(`${coverUrl}~16-9`) + '?t=' + this.updatedAt : '/assets/img/default-cover.jpg';
     this.coverSmall169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.coverThumbnail169Url = coverUrl ? encodeURI(`${coverUrl}~16-9?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.cover11Url = coverUrl ? encodeURI(`${coverUrl}~1-1`) : '/assets/img/default-cover.jpg';
