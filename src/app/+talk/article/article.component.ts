@@ -59,6 +59,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isiOS = UtilsService.isiOS;
   isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
   isNewApp: boolean;
+  closeVideo: boolean;
+  isVideoEle: any;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
@@ -118,6 +120,43 @@ export class ArticleComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit() {
+    if (this.isVideoOverThree(this.talkInfo.media.duration)) {
+      this.isVideoEle = document.getElementsByTagName('video')[0];
+      this.isVideoEle.addEventListener('timeupdate', this.bindHandler.bind(this), false);
+    }
+  }
+
+  bindHandler(event) {
+    let _this = event.target;
+    if (_this.currentTime > 180) {
+      this.closeVideo = true;
+      if (this.isVideoEle) {
+        this.isVideoEle.removeEventListener('timeupdate', this.bindHandler.bind(this), false);
+        this.isVideoEle = null;
+      }
+    }
+  }
+
+  isVideoOverThree(duration) {
+    if ((UtilsService.isInApp && this.isNewApp) || !this.talkInfo.isForMember || (this.userInfo && this.userInfo.isMember)) {
+      return false;
+    }
+    if (duration.minutes() >= 3) {
+      return true;
+    }
+    if (duration.minutes() === 3 && duration.seconds() > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  gotoMember() {
+    let uriTree = this.router.createUrlTree([`/new-member/action`]);
+    let path = this.router.serializeUrl(uriTree);
+    this.router.navigate([path]);
+  }
+
   scrollToComment() {
     this.main.nativeElement.scrollTop = this.commentTitle.nativeElement.offsetTop;
   }
@@ -144,6 +183,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.routeSub) this.routeSub.unsubscribe();
     if (this.onlineService) this.onlineService.destroy();
+    if (this.isVideoEle) {
+      this.isVideoEle.removeEventListener('timeupdate', this.bindHandler.bind(this), false);
+    }
   }
 
   markOnline() {
