@@ -6,7 +6,7 @@
     <ul v-if="listText.length">
       <li v-for=" text in listText "><span class="dot"></span><span>{{text}}</span></li>
     </ul>
-    <div v-if="showVideoBtn && isMember" class="gold-btn" @click="goToVideo()">
+    <div v-if="showVideoBtn" class="gold-btn" @click="goToVideo()">
       <span>查看专属视频</span><i class="bi bi-member-video-enter"></i>
     </div>
     <p v-if="showRemarks">注：会员九折优惠和现金券福利不可同享</p>
