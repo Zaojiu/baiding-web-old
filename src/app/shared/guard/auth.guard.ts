@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
       } else if (err.status !== 401) {
         this.router.navigate([`/reload`], {queryParams: {redirectTo: to}});
       }
-
       this.router.navigate([`/signin`], {queryParams: {redirectTo: to}});
       return false;
     });
