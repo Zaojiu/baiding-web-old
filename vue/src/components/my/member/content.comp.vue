@@ -133,9 +133,8 @@
             'https://og9s6vxbs.qnssl.com/member/member-action.png'
           ];
           this.listText = [
-            '享受早鸟优惠线下活动 9 折票价',
-            '提前 1 至 3 天开放兑换和购买线下活动通道',
-            '兑换或购买后获赠线下活动抵用现金券 （可微信或微博分享）'
+            '优先抢票',
+            '优惠价购买所有正价商品'
           ];
           break;
         case "new-member.video":
@@ -144,9 +143,9 @@
             'https://og9s6vxbs.qnssl.com/member/member-only-video.png'
           ];
           this.listText = [
-            '定期推送精选视频和音频，例如：闭门课程/会议，每月至少一次；嘉宾闭门专访，每月至少 2 次；活动花絮',
-            'CEO 的季度分享',
-            '免费观看造就 Now 直播（非会员收费 ¥9.9)'
+            '可观看精选演讲视频',
+            '可观看CEO的季度分享视频',
+            '免费观看造就NOW全年现场直播'
           ];
           break;
         case "new-member.course":
@@ -154,8 +153,8 @@
             'https://og9s6vxbs.qnssl.com/member/online-class.png'
           ];
           this.listText = [
-            '免费学习在线音频 2 节',
-            '9 折优惠购买更多课程'
+            '免费观看《数据的本质》在线课程',
+            '优惠购买更多在线「大师之课」'
           ];
           break;
         case "new-member.download":
@@ -163,10 +162,8 @@
             'https://og9s6vxbs.qnssl.com/member/member-download.png'
           ];
           this.listText = [
-            '演讲视频下载，不包括精选视频',
-            '演讲 PPT 下载',
-            '演讲内容导读，总结和感受',
-            '视觉素材（屏保，壁纸等)'
+            '可下载演讲视频',
+            '可下载演讲PPT'
           ];
           break;
         default:
