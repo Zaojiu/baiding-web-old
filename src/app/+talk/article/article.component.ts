@@ -152,9 +152,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   gotoMember() {
-    let uriTree = this.router.createUrlTree([`/new-member/action`]);
-    let path = this.router.serializeUrl(uriTree);
-    this.router.navigate([path]);
+    location.href = `${host.self}/new-member/action`;
   }
 
   scrollToComment() {
