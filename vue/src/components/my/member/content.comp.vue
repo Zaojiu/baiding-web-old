@@ -133,8 +133,9 @@
             'https://og9s6vxbs.qnssl.com/member/member-action.png'
           ];
           this.listText = [
-            '优先抢票',
-            '优惠价购买所有正价商品'
+            '一次打通全年52场专题Talk，让您获得每周末一场深度学习体验。聚焦“创业”、“商业模式”、“大数据算法”、“黑科技”、“人文艺术”、“认知心理”等六大领域。',
+            '优先剧院购票专属通道',
+            '优先参与小型线下讲者沙龙，优先购买讲者书籍及衍生品'
           ];
           break;
         case "new-member.video":
@@ -143,18 +144,18 @@
             'https://og9s6vxbs.qnssl.com/member/member-only-video.png'
           ];
           this.listText = [
-            '可观看精选演讲视频',
-            '可观看CEO的季度分享视频',
-            '免费观看造就NOW全年现场直播'
-          ];
+            '500场精心剪辑的高清演讲视频',
+            '专享演讲者深度访谈及幕后花絮'
+
+        ];
           break;
         case "new-member.course":
           this.listImg = [
             'https://og9s6vxbs.qnssl.com/member/online-class.png'
           ];
           this.listText = [
-            '免费观看《数据的本质》在线课程',
-            '优惠购买更多在线「大师之课」'
+            '『造就UNI』在线课程第一期课堂：《数据的本质》在线课程 （每月持续更新）',
+            '五折购买在线《大师之课》'
           ];
           break;
         case "new-member.download":
@@ -162,8 +163,8 @@
             'https://og9s6vxbs.qnssl.com/member/member-download.png'
           ];
           this.listText = [
-            '可下载演讲视频',
-            '可下载演讲PPT'
+            '可订阅并下载近千个专属演讲视频',
+            '可下载收藏500多个造就演讲PPT'
           ];
           break;
         default:
