@@ -1,11 +1,11 @@
 <div class="main" #main *ngIf="talkInfo" (touchstart)="touchStart($event)" (touchmove)="touchMove($event)" #container>
   <header *ngIf="!isNewApp" [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen, 'mobile-landscape': !isOnScreen && isLandscape}">
-    <video-player
-      class="video-player"
-      [videoInfo]="videoInfo"
-      [option]="videoOption"
-      (onEvents)="onVideoEvent($event)"
-      #videoPlayer
+    <video-player *ngIf="!closeVideo"
+                  class="video-player"
+                  [videoInfo]="videoInfo"
+                  [option]="videoOption"
+                  (onEvents)="onVideoEvent($event)"
+                  #videoPlayer
     ></video-player>
 
     <div class="download-tips" *ngIf="isDownloadTipsShow">
@@ -17,13 +17,30 @@
       <a class="download-btn" (click)="isiOS ? redirectToYingYongBao() : showDownloadModal()">立即下载</a>
     </div>
 
-    <div class="live-cover" *ngIf="isVideoCoverShown">
+    <div class="live-cover" *ngIf="isVideoCoverShown && !closeVideo">
       <img
         class="cover-image"
         [src]="talkInfo.coverSmall169Url" alt="文章封面"
         (error)="resetDefaultBackground()"
       >
       <i class="bi bi-play-fill" *ngIf="videoInfo && videoInfo.hasVideo"></i>
+    </div>
+    <div class="live-cover-event" *ngIf="closeVideo">
+      <img
+        class="cover-image"
+        [src]="talkInfo.coverSmall169Url" alt="文章封面"
+        (error)="resetDefaultBackground()"
+      >
+      <div class="three-tips">
+        <div class="three-tips-content">
+          <div class="three-title">会员专属，非会员只能试看三分钟喔</div>
+          <div>
+            <button class="three-btn" (click)="gotoMember()">
+              <i class="bi bi-buy-member"></i>立即开通会员
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -36,7 +53,7 @@
     class="single-player"
     [ngClass]="{sticky: !isVideoCoverShown && !isOnScreen}"
     #audioPlayer
-    *ngIf="talkInfo.media && talkInfo.media.mp3"
+    *ngIf="talkInfo.media && talkInfo.media.mp3 && !talkInfo.isForMember"
     [audioCover]="talkInfo.coverSmall11Url"
     [audioUrl]="talkInfo.media.mp3"
     (event)="onAudioEvent($event)"
@@ -48,9 +65,11 @@
     <p class="desc">{{speaker.desc}}</p>
   </div>
 
-  <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}" [innerHtml]="talkInfo.safeContent"></section>
+  <section class="article talk-article" [ngClass]="{hidden: !isOnScreen && isLandscape}"
+           [innerHtml]="talkInfo.safeContent"></section>
 
-  <section class="info" *ngIf="talkInfo.categories.length || talkInfo.tags.length" [ngClass]="{hidden: !isOnScreen && isLandscape}">
+  <section class="info" *ngIf="talkInfo.categories.length || talkInfo.tags.length"
+           [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <ul *ngFor="let catalogArr of talkInfo.categories">
       <li *ngFor="let catalog of catalogArr">{{catalog.title}}</li>
     </ul>
@@ -83,13 +102,19 @@
         </div>
         <span class="reply" (click)="gotoComment(comment.id, comment.user.nick, comment.content)">回复</span>
       </div>
-      <div class="content"><div class="quote" *ngIf="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
+      <div class="content">
+        <div class="quote" *ngIf="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}
+        </div>
+        {{comment.content}}
+      </div>
     </div>
 
     <bd-loading class="comment-loading" *ngIf="isCommentLoading"></bd-loading>
 
     <div class="no-comments" *ngIf="!isCommentLoading && !comments.length">暂无评论</div>
-    <div class="more-comments" *ngIf="!isCommentLoading && hasMoreComments" (click)="listComments(comments[comments.length-1].originCreatedAt)">加载更多评论</div>
+    <div class="more-comments" *ngIf="!isCommentLoading && hasMoreComments"
+         (click)="listComments(comments[comments.length-1].originCreatedAt)">加载更多评论
+    </div>
     <div class="no-more-comments" *ngIf="!isCommentLoading && comments.length && !hasMoreComments">到底咯~</div>
   </section>
 
@@ -98,7 +123,8 @@
       <div class="font-content"><i class="bi bi-new-praise"></i></div>
       <div><span>点赞 {{talkInfo.praiseTotal}}</span></div>
     </div>
-    <div class="icon" [ngClass]="{'activate': talkInfo.isFavorited}" (click)="talkInfo.isFavorited ? unfavorite() : favorite()">
+    <div class="icon" [ngClass]="{'activate': talkInfo.isFavorited}"
+         (click)="talkInfo.isFavorited ? unfavorite() : favorite()">
       <div class="font-content"><i class="bi bi-new-favorite"></i></div>
       <div><span>收藏 {{talkInfo.favoriteTotal}}</span></div>
     </div>

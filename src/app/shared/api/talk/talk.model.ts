@@ -89,6 +89,7 @@ export class TalkInfoModel {
   parentId: string;
   isPraised: boolean = false;
   isFavorited: boolean = false;
+  isForMember: boolean = false;
   commentTotal: number;
   shareTotal: number;
   totalUsers: number;
@@ -132,6 +133,7 @@ export class TalkInfoModel {
     this.praiseTotal = data.praiseTotal;
     this.favoriteTotal = data.favoriteTotal;
     this.parentId = data.parentId;
+    this.isForMember = data.isForMember;
     if (currentUserInfo) this.isPraised = currentUserInfo.praised;
     this.commentTotal = data.commentTotal;
     if (currentUserInfo) this.isFavorited = !!currentUserInfo.favoritedAt;
