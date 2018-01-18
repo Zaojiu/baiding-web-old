@@ -56,7 +56,6 @@ export class TitleService {
     let shareLink = routeData && routeData['shareLink'] ? routeData['shareLink'] : `${host.self}/lives`; // 默认分享首页地址
     let isAsyncShareInfo = routeData && routeData['isAsyncShareInfo'];
     let isInheritShareInfo = routeData && routeData['isInheritShareInfo'];
-
     if (isInheritShareInfo && this.shareBridge.title && this.shareBridge.desc && this.shareBridge.cover && this.shareBridge.link) {
       this.shareBridge.setShareInfo(this.shareBridge.title, this.shareBridge.desc, this.shareBridge.cover, this.shareBridge.link);
       return;

@@ -1,0 +1,193 @@
+<div class="container">
+  <div class="question" *ngIf="showContent === 'question'">
+    <header>
+      <div class="img-cover">
+        <img [src] = 'cover'/>
+      </div>
+      <div class="title">
+        <h3 class="font-18">造就中高层领导者评鉴，测一测你在职场里的角色和性格吧！</h3>
+        <p class="font-14">你在职场里的性格是什么样的呢，你如何跟别人合作?你了解自己的行事方式吗？（题目来自：DDI）</p>
+      </div>
+    </header>
+    <section class="main">
+      <div class="choose-group" *ngFor="let group of questionGroup">
+        <h5 class="font-16"><span>{{'Q' + (group.id+1)}}.</span>{{group.question}}</h5>
+        <div class="choose-item" *ngFor="let answer of group.answers; let i = index">
+          <div class="label is-choose" *ngIf="i === answers[group.id]" (click)="chooseAnswer(group.id,i)">
+            <span class="text font-14">{{answer}}</span><span class="icon"><i class="bi bi-ddi-check"></i></span>
+          </div>
+          <div class="label" *ngIf="i !== answers[group.id]" (click)="chooseAnswer(group.id,i)">
+            <span class="text font-14">{{answer}}</span><span class="icon"></span>
+          </div>
+        </div>
+      </div>
+      <div class="submit">
+        <button (click)="submitAnswer()" class="font-18" >{{isAnswered?'你已经完成测试,查看答案':'提交答案'}}</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="answer" *ngIf="showContent === 'answer'">
+    <article class="bg-o" *ngIf="myAnswer === 0" >
+      <header class="answer-img">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/answer-o.jpg?t=1"/>
+      </header>
+      <section>
+        <div class="down-content">
+          <img src="https://og9s6vxbs.qnssl.com/ddi/talk-o.png?t=1"/>
+          <div [style.top]="btnTop">
+            <button class="font-18" (click)="toDownApp()">下载造就 App 观看视频</button>
+          </div>
+        </div>
+      </section>
+      <footer class="answer-btn">
+        <button class="font-18 color-o" (click)="toShare()">分享你的测试结果</button>
+      </footer>
+      <div class="join-ddi">
+        <button class="font-18" (click)="addDdi()">点击了解详情</button>
+      </div>
+      <p class="ddi-text font-12">数字化转型时代，你该如何面对？ 点击按钮，占得先机</p>
+    </article>
+    <article class="bg-t" *ngIf="myAnswer === 1" >
+      <header class="answer-img">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/answer-t.jpg?t=1"/>
+      </header>
+      <section>
+        <div class="down-content">
+          <img src="https://og9s6vxbs.qnssl.com/ddi/talk-t.png?t=1"/>
+          <div [style.top]="btnTop">
+            <button class="font-18" (click)="toDownApp()">下载造就 App 观看视频</button>
+          </div>
+        </div>
+      </section>
+      <footer class="answer-btn">
+        <button class="font-18 color-t" (click)="toShare()">分享你的测试结果</button>
+      </footer>
+      <div class="join-ddi">
+        <button class="font-18" (click)="addDdi()">点击了解详情</button>
+      </div>
+      <p class="ddi-text font-12">数字化转型时代，你该如何面对？ 点击按钮，占得先机</p>
+    </article>
+    <article class="bg-th" *ngIf="myAnswer === 2" >
+      <header class="answer-img">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/answer-th.jpg?t=1"/>
+      </header>
+      <section>
+        <div class="down-content">
+          <img src="https://og9s6vxbs.qnssl.com/ddi/talk-th.png?t=1"/>
+          <div [style.top]="btnTop">
+            <button class="font-18" (click)="toDownApp()">下载造就 App 观看视频</button>
+          </div>
+        </div>
+      </section>
+      <footer class="answer-btn">
+        <button class="font-18 special-share" (click)="toShare()">分享你的测试结果</button>
+      </footer>
+      <div class="join-ddi">
+        <button class="font-18 special-join" (click)="addDdi()">点击了解详情</button>
+      </div>
+      <p class="ddi-text font-12 special-text">数字化转型时代，你该如何面对？ 点击按钮，占得先机</p>
+    </article>
+    <article class="bg-f" *ngIf="myAnswer === 3" >
+      <header class="answer-img">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/answer-f.jpg?t=1"/>
+      </header>
+      <section>
+        <div class="down-content">
+          <img src="https://og9s6vxbs.qnssl.com/ddi/talk-f.png?t=1"/>
+          <div [style.top]="btnTop">
+            <button class="font-18" (click)="toDownApp()">下载造就 App 观看视频</button>
+          </div>
+        </div>
+      </section>
+      <footer class="answer-btn">
+        <button class="font-18 color-f" (click)="toShare()">分享你的测试结果</button>
+      </footer>
+      <div class="join-ddi">
+        <button class="font-18" (click)="addDdi()">点击了解详情</button>
+      </div>
+      <p class="ddi-text font-12">数字化转型时代，你该如何面对？ 点击按钮，占得先机</p>
+    </article>
+    <article class="bg-fi" *ngIf="myAnswer === 4" >
+      <header class="answer-img">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/answer-fi.jpg?t=1"/>
+      </header>
+      <section>
+        <div class="down-content">
+          <img src="https://og9s6vxbs.qnssl.com/ddi/talk-fi.png?t=1"/>
+          <div [style.top]="btnTop">
+            <button class="font-18" (click)="toDownApp()">下载造就 App 观看视频</button>
+          </div>
+        </div>
+      </section>
+      <footer class="answer-btn">
+        <button class="font-18 color-fi" (click)="toShare()">分享你的测试结果</button>
+      </footer>
+      <div class="join-ddi">
+        <button class="font-18" (click)="addDdi()">点击了解详情</button>
+      </div>
+      <p class="ddi-text font-12">数字化转型时代，你该如何面对？ 点击按钮，占得先机</p>
+    </article>
+    <article class="bg-s" *ngIf="myAnswer === 5" >
+      <header class="answer-img">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/answer-s.jpg?t=1"/>
+      </header>
+      <section>
+        <div class="down-content">
+          <img src="https://og9s6vxbs.qnssl.com/ddi/talk-s.png?t=1"/>
+          <div [style.top]="btnTop">
+            <button class="font-18" (click)="toDownApp()">下载造就 App 观看视频</button>
+          </div>
+        </div>
+      </section>
+      <footer class="answer-btn">
+        <button class="font-18 color-s" (click)="toShare()">分享你的测试结果</button>
+      </footer>
+      <div class="join-ddi">
+        <button class="font-18" (click)="addDdi()">点击了解详情</button>
+      </div>
+      <p class="ddi-text font-12">数字化转型时代，你该如何面对？ 点击按钮，占得先机</p>
+    </article>
+  </div>
+
+  <div class="share" *ngIf="showContent === 'share'">
+    <article *ngIf="myAnswer === 0" >
+      <header class="share-title color-o font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/share-o.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 1" >
+      <header class="share-title color-t font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/share-t.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 2" >
+      <header class="share-title color-th font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/share-th.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 3" >
+      <header class="share-title color-f font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/share-f.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 4" >
+      <header class="share-title color-fi font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/share-fi.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 5" >
+      <header class="share-title color-s font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/ddi/share-s.jpg"/>
+      </section>
+    </article>
+  </div>
+
+</div>
+

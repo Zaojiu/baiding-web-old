@@ -13,6 +13,7 @@ const appRoutes: Routes = [
   {path: 'signup', loadChildren: 'app/+signup/signup.module#SignupModule'},
   {path: 'signin', loadChildren: 'app/+signin/signin.module#SigninModule'},
   {path: 'member', loadChildren: 'app/+member/member.module#MemberModule'},
+  {path: 'wa/ddi', loadChildren: 'app/H5WA/DDI/ddi.module#DdiModule'},
   {path: 'activities', loadChildren: 'app/+activities/activities.module#ActivitiesModule'},
   {path: '', redirectTo: '/lives', pathMatch: 'full'},
   {path: '**', redirectTo: '/404', pathMatch: 'full'},
