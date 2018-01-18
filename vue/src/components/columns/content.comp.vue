@@ -10,7 +10,8 @@
         'played': isVideoPlayed,
         'played-landscape': isVideoPlayed && isLandscape
       }">
-        <div class="player" id="player" @click="itemInfo.current.isTypeVideo ? isVideoPlayed = true : false"></div>
+        <div class="player" v-if="!closeMedia" id="player"
+             @click="itemInfo.current.isTypeVideo ? isVideoPlayed = true : false"></div>
 
         <div class="live-cover" v-if="!isVideoPlayed">
           <img
@@ -23,6 +24,26 @@
           <div class="big-play" v-if="itemInfo.current.isTypeVideo">视频 {{itemInfo.current.duration.format('mm’ss“')}}
           </div>
         </div>
+
+        <div class="live-cover-event" v-if="closeMedia">
+          <img
+            class="cover-image"
+            alt="话题间封面"
+            :src="coverUrl"
+            @error="coverUrl = defaultCoverUrl"
+          >
+          <div class="three-tips">
+            <div class="three-tips-content">
+              <div class="three-title">会员专属，非会员只能试{{itemInfo.current.isTypeVideo?'看':'听'}}三分钟喔</div>
+              <div>
+                <button class="three-btn" @click="gotoMember">
+                  <i class="bi bi-buy-member"></i>立即开通会员
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </header>
 
       <div class="block content">
@@ -43,7 +64,8 @@
           </div>
         </div>
 
-        <audio-bar class="audio-bar" v-if="itemInfo.current.isTypeAudio" :audioUrl="itemInfo.current.audioUrl"></audio-bar>
+        <audio-bar class="audio-bar" v-if="itemInfo.current.isTypeAudio&&!closeMedia"
+                   :audioUrl="itemInfo.current.audioUrl"></audio-bar>
 
         <div class="article article-content" v-html="itemInfo.current.content"></div>
 
@@ -66,30 +88,30 @@
       </div>
 
       <!--<div id="comments" class="comments block">-->
-        <!--<h2>评论</h2>-->
+      <!--<h2>评论</h2>-->
 
-        <!--<div v-if="comments">-->
-          <!--<div class="comment" v-for="comment in comments" :key="comment.id">-->
-            <!--<div class="header" v-once>-->
-              <!--<div class="author-info">-->
-                <!--<img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">-->
-                <!--<span class="nick">{{comment.user.nick}}</span>-->
-                <!--<time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>-->
-              <!--</div>-->
-              <!--<div class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">-->
-                <!--<i class="bi bi-reply-comment"></i>回复-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; 不要换行，避免出现换行符 &ndash;&gt;-->
-            <!--<div class="comment-content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>-->
-          <!--</div>-->
-        <!--</div>-->
+      <!--<div v-if="comments">-->
+      <!--<div class="comment" v-for="comment in comments" :key="comment.id">-->
+      <!--<div class="header" v-once>-->
+      <!--<div class="author-info">-->
+      <!--<img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">-->
+      <!--<span class="nick">{{comment.user.nick}}</span>-->
+      <!--<time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>-->
+      <!--</div>-->
+      <!--<div class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">-->
+      <!--<i class="bi bi-reply-comment"></i>回复-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; 不要换行，避免出现换行符 &ndash;&gt;-->
+      <!--<div class="comment-content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>-->
+      <!--</div>-->
+      <!--</div>-->
 
-        <!--<bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>-->
-        <!--<error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>-->
-        <!--<div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>-->
-        <!--<div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>-->
-        <!--<div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>-->
+      <!--<bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>-->
+      <!--<error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>-->
+      <!--<div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>-->
+      <!--<div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>-->
+      <!--<div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>-->
       <!--</div>-->
 
       <footer
@@ -105,14 +127,14 @@
           <i class="bi bi-praise"></i>{{itemInfo.current.praisedTotal}}
         </div>
         <!--<div class="icon" @click="gotoComment()">-->
-          <!--<i class="bi bi-comment2"></i>-->
+        <!--<i class="bi bi-comment2"></i>-->
         <!--</div>-->
       </footer>
 
       <footer class="payment" v-show="!(isVideoPlayed && isLandscape)" v-if="!itemInfo.column.paid">
         <button class="button button-outline" v-if="false">赠送给好友</button>
         <button class="button button-primary" @click="createOrder()" :disabled="isPaying"><span class="origin-fee"
-                                                                   v-if="originFee">{{originFee}}</span>{{btnText}}
+                                                                                                v-if="originFee">{{originFee}}</span>{{btnText}}
         </button>
       </footer>
     </div>
@@ -143,7 +165,7 @@
       }
 
       &.played:before {
-        height: 56.25vw;
+        //height: 56.25vw;
       }
 
       &.played-landscape:before {
@@ -153,7 +175,7 @@
       &:before {
         content: "";
         display: block;
-        height: 100vw;
+        padding-top: 56.25%;
         transition: height .5s;
       }
 
@@ -231,6 +253,62 @@
           white-space: nowrap;
           color: $color-w;
           text-shadow: 0 0 2px $color-b;
+        }
+      }
+
+      .live-cover-event {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column-reverse;
+        -webkit-box-pack: end;
+
+        .three-tips {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 1);
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translateX(-50%) translateY(-50%);
+          font-size: 14px;
+          text-align: center;
+          color: #D5B578;
+          display: table;
+          .three-tips-content {
+            display: table-cell;
+            vertical-align: middle;
+            .three-btn {
+              position: relative;
+              z-index: 3;
+              font-size: 16px;
+              text-align: center;
+              padding: 12px 40px;
+              color: #fff;
+              background: linear-gradient(rgba(204, 169, 104, 1), rgba(154, 120, 58, 1));
+              border-radius: 4px;
+              margin-top: 20px;
+              .bi {
+                padding-right: 4px;
+                position: relative;
+                top: -2px;
+              }
+            }
+          }
+        }
+
+        .cover-image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          text-indent: -10000px;
+          transition: opacity 2.5s;
         }
       }
     }
@@ -598,7 +676,7 @@
   import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils';
   import {getColumnItemDetail, praise, unpraise} from '../../shared/api/column.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
-  import {ColumnItemDetail, ColumnItemContent} from "../../shared/api/column.model";
+  import {ColumnItemDetail, ColumnItemContent, ColumnItem} from "../../shared/api/column.model";
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {Store} from "../../shared/utils/store";
   import {OrderObjectType, PostOrderObject} from '../../shared/api/order.model';
@@ -611,7 +689,7 @@
   import {setPaymentNone} from "../../store/payment";
   import {setTitle} from '../../shared/utils/title';
 
-//  const COMMENT_COUNT = 20;
+  //  const COMMENT_COUNT = 20;
 
   @Component({
     components: {
@@ -633,6 +711,10 @@
     itemInfo = new ColumnItemDetail({});
     isLoading = false;
     isError = false;
+    closeMedia = false;
+    isListener = false;
+    limitSeconds = 180;
+
 //    comments: ColumnItemCommentModel[] = [];
 //    isCommentLoading = false;
 //    isCommentError = false;
@@ -642,8 +724,26 @@
 
     created() {
       this.columnId = this.$route.params['id'];
-
       this.itemChanged();
+    }
+
+    destroyed() {
+      if (this.isListener) {
+        document.removeEventListener('timeupdate', this.bindHandler.bind(this), true);
+      }
+    }
+
+    bindHandler(event: any) {
+      let _this = event.target;
+      if (_this.currentTime > this.limitSeconds) {
+        this.closeMedia = true;
+        document.removeEventListener('timeupdate', this.bindHandler.bind(this), true);
+        this.isListener = false;
+      }
+    }
+
+    gotoMember() {
+      this.$router.push({path: '/new-member/action'});
     }
 
     @Watch('$route')
@@ -744,10 +844,29 @@
       } finally {
         this.isLoading = false;
       }
-
       if (this.itemInfo.current.isTypeVideo) this.prepareVideo();
       this.coverUrl = this.itemInfo.current.coverSmall11Url;
       if (!this.isChildActived()) setTitle(this.itemInfo.current.subject);
+
+      if (this.isNeedLimitThreeMinutes(this.itemInfo.item)) {
+        document.addEventListener('timeupdate', this.bindHandler.bind(this), true);
+        this.isListener = true;
+      }
+    }
+
+    isNeedLimitThreeMinutes(item: ColumnItem | null) {
+      if (!this.itemInfo.current.isTypeVideo && !this.itemInfo.current.isTypeAudio) {
+        return false;
+      }
+      if (!item) {
+        return false;
+      }
+      let seconds = item.duration.minutes() * 60 + item.duration.seconds();
+      if ((!this.userInfo || !this.userInfo.isMember) &&
+        seconds > this.limitSeconds) {
+        return true;
+      }
+      return false;
     }
 
 //    async initComments() {
@@ -885,7 +1004,7 @@
       try {
         const orderMeta = await createOrder([orderQuery], [], false);
         await this.pay(orderMeta.orderNo);
-      } catch(e) {
+      } catch (e) {
         if (e instanceof ApiError) {
           const code = e.code;
 
