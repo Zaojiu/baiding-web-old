@@ -16,7 +16,7 @@ import {afterHooks, beforeHooks} from "./hooks";
 import {liveInfoResolver} from "./shared/resolver/live-info.resolver";
 import memberContainer from './components/my/member/container.comp.vue';
 import memberContent from './components/my/member/content.comp.vue';
-
+import MemberVideoComponent from './components/member_video/list.comp.vue';
 Vue.use(Router);
 
 export const router = new Router({
@@ -122,6 +122,16 @@ export const router = new Router({
             execRouteTask(tasks, to, from, next);
           },
           component: () => System.import('./components/topic_post/post-comment.comp.vue'),
+        }
+      ]
+    },
+    {
+      path: '/member_video',
+      component: MemberVideoComponent,
+      children: [
+        {
+          name: 'member_video.main',
+          path: ''
         }
       ]
     },

@@ -43,7 +43,7 @@
           background-color: rgb(217, 217, 217);
           margin-right: 8px;
         }
-        span{
+        span {
           vertical-align: middle;
         }
       }
@@ -59,7 +59,7 @@
       color: rgb(214, 173, 96);
       box-sizing: border-box;
       position: relative;
-      .bi{
+      .bi {
         font-size: 16px;
         vertical-align: sub;
         padding-left: 6px;
@@ -82,8 +82,8 @@
       font-size: 13px;
       line-height: 16px;
     }
-    .ps{
-      color:#d6ad60;
+    .ps {
+      color: #d6ad60;
     }
   }
 </style>
@@ -147,7 +147,7 @@
             '500场精心剪辑的高清演讲视频',
             '专享演讲者深度访谈及幕后花絮'
 
-        ];
+          ];
           break;
         case "new-member.course":
           this.listImg = [
@@ -171,12 +171,13 @@
       }
     }
 
-    goToVideo = async () => {
+    async goToVideo() {
       if (this.isInApp) {
         await initIOS();
         callHandler('pushMemberVideo', '');
+      } else {
+        this.$router.push({path: '/member_video'});
       }
-      return;
     }
   }
 </script>
