@@ -176,7 +176,7 @@
         await initIOS();
         callHandler('pushMemberVideo', '');
       } else {
-        this.$router.push({path: '/member_video'});
+        this.$router.push({path: '/member/video'});
       }
     }
   }

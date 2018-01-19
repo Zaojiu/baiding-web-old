@@ -126,7 +126,7 @@ export const router = new Router({
       ]
     },
     {
-      path: '/member_video',
+      path: '/member/video',
       component: MemberVideoComponent,
       children: [
         {
