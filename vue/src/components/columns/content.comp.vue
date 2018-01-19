@@ -148,6 +148,8 @@
     position: relative;
     background-color: $color-gray5;
     padding-bottom: 46px;
+    overflow: auto;
+    height: 100vh;
 
     .block {
       box-shadow: 0 2px 2px rgb(236, 236, 236);

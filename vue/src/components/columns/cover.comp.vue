@@ -64,6 +64,8 @@
 <style lang="scss" scoped>
   .columns {
     background-color: $color-gray5;
+    overflow: auto;
+    height: 100vh;
 
     .cover {
       position: relative;
