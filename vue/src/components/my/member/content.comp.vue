@@ -1,6 +1,6 @@
 <template>
   <div class="member-card">
-    <div v-for="item in listImg" class="image-cover">
+    <div v-for="item in listImg" class="image-cover" @click="actionImgCover()">
       <img :src="item"/>
     </div>
     <ul v-if="listText.length">
@@ -103,6 +103,7 @@
     listImg: string[] = [];
     showVideoBtn: boolean;
     showRemarks: boolean;
+    inTab = 1;
     defaultCover = 'assets/img/default-cover.jpg';
 
     created() {
@@ -126,6 +127,7 @@
             'https://og9s6vxbs.qnssl.com/member/member-two.png'
           ];
           this.listText = [];
+          this.inTab = 0;
           break;
         case "new-member.action":
           this.showRemarks = true;
@@ -137,6 +139,7 @@
             '优先剧院购票专属通道',
             '优先参与小型线下讲者沙龙，优先购买讲者书籍及衍生品'
           ];
+          this.inTab = 1;
           break;
         case "new-member.video":
           this.showVideoBtn = true;
@@ -146,8 +149,8 @@
           this.listText = [
             '500场精心剪辑的高清演讲视频',
             '专享演讲者深度访谈及幕后花絮'
-
           ];
+          this.inTab = 2;
           break;
         case "new-member.course":
           this.listImg = [
@@ -157,6 +160,7 @@
             '『造就UNI』在线课程第一期课堂：《数据的本质》在线课程 （每月持续更新）',
             '五折购买在线《大师之课》'
           ];
+          this.inTab = 3;
           break;
         case "new-member.download":
           this.listImg = [
@@ -166,10 +170,18 @@
             '可订阅并下载近千个专属演讲视频',
             '可下载收藏500多个造就演讲PPT'
           ];
+          this.inTab = 4;
           break;
         default:
       }
     }
+
+    actionImgCover() {
+      // 在线课程跳转到课程
+      if (this.inTab === 3) {
+        this.$router.push({path: '/columns/5a5f080551281300015d4449'});
+      }
+    };
 
     async goToVideo() {
       if (this.isInApp) {

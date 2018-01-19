@@ -517,11 +517,9 @@
         if (this.userInfo && this.userInfo.isMobileBinded) {
           return true;
         }
-
         this.$router.push({path: '/mobile-bind', query: {redirectTo: to}});
         return false;
       };
-
       if (item) {
         // ready and paid or free item
         if (item.isStatusReady && (item.isPayTypeFree || (item.isPayTypeColumn && this.columnInfo.paid))) {

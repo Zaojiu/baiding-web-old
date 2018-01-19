@@ -156,7 +156,6 @@ export class ColumnItem {
     if (!data) return;
 
     const coverUrl = data.coverUrl;
-
     this.id = data.id;
     this.columnId = data.columnId;
     this.vol = data.vol;
@@ -265,6 +264,7 @@ export class ColumnItemDetail {
   current: ColumnItemContent;
   prev: ColumnItemContent | null;
   next: ColumnItemContent | null;
+  item: ColumnItem | null;
 
   constructor(data: any) {
     if (!data) return;
@@ -272,6 +272,7 @@ export class ColumnItemDetail {
     this.column = new Column(data.column, data.column_user_info);
     this.prev = data.pre ? new ColumnItemContent(data.pre) : null;
     this.next = data.next ? new ColumnItemContent(data.next) : null;
+    this.item = data.item ? new ColumnItem(data.item) : null;
     this.current = new ColumnItemContent(data.item, data.item_user_info);
   }
 
