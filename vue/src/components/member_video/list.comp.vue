@@ -9,25 +9,34 @@
       <h1 class="title">
         专属视频
       </h1>
-      <ul class="list-group" v-if="list.length !== 0">
-        <li class="list-item" v-for="item in data.list">
-          <div @click="goTalk(item.id)">
-            <div class="item-img">
-              <img :src="item.coverUrl"
-                   alt="视频封面"
-              >
-              <span class="left">{{item.tag}}</span>
-              <span class="right">{{item.duration}}</span>
+      <div class="video-list scrollable"
+           v-scroll-view="{onBottom: fetchMoreList}"
+      >
+        <ul class="list-group"
+            v-if="list.length !== 0">
+          <li class="list-item" v-for="item in data.list">
+            <div @click="goTalk(item.id)">
+              <div class="item-img">
+                <img :src="item.coverUrl"
+                     alt="视频封面"
+                     @error="setDefaultUrl"
+                >
+                <span class="left">{{item.tag}}</span>
+                <span class="right">{{item.duration}}</span>
+              </div>
+              <div class="item-text">
+                <h3>{{item.title}}</h3>
+                <p>{{item.name}} · {{item.speakerTitle}}{{item.speakerCompany}}</p>
+              </div>
             </div>
-            <div class="item-text">
-              <h3>{{item.title}}</h3>
-              <p>{{item.name}} . {{item.speakerTitle}} . {{item.speakerCompany}}</p>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="no-more" v-if="list.length === 0">暂无数据</div>
-      <!--<div class="get-more" v-if="marker&&marker.length !== 0" @click="getMore">加载更多</div>-->
+          </li>
+        </ul>
+        <div class="no-more" v-if="!marker">已显示全部内容</div>
+        <footer v-if="marker&&marker.length !== 0"
+                :class="{show: isListLoading, hide: !isListLoading}">
+          <bd-loading></bd-loading>
+        </footer>
+      </div>
     </div>
 
     <router-view></router-view>
@@ -38,11 +47,22 @@
   .container {
     min-height: 100vh;
     background-color: rgb(36, 36, 36);
+
+    .video-list{
+      position: absolute;
+      top: 118px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      overflow: auto;
+    }
   }
 
   .main {
     position: relative;
     color: rgb(242, 242, 242);
+    height: 100vh;
+
     .app-download-tips {
       position: absolute;
       top: 0;
@@ -51,7 +71,9 @@
     }
     .no-more {
       text-align: center;
-      padding: 10px;
+      font-size: 14px;
+      padding: 0 0 24px 0;
+      color:#808080;
     }
 
     .get-more {
@@ -66,6 +88,7 @@
       letter-spacing: -0.7px;
       box-shadow: 0px 2px 4px rgba(0, 0, 0, .5);
     }
+
     .list-group {
       padding: 24px 20px;
       .list-item {
@@ -79,8 +102,7 @@
         border-top-right-radius: 8px;
         background-color: #000;
         position: relative;
-        min-height: 56vw;
-        max-height: 512px;
+        min-height: 40vw;
         img {
           width: 100%;
         }
@@ -119,6 +141,27 @@
         }
       }
     }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+
+      &.fullscreen {
+        height: 100vh;
+      }
+
+      &.show {
+        opacity: 1;
+      }
+
+      &.hide {
+        transition: 1s ease all;
+        opacity: 0;
+      }
+    }
+
   }
 </style>
 
@@ -128,19 +171,23 @@
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
   import {setTitle} from '../../shared/utils/title';
   import {getMemberVideoList} from '../../shared/api/member-video.api'
+  import {scrollView} from '../../shared/scroll-view/scroll-view.directive';
   import {host} from '../../env/environment';
 
   @Component({
     components: {
       appDownloadTips: appDownloadTips,
-    }
+    },
+    directives: {
+      scrollView
+    },
   })
   export default class MemberVideoComponent extends Vue {
     isLoading = false;
     isError = false;
     isAppDownloadTipsShow = true;
     data: any;
-    list: any;
+    list = <any>[];
     marker: string;
     isListLoading = false;
     defaultCoverUrl = '/assets/img/default-cover.jpg';
@@ -166,14 +213,13 @@
       }
     }
 
-    /*async getMore() {
+    async getMore() {
       this.isListLoading = true;
       try {
         let data = await getMemberVideoList(this.data.marker);
-        this.list = this.list.concat(data.list);
         this.marker = data.marker;
         if (data.list.length > 0) {
-          data.list.map((item: any) => {
+          data.list.forEach((item: any) => {
             this.list.push(item);
           })
         }
@@ -184,7 +230,18 @@
       } finally {
         this.isListLoading = false;
       }
-    }*/
+    }
+
+    fetchMoreList() {
+      if (this.list.length === 0 || this.marker.length === 0) {
+        return;
+      }
+      this.getMore();
+    }
+
+    setDefaultUrl(event:any){
+      event.target.src = this.defaultCoverUrl;
+    }
 
     goTalk(id: string) {
       location.href = `${host.self}/talks/${id}`
