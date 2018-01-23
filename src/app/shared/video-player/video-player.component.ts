@@ -2,8 +2,15 @@ import {
   Component, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges, Output,
   EventEmitter
 } from '@angular/core';
-import { VideoInfo, VideoPlayerOption } from "./video-player.model";
-import { AnalyticsService, MediaType, MediaInfo, MediaQuality, MediaFormat, MediaPlayer } from "../analytics/analytics.service"
+import {VideoInfo, VideoPlayerOption} from "./video-player.model";
+import {
+  AnalyticsService,
+  MediaType,
+  MediaInfo,
+  MediaQuality,
+  MediaFormat,
+  MediaPlayer
+} from "../analytics/analytics.service"
 
 @Component({
   selector: 'video-player',
@@ -58,6 +65,7 @@ export class VideoPlayerComponent implements OnDestroy, OnChanges {
       live: this.option.isLive,
       width: '100%',
       height: '100%',
+      x5_type: 'h5',
       listener: (msg: TcPlayerOptionListenerMsg) => this._onEvents(msg),
     };
 
