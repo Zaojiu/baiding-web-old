@@ -22,6 +22,7 @@ export class LiveInfoModel {
   isDraft: boolean;
   owner: UserInfoModel;
   admin: UserInfoModel;
+  isDisablePlayback: boolean;//判断是否回放
   editors: UserInfoModel[]; //后端新增字段 avatar_url,title //TODO
   invitees: LiveInviteeInfoModel[];
   latestUsers: UserInfoModel[]; // 话题间观众
