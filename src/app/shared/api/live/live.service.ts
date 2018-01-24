@@ -48,6 +48,7 @@ export class LiveService {
     liveInfo.id = stream.id;
     liveInfo.subject = stream.subject;
     liveInfo.desc = stream.desc;
+    liveInfo.isDisablePlayback = stream.meta.isDisablePlayback;
 
     switch (stream.meta.kind) {
       case 'text':
