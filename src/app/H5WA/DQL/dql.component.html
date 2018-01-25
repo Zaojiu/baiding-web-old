@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="question" *ngIf="showContent === 'question'">
+    <header>
+      <div class="img-cover">
+        <img [src] = 'cover'/>
+      </div>
+      <div class="title">
+        <h3 class="font-18">造就潜力测试，测一测你在数字时代下的潜力吧！</h3>
+        <p class="font-14">你如何评估自己的潜力的?你了解自己潜力大小吗？（题目来自：DDI）</p>
+      </div>
+    </header>
+    <section class="main">
+      <div class="choose-group" *ngFor="let group of questionGroup">
+        <h5 class="font-16"><span>{{'Q' + (group.id+1)}}.</span>{{group.question}}</h5>
+        <div class="choose-item" *ngFor="let answer of group.answers; let i = index">
+          <div class="label is-choose" *ngIf="i === answers[group.id]" (click)="chooseAnswer(group.id,i)">
+            <span class="text font-14">{{answer}}</span><span class="icon"><i class="bi bi-ddi-check"></i></span>
+          </div>
+          <div class="label" *ngIf="i !== answers[group.id]" (click)="chooseAnswer(group.id,i)">
+            <span class="text font-14">{{answer}}</span><span class="icon"></span>
+          </div>
+        </div>
+      </div>
+      <div class="submit">
+        <button (click)="submitAnswer()" class="font-18" >{{isAnswered?'你已经完成测试,查看答案':'提交答案'}}</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="answer" *ngIf="showContent === 'answer'">
+    <article class="bg-black">
+      <header class="answer-img" *ngIf="myAnswer === 0">
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer-o.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer.jpg"/>
+      </header>
+      <header class="answer-img" *ngIf="myAnswer === 1">
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer-t.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer.jpg"/>
+      </header>
+      <header class="answer-img" *ngIf="myAnswer === 2">
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer-th.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer.jpg"/>
+      </header>
+      <header class="answer-img" *ngIf="myAnswer === 3">
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer-f.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer.jpg"/>
+      </header>
+      <header class="answer-img" *ngIf="myAnswer === 4">
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer-fi.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer.jpg"/>
+      </header>
+      <header class="answer-img" *ngIf="myAnswer === 5">
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer-s.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/dql/answer.jpg"/>
+      </header>
+      <div class="join-ddi">
+        <button class="font-18" (click)="addMember()">加入造就会员</button>
+      </div>
+      <footer class="answer-btn">
+        <button class="font-18" (click)="toShare()">分享你的测试结果</button>
+      </footer>
+    </article>
+  </div>
+
+  <div class="share" *ngIf="showContent === 'share'">
+    <article *ngIf="myAnswer === 0" >
+      <header class="share-title font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/dql/share-o.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 1" >
+      <header class="share-title font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/dql/share-t.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 2" >
+      <header class="share-title font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/dql/share-th.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 3" >
+      <header class="share-title font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/dql/share-f.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 4" >
+      <header class="share-title font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/dql/share-fi.jpg"/>
+      </section>
+    </article>
+    <article *ngIf="myAnswer === 5" >
+      <header class="share-title font-14">长按保存图片并且分享到朋友圈</header>
+      <section class="share-main">
+        <img src="https://og9s6vxbs.qnssl.com/dql/share-s.jpg"/>
+      </section>
+    </article>
+  </div>
+
+</div>
+

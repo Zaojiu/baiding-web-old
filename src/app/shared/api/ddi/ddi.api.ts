@@ -9,18 +9,19 @@ export class DdiApiService {
   constructor(private http: Http) {
   }
 
-  getResult(): Promise<any> {
+  getResult(no = 0): Promise<any> {
     const url = `${environment.config.host.io}/api/live/ddi_test`;
-    return this.http.get(url).toPromise().then(res => {
+    return this.http.get(`${url}?${$.param({'no': no})}`).toPromise().then(res => {
       let data = res.json();
       return data;
     });
   }
 
-  postAnswer(answer: Array<number>): Promise<number> {
+  postAnswer(answer: Array<number>, no = 0): Promise<number> {
     const url = `${environment.config.host.io}/api/live/ddi_test`;
     return this.http.post(url, {
-        'answer': answer
+        'answer': answer,
+        'no': no
       }
     ).toPromise().then(res => {
       let data = res.json();
