@@ -10,6 +10,7 @@ export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel
   const res = await get(url, {needHandleError: needHandleError});
   const userInfo = new UserInfoModel(res.data);
   Store.memoryStore.set('userInfo', userInfo);
+  Store.localStore.set('userInfo', userInfo);
   return userInfo;
 };
 
