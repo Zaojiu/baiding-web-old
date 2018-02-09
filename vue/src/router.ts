@@ -19,6 +19,7 @@ import memberContent from './components/my/member/content.comp.vue';
 import iosNotMemberContent from './components/my/iosOnlyMember/notMember.comp.vue';
 import iosIsMemberContent from './components/my/iosOnlyMember/isMember.comp.vue';
 import MemberVideoComponent from './components/member_video/list.comp.vue';
+import iosMemberContainer from './components/my/iosInAppPayMember/container.comp.vue';
 
 Vue.use(Router);
 
@@ -220,6 +221,45 @@ export const router = new Router({
         },
       ],
       component: memberContainer,
+    },
+    {
+      path: '/wv/ios-member',
+      meta: {
+        title: '造就新会员',
+      },
+      children: [
+        {
+          path: '',
+          name: 'new-member.main',
+          redirect: 'action'
+        },
+        {
+          path: 'card',
+          name: 'new-member.card',
+          component: memberContent,
+        },
+        {
+          path: 'action',
+          name: 'new-member.action',
+          component: memberContent,
+        },
+        {
+          name: 'new-member.video',
+          path: 'video',
+          component: memberContent
+        },
+        {
+          name: 'new-member.course',
+          path: 'course',
+          component: memberContent,
+        },
+        {
+          name: 'new-member.download',
+          path: 'download',
+          component: memberContent
+        },
+      ],
+      component: iosMemberContainer,
     },
     {
       path: '/my',

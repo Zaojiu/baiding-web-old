@@ -4,7 +4,7 @@
       <img :src="item"/>
     </div>
     <ul v-if="listText.length">
-      <li v-for=" text in listText "><span class="dot"></span><span>{{text}}</span></li>
+      <li v-for=" text in listText "><span class="dot"></span><span v-html="text"></span></li>
     </ul>
     <div v-if="showVideoBtn" class="gold-btn" @click="goToVideo()">
       <span>查看专属视频</span><i class="bi bi-member-video-enter"></i>
@@ -120,9 +120,18 @@
             'https://og9s6vxbs.qnssl.com/member/member-action.png'
           ];
           this.listText = [
-            '一次打通全年52场专题Talk，让您获得每周末一场深度学习体验。聚焦“创业”、“商业模式”、“大数据算法”、“黑科技”、“人文艺术”、“认知心理”等六大领域。',
-            '优先剧院购票专属通道',
-            '优先参与小型线下讲者沙龙，优先购买讲者书籍及衍生品'
+            '线上福利:<br/>' +
+            '享有全年52场线上专题Talk<br/>' +
+            '500个会员专属视频<br/>' +
+            '专享深度访谈及幕后花絮<br/>' +
+            '在线课程的持续更新<br/>' +
+            '近千个演讲视频及嘉宾演讲PPT<br/>' +
+            '五折购买在线 “大师课程”<br/>',
+            '线下福利:<br/>' +
+            '优先优惠购票<br/>' +
+            '会员专属座位<br/>' +
+            '优先参与小型线下沙龙<br/>' +
+            '优先购买衍生品及演讲者书籍'
           ];
           this.inTab = 1;
           break;
