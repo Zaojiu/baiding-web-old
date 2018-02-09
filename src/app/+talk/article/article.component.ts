@@ -78,9 +78,14 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.markOnline();
     this.isNewApp = UtilsService.isNewAppVersion('2.1.4');
     this.id = this.route.snapshot.params['id'];
-    this.userInfo = this.userInfoService.getUserInfoCache();
     this.talkInfo = this.route.snapshot.data['talkInfo'];
     if (!this.talkInfo) return;
+    // 在微信中，并且是会员专属视屏
+    if (UtilsService.isInWechat && this.talkInfo.isForMember) {
+      this.userInfo = this.userInfoService.getUserInfoCache(location.href);
+    } else {
+      this.userInfo = this.userInfoService.getUserInfoCache();
+    }
     this.init();
   }
 

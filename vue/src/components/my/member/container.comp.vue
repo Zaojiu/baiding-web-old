@@ -143,7 +143,7 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {getUserInfoCache} from "../../../shared/api/user.api";
   import {UserInfoModel} from '../../../shared/api/user.model'
-  import {isInApp} from "../../../shared/utils/utils";
+  import {isInApp, isInWechat} from "../../../shared/utils/utils";
   import {PostOrderObject, OrderObjectType} from "../../../shared/api/order.model";
 
   @Component({})
@@ -171,6 +171,8 @@
         if (subject === '1') {
           this.userInfo = getUserInfoCache(false);
         }
+      } else if (isInWechat) {
+        this.userInfo = getUserInfoCache(true);
       } else {
         this.userInfo = getUserInfoCache(false);
       }
@@ -273,7 +275,7 @@
 
     async goIntro() {
       this.userInfo = getUserInfoCache();
-      if (this.userInfo && this.userInfo.member.valid){
+      if (this.userInfo && this.userInfo.member.valid) {
         return;
       }
 
