@@ -146,7 +146,8 @@ export const router = new Router({
         title: '激活会员',
       },
       beforeEnter(to, from, next) {
-        const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
+        // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
+        const tasks = [authGuard(), mobileBindedGuard()];
         execRouteTask(tasks, to, from, next);
       },
       component: () => System.import('./components/member/activate.comp.vue'),
