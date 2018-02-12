@@ -197,6 +197,7 @@
       let userDetailInfo;
 
       try {
+        this.memberCode = this.$route.query['code'];
         userDetailInfo = await getUserDetailInfo();
       } catch (e) {
       }
