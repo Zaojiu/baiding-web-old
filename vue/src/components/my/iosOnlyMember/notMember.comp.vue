@@ -1,7 +1,10 @@
 <template>
   <div class="member-card">
-    <div v-for="item in listImg" class="image-cover" @click="actionImgCover()">
+    <div v-if="inTab !== 1" v-for="item in listImg" class="image-cover" @click="actionImgCover()">
       <img :src="item"/>
+    </div>
+    <div v-else class="image-cover">
+      <Swiper/>
     </div>
     <ul v-if="listText.length">
       <li v-for=" text in listText "><span class="dot"></span><span v-html="text"></span></li>
@@ -95,8 +98,13 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {initIOS, callHandler} from "../../../shared/utils/ios";
   import {isInApp} from "../../../shared/utils/utils";
+  import Swiper from '../../../shared/swiper.comp.vue';
 
-  @Component({})
+  @Component({
+    components: {
+      Swiper: Swiper,
+    }
+  })
   export default class Action extends Vue {
     isInApp: boolean = isInApp;
     listText: string[] = [];
