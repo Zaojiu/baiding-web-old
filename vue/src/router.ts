@@ -20,6 +20,11 @@ import iosNotMemberContent from './components/my/iosOnlyMember/notMember.comp.vu
 import iosIsMemberContent from './components/my/iosOnlyMember/isMember.comp.vue';
 import MemberVideoComponent from './components/member_video/list.comp.vue';
 import iosMemberContainer from './components/my/iosInAppPayMember/container.comp.vue';
+import popQuiz from './components/pop_quiz/index.comp.vue';
+import popQuizMy from './components/pop_quiz/my.comp.vue';
+import popQuizQuestion from './components/pop_quiz/question.comp.vue';
+import popQuizRank from './components/pop_quiz/rank.comp.vue';
+import popQuizReceive from './components/pop_quiz/receive-prizes.comp.vue';
 
 Vue.use(Router);
 
@@ -136,6 +141,36 @@ export const router = new Router({
         {
           name: 'member_video.main',
           path: ''
+        }
+      ]
+    },
+    {
+      path: '/wv/pop_quiz',
+      component: popQuiz,
+      children: [
+        {
+          name: 'pop_quiz.main',
+          path: ''
+        },
+        {
+          name: 'pop_quiz.question',
+          path: 'question',
+          component: popQuizQuestion
+        },
+        {
+          name: 'pop_quiz.my',
+          path: 'my/:id',
+          component: popQuizMy
+        },
+        {
+          name: 'pop_quiz.my',
+          path: 'rank',
+          component: popQuizRank
+        },
+        {
+          name: 'pop_quiz.receive',
+          path: 'receive/:id',
+          component: popQuizReceive
         }
       ]
     },
