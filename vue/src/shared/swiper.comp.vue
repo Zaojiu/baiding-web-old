@@ -90,47 +90,54 @@
 
 </style>
 
-<script>
-  export default {
-    data() {
-      return {
-        timer: null, //定时器
-        mark: 0, //比对图片索引的变量
-        imgArray: [
-          'https://og9s6vxbs.qnssl.com/memers/member-action-first.jpg',
-          'https://og9s6vxbs.qnssl.com/memers/member-action-s.jpg',
-          'https://og9s6vxbs.qnssl.com/memers/member-action-t.jpg',
-          'https://og9s6vxbs.qnssl.com/memers/member-action-f.jpg',
-          'https://og9s6vxbs.qnssl.com/memers/member-action-fi.jpg'
-        ]
-      }
-    },
-    methods: {
-      autoPlay() {
-        this.mark++;
-        if (this.mark === 4) {
-          this.mark = 0;
-        }
-      },
-      play() {
-        this.timer = setInterval(this.autoPlay, 2500)
-      },
-      change(i) {
-        this.mark = i
-      },
-      stop() {
-        clearInterval(this.timer)
-      },
-      move() {
-        this.timer = setInterval(this.autoPlay, 2500)
-      }
-    },
+<script lang="ts">
+  import Vue from 'vue';
+  import {Component} from 'vue-property-decorator';
+
+  @Component({})
+  export default class SwiperComponent extends Vue {
+    timer: any;//定时器
+    mark = 0; //比对图片索引的变量
+    imgArray = [
+      'https://og9s6vxbs.qnssl.com/memers/member-action-first.jpg',
+      'https://og9s6vxbs.qnssl.com/memers/member-action-s.jpg',
+      'https://og9s6vxbs.qnssl.com/memers/member-action-t.jpg',
+      'https://og9s6vxbs.qnssl.com/memers/member-action-f.jpg',
+      'https://og9s6vxbs.qnssl.com/memers/member-action-fi.jpg'
+    ];
+
     created() {
       this.play()
-    },
+    }
 
     beforeDestroy() {
       this.stop();
     }
+
+    autoPlay() {
+      this.mark++;
+      if (this.mark === 4) {
+        this.mark = 0;
+      }
+    };
+
+    play() {
+      this.timer = setInterval(this.autoPlay, 2500)
+    };
+
+    change(i: number) {
+      this.mark = i
+    };
+
+    stop() {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+    };
+
+    move() {
+      this.timer = setInterval(this.autoPlay, 2500)
+    }
   }
+
 </script>
