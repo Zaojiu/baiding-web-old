@@ -170,8 +170,8 @@
           break;
         case "new-member.course":
           this.listImg = [
-            'https://og9s6vxbs.qnssl.com/member/online-class.png',
-            'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9'
+            'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9',
+            'https://og9s6vxbs.qnssl.com/member/online-class.png'
           ];
           this.listText = [
             '『造就UNI』在线课程第一期课堂：《数据的本质》在线课程 （每月持续更新）',
