@@ -3,6 +3,7 @@
     <div class="content">
       <div class="cover">
         <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/memers/mars-intro.jpeg">
+        <div style="padding: 15px;color:#afafaf;text-align: center;font-size: 14px;">如需开票请联系造就会员客服微信zaojiu6</div>
       </div>
     </div>
     <button class="button button-primary" @click="btnClick()">{{btnText}}</button>
@@ -157,7 +158,7 @@
 
     async buy() {
       if (!this.userInfo) {
-        this.$router.push({path: '/signin', query: {redirectTo: `/member/intro`}});
+        this.$router.push({path: '/signin', query: {redirectTo: `/member/intro-mars`}});
         return;
       }
 
