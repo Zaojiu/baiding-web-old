@@ -196,6 +196,14 @@ export const router = new Router({
       component: () => System.import('./components/member/intro.comp.vue'),
     },
     {
+      path: '/member/intro-mars',
+      name: 'member.intro-mars',
+      meta: {
+        title: '造就火星会员',
+      },
+      component: () => System.import('./components/member/intro-mars.comp.vue'),
+    },
+    {
       path: '/wv/appPay-guide/:id',
       name: 'appPay.guide',
       meta: {

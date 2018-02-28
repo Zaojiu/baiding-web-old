@@ -21,11 +21,13 @@ export class MemberModel {
   valid: boolean;
   joinAt: Moment;
   expiredAt: Moment;
+  memberId: string;
 
   constructor(member: any) {
     this.valid = member ? member.valid : false;
     this.joinAt = member ? moment(member.joinAt) : moment.unix(0);
     this.expiredAt = member ? moment(member.expiredAt) : moment.unix(0);
+    this.memberId = member ? member.memberId : "";
   }
 }
 

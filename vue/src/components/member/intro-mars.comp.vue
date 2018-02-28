@@ -1,32 +1,9 @@
 <template>
   <div class="container">
-    <top-nav></top-nav>
-
     <div class="content">
       <div class="cover">
-        <img src="/assets/img/member-intro-cover.png" alt="会员头图">
-        <div class="tips">
-          <small>造就会员</small>
-          <div class="price">{{fee.toYuan('', '元/年', true, 0)}}</div>
-        </div>
-      </div>
-      <div class="block">
-        <h2 class="title">会员权益</h2>
-        <ol class="list">
-          <li>您将获得4本由造就为您精心挑选的畅销书籍，让好书陪你度过春夏秋冬。</li>
-          <li>您将享受9折会员价购买造就正价收费产品。</li>
-          <li>您将优先获得“在线大师课程”的体验机会。</li>
-        </ol>
-      </div>
-
-      <div class="block">
-        <h2 class="title">会员须知</h2>
-        <ol class="list">
-          <li>购买之日起自动开通会员身份有效期为一年。</li>
-          <li>有效期内可随时续费延长您的会员身份。</li>
-          <li>会员身份将与您的手机号一对一绑定。</li>
-          <li>我们将不断增加更多有意思的权益和体验给到会员。</li>
-        </ol>
+        <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/memers/mars-intro.jpeg">
+        <div style="padding: 15px;color:#afafaf;text-align: center;font-size: 14px;">如需开票请联系造就会员客服微信zaojiu6</div>
       </div>
     </div>
     <button class="button button-primary" @click="btnClick()">{{btnText}}</button>
@@ -45,21 +22,6 @@
 
       .cover {
         position: relative;
-
-        &:before {
-          display: block;
-          padding-top: 45.3%;
-          content: '';
-        }
-
-        img {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
 
         .tips {
           position: absolute;
@@ -121,8 +83,8 @@
       border-radius: 0;
       height: 53px;
       line-height: 53px;
-      background-color: #16178c;
-      color: #01dfd3;
+      background-color: #BD2F14;
+      color: #fff;
       font-size: $font-size-14;
       font-weight: bold;
 
@@ -154,10 +116,10 @@
   import {checkOrderFee} from "../../shared/api/order.api";
 
   @Component
-  export default class IntroComponent extends Vue {
+  export default class IntroMarsComponent extends Vue {
     userInfo: UserInfoModel|null = null;
-    fee = new Money(21800);
-    memberOrderObject = new PostOrderObject('member-year', OrderObjectType.Member, 1); // hardcode temporary
+    fee = new Money(1000000);
+    memberOrderObject = new PostOrderObject('member-mars', OrderObjectType.Member, 1); // hardcode temporary
 
     created() {
       try {
@@ -168,18 +130,18 @@
 
     get btnText(): string {
       let text: string;
-
-      if (this.userInfo && this.userInfo.isMember) {
-        text = '已是会员，查看我的权益';
+      console.log(this.userInfo);
+      if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId === 'member-mars') {
+        text = '已是火星会员，查看我的权益';
       } else {
-        text = `购买造就会员 ${this.fee.toYuan('', '元/年')}`;
+        text = `购买造就火星会员 ${this.fee.toYuan('', '元/2年')}`;
       }
 
       return text;
     }
 
     btnClick() {
-      if (this.userInfo && this.userInfo.isMember) {
+      if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId === 'member-mars') {
         this.goMyMember();
       } else {
         this.buy();
@@ -200,7 +162,7 @@
         return;
       }
 
-      if (this.userInfo.isMember) return;
+      if (this.userInfo.isMember && this.userInfo.member.memberId === 'member-mars') return;
 
       this.$router.push({
         path: '/orders',
@@ -209,3 +171,5 @@
     }
   }
 </script>
+
+#BD2F14
