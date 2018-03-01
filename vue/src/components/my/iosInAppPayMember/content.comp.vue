@@ -128,7 +128,7 @@
       this.showRemarks = false;
       this.showVideoBtn = false;
       switch (this.$route.name) {
-        case "new-member.card":
+        case "ios-member.card":
           this.listImg = [
             'https://og9s6vxbs.qnssl.com/member/member-one.png',
             'https://og9s6vxbs.qnssl.com/member/member-two.png'
@@ -136,7 +136,7 @@
           this.listText = [];
           this.inTab = 0;
           break;
-        case "new-member.action":
+        case "ios-member.action":
           this.showRemarks = true;
           this.listImg = [
             'https://og9s6vxbs.qnssl.com/member/member-action.png'
@@ -157,7 +157,7 @@
           ];
           this.inTab = 1;
           break;
-        case "new-member.video":
+        case "ios-member.video":
           this.showVideoBtn = true;
           this.listImg = [
             'https://og9s6vxbs.qnssl.com/member/member-only-video.png'
@@ -168,7 +168,7 @@
           ];
           this.inTab = 2;
           break;
-        case "new-member.course":
+        case "ios-member.course":
           this.listImg = [
             'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9',
             'https://og9s6vxbs.qnssl.com/member/online-class.png'
@@ -179,7 +179,7 @@
           ];
           this.inTab = 3;
           break;
-        case "new-member.download":
+        case "ios-member.download":
           this.listImg = [
             'https://og9s6vxbs.qnssl.com/member/member-download.png'
           ];
