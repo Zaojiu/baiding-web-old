@@ -158,7 +158,7 @@
 
     async buy() {
       if (!this.userInfo) {
-        this.$router.push({path: '/signin', query: {redirectTo: `/member/intro`}});
+        this.$router.push({path: '/signin', query: {redirectTo: `/member/intro-mars`}});
         return;
       }
 
