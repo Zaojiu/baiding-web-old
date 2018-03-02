@@ -3,7 +3,11 @@
     <div class="content">
       <div class="cover">
         <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/memers/mars-intro.jpeg">
-        <div style="padding: 15px;color:#afafaf;text-align: center;font-size: 14px;">如需开票请联系造就会员客服微信zaojiu6</div>
+        <div style="padding: 15px;color:#afafaf;text-align: center;font-size: 14px;">
+          年度会员升级优惠218元。
+          <br>
+          如需开票请联系造就会员客服微信zaojiu6。
+        </div>
       </div>
     </div>
     <button class="button button-primary" @click="btnClick()">{{btnText}}</button>
@@ -130,9 +134,15 @@
 
     get btnText(): string {
       let text: string;
-      console.log(this.userInfo);
-      if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId === 'member-mars') {
-        text = '已是火星会员，查看我的权益';
+      if (this.userInfo && this.userInfo.isMember ) {
+        if(this.userInfo.member.memberId == "member-year"){
+          let fee = new Money(1000000 - 21800);
+          text = `升级成为火星会员 ${fee.toYuan('', '元/2年')}(已优惠${new Money(21800).toYuan('')}元)`;
+        } else if (this.userInfo.member.memberId == "member-mars"){
+          text = '已是火星会员，查看我的权益';
+        }else{
+          text = `购买造就火星会员 ${this.fee.toYuan('', '元/2年')}`;
+        }
       } else {
         text = `购买造就火星会员 ${this.fee.toYuan('', '元/2年')}`;
       }
