@@ -10,7 +10,7 @@ export const activateMember = async (code: string, wechat: string, realname: str
   const data = {code, wechat, realname, company, position};
 
   try {
-    post(url, data);
+    await post(url, data);
   } catch (e) {
     throw e;
   }

@@ -224,15 +224,18 @@
       try {
         await activateMember(this.memberCode, this.wechatNumber, this.name, this.company, this.title);
         Store.memoryStore.delete('userInfo');
-        await refreshUserInfo();
+        let userInfo = await refreshUserInfo();
+        showTips('激活会员成功');
+        if (userInfo.member.valid) {
+          this.$router.push({path: '/new-member/card'});
+        } else {
+          this.$router.push({path: '/new-member/video'});
+        }
       } catch (e) {
         throw e;
       } finally {
         this.isSubmitting = false;
       }
-
-      showTips('激活会员成功');
-      this.$router.push({path: '/my/member'});
     }
   }
 </script>
