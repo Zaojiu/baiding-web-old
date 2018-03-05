@@ -69,7 +69,7 @@
     }
 
     gotoMyMember() {
-      this.$router.push({path: '/my/member'});
+      this.$router.push({path: '/new-member/action'});
     }
   }
 </script>

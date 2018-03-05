@@ -180,20 +180,20 @@
         this.isMember = false;
       }
       switch (this.$route.name) {
-        case "new-member.card":
+        case "ios-member.card":
           this.navIndex = 0;
           this.isCard = true;
           break;
-        case "new-member.action":
+        case "ios-member.action":
           this.navIndex = 1;
           break;
-        case "new-member.video":
+        case "ios-member.video":
           this.navIndex = 2;
           break;
-        case "new-member.course":
+        case "ios-member.course":
           this.navIndex = 3;
           break;
-        case "new-member.download":
+        case "ios-member.download":
           this.navIndex = 4;
           break;
         default:

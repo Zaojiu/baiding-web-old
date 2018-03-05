@@ -6,6 +6,7 @@ import talksComp from './components/talks/content.comp.vue';
 import topic_post from './components/topic_post/topic_post.comp.vue';
 import errorComp from './components/error/error.comp.vue';
 import {authGuard} from "./shared/guard/user-auth.guard";
+import {memberGuard} from './shared/guard/mars-member.guard';
 import {execRouteTask} from "./shared/guard/route-task";
 import {mobileBindedGuard} from "./shared/guard/mobile-binded.guard";
 import {memberActivateCompGuard} from "./shared/guard/member-activate-comp.guard";
@@ -15,7 +16,7 @@ import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
 import {afterHooks, beforeHooks} from "./hooks";
 import {liveInfoResolver} from "./shared/resolver/live-info.resolver";
 import memberContainer from './components/my/member/container.comp.vue';
-import memberContent from './components/my/member/content.comp.vue';
+import memberContent from './components/my/iosInAppPayMember/content.comp.vue';
 import iosNotMemberContent from './components/my/iosOnlyMember/notMember.comp.vue';
 import iosIsMemberContent from './components/my/iosOnlyMember/isMember.comp.vue';
 import MemberVideoComponent from './components/member_video/list.comp.vue';
@@ -25,6 +26,14 @@ import popQuizMy from './components/pop_quiz/my.comp.vue';
 import popQuizQuestion from './components/pop_quiz/question.comp.vue';
 import popQuizRank from './components/pop_quiz/rank.comp.vue';
 import popQuizReceive from './components/pop_quiz/receive-prizes.comp.vue';
+
+import marsMemberDiscount from './components/mars_member/discount.comp.vue';
+import marsMemberContainer from './components/mars_member/container.comp.vue';
+import marsMemberCard from './components/mars_member/card.comp.vue';
+import marsMemberVideo from './components/mars_member/video.comp.vue';
+import marsMemberCourse from './components/mars_member/course.comp.vue';
+import marsMemberDownload from './components/mars_member/download.comp.vue';
+import marsMemberPlanList from './components/mars_member/planList.comp.vue';
 
 Vue.use(Router);
 
@@ -163,7 +172,7 @@ export const router = new Router({
           component: popQuizMy
         },
         {
-          name: 'pop_quiz.my',
+          name: 'pop_quiz.rank',
           path: 'rank',
           component: popQuizRank
         },
@@ -232,39 +241,85 @@ export const router = new Router({
       meta: {
         title: '造就新会员',
       },
+      beforeEnter(to, from, next) {
+        const tasks = [memberGuard()];
+        execRouteTask(tasks, to, from, next);
+      },
       children: [
         {
           path: '',
           name: 'new-member.main',
-          redirect: 'action'
+          redirect: 'video'
         },
         {
           path: 'card',
           name: 'new-member.card',
-          component: memberContent,
+          component: marsMemberCard,
         },
         {
           path: 'action',
           name: 'new-member.action',
-          component: memberContent,
+          component: marsMemberDiscount,
+        },
+        {
+          path: 'plan',
+          name: 'new-member.plan',
+          component: marsMemberPlanList,
         },
         {
           name: 'new-member.video',
           path: 'video',
-          component: memberContent
+          component: marsMemberVideo
         },
         {
           name: 'new-member.course',
           path: 'course',
-          component: memberContent,
+          component: marsMemberCourse,
         },
         {
           name: 'new-member.download',
           path: 'download',
-          component: memberContent
+          component: marsMemberDownload
         },
       ],
       component: memberContainer,
+    },
+    {
+      path: '/mars-member',
+      meta: {
+        title: '造就火星会员',
+      },
+      component: marsMemberContainer,
+      children: [
+        {
+          path: '',
+          redirect: 'video'
+        },
+        {
+          path: 'card',
+          component: marsMemberCard,
+        },
+        {
+          path: 'action',
+          component: marsMemberDiscount,
+        },
+        {
+          path: 'video',
+          component: marsMemberVideo
+        },
+        {
+          path: 'course',
+          component: marsMemberCourse,
+        },
+        {
+          path: 'download',
+          component: marsMemberDownload
+        },
+        {
+          path: 'plan',
+          component: marsMemberPlanList
+        }
+      ]
     },
     {
       path: '/wv/ios-member',
@@ -274,31 +329,30 @@ export const router = new Router({
       children: [
         {
           path: '',
-          name: 'new-member.main',
           redirect: 'action'
         },
         {
           path: 'card',
-          name: 'new-member.card',
+          name: 'ios-member.card',
           component: memberContent,
         },
         {
           path: 'action',
-          name: 'new-member.action',
+          name: 'ios-member.action',
           component: memberContent,
         },
         {
-          name: 'new-member.video',
+          name: 'ios-member.video',
           path: 'video',
           component: memberContent
         },
         {
-          name: 'new-member.course',
+          name: 'ios-member.course',
           path: 'course',
           component: memberContent,
         },
         {
-          name: 'new-member.download',
+          name: 'ios-member.download',
           path: 'download',
           component: memberContent
         },

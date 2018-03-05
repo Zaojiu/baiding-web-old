@@ -2,14 +2,36 @@
   <div class="member-activate">
     <article class="member-page">
       <top-nav></top-nav>
-      <h1>造就会员</h1>
+      <h1>造就会员<span v-if="timeOver">{{timeOver}}到期</span></h1>
       <nav>
         <ul class="nav">
-          <li v-if="isMember" @click="changeNav(0)" :class="{active:navIndex===0,'app-padding':!isMember}">会员卡</li>
-          <li @click="changeNav(1)" :class="{active:navIndex===1,'app-padding':!isMember}">特别优惠</li>
-          <li @click="changeNav(2)" :class="{active:navIndex===2,'app-padding':!isMember}">专属视频</li>
-          <li @click="changeNav(3)" :class="{active:navIndex===3,'app-padding':!isMember}">在线课程</li>
-          <li @click="changeNav(4)" :class="{active:navIndex===4,'app-padding':!isMember}">干货下载</li>
+          <li v-if="isMember"
+              @click="changeNav(0)"
+              :class="{'active':navIndex===0,'app-padding':!isMember||isMember&&memberType === 0}">
+            会员卡
+          </li>
+          <li v-if="!isMember"
+              @click="changeNav(1)"
+              :class="{'active':navIndex===1,'app-padding':!isMember||isMember&&memberType === 0}">
+            特别优惠
+          </li>
+          <li v-if="isMember&&memberType === 1"
+              @click="changeNav(2)"
+              :class="{'active':navIndex===2,'app-padding':!isMember||isMember&&memberType === 0}">
+            计划表
+          </li>
+          <li @click="changeNav(3)"
+              :class="{'active':navIndex===3,'app-padding':!isMember||isMember&&memberType === 0}">
+            专属视频
+          </li>
+          <li @click="changeNav(4)"
+              :class="{'active':navIndex===4,'app-padding':!isMember||isMember&&memberType === 0}">
+            在线课程
+          </li>
+          <li @click="changeNav(5)"
+              :class="{'active':navIndex===5,'app-padding':!isMember||isMember&&memberType === 0}">
+            干货下载
+          </li>
         </ul>
       </nav>
       <section class="member-content"
@@ -46,6 +68,11 @@
         color: rgb(242, 242, 242);
         line-height: 28px;
         font-size: 30px;
+        span {
+          font-weight: normal;
+          font-size: 16px;
+          padding-left: 20px;
+        }
       }
       @media (max-width: 386px) {
         .nav {
@@ -96,9 +123,9 @@
         }
       }
       .member-content {
-        padding: 24px 42px;
+        padding: 20px 20px 0 20px;
         background-color: rgb(26, 26, 26);
-        overflow: auto;
+        overflow: hidden;
       }
       .submargin {
         padding: 24px 20px;
@@ -144,6 +171,7 @@
   import {getUserInfoCache} from "../../../shared/api/user.api";
   import {UserInfoModel} from '../../../shared/api/user.model'
   import {isInApp, isInWechat} from "../../../shared/utils/utils";
+  import {initIOS, callHandler} from "../../../shared/utils/ios";
   import {PostOrderObject, OrderObjectType} from "../../../shared/api/order.model";
 
   @Component({})
@@ -159,6 +187,8 @@
     originY: number;
     moveClientY: number;
     openBtn = true;
+    memberType = -1;//-1非会员 0 普通会员，1 火星会员
+    timeOver = '';
 
     @Watch('$route.name')
     setNavIndex() {
@@ -166,15 +196,19 @@
     }
 
     created() {
-      if (isInApp) {
-        let subject = this.$route.query['login'];
-        if (subject === '1') {
+      try {
+        if (isInApp) {
+          let subject = this.$route.query['login'];
+          if (subject === '1') {
+            this.userInfo = getUserInfoCache(false);
+          }
+        } else if (isInWechat) {
+          this.userInfo = getUserInfoCache(true);
+        } else {
           this.userInfo = getUserInfoCache(false);
         }
-      } else if (isInWechat) {
-        this.userInfo = getUserInfoCache(true);
-      } else {
-        this.userInfo = getUserInfoCache(false);
+      } catch (e) {
+
       }
       this.init();
     }
@@ -183,10 +217,17 @@
       this.navIndex = 1;
       this.isInApp = isInApp;
       this.isCard = false;
-      if (this.userInfo) {
-        this.isMember = this.userInfo.member.valid;
+      if (this.userInfo && this.userInfo.member.valid) {
+        this.isMember = true;
+        this.timeOver = moment(this.userInfo.member.expiredAt).format('YYYY-MM-DD');
+        if (this.userInfo.member.memberId && this.userInfo.member.memberId === 'member-mars') {
+          this.memberType = 1;
+        } else {
+          this.memberType = 0;
+        }
       } else {
         this.isMember = false;
+        this.memberType = -1;
       }
       switch (this.$route.name) {
         case "new-member.card":
@@ -196,14 +237,17 @@
         case "new-member.action":
           this.navIndex = 1;
           break;
-        case "new-member.video":
+        case "new-member.plan":
           this.navIndex = 2;
           break;
-        case "new-member.course":
+        case "new-member.video":
           this.navIndex = 3;
           break;
-        case "new-member.download":
+        case "new-member.course":
           this.navIndex = 4;
+          break;
+        case "new-member.download":
+          this.navIndex = 5;
           break;
         default:
       }
@@ -218,12 +262,15 @@
           this.$router.push({path: '/new-member/action'});
           break;
         case 2:
-          this.$router.push({path: '/new-member/video'});
+          this.$router.push({path: '/new-member/plan'});
           break;
         case 3:
-          this.$router.push({path: '/new-member/course'});
+          this.$router.push({path: '/new-member/video'});
           break;
         case 4:
+          this.$router.push({path: '/new-member/course'});
+          break;
+        case 5:
           this.$router.push({path: '/new-member/download'});
           break;
         default:
@@ -247,29 +294,118 @@
         return;
       }
       if (this.originX - this.moveClientX > 20) {
-        if (this.navIndex < 4) {
-          this.changeNav(this.navIndex + 1);
-        } else {
-          if (this.isMember) {
-            this.changeNav(0);
-          } else {
-            this.changeNav(1);
-          }
-        }
+        this.touchChangeNav(false);
       } else if (this.moveClientX - this.originX > 20) {
-        if (this.isMember) {
-          if (this.navIndex > 0) {
-            this.changeNav(this.navIndex - 1);
-          } else {
-            this.changeNav(4);
+        this.touchChangeNav(true);
+      }
+    }
+
+    touchChangeNav(up: boolean) {
+      switch (this.memberType) {
+        case -1:
+          switch (this.navIndex) {
+            case 1:
+              if (up) {
+                this.changeNav(3);
+              } else {
+                this.changeNav(5);
+              }
+              break;
+            case 3:
+              if (up) {
+                this.changeNav(4);
+              } else {
+                this.changeNav(1);
+              }
+              break;
+            case 4:
+              if (up) {
+                this.changeNav(5);
+              } else {
+                this.changeNav(3);
+              }
+              break;
+            case 5:
+              if (up) {
+                this.changeNav(1);
+              } else {
+                this.changeNav(4);
+              }
+              break;
           }
-        } else {
-          if (this.navIndex > 1) {
-            this.changeNav(this.navIndex - 1);
-          } else {
-            this.changeNav(4);
+          break;
+        case 0:
+          switch (this.navIndex) {
+            case 0:
+              if (up) {
+                this.changeNav(3);
+              } else {
+                this.changeNav(5);
+              }
+              break;
+            case 3:
+              if (up) {
+                this.changeNav(4);
+              } else {
+                this.changeNav(0);
+              }
+              break;
+            case 4:
+              if (up) {
+                this.changeNav(5);
+              } else {
+                this.changeNav(3);
+              }
+              break;
+            case 5:
+              if (up) {
+                this.changeNav(0);
+              } else {
+                this.changeNav(4);
+              }
+              break;
           }
-        }
+          break;
+        case 1:
+          switch (this.navIndex) {
+            case 0:
+              if (up) {
+                this.changeNav(2);
+              } else {
+                this.changeNav(5);
+              }
+              break;
+            case 2:
+              if (up) {
+                this.changeNav(3);
+              } else {
+                this.changeNav(0);
+              }
+              break;
+            case 3:
+              if (up) {
+                this.changeNav(4);
+              } else {
+                this.changeNav(2);
+              }
+              break;
+            case 4:
+              if (up) {
+                this.changeNav(5);
+              } else {
+                this.changeNav(3);
+              }
+              break;
+            case 5:
+              if (up) {
+                this.changeNav(0);
+              } else {
+                this.changeNav(4);
+              }
+              break;
+          }
+          break;
+        default:
       }
     }
 
@@ -279,6 +415,7 @@
         return;
       }
 
+      //web端购买
       if (this.userInfo && !this.userInfo.member.valid) {
         this.$router.push({
           path: '/orders',
