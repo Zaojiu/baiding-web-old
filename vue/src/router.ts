@@ -6,7 +6,7 @@ import talksComp from './components/talks/content.comp.vue';
 import topic_post from './components/topic_post/topic_post.comp.vue';
 import errorComp from './components/error/error.comp.vue';
 import {authGuard} from "./shared/guard/user-auth.guard";
-import {memberGuard} from './shared/guard/mars-member.guard';
+import {memberActionGuard, memberCardGuard, memberPlanGuard} from './shared/guard/mars-member.guard';
 import {execRouteTask} from "./shared/guard/route-task";
 import {mobileBindedGuard} from "./shared/guard/mobile-binded.guard";
 import {memberActivateCompGuard} from "./shared/guard/member-activate-comp.guard";
@@ -241,10 +241,6 @@ export const router = new Router({
       meta: {
         title: '造就新会员',
       },
-      beforeEnter(to, from, next) {
-        const tasks = [memberGuard()];
-        execRouteTask(tasks, to, from, next);
-      },
       children: [
         {
           path: '',
@@ -254,16 +250,29 @@ export const router = new Router({
         {
           path: 'card',
           name: 'new-member.card',
+
+          beforeEnter(to, from, next) {
+            const tasks = [memberCardGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
           component: marsMemberCard,
         },
         {
           path: 'action',
           name: 'new-member.action',
+          beforeEnter(to, from, next) {
+            const tasks = [memberActionGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
           component: marsMemberDiscount,
         },
         {
           path: 'plan',
           name: 'new-member.plan',
+          beforeEnter(to, from, next) {
+            const tasks = [memberPlanGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
           component: marsMemberPlanList,
         },
         {
