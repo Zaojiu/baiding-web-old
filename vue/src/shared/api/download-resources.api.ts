@@ -9,11 +9,11 @@ export class DownloadResourcesModel {
   coverUrl = '';
 
   constructor(item: any) {
-    this.title = item.subject;
+    this.title = item.subject || '';
     this.downloadUrl = item.downloadUrl;
     this.id = item.id || '';
-    if (item.speaker && item.speakers.subject && item.speakers.desc) {
-      this.title = `${item.speakers.subject}:${item.speakers.desc}`;
+    if (item.speaker && item.speaker.subject && item.speakers.desc) {
+      this.title = `${item.speaker.subject}:${item.speakers.desc}`;
     }
   }
 }
