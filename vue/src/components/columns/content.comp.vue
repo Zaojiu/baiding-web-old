@@ -2,11 +2,10 @@
   <div class="container">
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
-    <div class="main" v-else v-show="!isChildActived()" @touchstart="touchStart" @touchmove="touchMove">
+    <div class="main" v-else v-show="!isChildActived()">
       <top-nav v-if="!(isVideoPlayed && isLandscape)"></top-nav>
 
       <header :class="{
-        'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
         'played-landscape': isVideoPlayed && isLandscape
       }">
@@ -72,15 +71,13 @@
         <div class="relative-items" v-if="itemInfo.prev || itemInfo.next">
           <div class="item" v-if="itemInfo.prev" @click="gotoRelativeItem(itemInfo.prev)">
             <div class="item-cover">
-              <img :src="itemInfo.prev.cover169Url" alt="专栏图片">
               <span class="text">{{prevBtnText}}</span>
             </div>
             <p class="item-title">{{itemInfo.prev.subject}}</p>
           </div>
           <div class="item" v-if="itemInfo.next" @click="gotoRelativeItem(itemInfo.next)">
             <div class="item-cover">
-              <img :src="itemInfo.next.cover169Url" alt="专栏图片">
-              <span class="text">{{nextBtnText}}</span>
+              <span class="text next">{{nextBtnText}}</span>
             </div>
             <p class="item-title">{{itemInfo.next.subject}}</p>
           </div>
@@ -114,31 +111,20 @@
       <!--<div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>-->
       <!--</div>-->
 
-      <footer
-        id="toolBar"
-        class="tool-bar"
-        style="position:fixed; bottom:0;"
-        v-show="!(isVideoPlayed && isLandscape)"
-        v-if="itemInfo.column.paid"
-        ref="toolBar"
-      >
-        <div class="icon view">{{itemInfo.current.viewTotal}}人看过</div>
-        <div class="icon" @click="togglePraise()" :class="{'active': itemInfo.current.currentUserInfo.praised}">
-          <i class="bi bi-praise"></i>{{itemInfo.current.praisedTotal}}
-        </div>
-        <!--<div class="icon" @click="gotoComment()">-->
-        <!--<i class="bi bi-comment2"></i>-->
-        <!--</div>-->
-      </footer>
-
-      <footer class="payment" v-show="!(isVideoPlayed && isLandscape)" v-if="!itemInfo.column.paid">
-        <button class="button button-outline" v-if="false">赠送给好友</button>
-        <button class="button button-primary" @click="createOrder()" :disabled="isPaying"><span class="origin-fee"
-                                                                                                v-if="originFee">{{originFee}}</span>{{btnText}}
-        </button>
-      </footer>
     </div>
-
+    <footer
+      id="toolBar"
+      class="tool-bar"
+      style="position:absolute; bottom:0;"
+      v-show="!(isVideoPlayed && isLandscape)"
+      v-if="itemInfo.column.paid"
+      ref="toolBar"
+    >
+      <div class="icon view">{{itemInfo.current.viewTotal}}人看过</div>
+      <div class="icon" @click="togglePraise()" :class="{'active': itemInfo.current.currentUserInfo.praised}">
+        <i class="bi bi-praise"></i>{{itemInfo.current.praisedTotal}}
+      </div>
+    </footer>
     <router-view></router-view>
   </div>
 </template>
@@ -153,7 +139,7 @@
 
     .block {
       box-shadow: 0 2px 2px rgb(236, 236, 236);
-      margin-bottom: 10px;
+      margin-bottom: 3px;
       background-color: $color-w;
     }
 
@@ -470,6 +456,9 @@
             font-size: $font-size-18;
             color: $color-w;
           }
+          .next{
+            background-color: rgba(0, 0, 0, .6);
+          }
         }
 
         .item-title {
@@ -594,59 +583,6 @@
       }
     } */
 
-    .tool-bar {
-      display: flex;
-      height: 46px;
-      background-color: rgb(10, 10, 23);
-      max-width: 1024px;
-      width: 100%;
-
-      .icon {
-        line-height: 1em;
-        font-size: $font-size-14;
-        color: $color-w;
-        display: flex;
-        align-items: center;
-        padding-left: 15px;
-
-        &:first-child {
-          padding-left: 24px;
-        }
-
-        &:last-child {
-          padding-right: 24px;
-        }
-
-        &.active {
-          color: $color-brand;
-        }
-
-        .bi {
-          margin-right: 5px;
-        }
-
-        .bi-praise {
-          font-size: $font-size-18;
-        }
-
-        .bi-favorite {
-          font-size: $font-size-18;
-        }
-
-        .bi-comment2 {
-          font-size: $font-size-16;
-        }
-      }
-
-      .view {
-        flex-grow: 1;
-
-        .bi {
-          font-size: 16px;
-        }
-      }
-    }
-
     .payment {
       position: fixed;
       width: 100%;
@@ -667,6 +603,58 @@
 
       .button-outline {
         width: 40%;
+      }
+    }
+  }
+  .tool-bar {
+    display: flex;
+    height: 46px;
+    background-color: rgb(10, 10, 23);
+    max-width: 1024px;
+    width: 100%;
+
+    .icon {
+      line-height: 1em;
+      font-size: $font-size-14;
+      color: $color-w;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
+
+      &:first-child {
+        padding-left: 24px;
+      }
+
+      &:last-child {
+        padding-right: 24px;
+      }
+
+      &.active {
+        color: $color-brand;
+      }
+
+      .bi {
+        margin-right: 5px;
+      }
+
+      .bi-praise {
+        font-size: $font-size-18;
+      }
+
+      .bi-favorite {
+        font-size: $font-size-18;
+      }
+
+      .bi-comment2 {
+        font-size: $font-size-16;
+      }
+    }
+
+    .view {
+      flex-grow: 1;
+
+      .bi {
+        font-size: 16px;
       }
     }
   }

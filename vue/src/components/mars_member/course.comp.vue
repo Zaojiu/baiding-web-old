@@ -144,8 +144,7 @@
       if (this.isInApp) {
         await initIOS();
         if (item === 'https://og9s6vxbs.qnssl.com/member/online-class.png') {
-          //callHandler('pushMemberCourse2', '5a5f080551281300015d4449');
-          callHandler('pushMemberCourse2', '59c3657894f498000140bb7c');
+          callHandler('pushMemberCourse2', '5a5f080551281300015d4449');
         } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9') {
           callHandler('pushMemberCourse2', '5a911d1f0b603c0001c24160');
         }

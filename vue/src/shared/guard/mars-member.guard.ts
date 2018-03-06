@@ -1,11 +1,11 @@
-import {getUserInfoCache} from '../api/user.api';
+import {getUserInfo} from '../api/user.api';
 import {Route} from "vue-router";
 import {router} from "../../router";
 
 export const memberActionGuard = () => {
   return async (to: Route, from: Route): Promise<boolean> => {
     try {
-      let userInfo = getUserInfoCache(false);
+      let userInfo = await getUserInfo(false);
       if (userInfo && userInfo.member.valid) {
         router.push({path: '/new-member/card'});
         return false;
@@ -20,7 +20,7 @@ export const memberActionGuard = () => {
 export const memberCardGuard = () => {
   return async (to: Route, from: Route): Promise<boolean> => {
     try {
-      let userInfo = getUserInfoCache(false);
+      let userInfo = await getUserInfo(false);
       if (!userInfo || !userInfo.member.valid) {
         router.push({path: '/new-member/action'});
         return false;
@@ -36,7 +36,7 @@ export const memberCardGuard = () => {
 export const memberPlanGuard = () => {
   return async (to: Route, from: Route): Promise<boolean> => {
     try {
-      let userInfo = getUserInfoCache(false);
+      let userInfo = await getUserInfo(false);
       if (!userInfo || !userInfo.member.valid) {
         router.push({path: '/new-member/action'});
         return false;
