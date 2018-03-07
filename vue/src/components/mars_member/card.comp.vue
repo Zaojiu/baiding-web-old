@@ -5,7 +5,7 @@
     </div>
     <div v-if="rights.length>0" class="discount">
       <h3>优惠券</h3>
-      <p v-for="right in rights">{{right.title}} {{right.total||0}}张</p>
+      <p v-for="right in rights">{{right.title}} {{right.totalAmount||0}}张</p>
     </div>
   </div>
 </template>
