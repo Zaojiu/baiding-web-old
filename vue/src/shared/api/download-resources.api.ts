@@ -12,8 +12,11 @@ export class DownloadResourcesModel {
     this.title = item.subject || '';
     this.downloadUrl = item.downloadUrl;
     this.id = item.id || '';
-    if (item.speaker && item.speaker.subject && item.speaker.desc) {
-      this.title = `${item.speaker.subject}:${item.speaker.desc}`;
+    if (item.speaker && item.speaker.subject && item.object && item.object.subject) {
+      this.title = `${item.speaker.subject}:${item.object.subject}`;
+    }
+    if (item.object && item.object.coverUrl) {
+      this.coverUrl = `${item.object.coverUrl}~1-1`;
     }
   }
 }

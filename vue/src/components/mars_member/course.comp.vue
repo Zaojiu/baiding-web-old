@@ -101,6 +101,7 @@
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
   import {isInApp} from "../../shared/utils/utils";
+  import {showTips} from '../../store/tip';
 
   @Component({})
   export default class Course extends Vue {
@@ -109,6 +110,7 @@
     listImg: string[] = [];
     userInfo: UserInfoModel;
     defaultCover = 'assets/img/default-cover.jpg';
+    lockAction = false;
 
     created() {
       this.init();
@@ -131,6 +133,7 @@
 
       }
       if (!this.userInfo || !this.userInfo.member.valid) {
+        this.lockAction = true;
         this.listText = [
           '『造就UNI』在线课程第一期课堂：《数据的本质》在线课程 （每月持续更新）',
           '五折购买在线《大师之课》'
@@ -140,6 +143,11 @@
 
     async actionImgCover(item: string) {
       // 在线课程跳转到课程
+
+      if (this.lockAction) {
+        showTips('会员专属');
+        return;
+      }
 
       if (this.isInApp) {
         await initIOS();

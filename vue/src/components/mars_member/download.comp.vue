@@ -11,7 +11,7 @@
               v-if="list.length !== 0">
             <li class="list-item" v-for="item in list">
               <div class="item-img">
-                <img :src="defaultCoverUrl"
+                <img :src="item.coverUrl"
                      alt="封面"
                 >
               </div>
@@ -109,21 +109,20 @@
           }
 
           .item-img {
-            width: 30px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            overflow: hidden;
 
             img {
               width: 100%;
             }
           }
           .item-text {
-            width: calc(100% - 110px);
-            padding: 0 38px 0 8px;
-            background: linear-gradient(to right, rgb(213, 181, 120) 0%, rgb(130, 96, 33) 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color-teal', endColorstr='$color-seafoam', GradientType=1);
-            background-clip: text;
-            -webkit-background-clip: text; /* 规定背景的划分区域 */
-            -webkit-text-fill-color: transparent;
+            width: calc(100% - 120px);
+            padding: 0 20px 0 8px;
+            color:rgb(213, 181, 120);
+
             p {
               width: 100%;
               font-size: 14px;
@@ -289,7 +288,6 @@
     isListLoading = false;
     userInfo: UserInfoModel;
     isMember = false;
-    defaultCoverUrl = 'assets/img/pdfIcon.png';
     listText: string[] = [];
     listImg: string[] = [];
 
