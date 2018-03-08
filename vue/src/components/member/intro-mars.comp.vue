@@ -16,7 +16,7 @@
             @error="coverUrl = defaultCoverUrl"
           >
 
-          <div class="big-play" v-if="1"></div>
+          <div class="big-play"></div>
         </div>
       </header>
     </div>
@@ -275,8 +275,9 @@
     created() {
       try {
         this.userInfo = getUserInfoCache(false);
-        this.prepareVideo();
       } catch (e) {
+      } finally {
+        this.prepareVideo();
       }
     }
 

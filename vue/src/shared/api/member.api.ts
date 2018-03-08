@@ -24,24 +24,30 @@ export const listMemberRights = async (): Promise<MemberRight[]> => {
   let resp: AxiosResponse;
   try {
     resp = await get(url);
-  } catch(e) {
+  } catch (e) {
     return [];
   }
 
-  const rights: MemberRight[] = [];
+  let rights: MemberRight[] = [];
   const data = resp.data || [];
-  data.forEach((rightData: any) => rights.push(new MemberRight(rightData)));
+  if (data.length) {
+    rights = data.filter((r: any) => {
+      return r.total > 0;
+    }).map((r: any) => {
+      return new MemberRight(r);
+    });
+  }
 
   return rights;
 };
 
-export const getMemberRight = async (id: string): Promise<MemberRight|null> => {
+export const getMemberRight = async (id: string): Promise<MemberRight | null> => {
   const url = `${host.io}/api/wallet/discount/${id}`;
 
   let resp: AxiosResponse;
   try {
     resp = await get(url);
-  } catch(e) {
+  } catch (e) {
     return null;
   }
 
@@ -51,14 +57,14 @@ export const getMemberRight = async (id: string): Promise<MemberRight|null> => {
 
 export const listMemberRightsCode = async (discountId: string, onlyUnused = false, onlyUsed = false): Promise<Discount[]> => {
   const url = `${host.io}/api/wallet/discount/code`;
-  const query: {[key: string]: any} = {discountId};
+  const query: { [key: string]: any } = {discountId};
   if (onlyUnused) query['unused'] = true;
   if (onlyUsed) query['used'] = true;
 
   let resp: AxiosResponse;
   try {
     resp = await get(`${url}?${params(query)}`);
-  } catch(e) {
+  } catch (e) {
     return [];
   }
 
