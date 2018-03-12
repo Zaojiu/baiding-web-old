@@ -261,7 +261,7 @@
 
   @Component
   export default class IntroMarsComponent extends Vue {
-    defaultCoverUrl = '/assets/img/default-cover.jpg';
+    defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/members/mars-member-card.png';
     userInfo: UserInfoModel | null = null;
     fee = new Money(1000000);
     memberOrderObject = new PostOrderObject('member-mars', OrderObjectType.Member, 1); // hardcode temporary
