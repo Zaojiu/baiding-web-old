@@ -465,7 +465,7 @@
       }
 
       if (!userInfo.mobile.number) {
-        this.$router.push({path: '/mobile-bind', query: {redirectTo: this.$route.fullPath}});
+        this.$router.push({path: '/mobile-bind-event', query: {redirectTo: this.$route.fullPath}});
         return;
       }
 

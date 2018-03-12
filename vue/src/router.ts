@@ -87,6 +87,18 @@ export const router = new Router({
       component: () => System.import('./components/signin/mobile-bind.comp.vue'),
     },
     {
+      path: '/mobile-bind-event',
+      name: 'mobileBind.event',
+      meta: {
+        title: '绑定手机',
+      },
+      beforeEnter(to, from, next) {
+        const tasks = [authGuard(), mobileBindedCompGuard()];
+        execRouteTask(tasks, to, from, next);
+      },
+      component: () => System.import('./components/signin/mobile-bind-event.comp.vue'),
+    },
+    {
       path: '/forget-password',
       name: 'forgetPassword',
       meta: {
