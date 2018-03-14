@@ -135,7 +135,7 @@
         height: calc(100vh - 224px);
       }
       .web-btn-hide {
-        height: calc(100vh - 146px);
+        height: calc(100vh - 150px);
       }
       .app-btn-show {
         height: calc(100vh - 174px);
