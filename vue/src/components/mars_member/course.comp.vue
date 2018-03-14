@@ -124,6 +124,7 @@
     init() {
       this.isInApp = isInApp;
       this.listImg = [
+        'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9',
         'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9',
         'https://og9s6vxbs.qnssl.com/member/online-class.png'
       ];
@@ -155,6 +156,8 @@
           callHandler('pushMemberCourse2', '5a5f080551281300015d4449');
         } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9') {
           callHandler('pushMemberCourse2', '5a911d1f0b603c0001c24160');
+        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9') {
+          callHandler('pushMemberCourse2', '5aa8d12f0b603c0001b68a37');
         }
 
       } else {
@@ -162,6 +165,8 @@
           this.$router.push({path: '/columns/5a5f080551281300015d4449'});
         } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9') {
           this.$router.push({path: '/columns/5a911d1f0b603c0001c24160'});
+        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9') {
+          this.$router.push({path: '/columns/5aa8d12f0b603c0001b68a37'});
         }
       }
     };
