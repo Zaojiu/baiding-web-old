@@ -3,6 +3,7 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="main" v-else v-show="!isChildActived()">
+
       <top-nav v-if="!(isVideoPlayed && isLandscape)"></top-nav>
 
       <header :class="{
@@ -84,58 +85,126 @@
         </div>
       </div>
 
-      <!--<div id="comments" class="comments block">-->
-      <!--<h2>评论</h2>-->
+      <div id="comments" class="comments block">
+        <h2>评论</h2>
 
-      <!--<div v-if="comments">-->
-      <!--<div class="comment" v-for="comment in comments" :key="comment.id">-->
-      <!--<div class="header" v-once>-->
-      <!--<div class="author-info">-->
-      <!--<img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">-->
-      <!--<span class="nick">{{comment.user.nick}}</span>-->
-      <!--<time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>-->
-      <!--</div>-->
-      <!--<div class="reply" @click="gotoComment(comment.id, comment.user.nick, comment.content)">-->
-      <!--<i class="bi bi-reply-comment"></i>回复-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--&lt;!&ndash; 不要换行，避免出现换行符 &ndash;&gt;-->
-      <!--<div class="comment-content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>-->
-      <!--</div>-->
-      <!--</div>-->
+        <div v-if="comments">
+          <div class="comment" v-for="comment in comments" :key="comment.id">
+            <div class="header" v-once>
+              <div class="author-info">
+                <img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">
+                <span class="nick">{{comment.user.nick}}</span>
+                <time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>
+              </div>
+            </div>
+            <!-- 不要换行，避免出现换行符 -->
+            <div class="comment-content" v-once>
+              <div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}
+              </div>
+              <div>{{comment.content}}</div>
+            </div>
+          </div>
+        </div>
 
-      <!--<bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>-->
-      <!--<error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>-->
-      <!--<div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>-->
-      <!--<div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>-->
-      <!--<div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>-->
-      <!--</div>-->
-
-    </div>
-    <footer
-      id="toolBar"
-      class="tool-bar"
-      style="position:absolute; bottom:0;"
-      v-show="!(isVideoPlayed && isLandscape)"
-      v-if="itemInfo.column.paid"
-      ref="toolBar"
-    >
-      <div class="icon view">{{itemInfo.current.viewTotal}}人看过</div>
-      <div class="icon" @click="togglePraise()" :class="{'active': itemInfo.current.currentUserInfo.praised}">
-        <i class="bi bi-praise"></i>{{itemInfo.current.praisedTotal}}
+        <bd-loading class="comment-loading" v-if="isCommentLoading"></bd-loading>
+        <error class="comment-error" v-else-if="isCommentError" @retry="fetchComments()"></error>
+        <div class="no-comments" v-else-if="!comments.length"><i class="bi bi-no-comment"></i> 暂无评论</div>
+        <div class="no-more-comments" v-else-if="isCommentOnLatest">到底咯~</div>
+        <div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>
+        <div ref="bottom"></div>
       </div>
-    </footer>
+      <footer class="tool-bar" v-show="!(isVideoPlayed && isLandscape)" ref="toolBar"
+              :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
+        <div class="icon" @click="togglePraise()" :class="{'active': isPraised}">
+          <div class="font-content"><i class="bi bi-new-praise"></i></div>
+          <div><span>点赞 {{itemInfo.current.praisedTotal}}</span></div>
+        </div>
+        <div class="icon" @click="goComment">
+          <div class="font-content"><i class="bi bi-new-comment"></i></div>
+          <div><span>评论 {{itemInfo.current.commentTotal}}</span></div>
+        </div>
+      </footer>
+    </div>
     <router-view></router-view>
   </div>
 </template>
 
 <style lang="scss" scoped>
+  .container {
+    overflow: hidden;
+  }
+
   .main {
     position: relative;
-    background-color: $color-gray5;
-    padding-bottom: 46px;
-    overflow: auto;
     height: 100vh;
+    overflow: auto;
+    background-color: $color-gray5;
+
+    .tool-bar {
+      position: fixed;
+      width: 100%;
+      max-width: 1024px;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      height: 50px;
+      background-color: rgb(10, 10, 23);
+      display: -webkit-box;
+      display: -ms-flexbox;
+      z-index: 1;
+
+      .icon {
+        flex: 1;
+        line-height: 1em;
+        font-size: $font-size-14;
+        color: $color-w;
+        display: flex;
+        flex-direction: column;
+        div {
+          text-align: center;
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          span {
+            font-size: 12px;
+          }
+        }
+        .font-content {
+          flex: 3;
+          font-size: 20px;
+        }
+
+        &.active {
+          color: $color-brand;
+        }
+
+        .bi {
+          margin-top: 3px;
+        }
+
+        .bi-praise {
+          font-size: $font-size-18;
+        }
+
+        .bi-favorite {
+          font-size: $font-size-18;
+        }
+
+        .bi-comment2 {
+          font-size: $font-size-16;
+        }
+      }
+
+      .view {
+        flex-grow: 1;
+
+        .bi {
+          font-size: 16px;
+        }
+      }
+    }
 
     .block {
       box-shadow: 0 2px 2px rgb(236, 236, 236);
@@ -456,7 +525,7 @@
             font-size: $font-size-18;
             color: $color-w;
           }
-          .next{
+          .next {
             background-color: rgba(0, 0, 0, .6);
           }
         }
@@ -474,8 +543,8 @@
       }
     }
 
-    /* .comments {
-      padding: 15px 15px 65px;
+    .comments {
+      padding: 15px 15px 65px 15px;
       box-shadow: none;
       margin-bottom: 0;
 
@@ -581,7 +650,7 @@
         color: $color-dark-gray;
         font-size: 14px;
       }
-    } */
+    }
 
     .payment {
       position: fixed;
@@ -606,58 +675,7 @@
       }
     }
   }
-  .tool-bar {
-    display: flex;
-    height: 46px;
-    background-color: rgb(10, 10, 23);
-    max-width: 1024px;
-    width: 100%;
 
-    .icon {
-      line-height: 1em;
-      font-size: $font-size-14;
-      color: $color-w;
-      display: flex;
-      align-items: center;
-      padding-left: 15px;
-
-      &:first-child {
-        padding-left: 24px;
-      }
-
-      &:last-child {
-        padding-right: 24px;
-      }
-
-      &.active {
-        color: $color-brand;
-      }
-
-      .bi {
-        margin-right: 5px;
-      }
-
-      .bi-praise {
-        font-size: $font-size-18;
-      }
-
-      .bi-favorite {
-        font-size: $font-size-18;
-      }
-
-      .bi-comment2 {
-        font-size: $font-size-16;
-      }
-    }
-
-    .view {
-      flex-grow: 1;
-
-      .bi {
-        font-size: 16px;
-      }
-    }
-  }
 </style>
 
 <script lang="ts">
@@ -666,7 +684,7 @@
   import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils';
   import {getColumnItemDetail, praise, unpraise} from '../../shared/api/column.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
-  import {ColumnItemDetail, ColumnItemContent, ColumnItem} from "../../shared/api/column.model";
+  import {ColumnItemDetail, ColumnItemContent, ColumnItem, ColumnItemCommentModel} from "../../shared/api/column.model";
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {Store} from "../../shared/utils/store";
   import {OrderObjectType, PostOrderObject} from '../../shared/api/order.model';
@@ -678,8 +696,13 @@
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from "../../store/payment";
   import {setTitle} from '../../shared/utils/title';
+  import {listComments} from '../../shared/api/column.api';
+  import {initWechat} from "../../shared/utils/wechat";
+  import {setShareInfo} from '../../shared/utils/share';
+  import {isInWechat} from "../../shared/utils/utils";
+  import {host} from "../../env/environment";
 
-  //  const COMMENT_COUNT = 20;
+  const COMMENT_COUNT = 20;
 
   @Component({
     components: {
@@ -704,13 +727,18 @@
     closeMedia = false;
     isListener = false;
     limitSeconds = 180;
+    isPraised = false;
+    isComment = false;
+    isChangeItem = true;
 
-//    comments: ColumnItemCommentModel[] = [];
-//    isCommentLoading = false;
-//    isCommentError = false;
-//    isCommentOnLatest = false;
+    comments: ColumnItemCommentModel[] = [];
+    isCommentLoading = false;
+    isCommentError = false;
+    isCommentOnLatest = false;
+
     userInfo = getUserInfoCache();
     isPaying = false;
+    isToolbarShow = false;
 
     created() {
       this.columnId = this.$route.params['id'];
@@ -741,9 +769,26 @@
       this.id = this.$route.params['itemId'];
       if (!this.fromPaymentResult()) {
         this.initData();
-//        this.initComments();
-        this.setViewedColumnItem();
+        if (this.isChangeItem) {
+          this.isChangeItem = false;
+          this.initComments(false);
+          this.setViewedColumnItem();
+        } else {
+          this.initComments(true);
+        }
       }
+      if (isInWechat) {
+        this.share();
+      }
+    }
+
+    async share() {
+      const {id, itemId} = this.$route.params;
+      await initWechat();
+      setShareInfo(this.itemInfo.current.subject,
+        '',
+        `${host.assets}/assets/img/zaojiu-logo.jpg`,
+        `${host.self}/columns/${id}/items/${itemId}`);
     }
 
     fromPaymentResult() {
@@ -828,6 +873,7 @@
 
       try {
         this.itemInfo = await getColumnItemDetail(this.id);
+        this.isPraised = this.itemInfo.current.currentUserInfo.praised;
       } catch (e) {
         this.isError = true;
         throw e;
@@ -859,38 +905,46 @@
       return false;
     }
 
-//    async initComments() {
-//      this.comments = [];
-//      await this.fetchComments();
-//    }
-//
-//    async fetchComments() {
-//      this.isCommentLoading = true;
-//      this.isCommentError = false;
-//
-//      try {
-//        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
-//        const comments = await listComments(this.id, COMMENT_COUNT + 1, lastMarker);
-//        let isCommentOnLatest = true;
-//        if (comments.length === COMMENT_COUNT + 1) {
-//          isCommentOnLatest = false;
-//          comments.pop();
-//        }
-//        this.comments.push(...comments);
-//        this.isCommentOnLatest = isCommentOnLatest;
-//      } catch (e) {
-//        this.isCommentError = true;
-//        throw e;
-//      } finally {
-//        this.isCommentLoading = false;
-//      }
-//    }
+    async initComments(needScroll: boolean) {
+      this.comments = [];
+      await this.fetchComments();
+      if (needScroll) {
+        (this.$refs['bottom'] as HTMLElement).scrollIntoView(true);
+      }
+    }
+
+    async fetchComments() {
+      this.isCommentLoading = true;
+      this.isCommentError = false;
+
+      try {
+        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
+        const comments = await listComments(this.id, COMMENT_COUNT + 1, lastMarker);
+        let isCommentOnLatest = true;
+        if (comments.length === COMMENT_COUNT + 1) {
+          isCommentOnLatest = false;
+          comments.pop();
+        }
+        this.comments.push(...comments);
+        this.isCommentOnLatest = isCommentOnLatest;
+      } catch (e) {
+        this.isCommentError = true;
+        throw e;
+      } finally {
+        this.isCommentLoading = false;
+      }
+    }
+
 
     async togglePraise() {
-      this.itemInfo.current.currentUserInfo.praised = !this.itemInfo.current.currentUserInfo.praised;
-      this.itemInfo.current.praisedTotal = this.itemInfo.current.currentUserInfo.praised ? this.itemInfo.current.praisedTotal + 1 : this.itemInfo.current.praisedTotal - 1;
-      const promise = this.itemInfo.current.currentUserInfo.praised ? praise(this.id) : unpraise(this.id);
-      await promise;
+      let oldStatus = this.isPraised;
+      try {
+        this.isPraised = !this.isPraised;
+        this.itemInfo.current.praisedTotal = oldStatus ? this.itemInfo.current.praisedTotal - 1 : this.itemInfo.current.praisedTotal + 1;
+        const promise = (!oldStatus) ? praise(this.id) : unpraise(this.id);
+        await promise;
+      } catch (e) {
+      }
     }
 
     prepareVideo() {
@@ -922,7 +976,7 @@
       });
     }
 
-    gotoComment(id: string, nick: string, content: string) {
+    goComment(id: string, nick: string, content: string) {
       const query: { [key: string]: string } = {title: encodeURIComponent(this.itemInfo.current.subject)};
 
       if (id && nick && content) {
@@ -945,23 +999,12 @@
     touchMove(e: TouchEvent) {
       if (!this.$refs['toolBar']) return;
 
-      const clientY = e.touches[0].clientY;
-
-      if (this.originY - clientY > 10 && (this.$refs['toolBar'] as HTMLElement).style.position !== 'absolute') {
-        (this.$refs['toolBar'] as HTMLElement).style.bottom = '-46px';
-        (this.$refs['toolBar'] as HTMLElement).style.transition = 'bottom 0.3s ease';
-        setTimeout(() => {
-          (this.$refs['toolBar'] as HTMLElement).style.bottom = '0px';
-          (this.$refs['toolBar'] as HTMLElement).style.position = 'absolute';
-        }, 300);
-      } else if (clientY - this.originY > 10 && (this.$refs['toolBar'] as HTMLElement).style.position !== 'fixed') {
-        (this.$refs['toolBar'] as HTMLElement).style.bottom = '-46px';
+      if (this.originY - e.touches[0].clientY > 10 && this.isToolbarShow) {
+        this.isToolbarShow = false;
+        setTimeout(() => (this.$refs['toolBar'] as HTMLElement).style.position = 'static', 300);
+      } else if (e.touches[0].clientY - this.originY > 10 && !this.isToolbarShow) {
         (this.$refs['toolBar'] as HTMLElement).style.position = 'fixed';
-        (this.$refs['toolBar'] as HTMLElement).style.transition = '';
-        setTimeout(() => {
-          (this.$refs['toolBar'] as HTMLElement).style.bottom = '0px';
-          (this.$refs['toolBar'] as HTMLElement).style.transition = 'bottom 0.3s ease';
-        });
+        this.isToolbarShow = true;
       }
     }
 
@@ -971,13 +1014,14 @@
 
     gotoRelativeItem(item: ColumnItemContent) {
       if (item.isStatusReady && this.itemInfo.column.paid) {
+        this.isChangeItem = true;
         this.$router.push({path: `/columns/${item.columnId}/items/${item.id}`});
       }
     }
 
     checkMobileBind() {
       if (!this.userInfo.isMobileBinded) {
-        this.$router.push({path: '/mobile-bind', query: {redirectTo: this.$route.fullPath}});
+        this.$router.push({path: '/mobile-bind-event', query: {redirectTo: this.$route.fullPath}});
         return false;
       }
 

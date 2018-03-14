@@ -27,7 +27,8 @@
           <h2>专栏简介</h2>
           <a href="" @click.prevent="toggleCollape()">{{isIntroCollape ? '折叠' : '展开'}}</a>
         </div>
-        <div class="intro article-content no-margin" @click.prevent="toggleCollape()" v-bind:class="{'collaped': isIntroCollape}" v-html="columnInfo.content"></div>
+        <div class="intro article-content no-margin" @click.prevent="toggleCollape()"
+             v-bind:class="{'collaped': isIntroCollape}" v-html="columnInfo.content"></div>
       </section>
 
       <section class="columns-list block">
@@ -36,7 +37,8 @@
           <span>{{columnInfo.currentVol}}/{{columnInfo.totalVol}}</span>
         </div>
         <ul class="list">
-          <li v-for="item in items" :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !columnInfo.paid}">
+          <li v-for="item in items"
+              :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !columnInfo.paid}">
             <div class="item-detail">
               <h3 class="item-title">{{getColumnItemIndex(item)}}{{item.subject}}</h3>
               <p class="item-intro">{{item.desc}}</p>
@@ -55,7 +57,9 @@
 
       <footer>
         <button class="button button-outline" v-if="false">赠送给好友</button>
-        <button class="button button-primary" @click="go()" :disabled="isPaying"><span class="origin-fee" v-if="originFee">{{originFee}}</span>{{btnText}}</button>
+        <button class="button button-primary" @click="go()" :disabled="isPaying"><span class="origin-fee"
+                                                                                       v-if="originFee">{{originFee}}</span>{{btnText}}
+        </button>
       </footer>
     </div>
   </div>
@@ -333,7 +337,7 @@
 
 <script lang="ts">
   import Vue from "vue";
-  import {Component,Watch} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
   import {getColumnInfo, listColumnItems} from '../../shared/api/column.api';
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {Column, ColumnItem} from '../../shared/api/column.model';
@@ -348,6 +352,10 @@
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from "../../store/payment";
   import {getRelativePath} from '../../shared/utils/utils';
+  import {initWechat} from "../../shared/utils/wechat";
+  import {setShareInfo} from '../../shared/utils/share';
+  import {isInWechat} from "../../shared/utils/utils";
+  import {host} from "../../env/environment";
 
   @Component
   export default class CoverComponent extends Vue {
@@ -386,7 +394,7 @@
       try {
         this.columnInfo = await getColumnInfo(this.id);
         this.items = await listColumnItems(this.id);
-      } catch(e) {
+      } catch (e) {
         if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
           this.isNotFound = true;
         } else {
@@ -395,7 +403,18 @@
         throw e;
       } finally {
         this.isLoading = false;
+        if (isInWechat) {
+          this.share();
+        }
       }
+    }
+
+    async share() {
+      await initWechat();
+      setShareInfo(this.columnInfo.subject,
+        `我正在「造就」学习《${this.columnInfo.subject}》,期待你的加入`,
+        `${host.assets}/assets/img/zaojiu-logo.jpg`,
+        `${host.self}${this.$route.fullPath}`);
     }
 
     fromPaymentResult() {
@@ -419,7 +438,7 @@
     }
 
     get btnText(): string {
-      const latestViewedColumnItem: {[key: string]: string} = Store.localStore.get('latestViewedColumnItem') || {};
+      const latestViewedColumnItem: { [key: string]: string } = Store.localStore.get('latestViewedColumnItem') || {};
       const latestViewedItemId = latestViewedColumnItem[this.id] || '';
       const latestViewedItem = this.items.find((item) => item.id === latestViewedItemId);
 
@@ -486,7 +505,7 @@
 
     getColumnItemIndex(item: ColumnItem, withSuffix = true): string {
       const index = this.items.findIndex(_item => _item.id === item.id);
-      return index !== -1 ? padStart(`${index+1}`, 3, '0') + (withSuffix ? ' | ' : '') : '';
+      return index !== -1 ? padStart(`${index + 1}`, 3, '0') + (withSuffix ? ' | ' : '') : '';
     }
 
     getColumnItemDuration(item: ColumnItem): string {
@@ -498,7 +517,7 @@
     }
 
     toggleCollape() {
-      this.isIntroCollape=!this.isIntroCollape;
+      this.isIntroCollape = !this.isIntroCollape;
     }
 
     go(item?: ColumnItem) {
@@ -529,7 +548,7 @@
           if (checkLogin(to)) this.$router.push({path: to});
         }
       } else {
-        const latestViewedColumnItem: {[key: string]: string} = Store.localStore.get('latestViewedColumnItem') || {};
+        const latestViewedColumnItem: { [key: string]: string } = Store.localStore.get('latestViewedColumnItem') || {};
         const latestViewedItemId = latestViewedColumnItem[this.id] || '';
         const latestViewedItem = this.items.find((item) => item.id === latestViewedItemId);
 
@@ -560,7 +579,7 @@
       try {
         const orderMeta = await createOrder([orderQuery], [], false);
         await this.pay(orderMeta.orderNo);
-      } catch(e) {
+      } catch (e) {
         if (e instanceof ApiError) {
           const code = e.code;
 
