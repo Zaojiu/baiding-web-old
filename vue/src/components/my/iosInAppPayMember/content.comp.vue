@@ -171,8 +171,8 @@
         case "ios-member.course":
           this.listImg = [
             'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9',
-            'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9',
-            'https://og9s6vxbs.qnssl.com/member/online-class.png'
+            'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9',
+            'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9'
           ];
           this.listText = [
             '『造就UNI』在线课程第一期课堂：《数据的本质》在线课程 （每月持续更新）',
@@ -197,9 +197,9 @@
     actionImgCover(item: string) {
       // 在线课程跳转到课程
       if (this.inTab === 3) {
-        if (item === 'https://og9s6vxbs.qnssl.com/member/online-class.png') {
+        if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9') {
           this.$router.push({path: '/columns/5a5f080551281300015d4449'});
-        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/Fr68ytdpD1lPW4zQuUwu1S_tv1Vl-1519459640.png~16-9') {
+        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9') {
           this.$router.push({path: '/columns/5a911d1f0b603c0001c24160'});
         } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9') {
           this.$router.push({path: '/columns/5aa8d12f0b603c0001b68a37'});
