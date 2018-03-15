@@ -2,8 +2,9 @@
   <form name="postComment" class="post-comment" @submit.prevent="submit" v-focus-first-invalid>
     <header v-if="!isInApp"><i class="bi bi-close" @click="backToColumnItem()"></i>
       <div class="header_title"></div>
-      <button class="header_reply" :disabled="isSubmitting">{{replyId ? '回复' : '发表'}}</button>
     </header>
+
+    <section><small>发表评论</small>{{subject}}</section>
 
     <div class="reply" v-if="replyId">
       <div class="nick">回复{{replyNick}}</div>
@@ -22,11 +23,14 @@
             v-focus
             v-has-value
             v-model="content"
-            :placeholder="replyId ? '回复你此刻的想法' : '关于这篇文章你有什么想法？'"
           ></textarea>
+          <label class="required">评论内容</label>
         </div>
       </div>
     </div>
+    <footer class="operation-area">
+      <button :disabled="isSubmitting" class="btn">{{replyId ? '回复' : '发表'}}评论</button>
+    </footer>
   </form>
 </template>
 
@@ -92,25 +96,17 @@
 
     .reply {
       flex-shrink: 0;
-      font-size: 14px;
-      color: rgb(144, 144, 144);
-      background-color: rgb(237, 237, 237);
-      padding: 20px 15px;
-      margin-bottom: 15px;
+      background-color: #ededed;
+      padding: 10px;
+      margin-top: 20px;
+      margin-left: 15px;
+      margin-right: 15px;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
 
       .nick {
+        font-weight: bold;
         margin-right: 6px;
-      }
-
-      .reply-content {
-        margin-top: 10px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        white-space: pre-wrap;
-        word-break: break-all;
       }
     }
 
@@ -119,19 +115,49 @@
       overflow: auto;
 
       .form-group {
-        margin-top: 0;
 
         .input-group {
-          padding-top: 0;
+          position: relative;
+          padding-top: 14px;
 
           .content {
-            padding: 0;
             border-bottom: none;
+            overflow: hidden;
+            word-wrap: break-word;
+            height: 18px;
+            width: 100%;
+            max-width: 100%;
+            min-width: 100%;
+            border-bottom: 1px solid #dadada;
+            background: transparent;
+            color: #4b4b4b;
+            font-size: 16px;
+            box-sizing: content-box;
+            padding: 7px 0;
+            border-radius: 0;
           }
         }
       }
     }
 
+    .operation-area {
+      flex-shrink: 0;
+
+      .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        height: 49px;
+        line-height: 49px;
+        font-size: 17px;
+        color: $color-w;
+        background-color: $color-brand;
+
+        &.disabled {
+          background-color: change_color($color-brand, $alpha: .5);
+        }
+      }
+    }
     .operation-area {
       flex-shrink: 0;
 
