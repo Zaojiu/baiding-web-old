@@ -5,16 +5,16 @@ import appComp from './components/app.comp.vue';
 import talksComp from './components/talks/content.comp.vue';
 import topic_post from './components/topic_post/topic_post.comp.vue';
 import errorComp from './components/error/error.comp.vue';
-import {authGuard} from "./shared/guard/user-auth.guard";
+import {authGuard} from './shared/guard/user-auth.guard';
 import {memberActionGuard, memberCardGuard, memberPlanGuard} from './shared/guard/mars-member.guard';
-import {execRouteTask} from "./shared/guard/route-task";
-import {mobileBindedGuard} from "./shared/guard/mobile-binded.guard";
-import {memberActivateCompGuard} from "./shared/guard/member-activate-comp.guard";
-import {getRelativePath, scrollPosition} from "./shared/utils/utils";
-import {signinGuard} from "./shared/guard/signin-comp.guard";
-import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
-import {afterHooks, beforeHooks} from "./hooks";
-import {liveInfoResolver} from "./shared/resolver/live-info.resolver";
+import {execRouteTask} from './shared/guard/route-task';
+import {mobileBindedGuard} from './shared/guard/mobile-binded.guard';
+import {memberActivateCompGuard} from './shared/guard/member-activate-comp.guard';
+import {getRelativePath, scrollPosition} from './shared/utils/utils';
+import {signinGuard} from './shared/guard/signin-comp.guard';
+import {mobileBindedCompGuard} from './shared/guard/mobile-binded-comp.guard';
+import {afterHooks, beforeHooks} from './hooks';
+import {liveInfoResolver} from './shared/resolver/live-info.resolver';
 import memberContainer from './components/my/member/container.comp.vue';
 import memberContent from './components/my/iosInAppPayMember/content.comp.vue';
 import iosNotMemberContent from './components/my/iosOnlyMember/notMember.comp.vue';
@@ -512,6 +512,22 @@ export const router = new Router({
           component: () => System.import('./components/columns/post-comment.comp.vue'),
         }
       ]
+    },
+    {
+      path: '/columns/:id/group',
+      name: 'group',
+      meta: {
+        title: '圈子',
+      },
+      component: () => System.import('./components/group/list.comp.vue'),
+    },
+    {
+      path: '/columns/:id/group/new-message',
+      name: 'group-new-message',
+      meta: {
+        title: '新内容',
+      },
+      component: () => System.import('./components/group/post-message.comp.vue'),
     },
     {
       path: '/500',
