@@ -514,20 +514,12 @@ export const router = new Router({
       ]
     },
     {
-      path: '/columns/:id/group',
-      name: 'group',
+      path: '/group/:id/:msg',
+      name: 'group.message.comment',
       meta: {
-        title: '圈子',
+        title: '评论'
       },
-      component: () => System.import('./components/group/list.comp.vue'),
-    },
-    {
-      path: '/columns/:id/group/new-message',
-      name: 'group-new-message',
-      meta: {
-        title: '新内容',
-      },
-      component: () => System.import('./components/group/post-message.comp.vue'),
+      component: () => System.import('./components/group/comment.comp.vue'),
     },
     {
       path: '/500',
