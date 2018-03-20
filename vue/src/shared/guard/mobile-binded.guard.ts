@@ -2,7 +2,7 @@ import {getUserInfoCache} from '../api/user.api'
 import {Route} from "vue-router";
 import {router} from "../../router";
 
-export const mobileBindedGuard = () => {
+export const mobileBindedGuard = (needNew = false) => {
   return (to: Route, from: Route): boolean => {
     let userInfo;
 
@@ -14,7 +14,11 @@ export const mobileBindedGuard = () => {
     }
 
     if (!userInfo.mobile.number) {
-      router.push({path: '/mobile-bind', query: {redirectTo: to.fullPath}});
+      if (needNew) {
+        router.push({path: '/mobile-bind-event', query: {redirectTo: to.fullPath}});
+      } else {
+        router.push({path: '/mobile-bind', query: {redirectTo: to.fullPath}});
+      }
       return false;
     }
 

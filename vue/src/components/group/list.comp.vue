@@ -1,23 +1,23 @@
 <template>
   <div class="container">
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
-    <error class="abs-center" v-else-if="isNotFound">无此专栏</error>
-    <error class="abs-center" v-else-if="isError"></error>
+    <error class="abs-center" v-else-if="isNotFound">购买课程，加入圈子</error>
     <div class="group" v-else>
       <div class="scroll">
         <top-nav></top-nav>
         <div class="item" v-for="(item, index) in groupData">
           <div class="top">
-            <img class="avatar avatar-round avatar-45 top-avatar" name="" v-bind:src=" item.userInfo?  item.userInfo.avatar : defaultAvatar " alt="头像"/>
+            <img class="avatar avatar-round avatar-45 top-avatar"
+                 v-bind:src=" item.userInfo?  item.userInfo.avatar : defaultAvatar " alt="头像"/>
             <div class="top-right">
-              <p class="nick">{{ item.userInfo.nick }}</p>
+              <p class="nick">{{ (item.userInfo&&item.userInfo.nick)?item.userInfo.nick:'匿名用户' }}</p>
               <p class="created-at">{{ showMoment(item.createdAt) }}</p>
             </div>
           </div>
           <p class="content">{{ item.content }}</p>
         </div>
-        <div class="new-content" @click="toPostMsg()">发布内容</div>
       </div>
+      <div class="new-content" @click="toPostMsg()">发布内容</div>
     </div>
     <div class="pop-bg" v-if="isPosting"></div>
     <div class="container-post" v-show="isPosting">
@@ -27,7 +27,7 @@
       </div>
       <p class="title">发布内容</p>
       <div class="bottom">
-        <textarea class="textarea" autofocus v-model="content" >{{ content }}</textarea>
+        <textarea class="textarea" autofocus v-model="content">{{ content }}</textarea>
       </div>
     </div>
   </div>
@@ -70,12 +70,16 @@
     }
 
     async initData() {
-      let res = await getData(this.groupId, this.size, this.createdAt);
-      console.log(res);
-      this.groupData = res;
-
-      // this.groupData = res.data.result;
-      // this.userData = res.data.include.users;
+      try {
+        this.isLoading = true;
+        let res = await getData(this.groupId, this.size, this.createdAt);
+        this.groupData = res;
+      } catch (e) {
+        this.isNotFound = true;
+        throw e;
+      } finally {
+        this.isLoading = false;
+      }
 
     }
 
@@ -84,6 +88,7 @@
         await postMessage(this.groupId, getUserInfoCache(false).uid, this.content);
         this.closePage();
         this.content = '';
+        await this.initData();
         return;
       } else {
         showTips('内容不能为空！');
@@ -91,17 +96,16 @@
       }
     }
 
-    closePage () {
+    closePage() {
       this.isPosting = false;
     }
 
 
-
-    showMoment (m: any) {
+    showMoment(m: any) {
       return moment.unix(m.substring(0, 10)).format('YYYY-MM-DD HH:mm:ss');
     }
 
-    toPostMsg () {
+    toPostMsg() {
       this.isPosting = true;
     }
   }
@@ -111,77 +115,74 @@
 <style lang="scss" scoped>
   .container {
     width: 100%;
+    height: 100%;
     background-color: transparent;
-    position: absolute;
-    z-index: -10;
-    top: 0;
-    bottom: 0;
+    position: relative;
     overflow: hidden;
 
     .group {
       height: 100%;
       width: 100%;
-      overflow: scroll;
+      overflow: hidden;
 
-     .scroll {
-       background-color: rgb(242, 242, 242);
-       position: relative;
-       overflow: scroll;
+      .scroll {
+        background-color: rgb(242, 242, 242);
+        height: calc(100% - 50px);
+        overflow: auto;
 
-       .item {
-         background-color: white;
-         margin-bottom: 8px;
+        .item {
+          background-color: white;
+          margin-bottom: 8px;
 
-         .top {
-           color: #000;
-           margin-left: 20px;
-           padding-top: 16px;
+          .top {
+            color: #000;
+            margin-left: 20px;
+            padding-top: 16px;
 
-           .top-avatar {
-             height: 40px;
-             width: 40px;
-           }
+            .top-avatar {
+              height: 40px;
+              width: 40px;
+            }
 
-           .top-right {
-             display: inline-block;
-             margin-left: 12px;
-             vertical-align: top;
+            .top-right {
+              display: inline-block;
+              margin-left: 12px;
+              vertical-align: top;
 
-             .nick {
-               display: block;
-               margin-top: 5px;
-               font-size: 15px;
-               line-height: 15px;
-             }
+              .nick {
+                display: block;
+                margin-top: 5px;
+                font-size: 15px;
+                line-height: 15px;
+              }
 
-             .created-at {
-               display: block;
-               margin-top: 6px;
-               font-size: 10px;
-               line-height: 10px;
-             }
-           }
-         }
+              .created-at {
+                display: block;
+                margin-top: 6px;
+                font-size: 10px;
+                line-height: 10px;
+              }
+            }
+          }
 
-         .content {
-           color: #000;
-           margin: 8px 20px 12px 20px;
-           padding-bottom: 16px;
-           font-size: 15px;
-           line-height: 23px;
-         }
-       }
+          .content {
+            color: #000;
+            margin: 8px 20px 12px 20px;
+            padding-bottom: 16px;
+            font-size: 15px;
+            line-height: 23px;
+          }
+        }
+      }
 
-       .new-content {
-         height: 47px;
-         color: white;
-         font-size: 18px;
-         line-height: 47px;
-         margin: 0 15px 15px 15px;
-         border-radius: 4px;
-         text-align: center;
-         background-color: rgb(0, 211, 193);
-       }
+      .new-content {
+        height: 50px;
+        color: white;
+        font-size: 18px;
+        line-height: 50px;
+        text-align: center;
+        width: 100%;
+        background-color: rgb(0, 211, 193);
       }
     }
   }
@@ -230,7 +231,7 @@
       font-size: 28px;
       line-height: 28px;
       color: black;
-      box-shadow:  0px 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
       font-weight: bold;
     }
 

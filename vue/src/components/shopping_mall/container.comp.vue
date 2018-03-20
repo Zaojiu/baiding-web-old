@@ -19,6 +19,7 @@
       height: calc(100vh - 50px);
     }
     footer {
+      background-color: #fff;
       height: 50px;
       position: absolute;
       bottom: 0;
@@ -56,8 +57,6 @@
     groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
 
     created() {
-      this.id = this.$route.params['id'];
-      this.groupId = this.$route.query['groupId'];
       this.routeChange();
     }
 
@@ -65,21 +64,25 @@
     routeChange() {
       let routeName = this.$route.name;
       if (routeName === 'course.cover') {
+        this.id = this.$route.params['id'];
+        this.groupId = this.$route.query['groupId'];
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon-active.png';
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
-      } else {
+      } else if(routeName === 'group.cover') {
+        this.groupId = this.$route.params['id'];
+        this.id = this.$route.query['courseId'];
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon-active.png';
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
       }
     }
 
     goToCourse() {
-      this.$router.push({path: `/course/${this.id}/cover`});
+      this.$router.push({path: `/course/${this.id}/cover?groupId=${this.groupId}`});
     }
 
     goToGroup() {
       if (this.groupId) {
-        this.$router.push({path: `/group/${this.groupId}`});
+        this.$router.push({path: `/group/${this.groupId}/cover?courseId=${this.id}`});
       }
     }
   }

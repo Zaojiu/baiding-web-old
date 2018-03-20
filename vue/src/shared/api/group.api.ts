@@ -29,9 +29,8 @@ export const getData = async (groupId: string, size: number, createdAt: string):
     let res = await get(url);
     return pushUserInfo(res.data.result, res.data.include.users);
   } catch (e) {
-    //
+    throw e;
   }
-  return;
 }
 
 export const postMessage = async (groupId: string, toUids: number, content: string): Promise<any> => {

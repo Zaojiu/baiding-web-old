@@ -151,7 +151,7 @@ export const router = new Router({
     {
       path: '/course/:id/items/:itemId',
       beforeEnter(to, from, next) {
-        const tasks = [authGuard(), mobileBindedGuard()];
+        const tasks = [authGuard(), mobileBindedGuard(true)];
         execRouteTask(tasks, to, from, next);
       },
       component: () => System.import('./components/shopping_mall/content.comp.vue'),
