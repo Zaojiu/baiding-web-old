@@ -45,6 +45,7 @@ export class Column {
   subject: string;
   desc: string;
   content: string;
+  groupId: string;
   totalFee: Money; // 价格，单位“分”
   memberFee: Money; // 会员价，单位“分”
   originFee: Money; // 原价，单位分
@@ -79,6 +80,7 @@ export class Column {
     this.speaker = new SpeakerModel(data.speaker);
     this.subject = data.subject;
     this.desc = data.desc;
+    this.groupId = data.groupId;
     this.content = data.content;
     this.totalFee = new Money(data.totalFee);
     this.memberFee = new Money(data.memberFee);

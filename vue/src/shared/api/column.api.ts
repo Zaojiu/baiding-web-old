@@ -90,3 +90,13 @@ export const unpraise = async (id: string) => {
 
   return;
 };
+
+// 加入圈子
+export const joinGroup = async (id: string) => {
+  const url = `${host.io}/api/group/groups/${id}/join`;
+  try {
+    await post(url, null);
+  } catch (e) {
+  }
+  return;
+};

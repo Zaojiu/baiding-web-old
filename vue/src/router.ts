@@ -34,6 +34,8 @@ import marsMemberVideo from './components/mars_member/video.comp.vue';
 import marsMemberCourse from './components/mars_member/course.comp.vue';
 import marsMemberDownload from './components/mars_member/download.comp.vue';
 import marsMemberPlanList from './components/mars_member/planList.comp.vue';
+// 商城（课程）
+import MallContainer from './components/shopping_mall/container.comp.vue';
 
 Vue.use(Router);
 
@@ -110,6 +112,63 @@ export const router = new Router({
         execRouteTask(tasks, to, from, next);
       },
       component: () => System.import('./components/signin/forget-password.comp.vue'),
+    },
+    {
+      path: '/mall',
+      name: 'mall.main',
+      component: () => System.import('./components/shopping_mall/mall.comp.vue')
+    },
+    {
+      path: '/group/:id',
+      component: MallContainer,
+      children: [
+        {
+          name: 'group.main',
+          path: ''
+        },
+        {
+          name: 'group.cover',
+          path: 'cover',
+          component: () => System.import('./components/group/list.comp.vue')
+        }
+      ]
+    },
+    {
+      path: '/course/:id',
+      component: MallContainer,
+      children: [
+        {
+          name: 'course.main',
+          path: ''
+        },
+        {
+          name: 'course.cover',
+          path: 'cover',
+          component: () => System.import('./components/shopping_mall/cover.comp.vue')
+        }
+      ]
+    },
+    {
+      path: '/course/:id/items/:itemId',
+      beforeEnter(to, from, next) {
+        const tasks = [authGuard(), mobileBindedGuard()];
+        execRouteTask(tasks, to, from, next);
+      },
+      component: () => System.import('./components/shopping_mall/content.comp.vue'),
+      children: [
+        {
+          name: 'shopping_mall.item.main',
+          path: ''
+        },
+        {
+          name: 'shopping_mall.item.post-comment',
+          path: 'post-comment',
+          meta: {
+            title: '发表评论',
+          },
+          component: () => System.import('./components/shopping_mall/post-comment.comp.vue'),
+        }
+      ]
     },
     {
       path: '/talks/:id',
