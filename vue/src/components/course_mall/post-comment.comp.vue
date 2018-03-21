@@ -1,6 +1,6 @@
 <template>
   <form name="postComment" class="post-comment" @submit.prevent="submit" v-focus-first-invalid>
-    <header v-if="!isInApp"><i class="bi bi-close" @click="backToColumnItem()"></i>
+    <header v-if="!isInApp"><i class="bi bi-close" @click="backToCourseItem()"></i>
       <div class="header_title"></div>
     </header>
 
@@ -45,7 +45,7 @@
     z-index: $z-index-page-lv2;
     background-color: $color-w;
     display: flex;
-    flex-direction: column;
+    flex-direction: course;
 
     header {
       display: flex;
@@ -186,14 +186,14 @@
   import {form} from '../../shared/form';
   import {showTips} from '../../store/tip';
   import {ErrorBag} from "vee-validate";
-  import {postComment} from '../../shared/api/column.api';
+  import {postComment} from '../../shared/api/course.api';
 
   @Component({
     directives: form
   })
   export default class PostCommentComponent extends Vue {
     id = '';
-    columnId = '';
+    courseId = '';
     subject = '';
     replyId = '';
     replyNick = '';
@@ -205,7 +205,7 @@
 
     created() {
       this.id = this.$route.params['itemId'];
-      this.columnId = this.$route.params['id'];
+      this.courseId = this.$route.params['id'];
       this.subject = decodeURIComponent(this.$route.query['title']);
 
       const request = this.$route.query['request'];
@@ -218,8 +218,8 @@
       }
     }
 
-    backToColumnItem () {
-      this.$router.push({path: `/course/${this.columnId}/items/${this.id}`});
+    backToCourseItem () {
+      this.$router.push({path: `/course/${this.courseId}/items/${this.id}`});
     }
 
     async submit () {
@@ -235,7 +235,7 @@
       }
 
       await showTips('评论成功');
-      this.backToColumnItem();
+      this.backToCourseItem();
     }
   };
 </script>

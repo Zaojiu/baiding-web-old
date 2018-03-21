@@ -4,11 +4,12 @@ import {UserPublicInfoModel} from "./user.model";
 
 export enum OrderObjectType {
   LiveStream = 1, // 付费-话题间
-  Media,          // 付费-视频
-  Talk,           // 付费-文章
-  Event,          // 付费-活动-售票🎫
-  Member,         // 付费-会员资格
-  Column,         // 付费-专栏
+  Media = 2,          // 付费-视频
+  Talk = 3,           // 付费-文章
+  Event = 4,          // 付费-活动-售票🎫
+  Member = 5,         // 付费-会员资格
+  Column = 6,         // 付费-专栏 //用于Column，删掉会报错！！！
+  Course = 9,         // 付费-专栏
 }
 
 export class PostOrderObject {

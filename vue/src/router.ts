@@ -35,7 +35,7 @@ import marsMemberCourse from './components/mars_member/course.comp.vue';
 import marsMemberDownload from './components/mars_member/download.comp.vue';
 import marsMemberPlanList from './components/mars_member/planList.comp.vue';
 // 商城（课程）
-import MallContainer from './components/shopping_mall/container.comp.vue';
+import CourseMallContainer from './components/course_mall/container.comp.vue';
 
 Vue.use(Router);
 
@@ -116,11 +116,11 @@ export const router = new Router({
     {
       path: '/mall',
       name: 'mall.main',
-      component: () => System.import('./components/shopping_mall/mall.comp.vue')
+      component: () => System.import('./components/course_mall/mall.comp.vue')
     },
     {
       path: '/group/:id',
-      component: MallContainer,
+      component: CourseMallContainer,
       children: [
         {
           name: 'group.main',
@@ -135,7 +135,7 @@ export const router = new Router({
     },
     {
       path: '/course/:id',
-      component: MallContainer,
+      component: CourseMallContainer,
       children: [
         {
           name: 'course.main',
@@ -144,7 +144,7 @@ export const router = new Router({
         {
           name: 'course.cover',
           path: 'cover',
-          component: () => System.import('./components/shopping_mall/cover.comp.vue')
+          component: () => System.import('./components/course_mall/cover.comp.vue')
         }
       ]
     },
@@ -154,19 +154,19 @@ export const router = new Router({
         const tasks = [authGuard(), mobileBindedGuard(true)];
         execRouteTask(tasks, to, from, next);
       },
-      component: () => System.import('./components/shopping_mall/content.comp.vue'),
+      component: () => System.import('./components/course_mall/content.comp.vue'),
       children: [
         {
-          name: 'shopping_mall.item.main',
+          name: 'course_mall.item.main',
           path: ''
         },
         {
-          name: 'shopping_mall.item.post-comment',
+          name: 'course_mall.item.post-comment',
           path: 'post-comment',
           meta: {
             title: '发表评论',
           },
-          component: () => System.import('./components/shopping_mall/post-comment.comp.vue'),
+          component: () => System.import('./components/course_mall/post-comment.comp.vue'),
         }
       ]
     },

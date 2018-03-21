@@ -96,7 +96,6 @@
     async postMsg() {
       if (this.content) {
         this.closePage();
-        showTips('提交中');
         await postMessage(this.groupId, getUserInfoCache(false).uid, this.content);
         await this.initData();
         this.content = '';

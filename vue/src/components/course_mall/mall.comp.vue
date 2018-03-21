@@ -9,14 +9,14 @@
         </div>
       </div>
       <footer class="buy-btn">
-        <div class="try" v-if="!columnInfo.paid">
+        <div class="try" v-if="!courseInfo.paid">
           <button class="button" @click="audition()">
             <span>试听</span>
           </button>
         </div>
         <div class="buy">
           <button class="button button-primary" @click="go()" :disabled="isPaying">
-            <span class="origin-fee" v-if="originFee && !columnInfo.currentUserInfo.paid">{{originFee}}</span>
+            <span class="origin-fee" v-if="originFee && !courseInfo.currentUserInfo.paid">{{originFee}}</span>
             <span>{{btnText}}</span>
           </button>
         </div>
@@ -91,8 +91,8 @@
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
   import {getUserInfoCache} from "../../shared/api/user.api";
-  import {getColumnInfo, joinGroup} from '../../shared/api/column.api';
-  import {Column} from '../../shared/api/column.model';
+  import {getCourseInfo, joinGroup} from '../../shared/api/course.api';
+  import {Course} from '../../shared/api/course.model';
   import {UserInfoModel} from '../../shared/api/user.model';
   import {setPaymentNone} from "../../store/payment";
   import {showTips} from '../../store/tip';
@@ -112,7 +112,7 @@
   export default class CourseMall extends Vue {
     courseList: any[] = [];
     userInfo: UserInfoModel;
-    columnInfo = new Column({});
+    courseInfo = new Course({});
     id = '5aa8d12f0b603c0001b68a37';
     isLoading = false;
     isError = false;
@@ -141,8 +141,8 @@
       this.isError = false;
 
       try {
-        this.columnInfo = await getColumnInfo(this.id);
-        this.groupId = this.columnInfo.groupId;
+        this.courseInfo = await getCourseInfo(this.id);
+        this.groupId = this.courseInfo.groupId;
       } catch (e) {
         if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
           this.isNotFound = true;
@@ -167,8 +167,8 @@
     }
 
     get originFee(): string {
-      if (this.columnInfo.originFee.value && this.columnInfo.originFee.value !== this.columnInfo.totalFee.value) {
-        return this.columnInfo.originFee.toYuan();
+      if (this.courseInfo.originFee.value && this.courseInfo.originFee.value !== this.courseInfo.totalFee.value) {
+        return this.courseInfo.originFee.toYuan();
       }
 
       return '';
@@ -176,23 +176,23 @@
 
     get btnText(): string {
 
-      if (this.columnInfo && this.columnInfo.isNeedPay) {
-        if (!this.columnInfo.currentUserInfo) {
+      if (this.courseInfo && this.courseInfo.isNeedPay) {
+        if (!this.courseInfo.currentUserInfo) {
           // 未登录
-          return `支付: ${this.columnInfo.totalFee.toYuan()}`;
-        } else if (!this.columnInfo.currentUserInfo.paid) {
+          return `支付: ${this.courseInfo.totalFee.toYuan()}`;
+        } else if (!this.courseInfo.currentUserInfo.paid) {
           // 已登录，未付费
           if (this.userInfo && this.userInfo.isMember) {
-            if (this.columnInfo.memberFee.value === 0) {
+            if (this.courseInfo.memberFee.value === 0) {
               return `会员免费`;
             } else {
-              return `会员价: ${this.columnInfo.memberFee.toYuan()}`;
+              return `会员价: ${this.courseInfo.memberFee.toYuan()}`;
             }
           } else {
-            if (this.columnInfo.totalFee.value === 0) {
+            if (this.courseInfo.totalFee.value === 0) {
               return `限时免费`;
             } else {
-              return `支付: ${this.columnInfo.totalFee.toYuan()}`;
+              return `支付: ${this.courseInfo.totalFee.toYuan()}`;
             }
           }
         } else {
@@ -227,7 +227,7 @@
 
     async actionImgCover(item: any) {
       // 在线课程跳转到课程
-      this.$router.push({path: `/course/${item.columnId}/cover`});
+      this.$router.push({path: `/course/${item.courseId}/cover`});
     };
 
     go() {
@@ -249,9 +249,9 @@
         this.$router.push({path: '/mobile-bind', query: {redirectTo: to}});
         return false;
       };
-      if (this.columnInfo.paid) {
+      if (this.courseInfo.paid) {
         let to = `/course/${this.id}/cover`;
-        if (checkLogin(to)) this.$router.push({path: to, query: {groupId: this.columnInfo.groupId}});
+        if (checkLogin(to)) this.$router.push({path: to, query: {groupId: this.courseInfo.groupId}});
       } else {
         if (checkLogin(this.$route.fullPath) && checkMobileBinded(this.$route.fullPath)) {
           this.createOrder();
@@ -263,7 +263,7 @@
       if (this.isPaying) return;
 
       this.isPaying = true;
-      const orderQuery = new PostOrderObject(this.id, OrderObjectType.Column, 1);
+      const orderQuery = new PostOrderObject(this.id, OrderObjectType.Course, 1);
 
       try {
         const orderMeta = await createOrder([orderQuery], [], false);

@@ -53,11 +53,11 @@
             <div class="author-info">
               <img
                 class="avatar avatar-round avatar-25"
-                :src="itemInfo.column.speaker && itemInfo.column.speaker.coverUrl || '/assets/img/zaojiu-logo.jpg'"
+                :src="itemInfo.course.speaker && itemInfo.course.speaker.coverUrl || '/assets/img/zaojiu-logo.jpg'"
                 alt="发布人头像"
               >
               <span
-                class="nick">{{itemInfo.column.speaker && itemInfo.column.speaker.subject ? itemInfo.column.speaker.subject : '造就'}}</span>
+                class="nick">{{itemInfo.course.speaker && itemInfo.course.speaker.subject ? itemInfo.course.speaker.subject : '造就'}}</span>
             </div>
 
             <time>{{itemInfo.current.publishAtParsed.format('YYYY年MM月DD日')}}</time>
@@ -159,12 +159,12 @@
         font-size: $font-size-14;
         color: $color-w;
         display: flex;
-        flex-direction: column;
+        flex-direction: course;
         div {
           text-align: center;
           flex: 2;
           display: flex;
-          flex-direction: column;
+          flex-direction: course;
           justify-content: center;
           align-items: center;
           span {
@@ -261,7 +261,7 @@
         bottom: 0;
         right: 0;
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: course-reverse;
         -webkit-box-pack: end; // for old ios browser
         pointer-events: none;
 
@@ -320,7 +320,7 @@
         bottom: 0;
         right: 0;
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: course-reverse;
         -webkit-box-pack: end;
 
         .three-tips {
@@ -682,9 +682,9 @@
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
   import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils';
-  import {getColumnItemDetail, praise, unpraise} from '../../shared/api/column.api';
+  import {getCourseItemDetail, praise, unpraise} from '../../shared/api/course.api';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
-  import {ColumnItemDetail, ColumnItemContent, ColumnItem, ColumnItemCommentModel} from "../../shared/api/column.model";
+  import {CourseItemDetail, CourseItemContent, CourseItem, CourseItemCommentModel} from "../../shared/api/course.model";
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {Store} from "../../shared/utils/store";
   import {OrderObjectType, PostOrderObject} from '../../shared/api/order.model';
@@ -696,7 +696,7 @@
   import {showTips} from '../../store/tip';
   import {setPaymentNone} from "../../store/payment";
   import {setTitle} from '../../shared/utils/title';
-  import {listComments} from '../../shared/api/column.api';
+  import {listComments} from '../../shared/api/course.api';
   import {initWechat} from "../../shared/utils/wechat";
   import {setShareInfo} from '../../shared/utils/share';
   import {isInWechat} from "../../shared/utils/utils";
@@ -711,7 +711,7 @@
   })
   export default class ContentComponent extends Vue {
     id = '';
-    columnId = '';
+    courseId = '';
     originY = 0;
     isOnScreen = isOnLargeScreen;
     isVideoPlayed = false;
@@ -721,7 +721,7 @@
     tabIndex = 0;
     emphasisActiveIndex = -1;
     player: ZaojiuPlayerInstance;
-    itemInfo = new ColumnItemDetail({});
+    itemInfo = new CourseItemDetail({});
     isLoading = false;
     isError = false;
     closeMedia = false;
@@ -731,7 +731,7 @@
     isComment = false;
     isChangeItem = true;
 
-    comments: ColumnItemCommentModel[] = [];
+    comments: CourseItemCommentModel[] = [];
     isCommentLoading = false;
     isCommentError = false;
     isCommentOnLatest = false;
@@ -741,7 +741,7 @@
     isToolbarShow = false;
 
     created() {
-      this.columnId = this.$route.params['id'];
+      this.courseId = this.$route.params['id'];
       this.itemChanged();
     }
 
@@ -772,7 +772,7 @@
         if (this.isChangeItem) {
           this.isChangeItem = false;
           this.initComments(false);
-          this.setViewedColumnItem();
+          this.setViewedCourseItem();
         } else {
           this.initComments(true);
         }
@@ -812,8 +812,8 @@
     }
 
     get originFee(): string {
-      if (this.itemInfo.column.originFee.value && this.itemInfo.column.originFee.value !== this.itemInfo.column.totalFee.value) {
-        return this.itemInfo.column.originFee.toYuan();
+      if (this.itemInfo.course.originFee.value && this.itemInfo.course.originFee.value !== this.itemInfo.course.totalFee.value) {
+        return this.itemInfo.course.originFee.toYuan();
       }
 
       return '';
@@ -821,16 +821,16 @@
 
     get btnText(): string {
       if (this.userInfo && this.userInfo.isMember) {
-        if (this.itemInfo.column.memberFee.value === 0) {
+        if (this.itemInfo.course.memberFee.value === 0) {
           return `会员免费`;
         } else {
-          return `会员价: ${this.itemInfo.column.memberFee.toYuan()}`;
+          return `会员价: ${this.itemInfo.course.memberFee.toYuan()}`;
         }
       } else {
-        if (this.itemInfo.column.totalFee.value === 0) {
+        if (this.itemInfo.course.totalFee.value === 0) {
           return `限时免费`;
         } else {
-          return `支付: ${this.itemInfo.column.totalFee.toYuan()}`;
+          return `支付: ${this.itemInfo.course.totalFee.toYuan()}`;
         }
       }
     }
@@ -840,7 +840,7 @@
       if (item) {
         if (item.isStatusNotReady) {
           return '制作中';
-        } else if (!this.itemInfo.column.paid) {
+        } else if (!this.itemInfo.course.paid) {
           return '付费看上篇';
         } else {
           return '上一篇';
@@ -853,7 +853,7 @@
       if (item) {
         if (item.isStatusNotReady) {
           return '制作中';
-        } else if (!this.itemInfo.column.paid) {
+        } else if (!this.itemInfo.course.paid) {
           return '付费看下篇';
         } else {
           return '下一篇';
@@ -861,10 +861,10 @@
       }
     }
 
-    setViewedColumnItem() {
-      const latestViewedColumnItem: { [key: string]: string } = Store.localStore.get('latestViewedColumnItem') || {};
-      latestViewedColumnItem[this.columnId] = this.id;
-      Store.localStore.set('latestViewedColumnItem', latestViewedColumnItem);
+    setViewedCourseItem() {
+      const latestViewedCourseItem: { [key: string]: string } = Store.localStore.get('latestViewedCourseItem') || {};
+      latestViewedCourseItem[this.courseId] = this.id;
+      Store.localStore.set('latestViewedCourseItem', latestViewedCourseItem);
     }
 
     async initData() {
@@ -872,7 +872,7 @@
       this.isError = false;
 
       try {
-        this.itemInfo = await getColumnItemDetail(this.id);
+        this.itemInfo = await getCourseItemDetail(this.id);
         this.isPraised = this.itemInfo.current.currentUserInfo.praised;
       } catch (e) {
         this.isError = true;
@@ -890,7 +890,7 @@
       }
     }
 
-    isNeedLimitThreeMinutes(item: ColumnItem | null) {
+    isNeedLimitThreeMinutes(item: CourseItem | null) {
       if (!this.itemInfo.current.isTypeVideo && !this.itemInfo.current.isTypeAudio) {
         return false;
       }
@@ -987,7 +987,7 @@
         }));
       }
 
-      this.$router.push({path: `/course/${this.columnId}/items/${this.id}/post-comment`, query: query});
+      this.$router.push({path: `/course/${this.courseId}/items/${this.id}/post-comment`, query: query});
     }
 
     touchStart(e: TouchEvent) {
@@ -1009,13 +1009,13 @@
     }
 
     isChildActived() {
-      return this.$router.currentRoute.name !== 'shopping_mall.item.main';
+      return this.$router.currentRoute.name !== 'course_mall.item.main';
     }
 
-    gotoRelativeItem(item: ColumnItemContent) {
-      if (item.isStatusReady && this.itemInfo.column.paid) {
+    gotoRelativeItem(item: CourseItemContent) {
+      if (item.isStatusReady && this.itemInfo.course.paid) {
         this.isChangeItem = true;
-        this.$router.push({path: `/course/${item.columnId}/items/${item.id}`});
+        this.$router.push({path: `/course/${item.courseId}/items/${item.id}`});
       }
     }
 
@@ -1033,7 +1033,7 @@
       if (this.isPaying) return;
 
       this.isPaying = true;
-      const orderQuery = new PostOrderObject(this.columnId, OrderObjectType.Column, 1);
+      const orderQuery = new PostOrderObject(this.courseId, OrderObjectType.Course, 1);
 
       try {
         const orderMeta = await createOrder([orderQuery], [], false);
@@ -1059,7 +1059,7 @@
 
     async pay(orderNo: string) {
       await pay(orderNo);
-      this.$router.push({path: `/course/${this.columnId}/items/${this.id}`, query: {payResult: 'success'}});
+      this.$router.push({path: `/course/${this.courseId}/items/${this.id}`, query: {payResult: 'success'}});
     }
   }
 </script>

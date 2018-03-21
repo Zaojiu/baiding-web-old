@@ -3,44 +3,44 @@
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isNotFound">无此专栏</error>
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
-    <div class="columns" v-else>
+    <div class="courses" v-else>
       <top-nav></top-nav>
 
       <div class="cover" v-once>
-        <img :src="columnInfo.cover169Url" alt="专栏封面">
+        <img :src="courseInfo.cover169Url" alt="专栏封面">
       </div>
 
       <header class="block" v-once>
-        <h1 class="title">{{columnInfo.subject}}</h1>
-        <p class="period">共{{columnInfo.totalVol}}期</p>
+        <h1 class="title">{{courseInfo.subject}}</h1>
+        <p class="period">共{{courseInfo.totalVol}}期</p>
         <div class="info">
-          <img class="avatar avatar-round avatar-45" :src="columnInfo.speaker.coverUrl" alt="嘉宾头像">
+          <img class="avatar avatar-round avatar-45" :src="courseInfo.speaker.coverUrl" alt="嘉宾头像">
           <div class="intro">
-            <strong class="nick">{{columnInfo.speaker.subject}}</strong>
-            <p class="content">{{columnInfo.speaker.title}}</p>
+            <strong class="nick">{{courseInfo.speaker.subject}}</strong>
+            <p class="content">{{courseInfo.speaker.title}}</p>
           </div>
         </div>
       </header>
 
-      <section class="columns-intro block">
+      <section class="courses-intro block">
         <div class="head">
           <h2>专栏简介</h2>
           <a href="" @click.prevent="toggleCollape()">{{isIntroCollape ? '折叠' : '展开'}}</a>
         </div>
         <div class="intro article-content no-margin" @click.prevent="toggleCollape()"
-             v-bind:class="{'collaped': isIntroCollape}" v-html="columnInfo.content"></div>
+             v-bind:class="{'collaped': isIntroCollape}" v-html="courseInfo.content"></div>
       </section>
 
-      <section class="columns-list block">
+      <section class="courses-list block">
         <div class="head">
           <h2>专栏列表</h2>
-          <span>{{columnInfo.currentVol}}/{{columnInfo.totalVol}}</span>
+          <span>{{courseInfo.currentVol}}/{{courseInfo.totalVol}}</span>
         </div>
         <ul class="list">
           <li v-for="item in items"
-              :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !columnInfo.paid}">
+              :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !courseInfo.paid}">
             <div class="item-detail">
-              <h3 class="item-title">{{getColumnItemIndex(item)}}{{item.subject}}</h3>
+              <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
               <p class="item-intro">{{item.desc}}</p>
               <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </div>
@@ -48,7 +48,7 @@
               <i class="bi bi-paper3" v-if="item.isTypePost"></i>
               <i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>
               <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
-              <span class="duration" v-if="getColumnItemDuration(item)">{{getColumnItemDuration(item)}}</span>
+              <span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>
               <span class="tips">{{itemBtnText(item)}}</span>
             </div>
           </li>
@@ -66,7 +66,7 @@
 </template>
 
 <style lang="scss" scoped>
-  .columns {
+  .courses {
     background-color: $color-gray5;
     overflow: auto;
     height: calc(100vh - 50px);
@@ -171,7 +171,7 @@
       }
     }
 
-    .columns-intro {
+    .courses-intro {
       .intro {
         font-size: $font-size-16;
         color: $color-gray3;
@@ -186,7 +186,7 @@
       }
     }
 
-    .columns-list {
+    .courses-list {
       box-shadow: none;
       margin-bottom: 50px;
 
@@ -273,7 +273,7 @@
 
           .operation-area {
             display: flex;
-            flex-direction: column;
+            flex-direction: course;
             align-items: center;
             width: 40px;
 
@@ -338,9 +338,9 @@
 <script lang="ts">
   import Vue from "vue";
   import {Component, Watch} from 'vue-property-decorator';
-  import {getColumnInfo, listColumnItems, joinGroup} from '../../shared/api/column.api';
+  import {getCourseInfo, listCourseItems, joinGroup} from '../../shared/api/course.api';
   import {getUserInfoCache} from '../../shared/api/user.api';
-  import {Column, ColumnItem} from '../../shared/api/column.model';
+  import {Course, CourseItem} from '../../shared/api/course.model';
   import {UserInfoModel} from "../../shared/api/user.model";
   import padStart from 'lodash/padStart';
   import {Store} from "../../shared/utils/store";
@@ -360,12 +360,12 @@
   @Component
   export default class CoverComponent extends Vue {
     id = '';
-    columnInfo = new Column({});
+    courseInfo = new Course({});
     userInfo: UserInfoModel | null = null;
     isLoading = false;
     isError = false;
     isIntroCollape = true;
-    items: ColumnItem[] = [];
+    items: CourseItem[] = [];
     isPaying = false;
     isNotFound = false;
 
@@ -392,9 +392,9 @@
       this.isError = false;
 
       try {
-        this.columnInfo = await getColumnInfo(this.id);
-        this.$emit('setGroupId', this.columnInfo.groupId);
-        this.items = await listColumnItems(this.id);
+        this.courseInfo = await getCourseInfo(this.id);
+        this.$emit('setGroupId', this.courseInfo.groupId);
+        this.items = await listCourseItems(this.id);
       } catch (e) {
         if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
           this.isNotFound = true;
@@ -412,8 +412,8 @@
 
     async share() {
       await initWechat();
-      setShareInfo(this.columnInfo.subject,
-        `我正在「造就」学习《${this.columnInfo.subject}》,期待你的加入`,
+      setShareInfo(this.courseInfo.subject,
+        `我正在「造就」学习《${this.courseInfo.subject}》,期待你的加入`,
         `${host.assets}/assets/img/zaojiu-logo.jpg`,
         `${host.self}${this.$route.fullPath}`);
     }
@@ -425,7 +425,7 @@
 
       if (payResult === 'success') {
         showTips('支付成功');
-        joinGroup(this.columnInfo.groupId);
+        joinGroup(this.courseInfo.groupId);
         setPaymentNone();
       } else if (payResult === 'cancel') {
         showTips('订单未支付');
@@ -440,39 +440,39 @@
     }
 
     get btnText(): string {
-      const latestViewedColumnItem: { [key: string]: string } = Store.localStore.get('latestViewedColumnItem') || {};
-      const latestViewedItemId = latestViewedColumnItem[this.id] || '';
+      const latestViewedCourseItem: { [key: string]: string } = Store.localStore.get('latestViewedCourseItem') || {};
+      const latestViewedItemId = latestViewedCourseItem[this.id] || '';
       const latestViewedItem = this.items.find((item) => item.id === latestViewedItemId);
 
-      if (this.columnInfo && this.columnInfo.isNeedPay) {
-        if (!this.columnInfo.currentUserInfo) {
+      if (this.courseInfo && this.courseInfo.isNeedPay) {
+        if (!this.courseInfo.currentUserInfo) {
           // 未登录
-          return `支付: ${this.columnInfo.totalFee.toYuan()}`;
-        } else if (!this.columnInfo.currentUserInfo.paid) {
+          return `支付: ${this.courseInfo.totalFee.toYuan()}`;
+        } else if (!this.courseInfo.currentUserInfo.paid) {
           // 已登录，未付费
           if (this.userInfo && this.userInfo.isMember) {
-            if (this.columnInfo.memberFee.value === 0) {
+            if (this.courseInfo.memberFee.value === 0) {
               return `会员免费`;
             } else {
-              return `会员价: ${this.columnInfo.memberFee.toYuan()}`;
+              return `会员价: ${this.courseInfo.memberFee.toYuan()}`;
             }
           } else {
-            if (this.columnInfo.totalFee.value === 0) {
+            if (this.courseInfo.totalFee.value === 0) {
               return `限时免费`;
             } else {
-              return `支付: ${this.columnInfo.totalFee.toYuan()}`;
+              return `支付: ${this.courseInfo.totalFee.toYuan()}`;
             }
           }
         } else {
           if (latestViewedItem) {
-            return `继续阅读 ${this.getColumnItemIndex(latestViewedItem, false)}`;
+            return `继续阅读 ${this.getCourseItemIndex(latestViewedItem, false)}`;
           } else {
             return '阅读专栏';
           }
         }
       } else {
         if (latestViewedItem) {
-          return `继续阅读 ${this.getColumnItemIndex(latestViewedItem, false)}`;
+          return `继续阅读 ${this.getCourseItemIndex(latestViewedItem, false)}`;
         } else {
           return '阅读专栏';
         }
@@ -480,37 +480,37 @@
     }
 
     get originFee(): string {
-      if (this.columnInfo.originFee.value && this.columnInfo.originFee.value !== this.columnInfo.totalFee.value) {
-        return this.columnInfo.originFee.toYuan();
+      if (this.courseInfo.originFee.value && this.courseInfo.originFee.value !== this.courseInfo.totalFee.value) {
+        return this.courseInfo.originFee.toYuan();
       }
 
       return '';
     }
 
-    itemBtnText(item: ColumnItem): string {
+    itemBtnText(item: CourseItem): string {
       if (item.isStatusNotReady) {
         return '制作中';
-      } else if (item.isPayTypeColumn && !this.columnInfo.paid) { // TODO: payTypeSingle
+      } else if (item.isPayTypeCourse && !this.courseInfo.paid) { // TODO: payTypeSingle
         return '收费';
       } else {
         if (item.isTypeVideo) {
-          return item.isPayTypeFree && !this.columnInfo.paid ? '试看' : '观看';
+          return item.isPayTypeFree && !this.courseInfo.paid ? '试看' : '观看';
         } else if (item.isTypeAudio) {
-          return item.isPayTypeFree && !this.columnInfo.paid ? '试听' : '收听';
+          return item.isPayTypeFree && !this.courseInfo.paid ? '试听' : '收听';
         } else if (item.isTypePost) {
-          return item.isPayTypeFree && !this.columnInfo.paid ? '试读' : '阅读';
+          return item.isPayTypeFree && !this.courseInfo.paid ? '试读' : '阅读';
         }
       }
 
       return '进入';
     }
 
-    getColumnItemIndex(item: ColumnItem, withSuffix = true): string {
+    getCourseItemIndex(item: CourseItem, withSuffix = true): string {
       const index = this.items.findIndex(_item => _item.id === item.id);
       return index !== -1 ? padStart(`${index + 1}`, 3, '0') + (withSuffix ? ' | ' : '') : '';
     }
 
-    getColumnItemDuration(item: ColumnItem): string {
+    getCourseItemDuration(item: CourseItem): string {
       if (item.isTypeAudio || item.isTypeVideo) {
         return item.duration.format('mm‘ss“', {trim: false});
       } else {
@@ -522,7 +522,7 @@
       this.isIntroCollape = !this.isIntroCollape;
     }
 
-    go(item?: ColumnItem) {
+    go(item?: CourseItem) {
       if (item && item.isStatusNotReady) return;
 
       const checkLogin = (to: string) => {
@@ -545,16 +545,16 @@
       };
       if (item) {
         // ready and paid or free item
-        if (item.isStatusReady && (item.isPayTypeFree || (item.isPayTypeColumn && this.columnInfo.paid))) {
+        if (item.isStatusReady && (item.isPayTypeFree || (item.isPayTypeCourse && this.courseInfo.paid))) {
           const to = `/course/${this.id}/items/${item.id}`;
           if (checkLogin(to)) this.$router.push({path: to});
         }
       } else {
-        const latestViewedColumnItem: { [key: string]: string } = Store.localStore.get('latestViewedColumnItem') || {};
-        const latestViewedItemId = latestViewedColumnItem[this.id] || '';
+        const latestViewedCourseItem: { [key: string]: string } = Store.localStore.get('latestViewedCourseItem') || {};
+        const latestViewedItemId = latestViewedCourseItem[this.id] || '';
         const latestViewedItem = this.items.find((item) => item.id === latestViewedItemId);
 
-        if (this.columnInfo.paid) {
+        if (this.courseInfo.paid) {
           let to = '';
 
           if (latestViewedItem) {
@@ -576,7 +576,7 @@
       if (this.isPaying) return;
 
       this.isPaying = true;
-      const orderQuery = new PostOrderObject(this.id, OrderObjectType.Column, 1);
+      const orderQuery = new PostOrderObject(this.id, OrderObjectType.Course, 1);
 
       try {
         const orderMeta = await createOrder([orderQuery], [], false);

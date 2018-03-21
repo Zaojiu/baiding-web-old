@@ -106,7 +106,6 @@
     async postComments () {
       if (this.content) {
         this.closePost();
-        showTips('提交中');
         await postComment(this.groupId, this.msgId, this.content ,getUserInfoCache(false).uid);
         this.content = '';
         await this.initData();
