@@ -52,21 +52,28 @@
 
   @Component({})
   export default class MallContainer extends Vue {
-    id: string = '';
+    courseId: string = '';
     groupId: string = '';
     courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
     groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
 
     created() {
-      this.id = this.$route.params['courseId'];
+      if (this.$route.query['courseId']) {
+        this.courseId = this.$route.query['courseId'];
+      } else {
+        this.courseId = this.$route.params['courseId'];
+      }
+
       this.initData();
       this.routeChange();
     }
 
     async initData () {
       try {
-        let data =  await getCourseInfo(this.id);
-        this.groupId = data.groupId;
+        if (this.courseId) {
+          let data =  await getCourseInfo(this.courseId);
+          this.groupId = data.groupId;
+        }
       } catch (e){
         //
       }
@@ -76,25 +83,25 @@
     routeChange() {
       let routeName = this.$route.name;
       if (routeName === 'course.cover') {
-        this.id = this.$route.params['courseId'];
+        this.courseId = this.$route.params['courseId'];
         this.groupId = this.$route.query['groupId'];
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon-active.png';
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
       } else if(routeName === 'group.cover') {
         this.groupId = this.$route.params['groupId'];
-        this.id = this.$route.query['courseId'];
+        this.courseId = this.$route.query['courseId'];
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon-active.png';
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
       }
     }
 
     goToCourse() {
-      this.$router.push({path: `/course/${this.id}/cover?groupId=${this.groupId}`});
+      this.$router.push({path: `/course/${this.courseId}/cover?groupId=${this.groupId}`});
     }
 
     goToGroup() {
       if (this.groupId) {
-        this.$router.push({path: `/group/${this.groupId}/cover?courseId=${this.id}`});
+        this.$router.push({path: `/group/${this.groupId}/cover?courseId=${this.courseId}`});
       }
     }
   }
