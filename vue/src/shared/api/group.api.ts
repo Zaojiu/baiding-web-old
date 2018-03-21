@@ -82,7 +82,7 @@ export const getComments = async (groupId: string, msgId: string, size: number, 
 export const postComment = async (groupId: string, msgId: string, content: string, uid: any): Promise<any> => {
   const data = {
     content: content,
-    toUids: uid,
+    toUids: [uid],
   }
 
   let url = `${ host.io }/api/group/groups/${ groupId }/messages/${ msgId }/comments`;

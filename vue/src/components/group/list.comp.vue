@@ -1,11 +1,13 @@
 <template>
   <div class="container">
+
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isNotFound">购买课程，加入圈子</error>
+
     <div class="group" v-else>
-      <div class="scroll">
+      <div class="scroll" v-bind:style=" isPosting ? disscroll : doscroll ">
         <top-nav></top-nav>
-        <div class="item" v-for="(item, index) in groupData">
+        <div class="item" v-for="item in groupData" @click="toCommentPage(item.id)">
           <div class="top">
             <img class="avatar avatar-round avatar-45 top-avatar"
                  v-bind:src=" item.userInfo?  item.userInfo.avatar : defaultAvatar " alt="头像"/>
@@ -19,6 +21,7 @@
       </div>
       <div class="new-content" @click="toPostMsg()">发布内容</div>
     </div>
+
     <div class="pop-bg" v-if="isPosting"></div>
     <div class="container-post" v-show="isPosting">
       <div class="top">
@@ -30,10 +33,12 @@
         <textarea class="textarea" autofocus v-model="content">{{ content }}</textarea>
       </div>
     </div>
+
   </div>
 </template>
 
 <script lang="ts">
+  import {host} from '../../env/environment';
   import Vue from 'vue';
   import moment from 'moment';
   import {Component} from 'vue-property-decorator';
@@ -47,6 +52,7 @@
   export default class GroupComponent extends Vue {
     id = 0;
     groupId = '';
+    courseId = '';
     size = 100;
     createdAt = '';
     userInfo: UserInfoModel | null = null;
@@ -55,18 +61,22 @@
     isIntroCollape = true;
     isPaying = false;
     isNotFound = false;
+
+    doscroll = 'overflow: scroll';
+    disscroll = 'overflow: hidden';
     defaultAvatar = '/assets/img/zaojiu-logo.jpg';
 
     isPosting = false;
     content = '';
-
     groupData = [];
     userData = {};
 
 
     created() {
       this.groupId = this.$route.params.id;
+      this.courseId = this.$route.query.courseId;
       this.initData();
+      console.log(this.$route.params.id);
     }
 
     async initData() {
@@ -85,10 +95,11 @@
 
     async postMsg() {
       if (this.content) {
-        await postMessage(this.groupId, getUserInfoCache(false).uid, this.content);
         this.closePage();
-        this.content = '';
+        showTips('提交中');
+        await postMessage(this.groupId, getUserInfoCache(false).uid, this.content);
         await this.initData();
+        this.content = '';
         return;
       } else {
         showTips('内容不能为空！');
@@ -108,6 +119,10 @@
     toPostMsg() {
       this.isPosting = true;
     }
+
+    toCommentPage (msgId: string) {
+      location.href = `${ host.self }/group/${ this.groupId }/${ msgId }?courseId=${ this.courseId }`;
+    }
   }
 
 </script>
@@ -118,17 +133,14 @@
     height: 100%;
     background-color: transparent;
     position: relative;
-    overflow: hidden;
 
     .group {
       height: 100%;
       width: 100%;
-      overflow: hidden;
 
       .scroll {
         background-color: rgb(242, 242, 242);
         height: calc(100% - 50px);
-        overflow: auto;
 
         .item {
           background-color: white;
@@ -150,6 +162,7 @@
               vertical-align: top;
 
               .nick {
+                font-weight: bold;
                 display: block;
                 margin-top: 5px;
                 font-size: 15px;
