@@ -3,7 +3,7 @@ import {Money} from "../utils/utils";
 import {PayType} from "./pay.enum";
 import {UserInfoModel} from "./user.model";
 
-export class ColumnUserInfo {
+export class CourseUserInfo {
   paid: boolean;
   paidAt: string;
   paidAtParsed: Moment;
@@ -25,12 +25,12 @@ export class ColumnUserInfo {
   }
 }
 
-export enum ColumnStatus {
+export enum CourseStatus {
   Unpublish = 0,
   Publish,
 }
 
-export class Column {
+export class Course {
   id: string;
   coverUrl: string;
   coverSmallUrl: string;
@@ -53,14 +53,14 @@ export class Column {
   subscribedTotal: number;
   totalVol: number;
   currentVol: number;
-  status: ColumnStatus;
+  status: CourseStatus;
   publishAt: string;
   publishAtParsed: Moment;
   createdAt: string;
   createdAtParsed: Moment;
   updatedAt: string;
   updatedAtParsed: Moment;
-  currentUserInfo: ColumnUserInfo;
+  currentUserInfo: CourseUserInfo;
 
   constructor(data: any, currentUserInfo?: any) {
     if (!data) return;
@@ -96,7 +96,7 @@ export class Column {
     this.createdAtParsed = moment(data.createdAt);
     this.updatedAt = data.updatedAt;
     this.updatedAtParsed = moment(data.updatedAt);
-    this.currentUserInfo = currentUserInfo ? new ColumnUserInfo(currentUserInfo) : new ColumnUserInfo({});
+    this.currentUserInfo = currentUserInfo ? new CourseUserInfo(currentUserInfo) : new CourseUserInfo({});
   }
 
   get paid(): boolean {
@@ -104,29 +104,29 @@ export class Column {
   }
 }
 
-export enum ColumnItemType {
+export enum CourseItemType {
   Post = 1, // 文章
   Audio, // 音频
   Video, // 视频
 }
 
-export enum ColumnItemPayType {
+export enum CourseItemPayType {
   Single = 1, //单品售卖
-  InColumn, //专栏内售卖
+  InCourse, //专栏内售卖
   Free, //免费
 }
 
-export enum ColumnItemStatus {
+export enum CourseItemStatus {
   Ready = 1, //上架
   Draft, //草稿
   NotReady, // 内容未上架
 }
 
-export class ColumnItem {
+export class CourseItem {
   id: string;
-  columnId: string;
+  courseId: string;
   vol: number;
-  type: ColumnItemType;
+  type: CourseItemType;
   subject: string;
   desc: string;
   coverUrl: string;
@@ -142,8 +142,8 @@ export class ColumnItem {
   totalFee: Money; // 价格，单位“分”
   memberFee: Money; // 会员价，单位“分”
   originFee: Money; // 原价，单位分
-  payType: ColumnItemPayType;
-  status: ColumnItemStatus;
+  payType: CourseItemPayType;
+  status: CourseItemStatus;
   viewTotal: number;
   commentTotal: number;
   praisedTotal: number;
@@ -159,7 +159,7 @@ export class ColumnItem {
 
     const coverUrl = data.coverUrl;
     this.id = data.id;
-    this.columnId = data.columnId;
+    this.courseId = data.courseId;
     this.vol = data.vol;
     this.type = data.type;
     this.subject = data.subject;
@@ -191,39 +191,39 @@ export class ColumnItem {
   }
 
   get isTypePost(): boolean {
-    return this.type === ColumnItemType.Post;
+    return this.type === CourseItemType.Post;
   }
 
   get isTypeVideo(): boolean {
-    return this.type === ColumnItemType.Video;
+    return this.type === CourseItemType.Video;
   }
 
   get isTypeAudio(): boolean {
-    return this.type === ColumnItemType.Audio;
+    return this.type === CourseItemType.Audio;
   }
 
   get isStatusNotReady(): boolean {
-    return this.status === ColumnItemStatus.NotReady;
+    return this.status === CourseItemStatus.NotReady;
   }
 
   get isStatusReady(): boolean {
-    return this.status === ColumnItemStatus.Ready;
+    return this.status === CourseItemStatus.Ready;
   }
 
-  get isPayTypeColumn(): boolean {
-    return this.payType === ColumnItemPayType.InColumn;
+  get isPayTypeCourse(): boolean {
+    return this.payType === CourseItemPayType.InCourse;
   }
 
   get isPayTypeSingle(): boolean {
-    return this.payType === ColumnItemPayType.Single;
+    return this.payType === CourseItemPayType.Single;
   }
 
   get isPayTypeFree(): boolean {
-    return this.payType === ColumnItemPayType.Free;
+    return this.payType === CourseItemPayType.Free;
   }
 }
 
-export class ColumnItemUserInfo {
+export class CourseItemUserInfo {
   paid: boolean;
   paidAt: string;
   paidAtParsed: Moment;
@@ -243,11 +243,11 @@ export class ColumnItemUserInfo {
   }
 }
 
-export class ColumnItemContent extends ColumnItem {
+export class CourseItemContent extends CourseItem {
   content: string;
   audioUrl: string;
   videoUrl: string;
-  currentUserInfo: ColumnItemUserInfo;
+  currentUserInfo: CourseItemUserInfo;
 
   constructor(data: any, currentUserInfo?: any) {
     if (!data) return;
@@ -257,33 +257,33 @@ export class ColumnItemContent extends ColumnItem {
     this.content = data.content;
     this.audioUrl = data.audioUrl;
     this.videoUrl = data.videoUrl;
-    this.currentUserInfo = currentUserInfo ? new ColumnItemUserInfo(currentUserInfo) : new ColumnItemUserInfo({});
+    this.currentUserInfo = currentUserInfo ? new CourseItemUserInfo(currentUserInfo) : new CourseItemUserInfo({});
   }
 }
 
-export class ColumnItemDetail {
-  column: Column;
-  current: ColumnItemContent;
-  prev: ColumnItemContent | null;
-  next: ColumnItemContent | null;
-  item: ColumnItem | null;
+export class CourseItemDetail {
+  course: Course;
+  current: CourseItemContent;
+  prev: CourseItemContent | null;
+  next: CourseItemContent | null;
+  item: CourseItem | null;
 
   constructor(data: any) {
     if (!data) return;
 
-    this.column = new Column(data.column, data.column_user_info);
-    this.prev = data.pre ? new ColumnItemContent(data.pre) : null;
-    this.next = data.next ? new ColumnItemContent(data.next) : null;
-    this.item = data.item ? new ColumnItem(data.item) : null;
-    this.current = new ColumnItemContent(data.item, data.item_user_info);
+    this.course = new Course(data.course, data.course_user_info);
+    this.prev = data.pre ? new CourseItemContent(data.pre) : null;
+    this.next = data.next ? new CourseItemContent(data.next) : null;
+    this.item = data.item ? new CourseItem(data.item) : null;
+    this.current = new CourseItemContent(data.item, data.item_user_info);
   }
 
   get paid(): boolean {
-    return this.column.paid;
+    return this.course.paid;
   }
 }
 
-export class ColumnItemCommentParentModel {
+export class CourseItemCommentParentModel {
   user: UserInfoModel;
   content: string;
   createdAtParsed: Moment;
@@ -295,10 +295,10 @@ export class ColumnItemCommentParentModel {
   }
 }
 
-export class ColumnItemCommentModel {
+export class CourseItemCommentModel {
   id: string;
   user: UserInfoModel;
-  parent: ColumnItemCommentParentModel;
+  parent: CourseItemCommentParentModel;
   toUsers: UserInfoModel[] = [];
   content: string;
   createdAtParsed: Moment;
@@ -308,7 +308,7 @@ export class ColumnItemCommentModel {
     this.id = data.id;
     if (users) this.user = users[data.uid];
     if (data.parent && users) {
-      this.parent = new ColumnItemCommentParentModel(users[data.parent.uid], data.parent.content, moment(+data.parent.createdAt / 1e6));
+      this.parent = new CourseItemCommentParentModel(users[data.parent.uid], data.parent.content, moment(+data.parent.createdAt / 1e6));
     }
     if (data.toUids) {
       for (let uid of data.toUsers) {

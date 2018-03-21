@@ -1,47 +1,47 @@
 import {host} from "../../env/environment";
 import {del, get, post} from "./xhr";
-import {Column, ColumnItem, ColumnItemCommentModel, ColumnItemDetail} from "./column.model";
+import {Course, CourseItem, CourseItemCommentModel, CourseItemDetail} from "./course.model";
 import {params} from "../utils/utils";
 
-export const getColumnInfo = async (id: string): Promise<Column> => {
-  const url = `${host.io}/api/live/columns/${id}`;
+export const getCourseInfo = async (id: string): Promise<Course> => {
+  const url = `${host.io}/api/course/courses/${id}`;
   const res = await get(url);
-  const data = res.data.column;
+  const data = res.data.course;
   const currentUserInfo = res.data.current_user_info;
 
-  return new Column(data, currentUserInfo);
+  return new Course(data, currentUserInfo);
 };
 
-export const listColumnItems = async (id: string, size = 100, marker = ''): Promise<ColumnItem[]> => {
+export const listCourseItems = async (id: string, size = 100, marker = ''): Promise<CourseItem[]> => {
   const query = {size, marker};
-  const url = `${host.io}/api/live/columns/${id}/items_info?${params(query)}`;
+  const url = `${host.io}/api/course/courses/${id}/items_info?${params(query)}`;
   const res = await get(url);
 
   const data = res.data.result || [];
-  const items: ColumnItem[] = [];
+  const items: CourseItem[] = [];
   data.forEach((itemData: any) => {
-    const item = new ColumnItem(itemData);
+    const item = new CourseItem(itemData);
     items.push(item);
   });
 
   return items;
 };
 
-export const getColumnItemDetail = async (id: string): Promise<ColumnItemDetail> => {
-  const url = `${host.io}/api/live/columns/items/${id}`;
+export const getCourseItemDetail = async (id: string): Promise<CourseItemDetail> => {
+  const url = `${host.io}/api/course/courses/items/${id}`;
   const res = await get(url);
   const data = res.data;
 
-  return new ColumnItemDetail(data);
+  return new CourseItemDetail(data);
 };
 
-export const listComments = async (id: string, size = 20, marker = '', sorts = ['-createdAt']): Promise<ColumnItemCommentModel[]> => {
+export const listComments = async (id: string, size = 20, marker = '', sorts = ['-createdAt']): Promise<CourseItemCommentModel[]> => {
   const query = {
     createdAt: marker,
     size: size,
     sorts: sorts.join(',')
   };
-  const url = `${host.io}/api/live/columns/items/${id}/comments?${params(query)}`;
+  const url = `${host.io}/api/course/courses/items/${id}/comments?${params(query)}`;
   const res = await get(url);
   const result = res.data.result;
   const users = res.data.include ? res.data.include.users : null;
@@ -50,7 +50,7 @@ export const listComments = async (id: string, size = 20, marker = '', sorts = [
   if (!result || !result.length) return [];
 
   for (let item of result) {
-    comments.push(new ColumnItemCommentModel(item, users))
+    comments.push(new CourseItemCommentModel(item, users))
   }
 
   return comments;
@@ -62,7 +62,7 @@ export const postComment = async (id: string, content: string, parentId?: string
     parentId
   };
 
-  const url = `${host.io}/api/live/columns/items/${id}/comments`;
+  const url = `${host.io}/api/course/courses/items/${id}/comments`;
   try {
     await post(url, data);
   } catch (e) {
@@ -72,7 +72,7 @@ export const postComment = async (id: string, content: string, parentId?: string
 };
 
 export const praise = async (id: string) => {
-  const url = `${host.io}/api/live/columns/items/${id}/praises`;
+  const url = `${host.io}/api/course/courses/items/${id}/praises`;
   try {
     await post(url, null);
   } catch (e) {
@@ -82,7 +82,7 @@ export const praise = async (id: string) => {
 };
 
 export const unpraise = async (id: string) => {
-  const url = `${host.io}/api/live/columns/items/${id}/praises`;
+  const url = `${host.io}/api/course/courses/items/${id}/praises`;
   try {
     await del(url);
   } catch (e) {

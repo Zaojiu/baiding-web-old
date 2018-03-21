@@ -5,16 +5,16 @@ import appComp from './components/app.comp.vue';
 import talksComp from './components/talks/content.comp.vue';
 import topic_post from './components/topic_post/topic_post.comp.vue';
 import errorComp from './components/error/error.comp.vue';
-import {authGuard} from "./shared/guard/user-auth.guard";
+import {authGuard} from './shared/guard/user-auth.guard';
 import {memberActionGuard, memberCardGuard, memberPlanGuard} from './shared/guard/mars-member.guard';
-import {execRouteTask} from "./shared/guard/route-task";
-import {mobileBindedGuard} from "./shared/guard/mobile-binded.guard";
-import {memberActivateCompGuard} from "./shared/guard/member-activate-comp.guard";
-import {getRelativePath, scrollPosition} from "./shared/utils/utils";
-import {signinGuard} from "./shared/guard/signin-comp.guard";
-import {mobileBindedCompGuard} from "./shared/guard/mobile-binded-comp.guard";
-import {afterHooks, beforeHooks} from "./hooks";
-import {liveInfoResolver} from "./shared/resolver/live-info.resolver";
+import {execRouteTask} from './shared/guard/route-task';
+import {mobileBindedGuard} from './shared/guard/mobile-binded.guard';
+import {memberActivateCompGuard} from './shared/guard/member-activate-comp.guard';
+import {getRelativePath, scrollPosition} from './shared/utils/utils';
+import {signinGuard} from './shared/guard/signin-comp.guard';
+import {mobileBindedCompGuard} from './shared/guard/mobile-binded-comp.guard';
+import {afterHooks, beforeHooks} from './hooks';
+import {liveInfoResolver} from './shared/resolver/live-info.resolver';
 import memberContainer from './components/my/member/container.comp.vue';
 import memberContent from './components/my/iosInAppPayMember/content.comp.vue';
 import iosNotMemberContent from './components/my/iosOnlyMember/notMember.comp.vue';
@@ -34,6 +34,8 @@ import marsMemberVideo from './components/mars_member/video.comp.vue';
 import marsMemberCourse from './components/mars_member/course.comp.vue';
 import marsMemberDownload from './components/mars_member/download.comp.vue';
 import marsMemberPlanList from './components/mars_member/planList.comp.vue';
+// 商城（课程）
+import CourseMallContainer from './components/course_mall/container.comp.vue';
 
 Vue.use(Router);
 
@@ -110,6 +112,63 @@ export const router = new Router({
         execRouteTask(tasks, to, from, next);
       },
       component: () => System.import('./components/signin/forget-password.comp.vue'),
+    },
+    {
+      path: '/mall',
+      name: 'mall.main',
+      component: () => System.import('./components/course_mall/mall.comp.vue')
+    },
+    {
+      path: '/group/:id',
+      component: CourseMallContainer,
+      children: [
+        {
+          name: 'group.main',
+          path: ''
+        },
+        {
+          name: 'group.cover',
+          path: 'cover',
+          component: () => System.import('./components/group/list.comp.vue')
+        }
+      ]
+    },
+    {
+      path: '/course/:id',
+      component: CourseMallContainer,
+      children: [
+        {
+          name: 'course.main',
+          path: ''
+        },
+        {
+          name: 'course.cover',
+          path: 'cover',
+          component: () => System.import('./components/course_mall/cover.comp.vue')
+        }
+      ]
+    },
+    {
+      path: '/course/:id/items/:itemId',
+      beforeEnter(to, from, next) {
+        const tasks = [authGuard(), mobileBindedGuard(true)];
+        execRouteTask(tasks, to, from, next);
+      },
+      component: () => System.import('./components/course_mall/content.comp.vue'),
+      children: [
+        {
+          name: 'course_mall.item.main',
+          path: ''
+        },
+        {
+          name: 'course_mall.item.post-comment',
+          path: 'post-comment',
+          meta: {
+            title: '发表评论',
+          },
+          component: () => System.import('./components/course_mall/post-comment.comp.vue'),
+        }
+      ]
     },
     {
       path: '/talks/:id',
@@ -512,6 +571,14 @@ export const router = new Router({
           component: () => System.import('./components/columns/post-comment.comp.vue'),
         }
       ]
+    },
+    {
+      path: '/group/:id/:msg',
+      name: 'group.message.comment',
+      meta: {
+        title: '评论'
+      },
+      component: () => System.import('./components/group/comment.comp.vue'),
     },
     {
       path: '/500',
