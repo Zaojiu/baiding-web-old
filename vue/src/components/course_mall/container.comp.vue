@@ -44,6 +44,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
+  import {getCourseInfo, listCourseItems, joinGroup} from '../../shared/api/course.api';
   import {getUserInfoCache} from "../../shared/api/user.api";
   /*import {UserInfoModel} from '../../shared/api/user.model'
   import {isInApp, isInWechat} from "../../shared/utils/utils";
@@ -51,25 +52,36 @@
 
   @Component({})
   export default class MallContainer extends Vue {
-    id: string = "";
-    groupId: string = "";
+    id: string = '';
+    groupId: string = '';
     courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
     groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
 
     created() {
+      this.id = this.$route.params['courseId'];
+      this.initData();
       this.routeChange();
+    }
+
+    async initData () {
+      try {
+        let data =  await getCourseInfo(this.id);
+        this.groupId = data.groupId;
+      } catch (e){
+        //
+      }
     }
 
     @Watch('$route')
     routeChange() {
       let routeName = this.$route.name;
       if (routeName === 'course.cover') {
-        this.id = this.$route.params['id'];
+        this.id = this.$route.params['courseId'];
         this.groupId = this.$route.query['groupId'];
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon-active.png';
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
       } else if(routeName === 'group.cover') {
-        this.groupId = this.$route.params['id'];
+        this.groupId = this.$route.params['groupId'];
         this.id = this.$route.query['courseId'];
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon-active.png';
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';

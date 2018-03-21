@@ -82,7 +82,7 @@
     content = '';
 
     created () {
-      this.groupId = this.$route.params.id;
+      this.groupId = this.$route.params.groupId;
       this.msgId = this.$route.params.msg;
       this.courseId = this.$route.query.courseId;
       this.initData();

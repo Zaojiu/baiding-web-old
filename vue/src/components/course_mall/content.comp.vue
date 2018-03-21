@@ -741,7 +741,7 @@
     isToolbarShow = false;
 
     created() {
-      this.courseId = this.$route.params['id'];
+      this.courseId = this.$route.params['courseId'];
       this.itemChanged();
     }
 
