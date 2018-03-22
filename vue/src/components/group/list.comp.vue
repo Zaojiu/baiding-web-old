@@ -2,7 +2,8 @@
   <div class="container">
 
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
-    <error class="abs-center" v-else-if="isNotFound">购买课程，加入圈子</error>
+    <error class="abs-center" v-else-if="isNotFound">网络错误</error>
+    <error class="abs-center" v-else-if="isNotPaid">购买课程，加入圈子</error>
 
     <div class="group" v-else>
       <div class="scroll" v-bind:style=" isPosting ? disscroll : doscroll ">
@@ -42,9 +43,9 @@
   import Vue from 'vue';
   import moment from 'moment';
   import {Component} from 'vue-property-decorator';
-  import {getData, postMessage} from '../../shared/api/group.api';
+  import {joinGroup} from '../../shared/api/course.api';
+  import {getCourse, getGroup, listMessages, postTextMessage} from '../../shared/api/group.api';
   import {getUserInfoCache} from '../../shared/api/user.api';
-  import {models} from '../../shared/api/group.model';
   import {UserInfoModel} from '../../shared/api/user.model';
   import {showTips} from '../../store/tip';
 
@@ -61,6 +62,7 @@
     isIntroCollape = true;
     isPaying = false;
     isNotFound = false;
+    isNotPaid = true;
 
     doscroll = 'overflow: scroll';
     disscroll = 'overflow: hidden';
@@ -81,8 +83,38 @@
     async initData() {
       try {
         this.isLoading = true;
-        let res = await getData(this.groupId, this.size, this.createdAt);
-        this.groupData = res;
+        let course = await getCourse(this.courseId);
+        if (course.current_user_info && course.current_user_info.isPaid) {
+          //判断是否购买
+          this.isNotPaid = false;
+
+          let group = await getGroup(this.groupId);
+          if (group.currentGroupUser) {
+            //判断是否加入圈子
+
+            try {
+              let res = await listMessages(this.groupId, this.size, this.createdAt);
+              this.groupData = res;
+            } catch (e) {
+              this.isNotFound = true;
+              throw e;
+            }
+
+          } else {
+            await joinGroup(this.groupId);
+            try {
+              let res = await listMessages(this.groupId, this.size, this.createdAt);
+              this.groupData = res;
+            } catch (e) {
+              this.isNotFound = true;
+              throw e;
+            }
+          }
+
+        } else {
+          this.isNotPaid = true;
+        }
+
       } catch (e) {
         this.isNotFound = true;
         throw e;
@@ -95,7 +127,7 @@
     async postMsg() {
       if (this.content) {
         this.closePage();
-        await postMessage(this.groupId, getUserInfoCache(false).uid, this.content);
+        await postTextMessage(this.groupId, this.content);
         await this.initData();
         this.content = '';
         return;

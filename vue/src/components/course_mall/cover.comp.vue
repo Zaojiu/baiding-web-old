@@ -41,15 +41,16 @@
               :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !courseInfo.paid}">
             <div class="item-detail">
               <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
-              <p class="item-intro">{{item.desc}}</p>
+              <p class="item-intro" @click="go(item)">{{item.desc}}</p>
+              <audio-bar class="audio-bar" v-if="item.isTypeAudio" :audioUrl="item.audioUrl"></audio-bar>
               <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </div>
             <div class="operation-area" @click="go(item)">
               <i class="bi bi-paper3" v-if="item.isTypePost"></i>
-              <i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>
+              <!--<i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>-->
               <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
-              <span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>
-              <span class="tips">{{itemBtnText(item)}}</span>
+              <!--<span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>-->
+              <span class="tips" v-if="!item.isTypeAudio">{{itemBtnText(item)}}</span>
             </div>
           </li>
         </ul>
@@ -264,6 +265,10 @@
               margin-bottom: 5px;
             }
 
+            .audio-bar {
+              margin: 4px 0;
+            }
+
             time {
               color: $color-gray3;
               font-size: $font-size-12;
@@ -278,9 +283,9 @@
             width: auto;
 
             .bi {
-              margin-bottom: 7px;
               font-size: 22px;
               color: $color-dark-gray;
+              margin: 8px;
             }
 
             .duration, .tips {
@@ -356,8 +361,13 @@
   import {setShareInfo} from '../../shared/utils/share';
   import {isInWechat} from "../../shared/utils/utils";
   import {host} from "../../env/environment";
+  import audioBar from "../../shared/audio-bar.comp.vue";
 
-  @Component
+  @Component({
+    components: {
+      audioBar: audioBar,
+    }
+  })
   export default class CoverComponent extends Vue {
     id = '';
     courseInfo = new Course({});
@@ -606,7 +616,7 @@
 
     async pay(orderNo: string) {
       await pay(orderNo);
-      this.$router.push({path: `/course/${this.id}`, query: {payResult: 'success'}});
+      this.$router.push({path: `/course/${this.id}/cover`, query: {payResult: 'success'}});
     }
   }
 </script>

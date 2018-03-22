@@ -16,7 +16,29 @@ const pushUserInfo = (groupData: any, userData: any) => {
   return groupData;
 };
 
-export const getData = async (groupId: string, size: number, createdAt: string): Promise<any> => {
+export const getCourse = async (courseId: string): Promise<any> => {
+  let url = `${host.io }/api/course/courses/${ courseId }`;
+
+  try {
+    let res = await get(url);
+    return res.data;
+  } catch (e) {
+    throw e;
+  }
+}
+
+export const getGroup = async (groupId: string): Promise<any> => {
+  let url = `${host.io }/api/group/groups/${ groupId }`;
+
+  try {
+    let res = await get(url);
+    return res.data;
+  } catch (e) {
+    throw e;
+  }
+}
+
+export const listMessages = async (groupId: string, size: number, createdAt: string): Promise<any> => {
   let url;
 
   if (createdAt) {
@@ -33,10 +55,9 @@ export const getData = async (groupId: string, size: number, createdAt: string):
   }
 }
 
-export const postMessage = async (groupId: string, toUids: number, content: string): Promise<any> => {
+export const postTextMessage = async (groupId: string, content: string): Promise<any> => {
   const data = {
-    type: "text",
-    toUids: [toUids],
+    type: 'text',
     content: content
   }
   let url = `${ host.io }/api/group/groups/${ groupId }/messages`;
@@ -44,7 +65,7 @@ export const postMessage = async (groupId: string, toUids: number, content: stri
   try {
     await post(url, data);
   } catch (e) {
-    //
+    throw e;
   }
   return;
 }
@@ -58,7 +79,7 @@ export const getMessageDedail = async (groupId: string, msgId: string): Promise<
     res.data.userInfo = res.data.users[key];
     return res.data;
   } catch (e) {
-    //
+    throw e;
   }
 }
 
@@ -75,23 +96,22 @@ export const getComments = async (groupId: string, msgId: string, size: number, 
     let res = await get(url);
     return pushUserInfo(res.data.result, res.data.include.users);
   } catch (e) {
-    //
+    throw e;
   }
 }
 
-export const postComment = async (groupId: string, msgId: string, content: string, uid: any): Promise<any> => {
+export const postComment = async (groupId: string, msgId: string, content: string): Promise<any> => {
   const data = {
-    content: content,
-    toUids: [uid],
-  }
+    content: content
+  };
 
   let url = `${ host.io }/api/group/groups/${ groupId }/messages/${ msgId }/comments`;
 
   try {
     let res = await post(url, data);
-    return res; //判断响应码并反馈给用户
+    return res;
   } catch (e) {
-    //
+    throw e;
   }
 }
 
