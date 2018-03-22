@@ -159,12 +159,12 @@
         font-size: $font-size-14;
         color: $color-w;
         display: flex;
-        flex-direction: course;
+        flex-direction: column;
         div {
           text-align: center;
           flex: 2;
           display: flex;
-          flex-direction: course;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
           span {
@@ -261,7 +261,7 @@
         bottom: 0;
         right: 0;
         display: flex;
-        flex-direction: course-reverse;
+        flex-direction: column-reverse;
         -webkit-box-pack: end; // for old ios browser
         pointer-events: none;
 
@@ -320,7 +320,7 @@
         bottom: 0;
         right: 0;
         display: flex;
-        flex-direction: course-reverse;
+        flex-direction: column-reverse;
         -webkit-box-pack: end;
 
         .three-tips {

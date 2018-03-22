@@ -278,7 +278,7 @@
 
           .operation-area {
             display: flex;
-            flex-direction: course;
+            flex-direction: column;
             align-items: center;
             width: auto;
 
