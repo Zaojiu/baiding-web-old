@@ -45,7 +45,7 @@
     z-index: $z-index-page-lv2;
     background-color: $color-w;
     display: flex;
-    flex-direction: course;
+    flex-direction: column;
 
     header {
       display: flex;
@@ -205,7 +205,7 @@
 
     created() {
       this.id = this.$route.params['itemId'];
-      this.courseId = this.$route.params['id'];
+      this.courseId = this.$route.params['courseId'];
       this.subject = decodeURIComponent(this.$route.query['title']);
 
       const request = this.$route.query['request'];
