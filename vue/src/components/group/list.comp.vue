@@ -3,7 +3,7 @@
 
     <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
     <error class="abs-center" v-else-if="isNotFound">网络错误</error>
-    <error class="abs-center" v-else-if="isNotPaid">购买课程，加入圈子</error>
+    <error class="abs-center" v-else-if="notJionGroup">购买课程，加入圈子</error>
 
     <div class="group" v-else>
       <div class="scroll" v-bind:style=" isPosting ? disscroll : doscroll ">
@@ -62,7 +62,7 @@
     isIntroCollape = true;
     isPaying = false;
     isNotFound = false;
-    isNotPaid = true;
+    notJionGroup = true;
 
     doscroll = 'overflow: scroll';
     disscroll = 'overflow: hidden';
@@ -85,9 +85,9 @@
         this.isLoading = true;
         let checkData = await checkPaid(this.groupId);
 
-        if (checkData.currentGroupUser) {
+        if (checkData.currentGroupUser.paid) {
 
-          this.isNotPaid = false;
+          this.notJionGroup = false;
           try {
             let res = await getData(this.groupId, this.size, this.createdAt);
             this.groupData = res;
