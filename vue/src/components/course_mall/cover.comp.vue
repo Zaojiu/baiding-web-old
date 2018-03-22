@@ -275,7 +275,7 @@
             display: flex;
             flex-direction: course;
             align-items: center;
-            width: 40px;
+            width: auto;
 
             .bi {
               margin-bottom: 7px;
@@ -370,7 +370,7 @@
     isNotFound = false;
 
     created() {
-      this.id = this.$route.params['id'];
+      this.id = this.$route.params['courseId'];
 
       try {
         this.userInfo = getUserInfoCache(false);

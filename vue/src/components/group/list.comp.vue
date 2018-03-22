@@ -73,10 +73,9 @@
 
 
     created() {
-      this.groupId = this.$route.params.id;
+      this.groupId = this.$route.params.groupId;
       this.courseId = this.$route.query.courseId;
       this.initData();
-      console.log(this.$route.params.id);
     }
 
     async initData() {

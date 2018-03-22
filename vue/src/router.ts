@@ -119,7 +119,7 @@ export const router = new Router({
       component: () => System.import('./components/course_mall/mall.comp.vue')
     },
     {
-      path: '/group/:id',
+      path: '/group/:groupId',
       component: CourseMallContainer,
       children: [
         {
@@ -134,7 +134,7 @@ export const router = new Router({
       ]
     },
     {
-      path: '/course/:id',
+      path: '/course/:courseId',
       component: CourseMallContainer,
       children: [
         {
@@ -149,7 +149,7 @@ export const router = new Router({
       ]
     },
     {
-      path: '/course/:id/items/:itemId',
+      path: '/course/:courseId/items/:itemId',
       beforeEnter(to, from, next) {
         const tasks = [authGuard(), mobileBindedGuard(true)];
         execRouteTask(tasks, to, from, next);
@@ -573,7 +573,7 @@ export const router = new Router({
       ]
     },
     {
-      path: '/group/:id/:msg',
+      path: '/group/:groupId/:msg',
       name: 'group.message.comment',
       meta: {
         title: '评论'

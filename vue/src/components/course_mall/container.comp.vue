@@ -44,6 +44,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
+  import {getCourseInfo, listCourseItems, joinGroup} from '../../shared/api/course.api';
   import {getUserInfoCache} from "../../shared/api/user.api";
   /*import {UserInfoModel} from '../../shared/api/user.model'
   import {isInApp, isInWechat} from "../../shared/utils/utils";
@@ -51,38 +52,56 @@
 
   @Component({})
   export default class MallContainer extends Vue {
-    id: string = "";
-    groupId: string = "";
+    courseId: string = '';
+    groupId: string = '';
     courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
     groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
 
     created() {
+      if (this.$route.query['courseId']) {
+        this.courseId = this.$route.query['courseId'];
+      } else {
+        this.courseId = this.$route.params['courseId'];
+      }
+
+      this.initData();
       this.routeChange();
+    }
+
+    async initData () {
+      try {
+        if (this.courseId) {
+          let data =  await getCourseInfo(this.courseId);
+          this.groupId = data.groupId;
+        }
+      } catch (e){
+        //
+      }
     }
 
     @Watch('$route')
     routeChange() {
       let routeName = this.$route.name;
       if (routeName === 'course.cover') {
-        this.id = this.$route.params['id'];
+        this.courseId = this.$route.params['courseId'];
         this.groupId = this.$route.query['groupId'];
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon-active.png';
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
       } else if(routeName === 'group.cover') {
-        this.groupId = this.$route.params['id'];
-        this.id = this.$route.query['courseId'];
+        this.groupId = this.$route.params['groupId'];
+        this.courseId = this.$route.query['courseId'];
         this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon-active.png';
         this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
       }
     }
 
     goToCourse() {
-      this.$router.push({path: `/course/${this.id}/cover?groupId=${this.groupId}`});
+      this.$router.push({path: `/course/${this.courseId}/cover?groupId=${this.groupId}`});
     }
 
     goToGroup() {
       if (this.groupId) {
-        this.$router.push({path: `/group/${this.groupId}/cover?courseId=${this.id}`});
+        this.$router.push({path: `/group/${this.groupId}/cover?courseId=${this.courseId}`});
       }
     }
   }
