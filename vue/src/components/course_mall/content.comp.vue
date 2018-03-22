@@ -145,13 +145,13 @@
       width: 100%;
       max-width: 1024px;
       bottom: 0;
-      left: 0;
       display: flex;
       height: 50px;
       background-color: rgb(10, 10, 23);
       display: -webkit-box;
       display: -ms-flexbox;
       z-index: 1;
+      margin: 0 auto;
 
       .icon {
         flex: 1;
