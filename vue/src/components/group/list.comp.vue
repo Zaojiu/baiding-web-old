@@ -85,7 +85,7 @@
         this.isLoading = true;
         let checkData = await checkPaid(this.groupId);
 
-        if (checkData.currentGroupUser.paid) {
+        if (checkData.currentGroupUser) {
 
           this.isNotPaid = false;
           try {
