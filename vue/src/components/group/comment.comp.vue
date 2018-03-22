@@ -106,7 +106,7 @@
     async postComments () {
       if (this.content) {
         this.closePost();
-        await postComment(this.groupId, this.msgId, this.content ,getUserInfoCache(false).uid);
+        await postComment(this.groupId, this.msgId, this.content);
         this.content = '';
         await this.initData();
 
