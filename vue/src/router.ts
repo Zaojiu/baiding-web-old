@@ -35,7 +35,7 @@ import marsMemberCourse from './components/mars_member/course.comp.vue';
 import marsMemberDownload from './components/mars_member/download.comp.vue';
 import marsMemberPlanList from './components/mars_member/planList.comp.vue';
 // 商城（课程）
-import CourseMallContainer from './components/course_mall/container.comp.vue';
+import CourseMallContainer from './components/course/container.comp.vue';
 
 Vue.use(Router);
 
@@ -115,8 +115,8 @@ export const router = new Router({
     },
     {
       path: '/mall',
-      name: 'mall.main',
-      component: () => System.import('./components/course_mall/mall.comp.vue')
+      name: 'course.mall.main',
+      component: () => System.import('./components/course/mall.comp.vue')
     },
     {
       path: '/group/:groupId',
@@ -144,7 +144,7 @@ export const router = new Router({
         {
           name: 'course.cover',
           path: 'cover',
-          component: () => System.import('./components/course_mall/cover.comp.vue')
+          component: () => System.import('./components/course/cover.comp.vue')
         }
       ]
     },
@@ -154,19 +154,19 @@ export const router = new Router({
         const tasks = [authGuard(), mobileBindedGuard(true)];
         execRouteTask(tasks, to, from, next);
       },
-      component: () => System.import('./components/course_mall/content.comp.vue'),
+      component: () => System.import('./components/course/content.comp.vue'),
       children: [
         {
-          name: 'course_mall.item.main',
+          name: 'course.item.main',
           path: ''
         },
         {
-          name: 'course_mall.item.post-comment',
+          name: 'course.item.post-comment',
           path: 'post-comment',
           meta: {
             title: '发表评论',
           },
-          component: () => System.import('./components/course_mall/post-comment.comp.vue'),
+          component: () => System.import('./components/course/post-comment.comp.vue'),
         }
       ]
     },

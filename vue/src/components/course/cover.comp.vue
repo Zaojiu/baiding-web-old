@@ -42,15 +42,16 @@
             <div class="item-detail">
               <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
               <p class="item-intro" @click="go(item)">{{item.desc}}</p>
-              <audio-bar class="audio-bar" v-if="item.isTypeAudio" :audioUrl="item.audioUrl"></audio-bar>
+              <audio-bar class="audio-bar" v-if="item.isTypeAudio && (item.freeAudioUrl || item.audioUrl)"
+                         :audioUrl="courseInfo.paid ? item.audioUrl : item.freeAudioUrl"></audio-bar>
               <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </div>
             <div class="operation-area" @click="go(item)">
               <i class="bi bi-paper3" v-if="item.isTypePost"></i>
-              <!--<i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>-->
+              <i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>
               <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
               <!--<span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>-->
-              <span class="tips" v-if="!item.isTypeAudio">{{itemBtnText(item)}}</span>
+              <span class="tips">{{itemBtnText(item)}}</span>
             </div>
           </li>
         </ul>
@@ -266,7 +267,7 @@
             }
 
             .audio-bar {
-              margin: 4px 0;
+              margin: 4px 10px 4px 0;
             }
 
             time {

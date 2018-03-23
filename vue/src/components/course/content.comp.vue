@@ -1009,7 +1009,7 @@
     }
 
     isChildActived() {
-      return this.$router.currentRoute.name !== 'course_mall.item.main';
+      return this.$router.currentRoute.name !== 'course.item.main';
     }
 
     gotoRelativeItem(item: CourseItemContent) {
