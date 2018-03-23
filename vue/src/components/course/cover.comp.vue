@@ -58,7 +58,7 @@
 
             <section class="item-intro-toggle block" v-if=" !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid) ">
               <div class="head">
-                <h2>专栏简介</h2>
+                <h4>课时简介</h4>
                 <a href="" @click.prevent="itemToggle(index)" :style="{textDecoration: 'none'}">{{ item.toggle ? '折叠' : '展开'}}</a>
               </div>
               <div class="intro article-content no-margin" @click.prevent="itemToggle(index)"
@@ -286,8 +286,9 @@
           }
 
           .item-intro-toggle {
+            box-shadow: unset;
             margin: 6px;
-            padding: 10px;
+            padding: 0 4px 0 0;
             width: 100%;
 
             .head {
