@@ -42,7 +42,7 @@
             <div class="item-detail">
               <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
               <p class="item-intro" @click="go(item)">{{item.desc}}</p>
-              <audio-bar class="audio-bar" v-if="item.isTypeAudio && courseInfo.paid || item.isTypeAudio && item.freeAudioUrl"
+              <audio-bar class="audio-bar" v-if="item.isTypeAudio && (item.freeAudioUrl || item.audioUrl)"
                          :audioUrl="courseInfo.paid ? item.audioUrl : item.freeAudioUrl"></audio-bar>
               <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </div>
