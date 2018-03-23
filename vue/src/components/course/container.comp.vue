@@ -21,9 +21,10 @@
     footer {
       background-color: #fff;
       height: 50px;
-      position: absolute;
+      position: fixed;
       bottom: 0;
       width: 100%;
+      max-width: 1024px;
       display: flex;
       justify-content: space-around;
       align-items: center;
