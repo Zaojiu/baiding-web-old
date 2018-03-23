@@ -33,7 +33,7 @@
 
       <section class="courses-list block">
         <div class="head">
-          <h2>课程列表</h2>
+          <h2>专栏列表</h2>
           <span>{{courseInfo.currentVol}}/{{courseInfo.totalVol}}</span>
         </div>
         <ul class="list">
@@ -58,7 +58,7 @@
 
             <section class="item-intro-toggle block" v-if=" !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid) ">
               <div class="head">
-                <h4>课程简介</h4>
+                <h4>课时简介</h4>
                 <a href="" @click.prevent="itemToggle(index)" :style="{textDecoration: 'none'}">{{ item.toggle ? '折叠' : '展开'}}</a>
               </div>
               <div class="intro article-content no-margin" @click.prevent="itemToggle(index)"
