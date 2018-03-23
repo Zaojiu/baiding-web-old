@@ -25,7 +25,7 @@
       <section class="courses-intro block">
         <div class="head">
           <h2>专栏简介</h2>
-          <a href="" @click.prevent="toggleCollape()">{{isIntroCollape ? '折叠' : '展开'}}</a>
+          <a href="" @click.prevent="toggleCollape()" :style="{textDecoration: 'none'}">{{!isIntroCollape ? '折叠' : '展开'}}</a>
         </div>
         <div class="intro article-content no-margin" @click.prevent="toggleCollape()"
              v-bind:class="{'collaped': isIntroCollape}" v-html="courseInfo.content"></div>
@@ -38,20 +38,21 @@
         </div>
         <ul class="list">
           <li v-for="item in items"
-              :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !courseInfo.paid}">
+              :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !courseInfo.paid && item.payType != 3 }">
             <div class="item-detail">
               <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
               <p class="item-intro" @click="go(item)">{{item.desc}}</p>
-              <audio-bar class="audio-bar" v-if="item.isTypeAudio && (item.freeAudioUrl || item.audioUrl)"
-                         :audioUrl="courseInfo.paid ? item.audioUrl : item.freeAudioUrl"></audio-bar>
+              <audio-bar class="audio-bar" v-if="item.isTypeAudio && !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid)"
+                         :audioUrl="item.audioUrl"></audio-bar>
               <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
             </div>
             <div class="operation-area" @click="go(item)">
               <i class="bi bi-paper3" v-if="item.isTypePost"></i>
-              <i class="bi bi-wave2" v-else-if="item.isTypeAudio"></i>
+              <i class="bi bi-paper3" v-else-if="item.isTypeAudio"></i>
               <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
               <!--<span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>-->
               <span class="tips">{{itemBtnText(item)}}</span>
+              <span class="tips">PayType:{{item.payType}}</span>
             </div>
           </li>
         </ul>
@@ -422,7 +423,7 @@
     }
 
     async share() {
-      await initWechat();
+      //await initWechat(); //先注释，不影响分享功能，等公园回来再优化
       setShareInfo(this.courseInfo.subject,
         `我正在「造就」学习《${this.courseInfo.subject}》,期待你的加入`,
         `${host.assets}/assets/img/zaojiu-logo.jpg`,
@@ -507,9 +508,9 @@
         if (item.isTypeVideo) {
           return item.isPayTypeFree && !this.courseInfo.paid ? '试看' : '观看';
         } else if (item.isTypeAudio) {
-          return item.isPayTypeFree && !this.courseInfo.paid ? '试听' : '收听';
+          return item.isPayTypeFree && !this.courseInfo.paid ? '图文' : '图文';
         } else if (item.isTypePost) {
-          return item.isPayTypeFree && !this.courseInfo.paid ? '试读' : '阅读';
+          return item.isPayTypeFree && !this.courseInfo.paid ? '试读' : '图文';
         }
       }
 
@@ -521,13 +522,13 @@
       return index !== -1 ? padStart(`${index + 1}`, 3, '0') + (withSuffix ? ' | ' : '') : '';
     }
 
-    getCourseItemDuration(item: CourseItem): string {
-      if (item.isTypeAudio || item.isTypeVideo) {
-        return item.duration.format('mm‘ss“', {trim: false});
-      } else {
-        return '';
-      }
-    }
+    // getCourseItemDuration(item: CourseItem): string {
+    //   if (item.isTypeAudio || item.isTypeVideo) {
+    //     return item.duration.format('mm‘ss“', {trim: false});
+    //   } else {
+    //     return '';
+    //   }
+    // }
 
     toggleCollape() {
       this.isIntroCollape = !this.isIntroCollape;
@@ -556,7 +557,7 @@
       };
       if (item) {
         // ready and paid or free item
-        if (item.isStatusReady && (item.isPayTypeFree || (item.isPayTypeCourse && this.courseInfo.paid))) {
+        if (item.isStatusReady && (item.payType == 3 || (item.isPayTypeCourse && this.courseInfo.paid))) {
           const to = `/course/${this.id}/items/${item.id}`;
           if (checkLogin(to)) this.$router.push({path: to});
         }
