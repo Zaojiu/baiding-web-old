@@ -130,6 +130,8 @@ export class CourseItem {
   subject: string;
   desc: string;
   audioUrl: string;
+  toggle: boolean;
+  content: string;
   coverUrl: string;
   coverSmallUrl: string;
   coverThumbnailUrl: string;
@@ -166,6 +168,8 @@ export class CourseItem {
     this.subject = data.subject;
     this.desc = data.desc;
     this.audioUrl = data.audioUrl ;
+    this.toggle = false;
+    this.content = data.content;
     this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
     this.coverSmallUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.coverThumbnailUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';

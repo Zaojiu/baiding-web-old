@@ -24,7 +24,7 @@
 
       <section class="courses-intro block">
         <div class="head">
-          <h2>专栏简介</h2>
+          <h2>课程简介</h2>
           <a href="" @click.prevent="toggleCollape()" :style="{textDecoration: 'none'}">{{!isIntroCollape ? '折叠' : '展开'}}</a>
         </div>
         <div class="intro article-content no-margin" @click.prevent="toggleCollape()"
@@ -37,23 +37,35 @@
           <span>{{courseInfo.currentVol}}/{{courseInfo.totalVol}}</span>
         </div>
         <ul class="list">
-          <li v-for="item in items"
+          <li v-for="(item, index) in items"
               :class="{'not-ready': item.isStatusNotReady, 'need-pay': item.isStatusReady && !courseInfo.paid && item.payType != 3 }">
-            <div class="item-detail">
-              <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
-              <p class="item-intro" @click="go(item)">{{item.desc}}</p>
-              <audio-bar class="audio-bar" v-if="item.isTypeAudio && !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid)"
-                         :audioUrl="item.audioUrl"></audio-bar>
-              <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
+
+            <div class="top">
+              <div class="item-detail">
+                <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
+                <p class="item-intro" @click="go(item)">{{item.desc}}</p>
+                <audio-bar class="audio-bar" v-if="item.isTypeAudio && !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid)"
+                           :audioUrl="item.audioUrl"></audio-bar>
+              </div>
+
+              <div class="operation-area" @click="go(item)">
+                <i class="bi bi-paper3" v-if="item.isTypePost"></i>
+                <i class="bi bi-paper3" v-else-if="item.isTypeAudio"></i>
+                <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
+                <!--<span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>-->
+                <span class="tips">{{itemBtnText(item)}}</span>
+              </div>
             </div>
-            <div class="operation-area" @click="go(item)">
-              <i class="bi bi-paper3" v-if="item.isTypePost"></i>
-              <i class="bi bi-paper3" v-else-if="item.isTypeAudio"></i>
-              <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
-              <!--<span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>-->
-              <span class="tips">{{itemBtnText(item)}}</span>
-              <span class="tips">PayType:{{item.payType}}</span>
-            </div>
+
+            <section class="item-intro-toggle block">
+              <div class="head">
+                <h2>专栏简介</h2>
+                <a href="" @click.prevent="itemToggle(index)" :style="{textDecoration: 'none'}">{{ item.toggle ? '折叠' : '展开'}}</a>
+              </div>
+              <div class="intro article-content no-margin" @click.prevent="itemToggle(index)"
+                   v-bind:class="{'item-collaped': !item.toggle}" v-html="item.content"></div>
+            </section>
+            <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
           </li>
         </ul>
       </section>
@@ -203,7 +215,99 @@
           border-bottom: solid 1px rgb(236, 236, 236);
           margin-bottom: 20px;
           display: flex;
+          flex-direction: column;
           align-items: center;
+
+          .top {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+
+            .item-detail {
+              flex-grow: 1;
+              overflow: hidden;
+
+              .item-title {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: $font-size-16;
+                color: $color-dark-gray;
+                margin-bottom: 5px;
+              }
+
+              .item-intro {
+                overflow: hidden;
+                display: -webkit-box;
+                text-overflow: ellipsis;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                white-space: pre-wrap;
+                text-align: justify;
+                line-height: 1.5em;
+                font-size: $font-size-14;
+                color: $color-gray3;
+                margin-right: 10px;
+                margin-bottom: 5px;
+              }
+
+              .audio-bar {
+                margin: 4px 10px 4px 0;
+              }
+            }
+
+            .operation-area {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              width: auto;
+
+              .bi {
+                font-size: 22px;
+                color: $color-dark-gray;
+                margin: 8px;
+              }
+
+              .duration, .tips {
+                font-size: $font-size-12;
+                line-height: 1em;
+              }
+
+              .duration {
+                margin-bottom: 12px;
+                color: $color-dark-gray;
+              }
+
+              .tips {
+                color: $color-gray3;
+              }
+            }
+          }
+
+          .item-intro-toggle {
+            margin: 6px;
+            padding: 10px;
+            width: 100%;
+
+            .head {
+              margin-bottom: 6px;
+            }
+
+            .intro {
+              font-size: $font-size-16;
+              color: $color-gray3;
+              line-height: 1.75em;
+              max-height: 100000px;
+              transition: max-height .3s;
+              overflow: hidden;
+
+              &.item-collaped {
+                max-height: 0;
+              }
+            }
+          }
 
           &:last-child {
             margin-bottom: 0;
@@ -239,70 +343,11 @@
             }
           }
 
-          .item-detail {
-            flex-grow: 1;
-            overflow: hidden;
-
-            .item-title {
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              font-size: $font-size-16;
-              color: $color-dark-gray;
-              margin-bottom: 5px;
-            }
-
-            .item-intro {
-              overflow: hidden;
-              display: -webkit-box;
-              text-overflow: ellipsis;
-              -webkit-line-clamp: 3;
-              -webkit-box-orient: vertical;
-              white-space: pre-wrap;
-              text-align: justify;
-              line-height: 1.5em;
-              font-size: $font-size-14;
-              color: $color-gray3;
-              margin-right: 10px;
-              margin-bottom: 5px;
-            }
-
-            .audio-bar {
-              margin: 4px 10px 4px 0;
-            }
-
-            time {
-              color: $color-gray3;
-              font-size: $font-size-12;
-              line-height: 1em;
-            }
-          }
-
-          .operation-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: auto;
-
-            .bi {
-              font-size: 22px;
-              color: $color-dark-gray;
-              margin: 8px;
-            }
-
-            .duration, .tips {
-              font-size: $font-size-12;
-              line-height: 1em;
-            }
-
-            .duration {
-              margin-bottom: 12px;
-              color: $color-dark-gray;
-            }
-
-            .tips {
-              color: $color-gray3;
-            }
+          time {
+            color: $color-gray3;
+            font-size: $font-size-12;
+            line-height: 1em;
+            align-self: flex-start;
           }
         }
       }
@@ -532,6 +577,11 @@
 
     toggleCollape() {
       this.isIntroCollape = !this.isIntroCollape;
+    }
+
+    itemToggle(index: number) {
+      this.items[index].toggle = this.items[index].toggle? false: true;
+      return;
     }
 
     go(item?: CourseItem) {
