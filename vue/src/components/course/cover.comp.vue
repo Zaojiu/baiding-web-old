@@ -56,7 +56,7 @@
               </div>
             </div>
 
-            <section class="item-intro-toggle block">
+            <section class="item-intro-toggle block" v-if=" !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid) ">
               <div class="head">
                 <h2>专栏简介</h2>
                 <a href="" @click.prevent="itemToggle(index)" :style="{textDecoration: 'none'}">{{ item.toggle ? '折叠' : '展开'}}</a>
