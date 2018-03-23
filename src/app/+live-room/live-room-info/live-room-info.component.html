@@ -1,4 +1,14 @@
 <div class="live-room-info">
+  
+  <div class="download-tips" *ngIf="isDownloadTipsShow">
+    <i class="bi bi-close" (click)="isDownloadTipsShow = false"></i>
+    <div class="tips">
+      造就iOS版
+      <small>_REPL_SLOGAN_</small>
+    </div>
+    <a class="download-btn" (click)="isiOS ? redirectToYingYongBao() : showDownloadModal()">立即下载</a>
+  </div>
+
   <div class="content">
     <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
 

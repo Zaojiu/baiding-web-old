@@ -9,7 +9,10 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 import {UtilsService} from "../../shared/utils/utils";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {PaidStatus} from "./live-room-info.enums";
-import {host} from "../../../environments/environment";
+import {appConfig, host} from "../../../environments/environment";
+import {ModalService} from "../../shared/modal/modal.service";
+import {DomSanitizer} from "@angular/platform-browser";
+import {ModalLink} from "../../shared/modal/modal.model";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -34,10 +37,12 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   booking = false;
   originFee: string;
   themeElem = null;
+  isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
+              private sanitizer: DomSanitizer,
               private userInfoService: UserInfoService, private operationTipsService: OperationTipsService,
-              private iosBridgeService: IosBridgeService, private shareService: ShareApiService) {
+              private modalService: ModalService, private iosBridgeService: IosBridgeService, private shareService: ShareApiService) {
   }
 
   ngOnInit() {
@@ -298,6 +303,19 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
     this.router.navigate([`/lives/${this.liveInfo.id}/present`], {queryParams: {fromUid: this.userInfo.uid}});
   }
+
+  redirectToYingYongBao() {
+    location.href = appConfig.iosDownloadLink;
+  }
+
+  showDownloadModal() {
+    const content = `<img style="max-width: 80vw; height: auto;" src="${host.assets}/assets/img/yingyongbao-ios-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>`;
+    const link = this.sanitizer.bypassSecurityTrustUrl(appConfig.iosDownloadLink);
+    const target = '_target';
+    const confirmLink = new ModalLink(link, target);
+    this.modalService.popup(content, '取消', '下载', true, confirmLink);
+  }
+
 
   go() {
     if (!this.checkLogin()) return;

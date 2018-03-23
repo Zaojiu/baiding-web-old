@@ -1,3 +1,48 @@
+.download-tips {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, .5);
+  color: $color-w;
+  display: flex;
+  width: 100%;
+  z-index: 2;
+  align-items: center;
+
+  .bi-close {
+    flex-shrink: 0;
+    font-size: 22px;
+    padding: 14px 16px;
+    cursor: pointer;
+  }
+
+  .tips {
+    flex-grow: 1;
+    font-size: 14px;
+    line-height: 1em;
+
+    small {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+  }
+
+  .download-btn {
+    height: 26px;
+    width: 78px;
+    text-align: center;
+    line-height: 26px;
+    font-size: 12px;
+    background-color: $color-brand;
+    margin-right: 16px;
+    color: $color-w;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}
+
 .live-room-info {
   position: absolute;
   left: 0;
