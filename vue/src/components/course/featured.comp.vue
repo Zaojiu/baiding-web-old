@@ -293,7 +293,7 @@
 
     async pay(orderNo: string) {
       await pay(orderNo);
-      this.$router.push({path: `/mall`, query: {payResult: 'success'}});
+      this.$router.push({path: `/course/${this.id}/cover`, query: {payResult: 'success'}});
     }
 
     audition() {

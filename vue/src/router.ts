@@ -114,9 +114,9 @@ export const router = new Router({
       component: () => System.import('./components/signin/forget-password.comp.vue'),
     },
     {
-      path: '/mall',
-      name: 'course.mall.main',
-      component: () => System.import('./components/course/mall.comp.vue')
+      path: '/course/featured',
+      name: 'course.featured.main',
+      component: () => System.import('./components/course/featured.comp.vue')
     },
     {
       path: '/group/:groupId',

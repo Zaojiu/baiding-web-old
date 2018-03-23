@@ -52,7 +52,6 @@
                 <i class="bi bi-paper3" v-if="item.isTypePost"></i>
                 <i class="bi bi-paper3" v-else-if="item.isTypeAudio"></i>
                 <i class="bi bi-video2" v-else-if="item.isTypeVideo"></i>
-                <!--<span class="duration" v-if="getCourseItemDuration(item)">{{getCourseItemDuration(item)}}</span>-->
                 <span class="tips">{{itemBtnText(item)}}</span>
               </div>
             </div>
@@ -567,13 +566,6 @@
       return index !== -1 ? padStart(`${index + 1}`, 3, '0') + (withSuffix ? ' | ' : '') : '';
     }
 
-    // getCourseItemDuration(item: CourseItem): string {
-    //   if (item.isTypeAudio || item.isTypeVideo) {
-    //     return item.duration.format('mm‘ss“', {trim: false});
-    //   } else {
-    //     return '';
-    //   }
-    // }
 
     toggleCollape() {
       this.isIntroCollape = !this.isIntroCollape;
