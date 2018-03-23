@@ -27,7 +27,7 @@
           <h2>课程简介</h2>
           <a href="" @click.prevent="toggleCollape()" :style="{textDecoration: 'none'}">{{!isIntroCollape ? '折叠' : '展开'}}</a>
         </div>
-        <div class="intro article-content no-margin" @click.prevent="toggleCollape()"
+        <div class="intro article-content no-margin"
              v-bind:class="{'collaped': isIntroCollape}" v-html="courseInfo.content"></div>
       </section>
 
@@ -61,7 +61,7 @@
                 <h4>课时简介</h4>
                 <a href="" @click.prevent="itemToggle(index)" :style="{textDecoration: 'none'}">{{ item.toggle ? '折叠' : '展开'}}</a>
               </div>
-              <div class="intro article-content no-margin" @click.prevent="itemToggle(index)"
+              <div class="intro article-content no-margin"
                    v-bind:class="{'item-collaped': !item.toggle}" v-html="item.content"></div>
             </section>
             <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
