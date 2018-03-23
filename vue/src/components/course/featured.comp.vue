@@ -113,7 +113,7 @@
     courseList: any[] = [];
     userInfo: UserInfoModel;
     courseInfo = new Course({});
-    id = '59c3657894f498000140bb7c';
+    id = '5ab2071bbd4dcb0001f27828';
     isLoading = false;
     isError = false;
     isNotFound = false;
@@ -293,7 +293,7 @@
 
     async pay(orderNo: string) {
       await pay(orderNo);
-      this.$router.push({path: `/mall`, query: {payResult: 'success'}});
+      this.$router.push({path: `/course/${this.id}/cover`, query: {payResult: 'success'}});
     }
 
     audition() {

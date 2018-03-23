@@ -7,7 +7,7 @@ export class CourseUserInfo {
   paid: boolean;
   paidAt: string;
   paidAtParsed: Moment;
-  payType: PayType;
+  paidType: PayType;
   praised: boolean;
   praisedAt: Moment;
   praisedAtParsed: Moment;
@@ -18,7 +18,7 @@ export class CourseUserInfo {
     this.paid = data.isPaid;
     this.paidAt = data.paidAt;
     this.paidAtParsed = moment(data.paidAt);
-    this.payType = data.payType;
+    this.paidType = data.paidType;
     this.praised = !moment(data.praisedAt).isZero();
     this.praisedAt = data.praisedAt;
     this.praisedAtParsed = moment(data.praisedAt);
@@ -130,7 +130,8 @@ export class CourseItem {
   subject: string;
   desc: string;
   audioUrl: string;
-  freeAudioUrl: string;
+  toggle: boolean;
+  content: string;
   coverUrl: string;
   coverSmallUrl: string;
   coverThumbnailUrl: string;
@@ -167,7 +168,8 @@ export class CourseItem {
     this.subject = data.subject;
     this.desc = data.desc;
     this.audioUrl = data.audioUrl ;
-    this.freeAudioUrl = data.freeAudioUrl;
+    this.toggle = false;
+    this.content = data.content;
     this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
     this.coverSmallUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.coverThumbnailUrl = coverUrl ? encodeURI(`${coverUrl}?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
