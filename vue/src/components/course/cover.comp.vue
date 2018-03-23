@@ -286,8 +286,9 @@
           }
 
           .item-intro-toggle {
+            box-shadow: unset;
             margin: 6px;
-            padding: 10px;
+            padding: 0 4px 0 0;
             width: 100%;
 
             .head {
