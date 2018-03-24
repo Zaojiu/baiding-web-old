@@ -5,7 +5,7 @@
     <div v-else>
       <div class="content">
         <div class="img-cover">
-          <img src="https://og9s6vxbs.qnssl.com/course/cxg.jpg?t=1"/>
+          <img src="https://og9s6vxbs.qnssl.com/course/cxg2.jpg"/>
         </div>
       </div>
       <footer class="buy-btn">
@@ -160,7 +160,7 @@
 
     async share() {
       await initWechat();
-      setShareInfo('课程',
+      setShareInfo('快速迭代下的区块链学习手册',
         `「造就」精品课程,期待你的加入`,
         `${host.assets}/assets/img/zaojiu-logo.jpg`,
         `${host.self}${this.$route.fullPath}`);
@@ -246,7 +246,7 @@
         if (this.userInfo && this.userInfo.isMobileBinded) {
           return true;
         }
-        this.$router.push({path: '/mobile-bind', query: {redirectTo: to}});
+        this.$router.push({path: '/mobile-bind-event', query: {redirectTo: to}});
         return false;
       };
       if (this.courseInfo.paid) {

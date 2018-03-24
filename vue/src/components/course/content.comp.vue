@@ -881,7 +881,7 @@
         this.isLoading = false;
       }
       if (this.itemInfo.current.isTypeVideo) this.prepareVideo();
-      this.coverUrl = this.itemInfo.current.coverSmall11Url;
+      this.coverUrl = this.itemInfo.current.cover169Url;
       if (!this.isChildActived()) setTitle(this.itemInfo.current.subject);
 
       if (this.isNeedLimitThreeMinutes(this.itemInfo.item)) {
