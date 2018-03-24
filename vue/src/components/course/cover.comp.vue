@@ -468,7 +468,7 @@
     }
 
     async share() {
-      //await initWechat(); //先注释，不影响分享功能，等公园回来再优化
+      await initWechat();
       setShareInfo(this.courseInfo.subject,
         `我正在「造就」学习《${this.courseInfo.subject}》,期待你的加入`,
         `${host.assets}/assets/img/zaojiu-logo.jpg`,
