@@ -280,6 +280,7 @@
               .tips {
                 color: $color-gray3;
                 padding-bottom: 10px;
+                white-space: nowrap;
               }
             }
           }
