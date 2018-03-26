@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {UtilsService} from "../utils/utils";
+import {appConfig} from "../../../environments/environment";
 
 @Component({
   selector: 'download-tips',
@@ -13,5 +14,9 @@ export class DownloadTipsComponent {
   isAndroid = UtilsService.isAndroid;
 
   constructor () {
+  }
+
+  redirectToYingYongBao() {
+    location.href = appConfig.iosDownloadLink;
   }
 }

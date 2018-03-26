@@ -51,6 +51,7 @@ import {CachedLiveInfoResolver} from "./shared/guard/cached-live-info.resolver";
 import {AppJumperGuard} from "./shared/guard/app-jumper.guard";
 import {CustomHttp} from "./shared/api/custom-http.service";
 import {LoadingModule} from "./shared/bd-loading/bd-loading.module";
+import {DownloadTipsModule} from "./shared/download/download-tips.modules";
 import {TalkService} from "./shared/api/talk/talk.api";
 import {VideoService} from "./shared/video-player/video-player.service";
 import {AnalyticsService} from "./shared/analytics/analytics.service"
@@ -69,6 +70,7 @@ import {LiveInfoResolver} from "./shared/guard/live-info.resolver";
     Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
     ImageViewerModule,
     LoadingModule,
+    DownloadTipsModule,
     PayPopupModule,
   ],
   declarations: [

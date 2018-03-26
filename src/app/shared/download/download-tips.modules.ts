@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
-import {DownLoadComponent} from "./download-tips.component";
+import {DownloadTipsComponent} from "./download-tips.component";
 
 @NgModule({
     imports: [],
-    declarations: [],
-    exports: [],
+    declarations: [DownloadTipsComponent],
+    exports: [DownloadTipsComponent],
   },
 )
 export class DownloadTipsModule {
