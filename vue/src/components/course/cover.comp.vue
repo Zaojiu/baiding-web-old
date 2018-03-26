@@ -64,7 +64,6 @@
               <div class="intro article-content no-margin"
                    v-bind:class="{'item-collaped': !item.toggle}" v-html="item.content"></div>
             </section>
-            <time v-if="!item.publishAtParsed.isZero()">{{item.publishAtParsed.format('YYYY年MM月DD日')}}</time>
           </li>
         </ul>
       </section>
@@ -210,7 +209,6 @@
 
       .list {
         li {
-          padding-bottom: 20px;
           border-bottom: solid 1px rgb(236, 236, 236);
           margin-bottom: 20px;
           display: flex;
@@ -281,6 +279,7 @@
 
               .tips {
                 color: $color-gray3;
+                padding-bottom: 10px;
               }
             }
           }
@@ -343,12 +342,6 @@
             }
           }
 
-          time {
-            color: $color-gray3;
-            font-size: $font-size-12;
-            line-height: 1em;
-            align-self: flex-start;
-          }
         }
       }
     }
@@ -546,7 +539,7 @@
 
     itemBtnText(item: CourseItem): string {
       if (item.isStatusNotReady) {
-        return '制作中';
+        return '即将上线';
       } else if (item.isPayTypeCourse && !this.courseInfo.paid) { // TODO: payTypeSingle
         return '收费';
       } else {
