@@ -10,7 +10,7 @@
         'played': isVideoPlayed,
         'played-landscape': isVideoPlayed && isLandscape
       }">
-        <div class="player" v-if="!closeMedia" id="player"
+        <div class="player" id="player"
              @click="itemInfo.current.isTypeVideo ? isVideoPlayed = true : false"></div>
 
         <div class="live-cover" v-if="!isVideoPlayed">
@@ -22,25 +22,6 @@
           >
 
           <div class="big-play" v-if="itemInfo.current.isTypeVideo">视频 {{itemInfo.current.duration.format('mm’ss“')}}
-          </div>
-        </div>
-
-        <div class="live-cover-event" v-if="closeMedia">
-          <img
-            class="cover-image"
-            alt="话题间封面"
-            :src="coverUrl"
-            @error="coverUrl = defaultCoverUrl"
-          >
-          <div class="three-tips">
-            <div class="three-tips-content">
-              <div class="three-title">会员专属，非会员只能试{{itemInfo.current.isTypeVideo?'看':'听'}}三分钟喔</div>
-              <div>
-                <button class="three-btn" @click="gotoMember">
-                  <i class="bi bi-buy-member"></i>立即开通会员
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -64,7 +45,7 @@
           </div>
         </div>
 
-        <audio-bar class="audio-bar" v-if="itemInfo.current.isTypeAudio&&!closeMedia"
+        <audio-bar class="audio-bar" v-if="itemInfo.current.isTypeAudio"
                    :audioUrl="itemInfo.current.audioUrl"></audio-bar>
 
         <div class="article article-content" v-html="itemInfo.current.content"></div>
@@ -724,9 +705,7 @@
     itemInfo = new CourseItemDetail({});
     isLoading = false;
     isError = false;
-    closeMedia = false;
     isListener = false;
-    limitSeconds = 180;
     isPraised = false;
     isComment = false;
     isChangeItem = true;
@@ -745,20 +724,9 @@
       this.itemChanged();
     }
 
-    destroyed() {
-      if (this.isListener) {
-        document.removeEventListener('timeupdate', this.bindHandler.bind(this), true);
-      }
-    }
+    destroyed() { }
 
-    bindHandler(event: any) {
-      let _this = event.target;
-      if (_this.currentTime > this.limitSeconds) {
-        this.closeMedia = true;
-        document.removeEventListener('timeupdate', this.bindHandler.bind(this), true);
-        this.isListener = false;
-      }
-    }
+    bindHandler(event: any) { }
 
     gotoMember() {
       this.$router.push({path: '/new-member/action'});
@@ -883,26 +851,6 @@
       if (this.itemInfo.current.isTypeVideo) this.prepareVideo();
       this.coverUrl = this.itemInfo.current.cover169Url;
       if (!this.isChildActived()) setTitle(this.itemInfo.current.subject);
-
-      if (this.isNeedLimitThreeMinutes(this.itemInfo.item)) {
-        document.addEventListener('timeupdate', this.bindHandler.bind(this), true);
-        this.isListener = true;
-      }
-    }
-
-    isNeedLimitThreeMinutes(item: CourseItem | null) {
-      if (!this.itemInfo.current.isTypeVideo && !this.itemInfo.current.isTypeAudio) {
-        return false;
-      }
-      if (!item) {
-        return false;
-      }
-      let seconds = item.duration.minutes() * 60 + item.duration.seconds();
-      if ((!this.userInfo || !this.userInfo.isMember) &&
-        seconds > this.limitSeconds) {
-        return true;
-      }
-      return false;
     }
 
     async initComments(needScroll: boolean) {

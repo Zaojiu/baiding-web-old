@@ -71,7 +71,7 @@
       <footer>
         <button class="button button-outline" v-if="false">赠送给好友</button>
         <button class="button button-primary" @click="go()" :disabled="isPaying"><span class="origin-fee"
-                                                                                       v-if="originFee">{{originFee}}</span>{{btnText}}
+                                                                                       v-if="originFee&&!isPaid">{{originFee}}</span>{{btnText}}
         </button>
       </footer>
     </div>
@@ -419,6 +419,7 @@
     items: CourseItem[] = [];
     isPaying = false;
     isNotFound = false;
+    isPaid = false;
 
     created() {
       this.id = this.$route.params['courseId'];
@@ -444,6 +445,8 @@
 
       try {
         this.courseInfo = await getCourseInfo(this.id);
+        this.isPaid = this.courseInfo.currentUserInfo&&this.courseInfo.currentUserInfo.paid;
+
         this.$emit('setGroupId', this.courseInfo.groupId);
         this.items = await listCourseItems(this.id);
       } catch (e) {
