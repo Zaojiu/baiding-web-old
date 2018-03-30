@@ -9,10 +9,9 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 import {UtilsService} from "../../shared/utils/utils";
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {PaidStatus} from "./live-room-info.enums";
-import {appConfig, host} from "../../../environments/environment";
+import {host} from "../../../environments/environment";
 import {ModalService} from "../../shared/modal/modal.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ModalLink} from "../../shared/modal/modal.model";
 
 @Component({
   templateUrl: './live-room-info.component.html',
@@ -37,7 +36,6 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   booking = false;
   originFee: string;
   themeElem = null;
-  isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private sanitizer: DomSanitizer,
@@ -302,10 +300,6 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     if (!this.checkLogin()) return;
 
     this.router.navigate([`/lives/${this.liveInfo.id}/present`], {queryParams: {fromUid: this.userInfo.uid}});
-  }
-
-  redirectToYingYongBao() {
-    location.href = appConfig.iosDownloadLink;
   }
 
   go() {

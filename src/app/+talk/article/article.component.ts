@@ -20,11 +20,8 @@ import {ObjectModel} from "../../shared/api/object/object.model";
 
 import {IosBridgeService} from "../../shared/ios-bridge/ios-bridge.service";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
-import {appConfig, host} from "../../../environments/environment";
+import {host} from "../../../environments/environment";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
-import {ModalLink} from "../../shared/modal/modal.model";
-import {DomSanitizer} from "@angular/platform-browser";
-import {ModalService} from "../../shared/modal/modal.service";
 import {SinglePlayerComponent} from "../../shared/audio-player/single-player.component";
 
 @Component({
@@ -57,7 +54,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isVideoCoverShown = true;
   liveObject: ObjectModel;
   isiOS = UtilsService.isiOS;
-  isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
   isNewApp: boolean;
   closeVideo: boolean;
   isVideoEle: any;
@@ -70,8 +66,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router: Router,
               private talkApiService: TalkService, private shareBridge: ShareBridge,
               private analytics: AnalyticsService, private objectService: ObjectService,
-              private iosBridge: IosBridgeService, private userInfoService: UserInfoService,
-              private sanitizer: DomSanitizer, private modalService: ModalService) {
+              private iosBridge: IosBridgeService, private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
@@ -417,17 +412,5 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   coverLoadError(liveInfo: LiveInfoModel) {
     liveInfo.coverSmallUrl = '/assets/img/default-cover.jpg'
-  }
-
-  redirectToYingYongBao() {
-    location.href = appConfig.iosDownloadLink;
-  }
-
-  showDownloadModal() {
-    const content = `<img style="max-width: 80vw; height: auto;" src="${host.assets}/assets/img/yingyongbao-ios-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>`;
-    const link = this.sanitizer.bypassSecurityTrustUrl(appConfig.iosDownloadLink);
-    const target = '_target';
-    const confirmLink = new ModalLink(link, target);
-    this.modalService.popup(content, '取消', '下载', true, confirmLink);
   }
 }

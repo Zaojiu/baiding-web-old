@@ -13,15 +13,13 @@ import {ShareBridge} from '../shared/bridge/share.interface';
 import {MessageApiService} from "../shared/api/message/message.api";
 import {VideoInfo, VideoPlayerOption} from "../shared/video-player/video-player.model";
 import {UtilsService} from "../shared/utils/utils";
-import {appConfig, host} from "../../environments/environment";
+import {host} from "../../environments/environment";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {OperationTipsService} from "../shared/operation-tips/operation-tips.service";
 import {TimelineComponent} from "./timeline/timeline.component";
 import {VideoService} from "../shared/video-player/video-player.service";
-import {ModalService} from "../shared/modal/modal.service";
 import {VideoPlayerComponent} from "../shared/video-player/video-player.component";
 import {AnalyticsService, OnlineService, OnlineParams, MediaInfo} from "../shared/analytics/analytics.service"
-import {ModalLink} from "../shared/modal/modal.model";
 import {UserInfoService} from "../shared/api/user-info/user-info.service";
 import {StoreService} from "../shared/store/store.service";
 
@@ -44,7 +42,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   isVideoLoading = true;
   isVideoLoadError = false;
   isVideoCoverShown = true;
-  isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
   routerSub: Subscription;
   videoVisableSub: Subscription;
   isLiveRoomVisable: boolean;
@@ -65,7 +62,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
               private shareService: ShareApiService, private messageApiService: MessageApiService,
               private sanitizer: DomSanitizer, private tooltips: OperationTipsService,
               private analytics: AnalyticsService, private videoService: VideoService,
-              private modalService: ModalService, private userInfoService: UserInfoService) {
+              private userInfoService: UserInfoService) {
   }
 
   ngOnInit() {
@@ -292,18 +289,6 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     if (e.type === 'load' && this.videoOption.isAutoPlay) {
       this.isVideoCoverShown = false;
     }
-  }
-
-  redirectToYingYongBao() {
-    location.href = appConfig.iosDownloadLink;
-  }
-
-  showDownloadModal() {
-    const content = `<img style="max-width: 80vw; height: auto;" src="${host.assets}/assets/img/yingyongbao-ios-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>`;
-    const link = this.sanitizer.bypassSecurityTrustUrl(appConfig.iosDownloadLink);
-    const target = '_target';
-    const confirmLink = new ModalLink(link, target);
-    this.modalService.popup(content, '取消', '下载', true, confirmLink);
   }
 
   closeAlert() {
