@@ -55,7 +55,7 @@ import {BubbleComponent} from "./timeline/message/bubble.component";
 import {FormModule} from "../shared/form/form.module";
 import {LiveRoomTitleResolver} from "../shared/guard/title.resolver";
 import {LiveCoverModule} from "../shared/live-cover/live-cover.module";
-import {DownloadTipsComponent} from "../shared/download/download-tips.component";
+import {DownloadAppTipsComponent} from "../shared/download/download-app-tips.component";
 
 export class MessageHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement): HammerInstance {
@@ -109,7 +109,7 @@ export class MessageHammerConfig extends HammerGestureConfig {
     TopBarComponent,
     BeginnerGuideComponent,
     RecorderComponent,
-    DownloadTipsComponent,
+    DownloadAppTipsComponent,
   ],
   providers: [
     TimelineService,

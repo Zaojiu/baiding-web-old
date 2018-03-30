@@ -7,12 +7,12 @@ import {DomSanitizer} from "@angular/platform-browser";
 
 
 @Component({
-  selector: 'download-tips',
-  templateUrl: './download-tips.component.html',
-  styleUrls: ['./download-tips.component.scss']
+  selector: 'download-app-tips',
+  templateUrl: './download-app-tips.component.html',
+  styleUrls: ['./download-app-tips.component.scss']
 })
 
-export class DownloadTipsComponent {
+export class DownloadAppTipsComponent {
   isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
   isiOS = UtilsService.isiOS;
   isAndroid = UtilsService.isAndroid;
