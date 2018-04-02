@@ -50,7 +50,28 @@ export const listComments = async (id: string, size = 20, marker = '', sorts = [
   if (!result || !result.length) return [];
 
   for (let item of result) {
-    comments.push(new CourseItemCommentModel(item, users))
+    comments.push(new CourseItemCommentModel(item, users));
+  }
+
+  return comments;
+};
+
+export const listCourseComments = async (id: string, size = 20, marker = '', sorts = ['-createdAt']): Promise<CourseItemCommentModel[]> => {
+  const query = {
+    createdAt: marker,
+    size: size,
+    sorts: sorts.join(',')
+  };
+  const url = `${host.io}/api/course/courses/${id}/comments?${params(query)}`;
+  const res = await get(url);
+  const result = res.data.result;
+  const users = res.data.include ? res.data.include.users : null;
+  const comments = [];
+
+  if (!result || !result.length) return [];
+
+  for (let item of result) {
+    comments.push(new CourseItemCommentModel(item, users));
   }
 
   return comments;
@@ -71,6 +92,41 @@ export const postComment = async (id: string, content: string, parentId?: string
   return;
 };
 
+export const postCourseComment = async (id: string, content: string, parentId?: string) => {
+  const data = {
+    content,
+    parentId
+  };
+  const url = `${host.io}/api/course/courses/${id}/comments`;
+  try {
+    await post(url, data);
+  } catch (e) {
+  }
+
+  return;
+};
+
+
+export const favorite = async (id: string) => {
+  const url = `${host.io}/api/course/courses/${id}/favorites`;
+  try {
+    await post(url, null);
+  } catch (e) {
+  }
+
+  return;
+};
+
+export const unFavorite = async (id: string) => {
+  const url = `${host.io}/api/course/courses/${id}/favorites`;
+  try {
+    await del(url);
+  } catch (e) {
+  }
+
+  return;
+};
+
 export const praise = async (id: string) => {
   const url = `${host.io}/api/course/courses/items/${id}/praises`;
   try {
@@ -83,6 +139,26 @@ export const praise = async (id: string) => {
 
 export const unpraise = async (id: string) => {
   const url = `${host.io}/api/course/courses/items/${id}/praises`;
+  try {
+    await del(url);
+  } catch (e) {
+  }
+
+  return;
+};
+
+export const coursePraise = async (id: string) => {
+  const url = `${host.io}/api/course/courses/${id}/praises`;
+  try {
+    await post(url, null);
+  } catch (e) {
+  }
+
+  return;
+};
+
+export const courseUnpraise = async (id: string) => {
+  const url = `${host.io}/api/course/courses/${id}/praises`;
   try {
     await del(url);
   } catch (e) {

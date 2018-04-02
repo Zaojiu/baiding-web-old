@@ -11,6 +11,7 @@ export class CourseUserInfo {
   praised: boolean;
   praisedAt: Moment;
   praisedAtParsed: Moment;
+  favorited: boolean;
 
   constructor(data: any) {
     if (!data) return;
@@ -21,6 +22,7 @@ export class CourseUserInfo {
     this.paidType = data.paidType;
     this.praised = !moment(data.praisedAt).isZero();
     this.praisedAt = data.praisedAt;
+    this.favorited = !moment(data.favoritedAt).isZero();
     this.praisedAtParsed = moment(data.praisedAt);
   }
 }
@@ -61,6 +63,9 @@ export class Course {
   updatedAt: string;
   updatedAtParsed: Moment;
   currentUserInfo: CourseUserInfo;
+  commentTotal: number;
+  praisedTotal: number;
+  favoriteTotal: number;
 
   constructor(data: any, currentUserInfo?: any) {
     if (!data) return;
@@ -78,6 +83,9 @@ export class Course {
     this.coverSmall11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/640x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.coverThumbnail11Url = coverUrl ? encodeURI(`${coverUrl}~1-1?imageMogr2/auto-orient/thumbnail/80x>/format/jpg/interlace/1`) : '/assets/img/default-cover.jpg';
     this.speaker = new SpeakerModel(data.speaker);
+    this.favoriteTotal = data.favoriteTotal;
+    this.praisedTotal = data.praiseTotal;
+    this.commentTotal = data.commentTotal;
     this.subject = data.subject;
     this.desc = data.desc;
     this.groupId = data.groupId;
@@ -167,7 +175,7 @@ export class CourseItem {
     this.type = data.type;
     this.subject = data.subject;
     this.desc = data.desc;
-    this.audioUrl = data.audioUrl ;
+    this.audioUrl = data.audioUrl;
     this.toggle = false;
     this.content = data.content;
     this.coverUrl = coverUrl ? encodeURI(coverUrl) : '/assets/img/default-cover.jpg';
