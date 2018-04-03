@@ -52,6 +52,7 @@
 <style lang="scss" scoped>
   .container {
     height: 100%;
+    overflow: auto;
 
     .member-content {
       height: 100%;

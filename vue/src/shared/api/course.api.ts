@@ -35,11 +35,11 @@ export const getCourseItemDetail = async (id: string): Promise<CourseItemDetail>
   return new CourseItemDetail(data);
 };
 
-export const listComments = async (id: string, size = 20, marker = '', sorts = ['-createdAt']): Promise<CourseItemCommentModel[]> => {
+// 课程item
+export const listComments = async (id: string, size = 20, marker = ''): Promise<CourseItemCommentModel[]> => {
   const query = {
-    createdAt: marker,
-    size: size,
-    sorts: sorts.join(',')
+    marker: marker,
+    size: size
   };
   const url = `${host.io}/api/course/courses/items/${id}/comments?${params(query)}`;
   const res = await get(url);
@@ -56,11 +56,10 @@ export const listComments = async (id: string, size = 20, marker = '', sorts = [
   return comments;
 };
 
-export const listCourseComments = async (id: string, size = 20, marker = '', sorts = ['-createdAt']): Promise<CourseItemCommentModel[]> => {
+export const listCourseComments = async (id: string, size = 20, marker = ''): Promise<CourseItemCommentModel[]> => {
   const query = {
-    createdAt: marker,
-    size: size,
-    sorts: sorts.join(',')
+    marker: marker,
+    size: size
   };
   const url = `${host.io}/api/course/courses/${id}/comments?${params(query)}`;
   const res = await get(url);
@@ -101,6 +100,7 @@ export const postCourseComment = async (id: string, content: string, parentId?: 
   try {
     await post(url, data);
   } catch (e) {
+    throw e;
   }
 
   return;

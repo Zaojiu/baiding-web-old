@@ -244,12 +244,13 @@
       } else {
         try {
           await postCourseComment(this.id, this.content, this.replyId);
-        } finally {
+          showTips('评论成功');
+        } catch (e) {
+        }
+        finally {
           this.isSubmitting = false;
         }
       }
-
-      await showTips('评论成功');
       this.backToCourseItem();
     }
   };

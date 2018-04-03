@@ -416,6 +416,7 @@
   import {getCourseInfo} from '../../shared/api/course.api';
   import {CourseItemDetail, CourseItemCommentModel} from "../../shared/api/course.model";
   import {getUserInfoCache} from '../../shared/api/user.api';
+  import {UserInfoModel} from '../../shared/api/user.model';
   import {Course} from '../../shared/api/course.model';
 
   const COMMENT_COUNT = 20;
@@ -437,8 +438,7 @@
     isCommentLoading = false;
     isCommentError = false;
     isCommentOnLatest = false;
-
-    userInfo = getUserInfoCache();
+    userInfo: UserInfoModel;
     isToolbarShow = false;
 
     created() {
@@ -467,7 +467,6 @@
 
       try {
         this.courseInfo = await getCourseInfo(this.id);
-        console.log(this.courseInfo);
         this.isPraised = this.courseInfo.currentUserInfo.praised;
         this.isFavorited = this.courseInfo.currentUserInfo.favorited;
       } catch (e) {
@@ -491,8 +490,7 @@
       this.isCommentError = false;
 
       try {
-        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
-        // todo 获取课程评论
+        const lastMarker = this.comments.length ? this.comments[this.comments.length - 1].createdAt : '';
         const comments = await listCourseComments(this.id, COMMENT_COUNT + 1, lastMarker);
         let isCommentOnLatest = true;
         if (comments.length === COMMENT_COUNT + 1) {
@@ -533,6 +531,9 @@
     }
 
     goComment(id: string, nick: string, content: string) {
+
+      this.userInfo = getUserInfoCache(true);
+
       const query: { [key: string]: string } = {title: encodeURIComponent(this.courseInfo.subject)};
 
       if (id && nick && content) {
