@@ -405,11 +405,11 @@
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {setTitle} from '../../shared/utils/title';
   import {listComments} from '../../shared/api/course.api';
+  import {UserInfoModel} from '../../shared/api/user.model';
 
   const COMMENT_COUNT = 20;
 
-  @Component({
-  })
+  @Component({})
   export default class ContentComponent extends Vue {
     id = '';
     originY = 0;
@@ -428,7 +428,7 @@
     isCommentError = false;
     isCommentOnLatest = false;
 
-    userInfo = getUserInfoCache();
+    userInfo: UserInfoModel;
     isToolbarShow = false;
 
     created() {
@@ -481,7 +481,7 @@
       this.isCommentError = false;
 
       try {
-        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
+        const lastMarker = this.comments.length ? this.comments[this.comments.length - 1].createdAt : '';
         const comments = await listComments(this.id, COMMENT_COUNT + 1, lastMarker);
         let isCommentOnLatest = true;
         if (comments.length === COMMENT_COUNT + 1) {
@@ -511,6 +511,9 @@
     }
 
     goComment(id: string, nick: string, content: string) {
+
+      this.userInfo = getUserInfoCache(true);
+
       const query: { [key: string]: string } = {title: encodeURIComponent(this.itemInfo.current.subject)};
 
       if (id && nick && content) {
