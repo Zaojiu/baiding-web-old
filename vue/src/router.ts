@@ -114,6 +114,42 @@ export const router = new Router({
       component: () => System.import('./components/signin/forget-password.comp.vue'),
     },
     {
+      path: '/app_course/cover/:id',
+      component: () => System.import('./components/app_course/cover.comp.vue'),
+      children: [
+        {
+          name: 'appCourseCove.main',
+          path: ''
+        },
+        {
+          name: 'appCourseCover.post-comment',
+          path: 'post-comment',
+          meta: {
+            title: '发表评论',
+          },
+          component: () => System.import('./components/app_course/post-comment.comp.vue')
+        }
+      ]
+    },
+    {
+      path: '/app_course/item/:id',
+      component: () => System.import('./components/app_course/itemContent.comp.vue'),
+      children: [
+        {
+          name: 'appCourseItem.main',
+          path: ''
+        },
+        {
+          name: 'appCourseItem.post-comment',
+          path: 'post-comment',
+          meta: {
+            title: '发表评论',
+          },
+          component: () => System.import('./components/app_course/post-comment.comp.vue')
+        }
+      ]
+    },
+    {
       path: '/course/featured',
       name: 'course.featured.main',
       component: () => System.import('./components/course/featured.comp.vue')
