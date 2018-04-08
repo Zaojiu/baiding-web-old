@@ -50,7 +50,9 @@ export class MessageApiService {
       if (data && data.result) {
         for (let messageData of data.result) {
           let message = this.parseMessage(messageData, data.include.users);
-          messages.push(message);
+          if (message) {
+            messages.push(message);
+          }
         }
       }
       return messages;
@@ -87,7 +89,9 @@ export class MessageApiService {
       if (users[data.uid]) {
         message.user = users[data.uid];
       } else {
-        throw new Error('users[data.uid not find!');
+        console.log('users[data.uid] not find!');
+        return;
+        // throw new Error('users[data.uid not find!');
       }
     }
     message.content = data.content;
@@ -119,6 +123,11 @@ export class MessageApiService {
 
     if (data.type === 'nice') {
       message.type = MessageType.Nice;
+
+      if (!users[data.nice.uid]) {
+        console.log('users[data.nice.uid] not find!');
+        return;
+      }
 
       // 有内容的推送才会把推送语作为第一条回复
       if (data.content) {
@@ -321,13 +330,17 @@ export class MessageApiService {
 
   postTextMessage(liveId: string, content: string, replyMessage: MessageModel = null): Promise<MessageModel> {
     const postMessage = new PostMessageModel();
+    const userInfo = this.userInfoService.getUserInfoCache();
+    const message = new MessageModel();
     postMessage.liveId = liveId;
     postMessage.type = 'text';
     postMessage.content = content;
-    if (replyMessage) postMessage.parentId = replyMessage.id;
 
-    const userInfo = this.userInfoService.getUserInfoCache();
-    const message = new MessageModel();
+    if (!userInfo) {
+      return;
+    }
+
+    if (replyMessage) postMessage.parentId = replyMessage.id;
 
     if (replyMessage) {
       message.parentId = replyMessage.id;
@@ -365,6 +378,10 @@ export class MessageApiService {
 
     const message = new MessageModel();
     const userInfo = this.userInfoService.getUserInfoCache();
+
+    if (!userInfo) {
+      return;
+    }
 
     if (replyMessage) {
       message.parentId = replyMessage.id;
@@ -404,6 +421,10 @@ export class MessageApiService {
     const message = new MessageModel();
     const userInfo = this.userInfoService.getUserInfoCache();
 
+    if (!userInfo) {
+      return;
+    }
+
     message.id = UtilsService.randomId();
     message.parentId = '';
     message.isReceived = false;
@@ -437,6 +458,10 @@ export class MessageApiService {
 
     const message = new MessageModel();
     const userInfo = this.userInfoService.getUserInfoCache();
+
+    if (!userInfo) {
+      return;
+    }
 
     if (replyMessage) {
       message.parentId = replyMessage.id;

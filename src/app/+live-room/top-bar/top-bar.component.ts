@@ -4,9 +4,9 @@ import {Subscription} from "rxjs";
 import {ScrollerEventModel} from "../../shared/scroller/scroller.model";
 import {FadeDirective} from "../../shared/animation/fade/fade.directive";
 import {Router} from "@angular/router";
-import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {ShareBridge} from "../../shared/bridge/share.interface";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
+import {UserInfoModel} from '../../shared/api/user-info/user-info.model';
 import {UtilsService} from "../../shared/utils/utils";
 
 declare var $: any;
@@ -23,8 +23,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
   @Input() onlineCount: number;
   @Input() isTimelineOnOldest: boolean;
   @Input() isTimelineOnLatest: boolean;
-  @Input() userInfo: UserInfoModel;
   @Input() liveInfo: LiveInfoModel;
+  @Input() userInfo: UserInfoModel;
   @ViewChildren(FadeDirective) oldestLatestBtns: QueryList<FadeDirective>;
   isGotoOldestShown = false;
   isGotoLatestShown = false;
@@ -129,6 +129,12 @@ export class TopBarComponent implements OnInit, OnDestroy {
   }
 
   gotoShareStar() {
-    this.router.navigate([`/lives/${this.liveInfo.id}/share-star`]);
+    if (this.userInfo) {
+      this.router.navigate([`/lives/${this.liveInfo.id}/share-star`]);
+      return;
+    } else {
+      this.router.navigate(['/signin'], {queryParams: {redirectTo: location.href}});
+      return;
+    }
   }
 }

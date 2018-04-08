@@ -160,7 +160,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   onReceivedPraises(praisedUser: MqPraisedUser) {
     // 点赞的人和自己是同一个人
-    if (praisedUser.user.uid === this.userInfo.uid) {
+    if (this.userInfo && (praisedUser.user.uid === this.userInfo.uid)) {
       return;
     }
     for (let message of this.messages) {

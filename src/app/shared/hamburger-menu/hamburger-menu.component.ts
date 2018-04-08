@@ -35,19 +35,19 @@ export class HamburgerMenuComponent implements AfterViewInit, OnInit {
     if (this.timer) clearTimeout(this.timer);
 
     if (!this.isActivated) {
-      this.autoFade.opacityUp()
+      this.autoFade.opacityUp();
     }
     else {
       this.timer = setTimeout(() => {
         this.autoFade.opacityDown();
-      }, 3000)
+      }, 3000);
     }
 
     return this.isActivated = !this.isActivated;
   }
 
   gotoSignin() {
-    this.router.navigate(['/signin'], {queryParams: {redirectTo: '/lives'}});
+    this.router.navigate(['/signin'], {queryParams: {redirectTo: location.href}});
   }
 
   createRoom() {

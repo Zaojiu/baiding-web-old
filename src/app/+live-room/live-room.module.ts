@@ -55,6 +55,8 @@ import {BubbleComponent} from "./timeline/message/bubble.component";
 import {FormModule} from "../shared/form/form.module";
 import {LiveRoomTitleResolver} from "../shared/guard/title.resolver";
 import {LiveCoverModule} from "../shared/live-cover/live-cover.module";
+import {GuestLiveGuard} from "../shared/guard/guest-live.guard";
+import {LiveAuthGuard} from "../shared/guard/live-auth.guard";
 import {DownloadAppTipsModule} from "../shared/download/download-app-tips.module";
 
 export class MessageHammerConfig extends HammerGestureConfig {
@@ -119,6 +121,8 @@ export class MessageHammerConfig extends HammerGestureConfig {
     CommentApiService,
     CachedLiveInfoResolver,
     QuitEditGuard,
+    GuestLiveGuard,
+    LiveAuthGuard,
     RoleAuthGuard,
     RoleAuthGuardRedBook,
     UploadApiService,

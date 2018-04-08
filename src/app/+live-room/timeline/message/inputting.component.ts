@@ -30,6 +30,9 @@ export class InputtingComponent implements OnInit, OnDestroy {
     this.sub = this.inputtingService.actived$
       .throttleTime(5000)
       .filter(e => {
+        if (!this.userInfo) {
+          return true;
+        }
         return e.user.uid !== this.userInfo.uid;
       })
       .subscribe((m: InputtingMessageModel) => {

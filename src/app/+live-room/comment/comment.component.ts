@@ -79,7 +79,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     switch (comment.type) {
       case CommentType.Text:
-        if (_.includes(comment.toUids, this.userInfo.uid)) {
+        if (this.userInfo && _.includes(comment.toUids, this.userInfo.uid)) {
           content = `<span class="highlight">${UtilsService.parseAt(comment.content)}</span>`;
         } else {
           content = UtilsService.parseAt(comment.content, true);
@@ -94,7 +94,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         break;
 
       case CommentType.CommentPushed:
-        if (comment.eventData.comment_user.uid === this.userInfo.uid) {
+        if (this.userInfo && comment.eventData.comment_user.uid === this.userInfo.uid) {
           content = '<span class="highlight">我的评论被推送了</span>';
         } else {
           content = `${comment.eventData.comment_user.nick}的评论被推送了`;
@@ -164,7 +164,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         comment.createdAt = evt.info.comment.createdAt;
         comment.type = CommentType.CommentPushed;
         comment.eventData = evt.info;
-        if (comment.eventData.comment_user.uid === this.userInfo.uid) {
+        if (this.userInfo && comment.eventData.comment_user.uid === this.userInfo.uid) {
           this.tooltips.popup('您的评论已被推送');
         }
         this.commentPushQueue.push(comment);
@@ -282,6 +282,9 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   gotoCommentList(comment?: CommentModel) {
+    if (!this.userInfo) {
+      return;
+    }
     let query: any = {};
 
     query.commentId = comment.id;

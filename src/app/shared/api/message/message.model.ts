@@ -106,6 +106,9 @@ export class MessageModel {
   }
 
   getPraisedAvatars(currentUser: UserInfoModel) {
+    if (!currentUser) {
+      return [];
+    }
     let avatars = this.praisedAvatars.filter((item, index) => {
       return item && item.uid !== currentUser.uid;
     });

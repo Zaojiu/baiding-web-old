@@ -104,8 +104,11 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
           });
         }
       }
+      if (!this.userInfo) {
+        this.guestCounter();
+      }
     }).finally(() => {
-      this.onlineService.start()
+      this.onlineService.start();
     });
     this.refreshInterval = setInterval(() => this.refreshLiveInfo(), 120 * 1000); // 每30s刷新一次liveInfo, 更新在线人数。
 
@@ -119,9 +122,15 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       }
 
       if (evt.event === EventType.LivePraise) {
-        if (evt.info.user.uid == this.userInfo.uid) {
-          return
+
+        if (!this.userInfo) {
+          return;
         }
+
+        if (evt.info.user.uid == this.userInfo.uid) {
+          return;
+        }
+
         let userAnim = new UserAnimEmoji;
         userAnim.emoji = evt.info.emoji;
         userAnim.user = new UserInfoModel;
@@ -173,9 +182,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       return this.player.buildMediaInfo();
     };
     onlineParams.currentScroll = (): number => {
-      return 0
+      return 0;
     };
-    this.onlineService = this.analytics.onlineService(onlineParams)
+    this.onlineService = this.analytics.onlineService(onlineParams);
   }
 
   refreshLiveInfo(): Promise<boolean> {
@@ -188,7 +197,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   setShareInfo() {
-    let shareTitle = `${this.userInfo.nick}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
+    let shareTitle = `${this.userInfo ? this.userInfo.nick : '我'}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
     let shareDesc = this.liveInfo.desc;
     let shareCover = this.liveInfo.coverThumbnailUrl;
     let shareUrl = this.getShareUri();
@@ -235,10 +244,17 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   joinLiveRoom(): Promise<void> {
-    return this.liveService.getLiveInfo(this.id, true).then(liveInfo => { // 发送加入话题间的请求。
+    return this.liveService.getLiveInfo(this.id).then(liveInfo => { // 发送加入话题间的请求。
       this.liveInfo = liveInfo;
       this.isJoin = true;
       return this.liveService.joinLive(this.id);
+    });
+  }
+
+  guestCounter(): Promise<void> {
+    return this.liveService.getLiveInfo(this.id).then(liveInfo => {
+      this.liveInfo = liveInfo;
+      return this.liveService.Counter(this.id);
     });
   }
 

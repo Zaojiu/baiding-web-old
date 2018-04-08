@@ -89,7 +89,8 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.originFee = '';
 
     if (
-      this.liveInfo.isNeedPay && !this.liveInfo.paid &&
+      this.liveInfo.isNeedPay &&
+      !this.liveInfo.paid &&
       this.userInfo &&
       this.liveInfo.isAudience(this.userInfo.uid)
     ) {
@@ -209,6 +210,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   checkLogin() {
+    this.userInfo = this.userInfoService.getUserInfoCache();
     if (!this.userInfo) {
       this.router.navigate([`/signin`], {queryParams: {redirectTo: `/lives/${this.liveId}/info`}});
       return false;
@@ -303,13 +305,18 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   go() {
-    if (!this.checkLogin()) return;
+    // if (!this.checkLogin()) return;
 
     if (
-      this.liveInfo.isNeedPay && !this.liveInfo.paid &&
-      this.liveInfo.isAudience(this.userInfo.uid)
+      this.liveInfo.isNeedPay &&
+      !this.liveInfo.paid
     ) {
-      this.payLive();
+      if (
+        this.checkLogin() &&
+        this.liveInfo.isAudience(this.userInfo.uid)
+      ) {
+        this.payLive();
+      }
     } else {
       this.gotoLive();
     }
