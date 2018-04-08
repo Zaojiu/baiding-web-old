@@ -13,6 +13,7 @@
       [ngClass]="{'activate':  mode === modeEnums.Text || mode === modeEnums.At}"
       [liveId]="liveId"
       [liveInfo]="liveInfo"
+      [userInfo]="userInfo"
       [(mode)]="mode"
       [(commentContent)]="commentContent"
       (postSuccessful)="postSuccessful($event)"

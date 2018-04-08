@@ -8,6 +8,8 @@ import {LiveRoomService} from "../../+live-room/live-room.service";
 import {LiveInfoModel} from "../api/live/live.model";
 import {UserInfoModel} from "../api/user-info/user-info.model";
 import {CommentModel} from "../api/comment/comment.model";
+import {UserInfoService} from "../api/user-info/user-info.service";
+import {Router} from "@angular/router";
 
 declare var $: any;
 
@@ -20,6 +22,7 @@ declare var $: any;
 export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() liveId: string;
   @Input() liveInfo: LiveInfoModel;
+  @Input() userInfo: UserInfoModel;
   @Input() mode: EditMode;
   @Output() modeChange = new EventEmitter<EditMode>();
   @Input() commentContent: string;
@@ -29,7 +32,7 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
   isPosting: boolean;
   modeEnums = EditMode;
 
-  constructor(private commentApiService: CommentApiService, private liveRoomService: LiveRoomService) {
+  constructor(private router: Router, private commentApiService: CommentApiService, private liveRoomService: LiveRoomService) {
   }
 
   ngAfterViewInit() {
@@ -86,7 +89,7 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
     while (true) {
       var atTextArr = atRegexp.exec(this.commentContent);
       if (!atTextArr || atTextArr.length != 3 || !atRegexp.lastIndex) {
-        break
+        break;
       }
       atUids.push(+atTextArr[2]);
     }
@@ -138,5 +141,12 @@ export class CommentInputComponent implements AfterViewInit, OnChanges, OnDestro
 
   blurMessageInput() {
     this.commentInput.nativeElement.blur();
+  }
+
+  checkLogin () {
+    if (!this.userInfo) {
+      this.router.navigate(['/signin'], {queryParams: {redirectTo: location.href}});
+    }
+    return;
   }
 }

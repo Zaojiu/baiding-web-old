@@ -26,8 +26,8 @@
   <top-bar
     class="top-bar"
     [onlineCount]="liveInfo.totalUsers"
-    [userInfo]="userInfo"
     [liveInfo]="liveInfo"
+    [userInfo]="userInfo"
     [(isCommentOpened)]="isCommentOpened"
     [isTimelineOnOldest]="timeline.isOnOldest"
     [isTimelineOnLatest]="timeline.isOnLatest"
@@ -53,7 +53,7 @@
   </div>
 
   <audience-tool-bar
-    *ngIf="liveInfo.isAudience(userInfo.uid)&&!liveInfo.disableComment"
+    *ngIf="(userInfo ? liveInfo.isAudience(userInfo.uid) : 'guest') && !liveInfo.disableComment"
     class="audience-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"
@@ -61,7 +61,7 @@
   ></audience-tool-bar>
 
   <editor-tool-bar
-    *ngIf="liveInfo.isEditor(userInfo.uid)"
+    *ngIf="userInfo ? liveInfo.isEditor(userInfo.uid) : false"
     class="editor-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"

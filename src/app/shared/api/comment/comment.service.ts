@@ -26,7 +26,9 @@ export class CommentApiService {
     if (users[data.uid]) {
       comment.user = users[data.uid] as UserInfoModel;
     } else {
-      throw new Error('users[data.uid] not find!');
+      console.log('users[data.uid] not find!');
+      // throw new Error('users[data.uid] not find!');
+      return;
     }
     comment.msgId = data.msgId;
     comment.type = CommentType.Text;
@@ -39,7 +41,7 @@ export class CommentApiService {
     if (data.toUids && data.toUids.length) {
       for (let uid of data.toUids) {
         comment.toUsers.push((users[uid] as UserInfoModel));
-        if (uid === currentUserInfo.uid) {
+        if (currentUserInfo && uid === currentUserInfo.uid) {
           comment.isAtMe = true;
         }
       }
@@ -52,7 +54,7 @@ export class CommentApiService {
     const comment = new CommentModel();
     const userInfo = this.userInfoService.getUserInfoCache();
 
-    if (!data) return comment;
+    if (!data || !userInfo) return comment;
 
     comment.id = data.id;
     comment.user = userInfo;
@@ -119,7 +121,9 @@ export class CommentApiService {
       if (data && data.result) {
         for (let commentData of data.result) {
           let comment = this.parseComment(commentData, data.include.users);
-          comments.push(comment);
+          if (comment) {
+            comments.push(comment);
+          }
         }
       }
 

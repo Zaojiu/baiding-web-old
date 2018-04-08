@@ -3,14 +3,15 @@
   [ngClass]="{'activate': mode !== modeEnums.None}"
   (ngSubmit)="postComment(); focusMessageInput();"
 >
-  <div class="comment-input-wrapper">
+  <div class="comment-input-wrapper" (click)="checkLogin()">
     <input
+      [disabled]="!userInfo"
       class="comment-input"
       #commentInput
       name="commentContent"
       type="text"
       (focus)="changeMode(modeEnums.Text)"
-      placeholder="发表评论"
+      [placeholder]="userInfo ? '发表评论' : '请登录'"
       [(ngModel)]="commentContent"
       display-when-focus
     >

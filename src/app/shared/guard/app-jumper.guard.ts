@@ -28,15 +28,17 @@ export class AppJumperGuard implements CanActivate {
 
   private gotoLive(liveId: string, state: RouterStateSnapshot, needPush: boolean): Promise<boolean> {
     return this.processLiveInfo(liveId, state).then(liveInfo => {
-      const userInfo = this.userInfoService.getUserInfoCache(state.url);
 
-      if (!liveInfo || !userInfo) return false;
+      if (!liveInfo) return false;
 
       // app视频直播, 使用app的gotoLive
-      if (liveInfo.isTypeApp() && liveInfo.isEditor(userInfo.uid)) {
-        let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
-        this.iosBridge.gotoLive(liveInfo.id, liveInfo.kind, role);
-        return false;
+      if (liveInfo.isTypeApp()) {
+        const userInfo = this.userInfoService.getUserInfoCache(state.url);
+        if (liveInfo.isEditor(userInfo.uid)) {
+          let role = liveInfo.isAdmin(userInfo.uid) ? 'admin' : liveInfo.isVip(userInfo.uid) ? 'vip' : 'audience';
+          this.iosBridge.gotoLive(liveInfo.id, liveInfo.kind, role);
+          return false;
+        }
       }
 
       // 文字直播间, 如果在app中, 使用app的gotoRoom, 在其他浏览器正常跳转

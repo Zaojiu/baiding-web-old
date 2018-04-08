@@ -11,6 +11,7 @@ import {OperationTipsService} from "../../shared/operation-tips/operation-tips.s
 import {TimelineService} from "../timeline/timeline.service";
 import {CommentModel} from "../../shared/api/comment/comment.model";
 import {CommentService} from "../comment/comment.service";
+import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 
 @Component({
   selector: 'audience-tool-bar',
@@ -29,7 +30,8 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   private receviedAvatarTouchedSub: Subscription;
 
   constructor(private liveService: LiveService, private timelineService: TimelineService,
-              private router: Router, private tipsService: OperationTipsService, private commentService: CommentService) {
+              private router: Router, private tipsService: OperationTipsService,
+              private commentService: CommentService) {
   }
 
   ngOnInit() {
@@ -45,20 +47,25 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   }
 
   confirmPraise(emoji: string) {
-    let userAnim = new UserAnimEmoji;
-    userAnim.user = this.userInfo;
-    userAnim.emoji = emoji;
-    this.liveInfo.praisedAnimations.push(userAnim);
+    if (this.userInfo) {
+      let userAnim = new UserAnimEmoji;
+      userAnim.user = this.userInfo;
+      userAnim.emoji = emoji;
+      this.liveInfo.praisedAnimations.push(userAnim);
 
-    if (this.isPraisePosting) return;
+      if (this.isPraisePosting) return;
 
-    this.isPraisePosting = true;
-    this.liveInfo.hadPraised = true;
-    this.liveInfo.praised += 1;
+      this.isPraisePosting = true;
+      this.liveInfo.hadPraised = true;
+      this.liveInfo.praised += 1;
 
-    this.liveService.praiseLive(this.liveInfo.id, this.liveInfo.hadPraised, emoji).finally(() => {
-      this.isPraisePosting = false;
-    });
+      this.liveService.praiseLive(this.liveInfo.id, this.liveInfo.hadPraised, emoji).finally(() => {
+        this.isPraisePosting = false;
+      });
+    } else {
+      this.toLogin();
+    }
+    return;
   }
 
   postSuccessful(comment: CommentModel) {
@@ -67,6 +74,14 @@ export class AudienceToolBarComponent implements OnInit, OnDestroy {
   }
 
   goSettings() {
-    this.router.navigate([`lives/${this.liveId}/settings`]);
+    if (this.userInfo) {
+      this.router.navigate([`lives/${this.liveId}/settings`]);
+    } else {
+      this.toLogin();
+    }
+  }
+
+  toLogin () {
+    this.router.navigate(['/signin'], {queryParams: {redirectTo: location.href}});
   }
 }

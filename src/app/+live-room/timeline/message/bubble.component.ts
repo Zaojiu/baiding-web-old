@@ -12,6 +12,8 @@ import {ModalService} from "../../../shared/modal/modal.service";
 import {MessageApiService} from "../../../shared/api/message/message.api";
 import {LiveRoomService} from "../../live-room.service";
 import {TimelineService} from "../timeline.service";
+import {showTips} from "../../../../../vue/src/store/tip";
+import {OperationTipsService} from "../../../shared/operation-tips/operation-tips.service";
 
 @Component({
   selector: 'message-bubble',
@@ -38,7 +40,7 @@ export class BubbleComponent implements AfterViewInit, OnDestroy {
 
   constructor(private messageApiService: MessageApiService, private timelineService: TimelineService,
               private router: Router, private userInfoCardService: UserInfoCardService,
-              private modalService: ModalService, private liveRoomService: LiveRoomService) {
+              private modalService: ModalService, private liveRoomService: LiveRoomService, private operationTipsService: OperationTipsService) {
   }
 
   ngAfterViewInit() {
@@ -82,6 +84,10 @@ export class BubbleComponent implements AfterViewInit, OnDestroy {
   }
 
   confirmPraise() {
+    if (!this.userInfo) {
+      this.operationTipsService.popup(`请登录`);
+      return;
+    }
     let userAnim = new UserAnimEmoji;
     userAnim.user = this.userInfo;
     this.message.praisedAnimations.push(userAnim);
@@ -138,6 +144,9 @@ export class BubbleComponent implements AfterViewInit, OnDestroy {
   }
 
   get canReply(): boolean {
+    if (!this.userInfo) {
+      return;
+    }
     return this.liveInfo.isEditor(this.userInfo.uid) && this.message.isPostSuccessful() && !this.liveInfo.isClosed();
   }
 }

@@ -11,6 +11,8 @@ import {LiveRoomInfoRedBookComponent} from './live-room-redBook/live-room-info.c
 import {RoleAuthGuard} from '../shared/guard/role-auth.guard';
 import {RoleAuthGuardRedBook} from '../shared/guard/role-auth-redbook.guard';
 import {BindMobileGuard} from '../shared/guard/bind-mobile.guard';
+import {GuestLiveGuard} from "../shared/guard/guest-live.guard";
+import {LiveAuthGuard} from "../shared/guard/live-auth.guard";
 
 const route: Routes = [
   {
@@ -71,7 +73,7 @@ const route: Routes = [
   },
   {
     path: ':id',
-    canActivate: [AuthGuard, BindMobileGuard],
+    canActivate: [LiveAuthGuard],
     component: LiveRoomComponent,
     data: {
       isAsyncShareInfo: true,
@@ -81,7 +83,7 @@ const route: Routes = [
       title: LiveRoomTitleResolver,
     },
     children: [
-      {path: '', canActivate: [RoleAuthGuard]},
+      {path: '', canActivate: [GuestLiveGuard]},
       {path: 'push-comment', loadChildren: 'app/+live-room/+push-comment/push-comment.module#PushCommentModule'},
       {path: 'post', loadChildren: 'app/+live-room/+post/post.module#PostModule'},
       {path: 'vip-info', loadChildren: 'app/+live-room/+vip-info/vip-info.module#VipInfoModule'},
