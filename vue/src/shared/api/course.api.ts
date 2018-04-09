@@ -1,6 +1,6 @@
 import {host} from "../../env/environment";
 import {del, get, post} from "./xhr";
-import {Course, CourseItem, CourseItemCommentModel, CourseItemDetail} from "./course.model";
+import {Course, CourseItem, CourseItemCommentModel, CourseItemDetail, CommentModel} from "./course.model";
 import {params} from "../utils/utils";
 
 export const getCourseInfo = async (id: string): Promise<Course> => {
@@ -37,7 +37,7 @@ export const getCourseItemDetail = async (id: string, invitedBy = ''): Promise<C
 };
 
 // 课程item
-export const listComments = async (id: string, size = 20, marker = ''): Promise<CourseItemCommentModel[]> => {
+export const listComments = async (id: string, size = 20, marker = ''): Promise<CommentModel> => {
   const query = {
     marker: marker,
     size: size
@@ -46,18 +46,21 @@ export const listComments = async (id: string, size = 20, marker = ''): Promise<
   const res = await get(url);
   const result = res.data.result;
   const users = res.data.include ? res.data.include.users : null;
+  const markerStr = res.data.include ? res.data.include.markerStr : '';
   const comments = [];
 
-  if (!result || !result.length) return [];
+  if (!result || !result.length) {
+    return new CommentModel([], '');
+  }
 
   for (let item of result) {
     comments.push(new CourseItemCommentModel(item, users));
   }
 
-  return comments;
+  return new CommentModel(comments, markerStr);
 };
 
-export const listCourseComments = async (id: string, size = 20, marker = ''): Promise<CourseItemCommentModel[]> => {
+export const listCourseComments = async (id: string, size = 20, marker = ''): Promise<CommentModel> => {
   const query = {
     marker: marker,
     size: size
@@ -66,15 +69,18 @@ export const listCourseComments = async (id: string, size = 20, marker = ''): Pr
   const res = await get(url);
   const result = res.data.result;
   const users = res.data.include ? res.data.include.users : null;
+  const markerStr = res.data.include ? res.data.include.markerStr : '';
   const comments = [];
 
-  if (!result || !result.length) return [];
+  if (!result || !result.length) {
+    return new CommentModel([], '');
+  }
 
   for (let item of result) {
     comments.push(new CourseItemCommentModel(item, users));
   }
 
-  return comments;
+  return new CommentModel(comments, markerStr);
 };
 
 export const postComment = async (id: string, content: string, parentId?: string) => {

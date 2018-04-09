@@ -309,6 +309,16 @@ export class CourseItemCommentParentModel {
   }
 }
 
+export class CommentModel {
+  comments: CourseItemCommentModel[];
+  marker: string;
+
+  constructor(comments: CourseItemCommentModel[], marker: string) {
+    this.comments = comments;
+    this.marker = marker;
+  }
+}
+
 export class CourseItemCommentModel {
   id: string;
   user: UserInfoModel;

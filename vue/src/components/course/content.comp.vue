@@ -719,6 +719,7 @@
     isPaying = false;
     isToolbarShow = false;
     invitedBy = '';
+    marker = '';
 
     created() {
       this.courseId = this.$route.params['courseId'];
@@ -838,6 +839,14 @@
         this.isPraised = this.itemInfo.current.currentUserInfo.praised;
       } catch (e) {
         this.isError = true;
+        if (e instanceof ApiError) {
+          const code = e.code;
+          if (code === ApiCode.ErrUnpay) {
+            this.$router.push({path: `/course/${this.courseId}/cover`});
+            showTips(ApiErrorMessage[code]);
+            return;
+          }
+        }
         throw e;
       } finally {
         this.isLoading = false;
@@ -860,15 +869,12 @@
       this.isCommentError = false;
 
       try {
-        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
-        const comments = await listComments(this.id, COMMENT_COUNT + 1, lastMarker);
-        let isCommentOnLatest = true;
-        if (comments.length === COMMENT_COUNT + 1) {
-          isCommentOnLatest = false;
-          comments.pop();
-        }
+        const lastMarker = this.marker;
+        const commentsData = await listComments(this.id, COMMENT_COUNT, lastMarker);
+        const comments = commentsData.comments;
+        this.marker = commentsData.marker;
+        this.isCommentOnLatest = !this.marker;
         this.comments.push(...comments);
-        this.isCommentOnLatest = isCommentOnLatest;
       } catch (e) {
         this.isCommentError = true;
         throw e;

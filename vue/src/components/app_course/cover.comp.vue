@@ -440,6 +440,7 @@
     isCommentOnLatest = false;
     userInfo: UserInfoModel;
     isToolbarShow = false;
+    marker = '';
 
     created() {
       this.itemChanged();
@@ -490,15 +491,12 @@
       this.isCommentError = false;
 
       try {
-        const lastMarker = this.comments.length ? this.comments[this.comments.length - 1].createdAt : '';
-        const comments = await listCourseComments(this.id, COMMENT_COUNT + 1, lastMarker);
-        let isCommentOnLatest = true;
-        if (comments.length === COMMENT_COUNT + 1) {
-          isCommentOnLatest = false;
-          comments.pop();
-        }
+        const lastMarker = this.marker;
+        const commentsData = await listCourseComments(this.id, COMMENT_COUNT, lastMarker);
+        const comments = commentsData.comments;
+        this.marker = commentsData.marker;
+        this.isCommentOnLatest = !this.marker;
         this.comments.push(...comments);
-        this.isCommentOnLatest = isCommentOnLatest;
       } catch (e) {
         this.isCommentError = true;
         throw e;
