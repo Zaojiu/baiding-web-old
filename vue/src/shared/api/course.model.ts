@@ -15,7 +15,6 @@ export class CourseUserInfo {
 
   constructor(data: any) {
     if (!data) return;
-
     this.paid = data.isPaid;
     this.paidAt = data.paidAt;
     this.paidAtParsed = moment(data.paidAt);
@@ -104,7 +103,7 @@ export class Course {
     this.createdAtParsed = moment(data.createdAt);
     this.updatedAt = data.updatedAt;
     this.updatedAtParsed = moment(data.updatedAt);
-    this.currentUserInfo = currentUserInfo ? new CourseUserInfo(currentUserInfo) : new CourseUserInfo({});
+    this.currentUserInfo = currentUserInfo ? new CourseUserInfo(currentUserInfo) : new CourseUserInfo(null);
   }
 
   get paid(): boolean {
@@ -307,6 +306,16 @@ export class CourseItemCommentParentModel {
     this.user = userInfo;
     this.content = content;
     this.createdAtParsed = createdAtParsed;
+  }
+}
+
+export class CommentModel {
+  comments: CourseItemCommentModel[];
+  marker: string;
+
+  constructor(comments: CourseItemCommentModel[], marker: string) {
+    this.comments = comments;
+    this.marker = marker;
   }
 }
 
