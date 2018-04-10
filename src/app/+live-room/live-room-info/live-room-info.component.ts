@@ -87,7 +87,14 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
 
   initPayment() {
     this.originFee = '';
-
+    if (this.liveInfo.isForMember) {
+      if (this.userInfo && this.userInfo.isMember) {
+        this.btnText = '进入话题间';
+      } else {
+        this.btnText = '会员专属，点击加入会员';
+      }
+      return;
+    }
     if (
       this.liveInfo.isNeedPay &&
       !this.liveInfo.paid &&
@@ -305,7 +312,17 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   go() {
-    // if (!this.checkLogin()) return;
+    if (this.liveInfo.isForMember) {
+      if (!this.checkLogin()) {
+        return;
+      }
+      if (!this.userInfo.isMember) {
+        location.href = 'https://www.zaojiu.com/new-member/action';
+      } else {
+        this.gotoLive();
+      }
+      return;
+    }
 
     if (
       this.liveInfo.isNeedPay &&

@@ -50,6 +50,7 @@ export class LiveService {
     liveInfo.desc = stream.desc;
     liveInfo.isDisablePlayback = stream.meta.isDisablePlayback;
     liveInfo.requirement = stream.requirement;
+    liveInfo.isForMember = stream.isForMember;
 
     switch (stream.meta.kind) {
       case 'text':
