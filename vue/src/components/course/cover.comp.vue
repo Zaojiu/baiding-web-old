@@ -25,7 +25,8 @@
       <section class="courses-intro block">
         <div class="head">
           <h2>课程简介</h2>
-          <a href="" @click.prevent="toggleCollape()" :style="{textDecoration: 'none'}">{{!isIntroCollape ? '折叠' : '展开'}}</a>
+          <a href="" @click.prevent="toggleCollape()" :style="{textDecoration: 'none'}">{{!isIntroCollape ? '折叠' :
+            '展开'}}</a>
         </div>
         <div class="intro article-content no-margin"
              v-bind:class="{'collaped': isIntroCollape}" v-html="courseInfo.content"></div>
@@ -44,7 +45,8 @@
               <div class="item-detail">
                 <h3 class="item-title">{{getCourseItemIndex(item)}}{{item.subject}}</h3>
                 <p class="item-intro" @click="go(item)">{{item.desc}}</p>
-                <audio-bar class="audio-bar" v-if="item.isTypeAudio && !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid)"
+                <audio-bar class="audio-bar"
+                           v-if="item.isTypeAudio && !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid)"
                            :audioUrl="item.audioUrl"></audio-bar>
               </div>
 
@@ -56,10 +58,12 @@
               </div>
             </div>
 
-            <section class="item-intro-toggle block" v-if=" !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid) ">
+            <section class="item-intro-toggle block"
+                     v-if=" !item.isStatusNotReady && (item.payType == 3 || courseInfo.paid) ">
               <div class="head">
                 <h4>课时简介</h4>
-                <a href="" @click.prevent="itemToggle(index)" :style="{textDecoration: 'none'}">{{ item.toggle ? '折叠' : '展开'}}</a>
+                <a href="" @click.prevent="itemToggle(index)" :style="{textDecoration: 'none'}">{{ item.toggle ? '折叠' :
+                  '展开'}}</a>
               </div>
               <div class="intro article-content no-margin"
                    v-bind:class="{'item-collaped': !item.toggle}" v-html="item.content"></div>
@@ -403,6 +407,7 @@
   import {isInWechat} from "../../shared/utils/utils";
   import {host} from "../../env/environment";
   import audioBar from "../../shared/audio-bar.comp.vue";
+  import {params} from "../../shared/utils/utils";
 
   @Component({
     components: {
@@ -420,6 +425,7 @@
     isPaying = false;
     isNotFound = false;
     isPaid = false;
+    cashbackId = '';
 
     created() {
       this.id = this.$route.params['courseId'];
@@ -442,10 +448,11 @@
     async initData() {
       this.isLoading = true;
       this.isError = false;
+      this.cashbackId = this.$route.query['cashbackId'];
 
       try {
         this.courseInfo = await getCourseInfo(this.id);
-        this.isPaid = this.courseInfo.currentUserInfo&&this.courseInfo.currentUserInfo.paid;
+        this.isPaid = this.courseInfo.currentUserInfo && this.courseInfo.currentUserInfo.paid;
 
         this.$emit('setGroupId', this.courseInfo.groupId);
         this.items = await listCourseItems(this.id);
@@ -570,7 +577,7 @@
     }
 
     itemToggle(index: number) {
-      this.items[index].toggle = this.items[index].toggle? false: true;
+      this.items[index].toggle = this.items[index].toggle ? false : true;
       return;
     }
 
@@ -608,7 +615,6 @@
 
         if (this.courseInfo.paid) {
           let to = '';
-
           if (latestViewedItem) {
             to = `/course/${this.id}/items/${latestViewedItem.id}`;
           } else if (this.items.length) {
@@ -631,7 +637,7 @@
       const orderQuery = new PostOrderObject(this.id, OrderObjectType.Course, 1);
 
       try {
-        const orderMeta = await createOrder([orderQuery], [], false);
+        const orderMeta = await createOrder([orderQuery], [], false, this.cashbackId);
         await this.pay(orderMeta.orderNo);
       } catch (e) {
         if (e instanceof ApiError) {

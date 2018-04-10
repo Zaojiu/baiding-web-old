@@ -718,18 +718,11 @@
     userInfo = getUserInfoCache();
     isPaying = false;
     isToolbarShow = false;
+    invitedBy = '';
 
     created() {
       this.courseId = this.$route.params['courseId'];
       this.itemChanged();
-    }
-
-    destroyed() { }
-
-    bindHandler(event: any) { }
-
-    gotoMember() {
-      this.$router.push({path: '/new-member/action'});
     }
 
     @Watch('$route')
@@ -838,9 +831,10 @@
     async initData() {
       this.isLoading = true;
       this.isError = false;
+      this.invitedBy = this.$route.query['invited_by'];
 
       try {
-        this.itemInfo = await getCourseItemDetail(this.id);
+        this.itemInfo = await getCourseItemDetail(this.id, this.invitedBy);
         this.isPraised = this.itemInfo.current.currentUserInfo.praised;
       } catch (e) {
         this.isError = true;

@@ -27,8 +27,9 @@ export const listCourseItems = async (id: string, size = 100, marker = ''): Prom
   return items;
 };
 
-export const getCourseItemDetail = async (id: string): Promise<CourseItemDetail> => {
-  const url = `${host.io}/api/course/courses/items/${id}`;
+export const getCourseItemDetail = async (id: string, invitedBy = ''): Promise<CourseItemDetail> => {
+  const query = {'invited_by': invitedBy};
+  const url = `${host.io}/api/course/courses/items/${id}?${params(query)}`;
   const res = await get(url);
   const data = res.data;
 
