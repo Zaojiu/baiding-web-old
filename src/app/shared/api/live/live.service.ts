@@ -35,6 +35,7 @@ export class LiveService {
   }
 
   private payPopupSub: Subscription;
+  private liveInfoPromise: Promise<LiveInfoModel>;
 
   private refreshLiveInfo(liveId: string): Promise<LiveInfoModel> {
     return this.getLiveInfo(liveId, true).then((liveInfo) => {
@@ -50,6 +51,7 @@ export class LiveService {
     liveInfo.desc = stream.desc;
     liveInfo.isDisablePlayback = stream.meta.isDisablePlayback;
     liveInfo.requirement = stream.requirement;
+    liveInfo.isForMember = stream.isForMember;
 
     switch (stream.meta.kind) {
       case 'text':
@@ -172,12 +174,16 @@ export class LiveService {
       if (liveInfoCache) {
         return Promise.resolve(liveInfoCache);
       }
+      if (this.liveInfoPromise) {
+        return this.liveInfoPromise;
+      }
     }
     const url = `${environment.config.host.io}/api/live/objects/${id}/info`;
-    return this.http.get(url).toPromise().then(res => {
+    this.liveInfoPromise = this.http.get(url).toPromise().then(res => {
       const data = res.json();
       return this.parseLiveInfo(data.object, data.users, data.currentUserInfo);
     });
+    return this.liveInfoPromise;
   }
 
   getLiveInfoCache(id: string): LiveInfoModel {
@@ -191,6 +197,7 @@ export class LiveService {
       return;
     });
   }
+
   createLive(subject: string, coverUrl: string, desc: string, expectStartAt: string, kind: string): Promise<string> {
     let data: { [key: string]: string } = {
       subject: subject,
