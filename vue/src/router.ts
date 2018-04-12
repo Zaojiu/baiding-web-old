@@ -150,6 +150,11 @@ export const router = new Router({
       ]
     },
     {
+      path: '/app_course/item/:itemId/invited_by/:uid',
+      name: 'course.invited.main',
+      component: () => System.import('./components/course/shareMiddle.comp.vue')
+    },
+    {
       path: '/course/featured',
       name: 'course.featured.main',
       component: () => System.import('./components/course/featured.comp.vue')

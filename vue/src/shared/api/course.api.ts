@@ -1,6 +1,6 @@
 import {host} from "../../env/environment";
 import {del, get, post} from "./xhr";
-import {Course, CourseItem, CourseItemCommentModel, CourseItemDetail, CommentModel} from "./course.model";
+import {Course, CourseItem, CourseItemCommentModel, CourseItemDetail, CommentModel, InvitedModel} from "./course.model";
 import {params} from "../utils/utils";
 
 export const getCourseInfo = async (id: string): Promise<Course> => {
@@ -182,4 +182,20 @@ export const joinGroup = async (id: string) => {
   } catch (e) {
   }
   return;
+};
+
+export const getInvitedByInfo = async (itemId: string, uid: string) => {
+  const url = `${host.io}/api/course/courses/items/${itemId}/invited_by/${uid}`;
+  const res = await get(url);
+  const result = res.data;
+  return new InvitedModel(result);
+};
+
+// 接受课程
+export const acceptInvited = async (itemId: string, uid: number) => {
+    const url = `${host.io}/api/course/courses/items/${itemId}/invited_by`;
+    const postData = {
+      uid: uid
+    };
+    await post(url, postData);
 };

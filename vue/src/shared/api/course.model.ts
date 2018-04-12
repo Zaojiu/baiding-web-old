@@ -344,3 +344,83 @@ export class CourseItemCommentModel {
     this.createdAt = data.createdAt;
   }
 }
+
+class InvitedItemUserInfoModel {
+  id: string;
+  itemId: string;
+  uid: number;
+  isPaid: boolean;
+  invitedBy: number;
+
+  constructor(data: any) {
+    if (!data) {
+      return;
+    }
+    this.id = data.id;
+    this.itemId = data.itemId;
+    this.uid = data.uid;
+    this.isPaid = data.isPaid;
+    this.invitedBy = data.invitedBy;
+  }
+}
+
+class InvitedCourseUserInfoModel {
+  id: string;
+  courseId: string;
+  uid: number;
+  isPaid: boolean;
+  cashbackId: string;
+
+  constructor(data: any) {
+    if (!data) {
+      return;
+    }
+    this.id = data.id;
+    this.courseId = data.courseId;
+    this.uid = data.uid;
+    this.isPaid = data.isPaid;
+    this.cashbackId = data.cashbackId;
+  }
+}
+
+class InviterModel {
+  uid: number;
+  avatar: string;
+  nick: string;
+  sex: 0;
+  constructor(data: any) {
+    if (!data) {
+      return;
+    }
+    this.uid = data.uid;
+    this.avatar = data.avatar;
+    this.nick = data.nick;
+  }
+}
+
+
+export class InvitedModel {
+  id: string;
+  subject: string;
+  coverUrl: string;
+  inviter: InviterModel;
+  speaker: SpeakerModel;
+  invite_remain: number;
+  item_user_info: InvitedItemUserInfoModel;
+  course_user_info: InvitedCourseUserInfoModel;
+  constructor(data: any) {
+    if (!data) {
+      return;
+    }
+    this.id = data.id || '';
+    this.coverUrl = `${data.coverUrl}~16-9`;
+    this.subject = data.subject || '';
+    this.inviter = data.inviter ? new InviterModel(data.inviter) : new InviterModel(null);
+    this.speaker = data.speaker ? new SpeakerModel(data.speaker) : new SpeakerModel(null);
+    this.invite_remain = data.invite_remain || 0;
+    this.item_user_info = data.item_user_info ? new InvitedItemUserInfoModel(data.item_user_info) : new InvitedItemUserInfoModel(null);
+    this.course_user_info = data.item_user_info ?
+      new InvitedCourseUserInfoModel(data.course_user_info) :
+      new InvitedCourseUserInfoModel(null);
+  }
+}
