@@ -58,7 +58,6 @@
         height: 100%;
         top: 0;
         right: 0;
-        background-color: red;
         overflow: hidden;
         img{
           width: 100%;
@@ -165,12 +164,13 @@
     async initData() {
 
       try {
-        this.invitedInfo = await getInvitedByInfo(this.itemId, this.invitedByUid);
-        this.courseId = this.invitedInfo.course_user_info.courseId;
-        if (this.invitedInfo.item_user_info.isPaid || this.invitedInfo.course_user_info.isPaid){
+        let invitedInfo = await getInvitedByInfo(this.itemId, this.invitedByUid);
+        this.courseId = invitedInfo.course_user_info.courseId;
+        if (invitedInfo.item_user_info.isPaid || invitedInfo.course_user_info.isPaid){
           this.$router.push({path:`/course/${this.courseId}/items/${this.itemId}`});
           return;
         }
+        this.invitedInfo = invitedInfo;
       } catch (e) {
         this.isError = true;
         throw e;
