@@ -964,6 +964,14 @@
       if (item.isStatusReady && this.itemInfo.course.paid) {
         this.isChangeItem = true;
         this.$router.push({path: `/course/${item.courseId}/items/${item.id}`});
+        return;
+      }
+      if (!item.isStatusReady) {
+        showTips('课程正在制作中');
+        return;
+      }
+      if (!this.itemInfo.course.paid){
+        this.$router.push({path:`/course/${this.courseId}`})
       }
     }
 
