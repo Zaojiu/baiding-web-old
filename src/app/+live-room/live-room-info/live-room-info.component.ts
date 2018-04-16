@@ -88,7 +88,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   initPayment() {
     this.originFee = '';
     if (this.liveInfo.isForMember) {
-      if (this.userInfo && this.userInfo.isMember) {
+      if (this.checkUserAuthority(false)) {
         this.btnText = '进入话题间';
       } else {
         this.btnText = '会员专属，点击加入会员';
@@ -311,15 +311,29 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.router.navigate([`/lives/${this.liveInfo.id}/present`], {queryParams: {fromUid: this.userInfo.uid}});
   }
 
+  checkUserAuthority(needJumpLogin: boolean): boolean {
+    if (needJumpLogin) {
+      if (!this.checkLogin()) {
+        throw new Error('need login');
+      }
+    } else {
+      if (!this.userInfo) {
+        return false;
+      }
+    }
+    // 当前登录用户，是会员 或者是房主 或者是嘉宾
+    if (this.liveInfo.isAdmin(this.userInfo.uid) || this.liveInfo.isVip(this.userInfo.uid) || this.userInfo.isMember) {
+      return true;
+    }
+    return false;
+  }
+
   go() {
     if (this.liveInfo.isForMember) {
-      if (!this.checkLogin()) {
-        return;
-      }
-      if (!this.userInfo.isMember) {
-        location.href = 'https://www.zaojiu.com/new-member/action';
-      } else {
+      if (this.checkUserAuthority(true)) {
         this.gotoLive();
+      } else {
+        location.href = 'https://www.zaojiu.com/new-member/action';
       }
       return;
     }

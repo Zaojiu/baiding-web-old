@@ -71,11 +71,9 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
-    if (this.liveInfo.isForMember) {
-      if (!this.userInfo || !this.userInfo.isMember) {
-        this.router.navigate([`/lives/${this.liveInfo.id}/info`]);
-        return;
-      }
+    if (!this.canEnter()) {
+      this.router.navigate([`/lives/${this.liveInfo.id}/info`]);
+      return;
     }
     if (this.liveInfo.themeCss) {
       this.themeElem = UtilsService.insertStyleElemIntoHead(this.id, this.liveInfo.themeCss);
@@ -171,6 +169,20 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     if (this.refreshInterval) clearInterval(this.refreshInterval);
 
     if (this.onlineService) this.onlineService.destroy();
+  }
+
+  canEnter(): boolean {
+    if (this.liveInfo.isForMember) {
+      if (!this.userInfo) {
+        return false;
+      }
+      // 当前登录用户，是会员 或者是房主 或者是嘉宾
+      if (this.liveInfo.isAdmin(this.userInfo.uid) || this.liveInfo.isVip(this.userInfo.uid) || this.userInfo.isMember) {
+        return true;
+      }
+      return false;
+    }
+    return true;
   }
 
   markOnline() {
