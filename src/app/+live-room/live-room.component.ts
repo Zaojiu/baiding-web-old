@@ -71,7 +71,8 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
-    if (!this.canEnter()) {
+    let routerName = this.route.snapshot.firstChild.data['name'];
+    if (routerName !== 'invitation' && !this.canEnter()) {
       this.router.navigate([`/lives/${this.liveInfo.id}/info`]);
       return;
     }
