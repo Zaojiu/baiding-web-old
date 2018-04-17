@@ -23,7 +23,7 @@
       <footer>
         <div class="my-button">
           <button @click="goCourse()">
-            学习课程
+            立刻抢
           </button>
         </div>
         <p>限量二十个名额，请速速领取</p>
