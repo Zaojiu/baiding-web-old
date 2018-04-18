@@ -1,138 +1,162 @@
 <template>
   <div class="member-activate">
-    <top-nav></top-nav>
+    <div class="main-content">
+      <div class="cover">
+        <img src="https://og9s6vxbs.qnssl.com/member/member-one.png" alt="会员卡">
+      </div>
 
-    <section class="user-section"></section>
+      <div class="top-section">
+        <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
+          <section class="form-section">
+            <div class="form-group" :class="{'has-error': errors.has('memberCode')}">
+              <div class="input-group">
+                <input
+                  name="memberCode"
+                  v-model="memberCode"
+                  v-validate="{rules: {required: true}}"
+                  v-focus
+                  v-has-value
+                >
+                <label class="required">会员卡号</label>
+              </div>
+              <p class="helper error" v-if="errors.first('memberCode:required')">请填写会员卡号</p>
+            </div>
 
-    <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
-      <section>
-        <h2>会员卡激活</h2>
-        <small>仅限实物卡激活</small>
-        <div class="form-group" :class="{'has-error': errors.has('memberCode')}">
-          <div class="input-group">
-            <input
-              name="memberCode"
-              v-model="memberCode"
-              v-validate="{rules: {required: true}}"
-              v-focus
-              v-has-value
-            >
-            <label class="required">会员卡号</label>
-          </div>
-          <p class="helper error" v-if="errors.first('memberCode:required')">请填写会员卡号</p>
-        </div>
+            <div class="form-group" :class="{'has-error': errors.has('wechatNumber')}">
+              <div class="input-group">
+                <input
+                  name="wechatNumber"
+                  v-model="wechatNumber"
+                  v-validate="{rules: {required: true}}"
+                  v-has-value
+                >
+                <label class="required">微信号</label>
+              </div>
+              <p class="helper error" v-if="errors.first('wechatNumber:required')">请填写微信号</p>
+            </div>
 
-        <div class="form-group" :class="{'has-error': errors.has('wechatNumber')}">
-          <div class="input-group">
-            <input
-              name="wechatNumber"
-              v-model="wechatNumber"
-              v-validate="{rules: {required: true}}"
-              v-has-value
-            >
-            <label class="required">微信号</label>
-          </div>
-          <p class="helper error" v-if="errors.first('wechatNumber:required')">请填写微信号</p>
-        </div>
+            <div class="form-group"
+                 :class="{'has-error': errors.has('name')}">
+              <div class="input-group">
+                <input
+                  name="name"
+                  v-model="name"
+                  v-validate="{rules: {required: true}}"
+                  v-has-value
+                >
+                <label class="required">姓名</label>
+              </div>
+              <p class="helper error" v-if="errors.first('name:required')">请填写姓名</p>
+            </div>
 
-        <div class="form-group"
-             :class="{'has-error': errors.has('name')}">
-          <div class="input-group">
-            <input
-              name="name"
-              v-model="name"
-              v-validate="{rules: {required: true}}"
-              v-has-value
-            >
-            <label class="required">姓名</label>
-          </div>
-          <p class="helper" v-if="!errors.has('name')">请填写您的真实姓名</p>
-          <p class="helper error" v-else-if="errors.first('name:required')">请填写姓名</p>
-        </div>
+            <div class="form-group"
+                 :class="{'has-error': errors.has('company')}">
+              <div class="input-group">
+                <input
+                  name="company"
+                  v-model="company"
+                  v-validate="{rules: {required: true}}"
+                  v-has-value
+                >
+                <label class="required">公司名称</label>
+              </div>
+              <p class="helper error" v-if="errors.first('company:required')">请填写公司名称</p>
+            </div>
 
-        <div class="form-group"
-             :class="{'has-error': errors.has('company')}">
-          <div class="input-group">
-            <input
-              name="company"
-              v-model="company"
-              v-validate="{rules: {required: true}}"
-              v-has-value
-            >
-            <label class="required">公司名称</label>
-          </div>
-          <p class="helper error" v-if="errors.first('company:required')">请填写公司名称</p>
-        </div>
-
-        <div class="form-group"
-             :class="{'has-error': errors.has('title')}">
-          <div class="input-group">
-            <input
-              name="title"
-              v-model="title"
-              v-validate="{rules: {required: true}}"
-              v-has-value
-            >
-            <label class="required">职位</label>
-          </div>
-          <p class="helper error" v-if="errors.first('title:required')">请填写职位</p>
-        </div>
-      </section>
-
-      <section class="footer-section">
-        <div class="form-group">
-          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? '激活会员卡' : '激活中...'}}
-          </button>
-        </div>
-      </section>
-    </form>
+            <div class="form-group"
+                 :class="{'has-error': errors.has('title')}">
+              <div class="input-group">
+                <input
+                  name="title"
+                  v-model="title"
+                  v-validate="{rules: {required: true}}"
+                  v-has-value
+                >
+                <label class="required">职位</label>
+              </div>
+              <p class="helper error" v-if="errors.first('title:required')">请填写职位</p>
+            </div>
+          </section>
+        </form>
+      </div>
+    </div>
+    <section class="footer-section">
+      <div class="form-group">
+        <button @click.prevent="validateAndSubmit" :disabled="isSubmitting">{{!isSubmitting ? '激活会员卡' : '激活中...'}}
+        </button>
+      </div>
+    </section>
   </div>
 </template>
 
 <style lang="scss" scoped>
   .member-activate {
-    section {
-      padding: 30px 15px;
-      border-bottom: solid 10px #f8f8f8;
+    background-color: rgb(26, 26, 26);
 
-      h2 {
-        font-size: $font-size-18;
-        color: $color-dark-gray;
-        text-align: center;
-        line-height: 1em;
-        font-weight: bold;
+    .main-content {
+      padding: 24px 20px 0 20px;
+      height: calc(100vh - 75px);
+      overflow: auto;
+      .top-section {
+        padding-bottom: 20px;
+
+        .form-section {
+          input {
+            font-size: 16px;
+            color: rgb(217, 217, 217);
+            font-weight: bold;
+            border-bottom: 1px solid rgb(56, 56, 56);
+          }
+        }
+
       }
 
-      small {
-        display: block;
-        font-size: $font-size-14;
-        color: $color-gray3;
-        text-align: center;
-        margin-top: 5px;
-      }
-    }
+      .cover {
+        position: relative;
 
-    .user-section {
-      height: 50vw;
-      max-height: 400px;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position-y: 50%;
-      background-image: url('/assets/img/member-activate-background.png');
+        &:before {
+          content: "";
+          display: block;
+          padding-top: 56.2%;
+        }
+
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
     }
 
     .footer-section {
-      padding: 30px;
-      height: 150px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      padding: 0 15px;
+      height: 75px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #f8f8f8;
+      background-color: rgb(36, 36, 36);
+      box-shadow: 0px -2px 4px rgba(0, 0, 0, .5);
 
       .form-group {
         margin: 0;
         width: 100%;
+        button {
+          font-size: 18px;
+          color: #fff;
+          line-height: 25px;
+          padding: 11px 0;
+          font-weight: bold;
+          background: linear-gradient(rgba(204, 169, 104, 1), rgba(154, 120, 58, 1));
+          width: 100%;
+          border-radius: 4px;
+        }
       }
     }
 
