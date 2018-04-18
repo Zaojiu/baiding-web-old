@@ -431,7 +431,11 @@
       this.id = this.$route.params['courseId'];
 
       try {
-        this.userInfo = getUserInfoCache(false);
+        if (isInWechat) {
+          this.userInfo = getUserInfoCache(true);
+        } else {
+          this.userInfo = getUserInfoCache(false);
+        }
       } catch (e) {
       }
 
