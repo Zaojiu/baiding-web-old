@@ -216,7 +216,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   setShareInfo() {
-    let shareTitle = `${this.userInfo ? this.userInfo.nick : '我'}正在参与激烈的讨论，邀请你加入#${this.liveInfo.subject}#`;
+    let shareTitle = `${this.userInfo ? this.userInfo.nick : '我'}邀请你收看#${this.liveInfo.subject}#`;
     let shareDesc = this.liveInfo.desc;
     let shareCover = this.liveInfo.coverThumbnailUrl;
     let shareUrl = this.getShareUri();
