@@ -205,3 +205,180 @@ textarea {
   display: block;
   resize: none;
 }
+
+.form-group-new {
+  margin: 20px 5px;
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .input-group {
+    padding-top: 14px;
+
+    input {
+      font-size: 16px;
+      color: rgb(217, 217, 217);
+      font-weight: bold;
+      border-bottom: 1px solid rgb(56, 56, 56);
+    }
+
+    input:focus {
+      border-bottom: 1px solid rgb(214, 173, 96);
+    }
+
+    input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+      color: rgb(128, 128, 128);
+      font-weight: normal;
+    }
+    input:-moz-placeholder, textarea:-moz-placeholder {
+      color: rgb(128, 128, 128);
+      font-weight: normal;
+    }
+    input::-moz-placeholder, textarea::-moz-placeholder {
+      color: rgb(128, 128, 128);
+      font-weight: normal;
+    }
+    input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+      color: rgb(128, 128, 128);
+      font-weight: normal;
+    }
+  }
+
+  input, textarea {
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    margin: 0;
+  }
+
+  input, input[type="text"], input[type="number"], input[type="password"], input[type="datetime-local"], input[type="tel"], textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    background: transparent;
+    color: rgb(75, 75, 75);
+    font-size: 16px;
+    box-sizing: content-box;
+    padding: 7px 0;
+    border-radius: 0;
+
+    &:disabled {
+      color: rgb(218, 218, 218);
+      border-bottom: solid 1px rgb(218, 218, 218);
+      -webkit-text-fill-color: rgb(218, 218, 218); // ios下disabled的color是-webkit-text-fill-color
+      opacity: 1; // ios下disabled会调整opacity
+    }
+
+    &::selection {
+      background: color-brand-transparent(.5);
+    }
+  }
+
+  input, input[type="text"], input[type="number"], input[type="password"], input[type="datetime-local"], input[type="tel"] {
+    line-height: 1em;
+    height: 18px;
+  }
+
+  .radio-group {
+    display: flex;
+
+    .radio {
+      flex-grow: 1;
+    }
+  }
+
+  .radio {
+    position: relative;
+    border-bottom: solid 1px rgb(218, 218, 218);
+    text-align: center;
+
+    .label {
+      position: relative;
+      display: inline-block;
+      line-height: 1em;
+      box-sizing: content-box;
+      padding: 7px 0;
+      padding-left: 29px;
+      height: 18px;
+      text-align: center;
+      color: $color-gray;
+      transition: color .2s;
+      pointer-events: none;
+
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        left: 0;
+        top: 50%;
+        border-radius: 50%;
+        transform: translateY(-50%);
+        transition: all .2s;
+        box-sizing: border-box;
+      }
+
+      &:before {
+        border: solid 1px $color-gray;
+        background-color: $color-w;
+      }
+
+      &:after {
+        opacity: 0;
+        background-color: $color-w;
+        transform: translateY(-50%) scale(.6);
+      }
+    }
+
+    input[type=radio]:checked + .label {
+      color: $color-dark-gray;
+
+      &:before {
+        border: solid 1px transparent;
+        background-color: $color-brand;
+      }
+
+      &:after {
+        opacity: 1;
+      }
+    }
+
+    input[type=radio] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      left: 0;
+      top: 0;
+      margin: 0;
+    }
+  }
+
+  .helper {
+    color: $color-gray;
+    font-size: 12px;
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+
+  .helper.error {
+    position: absolute;
+    display: none;
+    color: rgb(255, 79, 62);;
+  }
+
+  &.has-error {
+
+    input {
+      border-bottom: 1px solid rgb(255, 79, 62);
+    }
+
+    .helper.error {
+      display: block;
+    }
+  }
+}
