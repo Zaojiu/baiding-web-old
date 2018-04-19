@@ -303,7 +303,7 @@ export const router = new Router({
       },
       beforeEnter(to, from, next) {
         // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
-        const tasks = [authGuard(), mobileBindedGuard()];
+        const tasks = [authGuard(), mobileBindedGuard(true)];
         execRouteTask(tasks, to, from, next);
       },
       component: () => System.import('./components/member/activate.comp.vue'),
