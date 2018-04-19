@@ -5,7 +5,7 @@
     <div v-else>
       <div class="content">
         <div class="img-cover">
-          <img src="https://og9s6vxbs.qnssl.com/course/cxg2.jpg"/>
+          <img src="https://og9s6vxbs.qnssl.com/course/cxg2.jpg?t=1"/>
         </div>
       </div>
       <footer class="buy-btn">
