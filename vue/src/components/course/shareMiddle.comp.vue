@@ -6,7 +6,9 @@
       <div class="top">
         <header>
           <div class="cover">
-            <img :src="invitedInfo.coverUrl">
+            <img :src="coverUrl"
+                 @error="coverUrl = defaultCoverUrl"
+            >
           </div>
         </header>
         <div class="user">
@@ -153,6 +155,8 @@
     invitedInfo: InvitedModel;
     isLoading = true;
     isError = false;
+    defaultCoverUrl = '/assets/img/default-cover.jpg';
+    coverUrl = '';
     userInfo = getUserInfoCache();
 
     created() {
@@ -171,6 +175,7 @@
           return;
         }
         this.invitedInfo = invitedInfo;
+        this.coverUrl = invitedInfo.coverUrl;
       } catch (e) {
         this.isError = true;
         throw e;
