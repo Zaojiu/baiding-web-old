@@ -28,7 +28,7 @@
               :class="{'active':navIndex===4,'app-padding':!isMember||isMember&&memberType === 0}">
             在线课程
           </li>
-          <li @click="changeNav(5)"
+          <li v-if="!isAndroid" @click="changeNav(5)"
               :class="{'active':navIndex===5,'app-padding':!isMember||isMember&&memberType === 0}">
             干货下载
           </li>
@@ -170,9 +170,10 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {getUserInfoCache} from "../../../shared/api/user.api";
   import {UserInfoModel} from '../../../shared/api/user.model'
-  import {isInApp, isInWechat} from "../../../shared/utils/utils";
+  import {isInApp, isInWechat, isAndroid} from "../../../shared/utils/utils";
   import {initIOS, callHandler} from "../../../shared/utils/ios";
   import {PostOrderObject, OrderObjectType} from "../../../shared/api/order.model";
+  import {host} from "../../../env/environment";
 
   @Component({})
   export default class ActivateComponent extends Vue {
@@ -189,6 +190,7 @@
     openBtn = true;
     memberType = -1;//-1非会员 0 普通会员，1 火星会员
     timeOver = '';
+    isAndroid = isAndroid && isInApp;
 
     @Watch('$route.name')
     setNavIndex() {
@@ -214,7 +216,6 @@
     }
 
     async init() {
-      this.navIndex = 1;
       this.isInApp = isInApp;
       this.isCard = false;
       if (this.userInfo && this.userInfo.member.valid) {
@@ -247,7 +248,9 @@
           this.navIndex = 4;
           break;
         case "new-member.download":
-          this.navIndex = 5;
+          if (!this.isAndroid) {
+            this.navIndex = 5;
+          }
           break;
         default:
       }
@@ -271,7 +274,9 @@
           this.$router.push({path: '/new-member/course'});
           break;
         case 5:
-          this.$router.push({path: '/new-member/download'});
+          if (!this.isAndroid) {
+            this.$router.push({path: '/new-member/download'});
+          }
           break;
         default:
       }
@@ -302,13 +307,17 @@
 
     touchChangeNav(up: boolean) {
       switch (this.memberType) {
-        case -1:
+        case -1: // 非会员
           switch (this.navIndex) {
             case 1:
               if (up) {
                 this.changeNav(3);
               } else {
-                this.changeNav(5);
+                if (!this.isAndroid) {
+                  this.changeNav(5);
+                } else {
+                  this.changeNav(4);
+                }
               }
               break;
             case 3:
@@ -320,7 +329,11 @@
               break;
             case 4:
               if (up) {
-                this.changeNav(5);
+                if (!this.isAndroid) {
+                  this.changeNav(5);
+                } else {
+                  this.changeNav(1);
+                }
               } else {
                 this.changeNav(3);
               }
@@ -334,13 +347,17 @@
               break;
           }
           break;
-        case 0:
+        case 0: // 普通会员
           switch (this.navIndex) {
             case 0:
               if (up) {
                 this.changeNav(3);
               } else {
-                this.changeNav(5);
+                if (!this.isAndroid) {
+                  this.changeNav(5);
+                } else {
+                  this.changeNav(4);
+                }
               }
               break;
             case 3:
@@ -352,7 +369,11 @@
               break;
             case 4:
               if (up) {
-                this.changeNav(5);
+                if (!this.isAndroid) {
+                  this.changeNav(5);
+                } else {
+                  this.changeNav(0);
+                }
               } else {
                 this.changeNav(3);
               }
@@ -366,13 +387,17 @@
               break;
           }
           break;
-        case 1:
+        case 1: //火星会员
           switch (this.navIndex) {
             case 0:
               if (up) {
                 this.changeNav(2);
               } else {
-                this.changeNav(5);
+                if (!this.isAndroid) {
+                  this.changeNav(5);
+                } else {
+                  this.changeNav(4);
+                }
               }
               break;
             case 2:
@@ -391,7 +416,11 @@
               break;
             case 4:
               if (up) {
-                this.changeNav(5);
+                if (!this.isAndroid) {
+                  this.changeNav(5);
+                } else {
+                  this.changeNav(0);
+                }
               } else {
                 this.changeNav(3);
               }
@@ -414,8 +443,14 @@
       if (this.userInfo && this.userInfo.member.valid) {
         return;
       }
+      //安卓端购买跳转
+      if (this.isAndroid) {
+        await initIOS();
+        callHandler('payOrder', `${host.self}/orders?items=${encodeURIComponent(JSON.stringify([this.memberOrderObject]))}`);
+        return;
+      }
 
-      //web端购买
+      //web端购买跳转
       if (this.userInfo && !this.userInfo.member.valid) {
         this.$router.push({
           path: '/orders',
