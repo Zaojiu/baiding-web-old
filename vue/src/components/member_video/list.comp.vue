@@ -48,7 +48,7 @@
     min-height: 100vh;
     background-color: rgb(36, 36, 36);
 
-    .video-list{
+    .video-list {
       position: absolute;
       top: 118px;
       left: 0;
@@ -73,7 +73,7 @@
       text-align: center;
       font-size: 14px;
       padding: 0 0 24px 0;
-      color:#808080;
+      color: #808080;
     }
 
     .get-more {
@@ -172,6 +172,8 @@
   import {setTitle} from '../../shared/utils/title';
   import {getMemberVideoList} from '../../shared/api/member-video.api'
   import {scrollView} from '../../shared/scroll-view/scroll-view.directive';
+  import {isInApp} from "../../shared/utils/utils";
+  import {initIOS, callHandler} from "../../shared/utils/ios";
   import {host} from '../../env/environment';
 
   @Component({
@@ -239,12 +241,17 @@
       this.getMore();
     }
 
-    setDefaultUrl(event:any){
+    setDefaultUrl(event: any) {
       event.target.src = this.defaultCoverUrl;
     }
 
-    goTalk(id: string) {
-      location.href = `${host.self}/talks/${id}`
+    async goTalk(id: string) {
+      if (isInApp) {
+        await initIOS();
+        callHandler('gotoRoom', id)
+      } else {
+        location.href = `${host.self}/talks/${id}`
+      }
     }
 
   }
