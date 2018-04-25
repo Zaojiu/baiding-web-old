@@ -8,7 +8,7 @@
       <div class="top-section">
         <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
           <section class="form-section">
-            <div class="form-group" :class="{'has-error': errors.has('memberCode')}">
+            <div class="form-group-new" :class="{'has-error': errors.has('memberCode')}">
               <div class="input-group">
                 <input
                   name="memberCode"
@@ -16,26 +16,26 @@
                   v-validate="{rules: {required: true}}"
                   v-focus
                   v-has-value
+                  placeholder="会员卡号"
                 >
-                <label class="required">会员卡号</label>
               </div>
               <p class="helper error" v-if="errors.first('memberCode:required')">请填写会员卡号</p>
             </div>
 
-            <div class="form-group" :class="{'has-error': errors.has('wechatNumber')}">
+            <div class="form-group-new" :class="{'has-error': errors.has('wechatNumber')}">
               <div class="input-group">
                 <input
                   name="wechatNumber"
                   v-model="wechatNumber"
                   v-validate="{rules: {required: true}}"
                   v-has-value
+                  placeholder="微信号"
                 >
-                <label class="required">微信号</label>
               </div>
               <p class="helper error" v-if="errors.first('wechatNumber:required')">请填写微信号</p>
             </div>
 
-            <div class="form-group"
+            <div class="form-group-new"
                  :class="{'has-error': errors.has('name')}">
               <div class="input-group">
                 <input
@@ -43,13 +43,13 @@
                   v-model="name"
                   v-validate="{rules: {required: true}}"
                   v-has-value
+                  placeholder="姓名"
                 >
-                <label class="required">姓名</label>
               </div>
               <p class="helper error" v-if="errors.first('name:required')">请填写姓名</p>
             </div>
 
-            <div class="form-group"
+            <div class="form-group-new"
                  :class="{'has-error': errors.has('company')}">
               <div class="input-group">
                 <input
@@ -57,13 +57,13 @@
                   v-model="company"
                   v-validate="{rules: {required: true}}"
                   v-has-value
+                  placeholder="公司名称"
                 >
-                <label class="required">公司名称</label>
               </div>
               <p class="helper error" v-if="errors.first('company:required')">请填写公司名称</p>
             </div>
 
-            <div class="form-group"
+            <div class="form-group-new"
                  :class="{'has-error': errors.has('title')}">
               <div class="input-group">
                 <input
@@ -71,8 +71,8 @@
                   v-model="title"
                   v-validate="{rules: {required: true}}"
                   v-has-value
+                  placeholder="职位"
                 >
-                <label class="required">职位</label>
               </div>
               <p class="helper error" v-if="errors.first('title:required')">请填写职位</p>
             </div>
@@ -81,7 +81,7 @@
       </div>
     </div>
     <section class="footer-section">
-      <div class="form-group">
+      <div class="footer">
         <button @click.prevent="validateAndSubmit" :disabled="isSubmitting">{{!isSubmitting ? '激活会员卡' : '激活中...'}}
         </button>
       </div>
@@ -99,16 +99,6 @@
       overflow: auto;
       .top-section {
         padding-bottom: 20px;
-
-        .form-section {
-          input {
-            font-size: 16px;
-            color: rgb(217, 217, 217);
-            font-weight: bold;
-            border-bottom: 1px solid rgb(56, 56, 56);
-          }
-        }
-
       }
 
       .cover {
@@ -144,7 +134,7 @@
       background-color: rgb(36, 36, 36);
       box-shadow: 0px -2px 4px rgba(0, 0, 0, .5);
 
-      .form-group {
+      .footer {
         margin: 0;
         width: 100%;
         button {
