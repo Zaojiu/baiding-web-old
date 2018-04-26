@@ -102,6 +102,17 @@ export class IosBridgeService {
     }
   }
 
+  // app中跳转到会员页面
+  gotoMember() {
+    if (this.hasInit) {
+      this.bridge.callHandler('pushMember');
+    } else {
+      this.init().then(() => {
+        this.bridge.callHandler('pushMember');
+      });
+    }
+  }
+
   // 收藏页面的长图大文点击后跳转
   gotoTopicPost(id: string) {
     if (this.hasInit) {

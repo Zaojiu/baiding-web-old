@@ -54,6 +54,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isVideoCoverShown = true;
   liveObject: ObjectModel;
   isiOS = UtilsService.isiOS;
+  isAndroid = UtilsService.isAndroid && UtilsService.isInApp;
   isNewApp: boolean;
   closeVideo: boolean;
   isVideoEle: any;
@@ -152,6 +153,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   gotoMember() {
+    if (UtilsService.isInApp) {
+      this.iosBridge.gotoMember();
+      return;
+    }
     location.href = `${host.self}/new-member/action`;
   }
 
