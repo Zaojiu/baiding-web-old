@@ -41,7 +41,15 @@ Vue.use(Router);
 
 export const router = new Router({
   mode: 'history',
-  scrollBehavior() {
+  scrollBehavior(to: any, from: any, savedPosition: any): any {
+    if (to.hash) {
+      return {
+        // 這個是透過 to.hash 的值來找到對應的元素
+        // 照你的 html 來看是不用多加處理這樣就可以了
+        // 例如你按下 #3 的連結，就會變成 querySelector('#3')，自然會找到 id = 3 的元素
+        selector: to.hash
+      };
+    }
     return scrollPosition;
   },
   routes: [
@@ -621,6 +629,123 @@ export const router = new Router({
       },
       component: () => System.import('./components/group/comment.comp.vue'),
     },
+    {
+      path: '/wv/wiee/banner',
+      component: () => System.import('./components/wiee/banner.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'wiee.banner',
+          meta: {
+            title: 'WIEE',
+          }
+        }
+      ]
+    },
+    {
+      path: '/wv/wiee/index',
+      component: () => System.import('./components/wiee/index.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'wiee.main',
+          meta: {
+            title: 'WIEE',
+          }
+        }
+      ]
+    },
+    {
+      path: '/wv/wiee/guests/:id',
+      meta: {
+        title: 'guests',
+      },
+      component: () => System.import('./components/wiee/guests/main.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'wiee.guests.main',
+          meta: {
+            title: '',
+          },
+          redirect: 'desc'
+        },
+        {
+          path: 'desc',
+          name: 'wiee.guests.desc',
+          meta: {
+            title: '介绍',
+          },
+          component: () => System.import('./components/wiee/guests/desc.comp.vue'),
+        },
+        {
+          path: 'talk',
+          name: 'wiee.guests.talk',
+          meta: {
+            title: '演讲',
+          },
+          component: () => System.import('./components/wiee/guests/talk.comp.vue'),
+        },
+        {
+          path: 'highlights',
+          name: 'wiee.guests.highlights',
+          meta: {
+            title: '演讲',
+          },
+          component: () => System.import('./components/wiee/guests/highlights.comp.vue'),
+        },
+        {
+          path: 'images',
+          name: 'wiee.guests.images',
+          meta: {
+            title: '演讲',
+          },
+          component: () => System.import('./components/wiee/guests/images.comp.vue'),
+        },
+      ]
+    },
+    {
+      path: '/wv/wiee/detail',
+      name: 'wiee.detail',
+      meta: {
+        title: 'WIEE大会 详情',
+      },
+      component: () => System.import('./components/wiee/detail/main.comp.vue'),
+    },
+    {
+      path: '/wv/wiee/map',
+      component: () => System.import('./components/wiee/map/main.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'wiee.map',
+          meta: {
+            title: 'WIEE大会 地图',
+          }
+        },
+        {
+          path: ':id',
+          name: 'wiee.map.detail',
+          meta: {
+            title: 'WIEE大会 地图',
+          },
+          component: () => System.import('./components/wiee/map/detail.comp.vue'),
+        },
+      ]
+    },
+    /*{
+      path: '/wv/wiee/group/:id',
+      component: () => System.import('./components/group/wiee.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'wiee.group',
+          meta: {
+            title: 'WIEE',
+          },
+        },
+      ]
+    },*/
     {
       path: '/500',
       name: 'error',
