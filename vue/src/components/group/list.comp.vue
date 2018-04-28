@@ -6,7 +6,7 @@
     <error class="abs-center" v-else-if="isNotPaid">购买课程，加入圈子</error>
 
     <div class="group" v-else>
-      <div class="scroll" v-bind:style=" isPosting ? disscroll : doscroll ">
+      <div class="scroll" :style=" isPosting ? disscroll : doscroll ">
         <top-nav></top-nav>
         <div class="item" v-for="item in groupData" @click="toCommentPage(item.id)">
           <div class="top">
@@ -18,23 +18,21 @@
             </div>
           </div>
           <p class="content">{{ item.content }}</p>
+          <div class="img-cover" v-if="item.type === 'image'">
+            <img :src="item.images[0]?item.images[0].link:''"/>
+          </div>
         </div>
       </div>
-      <div class="new-content" @click="toPostMsg()">发布内容</div>
+      <div class="new-content" @click="showPublishChoose()">发布内容</div>
     </div>
 
     <div class="pop-bg" v-if="isPosting"></div>
-    <div class="container-post" v-show="isPosting">
-      <div class="top">
-        <i class="btn-x bi bi-close-b" @click="closePage()"></i>
-        <span class="btn-post" @click="postMsg()">发布</span>
-      </div>
-      <p class="title">发布内容</p>
-      <div class="bottom">
-        <textarea class="textarea" autofocus v-model="content">{{ content }}</textarea>
-      </div>
-    </div>
-
+    <aside class="choose-type" v-show="isPosting">
+      <div class="type-title">选择内容类型</div>
+      <div class="type-item" @click="toPublish('text')">文字</div>
+      <div class="type-item" @click="toPublish('image')">图片</div>
+      <div class="type-cancel" @click="hidePublishChoose">取消</div>
+    </aside>
   </div>
 </template>
 
@@ -44,10 +42,9 @@
   import moment from 'moment';
   import {Component} from 'vue-property-decorator';
   import {joinGroup} from '../../shared/api/course.api';
-  import {getCourse, getGroup, listMessages, postTextMessage} from '../../shared/api/group.api';
+  import {getCourse, getGroup, listMessages} from '../../shared/api/group.api';
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {UserInfoModel} from '../../shared/api/user.model';
-  import {showTips} from '../../store/tip';
 
   @Component
   export default class GroupComponent extends Vue {
@@ -63,20 +60,17 @@
     isPaying = false;
     isNotFound = false;
     isNotPaid = true;
-
     doscroll = 'overflow: scroll';
     disscroll = 'overflow: hidden';
     defaultAvatar = '/assets/img/zaojiu-logo.jpg';
-
     isPosting = false;
     content = '';
     groupData = [];
     userData = {};
 
-
     created() {
-      this.groupId = this.$route.params.groupId;
-      this.courseId = this.$route.query.courseId;
+      this.groupId = this.$route.params['groupId'];
+      this.courseId = this.$route.query['courseId'];
       this.initData();
     }
 
@@ -84,37 +78,21 @@
       try {
         this.isLoading = true;
         let course = await getCourse(this.courseId);
+
+        //判断是否购买
         if (course.current_user_info && course.current_user_info.isPaid) {
-          //判断是否购买
           this.isNotPaid = false;
-
           let group = await getGroup(this.groupId);
-          if (group.currentGroupUser) {
-            //判断是否加入圈子
 
-            try {
-              let res = await listMessages(this.groupId, this.size, this.createdAt);
-              this.groupData = res;
-            } catch (e) {
-              this.isNotFound = true;
-              throw e;
-            }
-
-          } else {
+          //判断是否加入圈子
+          if (!group.currentGroupUser) {
             await joinGroup(this.groupId);
-            try {
-              let res = await listMessages(this.groupId, this.size, this.createdAt);
-              this.groupData = res;
-            } catch (e) {
-              this.isNotFound = true;
-              throw e;
-            }
           }
-
+          let res = await listMessages(this.groupId, this.size, this.createdAt);
+          this.groupData = res;
         } else {
           this.isNotPaid = true;
         }
-
       } catch (e) {
         this.isNotFound = true;
         throw e;
@@ -124,35 +102,27 @@
 
     }
 
-    async postMsg() {
-      if (this.content) {
-        this.closePage();
-        await postTextMessage(this.groupId, this.content);
-        await this.initData();
-        this.content = '';
-        return;
-      } else {
-        showTips('内容不能为空！');
-        return;
-      }
-    }
-
-    closePage() {
-      this.isPosting = false;
-    }
-
 
     showMoment(m: any) {
       return moment.unix(m.substring(0, 10)).format('YYYY-MM-DD HH:mm:ss');
     }
 
-    toPostMsg() {
+    showPublishChoose() {
       this.isPosting = true;
     }
 
-    toCommentPage (msgId: string) {
-      location.href = `${ host.self }/group/${ this.groupId }/${ msgId }?courseId=${ this.courseId }`;
+    hidePublishChoose() {
+      this.isPosting = false;
     }
+
+    toCommentPage(msgId: string) {
+      this.$router.push({path: `${msgId}`, query: {courseId: this.courseId}});
+    }
+
+    toPublish(type: string) {
+      this.$router.push({path: 'publish', query: {type: type}});
+    }
+
   }
 
 </script>
@@ -175,6 +145,7 @@
         .item {
           background-color: white;
           margin-bottom: 8px;
+          padding-bottom: 12px;
 
           .top {
             color: #000;
@@ -211,10 +182,18 @@
           .content {
             color: #000;
             margin: 8px 20px 12px 20px;
-            padding-bottom: 16px;
             font-size: 15px;
             line-height: 23px;
           }
+
+          .img-cover {
+            padding: 0 20px;
+
+            img {
+              width: 100%;
+            }
+          }
+
         }
       }
 
@@ -240,62 +219,42 @@
     z-index: 9;
   }
 
-  .container-post {
+  .choose-type {
     position: absolute;
     z-index: 10;
-    top: 120px;
-    left: 20px;
-    right: 20px;
-    bottom: 120px;
-    background-color: white;
-    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+    width: 90%;
+    bottom: 10px;
+    left: 5%;
 
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    div {
+      background-color: #fff;
+      text-align: center;
+      font-size: 18px;
+      line-height: 18px;
+      padding: 15px 0;
+      color: #1067ec;
+    }
 
-      .btn-x {
-        height: 12px;
-        width: 12px;
-        margin-left: 20px;
-      }
-      .btn-post {
-        color: rgb(0, 211, 193);
-        font-size: 17px;
-        line-height: 24px;
-        margin: 12px 20px;
+    .type-title {
+      font-size: 14px;
+      line-height: 14px;
+      padding: 19px 0;
+      color: #8d8d8d;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .type-item {
+      &:nth-child(3) {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
       }
     }
 
-    .title {
-      padding: 0 0 20px 20px;
-      font-size: 28px;
-      line-height: 28px;
-      color: black;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    .type-cancel {
+      margin-top: 10px;
       font-weight: bold;
-    }
-
-    .bottom {
-      position: absolute;
-      top: 92px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 16px;
-
-      .textarea {
-        display: block;
-        width: 100%;
-        height: 100%;
-        outline: none;
-        border: none;
-        resize: none;
-        font-size: 16px;
-        line-height: 24px;
-      }
+      border-radius: 8px;
     }
   }
 
