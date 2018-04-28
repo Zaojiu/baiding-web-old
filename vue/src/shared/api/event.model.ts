@@ -39,6 +39,7 @@ class EventMetaModel {
   location: number[];
   speakers: SpeakerModel[];
   tickets: EventTicketModel[];
+  disableDiscount: boolean;
 
   constructor(data: any) {
     if (!data) return;
@@ -57,6 +58,7 @@ class EventMetaModel {
     this.address = data.address;
     this.location = data.location;
     this.speakers = [];
+    this.disableDiscount = data.disableDiscount || false;
     const speakersData = data && data.speakers ? data.speakers : [];
     speakersData.forEach((speaker: any) => {
       this.speakers.push(new SpeakerModel(speaker));
