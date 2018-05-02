@@ -305,7 +305,7 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {getEvent} from "../../shared/api/event.api";
   import {EventModel, EventTicketModel} from "../../shared/api/event.model";
-  import {Money,isInWechat} from "../../shared/utils/utils";
+  import {Money, isInWechat} from "../../shared/utils/utils";
   import {TicketModel} from "../../shared/api/ticket.model";
   import {checkOrderFee} from "../../shared/api/order.api";
   import {initWechat} from "../../shared/utils/wechat";
@@ -371,7 +371,7 @@
       } finally {
         this.isLoading = false;
       }
-      if(isInWechat){
+      if (isInWechat) {
         await initWechat();
       }
       this.setShareInfo();
@@ -481,7 +481,7 @@
         return;
       }
 
-      const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount);
+      const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount, this.event.meta.disableDiscount);
       this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([query]))}});
     }
 

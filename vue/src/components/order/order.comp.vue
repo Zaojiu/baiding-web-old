@@ -516,10 +516,9 @@
       }
 
       if (!Array.isArray(itemParsed)) return [];
-
       const itemQuery: PostOrderObject[] = [];
       itemParsed.forEach(item => {
-        itemQuery.push(new PostOrderObject(item.objectId, item.objectType, item.nums));
+        itemQuery.push(new PostOrderObject(item.objectId, item.objectType, item.nums, item.discount));
       });
 
       return itemQuery;
@@ -555,7 +554,7 @@
 
     async prepareNewOrder() {
       await this.checkOrder();
-      if (this.itemsQuery[0].objectType !== 5){
+      if (this.itemsQuery[0].objectType !== 5 && this.itemsQuery[0].discount !== 1) {
         await this.checkDiscount();
       }
     }

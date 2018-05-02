@@ -16,11 +16,13 @@ export class PostOrderObject {
   objectId: string;
   objectType: OrderObjectType;
   nums: number;
+  discount: number; // 0 计算折扣，1不计算折扣
 
-  constructor(objectId: string, objectType: OrderObjectType, nums: number) {
+  constructor(objectId: string, objectType: OrderObjectType, nums: number, discount?: boolean) {
     this.objectId = objectId;
     this.objectType = objectType;
     this.nums = nums;
+    this.discount = discount ? 1 : 0;
   }
 
   get isTypeMember() {
@@ -149,7 +151,7 @@ export enum OrderStatus {
 }
 
 export enum OrderType {
-  Paid  = 1, // 付款
+  Paid = 1, // 付款
 }
 
 export class OrderMeta {
@@ -283,12 +285,12 @@ export class Order {
 }
 
 enum DiscountCodeStatus {
-  Normal    = 0, // 可使用
-  Shareing  = 1, // 可使用，分享中，未领取
-  Locked    = 6, // 已使用，lock 中
-  Used      = 7, // 已使用
-  Shared    = 8, // 已分享，被领取
-  Expired   = 9, // 已过期，或失效
+  Normal = 0, // 可使用
+  Shareing = 1, // 可使用，分享中，未领取
+  Locked = 6, // 已使用，lock 中
+  Used = 7, // 已使用
+  Shared = 8, // 已分享，被领取
+  Expired = 9, // 已过期，或失效
 }
 
 export class DiscountCodeDetail {
