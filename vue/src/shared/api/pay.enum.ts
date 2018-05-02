@@ -7,4 +7,5 @@ export enum PayPlatform {
   Wechat = 1,
   Pc,
   Ios,
+  Android = 6,
 }
