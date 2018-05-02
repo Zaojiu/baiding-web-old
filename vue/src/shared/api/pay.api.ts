@@ -1,17 +1,24 @@
-import {isInApp, isInWechat, isWindowsWechat} from "../utils/utils";
+import {isInApp, isInWechat, isWindowsWechat, isAndroid, isiOS} from "../utils/utils";
 import {appConfig, host} from "../../env/environment";
 import {post} from "./xhr";
-import {paymentStore, PayStatus, setPaymentFail, setPaymentNone, setPaymentPaying, setPaymentSuccess} from "../../store/payment";
+import {
+  paymentStore,
+  PayStatus,
+  setPaymentFail,
+  setPaymentNone,
+  setPaymentPaying,
+  setPaymentSuccess
+} from "../../store/payment";
 import {getOrder} from "./order.api";
 import {AxiosResponse} from "axios";
 import {ApiCode} from "./code-map.enum";
 import {router} from "../../router";
 import {showTips} from "../../store/tip";
-import {pay as iosPayBridge} from "../utils/ios";
+import {pay as iosPayBridge} from "../utils/ios"; // android ios 桥接方法一样
 import {PayPlatform} from "./pay.enum";
 
 
-let pcRejecter: ((reason: string) => void)|null;
+let pcRejecter: ((reason: string) => void) | null;
 let timer: any;
 
 const clear = () => {
@@ -69,7 +76,8 @@ const wechatPay = async (orderNo: string, redirectTo?: string): Promise<void> =>
   location.href = `${appConfig.payAddress}?req=${encodeURIComponent(JSON.stringify(wxPayReq))}&backto=${encodeURIComponent(backto)}`;
 
   // wechat pay change location and never resolve
-  return new Promise<void>((resolve, reject) => {});
+  return new Promise<void>((resolve, reject) => {
+  });
 };
 
 const pcPay = async (orderNo: string): Promise<void> => {
@@ -196,11 +204,81 @@ const iosPay = async (orderNo: string): Promise<void> => {
   });
 };
 
+const androidPay = async (orderNo: string): Promise<void> => {
+  const payUrl = `${host.io}/api/wallet/order/${orderNo}/pay`;
+
+  let resp: AxiosResponse;
+  try {
+    resp = await post(payUrl, {"platform": PayPlatform.Android});
+  } catch (e) {
+    const data = e.data;
+    if (data && data.code === ApiCode.ErrAlreadyPaid) {
+      setPaymentFail('already paid');
+      throw new Error('already paid');
+    } else {
+      setPaymentFail(e);
+      throw e;
+    }
+  }
+
+  const data = resp.data;
+
+  if (data.isOngoing) return;
+
+  const wxPayReq = {
+    appid: data.wxPay.request.appId,
+    partnerid: data.wxPay.request.mchId,
+    prepayid: data.wxPay.request.prepayId,
+    noncestr: data.wxPay.request.nonceStr,
+    timestamp: data.wxPay.request.timeStamp,
+    sign: data.wxPay.request.paySign,
+  };
+
+  iosPayBridge(wxPayReq);
+
+  // ios pay never resolve
+  setPaymentPaying('');
+
+  return new Promise<void>((resolve, reject) => {
+    pcRejecter = reject;
+
+    let count = 0;
+    timer = setInterval(async () => {
+      const order = await getOrder(orderNo, false);
+
+      if (order.isSuccess) {
+        clear();
+        resolve();
+        setPaymentSuccess();
+        return;
+      }
+
+      if (order.isClosed) {
+        clear();
+        reject('closed');
+        setPaymentFail('closed');
+        return;
+      }
+
+      if (count > 100) {
+        clear();
+        reject('timeout');
+        setPaymentFail('timeout');
+        return;
+      }
+
+      count++;
+    }, 3 * 1000);
+  });
+};
+
 export const pay = async (orderNo: string, redirectTo?: string): Promise<void> => {
   if (isInWechat && !isWindowsWechat) {
     return wechatPay(orderNo, redirectTo);
-  } else if (isInApp) {
+  } else if (isInApp && isiOS) {
     return iosPay(orderNo);
+  } else if (isInApp && isAndroid) {
+    return androidPay(orderNo);
   } else {
     return pcPay(orderNo);
   }
