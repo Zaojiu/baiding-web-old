@@ -204,6 +204,9 @@
         flex-direction: column;
 
         .item-name {
+          max-height: calc(100vh - 236px);
+          overflow: auto;
+
           .ticket {
             display: inline-block;
             font-size: $font-size-14;
