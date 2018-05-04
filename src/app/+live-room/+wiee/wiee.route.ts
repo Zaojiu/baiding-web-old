@@ -1,13 +1,13 @@
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Routes, RouterModule} from '@angular/router';
-import {NowComponent} from "./now.component";
+import {WieeComponent} from "../+wiee/wiee.component";
 
 const route: Routes = [
   {
     path: '',
-    component: NowComponent,
+    component: WieeComponent,
     data: {
-      title: 'ZaojiuTV',
+      title: 'WIEE直播',
     },
   },
 ];
@@ -15,8 +15,10 @@ const route: Routes = [
 const ROUTES: ModuleWithProviders = RouterModule.forChild(route);
 
 @NgModule({
-  imports: [ROUTES],
-  exports: [RouterModule]
+  imports: [ ROUTES ],
+  exports: [ RouterModule ]
 })
-export class NowRoutingModule {
+
+export class WieeRoutingModule {
+
 }
