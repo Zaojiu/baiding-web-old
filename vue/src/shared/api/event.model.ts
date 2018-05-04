@@ -9,12 +9,14 @@ export class EventTicketModel {
   originFee: Money; // 原价，单位分
   sellTotal: number;
   leftTotal: number;
+  disableDiscount: boolean; // 是否允许折扣
 
   constructor(data: any) {
     if (!data) return;
 
     this.id = data.id;
     this.name = data.name;
+    this.disableDiscount = data.disableDiscount || false;
     this.totalFee = data.totalFee ? new Money(data.totalFee) : new Money(0);
     this.memberFee = data.memberFee ? new Money(data.memberFee) : new Money(0);
     this.originFee = data.originFee ? new Money(data.originFee) : new Money(0);
@@ -39,7 +41,6 @@ class EventMetaModel {
   location: number[];
   speakers: SpeakerModel[];
   tickets: EventTicketModel[];
-  disableDiscount: boolean;
 
   constructor(data: any) {
     if (!data) return;
@@ -58,7 +59,6 @@ class EventMetaModel {
     this.address = data.address;
     this.location = data.location;
     this.speakers = [];
-    this.disableDiscount = data.disableDiscount || false;
     const speakersData = data && data.speakers ? data.speakers : [];
     speakersData.forEach((speaker: any) => {
       this.speakers.push(new SpeakerModel(speaker));

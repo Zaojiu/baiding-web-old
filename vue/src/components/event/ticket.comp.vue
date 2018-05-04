@@ -481,7 +481,7 @@
         return;
       }
 
-      const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount, this.event.meta.disableDiscount);
+      const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount, this.ticketSelected.disableDiscount);
       this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([query]))}});
     }
 
