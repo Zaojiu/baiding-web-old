@@ -1,0 +1,132 @@
+.live-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #000000;
+  overflow: auto;
+  padding-top: 4px;
+  padding-bottom: 52px;
+
+  .top-cover {
+    position: relative;
+    width: 100%;
+
+    .top-cover-img {
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .top-cover-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 48px;
+      height: 48px;
+      margin-top: -24px;
+      margin-left: -24px;
+      opacity: 0.8;
+    }
+
+    .top-cover-sub {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      font-size: 12px;
+      line-height: 32px;
+      color: $color-w;
+      background-color: rgba(56, 56, 56, 0.8);
+      padding-left: 20px;
+    }
+  }
+
+  .live-info-block {
+    padding: 20px;
+    background-color: $color-b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .cover-small {
+      width: 40%;
+      object-fit: cover;
+    }
+
+    .info {
+      position: relative;
+      width: 60%;
+      padding-left: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .title {
+        color: $color-w;
+        font-size: 16px;
+        line-height: 20px;
+        word-break: break-all;
+        margin-top: 5px;
+        height: 40px;
+        overflow: hidden;
+        font-weight: bold;
+      }
+
+      .time {
+        font-size: $font-size-xsm;
+        color: $color-w;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .bottom-book {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 52px;
+    height: 52px;
+    background: rgb(0, 211, 193);
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .loading-foot {
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+
+    &.show {
+      opacity: 1;
+    }
+
+    &.hide {
+      transition: 1s ease all;
+      opacity: 0;
+    }
+  }
+
+  .bottom {
+    display: flex;
+    height: 62px;
+
+    .word {
+      margin: auto;
+      font-size: 16px;
+      color: $color-gray;
+    }
+  }
+}
+
+.loading, .no-record-tips {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 16px;
+  color: $color-gray;
+  transform: translateX(-50%) translateY(-50%);
+}
