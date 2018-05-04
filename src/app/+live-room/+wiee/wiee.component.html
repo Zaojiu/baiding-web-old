@@ -1,0 +1,30 @@
+<div class="live-list scrollable" (scroller)="onScroll($event)" [data]="livesList"
+     [dataContainerSelector]="'.main-list'" [needUnload]="false">
+  <div class="top-cover" (click)="gotoLiveRoom(livesList[0].id)">
+    <img class="top-cover-img" [src]="livesList[0] ? livesList[0].coverUrl : ''" alt="话题间封面">
+    <img class="top-cover-btn" src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png">
+    <div class="top-cover-sub">{{ livesList[0] ? livesList[0].subject : ''}}</div>
+  </div>
+  <div class="main-list">
+    <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoomInfo(liveInfo.id)">
+      <img class="cover-small" [src]="liveInfo.coverSmall169Url" alt="话题间封面">
+
+      <div class="info">
+        <div class="title">{{liveInfo.subject}}</div>
+        <div class="time">{{liveTime[liveInfo.id]}}</div>
+      </div>
+    </div>
+
+    <div class="bottom-book" (click)="bookLive()">订阅直播通知
+    </div>
+
+    <div class="bottom" *ngIf="isOnLatest && livesList.length">
+      <div class="word">已显示全部内容</div>
+    </div>
+  </div>
+
+</div>
+
+<bd-loading class="loading" *ngIf="isLoading"></bd-loading>
+
+<div class="no-record-tips" *ngIf="!livesList.length && !isLoading">暂无Now直播内容</div>

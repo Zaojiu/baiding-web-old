@@ -23,6 +23,13 @@ const route: Routes = [
     }
   },
   {
+    path: 'wiee',
+    loadChildren: 'app/+live-room/+wiee/wiee.module#WieeModule',
+    data: {
+      title: 'WIEE直播'
+    }
+  },
+  {
     path: 'apply',
     loadChildren: 'app/+live-room/+apply/apply.module#ApplyModule',
     data: {
