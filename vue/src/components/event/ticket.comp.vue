@@ -306,7 +306,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {getEvent} from "../../shared/api/event.api";
+  import {getEventDetail} from "../../shared/api/event.api";
   import {EventModel, EventTicketModel} from "../../shared/api/event.model";
   import {Money, isInWechat} from "../../shared/utils/utils";
   import {TicketModel} from "../../shared/api/ticket.model";
@@ -363,7 +363,7 @@
       this.isLoading = true;
       this.isError = false;
       try {
-        this.event = await getEvent(this.id);
+        this.event = await getEventDetail(this.id);
       } catch (e) {
         if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
           this.isNotFound = true;
