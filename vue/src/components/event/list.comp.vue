@@ -58,8 +58,8 @@
 <style lang="scss" scoped>
 .container {
   position: relative;
-  height: 100vh;
   background-color: rgb(251, 251, 251);
+  padding: 10px 0;
 
   .event {
     position: relative;
@@ -79,7 +79,7 @@
 
     .top-cover {
       object-fit: cover;
-      max-width: 100%;
+      width: 100%;
       height: auto;
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
