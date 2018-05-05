@@ -638,122 +638,91 @@ export const router = new Router({
       component: () => System.import('./components/group/comment.comp.vue'),
     },
     {
-      path: '/wv/wiee/banner',
+      path: '/wv/wiee',
       component: () => System.import('./components/wiee/banner.comp.vue'),
       children: [
         {
           path: '',
           name: 'wiee.banner',
           meta: {
-            title: 'WIEE',
+            title: '造就思想节',
           }
-        }
-      ]
-    },
-    {
-      path: '/wv/wiee/index',
-      component: () => System.import('./components/wiee/index.comp.vue'),
-      children: [
+        },
         {
-          path: '',
+          path: 'index',
           name: 'wiee.main',
           meta: {
-            title: 'WIEE',
-          }
-        }
-      ]
-    },
-    {
-      path: '/wv/wiee/guests/:id',
-      meta: {
-        title: 'guests',
-      },
-      component: () => System.import('./components/wiee/guests/main.comp.vue'),
-      children: [
-        {
-          path: '',
-          name: 'wiee.guests.main',
-          meta: {
-            title: '',
+            title: '造就思想节',
           },
-          redirect: 'desc'
+          component: () => System.import('./components/wiee/index.comp.vue'),
         },
         {
-          path: 'desc',
-          name: 'wiee.guests.desc',
+          path: 'guests/:id',
           meta: {
-            title: '介绍',
+            title: '嘉宾详情',
           },
-          component: () => System.import('./components/wiee/guests/desc.comp.vue'),
+          component: () => System.import('./components/wiee/guests/main.comp.vue'),
         },
         {
-          path: 'talk',
-          name: 'wiee.guests.talk',
-          meta: {
-            title: '演讲',
-          },
-          component: () => System.import('./components/wiee/guests/talk.comp.vue'),
-        },
-        {
-          path: 'highlights',
-          name: 'wiee.guests.highlights',
-          meta: {
-            title: '演讲',
-          },
-          component: () => System.import('./components/wiee/guests/highlights.comp.vue'),
-        },
-        {
-          path: 'images',
-          name: 'wiee.guests.images',
-          meta: {
-            title: '演讲',
-          },
-          component: () => System.import('./components/wiee/guests/images.comp.vue'),
-        },
-      ]
-    },
-    {
-      path: '/wv/wiee/detail',
-      name: 'wiee.detail',
-      meta: {
-        title: 'WIEE大会 详情',
-      },
-      component: () => System.import('./components/wiee/detail/main.comp.vue'),
-    },
-    {
-      path: '/wv/wiee/map',
-      component: () => System.import('./components/wiee/map/main.comp.vue'),
-      children: [
-        {
-          path: '',
-          name: 'wiee.map',
-          meta: {
-            title: 'WIEE大会 地图',
-          }
-        },
-        {
-          path: ':id',
-          name: 'wiee.map.detail',
-          meta: {
-            title: 'WIEE大会 地图',
-          },
-          component: () => System.import('./components/wiee/map/detail.comp.vue'),
-        },
-      ]
-    },
-    /*{
-      path: '/wv/wiee/group/:id',
-      component: () => System.import('./components/group/wiee.comp.vue'),
-      children: [
-        {
-          path: '',
-          name: 'wiee.group',
+          path: 'detail',
+          name: 'wiee.detail',
           meta: {
             title: 'WIEE',
           },
+          component: () => System.import('./components/wiee/detail/main.comp.vue'),
+        },
+        {
+          path: 'map',
+          component: () => System.import('./components/wiee/map/main.comp.vue'),
+          children: [
+            {
+              path: '',
+              name: 'wiee.map',
+              meta: {
+                title: 'WIEE大会 地图',
+              }
+            },
+            {
+              path: ':id',
+              name: 'wiee.map.detail',
+              meta: {
+                title: 'WIEE大会 地图',
+              },
+              component: () => System.import('./components/wiee/map/detail.comp.vue'),
+            },
+          ]
+        },
+        {
+          path: 'group/:groupId',
+          component: () => System.import('./components/wiee/group/list.comp.vue'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '造就思想节交流圈'
+              },
+              name: 'wiee.group.main'
+            },
+            {
+              path: 'publish',
+              name: 'wiee.group.publish',
+              meta: {
+                title: '发布'
+              },
+              component: () => System.import('./components/wiee/group/publish.comp.vue'),
+            },
+            {
+              path: 'msg',
+              name: 'wiee.group.message.comment',
+              meta: {
+                title: '评论'
+              },
+              component: () => System.import('./components/wiee/group/comment.comp.vue'),
+            },
+          ]
         },
       ]
-    },*/
+    },
     {
       path: '/500',
       name: 'error',

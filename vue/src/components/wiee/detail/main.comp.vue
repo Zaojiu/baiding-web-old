@@ -6,8 +6,8 @@
       <span @click="showMenu = true" class="font-set"><i class="bi bi-menu"></i></span>
       <div class="menu" v-if="showMenu">
         <div class="menu-list">
-          <div class="close">
-            <i @click="showMenu = false" class="bi bi-close"></i>
+          <div class="close" @click="showMenu = false">
+            <i class="bi bi-close"></i>
           </div>
           <ul class="menu-ul">
             <li @click="goTo('index')">
@@ -140,6 +140,7 @@
           .close {
             text-align: right;
             padding: 20px 20px 30px 0;
+            font-size: 14px;
           }
 
           .menu-ul {

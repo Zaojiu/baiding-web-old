@@ -5,11 +5,11 @@
     <header class="header">
       <div class="img" @click="goToNextPage('detail')"><img
         src="https://og9s6vxbs.qnssl.com/wiee/index/home-right.png"/></div>
-      <span @click="showMenu = true" class="font-set"><i class="bi bi-menu"></i></span>
+      <span @click="showMenu = true" style="cursor: pointer;" class="font-set"><i class="bi bi-menu"></i></span>
       <div class="menu" v-if="showMenu">
         <div class="menu-list">
-          <div class="close">
-            <i @click="showMenu = false" class="bi bi-close"></i>
+          <div class="close" @click="showMenu = false">
+            <i class="bi bi-close"></i>
           </div>
           <ul class="menu-ul">
             <li @click="goTo('index')">
@@ -74,7 +74,7 @@
           <div class="img-wiee">
             <img src="https://og9s6vxbs.qnssl.com/wiee/index/wiee-zaojiu.png"/>
           </div>
-          <div class="img" @click="goTo('index')">
+          <div class="img" style="cursor: pointer;" @click="goTo('index')">
             <img src="https://og9s6vxbs.qnssl.com/wiee/index/down.png"/>
           </div>
         </div>
@@ -211,6 +211,7 @@
   .wiee-container {
     height: 100vh;
     background-color: #000;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 
     .header {
       display: flex;
@@ -263,6 +264,7 @@
         background-color: rgba(0, 0, 0, .8);
         z-index: 3;
         overflow: hidden;
+        font-size: 14px;
 
         .menu-list {
           background-color: rgb(0, 0, 0);
@@ -360,6 +362,7 @@
       line-height: 52px;
       font-weight: bold;
       z-index: 2;
+      font-size: 18px;
     }
 
     .content {
@@ -406,6 +409,8 @@
           .img {
             height: 55px;
             font-size: 0;
+            cursor: pointer;
+
             img {
               height: 100%;
             }
@@ -982,12 +987,11 @@
 
     async share() {
       if (isInWechat) {
-        await initWechat();
         setShareInfo(
           '造就思想节：发现最有创造力的思想',
           `科技与人文交汇的十字路口`,
           `${host.assets}/assets/img/zaojiu-logo.jpg`,
-          `${host.self}${this.$route.fullPath}`
+          `${host.self}/wv/wiee`
         );
       }
     }
@@ -1008,7 +1012,7 @@
     }
 
     goToGroup() {
-      this.$router.push({path: '/group/5aec2ad12cfc070001746a4d/cover'});
+      this.$router.push({path: '/wv/wiee/group/5aec2ad12cfc070001746a4d'});
     }
 
     goToNextPage(page: string) {
@@ -1020,7 +1024,7 @@
     };
 
     goToSpeaks(id: string) {
-      this.$router.push({path: `/wv/wiee/guests/${id}/desc`})
+      this.$router.push({path: `/wv/wiee/guests/${id}`})
     };
 
     touchStart(e: TouchEvent) {

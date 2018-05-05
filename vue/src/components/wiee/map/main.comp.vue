@@ -118,11 +118,17 @@
       this.init();
     }
 
+    @Watch('$route.name')
+    setNavIndex() {
+      this.init()
+    }
+
+
     async init() {
-      this.$nextTick(function () {
+      /*this.$nextTick(function () {
         let map = this.$refs['map'] as HTMLElement;
         map.scroll(400, 0)
-      });
+      });*/
     }
 
     closeSide() {
@@ -151,7 +157,7 @@
           break;
         //未来城市与大学展示区1
         case 7:
-          this.$router.push({path:`/wv/wiee/map/7`});
+          this.$router.push({path: `/wv/wiee/map/7`});
           break;
         //创客馆   0
         case 8:
@@ -159,11 +165,11 @@
           break;
         //未来生活展示区  1
         case 9:
-          this.$router.push({path:`/wv/wiee/map/9`});
+          this.$router.push({path: `/wv/wiee/map/9`});
           break;
         //未来居住展示区  1
         case 10:
-          this.$router.push({path:`/wv/wiee/map/10`});
+          this.$router.push({path: `/wv/wiee/map/10`});
           break;
         //智汇云顶  0
         case 11:
@@ -171,7 +177,7 @@
           break;
         //未来交通展示区  1
         case 12:
-          this.$router.push({path:`/wv/wiee/map/12`});
+          this.$router.push({path: `/wv/wiee/map/12`});
           break;
         case 13:
           break;
