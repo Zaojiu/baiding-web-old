@@ -579,6 +579,14 @@ export const router = new Router({
       component: () => System.import('./components/order/order.comp.vue'),
     },
     {
+      path: '/events',
+      name: 'event',
+      meta: {
+        title: '现场'
+      },
+      component: () => System.import('./components/event/list.comp.vue'),
+    },
+    {
       path: '/events/:id/tickets',
       name: 'event.ticket',
       meta: {
