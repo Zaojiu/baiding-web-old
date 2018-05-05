@@ -299,6 +299,7 @@ export const guests = [
   },
   {
     index: 8,
+    id: '5aed1e96d0f69a1b84796369',
     name: '孔那',
     desc: ['深圳安吉尔饮水产业集团有限公司总裁'],
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestskongna_b.jpg',
@@ -378,6 +379,7 @@ export const guests = [
   },
   {
     index: 18,
+    id: '5aec3235ce87e80001a56c08',
     name: '曹楠',
     desc: ['同济大学大数据可视化实验室 主任 教授'],
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestscaonan_b.jpg',

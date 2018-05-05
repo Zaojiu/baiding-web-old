@@ -1,12 +1,18 @@
 <template>
-  <article class="wiee-container">
-    <div class="bg"><img class="bg-img" src="https://og9s6vxbs.qnssl.com/wiee/bg.jpg"/></div>
-    <!--<div class="bg-text"><img src="https://og9s6vxbs.qnssl.com/wiee/bg-txt.png"/></div>-->
-    <button class="jump" @click="jump">跳过{{time}}S</button>
-  </article>
+  <div class="container">
+    <article class="wiee-container" v-if="showTips">
+      <div class="bg"><img class="bg-img" src="https://og9s6vxbs.qnssl.com/wiee/bg.jpg"/></div>
+      <button class="jump" @click="jump">跳过{{time}}S</button>
+    </article>
+    <router-view></router-view>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+  .container {
+    font-size: 0;
+  }
+
   .wiee-container {
     height: 100vh;
     width: 100%;
@@ -20,36 +26,9 @@
       font-size: 0;
 
       .bg-img {
-        // position: relative;
         width: 100%;
-        // animation: big 1.4s ease-in-out 0s both;
       }
     }
-
-    /*@keyframes big {
-      0% {
-        top: 0;
-        transform: scale(1);
-      }
-
-      100% {
-        top: 60px;
-        transform: scale(1.8);
-      }
-    }*/
-
-    /*.bg-text {
-      font-size: 0;
-      position: absolute;
-      bottom: 0;
-      left: 18px;
-      width: calc(100% - 36px);
-      background-color: transparent;
-
-      img {
-        width: 100%;
-      }
-    }*/
 
     .jump {
       position: absolute;
@@ -80,13 +59,19 @@
   export default class ActivateComponent extends Vue {
     time = 3;
     timer: any;
+    showTips = false;
 
     @Watch('$route.name')
     setNavIndex() {
-      this.init();
+      if (this.$route.name === 'wiee.banner') {
+        this.showTips = true;
+      } else {
+        this.showTips = false;
+      }
     }
 
     created() {
+      this.setNavIndex();
       this.init();
     }
 
@@ -94,7 +79,10 @@
       this.timer = setInterval(() => {
         this.time = this.time - 1;
         if (this.time === 0) {
-          this.$router.push({path: '/wv/wiee/index'})
+          this.$router.push({path: '/wv/wiee/index'});
+          if (this.timer) {
+            clearInterval(this.timer);
+          }
         }
       }, 1000)
     }
@@ -103,8 +91,8 @@
       if (isInWechat) {
         await initWechat();
         setShareInfo(
-          'WIEE-造就',
-          `一场思想盛宴`,
+          '造就思想节：发现最有创造力的思想',
+          `科技与人文交汇的十字路口`,
           `${host.assets}/assets/img/zaojiu-logo.jpg`,
           `${host.self}${this.$route.fullPath}`
         );
@@ -121,9 +109,9 @@
       this.$router.push({path: '/wv/wiee/index'})
     }
 
-    async init() {
+    init() {
       if (isInWechat) {
-        await this.share()
+        this.share()
       }
     }
   }

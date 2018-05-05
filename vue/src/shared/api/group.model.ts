@@ -1,5 +1,19 @@
-import {UserInfoModel} from './user.model';
+export class QiNiuTokenModel {
+  key: string;
+  token: string;
 
-export class models {
-  //
+  constructor(data: any) {
+    this.key = data.key;
+    this.token = data.token;
+  }
+}
+
+
+interface FileReaderEventTarget extends EventTarget {
+  result: string;
+}
+
+export interface FileReaderEvent extends Event {
+  target: FileReaderEventTarget;
+  getMessage(): string;
 }
