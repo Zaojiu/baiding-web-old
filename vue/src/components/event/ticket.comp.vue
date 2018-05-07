@@ -5,9 +5,17 @@
     <error class="abs-center" v-else-if="isNotFound">无此活动</error>
     <div class="event" v-else @click="isPaymentPopup = false">
       <top-nav></top-nav>
-      <img class="cover" :src="event.cover169Url" alt="头图">
+      <img class="cover" :src="event.cover169Url" alt="头图"/>
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>
+        <div class="translate">
+          <span @click="changeLang" :class="{'green':lang !== 'en'}">
+            中文
+          </span>
+          <span @click="changeLang" :class="{'green':lang ==='en'}">
+            EN
+          </span>
+        </div>
         <div class="desc article-content" v-html="event.meta.content"></div>
       </div>
     </div>
@@ -45,7 +53,7 @@
         <bd-loading v-if="isAmoutLoading"></bd-loading>
         <span v-if="!isAmoutLoading">{{amount.toYuan()}}</span>
       </div>
-      <button class="button button-primary" @click="gotoOrder()">立即购买</button>
+      <button class="button button-primary" @click="gotoOrder()">{{$t('m.event.buyNow')}}</button>
     </div>
   </div>
 </template>
@@ -143,6 +151,26 @@
         .address {
           margin-top: 10px;
         }
+      }
+    }
+
+    .translate {
+      padding-left: 20px;
+      > span {
+        display: inline-block;
+        font-size: 14px;
+        border: 1px solid #31b5a5;
+        width: 50px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        vertical-align: middle;
+        box-sizing: border-box;
+      }
+      .green {
+        background-color: #31b5a5;
+        font-size: 14px;
+        color: #fff;
       }
     }
 
@@ -337,6 +365,8 @@
     isAmoutLoading = false;
     debounceTimer = 0;
     ticketSelected = new EventTicketModel({});
+    lang = 'zh';
+    timer: any;
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -350,13 +380,31 @@
       this.initData();
     }
 
+    @Watch('lang')
+    changeLocale(val: string) {
+      if (val) {
+        this.$i18n.locale = val;
+      } else {
+        this.$i18n.locale = 'zh';
+      }
+    }
+
     created() {
       this.id = this.$route.params['id'];
+      this.lang = this.$route.query['lang'];
       this.initData();
     }
 
     setShareInfo() {
       setShareInfo(this.event.subject, this.event.desc, this.event.cover11Url, `${host.self}${this.$route.fullPath}`);
+    }
+
+    changeLang() {
+      if (this.lang === 'en') {
+        this.lang = 'zh';
+      } else {
+        this.lang = 'en'
+      }
     }
 
     async initData() {
@@ -384,8 +432,8 @@
         this.ticketSelected = this.event.meta.tickets[0];
         this.ticketCount = 1;
 
-        const timer = setInterval(() => {
-          this.checkDate(this.event, timer);
+        this.timer = setInterval(() => {
+          this.checkDate(this.event, this.timer);
         }, 3000);
       }
     }
@@ -426,7 +474,8 @@
         this.btnText = '未开始售票';
       } else {
         this.isPaymentDisabled = false;
-        this.btnText = '购买门票';
+        // 购买门票
+        this.btnText = this.$t('m.event.buy') as string;
         if (event.isForMember) {
           this.btnText = '购买门票（会员专享）'
         }
@@ -436,7 +485,13 @@
         this.isPaymentDisabled = true;
         this.btnText = '已结束售票';
         this.isPaymentPopup = false;
-        clearInterval(timer);
+        clearInterval(this.timer);
+      }
+    }
+
+    destroyed() {
+      if (this.timer) {
+        clearInterval(this.timer);
       }
     }
 
@@ -485,7 +540,10 @@
       }
 
       const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount, this.ticketSelected.disableDiscount);
-      this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([query]))}});
+      this.$router.push({
+        path: '/orders',
+        query: {items: encodeURIComponent(JSON.stringify([query])), lang: this.lang}
+      });
     }
 
     chooseTicket(ticket: EventTicketModel) {
