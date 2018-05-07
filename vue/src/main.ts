@@ -3,6 +3,7 @@ import './shared/utils/polyfill';
 import './shared/icons.font.js';
 
 import Vue, {ComponentOptions} from 'vue';
+import {i18n} from './vue-i18n';
 import {router} from './router';
 import {sync} from 'vuex-router-sync';
 import {store} from './store';
@@ -15,6 +16,7 @@ import {getUserInfo} from "./shared/api/user.api";
 sync(store, router);
 
 const app = new Vue({
+  i18n,
   router,
   store,
   ...appComp,
