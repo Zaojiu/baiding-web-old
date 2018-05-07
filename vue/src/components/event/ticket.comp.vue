@@ -8,14 +8,6 @@
       <img class="cover" :src="event.cover169Url" alt="头图"/>
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>
-        <div class="translate">
-          <span @click="changeLang" :class="{'green':lang !== 'en'}">
-            中文
-          </span>
-          <span @click="changeLang" :class="{'green':lang ==='en'}">
-            EN
-          </span>
-        </div>
         <div class="desc article-content" v-html="event.meta.content"></div>
       </div>
     </div>
@@ -151,26 +143,6 @@
         .address {
           margin-top: 10px;
         }
-      }
-    }
-
-    .translate {
-      padding-left: 20px;
-      > span {
-        display: inline-block;
-        font-size: 14px;
-        border: 1px solid #31b5a5;
-        width: 50px;
-        height: 20px;
-        line-height: 20px;
-        text-align: center;
-        vertical-align: middle;
-        box-sizing: border-box;
-      }
-      .green {
-        background-color: #31b5a5;
-        font-size: 14px;
-        color: #fff;
       }
     }
 
@@ -397,14 +369,6 @@
 
     setShareInfo() {
       setShareInfo(this.event.subject, this.event.desc, this.event.cover11Url, `${host.self}${this.$route.fullPath}`);
-    }
-
-    changeLang() {
-      if (this.lang === 'en') {
-        this.lang = 'zh';
-      } else {
-        this.lang = 'en'
-      }
     }
 
     async initData() {
