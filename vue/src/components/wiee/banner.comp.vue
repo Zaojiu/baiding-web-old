@@ -76,15 +76,17 @@
     }
 
     mounted() {
-      this.timer = setInterval(() => {
-        this.time = this.time - 1;
-        if (this.time === 0) {
-          this.$router.push({path: '/wv/wiee/index'});
-          if (this.timer) {
-            clearInterval(this.timer);
+      if (this.$route.name === 'wiee.banner') {
+        this.timer = setInterval(() => {
+          this.time = this.time - 1;
+          if (this.time === 0) {
+            this.$router.push({path: '/wv/wiee/index'});
+            if (this.timer) {
+              clearInterval(this.timer);
+            }
           }
-        }
-      }, 1000)
+        }, 1000)
+      }
     }
 
     async share() {

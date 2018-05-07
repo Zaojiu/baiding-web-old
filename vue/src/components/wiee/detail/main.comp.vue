@@ -3,7 +3,7 @@
     <header class="header">
       <div class="img" @click="goToNextPage('index')"><img
         src="https://og9s6vxbs.qnssl.com/wiee/zao/back-home.png"/></div>
-      <span @click="showMenu = true" class="font-set"><i class="bi bi-menu"></i></span>
+      <!--<span @click="showMenu = true" class="font-set"><i class="bi bi-menu"></i></span>
       <div class="menu" v-if="showMenu">
         <div class="menu-list">
           <div class="close" @click="showMenu = false">
@@ -56,12 +56,12 @@
               </div>
             </li>
           </ul>
-          <div class="footer" @click="goTo('other')">
+          <div class="footer" @click="goToGroup">
             <div class="btn">
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
     </header>
     <section class="content">
       <img src="https://og9s6vxbs.qnssl.com/wiee/zao/detail.png"/>
@@ -243,12 +243,16 @@
     }
 
     goToNextPage(tab: string) {
-      this.$router.push({path: `/wv/wiee/${tab}`})
+      this.$router.back();
     }
 
     goTo(tab: string) {
       this.showMenu = false;
       location.href = `/wv/wiee#${tab}`;
+    }
+
+    goToGroup() {
+      this.$router.push({path: '/wv/wiee/group/5aec2ad12cfc070001746a4d'});
     }
   }
 </script>

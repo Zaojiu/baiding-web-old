@@ -1,6 +1,7 @@
 import {host} from '../../env/environment';
 import {get} from '../../shared/api/xhr';
 import {params} from '../../shared/utils/utils';
+import {LiveInfoModel} from "../../shared/api/lives.model";
 
 
 export const getSpeakerInfo = async (id: string): Promise<any> => {
@@ -60,3 +61,28 @@ export class SpeakerMedia {
     this.duration = data.duration ? moment.duration(data.duration) : moment.duration(0);
   }
 }
+
+
+export const listNow = async (markerId?: string, size = 20): Promise<LiveInfoModel[]> => {
+  const query: { [key: string]: any } = {size};
+  if (markerId) query.marker = markerId;
+
+  const url = `${host.io}/api/live/term/wiee/streams?${params(query)}`;
+  let resp;
+  try {
+    resp = await get(url);
+  } catch (e) {
+    return [];
+  }
+
+  const data = resp.data || {};
+  const livesData = data.result ? data.result : [];
+  const usersData = data.include && data.include.users ? data.include.users : {};
+  const lives: LiveInfoModel[] = [];
+
+  for (let liveInfo of livesData) {
+    lives.push(new LiveInfoModel(liveInfo, usersData));
+  }
+
+  return lives;
+};

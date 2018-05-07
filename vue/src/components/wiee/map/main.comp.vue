@@ -17,6 +17,9 @@
         <area @click="showMapDetail(12)" shape="rect" coords="684,567,840,611" alt="未来交通展示区"/>
         <!--<area @click="showMapDetail(13)" shape="rect" coords="637,665,735,715" alt="参观入口（3）"/>-->
       </map>
+      <div class="tips">
+        <span>拖动查看更多</span>
+      </div>
     </div>
     <div class="aside" v-if="showSide">
       <div class="aside-main">
@@ -50,6 +53,24 @@
       }
     }
 
+    .tips {
+      position: fixed;
+      width: 100vw;
+      bottom: 12px;
+      text-align: center;
+
+      span {
+        width: 148px;
+        height: 30px;
+        background-color: rgb(0, 211, 193);
+        color: #fff;
+        font-size: 14px;
+        border-radius: 15px;
+        padding: 5px 20px;
+        box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, .3);
+      }
+    }
+
     .aside {
       position: absolute;
       height: 100%;
@@ -60,7 +81,6 @@
 
       .aside-main {
         position: absolute;
-        max-height: 300px;
         overflow-y: auto;
         width: 80%;
         top: 50%;
@@ -68,6 +88,7 @@
         transform: translate(-50%, -50%);
         background-color: #000;
         border-radius: 4px;
+        padding-bottom: 16px;
 
         .title {
           position: relative;
@@ -88,7 +109,7 @@
 
         .content {
           padding: 4px 20px 16px 20px;
-          max-height: 240px;
+          height: 240px;
           overflow-y: auto;
 
           p {
@@ -110,12 +131,10 @@
   @Component({})
   export default class ActivateComponent extends Vue {
     showSide = false;
-    sideTitle = '未来教育区';
-    sideContent = '地面箱体原有铁皮，墙面岩棉隔热板，T5 照明灯若干，1\n' +
-      '个挂式空调，玻璃门及开门上方雨棚。除此以外的其他内部展示以及装饰需求，由展商跟指定设计搭建。面向全球挑战和国家重大战略需求，聚焦科技前沿，明确创新导向，丰富创业实践，聚集全球创新创业人才，培育创新创业文化，培养具有创新意识和综合素质的未来型人才，为创新创业生态系统提供动力。由展商跟指定设计搭建。面向全球挑战和国家重大战略需求，聚焦科技前沿，明确创新导向，丰富创业实践';
+    sideTitle = '';
+    sideContent = '';
 
     created() {
-      this.init();
     }
 
     @Watch('$route.name')
@@ -123,12 +142,15 @@
       this.init()
     }
 
+    mounted() {
+      this.init();
+    }
 
     async init() {
-      /*this.$nextTick(function () {
+      this.$nextTick(function () {
         let map = this.$refs['map'] as HTMLElement;
         map.scroll(400, 0)
-      });*/
+      });
     }
 
     closeSide() {
@@ -147,12 +169,16 @@
           break;
         //创意集市
         case 4:
+          this.sideTitle = '创意集市';
+          this.sideContent = '我们为新兴设计师和艺术家提供开放、多元的创作环境和交易平台，推崇个人创造和精神创新，鼓励创意立业，是一个生成创意并商业化的的实验舞台。';
           this.showSide = true;
           break;
         case 5:
           break;
         //未来教育区  0
         case 6:
+          this.sideTitle = '未来教育区';
+          this.sideContent = '最有创新性和颠覆性的教育理念展示区，用科技的手段和人文的理念普及知识与教育';
           this.showSide = true;
           break;
         //未来城市与大学展示区1
@@ -161,6 +187,8 @@
           break;
         //创客馆   0
         case 8:
+          this.sideTitle = '创客馆';
+          this.sideContent = '创客是一群喜欢或者享受创新的人，追求自身创意的实现，而创客馆为这些创客们提供实现创意和交流创意思路及产品的线下和线上相结合、创新和交友相结合的平台。';
           this.showSide = true;
           break;
         //未来生活展示区  1
@@ -173,6 +201,8 @@
           break;
         //智汇云顶  0
         case 11:
+          this.sideTitle = '智汇云顶';
+          this.sideContent = '可容纳5000人的超级会场，不需传统搭建和框架结构，短短数天即可吹起来。';
           this.showSide = true;
           break;
         //未来交通展示区  1

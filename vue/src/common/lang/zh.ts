@@ -8,5 +8,14 @@ export const m = {
     price: '商品金额',
     discountPrice: '优惠金额',
     totalPrice: '合计'
+  },
+  wiee: {
+    guestsNav1: '介绍',
+    guestsNav2: '演讲',
+    guestsNav3: '花絮',
+    guestsNav4: '画册',
+    guestsCall: '联系嘉宾',
+    guestsIntroduce: '嘉宾介绍',
+    guestsNoTips: '暂无内容'
   }
 };
