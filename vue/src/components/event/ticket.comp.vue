@@ -17,18 +17,38 @@
     </footer>
 
     <div class="payment-popup" v-if="!isLoading && !isError && !isNotFound" :class="{'show': isPaymentPopup}">
-      <div class="header">
-        <div class="subject">{{event.subject}}</div>
-        <i class="bi bi-close" @click="isPaymentPopup = false"></i>
+      <div class="on-top">
+        <div class="header">
+          <div class="subject">{{event.subject}}</div>
+          <i class="bi bi-close" @click="isPaymentPopup = false"></i>
+        </div>
+        <div class="img-wrapper" v-if="event.meta.seatsMap.length>0">
+          <div class="cover-bg">
+            <div class="img-cover" v-for="(item,index) in event.meta.seatsMap" v-if="index===ticketImgIndex"
+                 :key="index">
+              <img
+                :src="item"/>
+            </div>
+          </div>
+          <div class="control">
+            <div class="item-content" v-for="(item,index) in event.meta.seatsMap" @click="chooeseImg(index)">
+              <div class="item"
+                 :class="{'active':index===ticketImgIndex}"
+                 >{{index+1}}
+            </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="detail">
         <div class="item-name">
-      <span
-        class="ticket"
-        :class="{'active': ticket.id === ticketSelected.id, 'disabled': !ticket.leftTotal}"
-        v-for="ticket in event.meta.tickets"
-        @click="ticket.leftTotal && chooseTicket(ticket)"
-      >{{ticket.name}}</span>
+          <span
+            class="ticket"
+            :class="{'active': ticket.id === ticketSelected.id, 'disabled': !ticket.leftTotal}"
+            v-for="ticket in event.meta.tickets"
+            @click="ticket.leftTotal && chooseTicket(ticket)"
+          >{{ticket.name}}
+          </span>
         </div>
         <div class="item-count">
           <div class="adjuster">
@@ -45,7 +65,9 @@
         <bd-loading v-if="isAmoutLoading"></bd-loading>
         <span v-if="!isAmoutLoading">{{amount.toYuan()}}</span>
       </div>
-      <button class="button button-primary" @click="gotoOrder()">{{$t('m.event.buyNow')}}</button>
+      <div>
+        <button class="button button-primary" @click="gotoOrder()">{{$t('m.event.buyNow')}}</button>
+      </div>
     </div>
   </div>
 </template>
@@ -178,33 +200,80 @@
     }
 
     .payment-popup {
-      .header {
-        display: flex;
-        align-items: center;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
 
-        .subject {
-          flex-grow: 1;
-          font-size: $font-size-14;
-          color: $color-b;
-          word-break: break-all;
-          line-height: 1.5em;
+      .on-top {
+        height: initial;
+
+        .header {
+          display: flex;
+          align-items: center;
+
+          .subject {
+            flex-grow: 1;
+            font-size: $font-size-14;
+            color: $color-b;
+            word-break: break-all;
+            line-height: 1.5em;
+          }
+
+          .bi-close {
+            flex-shrink: 0;
+            font-size: 14px;
+            color: $color-b;
+            padding: 10px;
+            transform: translateX(10px) translateY(-6px);
+          }
         }
 
-        .bi-close {
-          flex-shrink: 0;
-          font-size: 14px;
-          color: $color-b;
-          padding: 10px;
-          transform: translateX(10px) translateY(-6px);
+        .img-wrapper {
+          width: 100%;
+
+          img {
+            width: 100%;
+          }
+
+          .cover-bg {
+            width: 100%;
+
+            .img-cover {
+              width: 100%;
+            }
+          }
+
+          .control {
+            display: flex;
+            justify-content: center;
+
+            .item-content{
+              padding: 4px 10px;
+            }
+
+            .item {
+              font-size: 0;
+              color: #fff;
+              background-color: #909090;
+              height: 3px;
+              width: 20px;
+              text-align: center;
+              border-radius: 7px;
+            }
+
+            .active {
+              background-color: #31b5a5;
+            }
+          }
         }
       }
 
       .detail {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
 
         .item-name {
-          max-height: calc(100vh - 236px);
           overflow: auto;
 
           .ticket {
@@ -339,6 +408,7 @@
     ticketSelected = new EventTicketModel({});
     lang = 'zh';
     timer: any;
+    ticketImgIndex = 0;
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -515,5 +585,10 @@
       this.checkTicketCount();
       this.checkFee(this.ticketCount);
     }
+
+    chooeseImg(num: number) {
+      this.ticketImgIndex = num;
+    }
+
   }
 </script>
