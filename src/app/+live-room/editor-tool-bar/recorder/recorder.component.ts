@@ -47,12 +47,23 @@ export class RecorderComponent {
       }, (UtilsService.isInWechat ? UtilsService.isiOS ? 96 : 98 : 100));
       this.autoComplete();
     }, (err) => {
-      if (err && err.name === 'PermissionDeniedError') {
-        this.operationTips.popup('请开启录音权限');
-      } else {
-        this.operationTips.popup('录音失败');
+      switch (err.name) {
+        case 'NotAllowedError':
+        case 'PermissionDeniedError':
+          this.operationTips.popup('请开启录音权限');
+          break;
+        case 'NotFoundError':
+        case 'DevicesNotFoundError':
+          this.operationTips.popup('录音设备未找到');
+          break;
+        case 'NotSupportedError':
+          this.operationTips.popup('不支持录音功能');
+          break;
+        default:
+          this.operationTips.popup('录音失败');
       }
       this.status = RecordStatus.Waitting;
+      console.log(err);
     });
   }
 
