@@ -19,7 +19,14 @@ const route: Routes = [
     path: '',
     loadChildren: 'app/+live-room/+now/now.module#NowModule',
     data: {
-      title: '造就Now'
+      title: 'ZaojiuTV'
+    }
+  },
+  {
+    path: 'wiee',
+    loadChildren: 'app/+live-room/+wiee/wiee.module#WieeModule',
+    data: {
+      title: 'WIEE直播'
     }
   },
   {

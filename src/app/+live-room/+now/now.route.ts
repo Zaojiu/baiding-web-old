@@ -7,7 +7,7 @@ const route: Routes = [
     path: '',
     component: NowComponent,
     data: {
-      title: 'Now',
+      title: 'ZaojiuTV',
     },
   },
 ];

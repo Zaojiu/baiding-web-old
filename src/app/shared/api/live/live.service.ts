@@ -355,6 +355,30 @@ export class LiveService {
     });
   }
 
+  listWiee(markerId: string, size = 20): Promise<LiveInfoModel[]> {
+    const query = {
+      size: size,
+      marker: markerId
+    };
+    const url = `${environment.config.host.io}/api/live/term/wiee/streams?${$.param(query)}`;
+    return this.http.get(url).toPromise().then((res) => {
+      let data = res.json();
+
+      let streamData = data.result;
+      let liveInfoList: LiveInfoModel[] = [];
+
+      if (streamData && streamData.length) {
+        let usersData = data.include.users;
+        for (let liveInfo of streamData) {
+          let liveInfoParsed = this.parseLiveInfo(liveInfo, usersData);
+          liveInfoList.push(liveInfoParsed);
+        }
+      }
+
+      return liveInfoList;
+    });
+  }
+
   listLiveAudience(id: string): Promise<UserInfoModel[]> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users`;
     return this.http.get(url).toPromise().then((res) => {
@@ -389,6 +413,22 @@ export class LiveService {
     return this.http.post(url, null).toPromise().then((res) => {
       return this.refreshLiveInfo(liveId);
     });
+  }
+
+  bookLives(liveList: LiveInfoModel[]): Promise<LiveInfoModel> {
+    if (!liveList) {
+      return;
+    }
+    let topLiveId = liveList[0].id;
+    liveList.forEach((liveInfo: LiveInfoModel) => {
+      if (!liveInfo.isCreated()) {
+        return;
+      }
+      let url = `${environment.config.host.io}/api/live/streams/${ liveInfo.id }/book`;
+      this.http.post(url, null);
+    });
+
+    return this.refreshLiveInfo(topLiveId);
   }
 
   unbookLive(liveId: string): Promise<LiveInfoModel> {

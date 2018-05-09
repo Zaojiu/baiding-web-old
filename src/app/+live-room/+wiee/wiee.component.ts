@@ -4,13 +4,11 @@ import {LiveService} from "../../shared/api/live/live.service";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {UtilsService} from "../../shared/utils/utils";
-import {ScrollerDirective} from "../../shared/scroller/scroller.directive";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
 import {appConfig} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 
-declare var $: any;
 
 @Component({
   templateUrl: './wiee.component.html',
@@ -18,19 +16,12 @@ declare var $: any;
 })
 
 export class WieeComponent implements OnInit, OnDestroy {
-  constructor (private router: Router, private route: ActivatedRoute, private liveService: LiveService,
-               private operationTipsService: OperationTipsService,
-               private sanitizer: DomSanitizer, private userInfoService: UserInfoService) {
-  }
-
-  livesList: LiveInfoModel[] = [];
-  @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
-  covers: { [liveId: string]: SafeUrl } = {};
-  liveTime: { [liveId: string]: string } = {};
+  topLiveInfo: LiveInfoModel;
+  livesList: LiveInfoModel[] = []
   timeNow = UtilsService.now.toString();
+  liveTime: { [liveId: string]: string } = {};
   timer: any;
   userInfo: UserInfoModel;
-  liveInfo: LiveInfoModel;
   qrcode: string;
   liveId: string;
   from = '/lives';
@@ -42,15 +33,18 @@ export class WieeComponent implements OnInit, OnDestroy {
   isSubscribeLinkLoading = false;
   isSubscribeLinkError = false;
 
+  constructor (private router: Router, private route: ActivatedRoute, private liveService: LiveService,
+               private operationTipsService: OperationTipsService,
+               private sanitizer: DomSanitizer, private userInfoService: UserInfoService) {
+  }
+
   ngOnInit () {
     this.userInfo = this.userInfoService.getUserInfoCache();
 
     this.route.snapshot.data['shareTitle'] = `${this.userInfo ? this.userInfo.nick : '我'}正在使用${appConfig.name}，发现更多经验分享`;
 
-    this.timer = setInterval(() => this.timeNow = UtilsService.now.toString(), 1000);
-
     this.isLoading = true;
-    this.getLists('', 6).finally(() => {
+    this.getLists('', 19).finally(() => {
       this.isLoading = false;
     });
   }
@@ -68,17 +62,22 @@ export class WieeComponent implements OnInit, OnDestroy {
   }
 
   getLists(markerId: string, size: number): Promise<LiveInfoModel[]> {
-    return this.liveService.listNow(markerId, size + 1).then((livesList) => {
+    return this.liveService.listWiee(markerId, size + 1).then((livesList) => {
       if (livesList.length >= size + 1) {
         livesList.pop();
       }
 
-      this.scroller.appendData(livesList);
+      this.livesList = livesList.map( (i: LiveInfoModel) => {
+        this.liveTime[i.id] = UtilsService.praseLiveTime(i);
+        return i;
+      });
 
-      for (let liveInfo of this.livesList) {
-        this.covers[liveInfo.id] = this.sanitizer.bypassSecurityTrustUrl(liveInfo.coverSmallUrl);
-        this.liveTime[liveInfo.id] = UtilsService.praseLiveTime(liveInfo);
-      }
+      this.liveService.getLiveInfo(livesList[0].id, true).then( (liveData) => {
+        this.topLiveInfo = liveData;
+        console.log('LiveStatus' + this.topLiveInfo.isCreated());
+      });
+
+      this.getSubscribeLink();
 
       return livesList;
     });
@@ -87,16 +86,57 @@ export class WieeComponent implements OnInit, OnDestroy {
   //订阅直播通知函数
   bookLive () {
     if (this.userInfo) {
-      this.operationTipsService.popup('WIEE直播尚未开通，暂无法订阅');
+      if (this.booking || !this.livesList) {
+        return;
+      }
+
+      this.booking = true;
+
+      Promise.all<UserInfoModel, LiveInfoModel>([
+        this.userInfoService.getUserInfo(false),
+        this.liveService.bookLives(this.livesList),
+      ]).then(result => {
+        this.userInfo = result[0];
+        this.topLiveInfo = result[1];
+
+        if (!this.userInfo.isSubscribed && !this.isInApp) {
+          this.showQrcode();
+        } else if (!this.userInfo.isSubscribed && this.isInApp) {
+          this.showQrcode();
+        } else if (this.userInfo.isSubscribed) {
+          this.operationTipsService.popup('订阅成功');
+        }
+      }).finally(() => {
+        this.booking = false;
+      });
+
     } else {
       this.toLogin();
     }
   }
 
+  unbookLive() {
+    if (this.booking) {
+      return;
+    }
+
+    this.booking = true;
+
+    this.liveService.unbookLive(this.livesList[0].id).then(liveInfo => {
+      this.livesList[0] = liveInfo;
+      this.operationTipsService.popup('您已取消订阅');
+    }).finally(() => {
+      this.booking = false;
+    });
+  }
+
   showQrcode() {
-    if (!this.userInfo) return;
+    if (!this.userInfo) {
+      return;
+    }
 
     this.isQrcodeShown = true;
+    clearInterval(this.timer);
 
     // 轮询用户是否已订阅公众号
     this.timer = setInterval(() => {
@@ -104,6 +144,7 @@ export class WieeComponent implements OnInit, OnDestroy {
         if (userInfo.isSubscribed) {
           this.closeQrcode();
           this.operationTipsService.popup('订阅成功');
+          clearInterval(this.timer);
         }
         this.userInfo = userInfo;
       });
@@ -115,12 +156,13 @@ export class WieeComponent implements OnInit, OnDestroy {
   }
 
   getSubscribeLink(): Promise<void> {
-    if (this.isSubscribeLinkLoading) return;
+    if (this.isSubscribeLinkLoading)  return;
+    if (!this.livesList) return;
 
     this.isSubscribeLinkLoading = true;
     this.isSubscribeLinkError = false;
 
-    return this.liveService.getSubscribeLink(this.liveId).then(link => {
+    return this.liveService.getSubscribeLink(this.livesList[0].id).then(link => {
       this.qrcode = link;
       return;
     }).catch((err) => {

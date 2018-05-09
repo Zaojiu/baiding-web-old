@@ -1,5 +1,4 @@
-<div class="live-list scrollable" (scroller)="onScroll($event)" [data]="livesList"
-     [dataContainerSelector]="'.main-list'" [needUnload]="false">
+<div class="live-list scrollable">
   <div class="top-cover" (click)="gotoLiveRoom(livesList[0].id)">
     <img class="top-cover-img" [src]="livesList[0] ? livesList[0].coverUrl : ''" alt="话题间封面">
     <img class="top-cover-btn" src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png">
@@ -14,17 +13,38 @@
         <div class="time">{{liveTime[liveInfo.id]}}</div>
       </div>
     </div>
-
-    <div class="bottom-book" (click)="bookLive()">订阅直播通知
+    <div class="bottom-book" *ngIf="topLiveInfo && topLiveInfo.isCreated()">
+      <p *ngIf="!booking && !topLiveInfo.booked" (click)="bookLive()">订阅直播通知</p>
+      <p *ngIf="booking">订阅中...</p>
+      <p *ngIf="!booking && topLiveInfo.booked">已订阅直播通知</p>
     </div>
 
-    <div class="bottom" *ngIf="isOnLatest && livesList.length">
+    <div class="bottom">
       <div class="word">已显示全部内容</div>
     </div>
   </div>
 
 </div>
 
+<div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
+  <div class="content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <div class="close" (click)="closeQrcode()"></div>
+      <div class="live-title">订阅二维码</div>
+    </div>
+    <div class="qrcode">
+      <div class="qrcode-block">
+        <img *ngIf="!isSubscribeLinkLoading && !isSubscribeLinkError" class="qrcode-image" [src]="qrcode" alt="二维码">
+        <div *ngIf="isSubscribeLinkLoading">二维码加载中...</div>
+        <div *ngIf="isSubscribeLinkError">二维码加载失败，请<a class="retry-link" href="" (click)="getSubscribeLink(); $event.preventDefault();">重试</a></div>
+      </div>
+      <p *ngIf="isInWechat">长按二维码订阅话题间</p>
+      <p *ngIf="!isInWechat">使用微信扫描二维码订阅话题间</p>
+      <p>开播会通知你</p>
+    </div>
+  </div>
+</div>
+
 <bd-loading class="loading" *ngIf="isLoading"></bd-loading>
 
-<div class="no-record-tips" *ngIf="!livesList.length && !isLoading">暂无Now直播内容</div>
+<div class="no-record-tips" *ngIf="!livesList.length && !isLoading">暂无直播内容</div>
