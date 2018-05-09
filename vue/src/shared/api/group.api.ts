@@ -1,14 +1,12 @@
 import {host} from '../../env/environment';
 import {get, post} from './xhr';
-import {models} from '../../shared/api/group.model';
-import {ColumnItem} from './column.model';
-import {async} from "rxjs/scheduler/async";
+import {QiNiuTokenModel} from '../../shared/api/group.model';
 
 const pushUserInfo = (groupData: any, userData: any) => {
-  //将用户信息导入内容数组
+  // 将用户信息导入内容数组
   groupData.forEach((item: any, index: any) => {
     for (let key of Object.keys(userData)) {
-      if (item.uid == Number(key)) {
+      if (item.uid === Number(key)) {
         item.userInfo = userData[key];
       }
     }
@@ -45,7 +43,8 @@ export const listMessages = async (groupId: string, size: number, createdAt: str
     url = `${ host.io }/api/group/groups/${ groupId }/messages?sorts=-createdAt&size=${ size }＆createdAt=${ createdAt }`;
   } else {
     url = `${ host.io }/api/group/groups/${ groupId }/messages?sorts=-createdAt&size=${ size }`;
-  };
+  }
+  ;
 
   try {
     let res = await get(url);
@@ -59,7 +58,7 @@ export const postTextMessage = async (groupId: string, content: string): Promise
   const data = {
     type: 'text',
     content: content
-  }
+  };
   let url = `${ host.io }/api/group/groups/${ groupId }/messages`;
 
   try {
@@ -68,7 +67,40 @@ export const postTextMessage = async (groupId: string, content: string): Promise
     throw e;
   }
   return;
-}
+};
+
+export const postImgMessage = async (groupId: string, content: string, images: any[]): Promise<any> => {
+  const data = {
+    type: 'image',
+    content: content,
+    images: images
+  };
+  let url = `${ host.io }/api/group/groups/${ groupId }/messages`;
+
+  try {
+    await post(url, data);
+  } catch (e) {
+    throw e;
+  }
+  return;
+};
+
+export const getQiNiuToken = async (groupId: string, num = 9): Promise<any> => {
+  let url = `${ host.io }/api/group/groups/${ groupId }/messages/image/uptoken?num=${num}`;
+
+  try {
+    let res = await get(url);
+    let result: QiNiuTokenModel[] = [];
+    if (res.data.length > 0) {
+      result = res.data.map((item: any) => {
+        return new QiNiuTokenModel(item);
+      });
+    }
+    return result;
+  } catch (e) {
+    throw e;
+  }
+};
 
 export const getMessageDedail = async (groupId: string, msgId: string): Promise<any> => {
   let url = `${ host.io }/api/group/groups/${ groupId }/messages/${ msgId }`;

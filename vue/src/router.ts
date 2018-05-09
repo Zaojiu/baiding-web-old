@@ -41,7 +41,15 @@ Vue.use(Router);
 
 export const router = new Router({
   mode: 'history',
-  scrollBehavior() {
+  scrollBehavior(to: any, from: any, savedPosition: any): any {
+    if (to.hash) {
+      return {
+        // 這個是透過 to.hash 的值來找到對應的元素
+        // 照你的 html 來看是不用多加處理這樣就可以了
+        // 例如你按下 #3 的連結，就會變成 querySelector('#3')，自然會找到 id = 3 的元素
+        selector: to.hash
+      };
+    }
     return scrollPosition;
   },
   routes: [
@@ -571,6 +579,14 @@ export const router = new Router({
       component: () => System.import('./components/order/order.comp.vue'),
     },
     {
+      path: '/events',
+      name: 'event',
+      meta: {
+        title: '现场'
+      },
+      component: () => System.import('./components/event/list.comp.vue'),
+    },
+    {
       path: '/events/:id/tickets',
       name: 'event.ticket',
       meta: {
@@ -620,6 +636,92 @@ export const router = new Router({
         title: '评论'
       },
       component: () => System.import('./components/group/comment.comp.vue'),
+    },
+    {
+      path: '/wv/wiee',
+      component: () => System.import('./components/wiee/banner.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'wiee.banner',
+          meta: {
+            title: '造就思想节',
+          }
+        },
+        {
+          path: 'index',
+          name: 'wiee.main',
+          meta: {
+            title: '造就思想节',
+          },
+          component: () => System.import('./components/wiee/index.comp.vue'),
+        },
+        {
+          path: 'guests/:id',
+          meta: {
+            title: '嘉宾详情',
+          },
+          component: () => System.import('./components/wiee/guests/main.comp.vue'),
+        },
+        {
+          path: 'detail',
+          name: 'wiee.detail',
+          meta: {
+            title: 'WIEE',
+          },
+          component: () => System.import('./components/wiee/detail/main.comp.vue'),
+        },
+        {
+          path: 'map',
+          component: () => System.import('./components/wiee/map/main.comp.vue'),
+          children: [
+            {
+              path: '',
+              name: 'wiee.map',
+              meta: {
+                title: 'WIEE大会 地图',
+              }
+            },
+            {
+              path: ':id',
+              name: 'wiee.map.detail',
+              meta: {
+                title: 'WIEE大会 地图',
+              },
+              component: () => System.import('./components/wiee/map/detail.comp.vue'),
+            },
+          ]
+        },
+        {
+          path: 'group/:groupId',
+          component: () => System.import('./components/wiee/group/list.comp.vue'),
+          children: [
+            {
+              path: '',
+              meta: {
+                title: '造就思想节交流圈'
+              },
+              name: 'wiee.group.main'
+            },
+            {
+              path: 'publish',
+              name: 'wiee.group.publish',
+              meta: {
+                title: '发布'
+              },
+              component: () => System.import('./components/wiee/group/publish.comp.vue'),
+            },
+            {
+              path: 'msg',
+              name: 'wiee.group.message.comment',
+              meta: {
+                title: '评论'
+              },
+              component: () => System.import('./components/wiee/group/comment.comp.vue'),
+            },
+          ]
+        },
+      ]
     },
     {
       path: '/500',

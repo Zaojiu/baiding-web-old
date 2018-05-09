@@ -41,6 +41,7 @@ class EventMetaModel {
   location: number[];
   speakers: SpeakerModel[];
   tickets: EventTicketModel[];
+  seatsMap: string[];
 
   constructor(data: any) {
     if (!data) return;
@@ -69,6 +70,7 @@ class EventMetaModel {
     ticketsData.forEach((ticket: any) => {
       this.tickets.push(new EventTicketModel(ticket));
     });
+    this.seatsMap = data && data.seatsMap ? data.seatsMap : [];
   }
 }
 
