@@ -33,9 +33,9 @@
           <div class="control">
             <div class="item-content" v-for="(item,index) in event.meta.seatsMap" @click="chooeseImg(index)">
               <div class="item"
-                 :class="{'active':index===ticketImgIndex}"
-                 >{{index+1}}
-            </div>
+                   :class="{'active':index===ticketImgIndex}"
+              >{{index+1}}
+              </div>
             </div>
           </div>
         </div>
@@ -247,7 +247,7 @@
             display: flex;
             justify-content: center;
 
-            .item-content{
+            .item-content {
               padding: 4px 10px;
             }
 
@@ -377,7 +377,7 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {getEventDetail} from "../../shared/api/event.api";
   import {EventModel, EventTicketModel} from "../../shared/api/event.model";
-  import {Money, isInWechat} from "../../shared/utils/utils";
+  import {Money, isInWechat, isAndroid, isInApp} from "../../shared/utils/utils";
   import {TicketModel} from "../../shared/api/ticket.model";
   import {checkOrderFee} from "../../shared/api/order.api";
   import {initWechat} from "../../shared/utils/wechat";
@@ -389,6 +389,7 @@
   import {host} from "../../env/environment";
   import {ApiError} from '../../shared/api/xhr';
   import {ApiCode} from '../../shared/api/code-map.enum';
+  import {initIOS, callHandler} from "../../shared/utils/ios";
 
   @Component
   export default class EventTicketComponent extends Vue {
@@ -409,6 +410,7 @@
     lang = 'zh';
     timer: any;
     ticketImgIndex = 0;
+    isAndroid = isAndroid && isInApp;
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -564,7 +566,7 @@
       this.isPaymentPopup = true;
     }
 
-    gotoOrder() {
+    async gotoOrder() {
       if (!this.ticketSelected || !this.ticketSelected.id) {
         showTips('请选择购票类型');
         return;
@@ -574,6 +576,14 @@
       }
 
       const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount, this.ticketSelected.disableDiscount);
+
+      //安卓端购买跳转
+      if (this.isAndroid) {
+        await initIOS();
+        callHandler('payOrder', `${host.self}/orders?items=${encodeURIComponent(JSON.stringify([query]))}`);
+        return;
+      }
+
       this.$router.push({
         path: '/orders',
         query: {items: encodeURIComponent(JSON.stringify([query])), lang: this.lang}
