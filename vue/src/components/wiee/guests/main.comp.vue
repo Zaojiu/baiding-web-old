@@ -6,22 +6,22 @@
       <div
         @click="changeNav(0)"
         :class="{'active':navIndex===0}">
-        介绍
+        {{$t('m.wiee.guestsNav1')}}
       </div>
       <div
         @click="changeNav(1)"
         :class="{'active':navIndex===1}">
-        演讲
+        {{$t('m.wiee.guestsNav2')}}
       </div>
       <div
         @click="changeNav(2)"
         :class="{'active':navIndex===2}">
-        花絮
+        {{$t('m.wiee.guestsNav3')}}
       </div>
       <div
         @click="changeNav(3)"
         :class="{'active':navIndex===3}">
-        画册
+        {{$t('m.wiee.guestsNav4')}}
       </div>
       <!--<div
         @click="changeNav(4)"
@@ -42,10 +42,10 @@
                 <p class="description">{{speakerData.object.meta?speakerData.object.meta.title:''}}</p>
               </div>
               <div class="action">
-                <button @click="goToGroup">联系嘉宾</button>
+                <button @click="goToGroup">{{$t('m.wiee.guestsCall')}}</button>
               </div>
             </section>
-            <h1 class="title">嘉宾简介</h1>
+            <h1 class="title">{{$t('m.wiee.guestsIntroduce')}}</h1>
             <p class="chinese">
               {{speakerData.object.desc}}
             </p>
@@ -71,7 +71,7 @@
                 <p>{{item.title}}</p>
               </div>
             </div>
-            <div class="center">暂无演讲</div>
+            <div class="center">{{$t('m.wiee.guestsNoTips')}}</div>
           </div>
         </div>
       </transition>
@@ -89,7 +89,7 @@
                 <h3>{{item.subject}}</h3>
               </div>
             </div>
-            <div class="center">暂无花絮</div>
+            <div class="center">{{$t('m.wiee.guestsNoTips')}}</div>
           </div>
         </div>
       </transition>
@@ -103,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div class="center">暂无照片</div>
+            <div class="center">{{$t('m.wiee.guestsNoTips')}}</div>
           </div>
         </div>
       </transition>
@@ -126,6 +126,7 @@
       height: 48px;
       font-size: 14px;
       line-height: 16px;
+      border-bottom: 1px solid rgb(38, 38, 38);
 
       > div {
         width: 18%;
@@ -144,7 +145,7 @@
           margin: 0;
           height: 2px;
           background-color: rgb(0, 211, 193);
-          bottom: -14px;
+          bottom: -15px;
           left: 0;
           display: block;
         }
@@ -414,6 +415,7 @@
     defaultImg = '/assets/img/default-cover.jpg';
     imgList: string[] = [];
     media: SpeakerMedia[] = [];
+    lang = 'zh';
 
     created() {
       this.init();
@@ -427,6 +429,12 @@
     async init() {
       this.isLoading = true;
       this.id = this.$route.params['id'];
+      this.lang = this.$route.query['lang'];
+      if (this.lang === 'en') {
+        this.$i18n.locale = 'en';
+      } else {
+        this.$i18n.locale = 'zh';
+      }
       try {
         this.speakerData = await getSpeakerInfo(this.id);
         this.media = await getSpeakerMedia(this.id);

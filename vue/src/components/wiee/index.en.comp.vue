@@ -1,15 +1,17 @@
 <template>
   <article class="wiee-container"
-           @touchstart="touchStart" @touchmove="touchMove" @scroll="touchMove"
+           @touchstart="touchStart" @touchmove="touchMove"
   >
     <header class="header">
-      <div class="img" @click="goToNextPage('detail')"><img
-        src="https://og9s6vxbs.qnssl.com/wiee/index/home-right.png"/></div>
+      <div class="img" @click="goToNextPage('detail')">
+        <img
+          src="https://og9s6vxbs.qnssl.com/wiee/index/home-right.png"/>
+      </div>
       <div class="right">
-        <!--<span class="language" @click="changeLang()">
+        <span class="language" @click="changeLang">
           <span class="zh">中</span>
           <span class="en">EN</span>
-        </span>-->
+        </span>
         <span @click="showMenu = true" style="cursor: pointer;" class="font-set"><i class="bi bi-menu"></i></span>
       </div>
       <div class="menu" v-if="showMenu">
@@ -23,8 +25,7 @@
                 <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu01.png"/>
               </div>
               <div class="text">
-                <h4>首页</h4>
-                <div>HOME</div>
+                <h4>HOME</h4>
               </div>
             </li>
             <li @click="goTo('guests')">
@@ -32,8 +33,7 @@
                 <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu02.png"/>
               </div>
               <div class="text">
-                <h4>嘉宾</h4>
-                <div>GUESTS</div>
+                <h4>GUESTS</h4>
               </div>
             </li>
             <li @click="goTo('plan')">
@@ -41,8 +41,7 @@
                 <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu03.png"/>
               </div>
               <div class="text">
-                <h4>日程</h4>
-                <div>AGENDA</div>
+                <h4>AGENDA</h4>
               </div>
             </li>
             <li @click="goTo('map')">
@@ -50,8 +49,7 @@
                 <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu04.png"/>
               </div>
               <div class="text">
-                <h4>地图</h4>
-                <div>MAP</div>
+                <h4>MAP</h4>
               </div>
             </li>
             <li @click="goTo('live')" v-if="liveInfoListAll.length>0">
@@ -59,14 +57,13 @@
                 <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu05.png"/>
               </div>
               <div class="text">
-                <h4>直播</h4>
-                <div>LIVE</div>
+                <h4>LIVE</h4>
               </div>
             </li>
           </ul>
           <div class="footer" @click="goToGroup">
             <div class="btn">
-              互动专区
+              Forum
             </div>
           </div>
         </div>
@@ -76,7 +73,7 @@
              :style="{overflow:showMenu?'hidden':'auto'}"
     >
       <div class="index">
-        <img src="https://og9s6vxbs.qnssl.com/wiee/index/index-bg.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/wiee/index/index-bg-en.jpg"/>
         <div class="index-action">
           <div class="img-wiee">
             <img src="https://og9s6vxbs.qnssl.com/wiee/index/wiee-zaojiu.png"/>
@@ -90,31 +87,31 @@
       <div id="index" class="zao-detail">
         <h2><img src="https://og9s6vxbs.qnssl.com/wiee/detail/ZAO.png"/></h2>
         <p>
-          笛卡尔说：“我思故我在。”思考使人类真正获得了存在的价值，思想则是人类思考绽放出的耀眼火花。
-        </p>
-        <p ref="guests">
-          随着科技的飞速进步，它越来越深刻地改变着我们所处的世界。商业的价值转化发生了巨大的改变，城市的发展越来越依赖技术化的规划，教育的形态变得更加丰富多彩，文化与艺术则越来越多地与技术手段相结合。
+          René Descartes said, "I think, therefore I am". It is thinking that makes human’s existence valuable, and ideas are dazzling sparkles of thinking.
         </p>
         <p>
-          我们走到了一个值得深刻思考的十字路口，科技与人文在此交汇、碰撞，时间与空间的冲突、变革愈发频繁。我们试图在这个路口汇聚当下走在最前面的一群思想者，去探讨未来趋势的方向，去辩谈城市的构造与包容，去深思教育的未来形态，去诠释艺术的全新面貌。
+          As the development of technology rocketed, it gradually changes the world we live in in an in-depth way: the value of business is facing enormous change, the development plan of cities is more and more technology-dependent, the patterns of education are becoming varied, and culture and art are producing chemical reactions with technical means.
+        </p>
+        <p>
+          We are now in a cross-road that requires thinking. It is a cross-road which contains technology and culture, time and space, conflicts and reforms. We are trying to appeal the most cutting-edge thinkers at this cross-road, to discuss future trends, the construction and conversion of cities, to rethink the future pattern of education and to appreciate arts with a fresh appearance.
         </p>
       </div>
 
       <div id="guests" class="guest">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/guests.png"/>
+          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/guests-en.png"/>
         </h2>
         <div class="guest-show">
           <img :src="guestObj.url"/>
-          <div class="action">
+          <div class="action" ref="guests">
             <div class="action-text">
-              <h3>{{guestObj.name}}</h3>
-              <p v-for="item in guestObj.desc">{{item}}</p>
+              <h3>{{guestObj.enName}}</h3>
+              <p v-for="item in guestObj.enDesc">{{item}}</p>
             </div>
           </div>
           <div class="button-group">
-            <button @click="goToSpeaks(guestObj.id)">详情</button>
-            <button @click="goToGroup()">提问</button>
+            <button @click="goToSpeaks(guestObj.id)">Details</button>
+            <button @click="goToGroup()">Ask</button>
           </div>
         </div>
         <div class="guest-control">
@@ -127,17 +124,17 @@
 
       <div id="plan" class="plan">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/agenda.png"/>
+          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/agenda-en.png"/>
         </h2>
         <nav class="plan-nav">
-          <span class="item" :class="{'active':planIndex === 0}" @click="choosePlan(0)">5月19日</span>
-          <span class="item" :class="{'active':planIndex === 1}" @click="choosePlan(1)">5月20日</span>
-          <span class="item" :class="{'active':planIndex === 2}" @click="choosePlan(2)">5月21日</span>
-          <span class="item" :class="{'active':planIndex === 3}" @click="choosePlan(3)">5月22日</span>
+          <span class="item" :class="{'active':planIndex === 0}" @click="choosePlan(0)">MAY 19</span>
+          <span class="item" :class="{'active':planIndex === 1}" @click="choosePlan(1)">MAY 20</span>
+          <span class="item" :class="{'active':planIndex === 2}" @click="choosePlan(2)">MAY 21</span>
+          <span class="item" :class="{'active':planIndex === 3}" @click="choosePlan(3)">MAY 22</span>
         </nav>
         <div class="plan-content">
           <section class="plan-content">
-            <h3 v-for="item in planData.desc">{{item}}</h3>
+            <h3>{{planData.desc}}</h3>
             <div class="step-item" v-for="(content,index) in planData.content">
               <div class="line" :class="{first: index===0,last: index===(planData.content.length - 1)}"></div>
               <div class="line-text" :class="{'other-text-top':!content.status}">
@@ -158,28 +155,28 @@
 
       <div id="map" class="map">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map.png"/>
+          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map-en.png"/>
         </h2>
         <div class="map-content">
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map-detail.png"/>
+          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map-detail-en.png"/>
         </div>
         <div class="map-btn">
           <button @click="goToNextPage('map')">
-            查看场馆信息
+            Venue information
           </button>
         </div>
       </div>
 
       <div id="live" class="live" v-if="liveInfoListAll.length>0">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/live.png"/>
+          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/live-en.png"/>
         </h2>
         <header class="live-banner">
           <img class="img" :src="liveInfo.cover169Url" @error="liveInfo.cover169Url = defaultImg"/>
           <div class="play">
             <img src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png"/>
           </div>
-          <div class="tips" v-if="liveInfo.isStarted">正在直播：{{liveInfo.subject}}</div>
+          <div class="tips" v-if="liveInfo.isStarted">Live：{{liveInfo.subject}}</div>
         </header>
         <div class="live-content">
           <div class="item" v-for="item in liveInfoList">
@@ -196,25 +193,24 @@
         </div>
         <div class="live-btn">
           <button @click="goToNextPage('live')">
-            查看全部直播
+            All Live Video
           </button>
         </div>
       </div>
       <div class="collaboration" id="a">
-        <h5>合作单位</h5>
+        <h5>Partners</h5>
         <div class="co-content">
           <img src="https://og9s6vxbs.qnssl.com/wiee/detail/link-1.png"/>
         </div>
       </div>
       <div class="collaboration padding-60">
-        <h5>赞助单位</h5>
+        <h5>Sponsor</h5>
         <div class="co-content">
           <img src="https://og9s6vxbs.qnssl.com/wiee/detail/link-2.png"/>
         </div>
       </div>
     </section>
-    <div class="footer-btn" v-if="showBtn" @click="goToTicket()">
-      立即购票
+    <div class="footer-btn" v-if="showBtn" @click="goToTicket()"><img src="https://og9s6vxbs.qnssl.com/wiee/shape.png"/>Ask questions
     </div>
   </article>
 </template>
@@ -247,6 +243,7 @@
           .zh {
             font-size: 14px;
             line-height: 14px;
+            color: rgb(128, 128, 128);
             padding-right: 4px;
             font-weight: 700;
 
@@ -263,8 +260,7 @@
           }
 
           .en {
-            color: rgb(128, 128, 128);
-            padding-left: 6px;
+            padding-left: 4px;
             font-size: 15px;
             line-height: 15px;
             font-weight: 600;
@@ -378,16 +374,8 @@
               h4 {
                 font-size: 24px;
                 line-height: 24px;
-                letter-spacing: 9px;
+                letter-spacing: 2px;
                 margin-bottom: 4px;
-              }
-
-              div {
-                font-size: 16px;
-                line-height: 16px;
-                letter-spacing: 1.9px;
-                font-weight: 600;
-                padding-left: 1px;
               }
             }
 
@@ -520,10 +508,9 @@
         }
 
         p {
-          font-size: 16px;
+          font-size: 17px;
           line-height: 26px;
-          letter-spacing: 1.6px;
-          font-weight: bold;
+          font-weight: 700;
 
           & + p {
             margin-top: 30px;
@@ -567,7 +554,7 @@
             right: 0;
             z-index: 1;
 
-            .action-text {
+            .action-text{
 
               .h3 {
                 font-size: 18px;
@@ -722,14 +709,10 @@
 
           h3 {
             font-size: 20px;
-            line-height: 20px;
+            line-height: 24px;
             color: rgb(242, 242, 242);
             letter-spacing: 1px;
             margin-bottom: 0;
-
-            & + h3 {
-              margin-top: 6px;
-            }
           }
 
           .step-item {
@@ -798,13 +781,15 @@
 
                 h4 {
                   font-size: 14px;
-                  padding-bottom: 6px;
+                  line-height: 18px;
+                  padding-bottom: 11px;
                 }
 
                 p {
                   font-size: 14px;
                   line-height: 20px;
-                  color: rgb(166, 166, 166)
+                  color: rgb(166, 166, 166);
+                  margin-top: -5px;
                 }
               }
             }
@@ -1048,7 +1033,7 @@
   import {UserInfoModel} from '../../shared/api/user.model'
   import {isInApp, isInWechat} from "../../shared/utils/utils";
   import {host} from "../../env/environment";
-  import {guests, PlanList} from './wiee.data';
+  import {guests, enPlanList} from './wiee.data';
   import {initWechat} from "../../shared/utils/wechat";
   import {setShareInfo} from '../../shared/utils/share';
   import {LiveInfoModel} from "../../shared/api/lives.model";
@@ -1071,7 +1056,7 @@
     guestObj: { name: string, desc: string[], url: string } = guests[0];
     guestArray = guests;
     showMenu = false;
-    planData: any = PlanList[0];
+    planData: any = enPlanList[0];
     liveInfo: LiveInfoModel;
     liveInfoList: LiveInfoModel[] = [];
     liveInfoListAll: LiveInfoModel[] = [];
@@ -1111,7 +1096,6 @@
       } else {
         this.$i18n.locale = 'zh';
       }
-
       try {
         this.liveInfoListAll = await listNow('', 4);
       } catch (e) {
@@ -1127,11 +1111,11 @@
 
     goTo(tab: string) {
       this.showMenu = false;
-      location.href = `/wv/wiee/index#${tab}`;
+      location.href = `/wv/wiee/index/en#${tab}`;
     }
 
     goToGroup() {
-      this.$router.push({path: '/wv/wiee/group/5aec2ad12cfc070001746a4d'});
+      this.$router.push({path: '/wv/wiee/group/5aec2ad12cfc070001746a4d?lang=en'});
     }
 
     goToNextPage(page: string) {
@@ -1143,18 +1127,17 @@
     };
 
     goToSpeaks(id: string) {
-      this.$router.push({path: `/wv/wiee/guests/${id}`})
+      this.$router.push({path: `/wv/wiee/guests/${id}?lang=en`})
     };
 
     touchStart(e: TouchEvent) {
 
     }
 
-    touchMove() {
+    touchMove(e: TouchEvent) {
       let guestDom = (this.guestDom as HTMLElement);
       let rect = guestDom.getBoundingClientRect();
       let top = rect.top;
-      /* && top > 300*/
       if (top <= (document.documentElement.clientHeight - 70)) {
         this.showBtn = true;
       } else {
@@ -1163,15 +1146,6 @@
     }
 
     touchEnd() {
-      let guestDom = (this.guestDom as HTMLElement);
-      let rect = guestDom.getBoundingClientRect();
-      let top = rect.top;
-      /* && top > 300*/
-      if (top <= (document.documentElement.clientHeight - 70)) {
-        this.showBtn = true;
-      } else {
-        this.showBtn = false;
-      }
     }
 
     chooseGuest(index: number) {
@@ -1183,16 +1157,16 @@
       this.planIndex = index;
       switch (index) {
         case 0:
-          this.planData = PlanList[0];
+          this.planData = enPlanList[0];
           break;
         case 1:
-          this.planData = PlanList[1];
+          this.planData = enPlanList[1];
           break;
         case 2:
-          this.planData = PlanList[2];
+          this.planData = enPlanList[2];
           break;
         case 3:
-          this.planData = PlanList[3];
+          this.planData = enPlanList[3];
           break;
       }
     }
@@ -1202,7 +1176,7 @@
     }
 
     changeLang() {
-      this.$router.push({path: '/wv/wiee/index/en'});
+      this.$router.push({path: '/wv/wiee/index'});
     }
   }
 </script>

@@ -11,7 +11,7 @@
            style="height: 100vh"/>
     </div>
     <div class="tips" v-if="id!=='12'">
-      <button>拖动查看更多</button>
+      <span>拖动查看更多</span>
     </div>
   </div>
 </template>
@@ -37,13 +37,15 @@
       bottom: 12px;
       text-align: center;
 
-      button {
+      span {
         width: 148px;
         height: 30px;
         background-color: rgb(0, 211, 193);
         color: #fff;
         font-size: 14px;
         border-radius: 15px;
+        padding:5px 20px;
+        box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, .3);
       }
     }
 

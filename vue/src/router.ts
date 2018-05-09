@@ -42,14 +42,6 @@ Vue.use(Router);
 export const router = new Router({
   mode: 'history',
   scrollBehavior(to: any, from: any, savedPosition: any): any {
-    if (to.hash) {
-      return {
-        // 這個是透過 to.hash 的值來找到對應的元素
-        // 照你的 html 來看是不用多加處理這樣就可以了
-        // 例如你按下 #3 的連結，就會變成 querySelector('#3')，自然會找到 id = 3 的元素
-        selector: to.hash
-      };
-    }
     return scrollPosition;
   },
   routes: [
@@ -655,6 +647,14 @@ export const router = new Router({
             title: '造就思想节',
           },
           component: () => System.import('./components/wiee/index.comp.vue'),
+        },
+        {
+          path: 'index/en',
+          name: 'wiee.main.en',
+          meta: {
+            title: '造就思想节',
+          },
+          component: () => System.import('./components/wiee/index.en.comp.vue'),
         },
         {
           path: 'guests/:id',
