@@ -29,7 +29,10 @@
         </div>
         <div class="img-wrapper" v-if="event.meta.seatsMap.length>0">
           <div class="cover-bg">
-            <div class="img-cover" v-for="(item,index) in event.meta.seatsMap" v-if="index===ticketImgIndex"
+            <div class="img-cover"
+                 v-for="(item,index) in event.meta.seatsMap"
+                 v-if="index===ticketImgIndex"
+                 @click="showImg(item)"
                  :key="index">
               <img
                 :src="item"/>
@@ -74,6 +77,13 @@
         <button class="button button-primary" @click="gotoOrder()">{{$t('m.event.buyNow')}}</button>
       </div>
     </div>
+
+    <div class="show_img" v-if="showBigUrl">
+      <div class="close-btn" @click="showBigUrl = ''"><i class="bi bi-close-2"></i></div>
+      <div class="img-content">
+        <img :src="showBigUrl"/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -84,6 +94,46 @@
     height: 100vh;
     overflow: hidden;
     background-color: rgb(251, 251, 251);
+
+    .show_img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100vh;
+      z-index: 1;
+      background-color: #0A0A17;
+      width: 100%;
+      font-size: 0;
+
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+        z-index: 2;
+        background: #000;
+        height: 24px;
+        border-radius: 24px;
+        width: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .img-content {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: auto;
+
+        img {
+          height: 100%;
+        }
+      }
+    }
 
     .event {
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -422,6 +472,7 @@
     ticketImgIndex = 0;
     isAndroid = isAndroid && isInApp;
     isAppDownloadTipsShow = false;
+    showBigUrl = '';
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -612,6 +663,10 @@
 
     chooeseImg(num: number) {
       this.ticketImgIndex = num;
+    }
+
+    showImg(src: string) {
+      this.showBigUrl = src;
     }
 
   }
