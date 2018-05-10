@@ -63,6 +63,7 @@
 
     @Watch('$route.name')
     setNavIndex() {
+      this.share();
       if (this.$route.name === 'wiee.banner') {
         this.showTips = true;
       } else {
@@ -96,7 +97,7 @@
           '造就思想节：发现最有创造力的思想',
           `科技与人文交汇的十字路口`,
           'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
-          `${host.self}${this.$route.fullPath}`
+          `${host.self}/wv/wiee`
         );
       }
     }

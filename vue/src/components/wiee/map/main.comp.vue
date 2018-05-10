@@ -1,13 +1,9 @@
 <template>
   <div class="container">
     <div class="map" ref="map">
-      <img src="https://og9s6vxbs.qnssl.com/wiee/map.jpg" border="0" usemap="#planetmap" alt="地图"/>
-      <map name="planetmap" id="planetmap">
-        <!--<area @click="showMapDetail(1)" shape="rect" coords="241,288,326,326" alt="参观入口"/>
-        <area @click="showMapDetail(2)" shape="rect" coords="186,404,257,443" alt="停车场"/>
-        <area @click="showMapDetail(3)" shape="rect" coords="413,52,598,92" alt="停车场(巴士)"/>-->
+      <img :src="$t('m.wiee.mapBgUrl')" border="0" usemap="#planetmap" alt="地图"/>
+      <map v-if="lang!=='en'" name="planetmap" id="planetmap">
         <area @click="showMapDetail(4)" shape="rect" coords="400,230,502,272" alt="创意集市"/>
-        <!--<area @click="showMapDetail(5)" shape="rect" coords="604,98,694,139" alt="参观入口（2）"/>-->
         <area @click="showMapDetail(6)" shape="rect" coords="599,229,715,271" alt="未来教育区"/>
         <area @click="showMapDetail(7)" shape="rect" coords="452,349,653,388" alt="未来城市与大学展示区"/>
         <area @click="showMapDetail(8)" shape="rect" coords="690,307,778,347" alt="创客馆"/>
@@ -15,7 +11,16 @@
         <area @click="showMapDetail(10)" shape="rect" coords="500,497,654,545" alt="未来居住展示区"/>
         <area @click="showMapDetail(11)" shape="rect" coords="768,364,877,409" alt="智汇云顶"/>
         <area @click="showMapDetail(12)" shape="rect" coords="684,567,840,611" alt="未来交通展示区"/>
-        <!--<area @click="showMapDetail(13)" shape="rect" coords="637,665,735,715" alt="参观入口（3）"/>-->
+      </map>
+      <map name="planetmap" id="planetmap" v-else>
+        <area @click="showMapDetail(4)" shape="rect" coords="338,230,486,281" alt="创意集市"/>
+        <area @click="showMapDetail(6)" shape="rect" coords="593,238,792,282" alt="未来教育区"/>
+        <area @click="showMapDetail(7)" shape="rect" coords="288,352,645,396" alt="未来城市与大学展示区"/>
+        <area @click="showMapDetail(8)" shape="rect" coords="678,316,841,355" alt="创客馆"/>
+        <area @click="showMapDetail(9)" shape="rect" coords="479,419,739,459" alt="未来生活展示区"/>
+        <area @click="showMapDetail(10)" shape="rect" coords="358,509,654,546" alt="未来居住展示区"/>
+        <area @click="showMapDetail(11)" shape="rect" coords="763,373,941,419" alt="智汇云顶"/>
+        <area @click="showMapDetail(12)" shape="rect" coords="682,578,964,615" alt="未来交通展示区"/>
       </map>
       <div class="tips">
         <span>拖动查看更多</span>
@@ -133,8 +138,11 @@
     showSide = false;
     sideTitle = '';
     sideContent = '';
+    lang = 'zh';
+    mapSrc = '';
 
     created() {
+      this.init();
     }
 
     @Watch('$route.name')
@@ -143,14 +151,21 @@
     }
 
     mounted() {
-      this.init();
+      this.scroll();
     }
 
-    async init() {
+    scroll() {
       this.$nextTick(function () {
         let map = this.$refs['map'] as HTMLElement;
         map.scroll(400, 0)
       });
+    }
+
+    async init() {
+      this.lang = this.$route.query['lang'];
+      if (this.lang === 'en') {
+        this.$i18n.locale = 'en';
+      }
     }
 
     closeSide() {
@@ -169,16 +184,16 @@
           break;
         //创意集市
         case 4:
-          this.sideTitle = '创意集市';
-          this.sideContent = '我们为新兴设计师和艺术家提供开放、多元的创作环境和交易平台，推崇个人创造和精神创新，鼓励创意立业，是一个生成创意并商业化的的实验舞台。';
+          this.sideTitle = this.$t('m.wiee.mapTextTitle4') as string;
+          this.sideContent = this.$t('m.wiee.mapTextContent4') as string;
           this.showSide = true;
           break;
         case 5:
           break;
         //未来教育区  0
         case 6:
-          this.sideTitle = '未来教育区';
-          this.sideContent = '最有创新性和颠覆性的教育理念展示区，用科技的手段和人文的理念普及知识与教育';
+          this.sideTitle = this.$t('m.wiee.mapTextTitle6') as string;
+          this.sideContent = this.$t('m.wiee.mapTextContent6') as string;
           this.showSide = true;
           break;
         //未来城市与大学展示区1
@@ -187,8 +202,8 @@
           break;
         //创客馆   0
         case 8:
-          this.sideTitle = '创客馆';
-          this.sideContent = '创客是一群喜欢或者享受创新的人，追求自身创意的实现，而创客馆为这些创客们提供实现创意和交流创意思路及产品的线下和线上相结合、创新和交友相结合的平台。';
+          this.sideTitle = this.$t('m.wiee.mapTextTitle8') as string;
+          this.sideContent = this.$t('m.wiee.mapTextContent8') as string;
           this.showSide = true;
           break;
         //未来生活展示区  1
@@ -201,8 +216,8 @@
           break;
         //智汇云顶  0
         case 11:
-          this.sideTitle = '智汇云顶';
-          this.sideContent = '可容纳5000人的超级会场，不需传统搭建和框架结构，短短数天即可吹起来。';
+          this.sideTitle = this.$t('m.wiee.mapTextTitle11') as string;
+          this.sideContent = this.$t('m.wiee.mapTextContent11') as string;
           this.showSide = true;
           break;
         //未来交通展示区  1

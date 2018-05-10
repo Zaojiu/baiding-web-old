@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div class="aside-img">
-      <img src="https://og9s6vxbs.qnssl.com/wiee/map-car.jpg" v-if="id==='12'" alt="未来交通展示区"
+      <img :src="$t('m.wiee.mapUrl12')" v-if="id==='12'" alt="未来交通展示区"
            style="width: 100%"/>
-      <img src="https://og9s6vxbs.qnssl.com/wiee/map-live.jpg" v-if="id==='9'" alt="未来生活展示区"
+      <img :src="$t('m.wiee.mapUrl9')" v-if="id==='9'" alt="未来生活展示区"
            style="height: 100vh"/>
-      <img src="https://og9s6vxbs.qnssl.com/wiee/map-home.jpg" v-if="id==='10'" alt="未来居住展示区"
+      <img :src="$t('m.wiee.mapUrl10')" v-if="id==='10'" alt="未来居住展示区"
            style="width: 100%"/>
-      <img src="https://og9s6vxbs.qnssl.com/wiee/map-city.jpg" v-if="id==='7'" alt="未来城市展示区"
+      <img :src="$t('m.wiee.mapUrl7')" v-if="id==='7'" alt="未来城市展示区"
            style="height: 100vh"/>
     </div>
     <div class="tips" v-if="id!=='12'">
