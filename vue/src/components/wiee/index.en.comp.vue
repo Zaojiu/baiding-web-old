@@ -173,12 +173,12 @@
         </h2>
         <header class="live-banner">
           <img class="img" :src="liveInfo.cover169Url" @error="liveInfo.cover169Url = defaultImg"/>
-          <div class="play">
+          <div class="play" @click="goToNextPage('live')">
             <img src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png"/>
           </div>
           <div class="tips" v-if="liveInfo.isStarted">Live：{{liveInfo.subject}}</div>
         </header>
-        <div class="live-content">
+        <div class="live-content" @click="goToNextPage('live')">
           <div class="item" v-for="item in liveInfoList">
             <div class="item-banner">
               <img :src="item.cover169Url" @error="item.cover169Url = defaultImg"/>
@@ -1083,7 +1083,7 @@
         setShareInfo(
           '造就思想节：发现最有创造力的思想',
           `科技与人文交汇的十字路口`,
-          `${host.assets}/assets/img/zaojiu-logo.jpg`,
+          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
           `${host.self}/wv/wiee`
         );
       }

@@ -95,7 +95,7 @@
         setShareInfo(
           '造就思想节：发现最有创造力的思想',
           `科技与人文交汇的十字路口`,
-          `${host.assets}/assets/img/zaojiu-logo.jpg`,
+          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
           `${host.self}${this.$route.fullPath}`
         );
       }
