@@ -53,7 +53,7 @@
   </div>
 
   <audience-tool-bar
-    *ngIf="(userInfo ? liveInfo.isAudience(userInfo.uid) : 'guest') && !liveInfo.disableComment"
+    *ngIf="(userInfo ? liveInfo.isEditor(userInfo.uid) ? false : liveInfo.isAudience(userInfo.uid) : 'guest') && !liveInfo.disableComment"
     class="audience-tool-bar"
     [liveId]="id"
     [liveInfo]="liveInfo"
