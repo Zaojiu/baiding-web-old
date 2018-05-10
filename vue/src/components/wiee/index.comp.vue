@@ -6,10 +6,10 @@
       <div class="img" @click="goToNextPage('detail')"><img
         src="https://og9s6vxbs.qnssl.com/wiee/index/home-right.png?t=1"/></div>
       <div class="right">
-        <!--<span class="language" @click="changeLang()">
+        <span class="language" @click="changeLang()">
           <span class="zh">中</span>
           <span class="en">EN</span>
-        </span>-->
+        </span>
         <span @click="showMenu = true" style="cursor: pointer;" class="font-set"><i class="bi bi-menu"></i></span>
       </div>
       <div class="menu" v-if="showMenu">
@@ -176,13 +176,13 @@
         </h2>
         <header class="live-banner">
           <img class="img" :src="liveInfo.cover169Url" @error="liveInfo.cover169Url = defaultImg"/>
-          <div class="play" @click="goToNextPage('live')">
+          <div class="play" @click="goToLiveRoom(liveInfo.id)">
             <img src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png"/>
           </div>
           <div class="tips" v-if="liveInfo.isStarted">正在直播：{{liveInfo.subject}}</div>
         </header>
-        <div class="live-content" @click="goToNextPage('live')">
-          <div class="item" v-for="item in liveInfoList">
+        <div class="live-content">
+          <div class="item" v-for="item in liveInfoList" @click="goToLiveRoom(item.id)">
             <div class="item-banner">
               <img :src="item.cover169Url" @error="item.cover169Url = defaultImg"/>
             </div>
@@ -1154,19 +1154,7 @@
       let guestDom = (this.guestDom as HTMLElement);
       let rect = guestDom.getBoundingClientRect();
       let top = rect.top;
-      /* && top > 300*/
-      if (top <= (document.documentElement.clientHeight - 70)) {
-        this.showBtn = true;
-      } else {
-        this.showBtn = false;
-      }
-    }
 
-    touchEnd() {
-      let guestDom = (this.guestDom as HTMLElement);
-      let rect = guestDom.getBoundingClientRect();
-      let top = rect.top;
-      /* && top > 300*/
       if (top <= (document.documentElement.clientHeight - 70)) {
         this.showBtn = true;
       } else {
@@ -1203,6 +1191,10 @@
 
     changeLang() {
       this.$router.push({path: '/wv/wiee/index/en'});
+    }
+
+    goToLiveRoom(id: number) {
+      location.href = `https://www.zaojiu.com/lives/${id}/info`;
     }
   }
 </script>

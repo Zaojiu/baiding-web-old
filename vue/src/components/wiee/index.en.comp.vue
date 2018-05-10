@@ -87,13 +87,20 @@
       <div id="index" class="zao-detail">
         <h2><img src="https://og9s6vxbs.qnssl.com/wiee/detail/ZAO.png"/></h2>
         <p>
-          René Descartes said, "I think, therefore I am". It is thinking that makes human’s existence valuable, and ideas are dazzling sparkles of thinking.
+          René Descartes said, "I think, therefore I am". It is thinking that makes human’s existence valuable, and
+          ideas are dazzling sparkles of thinking.
+        </p>
+        <p ref="guests">
+          As the development of technology rocketed, it gradually changes the world we live in in an in-depth way: the
+          value of business is facing enormous change, the development plan of cities is more and more
+          technology-dependent, the patterns of education are becoming varied, and culture and art are producing
+          chemical reactions with technical means.
         </p>
         <p>
-          As the development of technology rocketed, it gradually changes the world we live in in an in-depth way: the value of business is facing enormous change, the development plan of cities is more and more technology-dependent, the patterns of education are becoming varied, and culture and art are producing chemical reactions with technical means.
-        </p>
-        <p>
-          We are now in a cross-road that requires thinking. It is a cross-road which contains technology and culture, time and space, conflicts and reforms. We are trying to appeal the most cutting-edge thinkers at this cross-road, to discuss future trends, the construction and conversion of cities, to rethink the future pattern of education and to appreciate arts with a fresh appearance.
+          We are now in a cross-road that requires thinking. It is a cross-road which contains technology and culture,
+          time and space, conflicts and reforms. We are trying to appeal the most cutting-edge thinkers at this
+          cross-road, to discuss future trends, the construction and conversion of cities, to rethink the future pattern
+          of education and to appreciate arts with a fresh appearance.
         </p>
       </div>
 
@@ -103,7 +110,7 @@
         </h2>
         <div class="guest-show">
           <img :src="guestObj.url"/>
-          <div class="action" ref="guests">
+          <div class="action">
             <div class="action-text">
               <h3>{{guestObj.enName}}</h3>
               <p v-for="item in guestObj.enDesc">{{item}}</p>
@@ -134,7 +141,7 @@
         </nav>
         <div class="plan-content">
           <section class="plan-content">
-            <h3>{{planData.desc}}</h3>
+            <h3 v-for="item in planData.desc">{{item}}</h3>
             <div class="step-item" v-for="(content,index) in planData.content">
               <div class="line" :class="{first: index===0,last: index===(planData.content.length - 1)}"></div>
               <div class="line-text" :class="{'other-text-top':!content.status}">
@@ -173,12 +180,12 @@
         </h2>
         <header class="live-banner">
           <img class="img" :src="liveInfo.cover169Url" @error="liveInfo.cover169Url = defaultImg"/>
-          <div class="play" @click="goToNextPage('live')">
+          <div class="play" @click="goToLiveRoom(liveInfo.id)">
             <img src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png"/>
           </div>
           <div class="tips" v-if="liveInfo.isStarted">Live：{{liveInfo.subject}}</div>
         </header>
-        <div class="live-content" @click="goToNextPage('live')">
+        <div class="live-content" @click="goToLiveRoom(item.id)">
           <div class="item" v-for="item in liveInfoList">
             <div class="item-banner">
               <img :src="item.cover169Url" @error="item.cover169Url = defaultImg"/>
@@ -210,7 +217,8 @@
         </div>
       </div>
     </section>
-    <div class="footer-btn" v-if="showBtn" @click="goToTicket()"><img src="https://og9s6vxbs.qnssl.com/wiee/shape.png"/>Ask questions
+    <div class="footer-btn" v-if="showBtn" @click="goToTicket()">
+      Register
     </div>
   </article>
 </template>
@@ -554,7 +562,7 @@
             right: 0;
             z-index: 1;
 
-            .action-text{
+            .action-text {
 
               .h3 {
                 font-size: 18px;
@@ -713,6 +721,10 @@
             color: rgb(242, 242, 242);
             letter-spacing: 1px;
             margin-bottom: 0;
+
+            & + h3 {
+              margin-top: 6px;
+            }
           }
 
           .step-item {
@@ -1120,7 +1132,7 @@
 
     goToNextPage(page: string) {
       if (page !== 'live') {
-        this.$router.push({path: `/wv/wiee/${page}`})
+        this.$router.push({path: `/wv/wiee/${page}?lang=en`})
       } else {
         window.location.href = 'https://www.zaojiu.com/lives/wiee';
       }
@@ -1134,18 +1146,16 @@
 
     }
 
-    touchMove(e: TouchEvent) {
+    touchMove() {
       let guestDom = (this.guestDom as HTMLElement);
       let rect = guestDom.getBoundingClientRect();
       let top = rect.top;
+
       if (top <= (document.documentElement.clientHeight - 70)) {
         this.showBtn = true;
       } else {
         this.showBtn = false;
       }
-    }
-
-    touchEnd() {
     }
 
     chooseGuest(index: number) {
@@ -1177,6 +1187,10 @@
 
     changeLang() {
       this.$router.push({path: '/wv/wiee/index'});
+    }
+
+    goToLiveRoom(id: number) {
+      location.href = `https://www.zaojiu.com/lives/${id}/info`;
     }
   }
 </script>
