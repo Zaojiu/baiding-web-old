@@ -6,6 +6,7 @@ import {WechatConfigModel} from './wechat.model';
 import {environment} from "../../../environments/environment";
 import {OperationTipsService} from "../operation-tips/operation-tips.service";
 import {Router, RoutesRecognized} from "@angular/router";
+import {UtilsService} from "../utils/utils";
 
 declare var wx: any;
 
@@ -16,6 +17,7 @@ export class WechatConfigService {
   onVoicePlayEnd: () => void;
   autoCompleteResolver: (localId: string) => void;
   autoCompleteRejecter: (reason: string) => void;
+  isiOS = UtilsService.isiOS;
 
   constructor(private http: Http, private tipsService: OperationTipsService, private router: Router) {
     this.router.events.filter(e => e instanceof RoutesRecognized).subscribe(() => {
@@ -108,7 +110,11 @@ export class WechatConfigService {
       });
 
       console.log('config wechat at init');
-      this.configWechat(true);
+      if (this.isiOS) {
+        this.configWechat();
+      } else {
+        this.configWechat(true);
+      }
       this.needResign = false;
     });
   }
