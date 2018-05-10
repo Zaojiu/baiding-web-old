@@ -2,10 +2,10 @@
   <div class="download-tips">
     <i class="bi bi-close" @click="$emit('close')"></i>
     <div class="tips">
-      造就iOS版
+      造就App
       <small>_REPL_SLOGAN_</small>
     </div>
-    <a class="download-btn" @click="isiOS ? redirectToYingYongBao() : showDownloadModal()">立即下载</a>
+    <a class="download-btn" @click="redirectToYingYongBao">立即下载</a>
   </div>
 </template>
 
@@ -56,11 +56,9 @@
   import {Component} from 'vue-property-decorator';
   import {appConfig, host} from '../env/environment';
   import {showModal} from '../store/modal';
-  import {isiOS} from './utils/utils';
 
   @Component
   export default class BdLoadingComponent extends Vue {
-    isiOS = isiOS;
 
     showDownloadModal() {
       const content = `<img style="max-width: 80vw; height: auto;" src="${host.assets}/assets/img/yingyongbao-ios-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>`;
@@ -69,7 +67,7 @@
     }
 
     redirectToYingYongBao() {
-      location.href = appConfig.iosDownloadLink;
+      location.href = 'https://www.zaojiu.com/app';
     }
   }
 </script>

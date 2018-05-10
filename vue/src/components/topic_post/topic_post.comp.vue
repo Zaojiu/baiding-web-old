@@ -19,7 +19,7 @@
                  alt="封面图"
                  :src="coverUrl"
                  @error="coverUrl = defaultCoverUrl"/>
-                 />
+            />
             <section class="talk-info" ref="content">
               <div class="categories" v-if="formatedCategories">{{formatedCategories}}</div>
               <h1>{{talkInfo.subject}}</h1>
@@ -42,7 +42,11 @@
                       class="bi bi-reply-comment"></i>回复</span>
                   </div>
                   <!-- 不要换行，避免出现换行符 -->
-                  <div class="content" v-once><div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}</div>{{comment.content}}</div>
+                  <div class="content" v-once>
+                    <div class="quote" v-if="comment.parent"><span class="nick">{{comment.parent.user.nick}}:</span>{{comment.parent.content}}
+                    </div>
+                    {{comment.content}}
+                  </div>
                 </div>
               </div>
 
@@ -197,16 +201,16 @@
 
       }
     }
-    .article-content{
-      p{
+    .article-content {
+      p {
         margin: 0;
         margin-bottom: 24px;
       }
-      figure{
+      figure {
         margin-bottom: 24px;
-        .p1{
+        .p1 {
           font-size: 14px;
-          color:rgb(128,128,128);
+          color: rgb(128, 128, 128);
           text-align: center;
           padding-top: 16px;
         }
@@ -349,7 +353,7 @@
     talkInfo = new TalkInfoModel({});
     isLoading = false;
     isError = false;
-    isAppDownloadTipsShow = true;
+    isAppDownloadTipsShow = false;
     contentDom: any;
     isContentChange = false;
     comments: TalkCommentModel[] = [];
@@ -368,6 +372,8 @@
     mounted() {
       if (this.isInApp) {
         window.addEventListener('scroll', this.handelScroll);
+      } else {
+        this.isAppDownloadTipsShow = true;
       }
       this.$nextTick(() => {
         this.contentDom = (this.$refs as any);
@@ -407,10 +413,10 @@
       this.isCommentError = false;
 
       try {
-        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length-1].createdAt}` : '';
-        const comments = await listTalkComments(this.id, COMMENT_COUNT+1, lastMarker);
+        const lastMarker = this.comments.length ? `$lt${this.comments[this.comments.length - 1].createdAt}` : '';
+        const comments = await listTalkComments(this.id, COMMENT_COUNT + 1, lastMarker);
         let isCommentOnLatest = true;
-        if (comments.length === COMMENT_COUNT+1) {
+        if (comments.length === COMMENT_COUNT + 1) {
           isCommentOnLatest = false;
           comments.pop();
         }
@@ -444,13 +450,13 @@
       callHandler('changeTop', status);
     };
 
-    nativeToComment = async (query:string) => {
+    nativeToComment = async (query: string) => {
       await initIOS();
       callHandler('pushComment', query);
     };
 
     gotoComment(id: string, nick: string, content: string) {
-      const query: {[key: string]: string} = { title: encodeURIComponent(this.talkInfo.subject) };
+      const query: { [key: string]: string } = {title: encodeURIComponent(this.talkInfo.subject)};
       if (id && nick && content) {
         query['request'] = encodeURIComponent(JSON.stringify({
           id: id,
@@ -458,10 +464,10 @@
           content: content
         }));
       }
-      if (this.isInApp){
+      if (this.isInApp) {
         this.nativeToComment(JSON.stringify({
-          title:this.talkInfo.subject,
-          query:{
+          title: this.talkInfo.subject,
+          query: {
             id: id,
             nick: nick,
             content: content,
