@@ -4,7 +4,7 @@
   >
     <header class="header">
       <div class="img" @click="goToNextPage('detail')"><img
-        src="https://og9s6vxbs.qnssl.com/wiee/index/home-right.png"/></div>
+        src="https://og9s6vxbs.qnssl.com/wiee/index/home-right.png?t=1"/></div>
       <div class="right">
         <!--<span class="language" @click="changeLang()">
           <span class="zh">中</span>
