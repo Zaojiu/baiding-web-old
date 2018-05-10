@@ -5,7 +5,7 @@
     <error class="abs-center" v-else-if="isNotFound">无此活动</error>
     <div class="event" v-else @click="isPaymentPopup = false">
       <top-nav></top-nav>
-      <img class="cover" :src="event.cover169Url" alt="头图">
+      <img class="cover" :src="event.cover169Url" alt="头图"/>
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>
         <div class="desc article-content" v-html="event.meta.content"></div>
@@ -17,18 +17,38 @@
     </footer>
 
     <div class="payment-popup" v-if="!isLoading && !isError && !isNotFound" :class="{'show': isPaymentPopup}">
-      <div class="header">
-        <div class="subject">{{event.subject}}</div>
-        <i class="bi bi-close" @click="isPaymentPopup = false"></i>
+      <div class="on-top">
+        <div class="header">
+          <div class="subject">{{event.subject}}</div>
+          <i class="bi bi-close" @click="isPaymentPopup = false"></i>
+        </div>
+        <div class="img-wrapper" v-if="event.meta.seatsMap.length>0">
+          <div class="cover-bg">
+            <div class="img-cover" v-for="(item,index) in event.meta.seatsMap" v-if="index===ticketImgIndex"
+                 :key="index">
+              <img
+                :src="item"/>
+            </div>
+          </div>
+          <div class="control">
+            <div class="item-content" v-for="(item,index) in event.meta.seatsMap" @click="chooeseImg(index)">
+              <div class="item"
+                   :class="{'active':index===ticketImgIndex}"
+              >{{index+1}}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="detail">
         <div class="item-name">
-      <span
-        class="ticket"
-        :class="{'active': ticket.id === ticketSelected.id, 'disabled': !ticket.leftTotal}"
-        v-for="ticket in event.meta.tickets"
-        @click="ticket.leftTotal && chooseTicket(ticket)"
-      >{{ticket.name}}</span>
+          <span
+            class="ticket"
+            :class="{'active': ticket.id === ticketSelected.id, 'disabled': !ticket.leftTotal}"
+            v-for="ticket in event.meta.tickets"
+            @click="ticket.leftTotal && chooseTicket(ticket)"
+          >{{ticket.name}}
+          </span>
         </div>
         <div class="item-count">
           <div class="adjuster">
@@ -45,7 +65,9 @@
         <bd-loading v-if="isAmoutLoading"></bd-loading>
         <span v-if="!isAmoutLoading">{{amount.toYuan()}}</span>
       </div>
-      <button class="button button-primary" @click="gotoOrder()">立即购买</button>
+      <div>
+        <button class="button button-primary" @click="gotoOrder()">{{$t('m.event.buyNow')}}</button>
+      </div>
     </div>
   </div>
 </template>
@@ -178,33 +200,80 @@
     }
 
     .payment-popup {
-      .header {
-        display: flex;
-        align-items: center;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
 
-        .subject {
-          flex-grow: 1;
-          font-size: $font-size-14;
-          color: $color-b;
-          word-break: break-all;
-          line-height: 1.5em;
+      .on-top {
+        height: initial;
+
+        .header {
+          display: flex;
+          align-items: center;
+
+          .subject {
+            flex-grow: 1;
+            font-size: $font-size-14;
+            color: $color-b;
+            word-break: break-all;
+            line-height: 1.5em;
+          }
+
+          .bi-close {
+            flex-shrink: 0;
+            font-size: 14px;
+            color: $color-b;
+            padding: 10px;
+            transform: translateX(10px) translateY(-6px);
+          }
         }
 
-        .bi-close {
-          flex-shrink: 0;
-          font-size: 14px;
-          color: $color-b;
-          padding: 10px;
-          transform: translateX(10px) translateY(-6px);
+        .img-wrapper {
+          width: 100%;
+
+          img {
+            width: 100%;
+          }
+
+          .cover-bg {
+            width: 100%;
+
+            .img-cover {
+              width: 100%;
+            }
+          }
+
+          .control {
+            display: flex;
+            justify-content: center;
+
+            .item-content {
+              padding: 4px 10px;
+            }
+
+            .item {
+              font-size: 0;
+              color: #fff;
+              background-color: #909090;
+              height: 3px;
+              width: 20px;
+              text-align: center;
+              border-radius: 7px;
+            }
+
+            .active {
+              background-color: #31b5a5;
+            }
+          }
         }
       }
 
       .detail {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
 
         .item-name {
-          max-height: calc(100vh - 236px);
           overflow: auto;
 
           .ticket {
@@ -306,9 +375,9 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {getEvent} from "../../shared/api/event.api";
+  import {getEventDetail} from "../../shared/api/event.api";
   import {EventModel, EventTicketModel} from "../../shared/api/event.model";
-  import {Money, isInWechat} from "../../shared/utils/utils";
+  import {Money, isInWechat, isAndroid, isInApp} from "../../shared/utils/utils";
   import {TicketModel} from "../../shared/api/ticket.model";
   import {checkOrderFee} from "../../shared/api/order.api";
   import {initWechat} from "../../shared/utils/wechat";
@@ -320,6 +389,7 @@
   import {host} from "../../env/environment";
   import {ApiError} from '../../shared/api/xhr';
   import {ApiCode} from '../../shared/api/code-map.enum';
+  import {initIOS, callHandler} from "../../shared/utils/ios";
 
   @Component
   export default class EventTicketComponent extends Vue {
@@ -337,6 +407,10 @@
     isAmoutLoading = false;
     debounceTimer = 0;
     ticketSelected = new EventTicketModel({});
+    lang = 'zh';
+    timer: any;
+    ticketImgIndex = 0;
+    isAndroid = isAndroid && isInApp;
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -350,8 +424,18 @@
       this.initData();
     }
 
+    @Watch('lang')
+    changeLocale(val: string) {
+      if (val) {
+        this.$i18n.locale = val;
+      } else {
+        this.$i18n.locale = 'zh';
+      }
+    }
+
     created() {
       this.id = this.$route.params['id'];
+      this.lang = this.$route.query['lang'];
       this.initData();
     }
 
@@ -363,7 +447,7 @@
       this.isLoading = true;
       this.isError = false;
       try {
-        this.event = await getEvent(this.id);
+        this.event = await getEventDetail(this.id);
       } catch (e) {
         if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
           this.isNotFound = true;
@@ -384,8 +468,8 @@
         this.ticketSelected = this.event.meta.tickets[0];
         this.ticketCount = 1;
 
-        const timer = setInterval(() => {
-          this.checkDate(this.event, timer);
+        this.timer = setInterval(() => {
+          this.checkDate(this.event, this.timer);
         }, 3000);
       }
     }
@@ -426,7 +510,8 @@
         this.btnText = '未开始售票';
       } else {
         this.isPaymentDisabled = false;
-        this.btnText = '购买门票';
+        // 购买门票
+        this.btnText = this.$t('m.event.buy') as string;
         if (event.isForMember) {
           this.btnText = '购买门票（会员专享）'
         }
@@ -436,7 +521,13 @@
         this.isPaymentDisabled = true;
         this.btnText = '已结束售票';
         this.isPaymentPopup = false;
-        clearInterval(timer);
+        clearInterval(this.timer);
+      }
+    }
+
+    destroyed() {
+      if (this.timer) {
+        clearInterval(this.timer);
       }
     }
 
@@ -475,7 +566,7 @@
       this.isPaymentPopup = true;
     }
 
-    gotoOrder() {
+    async gotoOrder() {
       if (!this.ticketSelected || !this.ticketSelected.id) {
         showTips('请选择购票类型');
         return;
@@ -485,7 +576,18 @@
       }
 
       const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, this.ticketCount, this.ticketSelected.disableDiscount);
-      this.$router.push({path: '/orders', query: {items: encodeURIComponent(JSON.stringify([query]))}});
+
+      //安卓端购买跳转
+      if (this.isAndroid) {
+        await initIOS();
+        callHandler('payOrder', `${host.self}/orders?items=${encodeURIComponent(JSON.stringify([query]))}`);
+        return;
+      }
+
+      this.$router.push({
+        path: '/orders',
+        query: {items: encodeURIComponent(JSON.stringify([query])), lang: this.lang}
+      });
     }
 
     chooseTicket(ticket: EventTicketModel) {
@@ -493,5 +595,10 @@
       this.checkTicketCount();
       this.checkFee(this.ticketCount);
     }
+
+    chooeseImg(num: number) {
+      this.ticketImgIndex = num;
+    }
+
   }
 </script>

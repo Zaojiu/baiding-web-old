@@ -32,6 +32,9 @@
             <li v-if="ticket.event.meta.address">地点: <span class="text"><span
               v-if="ticket.event.meta.city">{{ticket.event.meta.city}} </span>{{ticket.event.meta.address}}</span></li>
           </ul>
+          <div class="qrcode" v-if="ticket.ticketNo">
+            <img :src="qrcodeSrc(ticket.ticketNo)"/>
+          </div>
         </div>
       </div>
       <div class="no-more-record" v-if="tickets.length">到底啦~</div>
@@ -126,6 +129,10 @@
       padding-top: 18px;
       border-top: solid 1px rgb(239, 239, 239);
 
+      .qrcode{
+        text-align: center;
+      }
+
       .row {
         display: flex;
         align-items: center;
@@ -183,10 +190,11 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import { Component } from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
   import {tickets} from "../../shared/api/ticket.api";
   import {TicketModel} from "../../shared/api/ticket.model";
   import {scrollView} from '../../shared/scroll-view/scroll-view.directive';
+  import {yaqrcode} from 'yaqrcode';
 
   @Component({
     directives: {
@@ -218,6 +226,13 @@
       } finally {
         this.isLoading = false;
       }
+    }
+
+    qrcodeSrc(number: string): string {
+      if (number) {
+        return yaqrcode(number, {size: 150});
+      }
+      return '';
     }
 
     async onBottom() {

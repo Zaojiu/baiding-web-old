@@ -44,15 +44,15 @@
 
           <div class="amount block">
             <div class="row">
-              <span class="title">商品金额</span>
+              <span class="title">{{$t('m.order.price')}}</span>
               <span class="content">{{order.order.totalPrice.toYuan()}}</span>
             </div>
             <div class="row" v-if="order.order.totalDiscountAmount.value">
-              <span class="title">优惠金额</span>
+              <span class="title">{{$t('m.order.dicountPrice')}}</span>
               <span class="content">{{order.order.totalDiscountAmount.toYuan()}}</span>
             </div>
             <div class="row" v-if="!order.isPending">
-              <span class="title">合计</span>
+              <span class="title">{{$t('m.order.totalPrice')}}</span>
               <span class="content">{{order.order.totalDiscountedFee.toYuan()}}</span>
             </div>
           </div>
@@ -117,19 +117,19 @@
 
           <div class="amount block">
             <div class="row">
-              <span class="title">商品金额</span>
+              <span class="title">{{$t('m.order.price')}}</span>
               <span class="content">{{orderFee.totalPrice.toYuan()}}</span>
             </div>
             <div class="row" v-if="orderFee.totalDiscountAmount.value">
-              <span class="title">优惠金额</span>
+              <span class="title">{{$t('m.order.discountPrice')}}</span>
               <span class="content">{{orderFee.totalDiscountAmount.toYuan()}}</span>
             </div>
           </div>
         </div>
 
         <footer>
-          <div class="fee">合计: {{orderFee.totalDiscountedFee.toYuan()}}</div>
-          <button class="button button-primary" @click="pay()" :disabled="isPaying">提交订单</button>
+          <div class="fee">{{$t('m.order.totalPrice')}}: {{orderFee.totalDiscountedFee.toYuan()}}</div>
+          <button class="button button-primary" @click="pay()" :disabled="isPaying">{{$t('m.order.submit')}}</button>
         </footer>
 
         <div class="discount-popup" :class="{'show': isDiscountSelectorShow}" @click.stop>
@@ -429,8 +429,10 @@
     selectedDiscount: Discount[] = [];//选择的优惠
     isApplyingDiscount = false;//控制是否正在使用优惠，控制'使用优惠'按钮状态
     isDiscountDeleting: { [key: string]: boolean } = {};
+    lang = 'zh';
 
     created() {
+      this.lang = this.$route.query['lang'];
       const isContinue = this.handlePayResultForRedirect();
       if (isContinue) this.routeChange();
     }
@@ -440,6 +442,13 @@
       const isValid = this.processParams();
       if (isValid) {
         this.initData();
+      }
+    }
+
+    @Watch('lang')
+    changeLocale(val: string) {
+      if (val === 'en' && this.$i18n.locale !== val) {
+        this.$i18n.locale = val;
       }
     }
 
