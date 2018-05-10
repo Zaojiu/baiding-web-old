@@ -108,7 +108,7 @@ export class WechatConfigService {
       });
 
       console.log('config wechat at init');
-      this.configWechat(true);
+      this.configWechat();
       this.needResign = false;
     });
   }
