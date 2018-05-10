@@ -115,21 +115,6 @@ export class WieeComponent implements OnInit, OnDestroy {
     }
   }
 
-  unbookLive() {
-    if (this.booking) {
-      return;
-    }
-
-    this.booking = true;
-
-    this.liveService.unbookLive(this.livesList[0].id).then(liveInfo => {
-      this.livesList[0] = liveInfo;
-      this.operationTipsService.popup('您已取消订阅');
-    }).finally(() => {
-      this.booking = false;
-    });
-  }
-
   showQrcode() {
     if (!this.userInfo) {
       return;

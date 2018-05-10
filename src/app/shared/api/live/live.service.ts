@@ -425,7 +425,7 @@ export class LiveService {
         return;
       }
       let url = `${environment.config.host.io}/api/live/streams/${ liveInfo.id }/book`;
-      this.http.post(url, null);
+      this.http.post(url, null).toPromise().then();
     });
 
     return this.refreshLiveInfo(topLiveId);
