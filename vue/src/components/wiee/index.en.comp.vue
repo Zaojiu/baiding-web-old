@@ -73,7 +73,7 @@
              :style="{overflow:showMenu?'hidden':'auto'}"
     >
       <div class="index">
-        <img src="https://og9s6vxbs.qnssl.com/wiee/index/index-bg-en.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/wiee/index/bg-en.jpg"/>
         <div class="index-action">
           <div class="img-wiee">
             <img src="https://og9s6vxbs.qnssl.com/wiee/index/wiee-zaojiu.png"/>
@@ -102,6 +102,27 @@
           cross-road, to discuss future trends, the construction and conversion of cities, to rethink the future pattern
           of education and to appreciate arts with a fresh appearance.
         </p>
+      </div>
+
+      <div class="video-content">
+        <header :class="{
+        'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
+        'played': isVideoPlayed,
+        'played-landscape': isVideoPlayed && isLandscape
+      }">
+          <div class="player" id="player" @click="isVideoPlayed = true"></div>
+
+          <div class="live-cover" v-if="!isVideoPlayed">
+            <img
+              class="cover-image"
+              alt="话题间封面"
+              :src="coverUrl"
+              @error="coverUrl = defaultImg"
+            >
+
+            <div class="big-play"></div>
+          </div>
+        </header>
       </div>
 
       <div id="guests" class="guest">
@@ -218,7 +239,7 @@
       </div>
     </section>
     <div class="footer-btn" v-if="showBtn" @click="goToTicket()">
-      Register
+      Buy tickets
     </div>
   </article>
 </template>
@@ -437,6 +458,130 @@
         height: 17px;
         margin-right: 8px;
       }
+    }
+
+    .video-content {
+      margin: 20px auto 0 auto;
+      width: calc(100% - 40px);
+      flex-shrink: 0;
+      position: relative;
+      font-size: 0;
+      background-color: #0A0A17;
+      padding-top: calc(56.25% - 22.5px);
+
+      .video {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 56.25vw;
+        width: 100%;
+      }
+
+      header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+
+        /*&.sticky {
+          position: sticky;
+          top: 0;
+          z-index: $z-index-page-lv1;
+        }*/
+
+        &.played:before {
+          height: 56.25vw;
+        }
+
+        &.played-landscape:before {
+          height: 100vh;
+        }
+
+        &:before {
+          content: "";
+          display: block;
+          height: 240px;
+          transition: height .5s;
+        }
+
+        @media (max-width: 1024px) and (orientation: landscape) {
+          .video-container {
+            .video {
+              &:before {
+                height: 100vh;
+              }
+            }
+          }
+        }
+
+        .player {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+        }
+
+        .live-cover {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          display: flex;
+          flex-direction: column-reverse;
+          pointer-events: none;
+          font-size: 0;
+          background: #000;
+
+          .cover-thumbnail-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: $color-w;
+            overflow: hidden;
+
+            .cover-thumnail {
+              position: absolute;
+              top: -10px;
+              left: -10px;
+              width: calc(100% + 20px);
+              height: calc(100% + 20px);
+              background-position: center;
+              background-size: cover;
+              filter: blur(10px);
+            }
+          }
+
+          .cover-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            text-indent: -10000px;
+          }
+
+          .big-play {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            background: url("https://og9s6vxbs.qnssl.com/wiee/detail/play.png") center top no-repeat;
+            background-size: 100% 100%;
+            pointer-events: none;
+            height: 48px;
+            width: 48px;
+            color: $color-w;
+            text-shadow: 0 0 2px $color-b;
+          }
+        }
+      }
+
     }
 
     .content {
@@ -1051,6 +1196,8 @@
   import {LiveInfoModel} from "../../shared/api/lives.model";
   import {listNow} from './api';
   import {praseLiveTime} from '../../shared/utils/utils';
+  import {isOnLargeScreen, isAndroid, isiOS} from '../../shared/utils/utils';
+  import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
 
   @Component({})
   export default class ActivateComponent extends Vue {
@@ -1075,6 +1222,12 @@
     defaultImg = '/assets/img/default-cover.jpg';
     liveTime: { [liveId: string]: string } = {};
     lang = 'zh';
+    isOnScreen = isOnLargeScreen;
+    isVideoPlayed = false;
+    isLandscape = false;
+    coverUrl = 'https://og9s6vxbs.qnssl.com/wiee/video-cover.jpg';
+    seeking = false;
+    player: ZaojiuPlayerInstance;
 
 
     @Watch('$route.name')
@@ -1085,6 +1238,7 @@
     created() {
       this.share();
       this.init();
+      this.prepareVideo();
       this.$nextTick(() => {
         this.guestDom = this.$refs['guests'];
       })
@@ -1192,5 +1346,46 @@
     goToLiveRoom(id: number) {
       location.href = `https://www.zaojiu.com/lives/${id}/info`;
     }
+
+    prepareVideo() {
+      System.import('zaojiu-player').then((player: ZaojiuPlayer) => {
+        this.player = new player({
+          element: 'player',
+          playList: [{
+            src: '',// todo url
+            quality: '标清',
+            mimetype: 'video/mp4'
+          }, {
+            src: 'https://og9s6vxbs.qnssl.com/wiee/video.mp4',
+            quality: '高清',
+            mimetype: 'video/mp4'
+          }],
+        });
+        this.player.event$.subscribe((e: PlayerEvent) => {
+          switch (e.type) {
+            case 'play':
+              break;
+            case 'error':
+              this.isVideoPlayed = true;
+              break;
+            case 'seeking':
+              this.seeking = true;
+              break;
+            case 'playing':
+              this.seeking = false;
+              break;
+          }
+        });
+      });
+
+      // 横竖屏polyfill
+      System.import('o9n').then((o9n: any) => {
+        this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
+        o9n.orientation.onchange = (evt: any) => {
+          this.isLandscape = evt.target.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
+        }
+      });
+    }
+
   }
 </script>

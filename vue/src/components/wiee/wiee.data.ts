@@ -719,7 +719,7 @@ export const PlanList = [
         title: [
           '主题演讲1:元道'
         ],
-        desc: '元道：中关村区块链产业联盟理事长',
+        desc: '中关村区块链产业联盟理事长',
         status: 1
       },
       {
@@ -728,7 +728,7 @@ export const PlanList = [
         title: [
           '主题演讲2:孟岩'
         ],
-        desc: '孟岩：柏链道捷创始人兼CEO',
+        desc: '柏链道捷创始人兼CEO',
         status: 1
       },
       {
@@ -737,7 +737,7 @@ export const PlanList = [
         title: [
           '主题演讲3：任鑫'
         ],
-        desc: '任鑫：要发车创始人、Token Economy Design社群发起人\n',
+        desc: '要发车创始人、Token Economy Design社群发起人\n',
         status: 1
       },
       {
@@ -772,18 +772,18 @@ export const PlanList = [
         start: '13:45',
         end: '13:50',
         title: [
-          '欢迎/主持人'
+          '欢迎/主持人：娄永琪'
         ],
-        desc: '娄永琪-同济大学设计创意学院院长',
+        desc: '同济大学设计创意学院院长',
         status: 1
       },
       {
         start: '13:50',
         end: '14:35',
         title: [
-          '演讲1：吴志强',
-          '演讲2：李斌',
-          '演讲3：李宁宁'
+          '演讲1：吴志强；同济大学副校长、中国工程院院士、2010年上海世博会首席规划师',
+          '演讲2：李斌；蔚来创始人、董事长',
+          '演讲3：李宁宁；小米科技小米生态链工业设计高级总监'
         ],
         desc: '',
         status: 1
@@ -801,10 +801,10 @@ export const PlanList = [
         start: '14:45',
         end: '15:15',
         title: [
-          '主题版块1：洞察',
-          '演讲4：曹楠',
-          '演讲5：Ronan Doorley',
-          '演讲6：Marc Pons'
+          '主题版块1：洞察 ',
+          '演讲4：曹楠；同济大学智慧数据可视化实验室主任',
+          '演讲5：Ronan Doorley；麻省理工学院媒体实验室科学家',
+          '演讲6：Marc Pons；安道尔科学实验室主任'
         ],
         desc: '',
         status: 1
@@ -814,9 +814,9 @@ export const PlanList = [
         end: '15:45',
         title: [
           '主题版块2：转型',
-          '演讲7：Michael Lin',
-          '演讲8：Jörg Noennig',
-          '演讲9：Antti Tuomela'
+          '演讲7：Michael Lin；麻省理工学院媒体实验室博士研究员',
+          '演讲8：Jörg Noennig；汉堡城市科学实验室主任、汉堡港口大学教授',
+          '演讲9：Antti Tuomela；芬兰阿尔托大学地产公司首席执行官'
         ],
         desc: '',
         status: 1
@@ -835,9 +835,9 @@ export const PlanList = [
         end: '16:30',
         title: [
           '主题版块3：预测、体验',
-          '演讲10：Jarmo Souminem',
-          '演讲11：Arnaud Grignard',
-          '演讲12：孙效华，马可'
+          '演讲10：Jarmo Souminem；芬兰阿尔托大学教授、同济大学设计与创意学院教授',
+          '演讲11：Arnaud Grignard；麻省理工学院媒体实验室科学家',
+          '演讲12：孙效华，马可；同济大学设计与创意学院副院长，研究员'
         ],
         desc: '',
         status: 1
@@ -847,9 +847,9 @@ export const PlanList = [
         end: '17:00',
         title: [
           '主题版块4：共识',
-          '演讲13：张砚',
-          '演讲14：Ariel Noyman',
-          '演讲15：Markus ElKatsha'
+          '演讲13：张砚；麻省理工学院媒体实验室博士研究员',
+          '演讲14：Ariel Noyman；麻省理工学院媒体实验室博士研究员',
+          '演讲15：Markus ElKatsha；麻省理工学院媒体实验室研究员'
         ],
         desc: '',
         status: 1
@@ -859,9 +859,9 @@ export const PlanList = [
         end: '17:30',
         title: [
           '主题版块5：部署',
-          '演讲16：Hossein Rahnama',
-          '演讲17：Yasushi Sakai',
-          '演讲18：Luis Alonso'
+          '演讲16：Hossein Rahnama；Flybits创始人、CEO，入选MIT 35 under 35科技精英',
+          '演讲17：Yasushi Sakai；麻省理工学院媒体实验室博士研究员',
+          '演讲18：Luis Alonso；麻省理工学院媒体实验室科学家'
         ],
         desc: '',
         status: 1
@@ -870,7 +870,7 @@ export const PlanList = [
         start: '17:30',
         end: '17:40',
         title: [
-          '结束语：Antti Ahlava'
+          '结束语：娄永琪、Kent Larson'
         ],
         desc: '',
         status: 1
@@ -895,7 +895,7 @@ export const PlanList = [
           '总结致辞与闭幕酒会',
           '同济-MIT创新夜'
         ],
-        desc: '娄永琪，Kent Larson',
+        desc: '',
         status: 1
       }
     ]
@@ -1005,43 +1005,70 @@ export const PlanList = [
       },
       {
         start: '15:40',
-        end: '16:00',
+        end: '16:05',
         title: [
-          '休息'
+          '主题演讲5：范凌'
+        ],
+        desc: '特赞创始人兼首席执行官，世界经济论坛全球青年领袖',
+        status: 1
+      },
+      {
+        start: '16:05',
+        end: '16:25',
+        title: [
+          '中场休息'
         ],
         desc: '',
         status: 0
       },
       {
-        start: '16:00',
-        end: '6:25',
-        title: [
-          '主题演讲5：Srini Srinivasan'
-        ],
-        desc: '世界设计组织（WDO）当选主席',
-        status: 1
-      },
-      {
         start: '16:25',
-        end: '16:40',
+        end: '6:40',
         title: [
-          '主题演讲6：王欣'
+          '主题演讲6：娄永琪'
         ],
-        desc: '馒头商学院创始人',
+        desc: '同济大学设计创意学院院长、教授',
         status: 1
       },
       {
         start: '16:40',
         end: '17:05',
         title: [
-          '主题演讲7：娄永琪'
+          '主题演讲7：赵均宁'
         ],
-        desc: '同济大学设计创意学院 院长 教授',
+        desc: '上海万科国际学校校长',
         status: 1
       },
       {
         start: '17:05',
         end: '17:30',
+        title: [
+          '主题演讲8：Ali Vahabzadeh'
+        ],
+        desc: '共享交通初创公司Chariot创始人及董事会成员',
+        status: 1
+      },
+      {
+        start: '17:30',
+        end: '17:55',
+        title: [
+          '大主题演讲9：王欣'
+        ],
+        desc: '馒头商学院创始人',
+        status: 1
+      },
+      {
+        start: '17:55',
+        end: '18:20',
+        title: [
+          '主题演讲10：骆新'
+        ],
+        desc: '东方卫视首席记者，上海戏剧学院播音与主持艺术系主任',
+        status: 1
+      },
+      {
+        start: '18:20',
+        end: '18:30',
         title: [
           '大会总结：周斌'
         ],
