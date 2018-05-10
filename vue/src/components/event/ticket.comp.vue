@@ -5,6 +5,11 @@
     <error class="abs-center" v-else-if="isNotFound">无此活动</error>
     <div class="event" v-else @click="isPaymentPopup = false">
       <top-nav></top-nav>
+      <app-download-tips
+        class="app-download-tips"
+        v-if="isAppDownloadTipsShow"
+        @close="isAppDownloadTipsShow = false"
+      ></app-download-tips>
       <img class="cover" :src="event.cover169Url" alt="头图"/>
       <div class="block">
         <h1 class="subject">{{event.subject}}</h1>
@@ -390,8 +395,13 @@
   import {ApiError} from '../../shared/api/xhr';
   import {ApiCode} from '../../shared/api/code-map.enum';
   import {initIOS, callHandler} from "../../shared/utils/ios";
+  import appDownloadTips from '../../shared/app-download-tips.comp.vue';
 
-  @Component
+  @Component({
+    components: {
+      appDownloadTips: appDownloadTips,
+    }
+  })
   export default class EventTicketComponent extends Vue {
     id = '';
     event = new EventModel({});
@@ -411,6 +421,7 @@
     timer: any;
     ticketImgIndex = 0;
     isAndroid = isAndroid && isInApp;
+    isAppDownloadTipsShow = false;
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -434,6 +445,9 @@
     }
 
     created() {
+      if (!isInApp) {
+        this.isAppDownloadTipsShow = true;
+      }
       this.id = this.$route.params['id'];
       this.lang = this.$route.query['lang'];
       this.initData();
