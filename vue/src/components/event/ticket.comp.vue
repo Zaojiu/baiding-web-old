@@ -27,25 +27,8 @@
           <div class="subject">{{event.subject}}</div>
           <i class="bi bi-close" @click="isPaymentPopup = false"></i>
         </div>
-        <div class="img-wrapper" v-if="event.meta.seatsMap.length>0">
-          <div class="cover-bg">
-            <div class="img-cover"
-                 v-for="(item,index) in event.meta.seatsMap"
-                 v-if="index===ticketImgIndex"
-                 @click="showImg(item)"
-                 :key="index">
-              <img
-                :src="item"/>
-            </div>
-          </div>
-          <div class="control">
-            <div class="item-content" v-for="(item,index) in event.meta.seatsMap" @click="chooeseImg(index)">
-              <div class="item"
-                   :class="{'active':index===ticketImgIndex}"
-              >{{index+1}}
-              </div>
-            </div>
-          </div>
+        <div class="img-group" v-if="event.meta.seatsMap.length>0">
+          <mySwiperComponent @itemClick="showImg" :imgList="event.meta.seatsMap"/>
         </div>
       </div>
       <div class="detail">
@@ -77,13 +60,6 @@
         <button class="button button-primary" @click="gotoOrder()">{{$t('m.event.buyNow')}}</button>
       </div>
     </div>
-
-    <div class="show_img" v-if="showBigUrl">
-      <div class="close-btn" @click="showBigUrl = ''"><i class="bi bi-close-2"></i></div>
-      <div class="img-content">
-        <img :src="showBigUrl"/>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -94,46 +70,6 @@
     height: 100vh;
     overflow: hidden;
     background-color: rgb(251, 251, 251);
-
-    .show_img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 100vh;
-      z-index: 1;
-      background-color: #0A0A17;
-      width: 100%;
-      font-size: 0;
-
-      .close-btn {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        color: #fff;
-        z-index: 2;
-        background: #000;
-        height: 24px;
-        border-radius: 24px;
-        width: 24px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .img-content {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        overflow: auto;
-
-        img {
-          height: 100%;
-        }
-      }
-    }
 
     .event {
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -283,43 +219,9 @@
           }
         }
 
-        .img-wrapper {
-          width: 100%;
-
-          img {
-            width: 100%;
-          }
-
-          .cover-bg {
-            width: 100%;
-
-            .img-cover {
-              width: 100%;
-            }
-          }
-
-          .control {
-            display: flex;
-            justify-content: center;
-
-            .item-content {
-              padding: 4px 10px;
-            }
-
-            .item {
-              font-size: 0;
-              color: #fff;
-              background-color: #909090;
-              height: 3px;
-              width: 20px;
-              text-align: center;
-              border-radius: 7px;
-            }
-
-            .active {
-              background-color: #31b5a5;
-            }
-          }
+        .img-group{
+          max-width: 500px;
+          margin: auto;
         }
       }
 
@@ -446,10 +348,13 @@
   import {ApiCode} from '../../shared/api/code-map.enum';
   import {initIOS, callHandler} from "../../shared/utils/ios";
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
+  import {showImageStall} from '../../store/image-stall';
+  import MySwiperComponent from '../../shared/my-swiper.comp.vue';
 
   @Component({
     components: {
       appDownloadTips: appDownloadTips,
+      mySwiperComponent: MySwiperComponent
     }
   })
   export default class EventTicketComponent extends Vue {
@@ -472,7 +377,6 @@
     ticketImgIndex = 0;
     isAndroid = isAndroid && isInApp;
     isAppDownloadTipsShow = false;
-    showBigUrl = '';
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -666,7 +570,7 @@
     }
 
     showImg(src: string) {
-      this.showBigUrl = src;
+      showImageStall(src);
     }
 
   }

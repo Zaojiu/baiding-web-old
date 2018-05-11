@@ -6,6 +6,7 @@
     <payment></payment>
     <modal></modal>
     <tool-tips></tool-tips>
+    <ImageStallComponent></ImageStallComponent>
   </div>
 </template>
 
@@ -106,6 +107,7 @@
   import modal from '../shared/modal.comp.vue';
   import sharePopup from '../shared/share-popup.comp.vue';
   import qrcode from '../shared/qrcode.comp.vue';
+  import ImageStallComponent from '../shared/image-stall.comp.vue'
 
   export default {
     components: {
@@ -114,6 +116,7 @@
       payment,
       modal,
       sharePopup,
+      ImageStallComponent,
     }
   }
 </script>
