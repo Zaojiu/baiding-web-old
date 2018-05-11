@@ -248,7 +248,7 @@ export const guests = [
     id: '5aec1037ce87e80001a56bee',
     name: 'Chris Anderson',
     enName: 'Chris Anderson',
-    desc: ['3DR 首席执行官，《连线》杂质前主编，《长尾》、《免费》、《创客》作者'],
+    desc: ['3DR 首席执行官，《连线》杂志前主编，《长尾》、《免费》、《创客》作者'],
     enDesc: ['CEO of 3DR, Former Editor-in-chief of WIRED Magazine, Author of “The Long Tail”, “FREE” and “Makers”'],
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_b.jpg',
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_s.jpg'
