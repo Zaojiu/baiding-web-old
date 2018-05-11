@@ -3,6 +3,7 @@ import {post} from "../api/xhr";
 import {AxiosResponse} from "axios";
 import {showTips} from "../../store/tip";
 import {appendAfterEachHook} from "../../hooks";
+import {isAndroid} from './utils';
 
 declare const wx: any;
 
@@ -21,7 +22,9 @@ let onVoicePlayEnd: () => void;
 let autoCompleteResolver: (localId: string) => void;
 let autoCompleteRejecter: (reason: string) => void;
 
-appendAfterEachHook((to, from) => needResign = true);
+if (isAndroid) {
+  appendAfterEachHook((to, from) => needResign = true);
+}
 
 const getConfig = async (): Promise<WechatConfigModel> => {
   let resp: AxiosResponse;
