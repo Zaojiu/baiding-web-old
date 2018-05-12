@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router, NavigationEnd} from '@angular/router';
+import {ActivatedRoute, Router, NavigationStart, NavigationEnd} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 import {TimelineService} from './timeline/timeline.service';
@@ -67,6 +67,13 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.markOnline();
+
+    // 监听路由变化, 刷新liveInfo
+    this.router.events
+      .filter(event => event instanceof NavigationStart)
+      .subscribe(() => {
+        this.refreshLiveInfo();
+    });
 
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
