@@ -48,7 +48,7 @@
               <span class="content">{{order.order.totalPrice.toYuan()}}</span>
             </div>
             <div class="row" v-if="order.order.totalDiscountAmount.value">
-              <span class="title">{{$t('m.order.dicountPrice')}}</span>
+              <span class="title">{{$t('m.order.discountPrice')}}</span>
               <span class="content">{{order.order.totalDiscountAmount.toYuan()}}</span>
             </div>
             <div class="row" v-if="!order.isPending">
