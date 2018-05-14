@@ -93,11 +93,17 @@
     async share() {
       if (isInWechat) {
         await initWechat();
+        let url = `${host.self}/wv/wiee`;
+        let title = '造就思想节：发现最有创造力的思想';
+        if (this.$route.name === 'wiee.map' || this.$route.name === 'wiee.map.detail') {
+          url = `${host.self}/wv/wiee/map`;
+          title = '造就思想节:地图';
+        }
         setShareInfo(
-          '造就思想节：发现最有创造力的思想',
-          `科技与人文交汇的十字路口`,
+          title,
+          '科技与人文交汇的十字路口',
           'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
-          `${host.self}/wv/wiee`
+          url
         );
       }
     }

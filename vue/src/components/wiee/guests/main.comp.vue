@@ -71,7 +71,7 @@
                 <p>{{item.title}}</p>
               </div>
             </div>
-            <div class="center">{{$t('m.wiee.guestsNoTips')}}</div>
+            <div class="center" v-else>{{$t('m.wiee.guestsNoTips')}}</div>
           </div>
         </div>
       </transition>
@@ -89,7 +89,7 @@
                 <h3>{{item.subject}}</h3>
               </div>
             </div>
-            <div class="center">{{$t('m.wiee.guestsNoTips')}}</div>
+            <div class="center" v-else>{{$t('m.wiee.guestsNoTips')}}</div>
           </div>
         </div>
       </transition>
@@ -103,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div class="center">{{$t('m.wiee.guestsNoTips')}}</div>
+            <div class="center" v-else>{{$t('m.wiee.guestsNoTips')}}</div>
           </div>
         </div>
       </transition>
