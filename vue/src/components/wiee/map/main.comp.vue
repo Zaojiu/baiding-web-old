@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="map" ref="map">
+    <!--<div class="map" ref="map">
       <img :src="$t('m.wiee.mapBgUrl')" border="0" usemap="#planetmap" alt="地图"/>
       <map v-if="lang!=='en'" name="planetmap" id="planetmap">
         <area @click="showMapDetail(4)" shape="rect" coords="400,230,502,272" alt="创意集市"/>
@@ -25,6 +25,9 @@
       <div class="tips">
         <span>拖动查看更多</span>
       </div>
+    </div>-->
+    <div class="map" ref="map">
+      <img src="https://og9s6vxbs.qnssl.com/wiee/traffic-map.jpg" border="0" alt="地图"/>
     </div>
     <div class="aside" v-if="showSide">
       <div class="aside-main">
@@ -148,10 +151,6 @@
     @Watch('$route.name')
     setNavIndex() {
       this.init()
-    }
-
-    mounted() {
-      this.scroll();
     }
 
     scroll() {
