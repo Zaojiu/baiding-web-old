@@ -219,7 +219,7 @@
           }
         }
 
-        .img-group{
+        .img-group {
           max-width: 500px;
           margin: auto;
         }
@@ -334,7 +334,7 @@
   import {Component, Watch} from 'vue-property-decorator';
   import {getEventDetail} from "../../shared/api/event.api";
   import {EventModel, EventTicketModel} from "../../shared/api/event.model";
-  import {Money, isInWechat, isAndroid, isInApp} from "../../shared/utils/utils";
+  import {Money, isInWechat, isAndroid, isInApp, isInWeiBo} from "../../shared/utils/utils";
   import {TicketModel} from "../../shared/api/ticket.model";
   import {checkOrderFee} from "../../shared/api/order.api";
   import {initWechat} from "../../shared/utils/wechat";
@@ -349,6 +349,7 @@
   import {initIOS, callHandler} from "../../shared/utils/ios";
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
   import {showImageStall} from '../../store/image-stall';
+  import {showQrcode} from '../../store/qrcode';
   import MySwiperComponent from '../../shared/my-swiper.comp.vue';
 
   @Component({
@@ -514,6 +515,11 @@
 
     buy() {
       let userInfo: UserInfoModel;
+
+      if (isInWeiBo) {
+        showQrcode(`${host.self}${this.$route.fullPath}`, '保存二维码在微信扫描打开购票');
+        return;
+      }
 
       try {
         userInfo = getUserInfoCache(false);

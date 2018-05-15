@@ -13,6 +13,7 @@ export const isAndroid = /Android/i.test(navigator.userAgent);
 export const isOnLargeScreen = matchMedia && matchMedia('(min-width: 1024px)').matches;
 export const isChrome = /Chrome/i.test(navigator.userAgent);
 export const isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
+export const isInWeiBo = /weibo/i.test(navigator.userAgent);
 export const now = (): number => Math.floor((new Date()).getTime() / 1000);
 export const isViewportLandscape = (): boolean => {
   // 检测设备是否为横屏
