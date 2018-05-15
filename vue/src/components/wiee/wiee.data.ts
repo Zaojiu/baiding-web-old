@@ -559,24 +559,6 @@ export const PlanList = [
     desc: ['未来趋势峰会'],
     content: [
       {
-        start: '09:15',
-        end: '11:10',
-        title: [
-          '2018世界创新创业博览会开幕式'
-        ],
-        desc: '',
-        status: 1
-      },
-      {
-        start: '11:30',
-        end: '13:00',
-        title: [
-          'VIP嘉宾参观展区',
-        ],
-        desc: '',
-        status: 1
-      },
-      {
         start: '13:00',
         end: '13:45',
         title: [
