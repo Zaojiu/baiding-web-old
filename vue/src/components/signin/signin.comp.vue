@@ -4,9 +4,10 @@
       <div class="qrcode-container">
         <div class="loading-container" :class="{show: $store.state.user.qrcodeUrl === undefined}">
           <bd-loading class="loading"></bd-loading>
-          二维码加载中...
+          {{$t('m.signIn.qrcodeLoading')}}...
         </div>
-        <div class="retry" v-if="isWechatQrcodeError">二维码加载失败，请<a href="" @click.prevent="getQrcodeUrl()">重试</a>
+        <div class="retry" v-if="isWechatQrcodeError">{{$t('m.signIn.qrcodeError')}}<a href=""
+                                                                                       @click.prevent="getQrcodeUrl()">{{$t('m.signIn.tryAgain')}}</a>
         </div>
         <iframe
           :class="{show: $store.state.user.qrcodeUrl}"
@@ -15,17 +16,17 @@
           frameborder="0"
         ></iframe>
       </div>
-      <a class="button button-primary" href="" @click.prevent="switchMode('sms')">返回</a>
+      <a class="button button-primary" href="" @click.prevent="switchMode('sms')">{{$t('m.signIn.back')}}</a>
     </div>
 
     <div class="mobile-signin-container"
          ref="mobileSigninContainer"
          :class="{'show': mode === 'sms' || mode === 'password', 'hide': mode !== 'sms' && mode !== 'password'}">
       <nav>
-        <a href="" :class="{active: mode === 'sms'}"
-           @click.prevent="switchMode('sms'); $refs.mobileInput.focus();">验证码登录</a>
-        <a href="" :class="{active: mode === 'password'}"
-           @click.prevent="switchMode('password'); $refs.mobileInput.focus();">密码登录</a>
+        <a href="" :class="{active: mode === 'sms','font-s':ev!=='zh'}"
+           @click.prevent="switchMode('sms'); $refs.mobileInput.focus();">{{$t('m.signIn.byVerificationCode')}}</a>
+        <a href="" :class="{active: mode === 'password','font-s':ev!=='zh'}"
+           @click.prevent="switchMode('password'); $refs.mobileInput.focus();">{{$t('m.signIn.byPassword')}}</a>
       </nav>
 
       <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
@@ -39,11 +40,11 @@
               v-focus
               v-has-value
             >
-            <label class="required">手机号码</label>
+            <label class="required">{{$t('m.signIn.tellPhoneNumber')}}</label>
           </div>
           <i class="bi bi-close-2" v-if="phoneNumber!==''" @click="phoneNumber=''; $refs.mobileInput.focus();"></i>
-          <p class="helper error" v-if="errors.first('phoneNumber:required')">请填写手机号码</p>
-          <p class="helper error" v-else-if="errors.first('phoneNumber:regex')">手机号码格式错误，请重新填写</p>
+          <p class="helper error" v-if="errors.first('phoneNumber:required')">{{$t('m.signIn.tellPhoneRequired')}}</p>
+          <p class="helper error" v-else-if="errors.first('phoneNumber:regex')">{{$t('m.signIn.tellPhoneError')}}</p>
         </div>
 
         <div class="form-group sms-code-group"
@@ -60,15 +61,17 @@
               v-has-value
               @input="clearError('smsCode', 'wrongcode')"
             >
-            <label class="required">验证码</label>
+            <label class="required">{{$t('m.signIn.verificationCode')}}</label>
             <a class="sms-sender"
                href=""
                :class="{'disabled': !smsBtnAvailable}"
                @click.prevent="sendSMS(); errors.has('phoneNumber') ? $refs.mobileInput.focus() : $refs.smsCodeInput.focus();">{{smsBtnText}}</a>
           </div>
-          <p class="helper error" v-if="errors.first('smsCode:required')">请填写验证码</p>
-          <p class="helper error" v-else-if="errors.first('smsCode:regex')">手机验证码必须为6位数字</p>
-          <p class="helper error" v-else-if="errors.first('smsCode:wrongcode')">验证码错误</p>
+          <p class="helper error" v-if="errors.first('smsCode:required')">
+            {{$t('m.signIn.verificationCodeRequired')}}</p>
+          <p class="helper error" v-else-if="errors.first('smsCode:regex')">{{$t('m.signIn.verificationCodeMin')}}</p>
+          <p class="helper error" v-else-if="errors.first('smsCode:wrongcode')">
+            {{$t('m.signIn.verificationCodeError')}}</p>
         </div>
 
         <div class="form-group password-group"
@@ -85,25 +88,28 @@
               v-has-value
               @input="clearError('password', 'wrongpassword')"
             >
-            <label class="required">密码</label>
+            <label class="required">{{$t('m.signIn.password')}}</label>
           </div>
-          <a href="" class="forget-pwd" @click.prevent="gotoResetPwd()">忘记密码</a>
-          <p class="helper error" v-if="errors.first('password:required')">请填写密码</p>
-          <p class="helper error" v-else-if="errors.first('password:min')">密码不能少于8位</p>
-          <p class="helper error" v-else-if="errors.first('password:max')">密码不能多于32位</p>
-          <p class="helper error" v-else-if="errors.first('password:wrongpassword')">密码错误</p>
+          <a href="" class="forget-pwd" @click.prevent="gotoResetPwd()">{{$t('m.signIn.forgotPassword')}}</a>
+          <p class="helper error" v-if="errors.first('password:required')">{{$t('m.signIn.passwordRequired')}}</p>
+          <p class="helper error" v-else-if="errors.first('password:min')">{{$t('m.signIn.passwordMin')}}</p>
+          <p class="helper error" v-else-if="errors.first('password:max')">{{$t('m.signIn.passwordMax')}}</p>
+          <p class="helper error" v-else-if="errors.first('password:wrongpassword')">
+            {{$t('m.signIn.passwordError')}}</p>
         </div>
 
         <div class="form-group">
-          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? '登录' : '登录中...'}}
+          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? $t('m.signIn.signIn') :
+            $t('m.signIn.singInLoading')}}
           </button>
         </div>
       </form>
 
       <section class="vendor-signin">
-        <h2>第三方登录</h2>
+        <h2>{{$t('m.signIn.otherSingIn')}}</h2>
         <div class="vendor-container">
-          <a href="" @click.prevent="switchMode('wechat')"><i class="bi bi-wechat"></i>微信登录</a>
+          <a href="" @click.prevent="switchMode('wechat')"><i
+            class="bi bi-wechat"></i>{{$t('m.signIn.weChatSingIn')}}</a>
         </div>
       </section>
     </div>
@@ -141,6 +147,10 @@
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
+
+      .font-s {
+        font-size: 14px;
+      }
 
       a {
         font-size: $font-size-24;
@@ -362,15 +372,18 @@
     phoneNumber = '';
     smsCode = '';
     password = '';
-    smsBtnText = '发送验证码';
+    smsBtnText = '';
     smsBtnAvailable = true;
     isSubmitting = false;
     redirectTo: string;
     mode = 'sms';
     isWechatQrcodeError = false;
     regexpMobile = regexpMobile;
+    ev = '';
 
     created() {
+      this.ev = this.$i18n.locale;
+      this.smsBtnText = this.$t('m.signIn.sendVerificationCode') as string;
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');
       this.getQrcodeUrl();
     }
@@ -415,10 +428,10 @@
 
     async submit() {
       this.isSubmitting = true;
-      showTips('登录中...');
+      showTips(this.$t('m.signIn.singInLoading') as string);
 
       const errorMessage = _.assign({}, {
-        [ApiCode.ErrSigninInvalidPassword]: this.smsCode ? '验证码错误' : '密码错误'
+        [ApiCode.ErrSigninInvalidPassword]: this.smsCode ? (this.$t('m.signIn.verificationCodeError') as string) : (this.$t('m.signIn.passwordError') as string)
       }, SigninErrorMessage);
 
       try {
@@ -442,14 +455,14 @@
         this.isSubmitting = false;
       }
 
-      showTips('登录成功');
+      showTips(this.$t('m.signIn.singInSuccess') as string);
       this.$router.push({path: this.redirectTo});
     }
 
     async sendSMS() {
       const isMobileValid = !this.$validator.errors.has('phoneNumber');
 
-      if (!isMobileValid) showTips('请填写正确的手机号码再发送验证码');
+      if (!isMobileValid) showTips(this.$t('m.signIn.tellPhoneVerificationCode') as string);
 
       if (!this.smsBtnAvailable || !isMobileValid) return;
 
@@ -466,12 +479,12 @@
       let countDown = 60;
 
       this.smsBtnText = `${countDown}s`;
-      showTips('验证码发送成功');
+      showTips(this.$t('m.signIn.sendVerificationCodeSuccess') as string);
       timer = setInterval(() => {
         countDown--;
         if (countDown === 0) {
           this.smsBtnAvailable = true;
-          this.smsBtnText = `发送验证码`;
+          this.smsBtnText = this.$t('m.signIn.sendVerificationCode') as string;
           clearInterval(timer);
         } else {
           this.smsBtnText = `${countDown}s`;
