@@ -185,7 +185,7 @@
           <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map-detail.png"/>
         </div>
         <div class="map-btn">
-          <button @click="goToNextPage('map')">
+          <button @click="goToNextPage('navigation')">
             查看场馆信息
           </button>
         </div>

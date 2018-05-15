@@ -677,7 +677,7 @@ export const router = new Router({
           component: () => System.import('./components/wiee/detail/main.comp.vue'),
         },
         {
-          path: 'map',
+          path: 'navigation',
           component: () => System.import('./components/wiee/map/main.comp.vue'),
           children: [
             {
