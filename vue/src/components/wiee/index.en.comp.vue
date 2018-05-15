@@ -189,7 +189,7 @@
           <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map-detail-en.png"/>
         </div>
         <div class="map-btn">
-          <button @click="goToNextPage('map')">
+          <button @click="goToNextPage('navigation')">
             Venue information
           </button>
         </div>

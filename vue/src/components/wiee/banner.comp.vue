@@ -96,7 +96,7 @@
         let url = `${host.self}/wv/wiee`;
         let title = '造就思想节：发现最有创造力的思想';
         if (this.$route.name === 'wiee.map' || this.$route.name === 'wiee.map.detail') {
-          url = `${host.self}/wv/wiee/map`;
+          url = `${host.self}/wv/wiee/navigation`;
           title = '造就思想节:地图';
         }
         setShareInfo(
