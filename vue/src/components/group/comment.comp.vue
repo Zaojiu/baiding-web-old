@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-bind:style=" isPosting ? disscroll : doscroll ">
+  <div class="container" :style=" isPosting ? disscroll : doscroll ">
     <div class="scroll">
       <div class="top">
         <img class="btn-x" src="assets/icon/back.svg" @click="backToGroup()"/>
@@ -10,9 +10,11 @@
       <div class="bottom">
         <div class="main">
           <div class="top">
-            <img class="avatar avatar-round avatar-45 top-avatar" v-bind:src=" msgData ?  msgData.userInfo.avatar : defaultAvatar " alt="头像"/>
+            <img class="avatar avatar-round avatar-45 top-avatar"
+                 :src=" (msgData.userInfo && msgData.userInfo.avatar) ?  msgData.userInfo.avatar : defaultAvatar "
+                 alt="头像"/>
             <div class="top-right">
-              <p class="nick">{{ msgData.userInfo.nick }}</p>
+              <p class="nick">{{ msgData.userInfo?msgData.userInfo.nick:'' }}</p>
               <p class="created-at">{{ showMoment(msgData.createdAt) }}</p>
             </div>
           </div>
@@ -20,7 +22,8 @@
         </div>
         <div class="comments" v-for="item in commentData">
           <div class="top">
-            <img class="avatar avatar-round avatar-45 top-avatar" name="" v-bind:src=" item.userInfo?  item.userInfo.avatar : defaultAvatar " alt="头像"/>
+            <img class="avatar avatar-round avatar-45 top-avatar" name=""
+                 :src=" item.userInfo?  item.userInfo.avatar : defaultAvatar " alt="头像"/>
             <div class="top-right">
               <p class="nick">{{ item.userInfo.nick }}</p>
               <p class="created-at">{{ showMoment(item.createdAt) }}</p>
@@ -42,7 +45,7 @@
       </div>
       <p class="title">发布评论</p>
       <div class="bottom">
-        <textarea class="textarea" autofocus v-model="content" >{{ content }}</textarea>
+        <textarea class="textarea" autofocus v-model="content">{{ content }}</textarea>
       </div>
     </div>
 
@@ -53,12 +56,12 @@
   import Vue from 'vue';
   import moment from 'moment';
   import {Component} from 'vue-property-decorator';
-  import { getMessageDedail, getComments, postComment} from '../../shared/api/group.api';
+  import {getMessageDedail, getComments, postComment} from '../../shared/api/group.api';
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {showTips} from '../../store/tip';
 
   @Component
-  export default class CommentComponent extends Vue{
+  export default class CommentComponent extends Vue {
     courseId = '';
     groupId = '';
     msgId = '';
@@ -73,37 +76,29 @@
       createdAt: ''
     };
     commentData = [];
-
     doscroll = 'overflow: scroll';
     disscroll = 'overflow: hidden';
     defaultAvatar = '/assets/img/zaojiu-logo.jpg';
-
     isPosting = false;
     content = '';
 
-    created () {
-      this.groupId = this.$route.params.groupId;
-      this.msgId = this.$route.params.msg;
-      this.courseId = this.$route.query.courseId;
+    created() {
+      this.groupId = this.$route.params['groupId'];
+      this.msgId = this.$route.params['msg'];
+      this.courseId = this.$route.query['courseId'];
       this.initData();
-      //
     }
 
-    async initData () {
-      let msgDetail = await getMessageDedail(this.groupId, this.msgId);
-      console.log(msgDetail);
-      this.msgData = msgDetail;
-
-      let commentDatas = await getComments(this.groupId, this.msgId, 100, this.createdAt);
-      console.log(commentDatas);
-      this.commentData = commentDatas;
+    async initData() {
+      this.msgData = await getMessageDedail(this.groupId, this.msgId);
+      this.commentData = await getComments(this.groupId, this.msgId, 100, this.createdAt);
     }
 
-    readyToPost () {
+    readyToPost() {
       this.isPosting = true;
     }
 
-    async postComments () {
+    async postComments() {
       if (this.content) {
         this.closePost();
         await postComment(this.groupId, this.msgId, this.content);
@@ -115,18 +110,17 @@
         showTips('内容不能为空！');
         return;
       }
-
     }
 
-    closePost () {
+    closePost() {
       this.isPosting = false;
     }
 
-    showMoment (m: any) {
+    showMoment(m: any) {
       return moment.unix(m.substring(0, 10)).format('YYYY-MM-DD HH:mm:ss');
     }
 
-    backToGroup () {
+    backToGroup() {
       this.$router.go(-1);
     }
   }
@@ -171,7 +165,7 @@
         font-size: 28px;
         line-height: 28px;
         color: black;
-        box-shadow:  0px 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         font-weight: bold;
         margin-bottom: 4px;
         background-color: white;
@@ -281,7 +275,7 @@
       color: white;
       line-height: 47px;
       font-size: 18px;
-      background-color: rgb(0 ,211 ,193);
+      background-color: rgb(0, 211, 193);
       text-align: center;
     }
 
@@ -330,7 +324,7 @@
         font-size: 28px;
         line-height: 28px;
         color: black;
-        box-shadow:  0px 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         font-weight: bold;
       }
 

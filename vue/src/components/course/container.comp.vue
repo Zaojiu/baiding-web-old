@@ -46,10 +46,6 @@
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
   import {getCourseInfo, listCourseItems, joinGroup} from '../../shared/api/course.api';
-  import {getUserInfoCache} from "../../shared/api/user.api";
-  /*import {UserInfoModel} from '../../shared/api/user.model'
-  import {isInApp, isInWechat} from "../../shared/utils/utils";
-  import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";*/
 
   @Component({})
   export default class MallContainer extends Vue {

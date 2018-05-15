@@ -171,8 +171,21 @@ export const router = new Router({
           name: 'group.cover',
           path: 'cover',
           component: () => System.import('./components/group/list.comp.vue')
+        },
+        {
+          name: 'group.publish',
+          path: 'publish',
+          component: () => System.import('./components/group/publish.comp.vue')
         }
       ]
+    },
+    {
+      path: '/group/:groupId/:msg',
+      name: 'group.message.comment',
+      meta: {
+        title: '评论'
+      },
+      component: () => System.import('./components/group/comment.comp.vue'),
     },
     {
       path: '/course/:courseId',
@@ -620,14 +633,6 @@ export const router = new Router({
           component: () => System.import('./components/columns/post-comment.comp.vue'),
         }
       ]
-    },
-    {
-      path: '/group/:groupId/:msg',
-      name: 'group.message.comment',
-      meta: {
-        title: '评论'
-      },
-      component: () => System.import('./components/group/comment.comp.vue'),
     },
     {
       path: '/wv/wiee',

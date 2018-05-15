@@ -1,6 +1,6 @@
 import {host} from '../../env/environment';
 import {get, post} from './xhr';
-import {QiNiuTokenModel} from '../../shared/api/group.model';
+import {QiNiuTokenModel} from './group.model';
 
 const pushUserInfo = (groupData: any, userData: any) => {
   // 将用户信息导入内容数组
