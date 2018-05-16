@@ -136,7 +136,6 @@
       if (!this.userInfo || !this.userInfo.member.valid) {
         this.lockAction = true;
         this.listText = [
-          '『造就UNI』在线课程第一期课堂：《数据的本质》在线课程 （每月持续更新）',
           '五折购买在线《大师之课》'
         ];
       }

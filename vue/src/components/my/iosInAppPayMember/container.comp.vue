@@ -8,7 +8,7 @@
           <li v-if="isMember" @click="changeNav(0)" :class="{active:navIndex===0,'app-padding':!isMember}">会员卡</li>
           <li @click="changeNav(1)" :class="{active:navIndex===1,'app-padding':!isMember}">特别优惠</li>
           <li @click="changeNav(2)" :class="{active:navIndex===2,'app-padding':!isMember}">专属视频</li>
-          <li @click="changeNav(3)" :class="{active:navIndex===3,'app-padding':!isMember}">在线课程</li>
+          <li @click="changeNav(3)" :class="{active:navIndex===3,'app-padding':!isMember}">会员课程</li>
           <li @click="changeNav(4)" :class="{active:navIndex===4,'app-padding':!isMember}">干货下载</li>
         </ul>
       </nav>

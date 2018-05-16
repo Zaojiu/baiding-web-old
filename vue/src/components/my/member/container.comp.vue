@@ -26,7 +26,7 @@
           </li>
           <li @click="changeNav(4)"
               :class="{'active':navIndex===4,'app-padding':!isMember||isMember&&memberType === 0}">
-            在线课程
+            会员课程
           </li>
           <li v-if="!isAndroid" @click="changeNav(5)"
               :class="{'active':navIndex===5,'app-padding':!isMember||isMember&&memberType === 0}">

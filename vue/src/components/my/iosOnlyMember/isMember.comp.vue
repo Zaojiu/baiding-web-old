@@ -170,7 +170,6 @@
             'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9'
           ];
           this.listText = [
-            '『造就UNI』在线课程第一期课堂：《数据的本质》在线课程 （每月持续更新）',
             '五折购买在线《大师之课》'
           ];
           this.inTab = 3;
