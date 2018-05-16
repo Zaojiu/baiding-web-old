@@ -30,10 +30,10 @@ const route: Routes = [
     }
   },
   {
-    path: 'wiee',
-    loadChildren: 'app/+live-room/+wiee/wiee.module#WieeModule',
+    path: 'future',
+    loadChildren: 'app/+live-room/+future/future.module#FutureModule',
     data: {
-      title: 'WIEE直播'
+      title: '未来大会'
     }
   },
   {
