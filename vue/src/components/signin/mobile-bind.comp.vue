@@ -7,7 +7,7 @@
 
     <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
       <section>
-        <h2>手机号码绑定</h2>
+        <h2>{{$t('m.signIn.bindMobile')}}</h2>
         <div class="form-group mobile-group" :class="{'has-error': errors.has('phoneNumber')}">
           <div class="input-group">
             <input
@@ -18,12 +18,12 @@
               v-focus
               v-has-value
             >
-            <label class="required">手机号码</label>
+            <label class="required">{{$t('m.signIn.tellPhoneNumber')}}</label>
           </div>
           <i class="bi bi-close-2" v-if="phoneNumber!==''" @click="phoneNumber=''; $refs.mobileInput.focus();"></i>
-          <p class="helper" v-if="!errors.has('phoneNumber')">手机号码为11位数字</p>
-          <p class="helper error" v-else-if="errors.first('phoneNumber:required')">请填写手机号码</p>
-          <p class="helper error" v-else-if="errors.first('phoneNumber:regex')">手机号码格式错误，请重新填写</p>
+          <p class="helper" v-if="!errors.has('phoneNumber')">{{$t('m.signIn.mobileLength')}}</p>
+          <p class="helper error" v-else-if="errors.first('phoneNumber:required')">{{$t('m.signIn.tellPhoneRequired')}}</p>
+          <p class="helper error" v-else-if="errors.first('phoneNumber:regex')">{{$t('m.signIn.tellPhoneError')}}</p>
         </div>
 
         <div class="form-group sms-code-group"
@@ -39,16 +39,16 @@
               v-has-value
               @input="clearError('smsCode', 'wrongcode')"
             >
-            <label class="required">验证码</label>
+            <label class="required">{{$t('m.signIn.verificationCode')}}</label>
             <a class="sms-sender"
                href=""
                :class="{'disabled': !smsBtnAvailable}"
                @click.prevent="sendSMS(); errors.has('phoneNumber') ? $refs.mobileInput.focus() : $refs.smsCodeInput.focus();">{{smsBtnText}}</a>
           </div>
-          <p class="helper" v-if="!errors.has('smsCode')">六位数字验证码</p>
-          <p class="helper error" v-else-if="errors.first('smsCode:required')">请填写验证码</p>
-          <p class="helper error" v-else-if="errors.first('smsCode:regex')">手机验证码必须为6位数字</p>
-          <p class="helper error" v-else-if="errors.first('smsCode:wrongcode')">验证码错误</p>
+          <p class="helper" v-if="!errors.has('smsCode')">{{$t('m.signIn.verificationCodeMin')}}</p>
+          <p class="helper error" v-else-if="errors.first('smsCode:required')">{{$t('m.signIn.verificationCodeRequired')}}</p>
+          <p class="helper error" v-else-if="errors.first('smsCode:regex')">{{$t('m.signIn.verificationCodeMin')}}</p>
+          <p class="helper error" v-else-if="errors.first('smsCode:wrongcode')">{{$t('m.signIn.verificationCodeError')}}</p>
         </div>
 
         <div class="form-group"
@@ -63,17 +63,17 @@
               v-validate="{rules: {min: 8, max: 32, required: true}}"
               v-has-value
             >
-            <label class="required">密码</label>
+            <label class="required">{{$t('m.signIn.password')}}</label>
           </div>
-          <p class="helper" v-if="!errors.has('password')">密码长度为8-32位，字符不限</p>
-          <p class="helper error" v-else-if="errors.first('password:required')">请填写密码</p>
-          <p class="helper error" v-else-if="errors.first('password:min')">密码不能少于8位</p>
-          <p class="helper error" v-else-if="errors.first('password:max')">密码不能多于32位</p>
+          <p class="helper" v-if="!errors.has('password')">{{$t('m.signIn.passwordLength')}}</p>
+          <p class="helper error" v-else-if="errors.first('password:required')">{{$t('m.signIn.passwordRequired')}}</p>
+          <p class="helper error" v-else-if="errors.first('password:min')">{{$t('m.signIn.passwordMin')}}</p>
+          <p class="helper error" v-else-if="errors.first('password:max')">{{$t('m.signIn.passwordMax')}}</p>
         </div>
       </section>
 
       <section>
-        <h2>直播报名信息</h2>
+        <h2>{{$t('m.signIn.liveRegistration')}}</h2>
         <div class="form-group"
              :class="{'has-error': errors.has('name')}">
           <div class="input-group">
@@ -83,10 +83,10 @@
               v-validate="{rules: {required: true}}"
               v-has-value
             >
-            <label class="required">姓名</label>
+            <label class="required">{{$t('m.signIn.name')}}</label>
           </div>
-          <p class="helper" v-if="!errors.has('name')">请填写您的真实姓名</p>
-          <p class="helper error" v-else-if="errors.first('name:required')">请填写姓名</p>
+          <p class="helper" v-if="!errors.has('name')">{{$t('m.signIn.realName')}}</p>
+          <p class="helper error" v-else-if="errors.first('name:required')">{{$t('m.signIn.nameRequire')}}</p>
         </div>
 
         <div class="form-group"
@@ -98,9 +98,9 @@
               v-validate="{rules: {required: true}}"
               v-has-value
             >
-            <label class="required">公司名称</label>
+            <label class="required">{{$t('m.signIn.companyName')}}</label>
           </div>
-          <p class="helper error" v-if="errors.first('company:required')">请填写公司名称</p>
+          <p class="helper error" v-if="errors.first('company:required')">{{$t('m.signIn.companyNameRequired')}}</p>
         </div>
 
         <div class="form-group"
@@ -112,16 +112,16 @@
               v-validate="{rules: {required: true}}"
               v-has-value
             >
-            <label class="required">职位</label>
+            <label class="required">{{$t('m.signIn.position')}}</label>
           </div>
-          <p class="helper error" v-if="errors.first('title:required')">请填写职位</p>
+          <p class="helper error" v-if="errors.first('title:required')">{{$t('m.signIn.positionRequire')}}</p>
         </div>
       </section>
 
       <section class="footer-section">
         <div class="form-group">
-          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? '绑定手机号码' : '绑定中...'}}</button>
-          <p class="tips">手机号码绑定之后即可观看直播</p>
+          <button class="button button-primary" :disabled="isSubmitting">{{!isSubmitting ? $t('m.signIn.bindMobile') : $t('m.signIn.binding')}}</button>
+          <p class="tips">{{$t('m.signIn.liveBindMobileText')}}</p>
         </div>
       </section>
     </form>
@@ -230,13 +230,14 @@
     name = '';
     company = '';
     title = '';
-    smsBtnText = '发送验证码';
+    smsBtnText = '';
     smsBtnAvailable = true;
     isSubmitting = false;
     redirectTo: string;
     regexpMobile = regexpMobile;
 
     created() {
+      this.smsBtnText = this.$t('m.signIn.sendVerificationCode') as string;
       this.userInfo = getUserInfoCache();
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');
     }
@@ -257,7 +258,7 @@
 
     async submit() {
       this.isSubmitting = true;
-      showTips('绑定中...');
+      showTips(this.$t('m.signIn.binding') as string);
 
       try {
         await bindMobile(this.phoneNumber, this.smsCode, this.password, this.name, this.company, this.title);
@@ -280,14 +281,14 @@
         return;
       }
 
-      showTips('绑定手机成功');
+      showTips(this.$t('m.signIn.bindSuccess') as string);
       this.$router.push({path: this.redirectTo});
     }
 
     async sendSMS() {
       const isMobileValid = !this.$validator.errors.has('phoneNumber');
 
-      if (!isMobileValid) showTips('请填写正确的手机号码再发送验证码');
+      if (!isMobileValid) showTips(this.$t('m.signIn.tellPhoneVerificationCode') as string);
 
       if (!this.smsBtnAvailable || !isMobileValid) return;
 
@@ -304,12 +305,12 @@
       let countDown = 60;
 
       this.smsBtnText = `${countDown}s`;
-      showTips('验证码发送成功');
+      showTips(this.$t('m.signIn.sendVerificationCodeSuccess') as string);
       timer = setInterval(() => {
         countDown--;
         if (countDown === 0) {
           this.smsBtnAvailable = true;
-          this.smsBtnText = `发送验证码`;
+          this.smsBtnText = this.$t('m.signIn.sendVerificationCode') as string;
           clearInterval(timer);
         } else {
           this.smsBtnText = `${countDown}s`;

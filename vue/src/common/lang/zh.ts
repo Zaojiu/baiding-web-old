@@ -39,7 +39,22 @@ export const m = {
     singInLoading: '登录中...',
     singInSuccess: '登录成功',
     resetPasswordLoading: '重置密码中...',
-    resetPasswordSuccess: '重置密码成功，请重新登录'
+    resetPasswordSuccess: '重置密码成功，请重新登录',
+    bindMobile: '手机号码绑定',
+    mobileLength: '手机号码为11位数字',
+    passwordLength: '密码长度为8-32位，字符不限',
+    binding: '绑定中...',
+    bindAndLink: '绑定手机号码，方便造就客服联系',
+    bindSuccess: '手机号码绑定成功',
+    liveRegistration: '直播报名信息',
+    realName: '请填写您的真实姓名',
+    name: '姓名',
+    nameRequire: '请填写姓名',
+    companyName: '公司名称',
+    companyNameRequired: '请填写公司名称',
+    position: '职位',
+    positionRequire: '请填写职位',
+    liveBindMobileText: '手机号码绑定之后即可观看直播'
   },
   wiee: {
     guestsNav1: '介绍',
