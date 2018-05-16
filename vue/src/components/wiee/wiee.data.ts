@@ -673,13 +673,152 @@ export const PlanList = [
   },
   {
     title: '5.20',
-    desc: ['区块链经济论坛(闭门活动)'],
+    desc: ['区块链经济论坛(闭门活动)', '同济·MIT 城市科学峰会 2018'],
     content: [
       {
         start: '09:30',
         end: '11:30',
         title: [
           '区块链论坛(闭门活动)'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '13:30',
+        end: '13:40',
+        title: [
+          '开场演出'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '13:45',
+        end: '13:50',
+        title: [
+          '欢迎/主持人：娄永琪'
+        ],
+        desc: '同济大学设计创意学院院长',
+        status: 1
+      },
+      {
+        start: '13:50',
+        end: '14:35',
+        title: [
+          '演讲1：吴志强；同济大学副校长、中国工程院院士、2010年上海世博会首席规划师',
+          '演讲2：李斌；蔚来创始人、董事长',
+          '演讲3：李宁宁；小米科技小米生态链工业设计高级总监'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '14:35',
+        end: '14:45',
+        title: [
+          '主题介绍:Kent Larson'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '14:45',
+        end: '15:15',
+        title: [
+          '主题版块1：洞察 ',
+          '演讲4：曹楠；同济大学智慧数据可视化实验室主任',
+          '演讲5：Ronan Doorley；麻省理工学院媒体实验室科学家',
+          '演讲6：Marc Pons；安道尔科学实验室主任'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '15:15',
+        end: '15:45',
+        title: [
+          '主题版块2：转型',
+          '演讲7：Michael Lin；麻省理工学院媒体实验室博士研究员',
+          '演讲8：Jörg Noennig；汉堡城市科学实验室主任、汉堡港口大学教授',
+          '演讲9：Antti Tuomela；芬兰阿尔托大学地产公司首席执行官'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '15:45',
+        end: '16:00',
+        title: [
+          '休息'
+        ],
+        desc: '',
+        status: 0
+      },
+      {
+        start: '16:00',
+        end: '16:30',
+        title: [
+          '主题版块3：预测、体验',
+          '演讲10：Jarmo Souminem；芬兰阿尔托大学教授、同济大学设计与创意学院教授',
+          '演讲11：Arnaud Grignard；麻省理工学院媒体实验室科学家',
+          '演讲12：孙效华，马可；同济大学设计与创意学院副院长，研究员'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '16:30',
+        end: '17:00',
+        title: [
+          '主题版块4：共识',
+          '演讲13：张砚；麻省理工学院媒体实验室博士研究员',
+          '演讲14：Ariel Noyman；麻省理工学院媒体实验室博士研究员',
+          '演讲15：Markus ElKatsha；麻省理工学院媒体实验室研究员'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '17:00',
+        end: '17:30',
+        title: [
+          '主题版块5：部署',
+          '演讲16：Hossein Rahnama；Flybits创始人、CEO，入选MIT 35 under 35科技精英',
+          '演讲17：Yasushi Sakai；麻省理工学院媒体实验室博士研究员',
+          '演讲18：Luis Alonso；麻省理工学院媒体实验室科学家'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '17:30',
+        end: '17:40',
+        title: [
+          '结束语：娄永琪、Kent Larson'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '17:40',
+        end: '19:00',
+        title: [
+          '城市科学馆展示与互动',
+          '演示及交互体验',
+          '主题对话',
+          '视频采访',
+          '与会者交流招待会'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '19:00',
+        end: '20:00',
+        title: [
+          '总结致辞与闭幕酒会',
+          '同济-MIT创新夜'
         ],
         desc: '',
         status: 1
@@ -1125,13 +1264,152 @@ export const enPlanList = [
   },
   {
     title: '5.20',
-    desc: ['May 20 Blockchain Economy Forum(Private session)'],
+    desc: ['May 20 Blockchain Economy Forum(Private session)', 'Tongji & MIT City Science Summit'],
     content: [
       {
         start: '09:30',
         end: '11:30',
         title: [
           'Blockchain Economy Forum(Private session)'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '13:30',
+        end: '13:40',
+        title: [
+          'Openning Performance'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '13:45',
+        end: '13:50',
+        title: [
+          'Welcome/Hosting'
+        ],
+        desc: 'Lou Yongqi - Dean of School of Design and Creativity, Tongji University',
+        status: 1
+      },
+      {
+        start: '13:50',
+        end: '14:35',
+        title: [
+          'Speech 1：Wu Zhiqiang',
+          'Speech 2：Li Bin',
+          'Speech 3：Li Ningning'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '14:35',
+        end: '14:45',
+        title: [
+          'Theme Introduction'
+        ],
+        desc: 'Director of City Science Laboratory, MIT Media Lab',
+        status: 1
+      },
+      {
+        start: '14:45',
+        end: '15:15',
+        title: [
+          'Topic 1：Insight',
+          'Speech 4: Cao Nan',
+          'Speech 5：Ronan Doorley',
+          'Speech 6：Marc Pons'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '15:15',
+        end: '15:45',
+        title: [
+          'Topic 2：Transformation',
+          'Speech 7：Michael Lin',
+          'Speech 8：Jörg Noennig',
+          'Speech 9：Antti Tuomela'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '15:45',
+        end: '16:00',
+        title: [
+          'Break'
+        ],
+        desc: '',
+        status: 0
+      },
+      {
+        start: '16:00',
+        end: '16:30',
+        title: [
+          'Topic 3：Forecast & Experience',
+          'Speech 10：Jarmo Souminem',
+          'Speech 11：Arnaud Grignard',
+          'Speech 12：Sun Xiaohua, Ma Ke'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '16:30',
+        end: '17:00',
+        title: [
+          'Topic 4：Consensus',
+          'Speech 13：Zhang Yan',
+          'Speech 14：Ariel Noyman',
+          'Speech 15：Markus ElKatsha'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '17:00',
+        end: '17:30',
+        title: [
+          'Topic 5：Deployment',
+          'Speech 16：Hossein Rahnama',
+          'Speech 17：Yasushi Sakai',
+          'Speech 18：Luis Alonso'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '17:30',
+        end: '17:40',
+        title: [
+          'Concluding Remarks'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '17:40',
+        end: '19:00',
+        title: [
+          'Exhibition and Interaction in City Science Pavilion',
+          'Presentation and Interaction',
+          'Themed Communication',
+          'Interview',
+          'Communications & Reception'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '19:00',
+        end: '20:00',
+        title: [
+          'Concluding Remarks & Reception',
+          'Innovation Night of Tongji - MIT'
         ],
         desc: '',
         status: 1
