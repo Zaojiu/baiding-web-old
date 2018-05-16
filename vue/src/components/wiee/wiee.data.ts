@@ -673,17 +673,8 @@ export const PlanList = [
   },
   {
     title: '5.20',
-    desc: ['区块链经济论坛(闭门活动)', '同济·MIT 城市科学峰会 2018'],
+    desc: ['同济·MIT 城市科学峰会 2018'],
     content: [
-      {
-        start: '09:30',
-        end: '11:30',
-        title: [
-          '区块链论坛(闭门活动)'
-        ],
-        desc: '',
-        status: 1
-      },
       {
         start: '13:30',
         end: '13:40',
@@ -1264,17 +1255,8 @@ export const enPlanList = [
   },
   {
     title: '5.20',
-    desc: ['May 20 Blockchain Economy Forum(Private session)', 'Tongji & MIT City Science Summit'],
+    desc: ['Tongji & MIT City Science Summit'],
     content: [
-      {
-        start: '09:30',
-        end: '11:30',
-        title: [
-          'Blockchain Economy Forum(Private session)'
-        ],
-        desc: '',
-        status: 1
-      },
       {
         start: '13:30',
         end: '13:40',
