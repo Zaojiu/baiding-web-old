@@ -68,7 +68,7 @@ export class InviteComponent implements OnInit {
   setShareInfo() {
     let diffSec = moment.unix(+moment(this.liveInfo.expectStartAt) / 1000).diff(moment.unix(UtilsService.now));
     let durationStr = moment.duration(diffSec).humanize();
-    this.route.snapshot.data['shareTitle'] = `${this.userInfo.nick}邀请你加入#${this.liveInfo.subject}# `;
+    this.route.snapshot.data['shareTitle'] = `${this.userInfo ? this.userInfo.nick : '我'}邀请你加入#${this.liveInfo.subject}# `;
     this.route.snapshot.data['shareDesc'] = diffSec > 0 ? `${durationStr}后开始直播。${this.liveInfo.desc}` : `直播进行中。${this.liveInfo.desc}`;
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
     this.route.snapshot.data['shareLink'] = this.getShareUri();

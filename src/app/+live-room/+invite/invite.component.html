@@ -15,20 +15,20 @@
       <img class="avatar" [src]="liveInfo.admin.avatar">
     </div>
 
-    <i class="bi bi-stamp" *ngIf="token && isTokenExist && liveInfo.admin.uid !== userInfo.uid"></i>
+    <i class="bi bi-stamp" *ngIf="userInfo && token && isTokenExist && liveInfo.admin.uid !== userInfo.uid"></i>
   </div>
 
-  <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid === userInfo.uid">
+  <div class="operation-area" *ngIf="userInfo && token && isTokenExist && !isTokenUsed && liveInfo.admin.uid === userInfo.uid">
     <p class="share-tips">点击右上角 <i class="bi bi-more2"></i> 通过分享链接 <i class="bi bi-share2"></i> 来邀请嘉宾</p>
     <p class="share-tips">一条链接只能邀请一个用户</p>
     <a class="btn-goto-live" (click)="backToLive()">返回</a>
   </div>
 
-  <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid">
+  <div class="operation-area" *ngIf="userInfo && token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid">
     <a class="btn-accept-invitation" *ngIf="liveInfo.isCreated() || liveInfo.isStarted()" (click)="acceptInvitation()">接受邀请</a>
   </div>
 
-  <div class="operation-area" *ngIf="token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid && liveInfo.isClosed()">
+  <div class="operation-area" *ngIf="userInfo && token && isTokenExist && !isTokenUsed && liveInfo.admin.uid !== userInfo.uid && liveInfo.isClosed()">
     <a class="btn-accept-invitation" (click)="backToLive()">进入话题间</a>
     <p class="used-tips">直播已结束</p>
   </div>
