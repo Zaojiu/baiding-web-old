@@ -39,7 +39,22 @@ export const m = {
     singInLoading: 'Loading...',
     singInSuccess: 'Login successful',
     resetPasswordLoading: 'Resetting Password...',
-    resetPasswordSuccess: 'Password reset successful, please login again'
+    resetPasswordSuccess: 'Password reset successful, please login again',
+    bindMobile: 'Connect to cellphone number',
+    mobileLength: 'Cellphone number is must be 11 digits',
+    passwordLength: 'Password length is 8-32 bit, all characters are allowed',
+    binding: 'Connecting...',
+    bindAndLink: 'Connect to your mobile phone number for Zaojiu’s customer service contact',
+    bindSuccess: 'Cellphone number connection successful',
+    liveRegistration: 'Registration information to live broadcast',
+    realName: 'Please fill in your real name',
+    name: 'Name',
+    nameRequire: 'Please fill in your name',
+    companyName: 'Company name',
+    companyNameRequired: 'Please fill in the company name',
+    position: 'Position',
+    positionRequire: 'Please fill in the position',
+    liveBindMobileText: 'Watch live broadcast after cellphone number is connected'
   },
   wiee: {
     guestsNav1: 'About',
