@@ -729,6 +729,21 @@ export const router = new Router({
       ]
     },
     {
+      path: '/wv/reservation',
+      component: () => System.import('./components/h5/reservation/reservation.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: '预约嘉宾',
+        },
+        {
+          path: ':id',
+          name: '反馈',
+          component: () => System.import('./components/h5/reservation/success.comp.vue'),
+        }
+      ]
+    },
+    {
       path: '/500',
       name: 'error',
       component: errorComp,
