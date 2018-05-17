@@ -7,7 +7,7 @@ const route: Routes = [
     path: '',
     component: FutureComponent,
     data: {
-      title: '未来大会',
+      title: '创行-未来力大会',
     },
   },
 ];

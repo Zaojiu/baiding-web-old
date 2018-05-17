@@ -33,7 +33,7 @@ const route: Routes = [
     path: 'future',
     loadChildren: 'app/+live-room/+future/future.module#FutureModule',
     data: {
-      title: '未来大会'
+      title: '创行-未来力大会'
     }
   },
   {
