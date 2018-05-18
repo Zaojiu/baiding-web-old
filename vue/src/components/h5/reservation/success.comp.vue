@@ -2,21 +2,21 @@
   <article class="container">
     <transition name="slide-left" v-if="status===1">
       <div class="content" v-show="show">
-        <header>NO.{{bookId}} 预约成功！</header>
+        <header>NO.{{bookId}} 约问成功！请截图保存</header>
         <div class="guest-tips">
           <div class="avatar">
             <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
           </div>
           <div class="description description-b">
-            你是第<span>{{bookId}}</span>位约问问题的观众，请在<span>Talk环节结束后到演讲台左侧出示此页面截图</span>，我们将安排你亲自向嘉宾提出你的问题哦！
+            恭喜您，您是第<span>{{bookId}}</span>位约问问题的观众。请在今天下午整体talk环节结束后（预计时间下午6点）到演讲台左侧。<span>将这张图的截屏出示给对接工作人员</span>。我们将安排您亲自向嘉宾提出您的问题。
           </div>
         </div>
-        <div class="guest-tips">
+        <!--<div class="guest-tips">
           <div class="avatar">
             <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
           </div>
           <div class="description description-s">Ta的Talk开始时间是<span>{{guest.meetTime}}</span>,不要忘了！</div>
-        </div>
+        </div>-->
       </div>
     </transition>
     <div class="try" v-else-if="status===0">
@@ -29,10 +29,16 @@
       <div class="qrcode">
         <img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-qrcode.jpg"/>
       </div>
+      <div class="bottom">
+        <button @click="back">约问其他嘉宾</button>
+      </div>
     </div>
     <div class="text-tip" v-else="status===3">
       <h3>问题名额已满</h3>
       <p>很抱歉，这个嘉宾太火爆了，问题数量已爆满，你也可以向其他嘉宾提问哦！</p>
+      <div class="bottom">
+        <button @click="back">约问其他嘉宾</button>
+      </div>
     </div>
   </article>
 </template>
@@ -76,6 +82,24 @@
     .text-tip {
       padding: 0 30px;
       text-align: center;
+
+      .bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 15px;
+        width: 100%;
+        button {
+          width: 100%;
+          background-color: rgb(0, 211, 193);
+          border-radius: 4px;
+          font-size: 18px;
+          line-height: 18px;
+          padding:11px 0;
+          color: #fff;
+          font-weight: 600;
+        }
+      }
 
       h3 {
         margin: 48px 0 20px 0;
@@ -123,7 +147,7 @@
         margin-top: 28px;
         width: 100%;
         letter-spacing: -0.5px;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 600;
         line-height: 22px;
         background-color: rgb(0, 211, 193);
@@ -177,11 +201,11 @@
           }
         }
 
-        .description-b{
-          background: url("https://og9s6vxbs.qnssl.com/reservation/text-b.png") no-repeat;
+        .description-b {
+          background: url("https://og9s6vxbs.qnssl.com/reservation/text-l.png") no-repeat;
           background-size: 100% 100%;
         }
-        .description-s{
+        .description-s {
           background: url("https://og9s6vxbs.qnssl.com/reservation/text-s.png") no-repeat;
           background-size: 100% 100%;
         }
@@ -234,7 +258,7 @@
         setShareInfo(
           '预约嘉宾',
           `和嘉宾面对面交流`,
-          'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png',
+          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
           `${host.self}/wv/reservation`
         );
       }
