@@ -5,36 +5,34 @@
         <header>NO.{{bookId}} 预约成功！</header>
         <div class="guest-tips">
           <div class="avatar">
-            <div class="bg"><img :src="guest.cover"/></div>
+            <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
           </div>
-          <div class="description"><span>NO.{{bookId}}</span> 预约成功！你好我是 <span>{{guest.name}}</span>,期待跟你见面！</div>
+          <div class="description description-b">
+            你是第<span>{{bookId}}</span>位约问问题的观众，请在<span>Talk环节结束后到演讲台左侧出示此页面截图</span>，我们将安排你亲自向嘉宾提出你的问题哦！
+          </div>
         </div>
         <div class="guest-tips">
           <div class="avatar">
-            <div class="bg"><img :src="guest.cover"/></div>
+            <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
           </div>
-          <div class="description">见面会开始时间是<span>2018年5月19日18:30</span>,不要忘了！</div>
-        </div>
-        <div class="guest-tips">
-          <div class="avatar">
-            <div class="bg"><img :src="guest.cover"/></div>
-          </div>
-          <div class="description">你需要<span>将此页面截图出示给工作人员</span>才能入场，好了，到时候见！</div>
+          <div class="description description-s">Ta的Talk开始时间是<span>{{guest.meetTime}}</span>,不要忘了！</div>
         </div>
       </div>
     </transition>
-    <div class="try" v-else-if="status===0" @click="back">
-      点击返回重试
+    <div class="try" v-else-if="status===0">
+      <h4>页面错误</h4>
+      <div class="back" @click="back">返回首页</div>
     </div>
     <div class="text-tip" v-else-if="status===2">
-      <h3>嘉宾见面名额已约满</h3>
-      <p>嘉宾见面名额已满，您的问题我们会发给嘉宾，嘉宾回答后将在公众号中公布</p>
-      <p @click="back">点击返回</p>
+      <h3>约问已满</h3>
+      <p>真的很抱歉，由于时间原因，预约的现场问题回答名额已满，但是我们已经记住你的问题啦！我们会统一整理发给嘉宾，请关注造就微信公众号，一有回复我们会发出来哦！</p>
+      <div class="qrcode">
+        <img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-qrcode.jpg"/>
+      </div>
     </div>
     <div class="text-tip" v-else="status===3">
-      <h3>嘉宾提问名额已满</h3>
-      <p>很遗憾，这个嘉宾的见面会太火爆了，你晚了一步，没有约到。快去试约一下其他嘉宾吧~</p>
-      <p @click="back">点击返回</p>
+      <h3>问题名额已满</h3>
+      <p>很抱歉，这个嘉宾太火爆了，问题数量已爆满，你也可以向其他嘉宾提问哦！</p>
     </div>
   </article>
 </template>
@@ -54,12 +52,29 @@
       width: 100%;
       height: 100vh;
       text-align: center;
-      line-height: 100vh;
       color: rgb(166, 166, 166);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      h4 {
+        font-size: 21px;
+        line-height: 24px;
+        text-align: center;
+        color: rgb(166, 166, 166);
+      }
+
+      .back {
+        margin-top: 12px;
+        font-size: 14px;
+        line-height: 14px;
+        color: rgb(0, 211, 193);
+      }
     }
 
     .text-tip {
-      padding: 0 20px;
+      padding: 0 30px;
       text-align: center;
 
       h3 {
@@ -75,6 +90,23 @@
         font-size: 14px;
         line-height: 22px;
       }
+
+      .qrcode {
+        width: 40%;
+        margin: 60px auto 0 auto;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .back {
+        margin-top: 12px;
+        font-size: 14px;
+        line-height: 14px;
+        color: rgb(0, 211, 193);
+      }
+
     }
 
     .content {
@@ -107,12 +139,11 @@
         margin-top: 43px;
         display: flex;
         font-size: 0;
-        align-items: center;
+        align-items: flex-start;
 
         .avatar {
           height: $avatarSize;
           width: $avatarSize;
-          padding: 3px;
           border-radius: 32px;
           background-color: rgb(166, 166, 166);
           font-size: 0;
@@ -140,11 +171,19 @@
           border-radius: 4px;
           font-weight: 700;
           color: #fff;
-          background-color: #46ec50;
 
           span {
             color: rgb(0, 211, 193);
           }
+        }
+
+        .description-b{
+          background: url("https://og9s6vxbs.qnssl.com/reservation/text-b.png") no-repeat;
+          background-size: 100% 100%;
+        }
+        .description-s{
+          background: url("https://og9s6vxbs.qnssl.com/reservation/text-s.png") no-repeat;
+          background-size: 100% 100%;
         }
       }
 
@@ -168,7 +207,7 @@
   import {isInWechat} from "../../../shared/utils/utils";
   import {host} from "../../../env/environment";
   import {setShareInfo} from '../../../shared/utils/share';
-  import {bookGuestsMockData} from './reservation.api';
+  import {bookGuestsMockData, maxMeet} from './reservation.api';
   import {showTips} from "../../../store/tip";
 
   @Component({
@@ -181,7 +220,7 @@
     show = false;
     guest: any = {};
     bookId: number;
-    maxMeet = 5;//嘉宾见面名额
+    maxMeet = maxMeet;//嘉宾见面名额
     maxQuestion = 10;//问题名额
     status = -1;//0 错误，1在见面中，2不在见面中在提问中，3超出提问
 
@@ -195,7 +234,7 @@
         setShareInfo(
           '预约嘉宾',
           `和嘉宾面对面交流`,
-          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
+          'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png',
           `${host.self}/wv/reservation`
         );
       }

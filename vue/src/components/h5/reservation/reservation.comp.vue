@@ -3,7 +3,12 @@
     <transition name="slide-left">
       <div class="content" v-show="show">
         <div class="banner">
-          <img src="#"/>
+          <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/banner.jpg?t=1"/></div>
+          <div class="text">
+            <div class="text-content">
+              <p>留下一个你想向嘉宾提的问题，前{{maxMeet}}名有机会在Talk环节后获得嘉宾的现场解答哦！</p>
+            </div>
+          </div>
         </div>
         <div class="guest-list">
           <section class="guest-item" v-for="item in bookGuests">
@@ -95,33 +100,68 @@
     left: 0;
 
     .content {
-      padding: 0 20px;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
       background-color: #000;
       transition: all 1s cubic-bezier(0, 0, .2, 1);
 
       .banner {
         position: relative;
         font-size: 0;
-        padding-top: 85.33%;
-        background-color: #9a783a;
+        padding-top: 73.56%;
 
-        img {
+        .bg {
           position: absolute;
           width: 100%;
           height: 100%;
           left: 0;
           top: 0;
+
+          img {
+            width: 100%;
+          }
+        }
+
+        .text {
+          font-size: 0;
+          width: calc(100% - 40px);
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          padding-top: 24.03%;
+          background: url("https://og9s6vxbs.qnssl.com/reservation/text-t.png") no-repeat;
+          background-size: 100% 100%;
+
+          .text-content {
+            position: absolute;
+            bottom:5px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            p{
+              padding: 0 13px;
+              text-align: center;
+              font-weight: bold;
+              font-size: 14px;
+              line-height: 21px;
+              letter-spacing: 1.4px;
+              color: rgb(242, 242, 242);
+            }
+          }
         }
       }
 
       .guest-list {
         $avatarSize: 64px;
         $actionWidth: 69px;
+        padding: 0 20px;
         .guest-item {
           display: flex;
           align-items: center;
@@ -168,10 +208,11 @@
               width: 69px;
               height: 30px;
               text-align: center;
-              color: rgb(0, 211, 193);
-              border: 1px solid rgb(0, 211, 193);
+              color: #fff;
               border-radius: 15px;
               font-size: 12px;
+              background: url("https://og9s6vxbs.qnssl.com/reservation/btn-s.png") no-repeat;
+              background-size: 100% 100%;
             }
           }
         }
@@ -256,7 +297,7 @@
   import {host} from "../../../env/environment";
   import {setShareInfo} from '../../../shared/utils/share';
   import {initWechat} from '../../../shared/utils/wechat';
-  import {bookGuestsMockData, postQuestion} from './reservation.api';
+  import {bookGuestsMockData, maxMeet, postQuestion} from './reservation.api';
   import {form} from '../../../shared/form/index';
   import {showTips} from "../../../store/tip";
 
@@ -275,6 +316,7 @@
     isSubmitting = false;
     bookNo = -1;
     chooseName = '';
+    maxMeet = maxMeet;
 
     created() {
       this.share();
