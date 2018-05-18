@@ -179,6 +179,10 @@
 
     }
 
+    .form-group-new .input-group input:focus {
+      border-bottom: 1px solid #00d3c1;
+    }
+
     .aside {
       position: absolute;
       height: 100%;
