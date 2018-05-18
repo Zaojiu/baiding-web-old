@@ -56,12 +56,15 @@
                   <input
                     name="mobile"
                     v-model="mobile"
-                    v-validate="{rules: {required: true}}"
+                    v-validate="{rules: {required: true, regex: regexpMobile}}"
                     v-has-value
                     placeholder="手机号"
                   >
                 </div>
                 <p class="helper error" v-if="errors.first('mobile:required')">请填写手机号</p>
+                <p class="helper error" v-else-if="errors.first('mobile:regex')">
+                  手机号码格式错误</p>
+
               </div>
 
               <div class="form-group-new"
@@ -98,6 +101,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    overflow: hidden;
 
     .content {
       position: absolute;
@@ -106,6 +110,8 @@
       width: 100%;
       background-color: #000;
       transition: all 1s cubic-bezier(0, 0, .2, 1);
+      overflow: auto;
+      height: 100%;
 
       .banner {
         position: relative;
@@ -137,7 +143,7 @@
 
           .text-content {
             position: absolute;
-            bottom:5px;
+            bottom: 5px;
             left: 0;
             width: 100%;
             height: 100%;
@@ -145,7 +151,7 @@
             justify-content: center;
             align-items: center;
 
-            p{
+            p {
               padding: 0 13px;
               text-align: center;
               font-weight: bold;
@@ -161,7 +167,7 @@
       .guest-list {
         $avatarSize: 64px;
         $actionWidth: 69px;
-        padding: 0 20px;
+        padding: 0 20px 38px 20px;
         .guest-item {
           display: flex;
           align-items: center;
@@ -304,6 +310,7 @@
   import {bookGuestsMockData, maxMeet, postQuestion} from './reservation.api';
   import {form} from '../../../shared/form/index';
   import {showTips} from "../../../store/tip";
+  import {regexpMobile} from '../../../shared/utils/utils';
 
   @Component({
     directives: form,
@@ -321,6 +328,7 @@
     bookNo = -1;
     chooseName = '';
     maxMeet = maxMeet;
+    regexpMobile = regexpMobile;
 
     created() {
       this.share();

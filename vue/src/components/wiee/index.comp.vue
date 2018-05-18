@@ -189,6 +189,11 @@
             查看场馆信息
           </button>
         </div>
+        <div class="map-btn">
+          <button @click="goToNextPage('desc')">
+            参观解说
+          </button>
+        </div>
       </div>
 
       <div id="live" class="live" v-if="liveInfoListAll.length>0">

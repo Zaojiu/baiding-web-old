@@ -8,7 +8,7 @@
             <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
           </div>
           <div class="description description-b">
-            恭喜您，您是第<span>{{bookId}}</span>位约问问题的观众。请在今天下午整体talk环节结束后（预计时间下午6点）到演讲台左侧。<span>将这张图的截屏出示给对接工作人员</span>。我们将安排您亲自向嘉宾提出您的问题。
+            恭喜您，您是第<span>{{bookId}}</span>位约问问题的观众。请在今天下午整体talk环节结束后（预计时间下午{{meetTime}}）到演讲台左侧。<span>将这张图的截屏出示给对接工作人员</span>。我们将安排您亲自向嘉宾提出您的问题。
           </div>
         </div>
         <!--<div class="guest-tips">
@@ -95,7 +95,7 @@
           border-radius: 4px;
           font-size: 18px;
           line-height: 18px;
-          padding:11px 0;
+          padding: 11px 0;
           color: #fff;
           font-weight: 600;
         }
@@ -231,7 +231,7 @@
   import {isInWechat} from "../../../shared/utils/utils";
   import {host} from "../../../env/environment";
   import {setShareInfo} from '../../../shared/utils/share';
-  import {bookGuestsMockData, maxMeet} from './reservation.api';
+  import {bookGuestsMockData, maxMeet, maxQuestion, meetTime} from './reservation.api';
   import {showTips} from "../../../store/tip";
 
   @Component({
@@ -245,8 +245,9 @@
     guest: any = {};
     bookId: number;
     maxMeet = maxMeet;//嘉宾见面名额
-    maxQuestion = 10;//问题名额
+    maxQuestion = maxQuestion;//问题名额
     status = -1;//0 错误，1在见面中，2不在见面中在提问中，3超出提问
+    meetTime = meetTime;
 
     created() {
       this.share();
