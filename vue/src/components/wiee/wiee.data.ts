@@ -514,6 +514,236 @@ export const guests = [
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_b.jpg',
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_s.jpg'
   },
+  {
+    index: 24,
+    id: '',
+    name: 'Ilkka Niemelä',
+    enName: '',
+    desc: ['芬兰阿尔托大学校长'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Wolfgang Wagenhauser',
+    enName: '',
+    desc: ['德国特罗辛根国立音乐大学副校长', '同济大学艺术与传媒学院兼职教授'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '汤维维',
+    enName: '',
+    desc: ['造就创始人&CEO'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '冒志鸿',
+    enName: '',
+    desc: ['ArcBlock创始人兼CEO'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '王建硕',
+    enName: '',
+    desc: ['百姓网创始人兼CEO'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '张一甲',
+    enName: '',
+    desc: ['甲子光年创始人兼CEO'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '元道',
+    enName: '',
+    desc: ['中关村区块链产业联盟理事长'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '孟岩',
+    enName: '',
+    desc: ['柏链道捷创始人兼CEO'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '任鑫',
+    enName: '',
+    desc: ['要发车创始人、Token Economy Design社群发起人'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Ronan Doorley',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Marc Pons',
+    enName: '',
+    desc: ['安道尔科学实验室主任'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Michael Lin',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Jörg Noennig',
+    enName: '',
+    desc: ['堡城市科学实验室主任、汉堡港口大学教授'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Antti Tuomela',
+    enName: '',
+    desc: ['芬兰阿尔托大学地产公司首席执行官'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Arnaud Grignard',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '马可',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '张砚',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Ariel Noyman',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Markus ElKatsha',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室研究员'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: '苏运升',
+    enName: '',
+    desc: ['上海国际设计创新学院同济大学可持续未来设计研究中心执行主任'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Yasushi Sakai',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Luis Alonso',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
+  {
+    index: 24,
+    id: '',
+    name: 'Luis Alonso',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: '',
+    cover: ''
+  },
   /*{
     index: 24,
     id: '5aec151d6b3ff000012b3270',
