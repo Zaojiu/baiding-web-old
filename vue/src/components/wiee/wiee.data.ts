@@ -559,6 +559,24 @@ export const PlanList = [
     desc: ['未来趋势峰会'],
     content: [
       {
+        start: '09:15',
+        end: '11:10',
+        title: [
+          '2018世界创新创业博览会开幕式',
+        ],
+        desc: '',
+        status: 1
+      },
+      {
+        start: '11:30',
+        end: '13:00',
+        title: [
+          'VIP嘉宾参观展区'
+        ],
+        desc: '',
+        status: 1
+      },
+      {
         start: '13:00',
         end: '13:45',
         title: [
@@ -578,16 +596,16 @@ export const PlanList = [
       },
       {
         start: '14:00',
-        end: '14:25',
+        end: '14:20',
         title: [
-          '主题演讲1：Chris Anderson',
+          '主题演讲1：Don Norman',
         ],
-        desc: '3DR 首席执行官，《连线》杂质前主编，《长尾》作者',
+        desc: '设计思想家，《设计心理学》作者，苹果公司前副总裁，加利福尼亚大学圣地亚哥分校设计实验室主任',
         status: 1
       },
       {
-        start: '14:25',
-        end: '14:50',
+        start: '14:20',
+        end: '14:40',
         title: [
           '主题演讲2：Jochen Goller',
         ],
@@ -596,21 +614,30 @@ export const PlanList = [
       },
 
       {
-        start: '14:50',
-        end: '15:15',
+        start: '14:40',
+        end: '15:00',
         title: [
-          '主题演讲3：张洋洋'
+          '主题演讲3：孔那'
         ],
-        desc: '光启科学有限公司行政总裁',
+        desc: '深圳安吉尔饮水产业集团有限公司总裁',
         status: 1
       },
       {
-        start: '15:15',
+        start: '15:00',
+        end: '15:20',
+        title: [
+          '主题演讲4：Tuula Antola'
+        ],
+        desc: '芬兰Espoo市副市长',
+        status: 1
+      },
+      {
+        start: '15:20',
         end: '15:40',
         title: [
-          '主题演讲4：刘松'
+          '主题演讲5：张洋洋'
         ],
-        desc: '阿里巴巴集团副总裁',
+        desc: '光启科学有限公司行政总裁',
         status: 1
       },
       {
@@ -624,25 +651,25 @@ export const PlanList = [
       },
       {
         start: '16:00',
-        end: '16:25',
+        end: '16:20',
         title: [
-          '主题演讲5：Don Norman'
+          '主题演讲6：Chris Anderson'
         ],
-        desc: '设计思想家，《设计心理学》作者，苹果公司前副总裁，加利福尼亚大学圣地亚哥分校设计实验室主任',
+        desc: '3DR 首席执行官，《连线》杂质前主编，《长尾》《免费》《创客》作者',
         status: 1
       },
       {
-        start: '16:25',
-        end: '16:50',
+        start: '16:20',
+        end: '16:40',
         title: [
-          '主题演讲6：Tuula Antola'
+          '主题演讲7：刘松'
         ],
-        desc: '芬兰Espoo市副市长',
+        desc: '阿里巴巴集团副总裁',
         status: 1
       },
       {
-        start: '16:50',
-        end: '17:30',
+        start: '16:40',
+        end: '17:20',
         title: [
           '圆桌对谈'
         ],
@@ -657,12 +684,15 @@ export const PlanList = [
         'Cumulus国际艺术、设计与媒体院校联盟 主席;\n' +
         '\n' +
         'Tuula Teeri:\n' +
-        '瑞典皇家工程院院长。',
+        '瑞典皇家工程院院长;\n' +
+        '\n' +
+        'Wolfgang Wagenhauser:\n' +
+        '德国特罗辛根国立音乐大学副校长, 同济大学艺术与传媒学院兼职教授。',
         status: 1
       },
       {
-        start: '17:30',
-        end: '17:40',
+        start: '17:20',
+        end: '17:30',
         title: [
           '大会总结：骆新'
         ],
@@ -675,6 +705,15 @@ export const PlanList = [
     title: '5.20',
     desc: ['同济·MIT 城市科学峰会 2018'],
     content: [
+      {
+        start: '12:30',
+        end: '13:30',
+        title: [
+          '观众入场，贵宾茶歇'
+        ],
+        desc: '',
+        status: 1
+      },
       {
         start: '13:30',
         end: '13:40',
@@ -710,7 +749,7 @@ export const PlanList = [
         title: [
           '主题介绍:Kent Larson'
         ],
-        desc: '',
+        desc: '麻省理工学院媒体实验室首席科学家',
         status: 1
       },
       {
@@ -775,7 +814,7 @@ export const PlanList = [
         end: '17:30',
         title: [
           '主题版块5：部署',
-          '演讲16：Hossein Rahnama；Flybits创始人、CEO，入选MIT 35 under 35科技精英',
+          '演讲16：苏运升；上海国际设计创新学院同济大学可持续未来设计研究中心执行主任',
           '演讲17：Yasushi Sakai；麻省理工学院媒体实验室博士研究员',
           '演讲18：Luis Alonso；麻省理工学院媒体实验室科学家'
         ],
@@ -860,14 +899,14 @@ export const PlanList = [
         start: '11:20',
         end: '11:40',
         title: [
-          '主题演讲4：焦小军'
+          '主题演讲4'
         ],
-        desc: '中国保险资产管理协会特约权益专家，百年保险资产管理公司权益投资部总经理，同济校友',
+        desc: '',
         status: 1
       },
       {
         start: '13:00',
-        end: '13:45',
+        end: '13:40',
         title: [
           '签到'
         ],
@@ -875,7 +914,7 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '13:45',
+        start: '13:40',
         end: '14:00',
         title: [
           '开场演出',
@@ -885,7 +924,7 @@ export const PlanList = [
       },
       {
         start: '14:00',
-        end: '14:25',
+        end: '14:20',
         title: [
           '主题演讲1：Peter Vesterbacka'
         ],
@@ -893,26 +932,26 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '14:25',
-        end: '14:50',
+        start: '14:20',
+        end: '14:40',
         title: [
-          '主题演讲2：汤维维'
+          '主题演讲2：Rololphe el-Khoury'
+        ],
+        desc: '迈阿密大学建筑学院院长',
+        status: 1
+      },
+      {
+        start: '14:40',
+        end: '15:00',
+        title: [
+          '主题演讲3：汤维维'
         ],
         desc: '造就创始人及CEO',
         status: 1
       },
       {
-        start: '14:50',
-        end: '15:15',
-        title: [
-          '主题演讲3：忻榕'
-        ],
-        desc: '中欧国际工商学院管理学教授、副教务长 (欧洲事务)、中国企业全球化中心联合主任',
-        status: 1
-      },
-      {
-        start: '15:15',
-        end: '15:40',
+        start: '15:00',
+        end: '15:20',
         title: [
           '主题演讲4：王敏'
         ],
@@ -920,8 +959,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '15:40',
-        end: '16:05',
+        start: '15:20',
+        end: '15:40',
         title: [
           '主题演讲5：范凌'
         ],
@@ -929,8 +968,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '16:05',
-        end: '16:25',
+        start: '15:40',
+        end: '16:00',
         title: [
           '中场休息'
         ],
@@ -938,8 +977,8 @@ export const PlanList = [
         status: 0
       },
       {
-        start: '16:25',
-        end: '6:40',
+        start: '16:00',
+        end: '16:20',
         title: [
           '主题演讲6：娄永琪'
         ],
@@ -947,8 +986,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '16:40',
-        end: '17:05',
+        start: '16:20',
+        end: '16:40',
         title: [
           '主题演讲7：赵均宁'
         ],
@@ -956,8 +995,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '17:05',
-        end: '17:30',
+        start: '16:40',
+        end: '17:00',
         title: [
           '主题演讲8：Ali Vahabzadeh'
         ],
@@ -965,8 +1004,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '17:30',
-        end: '17:55',
+        start: '17:00',
+        end: '17:20',
         title: [
           '大主题演讲9：王欣'
         ],
@@ -974,8 +1013,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '17:55',
-        end: '18:20',
+        start: '17:20',
+        end: '17:40',
         title: [
           '主题演讲10：骆新'
         ],
@@ -983,8 +1022,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '18:20',
-        end: '18:30',
+        start: '17:40',
+        end: '18:00',
         title: [
           '大会总结：周斌'
         ],
@@ -995,7 +1034,7 @@ export const PlanList = [
   },
   {
     title: '5.22',
-    desc: ['城市艺术论坛'],
+    desc: ['城市与艺术论坛'],
     content: [
       {
         start: '13:00',
@@ -1017,7 +1056,7 @@ export const PlanList = [
       },
       {
         start: '14:00',
-        end: '14:25',
+        end: '14:20',
         title: [
           '主题演讲1：Ole Bouman'
         ],
@@ -1025,8 +1064,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '14:25',
-        end: '14:50',
+        start: '14:20',
+        end: '14:40',
         title: [
           '主题演讲2：刘克成'
         ],
@@ -1034,8 +1073,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '14:50',
-        end: '15:15',
+        start: '14:40',
+        end: '15:00',
         title: [
           '主题演讲3：Tiziano Cattaneo'
         ],
@@ -1043,8 +1082,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '15:15',
-        end: '15:40',
+        start: '15:00',
+        end: '15:20',
         title: [
           '主题演讲4：张周捷'
         ],
@@ -1052,8 +1091,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '15:40',
-        end: '16:05',
+        start: '15:20',
+        end: '15:40',
         title: [
           '休息'
         ],
@@ -1061,8 +1100,8 @@ export const PlanList = [
         status: 0
       },
       {
-        start: '16:05',
-        end: '6:30',
+        start: '15:40',
+        end: '16:00',
         title: [
           '主题演讲5：Ami Vitale'
         ],
@@ -1070,8 +1109,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '16:30',
-        end: '16:55',
+        start: '16:00',
+        end: '16:20',
         title: [
           '主题演讲6：朱晔'
         ],
@@ -1079,8 +1118,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '16:55',
-        end: '17:20',
+        start: '16:20',
+        end: '16:40',
         title: [
           '主题演讲7：Piotr Loj'
         ],
@@ -1088,8 +1127,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '17:20',
-        end: '17:45',
+        start: '16:40',
+        end: '17:00',
         title: [
           '主题演讲8：刘毅'
         ],
@@ -1097,8 +1136,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '17:45',
-        end: '18:10',
+        start: '17:00',
+        end: '17:20',
         title: [
           '主题演讲9：ANDREA BERGONZINI'
         ],
@@ -1106,8 +1145,8 @@ export const PlanList = [
         status: 1
       },
       {
-        start: '18:10',
-        end: '18:35',
+        start: '17:20',
+        end: '17:40',
         title: [
           '主题演讲10：kyle Lawrence Mertensmeyer'
         ],
@@ -1161,16 +1200,16 @@ export const enPlanList = [
       },
       {
         start: '14:00',
-        end: '14:25',
+        end: '14:20',
         title: [
-          'Keynote Speech 1：Chris Anderson'
+          'Keynote Speech1：Don Norman'
         ],
-        desc: 'CEO of 3DR, Former Editor-in-chief of WIRED Magazine, Author of “The Long Tail”',
+        desc: 'Design thinker, Director of Design Laboratory, University of California, San Diego',
         status: 1
       },
       {
-        start: '14:25',
-        end: '14:50',
+        start: '14:20',
+        end: '14:40',
         title: [
           'Keynote Speech 2：Jochen Goller'
         ],
@@ -1178,21 +1217,30 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '14:50',
-        end: '15:15',
+        start: '14:40',
+        end: '15:00',
         title: [
-          'Keynote Speech 3：Zhang Yangyang'
+          'Keynote Speech 3：Kong Na'
         ],
-        desc: 'Executive President of Kuangchi Science',
+        desc: 'President of Shenzhen Angel Group',
         status: 1
       },
       {
-        start: '15:15',
+        start: '15:00',
+        end: '15:20',
+        title: [
+          'Keynote Speech4：Tuula Antola'
+        ],
+        desc: 'Deputy Mayor of Espoo, Finland',
+        status: 1
+      },
+      {
+        start: '15:20',
         end: '15:40',
         title: [
-          'Keynote Speech4：Liu Song'
+          'Keynote Speech5：Zhang Yangyang'
         ],
-        desc: 'Vice-President of Alibaba Group',
+        desc: 'Executive President of Kuangchi Science',
         status: 1
       },
       {
@@ -1206,25 +1254,25 @@ export const enPlanList = [
       },
       {
         start: '16:00',
-        end: '16:25',
+        end: '16:20',
         title: [
-          'Keynote Speech 5：Don Norman'
+          'Keynote Speech 6：Chris Anderson'
         ],
-        desc: 'Design thinker, Director of Design Laboratory, University of California, San Diego',
+        desc: 'CEO of 3DR, Former Editor-in-chief of WIRED Magazine, Author of “The Long Tail”',
         status: 1
       },
       {
-        start: '16:25',
-        end: '16:50',
+        start: '16:20',
+        end: '16:40',
         title: [
-          'Keynote Speech 6：Tuula Antola'
+          'Keynote Speech 7：Liu Song'
         ],
-        desc: 'Deputy Mayor of Espoo, Finland',
+        desc: 'Vice-President of Alibaba Group',
         status: 1
       },
       {
-        start: '16:50',
-        end: '17:30',
+        start: '16:40',
+        end: '17:20',
         title: [
           'Roundtable'
         ],
@@ -1239,12 +1287,15 @@ export const enPlanList = [
         '        President of Cumulus International Association of Universities and Colleges of Art, Design and Media\n' +
         '\n' +
         '        Tuula Teeri-\n' +
-        '        President of the Royal Swedish Academy of Engineering',
+        '        President of the Royal Swedish Academy of Engineering;\n' +
+        '\n' +
+        '        Wolfgang Wagenhauser-\n' +
+        '        Vice-President of Staatliche Hochschule für Musik Trossingen, Professor of School of Design and Innovation, Tongji University',
         status: 1
       },
       {
-        start: '17:30',
-        end: '17:40',
+        start: '17:20',
+        end: '17:30',
         title: [
           'Concluding Remarks: Luo Xin'
         ],
@@ -1255,8 +1306,17 @@ export const enPlanList = [
   },
   {
     title: '5.20',
-    desc: ['Tongji & MIT City Science Summit'],
+    desc: ['Tongji & MIT City Science Summit 2018'],
     content: [
+      {
+        start: '12:30',
+        end: '13:30',
+        title: [
+          'Sign-in, Teabreak for VIPs'
+        ],
+        desc: '',
+        status: 1
+      },
       {
         start: '13:30',
         end: '13:40',
@@ -1290,7 +1350,7 @@ export const enPlanList = [
         start: '14:35',
         end: '14:45',
         title: [
-          'Theme Introduction'
+          'Theme Introduction:Kent Larson'
         ],
         desc: 'Director of City Science Laboratory, MIT Media Lab',
         status: 1
@@ -1357,7 +1417,7 @@ export const enPlanList = [
         end: '17:30',
         title: [
           'Topic 5：Deployment',
-          'Speech 16：Hossein Rahnama',
+          'Speech 16：Su Yunsheng',
           'Speech 17：Yasushi Sakai',
           'Speech 18：Luis Alonso'
         ],
@@ -1368,7 +1428,7 @@ export const enPlanList = [
         start: '17:30',
         end: '17:40',
         title: [
-          'Concluding Remarks'
+          'Conclusion'
         ],
         desc: '',
         status: 1
@@ -1442,16 +1502,17 @@ export const enPlanList = [
         start: '11:20',
         end: '11:40',
         title: [
-          'Keynote Speech 4：Jiao Xiaojun'
+          'Roundtable'
         ],
-        desc: 'Special Expert of Insurance Asset Management Association of China, Equity Investment GM of AEON Insurance Asset Management, Tongji University Alumnus',
+        desc: 'Hosting: Tang Weiwei, Founder & CEO of Zaojiu\n' +
+        'Guests: Guo Yuhang, Dai Jingjiao, Li Ting',
         status: 1
       },
 
 
       {
         start: '13:00',
-        end: '13:45',
+        end: '13:40',
         title: [
           'Sign-in'
         ],
@@ -1459,7 +1520,7 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '13:45',
+        start: '13:40',
         end: '14:00',
         title: [
           'Opening Performance',
@@ -1469,7 +1530,7 @@ export const enPlanList = [
       },
       {
         start: '14:00',
-        end: '14:25',
+        end: '14:20',
         title: [
           'Keynote Speech 1：Peter Vesterbacka'
         ],
@@ -1477,26 +1538,26 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '14:25',
-        end: '14:50',
+        start: '14:20',
+        end: '14:40',
         title: [
-          'Keynote Speech 2：Tang Weiwei'
+          'Keynote Speech 2：Rololphe el-Khoury'
         ],
-        desc: 'Founder and CEO of Zaojiu',
+        desc: 'Dean of School of Architecture, University of Miami',
         status: 1
       },
       {
-        start: '14:50',
-        end: '15:15',
+        start: '14:40',
+        end: '15:00',
         title: [
-          'Keynote Speech 3：Xin Rong'
+          'Keynote Speech 3：Tang Weiwei'
         ],
-        desc: 'Professor of Management, Deputy Registrar of European Affairs of China Europe International Business School, co-director of China Enterprise Globalization Centre',
+        desc: 'Founder & CEO of Zaojiu',
         status: 1
       },
       {
-        start: '15:15',
-        end: '15:40',
+        start: '15:00',
+        end: '15:20',
         title: [
           'Keynote Speech 4：Wang Min'
         ],
@@ -1504,8 +1565,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '15:40',
-        end: '16:05',
+        start: '15:20',
+        end: '15:40',
         title: [
           'Keynote Speech 5：Fan Ling'
         ],
@@ -1513,8 +1574,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '16:05',
-        end: '16:25',
+        start: '15:40',
+        end: '16:00',
         title: [
           'Break'
         ],
@@ -1522,8 +1583,8 @@ export const enPlanList = [
         status: 0
       },
       {
-        start: '16:25',
-        end: '6:40',
+        start: '16:00',
+        end: '16:20',
         title: [
           'Keynote Speech 6：Lou Yongqi'
         ],
@@ -1531,8 +1592,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '16:40',
-        end: '17:05',
+        start: '16:20',
+        end: '16:40',
         title: [
           'Keynote Speech 7：Zhao Junning'
         ],
@@ -1540,8 +1601,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '17:05',
-        end: '17:30',
+        start: '16:40',
+        end: '17:00',
         title: [
           'Keynote Speech 8：Ali Vahabzadeh'
         ],
@@ -1549,8 +1610,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '17:30',
-        end: '17:55',
+        start: '17:00',
+        end: '17:20',
         title: [
           'Keynote Speech 9：Wang Xin'
         ],
@@ -1558,8 +1619,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '17:55',
-        end: '18:20',
+        start: '17:20',
+        end: '17:40',
         title: [
           'Keynote Speech 10：Luo Xin'
         ],
@@ -1567,8 +1628,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '18:20',
-        end: '18:30',
+        start: '17:40',
+        end: '18:00',
         title: [
           'Concluding Remarks：Zhou Bin'
         ],
@@ -1601,7 +1662,7 @@ export const enPlanList = [
       },
       {
         start: '14:00',
-        end: '14:25',
+        end: '14:20',
         title: [
           'Keynote Speech 1：Ole Bouman'
         ],
@@ -1609,8 +1670,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '14:25',
-        end: '14:50',
+        start: '14:20',
+        end: '14:40',
         title: [
           'Keynote Speech 2：Liu Kecheng'
         ],
@@ -1618,8 +1679,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '14:50',
-        end: '15:15',
+        start: '14:40',
+        end: '15:00',
         title: [
           'Keynote Speech 3：Tiziano Cattaneo'
         ],
@@ -1627,8 +1688,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '15:15',
-        end: '15:40',
+        start: '15:00',
+        end: '15:20',
         title: [
           'Keynote Speech 4：Zhang Zhoujie'
         ],
@@ -1636,8 +1697,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '15:40',
-        end: '16:05',
+        start: '15:20',
+        end: '15:40',
         title: [
           'Break'
         ],
@@ -1645,8 +1706,8 @@ export const enPlanList = [
         status: 0
       },
       {
-        start: '16:05',
-        end: '6:30',
+        start: '15:40',
+        end: '16:00',
         title: [
           'Keynote Speech 5：Ami Vitale'
         ],
@@ -1654,8 +1715,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '16:30',
-        end: '16:55',
+        start: '16:00',
+        end: '16:20',
         title: [
           'Keynote Speech 6：Zhue Ye'
         ],
@@ -1663,8 +1724,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '16:55',
-        end: '17:20',
+        start: '16:20',
+        end: '16:40',
         title: [
           'Keynote Speech 7：Piotr Loj'
         ],
@@ -1672,8 +1733,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '17:20',
-        end: '17:45',
+        start: '16:60',
+        end: '17:00',
         title: [
           'Keynote Speech 8：Liu Yi'
         ],
@@ -1681,8 +1742,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '17:45',
-        end: '18:10',
+        start: '17:00',
+        end: '17:20',
         title: [
           'Keynote Speech 9：ANDREA BERGONZINI'
         ],
@@ -1690,8 +1751,8 @@ export const enPlanList = [
         status: 1
       },
       {
-        start: '18:10',
-        end: '18:35',
+        start: '17:20',
+        end: '17:40',
         title: [
           'Keynote Speech 10：Kyle Lawrence Mertensmeyer'
         ],
@@ -1701,4 +1762,3 @@ export const enPlanList = [
     ]
   }
 ];
-
