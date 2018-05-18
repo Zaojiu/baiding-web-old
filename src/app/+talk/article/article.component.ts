@@ -72,7 +72,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.markOnline();
-    this.isNewApp = UtilsService.isNewAppVersion('2.1.4');
+    // iOS 版本2.1.4以上，android 版本1.0.3以上去掉播放模块
+    this.isNewApp = UtilsService.isNewAppVersion('2.1.4', '1.0.3');
     this.id = this.route.snapshot.params['id'];
     this.talkInfo = this.route.snapshot.data['talkInfo'];
     if (!this.talkInfo) return;
