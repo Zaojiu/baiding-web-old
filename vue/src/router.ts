@@ -726,6 +726,10 @@ export const router = new Router({
             },
           ]
         },
+        {
+          path: 'desc',
+          component: () => System.import('./components/wiee/desc/main.comp.vue'),
+        }
       ]
     },
     {
