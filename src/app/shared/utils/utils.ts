@@ -1,4 +1,5 @@
 import {LiveInfoModel} from '../../shared/api/live/live.model';
+
 interface Window {
   navigator: any;
 }
@@ -37,12 +38,22 @@ export class UtilsService {
   static isWindowsWechat = /WindowsWechat/i.test(navigator.userAgent);
   static hasMouseEvent = ('onmousedown' in document);
 
-  static isNewAppVersion(oldVersion: string): boolean {
+  static isNewAppVersion(iOsOldVersion: string, androidOldVersion: string): boolean {
+    if (!this.isInApp) {
+      return false;
+    }
     let userAgent = navigator.userAgent;
+    let evnOldVersion = '';
+    if (this.isAndroid) {
+      evnOldVersion = androidOldVersion;
+    }
+    if (this.isiOS) {
+      evnOldVersion = iOsOldVersion;
+    }
     let matched = userAgent.match(/ZaoJiu\/([0-9.]+)/);
     if (matched && matched.length > 1) {
       let version = matched[1];
-      let oldVersionNum = oldVersion.split('.');
+      let oldVersionNum = evnOldVersion.split('.');
       let currentVersionNum = version.split('.');
       for (let i = 0; i < currentVersionNum.length; i++) {
         if (currentVersionNum[i] === oldVersionNum[i]) {
