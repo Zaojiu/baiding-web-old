@@ -1,247 +1,3 @@
-/*export const guests = [
-  {
-    index: 0,
-    name: 'Chris Anderson',
-    desc: ['3DR 首席执行官，《连线》杂质前主编，《长尾》、《免费》、《创客》作者'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_s.jpg'
-  },
-  {
-    index: 8,
-    id: '5aed1e96d0f69a1b84796369',
-    name: '孔那',
-    enName: 'Kong Na',
-    desc: ['深圳安吉尔饮水产业集团有限公司总裁'],
-    enDesc: ['President of Shenzhen Angel Group'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestskongna_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestskongna_s.jpg'
-  },
-  {
-    index: 1,
-    name: 'Don Norman',
-    desc: ['设计思想家，加利福尼亚大学圣地亚哥分校设计实验室主任，《设计心理学》作者，同济大学名誉教授'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsDon-Norman_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsDon-Norman_s.jpg'
-  },
-  {
-    index: 2,
-    name: 'Tuula Teeri',
-    desc: ['瑞典皇家工程院院长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Teeri_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Teeri_s.jpg'
-  },
-  {
-    index: 3,
-    name: 'Jochen Goller',
-    desc: ['宝马集团大中华区总裁兼首席执行官'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsJochen-Goller_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsJochen-Goller_s.jpg'
-  },
-  {
-    index: 4,
-    name: 'Tuula Antola',
-    desc: ['芬兰Espoo市副市长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Antola_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Antola_s.jpg'
-  },
-  {
-    index: 5,
-    name: '张洋洋',
-    desc: ['光启科学有限公司行政总裁'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestszhangyangyang_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestszhangyangyang_s.jpg'
-  },
-  {
-    index: 6,
-    name: '刘松',
-    desc: ['阿里巴巴集团副总裁'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsliusong_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsliusong_s.jpg'
-  },
-  {
-    index: 7,
-    name: 'Luisa Collina',
-    desc: ['米兰理工大学副校长、设计学院院长', 'Cumulus国际艺术、设计与媒体院校联盟 主席'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsLuisa-Collina_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsLuisa-Collina_s.jpg'
-  },
-  {
-    index: 8,
-    name: '孔那',
-    desc: ['深圳安吉尔饮水产业集团有限公司总裁'],
-    url: '',
-    cover: ''
-  },
-  {
-    index: 9,
-    name: '骆新',
-    desc: ['特邀主持、上海东方卫视创意总监、记者、新闻评论员'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsluoxin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsluoxin_s.jpg'
-  },
-  {
-    index: 10,
-    name: '吴志强',
-    desc: ['中国工程院 院士、同济大学副校长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestswuzhiqiang_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswuzhiqiang_s.jpg'
-  },
-  {
-    index: 11,
-    name: '李斌',
-    desc: ['蔚来创始人、董事长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestslibin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslibin_s.jpg'
-  },
-  {
-    index: 12,
-    name: 'Antti Ahlava',
-    desc: ['芬兰阿尔托大学 副校长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsAntti-Ahlava_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsAntti-Ahlava_s.jpg'
-  },
-  {
-    index: 13,
-    name: 'Kent Larson',
-    desc: ['麻省理工学院媒体实验室城市科学实验室主任'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsKent-Larson_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKent-Larson_s.jpg'
-  },
-  {
-    index: 14,
-    name: '李宁宁',
-    desc: ['小米科技小米生态链工业设计高级总监'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsliningning_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsliningning_s.jpg'
-  },
-  {
-    index: 15,
-    name: '娄永琪',
-    desc: ['同济大学设计创意学院 院长 教授'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestslouyongqi_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslouyongqi_s.jpg'
-  },
-  {
-    index: 16,
-    name: '孙效华',
-    desc: ['同济大学设计创意学院 副院长 教授'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestssunxiaohua_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestssunxiaohua_s.jpg'
-  },
-  {
-    index: 17,
-    name: 'Jarmo Souminem',
-    desc: ['阿尔托大学/同济大学设计创意学院 教授'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsJarmo-Souminem_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsJarmo-Souminem_s.jpg'
-  },
-  {
-    index: 18,
-    name: '曹楠 ',
-    desc: ['同济大学大数据可视化实验室 主任 教授'],
-    url: '',
-    cover: ''
-  },
-  {
-    index: 19,
-    name: 'Peter Vesterbacka',
-    desc: ['愤怒的小鸟联合创始人，SLUSH联合创始人'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsPeter-Vesterbacka_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsPeter-Vesterbacka_s.jpg'
-  },
-  {
-    index: 20,
-    name: 'Srini Srinivasan',
-    desc: ['世界设计组织（WDO）当选主席'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsSrini-Srinivasan_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsSrini-Srinivasan_s.jpg'
-  },
-  {
-    index: 21,
-    name: '忻榕',
-    desc: ['中欧国际工商学院管理学教授、副教务长 (欧洲事务)、中国企业全球化中心联合主任'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsqirong_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsqirong_s.jpg'
-  },
-  {
-    index: 22,
-    name: '赵均宁',
-    desc: ['万科国际学校 校长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestszhaojunning_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestszhaojunning_s.jpg'
-  },
-  {
-    index: 23,
-    name: '王欣',
-    desc: ['馒头商学院创始人'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestswangxin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswnagixin_s.jpg'
-  },
-  {
-    index: 24,
-    name: '陆坚',
-    desc: ['LinkedIn中国区总裁'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestslujian_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslujian_s.jpg'
-  },
-  {
-    index: 25,
-    name: '王敏',
-    desc: ['长江学者、原中央美术学院设计学院院长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestswangmin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswangmin_s.jpg'
-  },
-  {
-    index: 26,
-    name: '娄永琪',
-    desc: ['同济大学设计创意学院 院长 教授'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestslouyongqi_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslouyongqi_s.jpg'
-  },
-  {
-    index: 27,
-    name: '朱哲琴',
-    desc: ['歌手，跨界声音艺术家，独立制作人，【看见造物】创始人，同济-朱哲琴声音实验室发起人\n'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestszhuzheqin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestszhuzheqin_s.jpg'
-  },
-  {
-    index: 28,
-    name: 'Ami Vitale',
-    desc: ['国家地理杂志摄影师'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsAmi-Vitale_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsAmi-Vitale_s.jpg'
-  },
-  {
-    index: 29,
-    name: '蒋琼耳',
-    desc: ['「上下」首席执行官 & 艺术总监'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsjiangqionger_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsjiangqionger_s.jpg'
-  },
-  {
-    index: 30,
-    name: 'Piotr Loj',
-    desc: ['Virtual VR Dream首席执行官'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsPiotr-Loj_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsPiotr-Loj_s.jpg'
-  },
-  {
-    index: 31,
-    name: 'Kyle Lawrence Mertensmeyer',
-    desc: ['上海高德芬创始合伙人、首席设计师'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_s.jpg'
-  },
-  {
-    index: 32,
-    name: '奥雷·伯曼 Ole Bouman',
-    desc: ['设计互联 馆长'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_s.jpg'
-  }
-];*/
-
 export const guests = [
   {
     index: 0,
@@ -356,16 +112,6 @@ export const guests = [
   },
   {
     index: 11,
-    id: '5aec12c46b3ff000012b326f',
-    name: 'Antti Ahlava',
-    enName: 'Antti Ahlava',
-    desc: ['芬兰阿尔托大学 副校长'],
-    enDesc: ['Founder and Chairman of NIO Auto'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsAntti-Ahlava_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsAntti-Ahlava_s.jpg'
-  },
-  {
-    index: 12,
     id: '5aec13bbce87e80001a56bf8',
     name: 'Kent Larson',
     enName: 'Kent Larson',
@@ -375,7 +121,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKent-Larson_s.jpg'
   },
   {
-    index: 13,
+    index: 12,
     id: '5aec13bbce87e80001a56bf9',
     name: '李宁宁',
     enName: 'Li Ningning',
@@ -385,7 +131,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsliningning_s.jpg'
   },
   {
-    index: 14,
+    index: 13,
     id: '5a27521894cd830001c2a2f4',
     name: '娄永琪',
     enName: 'Lou Yongqi',
@@ -395,7 +141,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslouyongqi_s.jpg'
   },
   {
-    index: 15,
+    index: 14,
     id: '5aec13bbce87e80001a56bfa',
     name: '孙效华',
     enName: 'Sun Xiaohua',
@@ -405,7 +151,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestssunxiaohua_s.jpg'
   },
   {
-    index: 16,
+    index: 15,
     id: '5aec13bbce87e80001a56bfb',
     name: 'Jarmo Souminem',
     enName: 'Jarmo Souminem',
@@ -415,7 +161,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsJarmo-Souminem_s.jpg'
   },
   {
-    index: 17,
+    index: 16,
     id: '5aec3235ce87e80001a56c08',
     name: '曹楠',
     enName: 'Cao Nan',
@@ -425,7 +171,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestscannan_s.jpg'
   },
   {
-    index: 18,
+    index: 17,
     id: '5aec14e7ce87e80001a56bfc',
     name: 'Peter Vesterbacka',
     enName: 'Peter Vesterbacka',
@@ -435,7 +181,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsPeter-Vesterbacka_s.jpg'
   },
   {
-    index: 19,
+    index: 18,
     id: '5aec14e7ce87e80001a56bfd',
     name: 'Srini Srinivasan',
     enName: 'Srini Srinivasan',
@@ -445,17 +191,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsSrini-Srinivasan_s.jpg'
   },
   {
-    index: 20,
-    id: '5aec14e7ce87e80001a56bfe',
-    name: '忻榕',
-    enName: 'Xin Rong',
-    desc: ['中欧国际工商学院管理学教授、副教务长 (欧洲事务)、中国企业全球化中心联合主任'],
-    enDesc: ['Professor of Management, Deputy Registrar of European Affairs of China Europe International Business School, co-director of China Enterprise Globalization Centre'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsqirong_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsqirong_s.jpg'
-  },
-  {
-    index: 21,
+    index: 19,
     id: '5aec14e7ce87e80001a56bff',
     name: '赵均宁',
     enName: 'Zhao Junning',
@@ -465,7 +201,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestszhaojunning_s.jpg'
   },
   {
-    index: 22,
+    index: 20,
     id: '5aec14e7ce87e80001a56c00',
     name: '王欣',
     enName: 'Wang Xin',
@@ -475,7 +211,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswnagixin_s.jpg'
   },
   {
-    index: 23,
+    index: 21,
     id: '5aec1613ce87e80001a56c02',
     name: '王敏',
     enName: 'Wang Min',
@@ -485,7 +221,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswangmin_s.jpg'
   },
   {
-    index: 24,
+    index: 22,
     id: '5aec173fce87e80001a56c04',
     name: 'Ami Vitale',
     enName: 'Ami Vitale',
@@ -495,7 +231,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsAmi-Vitale_s.jpg'
   },
   {
-    index: 25,
+    index: 23,
     id: '5aec173fce87e80001a56c05',
     name: 'Piotr Loj',
     enName: 'Piotr Loj',
@@ -505,7 +241,7 @@ export const guests = [
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsPiotr-Loj_s.jpg'
   },
   {
-    index: 26,
+    index: 24,
     id: '5aec17756b3ff000012b3272',
     name: 'Kyle Lawrence Mertensmeyer',
     enName: 'Kyle Lawrence Mertensmeyer',
@@ -514,43 +250,245 @@ export const guests = [
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_b.jpg',
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_s.jpg'
   },
-  /*{
-    index: 24,
-    id: '5aec151d6b3ff000012b3270',
-    name: '陆坚',
-    enName: '',
-    desc: ['LinkedIn中国区总裁'],
-    enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestslujian_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslujian_s.jpg'
-  },*/
-  /*{
-    index: 27,
-    id: '59881bdd5a0cd800014a0e36',
-    name: '朱哲琴',
-    desc: ['歌手，跨界声音艺术家，独立制作人，【看见造物】创始人，同济-朱哲琴声音实验室发起人'],
-    enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestszhuzheqin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestszhuzheqin_s.jpg'
-  },*/
-  /*{
-    index: 29,
-    id: '58b8d8734b5b3479f27ea0b3',
-    name: '蒋琼耳',
-    desc: ['「上下」首席执行官 & 艺术总监'],
-    enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsjiangqionger_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsjiangqionger_s.jpg'
-  },*/
-  /*{
-    index: 32,
+  {
+    index: 25,
     id: '5aec186bce87e80001a56c06',
     name: '奥雷·伯曼 Ole Bouman',
     desc: ['设计互联 馆长'],
     enDesc: [''],
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_b.jpg',
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_s.jpg'
-  }*/
+  },
+  {
+    index: 26,
+    id: '5af565791824d200019725ec',
+    name: 'Ilkka Niemelä',
+    enName: '',
+    desc: ['芬兰阿尔托大学校长'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ilkka_Niemelä_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ilkka_Niemelä_s.jpg'
+  },
+  {
+    index: 27,
+    id: '58b8d8724b5b3479f27ea094',
+    name: '汤维维',
+    enName: '',
+    desc: ['造就创始人&CEO'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/tangweiwei_s.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/tangweiwei_b.jpg'
+  },
+  {
+    index: 28,
+    id: '5afe534704ea6d0001baa382',
+    name: 'Ronan Doorley',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ronan_Doorley_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ronan_Doorley_s.jpg'
+  },
+  {
+    index: 29,
+    id: '5afe534704ea6d0001baa383',
+    name: 'Marc Pons',
+    enName: '',
+    desc: ['安道尔科学实验室主任'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Marc_Pons_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Marc_Pons_s.jpg'
+  },
+  {
+    index: 30,
+    id: '5afe547404ea6d0001baa384',
+    name: 'Michael Lin',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Micheal_Lin_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Micheal_Lin_s.jpg'
+  },
+  {
+    index: 31,
+    id: '5afe547404ea6d0001baa385',
+    name: 'Jörg Noennig',
+    enName: '',
+    desc: ['堡城市科学实验室主任、汉堡港口大学教授'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Jörg_Noennig_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Jörg_Noennig_s.jpg'
+  },
+  {
+    index: 32,
+    id: '5afe55a004ea6d0001baa386',
+    name: 'Antti Tuomela',
+    enName: '',
+    desc: ['芬兰阿尔托大学地产公司首席执行官'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Antti_Tuomela_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Antti_Tuomela_s.jpg'
+  },
+  {
+    index: 33,
+    id: '5afe55a004ea6d0001baa387',
+    name: 'Arnaud Grignard',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Arnaud_Grignard_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Arnaud_Grignard_s.jpg'
+  },
+  {
+    index: 34,
+    id: '5afe55a004ea6d0001baa388',
+    name: '马可',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/make_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/make_s.jpg'
+  },
+  {
+    index: 35,
+    id: '5afe55a004ea6d0001baa38a',
+    name: 'Ariel Noyman',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ariel_Noyman_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ariel_Noyman_s.jpg'
+  },
+  {
+    index: 36,
+    id: '5afe56cc04ea6d0001baa38b',
+    name: 'Markus ElKatsha',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室研究员'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Markus_ElKatsha_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Markus_ElKatsha_s.jpg'
+  },
+  {
+    index: 37,
+    id: '5afe57f804ea6d0001baa38c',
+    name: 'Yasushi Sakai',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Yasushi_Sakai_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Yasushi_Sakai_s.jpg'
+  },
+  {
+    index: 38,
+    id: '5afe57f804ea6d0001baa38d',
+    name: 'Luis Alonso',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室科学家'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Luis_Alonso_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Luis_Alonso_s.jpg'
+  },
+  {
+    index: 39,
+    id: '5afe5ca904ea6d0001baa38f',
+    name: '李婷',
+    enName: '',
+    desc: ['云锋金融集团首席执行官'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/liting_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/liting_s.jpg'
+  },
+  {
+    index: 40,
+    id: '5afe5b7d04ea6d0001baa38e',
+    name: '戴京焦',
+    enName: '',
+    desc: ['贝塔网络金融科技CEO', '前嘉实基金副总经理，首席投资官'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/daijingjiao_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/daijingjiao_s.jpg'
+  },
+  {
+    index: 41,
+    id: '5afe5dd504ea6d0001baa391',
+    name: '刘克成',
+    enName: '',
+    desc: ['西安建筑科技大学建筑学院教授/刘克成设计工作室主持人'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/liukecheng_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/liukecheng_s.jpg'
+  },
+  {
+    index: 42,
+    id: '5af556b2df46b50001e292d3',
+    name: 'Tiziano Cattaneo',
+    enName: '',
+    desc: ['同济大学设计创意学院副教授、意大利建筑师协会注册一级建筑师，“上海千人计划”专家'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Tiziano_Cattaneo_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Tiziano_Cattaneo_s.jpg'
+  },
+  {
+    index: 43,
+    id: '5af5563b1824d200019725de',
+    name: '张周捷',
+    enName: '',
+    desc: ['独立设计师、艺术家'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangzhoujie_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangzhoujie_s.jpg'
+  },
+  {
+    index: 44,
+    id: '5afe5dd504ea6d0001baa392',
+    name: '朱晔',
+    enName: '',
+    desc: ['独立艺术家、策展人/广州美术学院建筑艺术设计学院兼职副教授'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhuye_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhuye_s.jpg'
+  },
+  {
+    index: 45,
+    id: '5af558941824d200019725e0',
+    name: '刘毅',
+    enName: '',
+    desc: ['艺术家，设计师，策展人'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/liuyi_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/liuyi_s.jpg'
+  },
+  {
+    index: 46,
+    id: '5afe5f0104ea6d0001baa393',
+    name: 'Andrea Bergonzini',
+    enName: '',
+    desc: ['DRAFTARCH建筑事务所合伙人'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Andrea_Bergonzini_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Andrea_Bergonzini_s.jpg'
+  },
+  {
+    index: 47,
+    id: '5afe55a004ea6d0001baa389',
+    name: '张砚',
+    enName: '',
+    desc: ['麻省理工学院媒体实验室博士研究员'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangyan_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangyan_s.jpg'
+  },
+  {
+    index: 48,
+    id: '5aec16496b3ff000012b3271',
+    name: 'Ali Vahabzadeh',
+    enName: '',
+    desc: ['共享交通初创公司Chariot创始人及董事会成员'],
+    enDesc: [''],
+    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/AliVahabzadeh_b.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/AliVahabzadeh_s.jpg'
+  },
 ];
 
 export const PlanList = [
