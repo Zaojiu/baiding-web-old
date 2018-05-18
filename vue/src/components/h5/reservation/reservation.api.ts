@@ -11,7 +11,7 @@ export const bookGuestsMockData = [
     enDesc: ['CEO of 3DR, Former Editor-in-chief of WIRED Magazine, Author of “The Long Tail”, “FREE” and “Makers”'],
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_b.jpg',
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_s.jpg',
-    meetTime: '',
+    meetTime: '2018年5月19日18:30',
     meetAddress: ''
   },
   {
@@ -23,10 +23,11 @@ export const bookGuestsMockData = [
     enDesc: ['Design thinker, Director of Design'],
     url: 'https://og9s6vxbs.qnssl.com/wiee/guestsDon-Norman_b.jpg',
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsDon-Norman_s.jpg',
-    meetTime: '',
+    meetTime: '2018年5月19日18:30',
     meetAddress: ''
   }];
 
+export const maxMeet = 5;
 
 export const postQuestion = async (speakerName: string, name: string, mobile: string, question: string): Promise<any> => {
   const data = {
