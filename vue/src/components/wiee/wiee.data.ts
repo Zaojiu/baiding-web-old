@@ -644,15 +644,6 @@ export const PlanList = [
     desc: ['同济·MIT 城市科学峰会 2018'],
     content: [
       {
-        start: '12:30',
-        end: '13:30',
-        title: [
-          '观众入场，贵宾茶歇'
-        ],
-        desc: '',
-        status: 1
-      },
-      {
         start: '13:30',
         end: '13:40',
         title: [
