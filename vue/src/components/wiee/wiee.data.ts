@@ -344,7 +344,7 @@ export const guests = [
     id: '5afe55a004ea6d0001baa388',
     name: '马可',
     enName: '',
-    desc: ['麻省理工学院媒体实验室科学家'],
+    desc: ['同济大学设计与创意学院副院长，研究员'],
     enDesc: [''],
     url: 'https://og9s6vxbs.qnssl.com/wiee/guests/make_b.jpg',
     cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/make_s.jpg'
