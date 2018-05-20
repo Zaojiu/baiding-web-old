@@ -2,13 +2,13 @@
   <article class="container">
     <transition name="slide-left" v-if="status===1">
       <div class="content" v-show="show">
-        <header>NO.{{bookId}} 约问成功！请截图保存</header>
+        <header>NO.{{bookId}} 约问成功！</header>
         <div class="guest-tips">
           <div class="avatar">
             <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
           </div>
           <div class="description description-b">
-            恭喜您，您是第<span>{{bookId}}</span>位约问问题的观众。请在今天下午整体talk环节结束后（预计时间下午{{meetTime}}）到演讲台左侧。<span>将这张图的截屏出示给对接工作人员</span>。我们将安排您亲自向嘉宾提出您的问题。
+            恭喜您，您是第<span>{{bookId}}</span>位约问题的观众。 我们将会把您的问题在嘉宾演讲结束后给到嘉宾。 您的问题将有机会在所有Talk环节结束后，得到嘉宾今天的现场回答。
           </div>
         </div>
         <!--<div class="guest-tips">
