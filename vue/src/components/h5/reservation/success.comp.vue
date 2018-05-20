@@ -257,8 +257,8 @@
     async share() {
       if (isInWechat) {
         setShareInfo(
-          '预约嘉宾',
-          `和嘉宾面对面交流`,
+          '约问嘉宾问题',
+          `留下一个你想向嘉宾提的问题`,
           'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
           `${host.self}/wv/reservation`
         );
