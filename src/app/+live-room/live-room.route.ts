@@ -31,9 +31,16 @@ const route: Routes = [
   },
   {
     path: 'future',
-    loadChildren: 'app/+live-room/+future/future.module#FutureModule',
+    loadChildren: 'app/+live-room/cooperate+future/future.module#FutureModule',
     data: {
       title: '创行-未来力大会'
+    }
+  },
+  {
+    path: 'changsanjiao2018',
+    loadChildren: 'app/+live-room/cooperate+changsanjiao2018/changsanjiao.module#ChangSanJiaoModule',
+    data: {
+      title: '活力长三角，青商新机遇'
     }
   },
   {

@@ -5,18 +5,18 @@ import {LiveInfoModel} from "../../shared/api/live/live.model";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {UtilsService} from "../../shared/utils/utils";
 import {UserInfoModel} from "../../shared/api/user-info/user-info.model";
-import {appConfig, environment} from "../../../environments/environment";
+import {appConfig, environment, host} from "../../../environments/environment";
 import {UserInfoService} from "../../shared/api/user-info/user-info.service";
 import {OperationTipsService} from "../../shared/operation-tips/operation-tips.service";
 import {CustomHttp} from "../../shared/api/custom-http.service";
 
 
 @Component({
-  templateUrl: './future.component.html',
-  styleUrls: ['./future.component.scss'],
+  templateUrl: './changsanjiao.component.html',
+  styleUrls: ['./changsanjiao.component.scss'],
 })
 
-export class FutureComponent implements OnInit, OnDestroy {
+export class ChangSanJiaoComponent implements OnInit, OnDestroy {
   topLiveInfo: LiveInfoModel;
   livesList: LiveInfoModel[] = [];
   timeNow = UtilsService.now.toString();
@@ -33,7 +33,8 @@ export class FutureComponent implements OnInit, OnDestroy {
   isQrcodeShown = false;
   isSubscribeLinkLoading = false;
   isSubscribeLinkError = false;
-  liveIdList = ['5af54fa4202b320001c3fd57', '5afab456feb7a20001932f56', '5afab491e262e30001275490', '5afab4effeb7a20001932f59', '5afab527e262e30001275493'];
+  liveIdList = ['5b04b1ec898ce900017b5dfd', '5b04b21f9871e7000129a97b', '5b04b2389871e7000129a97d', '5b04b2509871e7000129a97f', '5b04b26d9871e7000129a981'];
+  // liveIdList = ['5a03dc8b7bed47000100ca7c', '5a03dc8b7bed47000100ca7c', '5a03dc8b7bed47000100ca7c', '5a03dc8b7bed47000100ca7c', '5a03dc8b7bed47000100ca7c'];
 
   constructor (private router: Router, private route: ActivatedRoute, private liveService: LiveService,
                private operationTipsService: OperationTipsService, private http: CustomHttp,
@@ -41,9 +42,13 @@ export class FutureComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
+    this.topLiveInfo = this.route.snapshot.data['topLiveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
 
-    this.route.snapshot.data['shareTitle'] = `${this.userInfo ? this.userInfo.nick : '我'}正在使用${appConfig.name}，发现更多经验分享`;
+    this.route.snapshot.data['shareTitle'] = `活力长三角，青商新机遇`;
+    this.route.snapshot.data['shareDesc'] = `打造世界级产业集群，构建长三角竞争新环境。`;
+    this.route.snapshot.data['shareCover'] = `https://og9s6vxbs.qnssl.com/cover/img/Fte2KrHT3TgRCXC70qgpJT8EINNq-1527036137.jpg~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip`;
+    this.route.snapshot.data['shareLink'] = `${host.self}/lives/changsanjiao2018`;
 
     this.isLoading = true;
     this.getLists( this.liveIdList ).finally(() => {
@@ -96,31 +101,11 @@ export class FutureComponent implements OnInit, OnDestroy {
 
        this.getSubscribeLink();
 
-      console.log(livesList);
       return livesList;
     });
   }
-    // return this.liveService.listWiee(markerId, size + 1).then((livesList) => {
-    //   if (livesList.length >= size + 1) {
-    //     livesList.pop();
-    //   }
-    //
-    //   this.livesList = livesList.map( (i: LiveInfoModel) => {
-    //     this.liveTime[i.id] = UtilsService.praseLiveTime(i);
-    //     return i;
-    //   });
-    //
-    //   this.liveService.getLiveInfo(livesList[0].id, true).then( (liveData) => {
-    //     this.topLiveInfo = liveData;
-    //     console.log('LiveStatus' + this.topLiveInfo.isCreated());
-    //   });
-    //
-    //   this.getSubscribeLink();
-    //
-    //   return livesList;
-    // });
 
-  //订阅直播通知函数
+  // 订阅直播通知函数
   bookLive () {
     if (this.userInfo) {
       if (this.booking || !this.livesList) {

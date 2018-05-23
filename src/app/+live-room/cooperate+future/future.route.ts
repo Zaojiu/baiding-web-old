@@ -1,6 +1,6 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {FutureComponent} from '../+future/future.component';
+import {FutureComponent} from './future.component';
 
 const route: Routes = [
   {
