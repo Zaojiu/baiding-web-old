@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewChecked} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {LiveService} from "../../shared/api/live/live.service";
 import {LiveInfoModel} from "../../shared/api/live/live.model";
@@ -16,7 +16,7 @@ import {CustomHttp} from "../../shared/api/custom-http.service";
   styleUrls: ['./changsanjiao.component.scss'],
 })
 
-export class ChangSanJiaoComponent implements OnInit, OnDestroy {
+export class ChangSanJiaoComponent implements OnInit, OnDestroy, AfterViewChecked {
   topLiveInfo: LiveInfoModel;
   livesList: LiveInfoModel[] = [];
   timeNow = UtilsService.now.toString();
@@ -54,6 +54,10 @@ export class ChangSanJiaoComponent implements OnInit, OnDestroy {
     this.getLists( this.liveIdList ).finally(() => {
       this.isLoading = false;
     });
+  }
+
+  ngAfterViewChecked () {
+    document.title = '活力长三角，青商新机遇';
   }
 
   ngOnDestroy () {
