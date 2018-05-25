@@ -104,11 +104,12 @@ if (fs.existsSync(envFilePath)) {
     // See https://webpack.github.io/docs/list-of-plugins.html#normalmodulereplacementplugin
     new RegExp(
       path.resolve(__dirname, './src/env/environment.ts').replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&')),
-      envFilePath,
+    envFilePath,
     )
   );
 }
 const config = {
+  devtool: '#eval-source-map',
   entry: {
     'global': thirdPartyLibs,
     'libs': ['vue', 'vue-property-decorator', 'vue-router', 'vuex', 'vuex-router-sync', 'vee-validate', 'axios', 'autosize', 'vee-validate/dist/locale/zh_CN', 'yaqrcode', 'zaojiu-player'],
