@@ -83,7 +83,7 @@
             </section>
           </form>
           <div class="btn">
-            <button @click="validateAndSubmit" :disabled="isSubmitting">{{!isSubmitting ? '立即提问' : '提问中...'}}</button>
+            <button @click="validateAndSubmit" :disabled="isSubmitting">{{!isSubmitting ? '立即提交' : '提交中...'}}</button>
             <span>仅姓名必须填写</span>
           </div>
         </div>
@@ -428,10 +428,10 @@
     created() {
       try {
         this.userInfo = getUserInfoCache(false);
-        this.share();
       } catch (e) {
       } finally {
         this.prepareVideo();
+        this.share();
       }
     }
 

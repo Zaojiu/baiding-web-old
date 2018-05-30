@@ -29,9 +29,6 @@
         <div style=""></div>
       </div>
     </div>
-    <div class="bottom">
-      <button @click="back">点击返回</button>
-    </div>
   </div>
 </template>
 
