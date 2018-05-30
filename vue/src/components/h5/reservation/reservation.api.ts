@@ -4,94 +4,54 @@ import {host} from '../../../env/environment';
 export const bookGuestsMockData = [
   {
     index: 1,
-    id: '5aec186bce87e80001a56c06',
-    name: '奥雷·伯曼 Ole Bouman',
-    desc: ['设计互联 馆长'],
+    id: '',
+    name: '黎耕',
+    desc: ['中国科学院国家天文台副研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_s.jpg'
+    url: 'https://og9s6vxbs.qnssl.com/cover/img/FiF0gSZVatRcZr8XTfomCeHfW0wH-1525317837.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FiF0gSZVatRcZr8XTfomCeHfW0wH-1525317837.jpg'
   },
   {
     index: 2,
-    id: '5af556b2df46b50001e292d3',
-    name: 'Tiziano Cattaneo',
+    id: '',
+    name: '陈鹏飞',
     enName: '',
-    desc: ['同济大学设计创意学院副教授、意大利建筑师协会注册一级建筑师，“上海千人计划”专家'],
+    desc: ['长江学者,南京大学天文与空间科学学院教授'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Tiziano_Cattaneo_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Tiziano_Cattaneo_s.jpg'
+    url: 'https://og9s6vxbs.qnssl.com/cover/img/FittMFwPVVGvfCj_Y69UcLgu91n0-1525328485.jpeg',
+    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FittMFwPVVGvfCj_Y69UcLgu91n0-1525328485.jpeg'
   },
 
   {
     index: 3,
-    id: '5af5563b1824d200019725de',
-    name: '张周捷',
+    id: '',
+    name: '周济林',
     enName: '',
-    desc: ['独立设计师、艺术家'],
+    desc: ['南京大学天文与空间科学学院院长'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangzhoujie_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangzhoujie_s.jpg'
+    url: 'https://og9s6vxbs.qnssl.com/cover/img/FjeNaMuSN9AIntSvy0JxUiuVEVcm-1525317874.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FjeNaMuSN9AIntSvy0JxUiuVEVcm-1525317874.jpg'
   },
   {
     index: 4,
-    id: '5aec173fce87e80001a56c04',
-    name: 'Ami Vitale',
-    enName: 'Ami Vitale',
-    desc: ['国家地理杂志摄影师'],
+    id: '',
+    name: '戴子高',
+    enName: '',
+    desc: ['长江学者,中国天文学会副理事长'],
     enDesc: ['Photographer of National Geographic Magazine'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsAmi-Vitale_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsAmi-Vitale_s.jpg'
+    url: 'https://og9s6vxbs.qnssl.com/cover/img/FjnanqiTVUwt7DI49HdfouQxyUXe-1525317893.png',
+    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FjnanqiTVUwt7DI49HdfouQxyUXe-1525317893.png'
   },
   {
     index: 5,
-    id: '5afe5dd504ea6d0001baa392',
-    name: '朱晔',
+    id: '',
+    name: '袁强',
     enName: '',
-    desc: ['独立艺术家、策展人/广州美术学院建筑艺术设计学院兼职副教授'],
+    desc: [',紫金山天文台研究员,暗物质粒子探测卫星“悟空”团队成员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhuye_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhuye_s.jpg'
-  },
-  {
-    index: 6,
-    id: '5aec173fce87e80001a56c05',
-    name: 'Piotr Loj',
-    enName: 'Piotr Loj',
-    desc: ['Virtual VR Dream首席执行官'],
-    enDesc: ['CEO of Virtual VR Dream'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsPiotr-Loj_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsPiotr-Loj_s.jpg'
-  },
-  {
-    index: 7,
-    id: '5af558941824d200019725e0',
-    name: '刘毅',
-    enName: '',
-    desc: ['艺术家，设计师，策展人'],
-    enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/liuyi_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/liuyi_s.jpg'
-  },
-  {
-    index: 8,
-    id: '5afe5f0104ea6d0001baa393',
-    name: 'Andrea Bergonzini',
-    enName: '',
-    desc: ['DRAFTARCH建筑事务所合伙人'],
-    enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Andrea_Bergonzini_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Andrea_Bergonzini_s.jpg'
-  },
-  {
-    index: 9,
-    id: '5aec17756b3ff000012b3272',
-    name: 'Kyle Lawrence Mertensmeyer',
-    enName: 'Kyle Lawrence Mertensmeyer',
-    desc: ['上海高德芬创始合伙人、首席设计师'],
-    enDesc: ['Founder of Godolphin and CONSULATE'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_s.jpg'
-  },
+    url: 'https://og9s6vxbs.qnssl.com/cover/img/Fur44Xb6DTfp3_6q6Ob9BGZQXJWs-1525402007.jpg',
+    cover: 'https://og9s6vxbs.qnssl.com/cover/img/Fur44Xb6DTfp3_6q6Ob9BGZQXJWs-1525402007.jpg'
+  }
 ];
 
 export const maxMeet = 5; // 最大见面人数
