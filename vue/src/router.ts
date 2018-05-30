@@ -748,6 +748,22 @@ export const router = new Router({
       ]
     },
     {
+      path: '/wv/intro-mars',
+      name: 'mars',
+      meta: {
+        title: '火星会员',
+      },
+      component: () => System.import('./components/h5/mars-member/mars.comp.vue'),
+    },
+    {
+      path: '/wv/intro-mars/success',
+      name: 'mars.success',
+      meta: {
+        title: '开通成功',
+      },
+      component: () => System.import('./components/h5/mars-member/success.comp.vue'),
+    },
+    {
       path: '/500',
       name: 'error',
       component: errorComp,
