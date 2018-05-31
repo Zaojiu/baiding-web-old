@@ -2,7 +2,7 @@
   <div class="content">
     <div class="member-card">
       <div v-for="item in listImg" class="image-cover" @click="actionImgCover(item)">
-        <img :src="item"/>
+        <img :src="item.cover"/>
       </div>
       <ul v-if="listText.length">
         <li v-for=" text in listText "><span class="dot"></span><span v-html="text"></span></li>
@@ -31,6 +31,7 @@
       }
       & + .image-cover {
         margin-top: 32px;
+        margin-bottom: 32px;
       }
     }
     ul {
@@ -107,7 +108,7 @@
   export default class Course extends Vue {
     isInApp: boolean = isInApp;
     listText: string[] = [];
-    listImg: string[] = [];
+    listImg: any[] = [];
     userInfo: UserInfoModel;
     defaultCover = 'assets/img/default-cover.jpg';
     lockAction = false;
@@ -124,9 +125,22 @@
     init() {
       this.isInApp = isInApp;
       this.listImg = [
-        'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9',
-        'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9',
-        'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9'
+        {
+          id: '5aa8d12f0b603c0001b68a37',
+          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9'
+        },
+        {
+          id: '5a911d1f0b603c0001c24160',
+          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9'
+        },
+        {
+          id: '5a5f080551281300015d4449',
+          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9'
+        },
+        {
+          id: '5b0d0b195abd5900016a58ba',
+          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FsTeV8zqpcbVJnsQ4xsc2ujZC5G1-1527733436.jpg~16-9'
+        },
       ];
       try {
         this.userInfo = getUserInfoCache(false);
@@ -141,7 +155,7 @@
       }
     }
 
-    async actionImgCover(item: string) {
+    async actionImgCover(item: any) {
       // 在线课程跳转到课程
 
       if (this.lockAction) {
@@ -151,22 +165,10 @@
 
       if (this.isInApp) {
         await initIOS();
-        if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9') {
-          callHandler('pushMemberCourse2', '5a5f080551281300015d4449');
-        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9') {
-          callHandler('pushMemberCourse2', '5a911d1f0b603c0001c24160');
-        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9') {
-          callHandler('pushMemberCourse2', '5aa8d12f0b603c0001b68a37');
-        }
+        callHandler('pushMemberCourse2', item.id);
 
       } else {
-        if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9') {
-          this.$router.push({path: '/columns/5a5f080551281300015d4449'});
-        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9') {
-          this.$router.push({path: '/columns/5a911d1f0b603c0001c24160'});
-        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9') {
-          this.$router.push({path: '/columns/5aa8d12f0b603c0001b68a37'});
-        }
+        this.$router.push({path: `/columns/${item.id}`});
       }
     };
   }

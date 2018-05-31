@@ -769,6 +769,7 @@
       this.id = this.$route.params['itemId'];
       if (!this.fromPaymentResult()) {
         this.initData();
+        this.share();
         if (this.isChangeItem) {
           this.isChangeItem = false;
           this.initComments(false);
@@ -777,18 +778,17 @@
           this.initComments(true);
         }
       }
-      if (isInWechat) {
-        this.share();
-      }
     }
 
     async share() {
-      const {id, itemId} = this.$route.params;
-      await initWechat();
-      setShareInfo(this.itemInfo.current.subject,
-        '',
-        `${host.assets}/assets/img/zaojiu-logo.jpg`,
-        `${host.self}/columns/${id}/items/${itemId}`);
+      if (isInWechat) {
+        const {id, itemId} = this.$route.params;
+        await initWechat();
+        setShareInfo(this.itemInfo.current.subject,
+          '',
+          `${host.assets}/assets/img/zaojiu-logo.jpg`,
+          `${host.self}/columns/${id}/items/${itemId}`);
+      }
     }
 
     fromPaymentResult() {
