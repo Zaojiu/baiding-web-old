@@ -139,7 +139,7 @@
         },
         {
           id: '5b0d0b195abd5900016a58ba',
-          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FoMzM-TwYdDrpy0S6DrbW8i9pKyB-1527670691.jpg~16-9'
+          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FsTeV8zqpcbVJnsQ4xsc2ujZC5G1-1527733436.jpg~16-9'
         },
       ];
       try {
