@@ -315,6 +315,10 @@
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
   import {form} from '../../../shared/form/index';
   import {showTips} from "../../../store/tip";
+  import {isInWechat} from "../../../shared/utils/utils";
+  import {host} from "../../../env/environment";
+  import {initWechat} from "../../../shared/utils/wechat";
+  import {setShareInfo} from '../../../shared/utils/share';
 
   @Component({
     directives: form,
@@ -342,7 +346,22 @@
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
+        this.share();
         //this.prepareVideo();
+      }
+    }
+
+    async share() {
+      if (isInWechat) {
+        await initWechat();
+        let url = `${host.self}/wv/intro-mars`;
+        let title = '造就火星计划';
+        setShareInfo(
+          title,
+          '一起探索科技创新与未来的前沿',
+          'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png',
+          url
+        );
       }
     }
 
