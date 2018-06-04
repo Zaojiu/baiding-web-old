@@ -727,10 +727,11 @@
     }
 
     @Watch('$route')
-    itemChanged() {
+    async itemChanged() {
       this.id = this.$route.params['itemId'];
       if (!this.fromPaymentResult()) {
-        this.initData();
+        await this.initData();
+        this.share();
         if (this.isChangeItem) {
           this.isChangeItem = false;
           this.initComments(false);
@@ -739,18 +740,17 @@
           this.initComments(true);
         }
       }
-      /*if (isInWechat) {
-        this.share();
-      }*/
     }
 
     async share() {
-      const {id, itemId} = this.$route.params;
-      await initWechat();
-      setShareInfo(this.itemInfo.current.subject,
-        '',
-        `${host.assets}/assets/img/zaojiu-logo.jpg`,
-        `${host.self}/course/${id}/items/${itemId}`);
+      if (isInWechat) {
+        await initWechat();
+        const {id, itemId} = this.$route.params;
+        setShareInfo(this.itemInfo.current.subject,
+          '',
+          `${host.assets}/assets/img/zaojiu-logo.jpg`,
+          `${host.self}/course/${id}/items/${itemId}`);
+      }
     }
 
     fromPaymentResult() {
@@ -970,8 +970,8 @@
         showTips('课程正在制作中');
         return;
       }
-      if (!this.itemInfo.course.paid){
-        this.$router.push({path:`/course/${this.courseId}`})
+      if (!this.itemInfo.course.paid) {
+        this.$router.push({path: `/course/${this.courseId}`})
       }
     }
 

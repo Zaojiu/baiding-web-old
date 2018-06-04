@@ -765,10 +765,10 @@
     }
 
     @Watch('$route')
-    itemChanged() {
+    async itemChanged() {
       this.id = this.$route.params['itemId'];
       if (!this.fromPaymentResult()) {
-        this.initData();
+        await this.initData();
         this.share();
         if (this.isChangeItem) {
           this.isChangeItem = false;
@@ -784,7 +784,8 @@
       if (isInWechat) {
         const {id, itemId} = this.$route.params;
         await initWechat();
-        setShareInfo(this.itemInfo.current.subject,
+        setShareInfo(
+          this.itemInfo.current.subject,
           '',
           `${host.assets}/assets/img/zaojiu-logo.jpg`,
           `${host.self}/columns/${id}/items/${itemId}`);

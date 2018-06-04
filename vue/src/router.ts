@@ -18,7 +18,7 @@ import {liveInfoResolver} from './shared/resolver/live-info.resolver';
 
 import memberContainer from './components/my/member/container.comp.vue';
 
-//老版本iOS使用，可选择删除
+//老版本iOS使用，未来可选择删除
 import memberContent from './components/my/iosInAppPayMember/content.comp.vue';
 import iosMemberContainer from './components/my/iosInAppPayMember/container.comp.vue';
 //
@@ -729,19 +729,24 @@ export const router = new Router({
     },
     {
       path: '/wv/intro-mars',
-      name: 'mars',
-      meta: {
-        title: '火星会员',
-      },
       component: () => System.import('./components/h5/mars-member/mars.comp.vue'),
-    },
-    {
-      path: '/wv/intro-mars/success',
-      name: 'mars.success',
-      meta: {
-        title: '开通成功',
-      },
-      component: () => System.import('./components/h5/mars-member/success.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'mars',
+          meta: {
+            title: '火星会员',
+          }
+        },
+        {
+          path: 'success',
+          name: 'mars.success',
+          meta: {
+            title: '开通成功',
+          },
+          component: () => System.import('./components/h5/mars-member/success.comp.vue'),
+        },
+      ]
     },
     {
       path: '/500',
