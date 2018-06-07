@@ -96,7 +96,7 @@ const route: Routes = [
     path: 'fudan',
     loadChildren: 'app/+live-room/fudan/fudan.module#FuDanModule',
     data: {
-      title: '复旦EMBA'
+      title: '复旦大学EMBA'
     }
   },
   {
