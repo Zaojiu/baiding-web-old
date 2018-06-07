@@ -36,6 +36,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   booking = false;
   originFee: string;
   themeElem = null;
+  hiddenZj = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private liveService: LiveService,
               private sanitizer: DomSanitizer,
@@ -51,6 +52,7 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
       this.themeElem = UtilsService.insertStyleElemIntoHead(this.liveId, this.liveInfo.themeCss);
     }
 
+    this.hiddenZj = UtilsService.isFuDan(this.liveId);
     this.initPayment();
     this.handlePaymentRedirect();
 
@@ -58,7 +60,6 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
     this.route.snapshot.data['shareDesc'] = this.liveInfo.desc;
     this.route.snapshot.data['shareCover'] = this.liveInfo.coverThumbnailUrl;
     this.route.snapshot.data['shareLink'] = this.getShareUri();
-
     // this.shareService.accessSharedByRoute(this.route);
 
     this.getSubscribeLink();

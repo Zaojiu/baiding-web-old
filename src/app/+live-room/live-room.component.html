@@ -31,6 +31,7 @@
     [(isCommentOpened)]="isCommentOpened"
     [isTimelineOnOldest]="timeline.isOnOldest"
     [isTimelineOnLatest]="timeline.isOnLatest"
+    [hiddenShare]="hiddenZj"
   ></top-bar>
 
   <download-app-tips class="download-tips"></download-app-tips>
@@ -43,7 +44,7 @@
     [userInfo]="userInfo"
   ></comments>
 
-  <timeline class="timeline" [liveInfo]="liveInfo" [userInfo]="userInfo" #timeline></timeline>
+  <timeline class="timeline" [liveInfo]="liveInfo" [userInfo]="userInfo" [hiddenSelf]="hiddenZj" #timeline></timeline>
 
   <div class="praised-animations" praisedAnimation>
     <praised-animation

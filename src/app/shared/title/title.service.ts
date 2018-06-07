@@ -45,7 +45,9 @@ export class TitleService {
 
   private setTitle(routeData: Data) {
     let title = appConfig.name;
-    if (routeData && routeData['title']) title = `${routeData['title']} - ${appConfig.name}`;
+    // todo 暂时删除appConfig.name
+    // if (routeData && routeData['title']) title = `${routeData['title']} - ${appConfig.name}`;
+    if (routeData && routeData['title']) title = `${routeData['title']}`;
     this.titleSetter(title);
   }
 

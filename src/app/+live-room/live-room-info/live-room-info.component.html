@@ -33,32 +33,40 @@
       </div>
     </div>
 
-    <div class="share-star-entry" (click)="gotoShareStar()" *ngIf="!inApp"><span class="share-star-title"><i class="bi bi-share-star"></i>分享榜</span><span class="share-star-content">快来分享吧<i class="bi bi-right-arrow"></i></span></div>
+    <div class="share-star-entry" (click)="gotoShareStar()" *ngIf="!inApp&&!hiddenZj"><span class="share-star-title"><i
+      class="bi bi-share-star"></i>分享榜</span><span class="share-star-content">快来分享吧<i
+      class="bi bi-right-arrow"></i></span></div>
   </div>
 
   <div class="operation-area">
-    <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat" (click)="bookLive()"><i
-      class="bi bi-clock"></i><span *ngIf="!hasPresent">开播提醒</span></a>
+    <span *ngIf="!hiddenZj">
+      <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat"
+         (click)="bookLive()"><i
+        class="bi bi-clock"></i><span *ngIf="!hasPresent">开播提醒</span></a>
     <a class="btn notification disabled" *ngIf="booking && isInWechat"><i
       class="bi bi-clock"></i><span *ngIf="!hasPresent">{{liveInfo.booked ? '取消中...' : '订阅中...'}}</span></a>
-    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat" (click)="unbookLive()"><i
+    <a class="btn notification turn-on" *ngIf="liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat"
+       (click)="unbookLive()"><i
       class="bi bi-clock"></i><span *ngIf="!hasPresent">已经开通</span></a>
+    </span>
 
     <button
       class="btn present"
       *ngIf="hasPresent"
       (click)="gotoPresent()"
-    ><i class="bi bi-present"></i>请朋友看</button>
+    ><i class="bi bi-present"></i>请朋友看
+    </button>
 
     <button
       class="button button-primary button-square enter-room"
       [disabled]="paidStatus === paidEnums.Paying"
       (click)="go()"
-    ><span class="origin-fee" *ngIf="originFee">{{originFee}}</span>{{btnText}}</button>
+    ><span class="origin-fee" *ngIf="originFee">{{originFee}}</span>{{btnText}}
+    </button>
   </div>
 </div>
 
-<div class="qrcode-background" *ngIf="isQrcodeShown" (click)="closeQrcode()">
+<div class="qrcode-background" *ngIf="isQrcodeShown&&!hiddenZj" (click)="closeQrcode()">
   <div class="content" (click)="$event.stopPropagation()">
     <div class="header">
       <div class="close" (click)="closeQrcode()"></div>
@@ -70,7 +78,9 @@
       <div class="qrcode-block">
         <img *ngIf="!isSubscribeLinkLoading && !isSubscribeLinkError" class="qrcode-image" [src]="qrcode" alt="订阅二维码">
         <div *ngIf="isSubscribeLinkLoading">二维码加载中...</div>
-        <div *ngIf="isSubscribeLinkError">二维码加载失败，请<a class="retry-link" href="" (click)="getSubscribeLink(); $event.preventDefault();">重试</a></div>
+        <div *ngIf="isSubscribeLinkError">二维码加载失败，请<a class="retry-link" href=""
+                                                      (click)="getSubscribeLink(); $event.preventDefault();">重试</a>
+        </div>
       </div>
       <p *ngIf="isInWechat">长按二维码订阅话题间</p>
       <p *ngIf="!isInWechat">使用微信扫描二维码订阅话题间</p>

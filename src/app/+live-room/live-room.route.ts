@@ -93,6 +93,13 @@ const route: Routes = [
     loadChildren: 'app/+live-room/+share-star/share-star.module#ShareStarModule',
   },
   {
+    path: 'fudan',
+    loadChildren: 'app/+live-room/fudan/fudan.module#FuDanModule',
+    data: {
+      title: '复旦EMBA'
+    }
+  },
+  {
     path: ':id',
     canActivate: [LiveAuthGuard],
     component: LiveRoomComponent,
@@ -109,7 +116,11 @@ const route: Routes = [
       {path: 'post', loadChildren: 'app/+live-room/+post/post.module#PostModule'},
       {path: 'vip-info', loadChildren: 'app/+live-room/+vip-info/vip-info.module#VipInfoModule'},
       {path: 'stream-info', loadChildren: 'app/+live-room/+stream-info/stream-info.module#StreamInfoModule'},
-      {path: 'invitation', loadChildren: 'app/+live-room/+invite/invite.module#InviteModule', data: {name: 'invitation'}},
+      {
+        path: 'invitation',
+        loadChildren: 'app/+live-room/+invite/invite.module#InviteModule',
+        data: {name: 'invitation'}
+      },
       {path: 'share/:message_id', loadChildren: 'app/+live-room/+share/share.module#ShareModule'},
       {path: 'settings', loadChildren: 'app/+live-room/+settings/settings.module#SettingsModule'},
     ]

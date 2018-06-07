@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {HammerInstance} from "@angular/platform-browser/src/dom/events/hammer_gestures";
 import {CommonModule} from "@angular/common";
-import {ReactiveFormsModule, FormsModule}   from '@angular/forms';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 
 import {LiveRoomRoutingModule} from './live-room.route';
 import {LiveRoomComponent} from './live-room.component';

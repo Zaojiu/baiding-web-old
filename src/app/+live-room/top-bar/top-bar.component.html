@@ -12,7 +12,10 @@
     </a>
   </div>
 
-  <topbar-switch-btn class="switch-btn" [isCommentOpened]="isCommentOpened" [onlineCount] ="onlineCount" [isOpened]="isCommentOpened" [btnText]="btnText" (toggling)="toggleComment($event)"></topbar-switch-btn>
+  <topbar-switch-btn class="switch-btn" [isCommentOpened]="isCommentOpened" [onlineCount]="onlineCount"
+                     [isOpened]="isCommentOpened" [btnText]="btnText"
+                     (toggling)="toggleComment($event)"></topbar-switch-btn>
 
-  <a class="share-star-btn" (click)="gotoShareStar()" *ngIf="!isInApp"><i class="bi bi-share-star"></i></a>
+  <a class="share-star-btn" (click)="gotoShareStar()" *ngIf="!isInApp&&!hiddenShare"><i
+    class="bi bi-share-star"></i></a>
 </div>

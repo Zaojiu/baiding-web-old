@@ -56,6 +56,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   alertMessage: SafeHtml;
   isAlertMessageShown = false;
   themeElem = null;
+  hiddenZj = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private liveService: LiveService,
               private timelineService: TimelineService, private shareBridge: ShareBridge,
@@ -73,7 +74,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
       .filter(event => event instanceof NavigationStart)
       .subscribe(() => {
         this.refreshLiveInfo();
-    });
+      });
 
     this.id = this.route.snapshot.params['id'];
     this.liveInfo = this.route.snapshot.data['liveInfo'];
@@ -86,7 +87,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     if (this.liveInfo.themeCss) {
       this.themeElem = UtilsService.insertStyleElemIntoHead(this.id, this.liveInfo.themeCss);
     }
-
+    this.hiddenZj = UtilsService.isFuDan(this.id);
     const alertMessageCache = StoreService.localStore.get('alertMessageCache') || {};
     if (this.liveInfo.alertMessage && this.liveInfo.alertMessage !== alertMessageCache[this.id]) {
       this.alertMessage = this.sanitizer.bypassSecurityTrustHtml(this.liveInfo.alertMessage);
