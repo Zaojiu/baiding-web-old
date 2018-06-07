@@ -34,7 +34,7 @@
     [hiddenShare]="hiddenZj"
   ></top-bar>
 
-  <download-app-tips class="download-tips"></download-app-tips>
+  <download-app-tips class="download-tips" *ngIf="!hiddenZj"></download-app-tips>
 
   <comments
     *ngIf="!liveInfo.disableComment"
