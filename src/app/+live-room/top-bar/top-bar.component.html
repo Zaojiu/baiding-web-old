@@ -1,6 +1,6 @@
 <div class="top-bar">
   <div class="online-count">
-    <i class="bi bi-info-center" *ngIf="!isInApp" (click)="gotoInfoCenter()"></i>
+    <i class="bi bi-info-center" *ngIf="!isInApp&&!hiddenShare" (click)="gotoInfoCenter()"></i>
 
     <a class="oldest-btn" fade (click)="gotoOldest()">
       <i class="bi bi-up-arrow-round"></i>

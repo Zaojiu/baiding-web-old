@@ -1,6 +1,6 @@
 <div class="live-room-info">
 
-  <download-app-tips class="download-tips"></download-app-tips>
+  <download-app-tips class="download-tips" *ngIf="!hiddenZj"></download-app-tips>
 
   <div class="content">
     <live-room-info-upper class="live-room-info-component" [liveInfo]="liveInfo"></live-room-info-upper>
