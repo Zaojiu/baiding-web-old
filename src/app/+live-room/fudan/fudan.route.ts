@@ -7,7 +7,7 @@ const route: Routes = [
     path: '',
     component: FuDanComponent,
     data: {
-      title: '复旦EMBA'
+      title: '复旦大学EMBA'
     }
   }
 ];

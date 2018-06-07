@@ -44,8 +44,8 @@ export class FuDanComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.topLiveInfo = this.route.snapshot.data['topLiveInfo'];
     this.userInfo = this.userInfoService.getUserInfoCache();
 
-    this.route.snapshot.data['shareTitle'] = `复旦EMBA`;
-    this.route.snapshot.data['shareDesc'] = `复旦EMBA-直播列表`;
+    this.route.snapshot.data['shareTitle'] = `复旦大学EMBA`;
+    this.route.snapshot.data['shareDesc'] = `复旦大学EMBA-直播列表`;
     this.route.snapshot.data['shareCover'] = 'https://og9s6vxbs.qnssl.com/fudan/cover.jpg';
     this.route.snapshot.data['shareLink'] = `${host.self}/lives/fudan`;
 
@@ -56,7 +56,7 @@ export class FuDanComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    document.title = '复旦EMBA';
+    document.title = '复旦大学EMBA';
   }
 
   ngOnDestroy() {
