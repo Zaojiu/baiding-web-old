@@ -174,6 +174,8 @@
   import {initIOS, callHandler} from "../../../shared/utils/ios";
   import {PostOrderObject, OrderObjectType} from "../../../shared/api/order.model";
   import {host} from "../../../env/environment";
+  import {initWechat} from "../../../shared/utils/wechat";
+  import {setShareInfo} from "../../../shared/utils/share";
 
   @Component({})
   export default class ActivateComponent extends Vue {
@@ -197,6 +199,13 @@
       this.init();
     }
 
+    async share() {
+      if (isInWechat) {
+        await initWechat();
+        setShareInfo('造就会员', '', `${host.assets}/assets/img/zaojiu-logo.jpg`, `${host.self}/new-member/video`);
+      }
+    }
+
     created() {
       try {
         if (isInApp) {
@@ -216,6 +225,7 @@
     }
 
     async init() {
+      this.share();
       this.isInApp = isInApp;
       this.isCard = false;
       if (this.userInfo && this.userInfo.member.valid) {

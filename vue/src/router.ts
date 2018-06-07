@@ -15,17 +15,15 @@ import {signinGuard} from './shared/guard/signin-comp.guard';
 import {mobileBindedCompGuard} from './shared/guard/mobile-binded-comp.guard';
 import {afterHooks, beforeHooks} from './hooks';
 import {liveInfoResolver} from './shared/resolver/live-info.resolver';
+
 import memberContainer from './components/my/member/container.comp.vue';
+
+//老版本iOS使用，未来可选择删除
 import memberContent from './components/my/iosInAppPayMember/content.comp.vue';
-import iosNotMemberContent from './components/my/iosOnlyMember/notMember.comp.vue';
-import iosIsMemberContent from './components/my/iosOnlyMember/isMember.comp.vue';
-import MemberVideoComponent from './components/member_video/list.comp.vue';
 import iosMemberContainer from './components/my/iosInAppPayMember/container.comp.vue';
-import popQuiz from './components/pop_quiz/index.comp.vue';
-import popQuizMy from './components/pop_quiz/my.comp.vue';
-import popQuizQuestion from './components/pop_quiz/question.comp.vue';
-import popQuizRank from './components/pop_quiz/rank.comp.vue';
-import popQuizReceive from './components/pop_quiz/receive-prizes.comp.vue';
+//
+
+import MemberVideoComponent from './components/member_video/list.comp.vue';
 
 import marsMemberDiscount from './components/mars_member/discount.comp.vue';
 import marsMemberContainer from './components/mars_member/container.comp.vue';
@@ -34,8 +32,6 @@ import marsMemberVideo from './components/mars_member/video.comp.vue';
 import marsMemberCourse from './components/mars_member/course.comp.vue';
 import marsMemberDownload from './components/mars_member/download.comp.vue';
 import marsMemberPlanList from './components/mars_member/planList.comp.vue';
-// 商城（课程）
-import CourseMallContainer from './components/course/container.comp.vue';
 
 Vue.use(Router);
 
@@ -161,7 +157,7 @@ export const router = new Router({
     },
     {
       path: '/group/:groupId',
-      component: CourseMallContainer,
+      component: () => System.import('./components/course/container.comp.vue'),
       children: [
         {
           name: 'group.main',
@@ -189,7 +185,7 @@ export const router = new Router({
     },
     {
       path: '/course/:courseId',
-      component: CourseMallContainer,
+      component: () => System.import('./components/course/container.comp.vue'),
       children: [
         {
           name: 'course.main',
@@ -280,7 +276,7 @@ export const router = new Router({
     },
     {
       path: '/wv/pop_quiz',
-      component: popQuiz,
+      component: () => System.import('./components/pop_quiz/index.comp.vue'),
       children: [
         {
           name: 'pop_quiz.main',
@@ -289,22 +285,22 @@ export const router = new Router({
         {
           name: 'pop_quiz.question',
           path: 'question',
-          component: popQuizQuestion
+          component: () => System.import('./components/pop_quiz/question.comp.vue'),
         },
         {
           name: 'pop_quiz.my',
           path: 'my/:id',
-          component: popQuizMy
+          component: () => System.import('./components/pop_quiz/my.comp.vue'),
         },
         {
           name: 'pop_quiz.rank',
           path: 'rank',
-          component: popQuizRank
+          component: () => System.import('./components/pop_quiz/rank.comp.vue'),
         },
         {
           name: 'pop_quiz.receive',
           path: 'receive/:id',
-          component: popQuizReceive
+          component: () => System.import('./components/pop_quiz/receive-prizes.comp.vue'),
         }
       ]
     },
@@ -344,22 +340,6 @@ export const router = new Router({
         title: '绑定引导',
       },
       component: () => System.import('./components/appPay_guide/content.comp.vue'),
-    },
-    // 仅用于iOS非会员
-    {
-      path: '/wv/ios-notmember/:id',
-      meta: {
-        title: '造就会员',
-      },
-      component: iosNotMemberContent,
-    },
-    // 仅用于iOS会员
-    {
-      path: '/wv/ios-ismember/:id',
-      meta: {
-        title: '造就会员',
-      },
-      component: iosIsMemberContent,
     },
     {
       path: '/new-member',
@@ -749,19 +729,24 @@ export const router = new Router({
     },
     {
       path: '/wv/intro-mars',
-      name: 'mars',
-      meta: {
-        title: '火星会员',
-      },
       component: () => System.import('./components/h5/mars-member/mars.comp.vue'),
-    },
-    {
-      path: '/wv/intro-mars/success',
-      name: 'mars.success',
-      meta: {
-        title: '开通成功',
-      },
-      component: () => System.import('./components/h5/mars-member/success.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'mars',
+          meta: {
+            title: '火星会员',
+          }
+        },
+        {
+          path: 'success',
+          name: 'mars.success',
+          meta: {
+            title: '开通成功',
+          },
+          component: () => System.import('./components/h5/mars-member/success.comp.vue'),
+        },
+      ]
     },
     {
       path: '/500',

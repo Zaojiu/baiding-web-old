@@ -1,25 +1,5 @@
 <template>
   <div class="container">
-    <!--<div class="video-content">
-      <header :class="{
-        'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
-        'played': isVideoPlayed,
-        'played-landscape': isVideoPlayed && isLandscape
-      }">
-        <div class="player" id="player" @click="isVideoPlayed = true"></div>
-
-        <div class="live-cover" v-if="!isVideoPlayed">
-          <img
-            class="cover-image"
-            alt="话题间封面"
-            :src="coverUrl"
-            @error="coverUrl = defaultCoverUrl"
-          >
-
-          <div class="big-play"></div>
-        </div>
-      </header>
-    </div>-->
     <h3>恭喜您加入火星计划</h3>
     <h4>和我们众多会员一起探索科技创新与未来的前沿</h4>
     <div class="content">
@@ -38,6 +18,10 @@
     display: flex;
     flex-direction: column;
     background-color: #000;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 2;
 
     h3 {
       font-size: 22px;
