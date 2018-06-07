@@ -32,6 +32,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   id: string;
   @Input() liveInfo: LiveInfoModel;
   @Input() userInfo: UserInfoModel;
+  @Input() hiddenSelf: boolean;
   @ViewChild(ScrollerDirective) scroller: ScrollerDirective;
   messages: MessageModel[] = [];
   messagesIntialErr = false;

@@ -66,6 +66,12 @@ export class UtilsService {
     }
   }
 
+  static isFuDan(id: string): boolean {
+    // 复旦直播间ID
+    let idListStr = '5b18f0a6f1292f0001016050';
+    return !(idListStr.indexOf(id) === -1);
+  }
+
   static get isViewportLandscape(): boolean {
     return matchMedia && matchMedia('(orientation: landscape)').matches;
   }

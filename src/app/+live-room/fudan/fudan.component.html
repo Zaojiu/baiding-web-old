@@ -1,0 +1,29 @@
+<div *ngIf="livesList.length" class="live-list scrollable">
+  <div class="top-cover" (click)="gotoLiveRoom(livesList[0].id)"></div>
+  <div class="main-list">
+    <div class="live-info-block" *ngFor="let liveInfo of livesList" (click)="gotoLiveRoomInfo(liveInfo.id)">
+      <div class="cover-small">
+        <img [src]="liveInfo.coverSmall169Url" alt="话题间封面">
+      </div>
+
+      <div class="info">
+        <h3 class="title">{{liveInfo.subject}}</h3>
+        <div class="time">{{liveTime[liveInfo.id]}}</div>
+      </div>
+    </div>
+    <div class="bottom-book" *ngIf="topLiveInfo && topLiveInfo.isCreated()">
+      <p *ngIf="!booking && !topLiveInfo.booked" (click)="bookLive()">订阅直播通知</p>
+      <p *ngIf="booking">订阅中...</p>
+      <p *ngIf="!booking && topLiveInfo.booked">已订阅直播通知</p>
+    </div>
+
+    <div class="bottom">
+      <div class="word">已显示全部内容</div>
+    </div>
+  </div>
+
+</div>
+
+<bd-loading class="loading" *ngIf="isLoading"></bd-loading>
+
+<div class="no-record-tips" *ngIf="!livesList.length && !isLoading">暂无直播内容</div>
