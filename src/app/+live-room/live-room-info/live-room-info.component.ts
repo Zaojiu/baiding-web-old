@@ -250,6 +250,9 @@ export class LiveRoomInfoComponent implements OnInit, OnDestroy {
   }
 
   gotoLive() {
+    if (this.hiddenZj && !this.checkMobileBinded()) {
+      return;
+    }
     this.router.navigate([`/lives/${this.liveInfo.id}`]);
   }
 
