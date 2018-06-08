@@ -4,6 +4,7 @@ import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot, Router} from '
 import {UserInfoService} from '../api/user-info/user-info.service';
 import {host} from "../../../environments/environment";
 import {LiveService} from "../api/live/live.service";
+import {UtilsService} from '../utils/utils';
 
 @Injectable()
 export class LiveAuthGuard implements CanActivate {
@@ -16,7 +17,7 @@ export class LiveAuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const liveId = route.params['id'];
     const to = `${host.self}${state.url}`;
-
+    let roomType = UtilsService.isFuDan(liveId) ? 'fudan' : '';
     return this.liveService.getLiveInfo(liveId).then(liveInfo => {
       const userInfo = this.userInfoService.getUserInfoCache();
 
@@ -36,7 +37,7 @@ export class LiveAuthGuard implements CanActivate {
           if (userInfo && userInfo.mobile.number) {
             return true;
           } else {
-            this.router.navigate([`/signup`], {queryParams: {redirectTo: to}});
+            this.router.navigate([`/signup`], {queryParams: {redirectTo: to, roomType: roomType}});
             return false;
           }
         default:

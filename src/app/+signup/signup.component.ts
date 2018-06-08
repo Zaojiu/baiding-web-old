@@ -27,6 +27,7 @@ export class SignupComponent implements OnInit {
   smsBtnAvailable = true;
   isSubmitting = false;
   redirectTo: string;
+  roomType: string;
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router,
               private senderApiService: SenderApiService, private tipsService: OperationTipsService,
@@ -36,8 +37,15 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     this.userInfo = this.userInfoService.getUserInfoCache();
     this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/lives';
+    this.roomType = this.route.snapshot.queryParams['roomType'] || '';
     this.redirectTo = this.redirectTo.replace(host.self, '');
     if (this.redirectTo === '/' || !this.redirectTo.startsWith('/')) this.redirectTo = '/lives';
+    if (this.roomType === 'fudan') {
+      this.password = 'fudanemba';
+      this.name = '复旦emba';
+      this.company = '复旦emba';
+      this.title = '复旦emba';
+    }
     this.form = this.fb.group({
       'phoneNumber': new FormControl(this.phoneNumber, [
         Validators.required,
