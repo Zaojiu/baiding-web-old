@@ -87,6 +87,7 @@ export const initWechat = async (): Promise<void> => {
     wx.error((err: any) => {
       console.log('wx err:', err);
       showTips('微信初始化失败, 请刷新页面');
+      needResign = true;
       throw new Error(err && err.errMsg ? err.errMsg : err);
     });
 

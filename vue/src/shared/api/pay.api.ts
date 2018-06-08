@@ -35,7 +35,7 @@ paymentStore.subscribe((mutation, state) => {
   }
 });
 
-const payResult = router.currentRoute.query['payResult'];
+const payResult = (router && router.currentRoute) ? router.currentRoute.query['payResult'] : '';
 if (payResult) {
   if (payResult === 'success') {
     showTips('支付成功');
