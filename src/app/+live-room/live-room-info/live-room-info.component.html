@@ -37,7 +37,7 @@
       class="bi bi-share-star"></i>分享榜</span><span class="share-star-content">快来分享吧<i
       class="bi bi-right-arrow"></i></span></div>
   </div>
-  *ngIf="!hiddenZj"
+  
   <div class="operation-area">
     <a class="btn notification" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking && isInWechat && !hiddenZj"
        (click)="bookLive()"><i
