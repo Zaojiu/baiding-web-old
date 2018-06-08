@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div class="form-group"
+      <div *ngIf="roomType!=='fudan'" class="form-group"
            [ngClass]="{'has-error': form.controls['password'].dirty && form.controls['password'].invalid}">
         <div class="input-group">
           <input
@@ -79,7 +79,7 @@
       </div>
     </section>
 
-    <section>
+    <section *ngIf="roomType!=='fudan'">
       <h2>直播报名信息</h2>
       <div class="form-group"
            [ngClass]="{'has-error': form.controls['name'].dirty && form.controls['name'].invalid}">
@@ -120,7 +120,8 @@
         </div>
       </div>
 
-      <div class="form-group" [ngClass]="{'has-error': form.controls['title'].dirty && form.controls['title'].invalid}">
+      <div class="form-group"
+           [ngClass]="{'has-error': form.controls['title'].dirty && form.controls['title'].invalid}">
         <div class="input-group">
           <input
             id="title"
