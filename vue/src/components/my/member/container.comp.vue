@@ -168,7 +168,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {getUserInfoCache} from "../../../shared/api/user.api";
+  import {getUserInfoCache, refreshUserInfo} from "../../../shared/api/user.api";
   import {UserInfoModel} from '../../../shared/api/user.model'
   import {isInApp, isInWechat, isAndroid} from "../../../shared/utils/utils";
   import {initIOS, callHandler} from "../../../shared/utils/ios";
@@ -176,6 +176,14 @@
   import {host} from "../../../env/environment";
   import {initWechat} from "../../../shared/utils/wechat";
   import {setShareInfo} from "../../../shared/utils/share";
+  import {ApiError} from '../../../shared/api/xhr';
+  import {ApiCode, ApiErrorMessage} from '../../../shared/api/code-map.enum';
+  import {createOrder} from '../../../shared/api/order.api';
+  import {Store} from "../../../shared/utils/store";
+  import {showTips} from '../../../store/tip';
+  import {getRelativePath} from '../../../shared/utils/utils';
+  import {pay} from '../../../shared/api/pay.api';
+  import {setPaymentNone} from "../../../store/payment";
 
   @Component({})
   export default class ActivateComponent extends Vue {
@@ -193,6 +201,7 @@
     memberType = -1;//-1非会员 0 普通会员，1 火星会员
     timeOver = '';
     isAndroid = isAndroid && isInApp;
+    isPaying = false;
 
     @Watch('$route.name')
     setNavIndex() {
@@ -285,7 +294,7 @@
           break;
         case 5:
           if (!this.isAndroid) {
-            this.$router.push({path: '/new-member/download'});
+            this.$router.replace({path: '/new-member/download'});
           }
           break;
         default:
@@ -448,6 +457,15 @@
       }
     }
 
+    checkMobileBinded(to: string) {
+      // 未绑定手机
+      if (this.userInfo && this.userInfo.isMobileBinded) {
+        return true;
+      }
+      this.$router.push({path: '/mobile-bind-event', query: {redirectTo: to}});
+      return false;
+    };
+
     async goIntro() {
       this.userInfo = getUserInfoCache();
       if (this.userInfo && this.userInfo.member.valid) {
@@ -462,11 +480,60 @@
 
       //web端购买跳转
       if (this.userInfo && !this.userInfo.member.valid) {
-        this.$router.push({
+        /*this.$router.push({
           path: '/orders',
           query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}
-        });
+        });*/
+
+        // 创建订单
+        if (!this.checkMobileBinded(this.$route.fullPath)) {
+          return;
+        }
+        this.createOrder();
       }
+    }
+
+    //订单
+    async createOrder() {
+      if (this.isPaying) return;
+
+      this.isPaying = true;
+
+      try {
+        const orderMeta = await createOrder([this.memberOrderObject], [], false);
+        await this.payOrder(orderMeta.orderNo);
+      } catch (e) {
+        if (e instanceof ApiError) {
+          const code = e.code;
+
+          if (code === ApiCode.ErrOrderNeedProcessOthers) {
+            const oldOrderNum = e.originError.response && e.originError.response.data.data.orderNo;
+            this.payOrder(oldOrderNum);
+          } else if (e.isUnauthorized) {
+            Store.memoryStore.delete('userInfo');
+            showTips(`请登录`);
+            this.$router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
+          } else {
+            const errMessage = ApiErrorMessage[code] || `未知错误: ${code}`;
+            showTips(errMessage);
+          }
+
+          throw e;
+        }
+      } finally {
+        this.isPaying = false;
+      }
+    }
+
+    async payOrder(orderNo: string) {
+      await pay(orderNo, `${host.self}/new-member/card`);
+      setPaymentNone();
+      this.userInfo = await refreshUserInfo();
+      this.isMember = true;
+      if (!isInApp && !isInWechat) {
+        this.$router.push({path: `/new-member/card`});
+      }
+      showTips('支付成功');
     }
   }
 </script>

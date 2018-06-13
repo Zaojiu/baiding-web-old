@@ -769,7 +769,6 @@
       this.id = this.$route.params['itemId'];
       if (!this.fromPaymentResult()) {
         await this.initData();
-        this.share();
         if (this.isChangeItem) {
           this.isChangeItem = false;
           this.initComments(false);
@@ -871,10 +870,10 @@
     async initData() {
       this.isLoading = true;
       this.isError = false;
-
       try {
         this.itemInfo = await getColumnItemDetail(this.id);
         this.isPraised = this.itemInfo.current.currentUserInfo.praised;
+        this.share();
       } catch (e) {
         this.isError = true;
         throw e;
