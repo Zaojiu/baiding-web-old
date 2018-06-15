@@ -2,34 +2,40 @@
   <div class="member-activate">
     <article class="member-page">
       <top-nav></top-nav>
-      <h1>造就会员<span v-if="timeOver">{{timeOver}}到期</span></h1>
+      <div class="header">
+        <div class="left">
+          <span class="title">造就会员</span>
+          <span class="time" v-if="timeOver">{{timeOver}}到期</span>
+        </div>
+        <div class="btn" v-if="showBuyBtn" @click="goIntro">续费</div>
+      </div>
       <nav>
         <ul class="nav">
           <li v-if="isMember"
               @click="changeNav(0)"
-              :class="{'active':navIndex===0,'app-padding':!isMember||isMember&&memberType === 0}">
+              :class="{'active':navIndex===0,'little-padding':memberType!==1}">
             会员卡
           </li>
           <li v-if="!isMember"
               @click="changeNav(1)"
-              :class="{'active':navIndex===1,'app-padding':!isMember||isMember&&memberType === 0}">
+              :class="{'active':navIndex===1,'little-padding':memberType!==1}">
             特别优惠
           </li>
           <li v-if="isMember&&memberType === 1"
               @click="changeNav(2)"
-              :class="{'active':navIndex===2,'app-padding':!isMember||isMember&&memberType === 0}">
+              :class="{'active':navIndex===2,'little-padding':memberType!==1}">
             计划表
           </li>
           <li @click="changeNav(3)"
-              :class="{'active':navIndex===3,'app-padding':!isMember||isMember&&memberType === 0}">
+              :class="{'active':navIndex===3,'little-padding':memberType!==1}">
             专属视频
           </li>
           <li @click="changeNav(4)"
-              :class="{'active':navIndex===4,'app-padding':!isMember||isMember&&memberType === 0}">
+              :class="{'active':navIndex===4,'little-padding':memberType!==1}">
             会员课程
           </li>
           <li v-if="!isAndroid" @click="changeNav(5)"
-              :class="{'active':navIndex===5,'app-padding':!isMember||isMember&&memberType === 0}">
+              :class="{'active':navIndex===5,'little-padding':memberType!==1}">
             干货下载
           </li>
         </ul>
@@ -37,10 +43,10 @@
       <section class="member-content"
                :class="{
                   'submargin':isCard,
-                  'web-btn-show':!isInApp&&(openBtn&&!isMember),
-                  'web-btn-hide':!isInApp&&(!openBtn||isMember),
-                  'app-btn-show':isInApp&&(openBtn&&!isMember),
-                  'app-btn-hide':isInApp&&(!openBtn||isMember),
+                  'web-btn-show':!isInApp&&!isMember,
+                  'web-btn-hide':!isInApp&&isMember,
+                  'app-btn-show':isInApp&&!isMember,
+                  'app-btn-hide':isInApp&&isMember,
           }"
                @touchstart="touchStart"
                @touchmove="touchMove"
@@ -50,7 +56,7 @@
         </transition>
       </section>
     </article>
-    <footer v-if="!isMember&&openBtn">
+    <footer v-if="!isMember">
       <button @click="goIntro">立即开通会员</button>
     </footer>
   </div>
@@ -63,17 +69,56 @@
     overflow: hidden;
     .member-page {
       height: 100vh;
-      h1 {
-        padding: 12px 20px;
-        color: rgb(242, 242, 242);
-        line-height: 28px;
-        font-size: 30px;
-        span {
+      .header {
+        height: 54px;
+        padding: 11px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        .left {
+          color: #f2f2f2;
+
+          .title {
+            line-height: 30px;
+            font-size: 30px;
+            font-weight: bold;
+          }
+        }
+
+        .time {
           font-weight: normal;
-          font-size: 16px;
+          font-size: 15px;
           padding-left: 20px;
         }
+        .btn {
+          font-size: 14px;
+          color: #fff;
+          background: linear-gradient(rgb(204, 169, 104), rgb(154, 120, 58));
+          display: inline-block;
+          padding: 4px 20px;
+          border-radius: 22px;
+          line-height: 16px;
+        }
+
+        @media (max-width: 335px) {
+          .left {
+            .title {
+              line-height: 26px;
+              font-size: 26px;
+            }
+          }
+
+          .time {
+            font-size: 14px;
+            padding-left: 10px;
+          }
+          .btn {
+            padding: 3px 16px;
+          }
+        }
       }
+
       @media (max-width: 386px) {
         .nav {
           font-size: 14px !important;
@@ -98,7 +143,7 @@
         font-size: 15px;
         display: flex;
         font-weight: bold;
-        .app-padding {
+        .little-padding {
           margin-right: 26px;
         }
         li {
@@ -135,7 +180,7 @@
         height: calc(100vh - 224px);
       }
       .web-btn-hide {
-        height: calc(100vh - 150px);
+        height: calc(100vh - 148px);
       }
       .app-btn-show {
         height: calc(100vh - 174px);
@@ -197,7 +242,7 @@
     moveClientX: number;
     originY: number;
     moveClientY: number;
-    openBtn = true;
+    showBuyBtn = false;
     memberType = -1;//-1非会员 0 普通会员，1 火星会员
     timeOver = '';
     isAndroid = isAndroid && isInApp;
@@ -236,10 +281,17 @@
     async init() {
       this.share();
       this.isInApp = isInApp;
+      this.showBuyBtn = false;
       this.isCard = false;
       if (this.userInfo && this.userInfo.member.valid) {
         this.isMember = true;
         this.timeOver = moment(this.userInfo.member.expiredAt).format('YYYY-MM-DD');
+        // 30天内过期，提示继续购买
+        let diffTime = this.userInfo.member.expiredAt.diff(moment());
+        if (diffTime < 2592000000 && diffTime > 0) {
+          this.timeOver = this.userInfo.member.expiredAt.endOf('day').fromNow();
+          this.showBuyBtn = true;
+        }
         if (this.userInfo.member.memberId && this.userInfo.member.memberId === 'member-mars') {
           this.memberType = 1;
         } else {
@@ -468,9 +520,7 @@
 
     async goIntro() {
       this.userInfo = getUserInfoCache();
-      if (this.userInfo && this.userInfo.member.valid) {
-        return;
-      }
+
       //安卓端购买跳转
       if (this.isAndroid) {
         await initIOS();
@@ -478,19 +528,11 @@
         return;
       }
 
-      //web端购买跳转
-      if (this.userInfo && !this.userInfo.member.valid) {
-        /*this.$router.push({
-          path: '/orders',
-          query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}
-        });*/
-
-        // 创建订单
-        if (!this.checkMobileBinded(this.$route.fullPath)) {
-          return;
-        }
-        this.createOrder();
+      // web 创建订单
+      if (!this.checkMobileBinded(this.$route.fullPath)) {
+        return;
       }
+      this.createOrder();
     }
 
     //订单
@@ -529,9 +571,9 @@
       await pay(orderNo, `${host.self}/new-member/card`);
       setPaymentNone();
       this.userInfo = await refreshUserInfo();
-      this.isMember = true;
+      this.init();
       if (!isInApp && !isInWechat) {
-        this.$router.push({path: `/new-member/card`});
+        // this.$router.push({path: `/new-member/card`, query: {payResult: 'success'}});
       }
       showTips('支付成功');
     }
