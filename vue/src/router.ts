@@ -749,6 +749,19 @@ export const router = new Router({
       ]
     },
     {
+      path: '/wv/zaojiu-renwen',
+      component: () => System.import('./components/h5/zj-renwen/main.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'zaojiu.renwen',
+          meta: {
+            title: '造就人文',
+          }
+        },
+      ]
+    },
+    {
       path: '/500',
       name: 'error',
       component: errorComp,
