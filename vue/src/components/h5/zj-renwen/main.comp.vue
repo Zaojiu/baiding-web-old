@@ -2,8 +2,8 @@
   <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
   <error class="abs-center" v-else-if="isNotFound">网络错误</error>
   <div class="container"
-       v-else
        :class="{'noOverflow':!isNewIos}"
+       v-else
   >
     <nav class="nav">
       <div style="width: 30%;height: 56px"
@@ -456,7 +456,7 @@
           }
         }
 
-        .item-old{
+        .item-old {
           display: inline-block;
           vertical-align: middle;
         }
@@ -647,7 +647,6 @@
     created() {
       this.init();
       this.isNewIos = this.checkV();
-      console.log(this.isNewIos);
     }
 
     checkV() {
