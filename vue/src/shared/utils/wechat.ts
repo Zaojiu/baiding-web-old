@@ -3,7 +3,7 @@ import {post} from "../api/xhr";
 import {AxiosResponse} from "axios";
 import {showTips} from "../../store/tip";
 import {appendAfterEachHook} from "../../hooks";
-import {isAndroid} from './utils';
+import {isAndroid, isiOS} from './utils';
 
 declare const wx: any;
 
@@ -24,6 +24,14 @@ let autoCompleteRejecter: (reason: string) => void;
 
 if (isAndroid) {
   appendAfterEachHook((to, from) => needResign = true);
+}
+
+if (isiOS) {
+  appendAfterEachHook((to, from) => {
+    if (from.fullPath === '/') {
+      needResign = true
+    }
+  });
 }
 
 const getConfig = async (): Promise<WechatConfigModel> => {

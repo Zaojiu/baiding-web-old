@@ -3,7 +3,7 @@
   <error class="abs-center" v-else-if="isNotFound">网络错误</error>
   <div class="container"
        v-else
-       ref="container"
+       :class="{'noOverflow':!isNewIos}"
   >
     <nav class="nav">
       <div style="width: 30%;height: 56px"
@@ -13,7 +13,7 @@
       <div style="width: 11%;height: 50px;"
            @click="changeNav(1)"
            :class="{'active':navIndex===1}">
-        <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-2.png"/>
+        <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-bs.png"/>
       </div>
       <div style="width: 11%;height: 50px"
            @click="changeNav(2)"
@@ -33,7 +33,7 @@
         <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-5.png"/>
       </div>
     </nav>
-    <section class="content">
+    <section class="content" ref="content" :class="{'content-old-v':!isNewIos}">
       <transition :name="translation" v-if="navIndex===0">
         <div class="child-view" key="1">
           <div class="index">
@@ -57,18 +57,18 @@
               造就人文会从「视觉」、「听觉」、「味觉」等人类最基础的感知出发，去探索艺术与文化的内涵与边界。
             </p>
             <div class="btn-group">
-              <div class="btn-img" @click="changeNav(1)">
+              <div class="btn-img" @click="changeNav(1)" :class="{'item-old':!isNewIos}">
                 <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/link-1.png"/>
               </div>
-              <div class="btn-img" @click="changeNav(2)">
+              <div class="btn-img" @click="changeNav(2)" :class="{'item-old':!isNewIos}">
                 <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/link-2.png"/>
               </div>
             </div>
             <div class="btn-group">
-              <div class="btn-img" @click="changeNav(3)">
+              <div class="btn-img" @click="changeNav(3)" :class="{'item-old':!isNewIos}">
                 <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/link-3.png"/>
               </div>
-              <div class="btn-img" @click="changeNav(4)">
+              <div class="btn-img" @click="changeNav(4)" :class="{'item-old':!isNewIos}">
                 <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/link-4.png"/>
               </div>
             </div>
@@ -296,7 +296,7 @@
       </transition>
 
     </section>
-    <div class="button" v-if="navIndex===1" @click="goToTicket">
+    <div class="button" v-if="navIndex===1" @click="goToTicket" :class="{'button-new-v':isNewIos}">
       立即购票
     </div>
   </div>
@@ -308,19 +308,22 @@
     src: url("https://og9s6vxbs.qnssl.com/zaojiu_renwen/SourceHanSerifCN-Regular-s.ttf")
   }
 
+  .noOverflow {
+    overflow-y: hidden;
+  }
+
   .container {
     font-family: zjrw_songti;
     height: 100vh;
     background-color: #fff;
     color: #000;
-    $nav-height: 80px;
+    $nav-height: 84px;
     $font-p: 16px;
     $lineHeight: 29px;
     $font-title: 20px;
     $lineHeght-t: 28px;
     $font-l: 22px;
     $lineHeght-l: 37px;
-    overflow-y: hidden;
 
     .button {
       position: absolute;
@@ -334,6 +337,10 @@
       line-height: 52px;
       text-align: center;
       font-weight: bold;
+    }
+
+    .button-new-v {
+      position: fixed;
     }
 
     .nav {
@@ -379,13 +386,15 @@
       }
     }
 
+    .content-old-v {
+      height: calc(100vh - 84px);
+      overflow-y: auto;
+    }
+
     .content {
       background-color: #fff;
-      //height: calc(100vh - #{$nav-height});
       position: relative;
       font-size: $font-p;
-      height: calc(100vh - 80px);
-      overflow-y: auto;
 
       p {
         margin-top: 12px;
@@ -431,6 +440,7 @@
         font-size: 0;
         align-items: center;
         justify-content: space-around;
+        text-align: center;
 
         & + .btn-group {
           padding-bottom: 80px;
@@ -445,6 +455,11 @@
             width: 100%;
           }
         }
+
+        .item-old{
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
     }
 
@@ -452,8 +467,8 @@
       padding: 30px 20px 0 20px;
 
       .b-s-c {
-       /* height: calc(100vh - 130px);
-        overflow-y: auto;*/
+        /* height: calc(100vh - 130px);
+         overflow-y: auto;*/
 
         .guest-group {
 
@@ -614,7 +629,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {isInWechat} from '../../../shared/utils/utils';
+  import {isInWechat, isiOS} from '../../../shared/utils/utils';
   import {initWechat} from '../../../shared/utils/wechat';
   import {setShareInfo} from '../../../shared/utils/share';
   import {host} from '../../../env/environment'
@@ -626,30 +641,55 @@
     isLoading = false;
     isNotFound = false;
     defaultImg = '/assets/img/default-cover.jpg';
-    originX: number;
-    originY: number;
-    moveClientX: number;
-    moveClientY: number;
-    container: HTMLElement;
+    content: HTMLElement;
+    isNewIos = true;
 
     created() {
       this.init();
+      this.isNewIos = this.checkV();
+      console.log(this.isNewIos);
+    }
+
+    checkV() {
+      if (isiOS) {
+        let ver = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+        if (!ver) {
+          return false;
+        }
+        let version = parseInt(ver[1], 10);
+        if (version > 9) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
     }
 
     @Watch('navIndex')
     scrollTop() {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+      if (this.isNewIos) {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      } else {
+        this.content.scrollTop = 0;
+      }
     }
 
     async init() {
       this.share();
+      this.$nextTick(() => {
+        this.content = this.$refs['content'] as HTMLElement;
+      })
     }
 
     async share() {
       if (isInWechat) {
         await initWechat();
-        setShareInfo('歌剧表演艺术家黄英请你来听', '造就人文第二期：辨声——歌剧，虫鸣，电音……声声入耳', 'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png', `${host.self}/wv/zaojiu-renwen`);
+        setShareInfo('造就人文第二期：辨声——歌剧，虫鸣，电音……声声入耳',
+          '歌剧表演艺术家黄英请你来听',
+          `${host.assets}/assets/img/zaojiu-logo.jpg`,
+          `${host.self}/wv/zaojiu-renwen`);
       }
     }
 
