@@ -6,28 +6,28 @@
        ref="container"
   >
     <nav class="nav">
-      <div style="width: 21%;height: 117px"
+      <div style="width: 30%;height: 56px"
            @click="changeNav(0)">
-        <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-1.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-1-n.png"/>
       </div>
-      <div style="width: 11%;height: 59px;"
+      <div style="width: 11%;height: 50px;"
            @click="changeNav(1)"
            :class="{'active':navIndex===1}">
         <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-2.png"/>
       </div>
-      <div style="width: 11%;height: 59px"
+      <div style="width: 11%;height: 50px"
            @click="changeNav(2)"
            :class="{'active':navIndex===2}">
         <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-3.png"/>
       </div>
       <div
-        style="width: 11%;height: 59px"
+        style="width: 11%;height: 50px"
         @click="changeNav(3)"
         :class="{'active':navIndex===3}">
         <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-4.png"/>
       </div>
       <div
-        style="width: 11%;height: 59px"
+        style="width: 11%;height: 50px"
         @click="changeNav(4)"
         :class="{'active':navIndex===4}">
         <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/nav-5.png"/>
@@ -63,6 +63,8 @@
               <div class="btn-img" @click="changeNav(2)">
                 <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/link-2.png"/>
               </div>
+            </div>
+            <div class="btn-group">
               <div class="btn-img" @click="changeNav(3)">
                 <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/link-3.png"/>
               </div>
@@ -76,72 +78,97 @@
       <transition :name="translation" v-if="navIndex===1">
         <div class="child-view" key="2">
           <div class="b-s">
-            <div class="image-1-1">
-              <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/2-c.jpg"/>
-            </div>
-            <p>
-              最简单的、最普通的词语「声」出发，去探索声音的形状，去感受声音的力量，去体验声音的魅力，去探寻声音的价值……通过不同艺术、科技领域的领军者对于声音这一主题的不同认知和阐释，展现世界的多元、多维、辨证和美好。</p>
-            <div class="guest-group">
-              <h3 style="height: 31px">
-                <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice-1.png"/>
-              </h3>
-              <div class="img-group">
-                <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/zzq.jpg" align="left" width="140px" height="166px"/>
-                <b>朱哲琴 · 跨界音乐家、看见造物创始人兼艺术总监</b>
-                <p>
-                  二十多年来朱哲琴从音乐出发，开始其漫长的艺术探索之旅，近年其工作与创作已经大量介入到声音、视觉、表演，设计、传媒、公众、社群等领域。不再局限于歌唱家这个标签，朱哲琴不再局限于声音的即有维度；经过宇宙、自然与人之间关系的思考，将声音作为材料，用以表现艺术家本人的艺术与精神世界。而作为介质而存在的声音脱离了物理意义，以一种饱含意义，无边无形的自由展现“艺术”。
-                </p>
+            <div class="b-s-c">
+              <div class="image-1-1">
+                <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/2-c.jpg"/>
               </div>
-            </div>
-            <div class="guest-group">
-              <h3 style="height: 29px">
-                <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice-2.png"/>
-              </h3>
-              <div class="img-group">
-                <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/jpd.jpg" align="left" width="104px" height="138px"/>
-                <b>金培达 · 香港著名作曲家</b>
-                <p>香港著名作曲家。11 次荣获香港电影金像奖最佳原创音乐与最佳原创歌曲，其中包括广为传唱的《星语心愿》和《如果·爱》。音乐对于电影情节的推动和情绪的渲染达到了出神入化之境。2008
-                  年香港政府为他颁发了荣誉勋章，肯定其音乐成就及艺术领域的卓越贡献。
-                </p>
+              <p>
+                最简单的、最普通的词语「声」出发，去探索声音的形状，去感受声音的力量，去体验声音的魅力，去探寻声音的价值……通过不同艺术、科技领域的领军者对于声音这一主题的不同认知和阐释，展现世界的多元、多维、辨证和美好。
+              </p>
+              <div class="guest-group">
+                <h3 style="height: 27px">
+                  <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice_mm.png"/>
+                </h3>
+                <div class="img-group">
+                  <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/hy.jpg" align="left" width="97px" height="138px"/>
+                  <b>黄英 · 女高音艺术家</b>
+                  <p>
+                    国际音乐权威人士称黄英的演唱极富内涵，音色柔和甜美，花腔技巧灵活，演唱充满激情，堪称中国音乐界最杰出歌唱家之一。《纽约时报》说：黄英柔和优美的音色是最适合演唱莫扎特音乐风格的歌唱家。
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="guest-group">
-              <h3 style="height: 27px">
-                <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice-3.png"/>
-              </h3>
-              <div class="img-group">
-                <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/hy.jpg" align="left" width="97px" height="138px"/>
-                <b>黄英 · 女高音艺术家</b>
-                <p>
-                  国际音乐权威人士称黄英的演唱极富内涵，音色柔和甜美，花腔技巧灵活，演唱充满激情，堪称中国音乐界最杰出歌唱家之一。《纽约时报》说：黄英柔和优美的音色是最适合演唱莫扎特音乐风格的歌唱家。
-                </p>
+              <div class="guest-group">
+                <h3 style="height: 29px">
+                  <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice-2.png"/>
+                </h3>
+                <div class="img-group">
+                  <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/jpd.jpg" align="left" width="104px"
+                       height="138px"/>
+                  <b>金培达 · 香港著名作曲家</b>
+                  <p>香港著名作曲家。11 次荣获香港电影金像奖最佳原创音乐与最佳原创歌曲，其中包括广为传唱的《星语心愿》和《如果·爱》。音乐对于电影情节的推动和情绪的渲染达到了出神入化之境。2008
+                    年香港政府为他颁发了荣誉勋章，肯定其音乐成就及艺术领域的卓越贡献。
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="guest-group">
-              <h3 style="height: 36px">
-                <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice-4.png"/>
-              </h3>
-              <div class="img-group">
-                <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/shb.jpg" align="left" width="106px" height="76px"/>
-                <b>时海波 · 上海市第六人民医院耳鼻咽喉科行政副主任、 副主任医师、硕导</b>
-                <p>从事耳鼻咽喉头颈外科医疗工作 20 余年，2006 年获日本九州大学博士学位，2010 年赴美国 House 耳科研究所、2014 年赴德国德累斯顿工业大学附属医院临床进修。2013
-                  年首批入选上海市卫计委新一轮“百人计划”，2015 年首批入选上海市教委“高峰高原学科建设项目”，2017 年入选上海市领军人才。
-                </p>
+              <div class="guest-group">
+                <h3 style="height: 29px">
+                  <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice_xw.png"/>
+                </h3>
+                <div class="img-group">
+                  <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/dmq.png" align="left" width="98px"
+                       height="131px"/>
+                  <b>杜铭秋 · 同济大学建筑声学博士、中国美术学院副教授</b>
+                  <p>去听音乐会时，越贵的票一定越好吗？他用算法模拟出了音乐厅里每一个座位的声场，只想告诉你到底应该
+                    选哪个座位。在读了5年建筑系后，杜铭秋还是认为建筑太美学，但是纯理工又不完整，直到在研究所时一间音响实验室开启了他的视野。“过去声音就像「黑箱作业」，我们不知道里面有什么，现在我即使不能打开它，也要想办法让它透进一点光。”
+                  </p>
+                </div>
               </div>
-              <div class="desc">
-                <p>
-                  <b>活动时间：</b>2018年06月24日 19:00
-                </p>
-                <p>
-                  <b>活动地点：</b>兰心大戏院
-                </p>
-                <p>
-                  <b>详细地址：</b>上海市黄浦区茂名南路57号，近长乐路
-                </p>
+              <div class="guest-group">
+                <h3 style="height: 36px">
+                  <img class="img" src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice_bz.png"/>
+                </h3>
+                <div class="img-group">
+                  <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/shb.jpg" align="left" width="106px"
+                       height="76px"/>
+                  <b>
+                    时海波 · 上海交通大学附属第六人民医院耳鼻咽喉头颈外科常务副主任、教研室主任
+                    医学博士，主任医师，教授，博士研究生导师
+                  </b>
+                  <p>
+                    我们为什么能听见声音？每个人听见的声音是一样的吗？人工电子耳蜗的原理是什么？
+                    声音带来了那么多的美好，面对听障人士，现代医学一直没有放弃过研究。时海波主任现任中华医学会耳鼻咽喉头颈外科中青年委员会副主任委员，中国中西医结合眩晕疾病专科分会副主委，上海市临床质量控制中心委员，上海市医学会耳鼻咽喉头颈外科分会委员兼耳科组副组长，上海市声学学会生理学组主任委员，兼任多本核心期刊编委。
+                    他将从最理性科学的角度解释我们耳朵的构造，我们是如何“听”见声音，电子耳蜗的原理又是什么。To Cure Sometimes，To Relieve Often，To Comfort Always
+                    是他的座右铭。其他艺术家用声音治愈普罗大众，而他，让有缺陷的那部分人听见声音。
+                  </p>
+                </div>
+                <div class="guest-group">
+                  <h3 style="height: 31px">
+                    <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/voice_kj.png"/>
+                  </h3>
+                  <div class="img-group">
+                    <img src="https://og9s6vxbs.qnssl.com/zaojiu_renwen/xyp.png" align="left" width="98px"
+                         height="131px"/>
+                    <b>向奕裴 · 数字音频、电脑音乐专家、米谟科技创始人</b>
+                    <p>
+                      我们现在听到的声音，是如何一步步走到现在的？创造出原本不存在于这个世界的声音，是种什么样的感觉？
+                      一个清华电子毕业的学霸，却去念了音乐博士，左手科技右手艺术的他，告诉你用0和1写乐谱的创作过程。
+                    </p>
+                  </div>
+                </div>
+                <div class="padding">
+                  <div class="desc">
+                    <p>
+                      <b>活动时间：</b>2018年06月24日 19:00
+                    </p>
+                    <p>
+                      <b>活动地点：</b>兰心大戏院
+                    </p>
+                    <p>
+                      <b>详细地址：</b>上海市黄浦区茂名南路57号，近长乐路
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="button" @click="goToTicket">
-              立即购票
             </div>
           </div>
         </div>
@@ -269,13 +296,16 @@
       </transition>
 
     </section>
+    <div class="button" v-if="navIndex===1" @click="goToTicket">
+      立即购票
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
   @font-face {
     font-family: zjrw_songti;
-    src: url("https://og9s6vxbs.qnssl.com/zaojiu_renwen/SourceHanSerifCN-Regular.ttf")
+    src: url("https://og9s6vxbs.qnssl.com/zaojiu_renwen/SourceHanSerifCN-Regular-s.ttf")
   }
 
   .container {
@@ -283,13 +313,28 @@
     height: 100vh;
     background-color: #fff;
     color: #000;
-    $nav-height: 130px;
+    $nav-height: 80px;
     $font-p: 16px;
     $lineHeight: 29px;
     $font-title: 20px;
     $lineHeght-t: 28px;
     $font-l: 22px;
     $lineHeght-l: 37px;
+    overflow-y: hidden;
+
+    .button {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgb(0, 211, 193);
+      color: #fff;
+      height: 52px;
+      font-size: 18px;
+      line-height: 52px;
+      text-align: center;
+      font-weight: bold;
+    }
 
     .nav {
       display: flex;
@@ -339,6 +384,8 @@
       //height: calc(100vh - #{$nav-height});
       position: relative;
       font-size: $font-p;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
 
       p {
         margin-top: 12px;
@@ -384,7 +431,10 @@
         font-size: 0;
         align-items: center;
         justify-content: space-around;
-        padding-bottom: 80px;
+
+        & + .btn-group {
+          padding-bottom: 80px;
+        }
 
         .btn-img {
           margin-top: 40px;
@@ -401,63 +451,57 @@
     .b-s {
       padding: 30px 20px 0 20px;
 
-      .guest-group {
+      .b-s-c {
+       /* height: calc(100vh - 130px);
+        overflow-y: auto;*/
 
-        h3 {
-          height: 24px;
-          margin: 60px 0 24px;
-          text-align: center;
+        .guest-group {
 
-          img {
-            height: 100%;
+          h3 {
+            height: 24px;
+            margin: 60px 0 24px;
+            text-align: center;
+
+            img {
+              height: 100%;
+            }
+          }
+
+          .img-group {
+            margin-top: 15px;
+
+            img {
+              margin: 4px 11px 0 0;
+            }
+
+            p {
+              margin-top: 6px;
+            }
+
+            b {
+              font-size: $font-title;
+              text-align: left;
+              line-height: $lineHeght-t;
+            }
+          }
+
+          .music {
+            margin: 4px -10px 0 -10px;
+          }
+
+          .padding {
+            padding: 28px 0 92px 0;
+          }
+
+          .desc {
+            background-color: rgb(247, 247, 247);
+            padding: 12px;
+            p {
+              margin: 0;
+              padding: 0;
+            }
           }
         }
-
-        .img-group {
-          margin-top: 15px;
-
-          img {
-            margin: 4px 11px 0 0;
-          }
-
-          p {
-            margin-top: 6px;
-          }
-
-          b {
-            font-size: $font-title;
-            text-align: left;
-            line-height: $lineHeght-t;
-          }
-        }
-
-        .music {
-          margin: 4px -10px 0 -10px;
-        }
-
-        .desc {
-          margin: 28px 0 92px 0;
-          background-color: rgb(247, 247, 247);
-          padding: 12px;
-          p {
-            margin: 0;
-            padding: 0;
-          }
-        }
-      }
-
-      .button {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: rgb(0, 211, 193);
-        color: #fff;
-        height: 52px;
-        font-size: 18px;
-        line-height: 52px;
-        text-align: center;
-        font-weight: bold;
       }
     }
 
@@ -577,7 +621,7 @@
 
   @Component({})
   export default class MainComponent extends Vue {
-    navIndex = 0;
+    navIndex = 1;
     translation = '';
     isLoading = false;
     isNotFound = false;
@@ -594,18 +638,18 @@
 
     @Watch('navIndex')
     scrollTop() {
-      this.container.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     }
 
     async init() {
       this.share();
-      this.container = document.documentElement || document.body;
     }
 
     async share() {
       if (isInWechat) {
         await initWechat();
-        setShareInfo('造就人文', 'www.zaojiu.com', 'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png', `${host.self}/wv/zaojiu-renwen`);
+        setShareInfo('歌剧表演艺术家黄英请你来听', '造就人文第二期：辨声——歌剧，虫鸣，电音……声声入耳', 'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png', `${host.self}/wv/zaojiu-renwen`);
       }
     }
 
@@ -619,7 +663,7 @@
     }
 
     goToTicket() {
-      this.$router.push({path: '/events/59cb0b2d94f498000140bb7f'});
+      window.location.href = 'http://weixin.ticketgo.cn/wtWeChat/search/info?markapp=wentouWX&stroll=a&prono=10000384&from=groupmessage&isappinstalled=0';
     }
 
     goToTalk(id: string) {
