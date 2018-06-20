@@ -687,7 +687,7 @@
         await initWechat();
         setShareInfo('造就人文第二期：辨声——歌剧，虫鸣，电音……声声入耳',
           '歌剧表演艺术家黄英请你来听',
-          `${host.assets}/assets/img/zaojiu-logo.jpg`,
+          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
           `${host.self}/wv/zaojiu-renwen`);
       }
     }
