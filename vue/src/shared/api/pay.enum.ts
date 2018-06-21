@@ -8,4 +8,5 @@ export enum PayPlatform {
   Pc,
   Ios,
   Android = 6,
+  Alipay = 8,
 }

@@ -7,6 +7,7 @@
     <modal></modal>
     <tool-tips></tool-tips>
     <ImageStallComponent></ImageStallComponent>
+    <LoginPopUpComponent></LoginPopUpComponent>
   </div>
 </template>
 
@@ -108,6 +109,7 @@
   import sharePopup from '../shared/share-popup.comp.vue';
   import qrcode from '../shared/qrcode.comp.vue';
   import ImageStallComponent from '../shared/image-stall.comp.vue'
+  import LoginPopUpComponent from '../shared/loginPopUp.comp.vue'
 
   export default {
     components: {
@@ -117,6 +119,7 @@
       modal,
       sharePopup,
       ImageStallComponent,
+      LoginPopUpComponent,
     }
   }
 </script>
