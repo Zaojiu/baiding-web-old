@@ -41,7 +41,6 @@ export const imgStore = new Vuex.Store<ImgState>({
 });
 
 export const showImageStall = (url: string) => {
-  console.log(1);
   imgStore.dispatch(SHOW_IMG, url);
 };
 

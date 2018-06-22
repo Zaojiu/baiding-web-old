@@ -214,6 +214,7 @@
   import {getUserInfoCache} from '../../shared/api/user.api';
   import {appConfig} from '../../env/environment';
   import {showQrcode} from '../../store/qrcode';
+  import {host} from "../../env/environment";
 
   @Component({
     directives: {
@@ -312,7 +313,7 @@
       this.isPaying[order.order.orderNo] = true;
 
       try {
-        await pay(order.order.orderNo);
+        await pay(order.order.orderNo,`${host.self}/my/orders`);
       } catch (e) {
         throw e;
         // TODO: error handler

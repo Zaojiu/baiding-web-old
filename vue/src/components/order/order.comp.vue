@@ -400,7 +400,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
-  import {Money, parseUrl} from '../../shared/utils/utils';
+  import {Money, parseUrl, isInWeiBo} from '../../shared/utils/utils';
   import {refreshUserInfo, getUserInfoCache} from "../../shared/api/user.api";
   import {OrderObject, PostOrderObject, OrderFee, Discount, Order, OrderMeta} from "../../shared/api/order.model";
   import {checkOrderFee, listDiscountCode, createOrder, getOrder} from '../../shared/api/order.api';
@@ -412,7 +412,7 @@
   import {showModal} from '../../store/modal';
   import {UserInfoModel} from "../../shared/api/user.model";
   import {showQrcode} from '../../store/qrcode';
-  import {appConfig} from '../../env/environment';
+  import {appConfig, host} from '../../env/environment';
 
   @Component
   export default class OrderComponent extends Vue {
@@ -669,9 +669,16 @@
     }
 
     getBackToUrl(): string {
+
+      const orderType = this.getOrderType();
       const urlObj = parseUrl(location.href);
-      urlObj.search['orderType'] = this.getOrderType();
-      return urlObj.toString();
+      urlObj.search['orderType'] = orderType;
+      // 如果是购票，且在微博中，购买成功后跳转到我的订单
+      if (orderType === 'event' && isInWeiBo) {
+        return `${host.self}/my/orders`;
+      } else {
+        return urlObj.toString();
+      }
     }
 
     popupDiscountSelector() {
