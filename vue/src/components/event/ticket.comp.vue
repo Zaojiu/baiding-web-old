@@ -349,7 +349,6 @@
   import {initIOS, callHandler} from "../../shared/utils/ios";
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
   import {showImageStall} from '../../store/image-stall';
-  import {showQrcode} from '../../store/qrcode';
   import MySwiperComponent from '../../shared/my-swiper.comp.vue';
 
   @Component({
@@ -516,17 +515,7 @@
     buy() {
       let userInfo: UserInfoModel;
 
-      if (isInWeiBo) {
-        showQrcode(`${host.self}${this.$route.fullPath}`, '保存二维码在微信扫描打开购票');
-        return;
-      }
-
-      try {
-        userInfo = getUserInfoCache(false);
-      } catch (e) {
-        this.$router.push({path: '/signin', query: {redirectTo: this.$route.fullPath}});
-        return;
-      }
+      userInfo = getUserInfoCache(true);
 
       if (this.event.isForMember && !userInfo.member.valid) {
         showTips('您还不是造就会员');
