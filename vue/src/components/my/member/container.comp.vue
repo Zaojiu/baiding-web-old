@@ -55,10 +55,10 @@
           <router-view :is-member="isMember"></router-view>
         </transition>
       </section>
+      <footer v-if="!isMember">
+        <button @click="goIntro">立即开通会员</button>
+      </footer>
     </article>
-    <footer v-if="!isMember">
-      <button @click="goIntro">立即开通会员</button>
-    </footer>
   </div>
 </template>
 

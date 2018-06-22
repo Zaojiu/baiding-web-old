@@ -1,4 +1,4 @@
-import {isInApp, isInWechat, isWindowsWechat, isAndroid, isiOS} from "../utils/utils";
+import {isInApp, isInWechat, isWindowsWechat, isAndroid, isiOS, isInWeiBo} from "../utils/utils";
 import {appConfig, host} from "../../env/environment";
 import {post} from "./xhr";
 import {
@@ -49,6 +49,30 @@ if (payResult) {
   }
 }
 
+//目前仅在微博webview中支持支付宝支付。
+const alipayPay = async (orderNo: string, redirectTo?: string) => {
+  const payUrl = `${host.io}/api/wallet/v2/order/${orderNo}/pay`;
+  let resp: AxiosResponse;
+  try {
+    resp = await post(payUrl, {"platform": PayPlatform.Alipay, "return_url": redirectTo});
+  } catch (e) {
+    const data = e.data;
+    if (data && data.code === ApiCode.ErrAlreadyPaid) {
+      showTips('already paid');
+      throw new Error('already paid');
+    } else {
+      showTips(e);
+      throw e;
+    }
+  }
+  const data = resp.data;
+  // todo 返回支付宝收银页面URL，跳转到支付页面,maybe angular 也要实现一份
+  location.href = data.payUrl;
+
+  return new Promise<void>((resolve, reject) => {
+  });
+};
+
 const wechatPay = async (orderNo: string, redirectTo?: string): Promise<void> => {
   const payUrl = `${host.io}/api/wallet/order/${orderNo}/pay`;
 
@@ -65,7 +89,6 @@ const wechatPay = async (orderNo: string, redirectTo?: string): Promise<void> =>
       throw e;
     }
   }
-
   const data = resp.data;
 
   if (data.isOngoing) return;
@@ -279,6 +302,8 @@ export const pay = async (orderNo: string, redirectTo?: string): Promise<void> =
     return iosPay(orderNo);
   } else if (isInApp && isAndroid) {
     return androidPay(orderNo);
+  } else if (isInWeiBo) {
+    return alipayPay(orderNo, redirectTo);
   } else {
     return pcPay(orderNo);
   }

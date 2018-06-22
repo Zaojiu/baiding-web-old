@@ -4,6 +4,8 @@ import {UserDetailInfoModel, UserInfoModel, WechatSigninQrcodeModel} from './use
 import {AxiosResponse} from "axios";
 import {Store} from "../utils/store";
 import {router} from '../../router';
+import {isInWeiBo} from '../utils/utils';
+import {showLoginPopUp} from "../../store/loginPopUp";
 
 export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel> => {
   const url = `${host.io}/api/user`;
@@ -17,7 +19,14 @@ export const getUserInfo = async (needHandleError = true): Promise<UserInfoModel
 export const getUserInfoCache = (needSignin = true): UserInfoModel => {
   const userInfoCache = Store.memoryStore.get('userInfo');
   if (!userInfoCache) {
-    if (needSignin) router.push({path: '/signin', query: {redirectTo: location.href}});
+    if (needSignin) {
+      // 在微博app webview中，登录使用弹窗登录组件
+      if (isInWeiBo) {
+        showLoginPopUp();
+      } else {
+        router.push({path: '/signin', query: {redirectTo: location.href}});
+      }
+    }
     throw new Error('user no login');
   }
 
@@ -73,7 +82,7 @@ export const signup = async (mobile: string, code: string, codeMap?: { [key: num
   return;
 };
 
-export const bindMobile = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: {[key: number]: string}): Promise<void> => {
+export const bindMobile = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: { [key: number]: string }): Promise<void> => {
   const url = `${host.io}/api/user/mobile/bind`;
   const data = {
     mobile,
@@ -88,7 +97,7 @@ export const bindMobile = async (mobile: string, code: string, password: string,
   return;
 };
 
-export const resetPassword = async (mobile: string, code: string, password: string, codeMap?: {[key: number]: string}): Promise<void> => {
+export const resetPassword = async (mobile: string, code: string, password: string, codeMap?: { [key: number]: string }): Promise<void> => {
   const url = `${host.io}/api/user/login/reset`;
   const data = {
     mobile,
