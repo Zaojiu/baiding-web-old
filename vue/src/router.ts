@@ -762,6 +762,19 @@ export const router = new Router({
       ]
     },
     {
+      path: '/wv/future',
+      component: () => System.import('./components/h5/future-meeting/index.comp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'zaojiu.future',
+          meta: {
+            title: '未来大会',
+          }
+        },
+      ]
+    },
+    {
       path: '/500',
       name: 'error',
       component: errorComp,
