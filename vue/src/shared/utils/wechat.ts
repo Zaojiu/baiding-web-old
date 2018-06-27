@@ -29,7 +29,9 @@ if (isAndroid) {
 if (isiOS) {
   appendAfterEachHook((to, from) => {
     if (from.fullPath === '/') {
-      needResign = true
+      needResign = true;
+    } else {
+      needResign = false;
     }
   });
 }

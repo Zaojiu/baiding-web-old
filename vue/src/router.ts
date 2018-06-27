@@ -480,7 +480,7 @@ export const router = new Router({
         title: '个人中心',
       },
       beforeEnter(to, from, next) {
-        const tasks = [authGuard(), mobileBindedGuard()];
+        const tasks = [authGuard()];
         execRouteTask(tasks, to, from, next);
       },
       component: () => System.import('./components/my/my.comp.vue'),

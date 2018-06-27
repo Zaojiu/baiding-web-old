@@ -36,7 +36,7 @@ export const ApiErrorMessage: {[key: number]: string} = {
   [ApiCode.ErrUnauthorized]: '请登录',
   // [ApiCode.ErrNotFound]: '资源不存在',
   [ApiCode.ErrUserMobileAlreadyBinded]: '您已绑定过手机',
-  [ApiCode.ErrUserMobileUsedByOthers]: '手机已被其他用户绑定',
+  [ApiCode.ErrUserMobileUsedByOthers]: '手机已被其他用户绑定，请使用手机号码登录',
   [ApiCode.ErrSigninInvalidSmsCode]: '验证码错误',
   [ApiCode.ErrSigninEmptyPassword]: '密码未设置，请点忘记密码重置',
   [ApiCode.ErrPleaseWaitAMoment]: '请求过于频繁，请稍后重试',

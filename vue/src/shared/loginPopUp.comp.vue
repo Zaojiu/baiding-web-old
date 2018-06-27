@@ -250,14 +250,12 @@
   import Vue from "vue";
   import {Component} from 'vue-property-decorator';
   import {loginPopUpStore, hideLoginPopUp} from '../store/loginPopUp';
-  import {regexpMobile, getRelativePath} from "./utils/utils";
-  import {host} from "../env/environment";
+  import {regexpMobile} from "./utils/utils";
   import {form} from './form';
-  import {FETCH_SIGNIN_QRCODE} from '../store/user';
   import {showTips} from "../store/tip";
   import {SigninErrorMessage, ApiCode} from "./api/code-map.enum";
   import {SmsScene, SmsType, sendSmsByGuest} from "./api/sms.api";
-  import {signin, signup} from "./api/user.api";
+  import {signup} from "./api/user.api";
 
   @Component({
     directives: form,
@@ -334,6 +332,7 @@
 
       hideLoginPopUp();
       showTips(this.$t('m.signIn.singInSuccess') as string);
+      this.$router.go(0);
     }
 
     async sendSMS() {
