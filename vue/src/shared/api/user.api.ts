@@ -82,6 +82,14 @@ export const signup = async (mobile: string, code: string, codeMap?: { [key: num
   return;
 };
 
+export const signOut = async () => {
+  const url = `${host.io}/api/user/logout`;
+  await get(url);
+  Store.memoryStore.delete('userInfo');
+  Store.localStore.delete('userinfo');
+  return
+};
+
 export const bindMobile = async (mobile: string, code: string, password: string, realname: string, company: string, position: string, codeMap?: { [key: number]: string }): Promise<void> => {
   const url = `${host.io}/api/user/mobile/bind`;
   const data = {
