@@ -785,7 +785,7 @@
         await initWechat();
         setShareInfo(
           this.itemInfo.current.subject,
-          '',
+          'www.zaojiu.com',
           `${host.assets}/assets/img/zaojiu-logo.jpg`,
           `${host.self}/columns/${id}/items/${itemId}`);
       }
