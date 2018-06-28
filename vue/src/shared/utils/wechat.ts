@@ -26,16 +26,6 @@ if (isAndroid) {
   appendAfterEachHook((to, from) => needResign = true);
 }
 
-if (isiOS) {
-  appendAfterEachHook((to, from) => {
-    if (from.fullPath === '/') {
-      needResign = true;
-    } else {
-      needResign = false;
-    }
-  });
-}
-
 const getConfig = async (): Promise<WechatConfigModel> => {
   let resp: AxiosResponse;
   try {
@@ -90,7 +80,6 @@ const configWechat = async (needRefresh = false) => {
 
 export const initWechat = async (): Promise<void> => {
   console.log('wechat init');
-
   if (!needResign) return Promise.resolve();
 
   return new Promise<void>((resolve, reject) => {
