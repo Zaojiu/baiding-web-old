@@ -13,6 +13,13 @@ npm run init
 
 安装失败，可能是网络不行，需要代理翻墙。
 
+如果遇到问题:
+../node_modules/@types/webpack/index.d.ts(586,28): error TS2507: Type 'typeof "[...]/node_modules/@types/tapable/index"' is not a constructor function type.
+../node_modules/@types/webpack/index.d.ts(628,46): error TS2694: Namespace '"[...]/node_modules/@types/tapable/index"' has no exported member 'Plugin'.
+../node_modules/@types/webpack/index.d.ts(632,53): error TS2694: Namespace '"[...]/node_modules/@types/tapable/index"' has no exported member 'Plugin'.
+
+npm install @types/tapable@0.2.5 --save-dev 可以解决（https://github.com/webpack/tapable/issues/53）
+
 npm run init -- proxy http://shadowsocks ip:port source https://registry.npmjs.org/
 
 # serve dev mode with hot reload at localhost:9000
