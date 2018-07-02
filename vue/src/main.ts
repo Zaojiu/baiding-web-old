@@ -31,7 +31,7 @@ Vue.component('error', error);
 (async () => {
   try {
     if (isInWechat) {
-      initWechat();
+      await initWechat();
     }
     await getUserInfo(false);
   } catch (e) {
