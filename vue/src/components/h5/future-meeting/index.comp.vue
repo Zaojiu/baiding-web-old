@@ -7,10 +7,13 @@
       class="header"
       :class="{'bg-black':changeNav}"
     >
-      <div class="img">
-        <img src="https://og9s6vxbs.qnssl.com/futrue/logo.png"/></div>
-      <div class="right">
-        <span @click="showMenuSide" style="cursor: pointer;" class="font-set"><i class="bi bi-menu"></i></span>
+      <div class="head-content">
+        <div class="img">
+          <img src="https://og9s6vxbs.qnssl.com/futrue/logo.png"/></div>
+        <div class="right">
+          <span @click="showMenuSide" style="cursor: pointer;" class="font-set font-14"><i
+            class="bi bi-menu"></i></span>
+        </div>
       </div>
     </header>
     <section class="content">
@@ -19,7 +22,7 @@
         <img src="https://og9s6vxbs.qnssl.com/futrue/banner.jpg"/>
       </div>
 
-      <p class="desc">
+      <p class="desc font-14">
         科技的应用出现了令人惊叹的突破，原先看似疯狂的想法逐渐变为现实，未来已经被颠覆。最先进的技术元素，与产业变革有关，更与人类的未来与福祉息息相关。未来已来，让我们一同踏入充满奇思妙想的新纪元。
       </p>
 
@@ -27,10 +30,10 @@
         <div class="dots">
           <div class="text">
             <h3>未来智能：智能与人工的边界是什么</h3>
-            <p>
+            <p class="font-14">
               伴随着大数据、AI人工智能的应用化研究，此刻我们正踏入万物互联的“未来智能”红海。而当信息化的“数字空间”与现实世界的“物理空间”相连接“未来”的轮廓也将愈发明晰。
             </p>
-            <div class="time color-text-1">时间：7.28 9:00-11:00</div>
+            <div class="time font-14 color-text-1">时间：7.28 9:00-11:00</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/zhineng.jpg')">
@@ -41,7 +44,7 @@
           <img :src="guestsActiveMap.intelligentList.picture"/>
           <div class="text color-1">
             <h4>{{guestsActiveMap.intelligentList.name}}</h4>
-            <p>{{guestsActiveMap.intelligentList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.intelligentList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -57,11 +60,11 @@
         <div class="dots">
           <div class="text">
             <h3>未来生命：人造生物将会对医疗产生什么颠覆性影响</h3>
-            <p>
+            <p class="font-14">
               世纪是生物科学的世纪。大脑思维机理、癌症防治、基因测序
               就像其他基础学科一样，生命科学的成果是用于指导人类的生产活动 探索神秘的自然界和人类本身的过程就是最本质的、最大的乐趣和回报
             </p>
-            <div class="time color-text-2">时间：7.28 12:00-14:00</div>
+            <div class="time font-14 color-text-2">时间：7.28 12:00-14:00</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shengming.jpg')"></div>
@@ -71,7 +74,7 @@
           <img :src="guestsActiveMap.lifeList.picture"/>
           <div class="text color-2">
             <h4>{{guestsActiveMap.lifeList.name}}</h4>
-            <p>{{guestsActiveMap.lifeList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.lifeList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -87,10 +90,10 @@
         <div class="dots">
           <div class="text">
             <h3>未来城市：虚拟与物理，两个层面的城市将同时存在</h3>
-            <p>
+            <p class="font-14">
               “城市的形态”是不断优化，还是彻底颠覆? 是跃迁升级的科幻世界，还是电缆之中的虚拟国度? 我们看到的是充满惊喜的“应许之地” 还是必将离开的“厌弃之城”? 未来城市，必将颠覆你的“视”界
             </p>
-            <div class="time color-text-3">时间：7.28 15:30-17:30</div>
+            <div class="time font-14 color-text-3">时间：7.28 15:30-17:30</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/chengshi.jpg')"></div>
@@ -100,7 +103,7 @@
           <img :src="guestsActiveMap.cityList.picture"/>
           <div class="text color-3">
             <h4>{{guestsActiveMap.cityList.name}}</h4>
-            <p>{{guestsActiveMap.cityList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.cityList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -116,10 +119,10 @@
         <div class="dots">
           <div class="text">
             <h3>未来探索：外太空和深海探测，将重塑新的家园</h3>
-            <p>
+            <p class="font-14">
               陆地到海洋，再到天空、大气层，终至星空瀚海，人类一直在不断努力扩展自身的生存空间。人类活动范围的每一次扩展，都增强了人类认知和改造自然的能力促进了生产力和社会的发展。
             </p>
-            <div class="time color-text-4">时间：7.28 18:30-20:30</div>
+            <div class="time font-14 color-text-4">时间：7.28 18:30-20:30</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/tansuo.jpg')"></div>
@@ -129,7 +132,7 @@
           <img :src="guestsActiveMap.spaceList.picture"/>
           <div class="text color-4">
             <h4>{{guestsActiveMap.spaceList.name}}</h4>
-            <p>{{guestsActiveMap.spaceList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.spaceList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -145,10 +148,10 @@
         <div class="dots">
           <div class="text">
             <h3>未来娱乐：ACGN百亿量级市场如何产业化</h3>
-            <p>
+            <p class="font-14">
               动画、影视、漫画、游戏、轻小说、ACGN和数字娱乐行业随着次世代的来临地覆天翻的变化着。手游为王？主机消亡？中国的网络文学与日本轻小说孰优孰劣？国产影视注定五毛特效？未来ACGN产业化会如何发展？我们是否触碰到了次世代的边界？
             </p>
-            <div class="time color-text-5">时间：7.29 13:00-15:00</div>
+            <div class="time font-14 color-text-5">时间：7.29 13:00-15:00</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/yule.jpg')"></div>
@@ -158,7 +161,7 @@
           <img :src="guestsActiveMap.designList.picture"/>
           <div class="text color-5">
             <h4>{{guestsActiveMap.designList.name}}</h4>
-            <p>{{guestsActiveMap.designList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.designList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -174,10 +177,10 @@
         <div class="dots">
           <div class="text">
             <h3>未来空间：如何通过未来设计打造一个未来天堂</h3>
-            <p>
+            <p class="font-14">
               “在地球上创造一个天堂是设计师的任务。”我们的世界正在以光速迭代，新的设计层出不穷，我们不停创造的同时，也被设计的力量裹挟。或许，是时候了，我们应该坐下来谈一谈什么是设计？我们在为谁而设计？我们又在设计什么？
             </p>
-            <div class="time color-text-6">时间：7.29 9:00-11:00</div>
+            <div class="time font-14 color-text-6">时间：7.29 9:00-11:00</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/kongjian.jpg')"></div>
@@ -187,7 +190,7 @@
           <img :src="guestsActiveMap.recreationList.picture"/>
           <div class="text color-6">
             <h4>{{guestsActiveMap.recreationList.name}}</h4>
-            <p>{{guestsActiveMap.recreationList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.recreationList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -205,10 +208,10 @@
             <h3>
               未来商业：新零售及区块链会对传统商业带来何种冲击是的
             </h3>
-            <p>
+            <p class="font-14">
               便利店是最合理的线下店模式吗？大型超市还会继续存在下去吗？区块链可能会完全颠覆现有的商业结构；人工智能让金融变得更加智能与普惠；商业世界正在迎接有史以来的最大进化。
             </p>
-            <div class="time color-text-7">时间：7.29 15:30-17:30</div>
+            <div class="time font-14 color-text-7">时间：7.29 15:30-17:30</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shangye.jpg')"></div>
@@ -218,7 +221,7 @@
           <img :src="guestsActiveMap.saleList.picture"/>
           <div class="text color-7">
             <h4>{{guestsActiveMap.saleList.name}}</h4>
-            <p>{{guestsActiveMap.saleList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.saleList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -234,10 +237,10 @@
         <div class="dots">
           <div class="text">
             <h3>未来的我：信息爆炸时代如何寻找自由公平的个人价值</h3>
-            <p>
+            <p class="font-14">
               人类从未经历过如此急速变迁和信息爆炸的时代，人的心灵境况面临巨大挑战，我们呼唤自由、公平、团结，我们却受困于孤独、茫然、困惑。社会需要被重新理解和读取，人类需要找到新的存在价值与意义。
             </p>
-            <div class="time color-text-8">时间：7.29 18:30-20:30</div>
+            <div class="time font-14 color-text-8">时间：7.29 18:30-20:30</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/wo.jpg')"></div>
@@ -247,7 +250,7 @@
           <img :src="guestsActiveMap.humanList.picture"/>
           <div class="text color-8">
             <h4>{{guestsActiveMap.humanList.name}}</h4>
-            <p>{{guestsActiveMap.humanList.desc[0]}}</p>
+            <p class="font-14">{{guestsActiveMap.humanList.desc[0]}}</p>
           </div>
         </div>
         <div class="control">
@@ -267,7 +270,7 @@
         <h3>
           你！为什么一定要来参加？
         </h3>
-        <p>
+        <p class="font-14">
           未来大会聚焦于科学，科技、商业领域的前沿话题，追寻其中的前行者。构建一个让观念见解、实践经验乃至奇思妙想可以自由而快速传播的平台，从而让最前沿思想者的声音被更多人听到，让最有创造力的思想得到最广泛的传播。
           <br/>
           <br/>
@@ -292,7 +295,7 @@
         </div>
       </div>
     </section>
-    <div class="menu" v-if="showMenu">
+    <div class="menu font-14" v-if="showMenu">
       <div class="menu-list">
         <div class="close" @click="closeMenuSide">
           <i class="bi bi-close"></i>
@@ -304,7 +307,7 @@
             </div>
             <div class="text">
               <h4>未来智能</h4>
-              <div>INTELLIGENCE</div>
+              <div class="font-14">INTELLIGENCE</div>
             </div>
           </li>
           <li @click="jumpTo('live')">
@@ -313,7 +316,7 @@
             </div>
             <div class="text">
               <h4>未来生命</h4>
-              <div>LIFE</div>
+              <div class="font-14">LIFE</div>
             </div>
           </li>
           <li @click="jumpTo('city')">
@@ -322,7 +325,7 @@
             </div>
             <div class="text">
               <h4>未来城市</h4>
-              <div>CITY</div>
+              <div class="font-14">CITY</div>
             </div>
           </li>
           <li @click="jumpTo('explore')">
@@ -331,7 +334,7 @@
             </div>
             <div class="text">
               <h4>未来探索</h4>
-              <div>EXTREME</div>
+              <div class="font-14">EXTREME</div>
             </div>
           </li>
           <li @click="jumpTo('recreation')">
@@ -340,7 +343,7 @@
             </div>
             <div class="text">
               <h4>未来娱乐</h4>
-              <div>ESCAPE</div>
+              <div class="font-14">ESCAPE</div>
             </div>
           </li>
           <li @click="jumpTo('space')">
@@ -349,7 +352,7 @@
             </div>
             <div class="text">
               <h4>未来空间</h4>
-              <div>LIMITED UNLIMITED</div>
+              <div class="font-14">LIMITED UNLIMITED</div>
             </div>
           </li>
           <li @click="jumpTo('business')">
@@ -358,7 +361,7 @@
             </div>
             <div class="text">
               <h4>未来商业</h4>
-              <div>REVALUE</div>
+              <div class="font-14">REVALUE</div>
             </div>
           </li>
           <li @click="jumpTo('me')">
@@ -367,7 +370,7 @@
             </div>
             <div class="text">
               <h4>未来的我</h4>
-              <div>I HUMAN</div>
+              <div class="font-14">I HUMAN</div>
             </div>
           </li>
         </ul>
@@ -376,8 +379,6 @@
     <div class="footer-btn">
     </div>
     <div class="btn-cover" @click="goToTicket()">
-      <!--<div>立即</div>
-      <div>购票</div>-->
     </div>
   </article>
 </template>
@@ -389,6 +390,10 @@
     background-color: #000;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
+    .font-14 {
+      font-size: 0.875rem;
+    }
+
     .menu {
       position: fixed;
       top: 0;
@@ -398,8 +403,6 @@
       overflow: hidden;
       background-color: rgba(0, 0, 0, 1);
       z-index: 3;
-      // 14px
-      font-size: 3.73vw;
 
       .menu-list {
         background-color: rgb(0, 0, 0);
@@ -419,7 +422,7 @@
         }
 
         .menu-ul {
-          padding: 0 40px 0 50px;
+          padding: 0 40px 0 13vw;
         }
 
         li {
@@ -431,7 +434,7 @@
           margin-bottom: 4.7vh;
 
           .icon {
-            width: 31px;
+            width: 2rem;
             font-size: 0;
             margin-right: 13px;
 
@@ -444,61 +447,21 @@
             text-align: left;
 
             h4 {
-              font-size: 5.33vw;
+              font-size: 1.25rem;
               line-height: 1;
               letter-spacing: 2px;
               margin-bottom: 4px;
             }
 
             div {
-              font-size: 3.73vw;
               line-height: 1;
               letter-spacing: 2px;
               font-weight: 600;
               padding-left: 1px;
             }
           }
-
-          /*@media (max-width: 374px) {
-            .icon {
-
-            }
-
-            .text {
-              h4 {
-                font-size: 18px;
-                line-height: 18px;
-              }
-
-              div {
-                font-size: 13px;
-                line-height: 12px;
-              }
-            }
-          }*/
-
         }
 
-        .footer {
-          text-align: center;
-          flex: 1;
-          position: relative;
-
-          .btn {
-            width: 170px;
-            font-weight: bold;
-            background: url("https://og9s6vxbs.qnssl.com/wiee/index/side-btn.png") no-repeat;
-            background-size: 100% 100%;
-            font-size: 0.26vw;
-            line-height: 11.7vw;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 44px;
-            position: absolute;
-            bottom: 11.7vw;
-          }
-
-        }
       }
     }
 
@@ -507,12 +470,7 @@
       top: 0;
       left: 0;
       z-index: 3;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       width: 100%;
-      max-width: 800px;
-      height: 62px;
       padding: 0 20px;
       color: #fff;
       background-color: transparent;
@@ -522,16 +480,24 @@
         background-color: rgba(0, 0, 0, .5);
       }
 
+      .head-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 960px;
+        margin: auto;
+        min-height: 62px;
+      }
+
       .img {
         font-size: 0;
 
         img {
-          height: 32px;
+          height: 2rem;
         }
       }
 
       .font-set {
-        font-size: 3.73vw;
       }
 
       button {
@@ -559,8 +525,8 @@
       position: fixed;
       bottom: 20px;
       right: 14px;
-      height: 17.6vw;
-      width: 17.6vw;
+      height: 4.12rem;
+      width: 4.12rem;
       background-color: #00ac9c;
       border-radius: 17.6vw;
       box-shadow: 4px 4px 8px 0px #000;
@@ -570,10 +536,10 @@
 
     .btn-cover {
       position: fixed;
-      height: 14.9vw;
-      width: 14.9vw;
-      bottom: calc(20px + 1.3vw);
-      right: calc(14px + 1.3vw);
+      height: 3.5rem;
+      width: 3.5rem;
+      bottom: calc(20px + 0.31rem);
+      right: calc(14px + 0.31rem);
       background-color: rgb(0, 211, 193);
       justify-content: center;
       align-items: center;
@@ -582,18 +548,6 @@
       border-radius: 56px;
       background: url("https://og9s6vxbs.qnssl.com/futrue/btn.png") no-repeat;
       background-size: 100% 100%;
-
-      /*> div {
-        font-size: 4vw;
-        line-height: 4.53vw;
-        letter-spacing: 0.3vw;
-        color: #fff;
-        font-weight: bold;
-        text-align: center;
-        position: relative;
-        top: 2px;
-        left: 1px;
-      }*/
     }
 
     .content {
@@ -616,8 +570,8 @@
           color: #fff;
 
           h3 {
-            font-size: 6.4vw;
-            line-height: 8vw;
+            font-size: 1.5rem;
+            line-height: 1.25;
             position: relative;
             z-index: 2;
           }
@@ -626,8 +580,7 @@
             margin-top: 8px;
             position: relative;
             z-index: 2;
-            font-size: 3.73vw;
-            line-height: 6.43vw;
+            line-height: 1.72;
             letter-spacing: -0.1px;
             color: rgb(242, 242, 242);
           }
@@ -635,8 +588,7 @@
           .time {
             display: inline-block;
             margin: 12px 0;
-            font-size: 3.73vw;
-            line-height: 4.26vw;
+            line-height: 1.14vw;
           }
         }
         .img {
@@ -732,8 +684,7 @@
       }
 
       .desc {
-        font-size: 3.73vw;
-        line-height: 6.93vw;
+        line-height: 1.85;
         text-align: center;
         color: #e5e5e5;
         padding: 28px 20px 56px 20px;
@@ -761,8 +712,8 @@
 
           .text {
             position: absolute;
-            min-height: 40vw;
-            width: 40vw;
+            min-height: 9.375rem;
+            width: 9.375rem;
             bottom: 0;
             left: 0;
             border-top-right-radius: 40px;
@@ -770,14 +721,14 @@
             padding: 12px 8px 25px 8px;
 
             h4 {
-              font-size: 4.8vw;
+              //font-size: 4.8vw;
+              font-size: 1.125rem;
               line-height: 1;
             }
 
             p {
               margin-top: 6px;
-              font-size: 3.73vw;
-              line-height: 4.8vw;
+              line-height: 1.28;
               word-break: break-word;
             }
           }
@@ -833,25 +784,27 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 5.33vw;
-          line-height: 5.33vw;
+          font-size: 1.25rem;
+          line-height: 1;
 
           .img {
-            width: 6.66vw;
-            height: 7.73vw;
+            //rem
+            /*width: 6.66vw;
+            height: 7.73vw;*/
+            width: 1.56rem;
+            height: 1.81rem;
             margin-right: 6px;
           }
         }
 
         h3 {
           margin-top: 36px;
-          font-size: 5.33vw;
+          font-size: 1.25rem;
         }
 
         p {
           margin-top: 12px;
-          font-size: 3.73vw;
-          line-height: 6.4vw;
+          line-height: 1.71;
 
           span {
             color: rgb(1, 235, 216);
@@ -870,19 +823,18 @@
 
         h2 {
           line-height: 1;
-          font-size: 5.33vw;
+          font-size: 1.25rem;
           padding: 0 20px;
           display: flex;
           align-items: center;
           justify-content: center;
 
           .img {
-            width: 10.13vw;
-            height: 8vw;
-            background: url("https://og9s6vxbs.qnssl.com/futrue/icon.png");
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center;
+            //rem
+            /*width: 10.13vw;
+            height: 8vw;*/
+            height: 1.875rem;
+            width: 2.375rem;
           }
 
           span {

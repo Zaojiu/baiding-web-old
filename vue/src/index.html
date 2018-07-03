@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html style="font-size: 16px">
 <head>
   <meta charset="utf-8">
   <title>_REPL_SITE_NAME_</title>
@@ -15,6 +15,45 @@
   <meta name="theme-color" content="#000"><!-- Chrome, Firefox OS and Opera -->
   <meta name="msapplication-navbutton-color" content="#000"><!-- Windows Phone -->
 
+  <style>
+
+    @media only screen and (min-width: 1026px) {
+      html {
+        font-size: 24px !important;
+      }
+    }
+
+    @media only screen and (max-width: 1025px) {
+      html {
+        font-size: 24px !important;
+      }
+    }
+
+    @media only screen and (max-width: 616px) {
+      html {
+        font-size: 20px !important;
+      }
+    }
+
+    @media only screen and (max-width: 416px) {
+      html {
+        font-size: 18px !important;
+      }
+    }
+
+    @media only screen and (max-width: 376px) {
+      html {
+        font-size: 16px !important;
+      }
+    }
+
+    @media only screen and (max-width: 321px) {
+      html {
+        font-size: 14px !important;
+      }
+    }
+  </style>
+
   <!-- for trackjs: must put in head tag -->
   <script type="text/javascript">
     var token = '_REPL_TRACKJS_TOKEN_';
@@ -26,7 +65,7 @@
           display: true,
           error: true,
           warn: false,
-          watch: ["log","debug","info","warn","error"]
+          watch: ["log", "debug", "info", "warn", "error"]
         },
       };
     }
@@ -40,14 +79,16 @@
         var c = ca[i];
         while (c.charAt(0) === ' ') {
           c = c.substring(1, c.length);
-        }if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
       }
       return '';
     }
+
     function serializeObj(source) {
       var kvArr = source.split('&');
       var target = {};
-      for (var _iterator = kvArr, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+      for (var _iterator = kvArr, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
         var _ref;
 
         if (_isArray) {
@@ -73,8 +114,8 @@
     var sessCookie = readCookie('_sess');
     var sessObj = serializeObj(sessCookie);
     var sessId = sessObj['v'];
-    if (window.trackJs && uid) window.trackJs.configure({ userId: uid });
-    if (window.trackJs && sessId) window.trackJs.configure({ sessionId: sessId });
+    if (window.trackJs && uid) window.trackJs.configure({userId: uid});
+    if (window.trackJs && sessId) window.trackJs.configure({sessionId: sessId});
   </script>
 
   <!-- for ga: must put in head tag -->
@@ -279,7 +320,10 @@
       }
     </script>
     <div class="svg">
-      <svg width="100" height="69" viewBox="0 0 324 223" xmlns="http://www.w3.org/2000/svg"><path d="M227.9 211.196V142.68h11.873v68.516H227.9zM9.956 68.11h11.872v130.91h145.688v-56.34h11.872v68.515H21.828v11.035H9.955v-11.034H0V199.02h9.955V68.11zM197.965 0h11.872v20.553h34.683v11.872H102.936v39.102l44.51.062-.017 11.872-107.617-.144.017-11.872 51.233.067V32.425H39.78V0h11.873v20.553h39.41V0h11.873v20.553h95.03V0zm-157 180.916V104.99H148.9v75.926H40.964zm11.87-11.872h84.193V116.86H52.836v52.184zm189.36-51.204h-31.813v93.356H190.27v-11.72h8.24V117.84h-31.37V51.2h75.056v66.64zm-63.362-11.696h51.67v-43.25h-51.67v43.25zM9.956 52.99V0H21.83v52.99H9.955zM311.922 0h11.872v32.426h-35.577c.022 30.27 0 68.03 0 68.03v5.94h-19v104.8h-11.872V94.526h18.987c-.008-12.373.017-38.867 0-62.1H257.63V20.553h18.702c-.008-11.397 0-19.704 0-20.553h11.885c0 .848-.01 9.157 0 20.553h23.705V0zm-.086 199.475V60.687h11.872v150.508h-38.682v-88.933h11.872v77.213h14.938z" fill="#00EDDA" fill-rule="evenodd"/></svg>
+      <svg width="100" height="69" viewBox="0 0 324 223" xmlns="http://www.w3.org/2000/svg">
+        <path d="M227.9 211.196V142.68h11.873v68.516H227.9zM9.956 68.11h11.872v130.91h145.688v-56.34h11.872v68.515H21.828v11.035H9.955v-11.034H0V199.02h9.955V68.11zM197.965 0h11.872v20.553h34.683v11.872H102.936v39.102l44.51.062-.017 11.872-107.617-.144.017-11.872 51.233.067V32.425H39.78V0h11.873v20.553h39.41V0h11.873v20.553h95.03V0zm-157 180.916V104.99H148.9v75.926H40.964zm11.87-11.872h84.193V116.86H52.836v52.184zm189.36-51.204h-31.813v93.356H190.27v-11.72h8.24V117.84h-31.37V51.2h75.056v66.64zm-63.362-11.696h51.67v-43.25h-51.67v43.25zM9.956 52.99V0H21.83v52.99H9.955zM311.922 0h11.872v32.426h-35.577c.022 30.27 0 68.03 0 68.03v5.94h-19v104.8h-11.872V94.526h18.987c-.008-12.373.017-38.867 0-62.1H257.63V20.553h18.702c-.008-11.397 0-19.704 0-20.553h11.885c0 .848-.01 9.157 0 20.553h23.705V0zm-.086 199.475V60.687h11.872v150.508h-38.682v-88.933h11.872v77.213h14.938z"
+          fill="#00EDDA" fill-rule="evenodd"/>
+      </svg>
     </div>
 
     <div class="slogan">_REPL_SLOGAN_</div>
