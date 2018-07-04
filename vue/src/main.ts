@@ -12,8 +12,6 @@ import topNav from './shared/top-nav.comp.vue';
 import error from './shared/error.comp.vue';
 import bdLoading from './shared/bd-loading.comp.vue';
 import {getUserInfo} from "./shared/api/user.api";
-import {initWechat} from "./shared/utils/wechat";
-import {isInWechat} from "./shared/utils/utils";
 
 sync(store, router);
 
@@ -21,7 +19,7 @@ const app = new Vue({
   i18n,
   router,
   store,
-  ...appComp,
+  ...appComp
 } as ComponentOptions<Vue>);
 
 Vue.component('top-nav', topNav);
@@ -30,9 +28,6 @@ Vue.component('error', error);
 
 (async () => {
   try {
-    if (isInWechat) {
-      await initWechat();
-    }
     await getUserInfo(false);
   } catch (e) {
   } finally {

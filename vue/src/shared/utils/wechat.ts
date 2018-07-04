@@ -3,7 +3,7 @@ import {post} from "../api/xhr";
 import {AxiosResponse} from "axios";
 import {showTips} from "../../store/tip";
 import {appendAfterEachHook} from "../../hooks";
-import {isAndroid, isiOS} from './utils';
+import {isAndroid, isInWechat, isiOS} from './utils';
 
 declare const wx: any;
 
@@ -18,12 +18,23 @@ class WechatConfigModel {
 
 let cachedConfig: WechatConfigModel;
 let needResign = true;
+let num = 0;
 let onVoicePlayEnd: () => void;
 let autoCompleteResolver: (localId: string) => void;
 let autoCompleteRejecter: (reason: string) => void;
 
-if (isAndroid) {
+if (isAndroid && isInWechat) {
   appendAfterEachHook((to, from) => needResign = true);
+}
+
+if (isiOS && isInWechat) {
+  appendAfterEachHook((to, from) => {
+    if (num === 0) {
+      needResign = true
+    } else {
+      needResign = false
+    }
+  });
 }
 
 const getConfig = async (): Promise<WechatConfigModel> => {
@@ -41,6 +52,7 @@ const configWechat = async (needRefresh = false) => {
   if (cachedConfig && !needRefresh) {
     console.log('cache wechat config: ', cachedConfig);
     wx.config(cachedConfig);
+    needResign = false;
     return;
   }
 
@@ -79,6 +91,7 @@ const configWechat = async (needRefresh = false) => {
 };
 
 export const initWechat = async (): Promise<void> => {
+  num++;
   console.log('wechat init');
   if (!needResign) return Promise.resolve();
 
@@ -114,6 +127,5 @@ export const initWechat = async (): Promise<void> => {
 
     console.log('config wechat at init');
     configWechat(true);
-    needResign = false;
   });
 };
