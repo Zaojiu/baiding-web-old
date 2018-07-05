@@ -9,7 +9,7 @@
     >
       <div class="head-content">
         <div class="img">
-          <img src="https://og9s6vxbs.qnssl.com/futrue/logo.png"/></div>
+          <img src="https://og9s6vxbs.qnssl.com/futrue/logo-new.png"/></div>
         <div class="right">
           <span @click="showMenuSide" style="cursor: pointer;" class="font-set font-14"><i
             class="bi bi-menu"></i></span>
@@ -19,7 +19,7 @@
     <section class="content">
 
       <div class="img-cover">
-        <img src="https://og9s6vxbs.qnssl.com/futrue/banner.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/futrue/banner-new.jpg"/>
       </div>
 
       <p class="desc font-14">
@@ -917,11 +917,12 @@
     recreationList = recreationList;
     saleList = saleList;
     humanList = humanList;
+    imgList: any = {};
 
 
-    @Watch('$route.name')
+    @Watch('$route')
     setNavIndex() {
-      this.init();
+      this.share();
     }
 
     created() {
@@ -929,6 +930,18 @@
       this.$nextTick(() => {
         this.guestDom = this.$refs['container'] as HTMLElement;
       })
+    }
+
+    mounted() {
+      setTimeout(() => {
+        this.preLoadImg(intelligentList[1].picture);
+        this.preLoadImg(lifeList[1].picture);
+        this.preLoadImg(cityList[1].picture);
+        this.preLoadImg(spaceList[1].picture);
+        this.preLoadImg(recreationList[1].picture);
+        this.preLoadImg(designList[1].picture);
+        this.preLoadImg(humanList[1].picture);
+      }, 10);
     }
 
     async share() {
@@ -996,33 +1009,65 @@
       switch (category) {
         case 'intelligentList':
           this.guestsActiveMap[category] = intelligentList[index];
+          if (index < this.intelligentList.length - 1) {
+            this.preLoadImg(intelligentList[index + 1].picture);
+          }
           break;
         case 'lifeList':
           this.guestsActiveMap[category] = lifeList[index];
+          if (index < this.lifeList.length - 1) {
+            this.preLoadImg(lifeList[index + 1].picture);
+          }
           break;
         case 'cityList':
           this.guestsActiveMap[category] = cityList[index];
+          if (index < this.cityList.length - 1) {
+            this.preLoadImg(cityList[index + 1].picture);
+          }
           break;
         case 'spaceList':
           this.guestsActiveMap[category] = spaceList[index];
+          if (index < this.spaceList.length - 1) {
+            this.preLoadImg(spaceList[index + 1].picture);
+          }
           break;
         case 'designList':
           this.guestsActiveMap[category] = designList[index];
+          if (index < this.designList.length - 1) {
+            this.preLoadImg(designList[index + 1].picture);
+          }
           break;
         case 'recreationList':
           this.guestsActiveMap[category] = recreationList[index];
+          if (index < this.recreationList.length - 1) {
+            this.preLoadImg(recreationList[index + 1].picture);
+          }
           break;
         case 'saleList':
           this.guestsActiveMap[category] = saleList[index];
+          if (index < this.saleList.length - 1) {
+            this.preLoadImg(saleList[index + 1].picture);
+          }
           break;
         case 'humanList':
           this.guestsActiveMap[category] = humanList[index];
+          if (index < this.humanList.length - 1) {
+            this.preLoadImg(humanList[index + 1].picture);
+          }
           break;
       }
     }
 
     goToTicket() {
       this.$router.push({path: '/events/5b28d3aa42a2dc0001cc532c/tickets'});
+    }
+
+    preLoadImg(url: string) {
+      let img = new Image();
+      img.src = url;
+      if (!this.imgList[url]) {
+        this.imgList[url] = img;
+      }
     }
 
   }
