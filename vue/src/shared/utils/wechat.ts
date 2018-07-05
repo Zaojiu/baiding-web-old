@@ -30,9 +30,9 @@ if (isAndroid && isInWechat) {
 if (isiOS && isInWechat) {
   appendAfterEachHook((to, from) => {
     if (num === 0) {
-      needResign = true
+      needResign = true;
     } else {
-      needResign = false
+      needResign = false;
     }
   });
 }
