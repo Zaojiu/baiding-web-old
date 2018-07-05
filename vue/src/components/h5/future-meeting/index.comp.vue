@@ -935,7 +935,7 @@
       if (isInWechat) {
         await initWechat();
         setShareInfo(
-          '2018 ZJ未来大会',
+          '2018张江·造就未来大会',
           `为你打开通向未知和未来的大门`,
           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
           `${host.self}/wv/future`
