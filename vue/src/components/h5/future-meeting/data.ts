@@ -11,6 +11,15 @@ export const intelligentList = [
   },
   {
     id: '',
+    name: '彭斌',
+    enName: '',
+    desc: ['极飞科技创始人兼CEO'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/pengbin_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/pengbin_s.jpg'
+  },
+  {
+    id: '',
     name: '熊明磊',
     enName: '',
     desc: ['Robosea CEO'],
@@ -40,23 +49,23 @@ export const lifeList = [
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/daijianwu_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/daijianwu_s.jpg'
   },
-  /*{
+  {
     id: '',
     name: '张嘉漪',
     enName: '',
     desc: ['复旦大学脑科学研究院研究员'],
     enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/default-b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/default-s.jpg'
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjiayi_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjiayi_s.jpg'
   }, {
     id: '',
     name: '姜海',
     enName: '',
     desc: ['中国科学院上海生命科学研究院生物化学与细胞生物学研究所，研究员，研究组长'],
     enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/default-b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/default-s.jpg'
-  }*/
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianghai_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianghai_s.jpg'
+  }
 ];
 
 // 未来城市
@@ -69,7 +78,17 @@ export const cityList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/wangjian_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/wangjian_s.jpg'
-  }, {
+  },
+  {
+    id: '',
+    name: '崔晓波',
+    enName: '',
+    desc: ['TalkingData创始人兼CEO'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/cuixiaobo_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/cuixiaobo_s.jpg'
+  },
+  {
     id: '',
     name: '汤舸',
     enName: '',
@@ -90,7 +109,8 @@ export const spaceList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangchangwu_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangchangwu_s.jpg'
-  }, {
+  },
+  {
     id: '',
     name: '谢涛',
     enName: '',
@@ -98,7 +118,8 @@ export const spaceList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/xietao_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/xietao_s.jpg'
-  }, {
+  },
+  {
     id: '',
     name: '杨峰',
     enName: '',
@@ -107,10 +128,28 @@ export const spaceList = [
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangfeng_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangfeng_s.jpg'
   },
+  {
+    id: '',
+    name: '夏伯渝',
+    enName: '',
+    desc: ['登山家'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/xiaboyu_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/xiaboyu_s.jpg'
+  }
 ];
 
 // 未来娱乐
 export const designList = [
+  {
+    id: '',
+    name: 'Billy Tan',
+    enName: '',
+    desc: ['知名美漫大师，漫威及DC资深画师，现任唐漫文化创始人＆CEO'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/BillyTan_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/BillyTan_s.jpg'
+  },
   {
     id: '',
     name: '王希',
@@ -122,21 +161,21 @@ export const designList = [
   },
   {
     id: '',
-    name: '章扬',
+    name: '吴晓毛',
     enName: '',
-    desc: ['GK电子竞技俱乐部创始人，人人体育创始人，柑客电竞创始人'],
+    desc: ['德国Girtworld创始人及CEO，前Crytek 法兰克福项目总监及技术总监'],
     enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangyang_b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangyang_s.jpg'
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/wuxiaomao_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/wuxiaomao_s.jpg'
   },
   {
     id: '',
-    name: 'Billy Tan',
+    name: '于洲',
     enName: '',
-    desc: ['知名美漫大师，漫威及DC资深画师，现任唐漫文化创始人＆CEO'],
+    desc: ['追光动画联合创始人、《小门神》、《阿唐奇遇》、《猫与桃花源》总制片'],
     enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/BillyTan_b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/BillyTan_s.jpg'
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yuzhou_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yuzhou_s.jpg'
   },
   {
     id: '',
@@ -149,12 +188,12 @@ export const designList = [
   },
   {
     id: '',
-    name: '吴晓毛',
+    name: '章扬',
     enName: '',
-    desc: ['德国Girtworld创始人及CEO，前Crytek 法兰克福项目总监及技术总监'],
+    desc: ['GK电子竞技俱乐部创始人，人人体育创始人，柑客电竞创始人'],
     enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/wuxiaomao_b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/wuxiaomao_s.jpg'
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangyang_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangyang_s.jpg'
   }
 ];
 
@@ -211,15 +250,15 @@ export const humanList = [
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/PernilleTranberg_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/PernilleTranberg_s.jpg'
   },
+  {
+    id: '',
+    name: 'Amir Asor（拟邀）',
+    enName: '',
+    desc: ['Young Engineers 创始人及CEO'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/AmirAsor_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/AmirAsor_s.jpg'
+  }
 ];
 
-/*
-{
-  id: '',
-    name: '韩璧丞',
-  enName: '',
-  desc: [' 哈佛大学脑科学中心博士/脑机接口公司BrainCo创始人兼CEO/新型脑控义肢公司BrainRobotics创始人'],
-  enDesc: [''],
-  picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/hanbicheng_b.jpg',
-  Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/hanbicheng_s.jpg'
-}*/
+
