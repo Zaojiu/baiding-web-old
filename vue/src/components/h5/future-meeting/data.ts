@@ -97,6 +97,15 @@ export const cityList = [
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/tangke_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/tangke_s.jpg'
   },
+  {
+    id: '',
+    name: '杨泳梁',
+    enName: '',
+    desc: ['艺术家，代表作品《FALL INTO OBLIVION》、《The Day of Perpetual Night》等'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangyongliang_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangyongliang_s.jpg'
+  },
 ];
 
 // 未来探索
