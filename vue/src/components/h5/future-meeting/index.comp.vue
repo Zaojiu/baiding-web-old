@@ -26,6 +26,93 @@
         科技的应用出现了令人惊叹的突破，原先看似疯狂的想法逐渐变为现实，未来已经被颠覆。最先进的技术元素，与产业变革有关，更与人类的未来与福祉息息相关。未来已来，让我们一同踏入充满奇思妙想的新纪元。
       </p>
 
+      <div id="city" class="title-content">
+        <div class="dots">
+          <div class="text">
+            <h3>未来城市：虚拟与物理，两个层面的城市将同时存在</h3>
+            <p class="font-14">
+              “城市的形态”是不断优化，还是彻底颠覆? 是跃迁升级的科幻世界，还是电缆之中的虚拟国度? 我们看到的是充满惊喜的“应许之地” 还是必将离开的“厌弃之城”? 未来城市，必将颠覆你的“视”界
+            </p>
+            <div class="time font-14 color-text-3">时间：7.28 15:30-17:30</div>
+          </div>
+        </div>
+        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/chengshi.jpg')"></div>
+      </div>
+      <div class="guest-content">
+        <div class="panel">
+          <img :src="guestsActiveMap.cityList.picture"/>
+          <div class="text color-3">
+            <h4>{{guestsActiveMap.cityList.name}}</h4>
+            <p class="font-14">{{guestsActiveMap.cityList.desc[0]}}</p>
+          </div>
+        </div>
+        <div class="control">
+          <div class="guest-item" v-for="(item,index) in cityList"
+               :class="{'active':guestsIndexMap.cityList===index}"
+               @click="activeGuest('cityList',index)">
+            <img :src="item.Thumbnail"/>
+          </div>
+        </div>
+      </div>
+
+      <div id="recreation" class="title-content">
+        <div class="dots">
+          <div class="text">
+            <h3>未来娱乐：ACGN百亿量级市场如何产业化</h3>
+            <p class="font-14">
+              动画、影视、漫画、游戏、轻小说、ACGN和数字娱乐行业随着次世代的来临地覆天翻的变化着。手游为王？主机消亡？中国的网络文学与日本轻小说孰优孰劣？国产影视注定五毛特效？未来ACGN产业化会如何发展？我们是否触碰到了次世代的边界？
+            </p>
+            <div class="time font-14 color-text-5">时间：7.29 13:00-15:00</div>
+          </div>
+        </div>
+        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/yule.jpg')"></div>
+      </div>
+      <div class="guest-content">
+        <div class="panel">
+          <img :src="guestsActiveMap.designList.picture"/>
+          <div class="text color-5">
+            <h4>{{guestsActiveMap.designList.name}}</h4>
+            <p class="font-14">{{guestsActiveMap.designList.desc[0]}}</p>
+          </div>
+        </div>
+        <div class="control">
+          <div class="guest-item" v-for="(item,index) in designList"
+               :class="{'active':guestsIndexMap.designList===index}"
+               @click="activeGuest('designList',index)">
+            <img :src="item.Thumbnail"/>
+          </div>
+        </div>
+      </div>
+
+      <div id="explore" class="title-content">
+        <div class="dots">
+          <div class="text">
+            <h3>未来探索：外太空和深海探测，将重塑新的家园</h3>
+            <p class="font-14">
+              陆地到海洋，再到天空、大气层，终至星空瀚海，人类一直在不断努力扩展自身的生存空间。人类活动范围的每一次扩展，都增强了人类认知和改造自然的能力促进了生产力和社会的发展。
+            </p>
+            <div class="time font-14 color-text-4">时间：7.28 18:30-20:30</div>
+          </div>
+        </div>
+        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/tansuo.jpg')"></div>
+      </div>
+      <div class="guest-content">
+        <div class="panel">
+          <img :src="guestsActiveMap.spaceList.picture"/>
+          <div class="text color-4">
+            <h4>{{guestsActiveMap.spaceList.name}}</h4>
+            <p class="font-14">{{guestsActiveMap.spaceList.desc[0]}}</p>
+          </div>
+        </div>
+        <div class="control">
+          <div class="guest-item" v-for="(item,index) in spaceList"
+               :class="{'active':guestsIndexMap.spaceList===index}"
+               @click="activeGuest('spaceList',index)">
+            <img :src="item.Thumbnail"/>
+          </div>
+        </div>
+      </div>
+
       <div id="intelligent" class="title-content">
         <div class="dots">
           <div class="text">
@@ -81,93 +168,6 @@
           <div class="guest-item" v-for="(item,index) in lifeList"
                :class="{'active':guestsIndexMap.lifeList===index}"
                @click="activeGuest('lifeList',index)">
-            <img :src="item.Thumbnail"/>
-          </div>
-        </div>
-      </div>
-
-      <div id="city" class="title-content">
-        <div class="dots">
-          <div class="text">
-            <h3>未来城市：虚拟与物理，两个层面的城市将同时存在</h3>
-            <p class="font-14">
-              “城市的形态”是不断优化，还是彻底颠覆? 是跃迁升级的科幻世界，还是电缆之中的虚拟国度? 我们看到的是充满惊喜的“应许之地” 还是必将离开的“厌弃之城”? 未来城市，必将颠覆你的“视”界
-            </p>
-            <div class="time font-14 color-text-3">时间：7.28 15:30-17:30</div>
-          </div>
-        </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/chengshi.jpg')"></div>
-      </div>
-      <div class="guest-content">
-        <div class="panel">
-          <img :src="guestsActiveMap.cityList.picture"/>
-          <div class="text color-3">
-            <h4>{{guestsActiveMap.cityList.name}}</h4>
-            <p class="font-14">{{guestsActiveMap.cityList.desc[0]}}</p>
-          </div>
-        </div>
-        <div class="control">
-          <div class="guest-item" v-for="(item,index) in cityList"
-               :class="{'active':guestsIndexMap.cityList===index}"
-               @click="activeGuest('cityList',index)">
-            <img :src="item.Thumbnail"/>
-          </div>
-        </div>
-      </div>
-
-      <div id="explore" class="title-content">
-        <div class="dots">
-          <div class="text">
-            <h3>未来探索：外太空和深海探测，将重塑新的家园</h3>
-            <p class="font-14">
-              陆地到海洋，再到天空、大气层，终至星空瀚海，人类一直在不断努力扩展自身的生存空间。人类活动范围的每一次扩展，都增强了人类认知和改造自然的能力促进了生产力和社会的发展。
-            </p>
-            <div class="time font-14 color-text-4">时间：7.28 18:30-20:30</div>
-          </div>
-        </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/tansuo.jpg')"></div>
-      </div>
-      <div class="guest-content">
-        <div class="panel">
-          <img :src="guestsActiveMap.spaceList.picture"/>
-          <div class="text color-4">
-            <h4>{{guestsActiveMap.spaceList.name}}</h4>
-            <p class="font-14">{{guestsActiveMap.spaceList.desc[0]}}</p>
-          </div>
-        </div>
-        <div class="control">
-          <div class="guest-item" v-for="(item,index) in spaceList"
-               :class="{'active':guestsIndexMap.spaceList===index}"
-               @click="activeGuest('spaceList',index)">
-            <img :src="item.Thumbnail"/>
-          </div>
-        </div>
-      </div>
-
-      <div id="recreation" class="title-content">
-        <div class="dots">
-          <div class="text">
-            <h3>未来娱乐：ACGN百亿量级市场如何产业化</h3>
-            <p class="font-14">
-              动画、影视、漫画、游戏、轻小说、ACGN和数字娱乐行业随着次世代的来临地覆天翻的变化着。手游为王？主机消亡？中国的网络文学与日本轻小说孰优孰劣？国产影视注定五毛特效？未来ACGN产业化会如何发展？我们是否触碰到了次世代的边界？
-            </p>
-            <div class="time font-14 color-text-5">时间：7.29 13:00-15:00</div>
-          </div>
-        </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/yule.jpg')"></div>
-      </div>
-      <div class="guest-content">
-        <div class="panel">
-          <img :src="guestsActiveMap.designList.picture"/>
-          <div class="text color-5">
-            <h4>{{guestsActiveMap.designList.name}}</h4>
-            <p class="font-14">{{guestsActiveMap.designList.desc[0]}}</p>
-          </div>
-        </div>
-        <div class="control">
-          <div class="guest-item" v-for="(item,index) in designList"
-               :class="{'active':guestsIndexMap.designList===index}"
-               @click="activeGuest('designList',index)">
             <img :src="item.Thumbnail"/>
           </div>
         </div>
