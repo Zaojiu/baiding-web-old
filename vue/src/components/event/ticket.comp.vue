@@ -350,6 +350,7 @@
   import appDownloadTips from '../../shared/app-download-tips.comp.vue';
   import {showImageStall} from '../../store/image-stall';
   import MySwiperComponent from '../../shared/my-swiper.comp.vue';
+  import {Store} from "../../shared/utils/store";
 
   @Component({
     components: {
@@ -399,13 +400,16 @@
       }
     }
 
-    created() {
+    async created() {
       if (!isInApp) {
         this.isAppDownloadTipsShow = true;
       }
       this.id = this.$route.params['id'];
       this.lang = this.$route.query['lang'];
-      this.initData();
+      await this.initData();
+      if (Store.localStore.get('eventClickedBuy')) {
+        this.buy();
+      }
     }
 
     setShareInfo() {
@@ -514,19 +518,17 @@
 
     buy() {
       let userInfo: UserInfoModel;
-
+      Store.localStore.set('eventClickedBuy', true);
       userInfo = getUserInfoCache(true);
-
+      Store.localStore.delete('eventClickedBuy');
       if (this.event.isForMember && !userInfo.member.valid) {
         showTips('您还不是造就会员');
         return;
       }
-
       if (!userInfo.mobile.number) {
         this.$router.push({path: '/mobile-bind-event', query: {redirectTo: this.$route.fullPath}});
         return;
       }
-
       this.isPaymentPopup = true;
     }
 
