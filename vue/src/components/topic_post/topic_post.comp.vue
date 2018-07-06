@@ -15,11 +15,14 @@
         <div class="tab-content-inner"
              :class="{'tab-one-active': tabIndex === 0, 'tab-two-active': tabIndex === 1}">
           <div class="tab-content">
-            <img class="long-img"
-                 alt="封面图"
-                 :src="coverUrl"
-                 @error="coverUrl = defaultCoverUrl"/>
-            />
+            <div class="img-cover">
+              <img class="long-img"
+                   alt="封面图"
+                   :src="coverUrl"
+                   @error="coverUrl = defaultCoverUrl"/>
+              />
+            </div>
+
             <section class="talk-info" ref="content">
               <div class="categories" v-if="formatedCategories">{{formatedCategories}}</div>
               <h1>{{talkInfo.subject}}</h1>
@@ -33,7 +36,7 @@
               <div v-if="comments">
                 <div class="comment" v-for="comment in comments" :key="comment.id">
                   <div class="header" v-once>
-                    <div class="author-info">
+                    <div class="author-info" v-if="comment.user">
                       <img class="avatar avatar-round avatar-25" :src="comment.user.avatar" alt="用户头像">
                       <span class="nick">{{comment.user.nick}}</span>
                       <time>{{comment.createdAtParsed.format('MM月DD日 HH:mm')}}</time>
@@ -75,10 +78,21 @@
       left: 0;
       right: 0;
     }
-    .long-img {
-      width: 100vw;
-      height: 137.5vw;
+
+    .img-cover {
+      position: relative;
+      font-size: 0;
+      width: 100%;
+      padding-top: 137.5%;
+
+      .long-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
     }
+
     .tab-content-container {
       overflow: hidden;
 
