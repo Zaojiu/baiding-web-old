@@ -13,7 +13,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 })
 
 export class DownloadAppTipsComponent {
-  isDownloadTipsShow = !UtilsService.isAndroid && !UtilsService.isInApp;
+  isDownloadTipsShow = !UtilsService.isInApp;
   isiOS = UtilsService.isiOS;
   isAndroid = UtilsService.isAndroid;
 
@@ -21,12 +21,12 @@ export class DownloadAppTipsComponent {
   }
 
   redirectToYingYongBao() {
-    location.href = appConfig.iosDownloadLink;
+    location.href = appConfig.iosDownloadPage;
   }
 
   showDownloadModal() {
     const content = `<img style="max-width: 80vw; height: auto;" src="${host.assets}/assets/img/yingyongbao-ios-qrcode.png"><p>点击下载按钮或扫码，下载造就APP</p>`;
-    const link = this.sanitizer.bypassSecurityTrustUrl(appConfig.iosDownloadLink);
+    const link = this.sanitizer.bypassSecurityTrustUrl(appConfig.iosDownloadPage);
     const target = '_target';
     const confirmLink = new ModalLink(link, target);
     this.modalService.popup(content, '取消', '下载', true, confirmLink);
