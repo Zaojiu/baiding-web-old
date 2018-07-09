@@ -15,7 +15,7 @@ export class GuestLiveGuard implements CanActivate {
 
     return this.liveService.getLiveInfo(liveId).then(liveInfo => {
 
-      if ( liveInfo.isNeedPay && !liveInfo.paid) {
+      if ( liveInfo.isNeedPay && !liveInfo.paid && !liveInfo.isCurrentUserNeedPay) {
         this.router.navigate([`/lives/${liveId}/info`]);
         return false;
       }

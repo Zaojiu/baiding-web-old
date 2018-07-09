@@ -47,6 +47,7 @@ export class LiveInfoModel {
   memberFee: Money; // 会员价，单位“分”
   originFee: Money;
   paid: boolean; //付费情况
+  isCurrentUserNeedPay:boolean;
   paidType: LivePayType;
   invited: number;
   alertMessage: string;
