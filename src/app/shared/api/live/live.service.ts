@@ -136,6 +136,7 @@ export class LiveService {
     liveInfo.hadPraised = currentStreamUser && currentStreamUser.praised;
     liveInfo.booked = currentStreamUser && currentStreamUser.booked;
     liveInfo.paid = currentStreamUser && currentStreamUser.paid;
+    liveInfo.isCurrentUserNeedPay = currentStreamUser?( liveInfo.isAdmin(currentStreamUser.uid) || liveInfo.isVip(currentStreamUser.uid) || liveInfo.owner === currentStreamUser.uid):true;
     liveInfo.paidType = currentStreamUser && currentStreamUser.paidType;
     liveInfo.invited = currentStreamUser && currentStreamUser.invited;
 
