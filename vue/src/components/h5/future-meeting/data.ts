@@ -2,6 +2,15 @@
 export const intelligentList = [
   {
     id: '',
+    name: 'Charlie Brooker（拟邀）',
+    enName: '',
+    desc: ['英剧《黑镜》制作人'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/CharlieBrooker_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/CharlieBrooker_s.jpg'
+  },
+  {
+    id: '',
     name: 'Dr. Bibhrajit Halder',
     enName: 'Dr. Bibhrajit Halder',
     desc: ['自动驾驶软件公司创始人，范德堡大学机械工程系顾问，前苹果公司自动驾驶项目高级架构师'],
@@ -26,11 +35,56 @@ export const intelligentList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/xiongminglei_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/xiongminglei_s.jpg'
-  }
+  },
+  {
+    id: '',
+    name: '简仁贤（拟邀）',
+    enName: '',
+    desc: ['竹间智能创始人及CEO'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianrenxian_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianrenxian_s.jpg'
+  },
 ];
 
 // 未来生命
 export const lifeList = [
+  {
+    id: '',
+    name: 'Dr. Susan Jenkins',
+    enName: '',
+    desc: ['加州伯克利大学创新基因研究院院长'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/Dr.%20SusanJenkins_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/Dr.%20SusanJenkins_s.jpg'
+  },
+  {
+    id: '',
+    name: '徐讯',
+    enName: '',
+    desc: ['华大集团CEO,深圳华大生命科学研究院院长，国家基因库执行主任'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/xuxun_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/xuxun_s.jpg'
+  },
+  {
+    id: '',
+    name: '张嘉漪',
+    enName: '',
+    desc: ['复旦大学脑科学研究院研究员'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjiayi_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjiayi_s.jpg'
+  },
+  {
+    id: '',
+    name: '姜海',
+    enName: '',
+    desc: ['中国科学院上海生命科学研究院生物化学与细胞生物学研究所，研究员，研究组长'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianghai_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianghai_s.jpg'
+  },
   {
     id: '',
     name: '沈义栋',
@@ -48,23 +102,6 @@ export const lifeList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/daijianwu_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/daijianwu_s.jpg'
-  },
-  {
-    id: '',
-    name: '张嘉漪',
-    enName: '',
-    desc: ['复旦大学脑科学研究院研究员'],
-    enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjiayi_b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjiayi_s.jpg'
-  }, {
-    id: '',
-    name: '姜海',
-    enName: '',
-    desc: ['中国科学院上海生命科学研究院生物化学与细胞生物学研究所，研究员，研究组长'],
-    enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianghai_b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianghai_s.jpg'
   }
 ];
 
@@ -106,6 +143,15 @@ export const cityList = [
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangyongliang_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangyongliang_s.jpg'
   },
+  {
+    id: '',
+    name: '虞晶怡',
+    enName: '',
+    desc: ['上海科技大学信息科学与技术学院教授，美国特拉华大学计算机与信息科学系终身教授，叠境数字科技（上海）有限公司创始人'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yujingyi_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yujingyi_s.jpg'
+  }
 ];
 
 // 未来探索
@@ -136,6 +182,24 @@ export const spaceList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangfeng_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yangfeng_s.jpg'
+  },
+  {
+    id: '',
+    name: '盛文强',
+    enName: '',
+    desc: ['作家、海洋文化研究者'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/shengwenqiang_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/shengwenqiang_s.jpg'
+  },
+  {
+    id: '',
+    name: '叶聪',
+    enName: '',
+    desc: ['“蛟龙号”深海载人潜水器潜航员，“7000米载人潜水器”总布置主任设计师，中国唯一载人深潜器潜航员兼潜航员教练'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yecong_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yecong_s.jpg'
   },
   {
     id: '',
@@ -210,13 +274,32 @@ export const designList = [
 export const recreationList = [
   {
     id: '',
+    name: '毛大庆',
+    enName: '',
+    desc: ['优客工场创始人、董事长'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/maodaqing_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/maodaqing_s.jpg'
+  },
+  {
+    id: '',
+    name: '马岩松',
+    enName: '',
+    desc: ['MAD建筑设计事务所创始人、主持建筑师'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/mayansong_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/mayansong_s.jpg'
+  },
+  {
+    id: '',
     name: '青山周平',
     enName: '',
     desc: ['BLUE建筑设计事务所创始合伙人、主持建筑师'],
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/qingshanzhouping_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/qingshanzhouping_s.jpg'
-  }, {
+  },
+  {
     id: '',
     name: '朱胜萱',
     enName: '',
@@ -224,7 +307,8 @@ export const recreationList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhushengxuan_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhushengxuan_s.jpg'
-  }, {
+  },
+  {
     id: '',
     name: '张蓓',
     enName: '',
@@ -267,6 +351,24 @@ export const humanList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/AmirAsor_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/AmirAsor_s.jpg'
+  },
+  {
+    id: '',
+    name: '林俊廷',
+    enName: '',
+    desc: ['新媒体艺术家'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/linjunting_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/linjunting_s.jpg'
+  },
+  {
+    id: '',
+    name: '王志鸥',
+    enName: '',
+    desc: ['Blackbow黑弓创始人'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/wangzhiou_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/wangzhiou_s.jpg'
   }
 ];
 

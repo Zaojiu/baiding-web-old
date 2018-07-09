@@ -62,7 +62,7 @@
             <p class="font-14">
               动画、影视、漫画、游戏、轻小说、ACGN和数字娱乐行业随着次世代的来临地覆天翻的变化着。手游为王？主机消亡？中国的网络文学与日本轻小说孰优孰劣？国产影视注定五毛特效？未来ACGN产业化会如何发展？我们是否触碰到了次世代的边界？
             </p>
-            <div class="time font-14 color-text-5">时间：7.29 13:00-15:00</div>
+            <div class="time font-14 color-text-5">时间：7.29 9:00-11:00</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/yule.jpg')"></div>
@@ -151,7 +151,7 @@
               世纪是生物科学的世纪。大脑思维机理、癌症防治、基因测序
               就像其他基础学科一样，生命科学的成果是用于指导人类的生产活动 探索神秘的自然界和人类本身的过程就是最本质的、最大的乐趣和回报
             </p>
-            <div class="time font-14 color-text-2">时间：7.28 12:00-14:00</div>
+            <div class="time font-14 color-text-2">时间：7.28 13:00-15:00</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shengming.jpg')"></div>
@@ -180,7 +180,7 @@
             <p class="font-14">
               “在地球上创造一个天堂是设计师的任务。”我们的世界正在以光速迭代，新的设计层出不穷，我们不停创造的同时，也被设计的力量裹挟。或许，是时候了，我们应该坐下来谈一谈什么是设计？我们在为谁而设计？我们又在设计什么？
             </p>
-            <div class="time font-14 color-text-6">时间：7.29 9:00-11:00</div>
+            <div class="time font-14 color-text-6">时间：7.29 13:00-15:00</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/kongjian.jpg')"></div>
