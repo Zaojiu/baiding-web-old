@@ -2,15 +2,6 @@
 export const intelligentList = [
   {
     id: '',
-    name: 'Charlie Brooker（拟邀）',
-    enName: '',
-    desc: ['英剧《黑镜》制作人'],
-    enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/CharlieBrooker_b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/CharlieBrooker_s.jpg'
-  },
-  {
-    id: '',
     name: 'Dr. Bibhrajit Halder',
     enName: 'Dr. Bibhrajit Halder',
     desc: ['自动驾驶软件公司创始人，范德堡大学机械工程系顾问，前苹果公司自动驾驶项目高级架构师'],
@@ -45,6 +36,15 @@ export const intelligentList = [
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianrenxian_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/jianrenxian_s.jpg'
   },
+  {
+    id: '',
+    name: '张经纬',
+    enName: '',
+    desc: ['上海博物馆馆员'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjingwei_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangjingwei_s.jpg'
+  }
 ];
 
 // 未来生命
@@ -151,6 +151,15 @@ export const cityList = [
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/yujingyi_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/yujingyi_s.jpg'
+  },
+  {
+    id: '',
+    name: '龙瀛',
+    enName: '',
+    desc: ['清华大学建筑学院研究员、博士生导师、北京城市实验室创始人与执行主任'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/longying_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/longying_s.jpg'
   }
 ];
 
@@ -214,6 +223,15 @@ export const spaceList = [
 
 // 未来娱乐
 export const designList = [
+  {
+    id: '',
+    name: '蔡康永',
+    enName: '',
+    desc: ['节目主持人、作家、电影导演'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/caikangyong_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/caikangyong_s.jpg'
+  },
   {
     id: '',
     name: 'Billy Tan',
@@ -330,6 +348,24 @@ export const saleList = [
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/AmilcarChavarria_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/AmilcarChavarria_s.jpg'
   },
+  {
+    id: '',
+    name: '林俊廷',
+    enName: '',
+    desc: ['新媒体艺术家'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/linjunting_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/linjunting_s.jpg'
+  },
+  {
+    id: '',
+    name: '张弓',
+    enName: '',
+    desc: ['北京佳格天地科技有限公司创始人&CEO'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhanggong_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhanggong_s.jpg'
+  }
 ];
 
 // 未来的我
@@ -354,21 +390,21 @@ export const humanList = [
   },
   {
     id: '',
-    name: '林俊廷',
-    enName: '',
-    desc: ['新媒体艺术家'],
-    enDesc: [''],
-    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/linjunting_b.jpg',
-    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/linjunting_s.jpg'
-  },
-  {
-    id: '',
     name: '王志鸥',
     enName: '',
     desc: ['Blackbow黑弓创始人'],
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/wangzhiou_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/wangzhiou_s.jpg'
+  },
+  {
+    id: '',
+    name: '张睿',
+    enName: '',
+    desc: ['连尚网络首席运营官'],
+    enDesc: [''],
+    picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangrui_b.jpg',
+    Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/zhangrui_s.jpg'
   }
 ];
 
