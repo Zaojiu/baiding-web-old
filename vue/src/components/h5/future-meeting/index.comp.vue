@@ -33,7 +33,7 @@
             <p class="font-14">
               “城市的形态”是不断优化，还是彻底颠覆? 是跃迁升级的科幻世界，还是电缆之中的虚拟国度? 我们看到的是充满惊喜的“应许之地” 还是必将离开的“厌弃之城”? 未来城市，必将颠覆你的“视”界
             </p>
-            <div class="time font-14 color-text-3">时间：7.28 15:30-17:30</div>
+            <div class="time font-14 color-text-3">时间：7.28 13:30-15:30</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/chengshi.jpg')"></div>
@@ -62,7 +62,7 @@
             <p class="font-14">
               动画、影视、漫画、游戏、轻小说、ACGN和数字娱乐行业随着次世代的来临地覆天翻的变化着。手游为王？主机消亡？中国的网络文学与日本轻小说孰优孰劣？国产影视注定五毛特效？未来ACGN产业化会如何发展？我们是否触碰到了次世代的边界？
             </p>
-            <div class="time font-14 color-text-5">时间：7.29 9:00-11:00</div>
+            <div class="time font-14 color-text-5">时间：7.29 11:20-13:20</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/yule.jpg')"></div>
@@ -91,7 +91,7 @@
             <p class="font-14">
               陆地到海洋，再到天空、大气层，终至星空瀚海，人类一直在不断努力扩展自身的生存空间。人类活动范围的每一次扩展，都增强了人类认知和改造自然的能力促进了生产力和社会的发展。
             </p>
-            <div class="time font-14 color-text-4">时间：7.28 18:30-20:30</div>
+            <div class="time font-14 color-text-4">时间：7.28 15:40-17:40</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/tansuo.jpg')"></div>
@@ -120,7 +120,7 @@
             <p class="font-14">
               伴随着大数据、AI人工智能的应用化研究，此刻我们正踏入万物互联的“未来智能”红海。而当信息化的“数字空间”与现实世界的“物理空间”相连接“未来”的轮廓也将愈发明晰。
             </p>
-            <div class="time font-14 color-text-1">时间：7.28 9:00-11:00</div>
+            <div class="time font-14 color-text-1">时间：7.28 9:00-11:10</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/zhineng.jpg')">
@@ -151,7 +151,7 @@
               世纪是生物科学的世纪。大脑思维机理、癌症防治、基因测序
               就像其他基础学科一样，生命科学的成果是用于指导人类的生产活动 探索神秘的自然界和人类本身的过程就是最本质的、最大的乐趣和回报
             </p>
-            <div class="time font-14 color-text-2">时间：7.28 13:00-15:00</div>
+            <div class="time font-14 color-text-2">时间：7.28 11:20-13:20 </div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shengming.jpg')"></div>
@@ -180,7 +180,7 @@
             <p class="font-14">
               “在地球上创造一个天堂是设计师的任务。”我们的世界正在以光速迭代，新的设计层出不穷，我们不停创造的同时，也被设计的力量裹挟。或许，是时候了，我们应该坐下来谈一谈什么是设计？我们在为谁而设计？我们又在设计什么？
             </p>
-            <div class="time font-14 color-text-6">时间：7.29 13:00-15:00</div>
+            <div class="time font-14 color-text-6">时间：7.29 9:00-11:10</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/kongjian.jpg')"></div>
@@ -211,7 +211,7 @@
             <p class="font-14">
               便利店是最合理的线下店模式吗？大型超市还会继续存在下去吗？区块链可能会完全颠覆现有的商业结构；人工智能让金融变得更加智能与普惠；商业世界正在迎接有史以来的最大进化。
             </p>
-            <div class="time font-14 color-text-7">时间：7.29 15:30-17:30</div>
+            <div class="time font-14 color-text-7">时间：7.29 13:30-15:30</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shangye.jpg')"></div>
@@ -240,7 +240,7 @@
             <p class="font-14">
               人类从未经历过如此急速变迁和信息爆炸的时代，人的心灵境况面临巨大挑战，我们呼唤自由、公平、团结，我们却受困于孤独、茫然、困惑。社会需要被重新理解和读取，人类需要找到新的存在价值与意义。
             </p>
-            <div class="time font-14 color-text-8">时间：7.29 18:30-20:30</div>
+            <div class="time font-14 color-text-8">时间：7.29 15:40-17:40</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/wo.jpg')"></div>
