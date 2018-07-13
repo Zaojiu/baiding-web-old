@@ -252,9 +252,9 @@ export const designList = [
   },
   {
     id: '',
-    name: '吴晓毛',
+    name: '吴小毛',
     enName: '',
-    desc: ['德国Girtworld创始人及CEO，前Crytek 法兰克福项目总监及技术总监'],
+    desc: ['德国GritWorld创始人及CEO，前Crytek 法兰克福项目总监及技术总监'],
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/wuxiaomao_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/wuxiaomao_s.jpg'
@@ -312,7 +312,7 @@ export const recreationList = [
     id: '',
     name: '青山周平',
     enName: '',
-    desc: ['BLUE建筑设计事务所创始合伙人、主持建筑师'],
+    desc: ['B.L.U.E.建筑设计事务所创始合伙人、主持建筑师'],
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/qingshanzhouping_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/qingshanzhouping_s.jpg'
