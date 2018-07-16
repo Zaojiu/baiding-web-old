@@ -129,7 +129,7 @@ export const cityList = [
     id: '',
     name: '汤舸',
     enName: '',
-    desc: ['脉策数据（城市数据团）联合创始人及COO'],
+    desc: ['脉策数据（城市数据团）联合创始人'],
     enDesc: [''],
     picture: 'https://og9s6vxbs.qnssl.com/futrue/guests/tangke_b.jpg',
     Thumbnail: 'https://og9s6vxbs.qnssl.com/futrue/guests/tangke_s.jpg'
