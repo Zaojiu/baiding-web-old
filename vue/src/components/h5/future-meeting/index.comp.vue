@@ -285,7 +285,7 @@
         </p>
       </div>
 
-      <div id="map" class="map">
+      <!--<div id="map" class="map">
         <h2>
           <img class="img" src="https://og9s6vxbs.qnssl.com/futrue/icon-2.png"/>
           <span>大会地址</span>
@@ -293,7 +293,7 @@
         <div class="map-content">
           <img src="https://og9s6vxbs.qnssl.com/futrue/map.jpg"/>
         </div>
-      </div>
+      </div>-->
     </section>
     <div class="menu font-14" v-if="showMenu">
       <div class="menu-list">
