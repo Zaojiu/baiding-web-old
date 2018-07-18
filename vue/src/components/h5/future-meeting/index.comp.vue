@@ -9,7 +9,8 @@
     >
       <div class="head-content">
         <div class="img">
-          <img src="https://og9s6vxbs.qnssl.com/futrue/logo-new.png"/></div>
+          <!--<img src="https://og9s6vxbs.qnssl.com/futrue/logo-new.png"/>-->
+        </div>
         <div class="right">
           <span @click="showMenuSide" style="cursor: pointer;" class="font-set font-14"><i
             class="bi bi-menu"></i></span>
@@ -19,7 +20,7 @@
     <section class="content">
 
       <div class="img-cover">
-        <img src="https://og9s6vxbs.qnssl.com/futrue/banner-new.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/futrue/banner-new-n.jpg"/>
       </div>
 
       <p class="desc font-14">
