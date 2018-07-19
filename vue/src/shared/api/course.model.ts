@@ -51,6 +51,7 @@ export class Course {
   memberFee: Money; // 会员价，单位“分”
   originFee: Money; // 原价，单位分
   isNeedPay: boolean;
+  isForMember: boolean;
   subscribedTotal: number;
   totalVol: number;
   currentVol: number;
@@ -93,6 +94,7 @@ export class Course {
     this.memberFee = new Money(data.memberFee);
     this.originFee = new Money(data.originFee);
     this.isNeedPay = data.isNeedPay;
+    this.isForMember = data.isForMember;
     this.subscribedTotal = data.subscribedTotal;
     this.totalVol = data.totalVol;
     this.currentVol = data.currentVol;

@@ -361,7 +361,7 @@
   export default class CoverComponent extends Vue {
     id = '';
     columnInfo = new Column({});
-    userInfo: UserInfoModel | null = null;
+    userInfo: UserInfoModel;
     isLoading = false;
     isError = false;
     isIntroCollape = true;
@@ -373,7 +373,7 @@
       this.id = this.$route.params['id'];
 
       try {
-        this.userInfo = getUserInfoCache(false);
+        this.userInfo = getUserInfoCache(true);
       } catch (e) {
       }
 
@@ -564,6 +564,10 @@
           if (checkLogin(to)) this.$router.push({path: to});
         } else {
           if (checkLogin(this.$route.fullPath) && checkMobileBinded(this.$route.fullPath)) {
+            if (!this.userInfo.isMember) {
+              showTips('会员专属，您还不是会员');
+              return;
+            }
             this.createOrder();
           }
         }
