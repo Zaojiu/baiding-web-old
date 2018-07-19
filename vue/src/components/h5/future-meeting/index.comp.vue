@@ -952,7 +952,7 @@
         await initWechat();
         setShareInfo(
           '2018造就FUTURE年度大会',
-          `蔡康永、马岩松...邀你一同踏入奇思妙想新纪元！`,
+          `蔡康永、马岩松...邀你踏入奇思妙想新纪元！`,
           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
           `${host.self}/wv/future`
         );
