@@ -769,7 +769,7 @@ export const router = new Router({
               path: '',
               name: 'zaojiu.future',
               meta: {
-                title: '未来大会',
+                title: '2018造就FUTURE年度大会',
               }
             },
           ]

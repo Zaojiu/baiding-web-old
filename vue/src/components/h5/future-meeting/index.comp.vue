@@ -20,7 +20,7 @@
     <section class="content">
 
       <div class="img-cover">
-        <img src="https://og9s6vxbs.qnssl.com/futrue/banner-new-n.jpg"/>
+        <img src="https://og9s6vxbs.qnssl.com/futrue/banner-n-n.jpg"/>
       </div>
 
       <p class="desc font-14">
@@ -61,7 +61,7 @@
           <div class="text">
             <h3>未来娱乐：ACGN百亿量级市场如何产业化</h3>
             <p class="font-14">
-              动画、影视、漫画、游戏、轻小说、ACGN和数字娱乐行业随着次世代的来临地覆天翻的变化着。手游为王？主机消亡？中国的网络文学与日本轻小说孰优孰劣？国产影视注定五毛特效？未来ACGN产业化会如何发展？我们是否触碰到了次世代的边界？
+              动画、影视、漫画、游戏、轻小说、ACGN和数字娱乐行业随着次世代的来临地覆天翻的变化着。手游为王？主机消亡？中国的网络文学与日本轻小说孰优孰劣？未来ACGN产业化会如何发展？我们是否触碰到了次世代的边界？
             </p>
             <div class="time font-14 color-text-5">时间：7.29 11:20-13:20</div>
           </div>
@@ -152,7 +152,7 @@
               世纪是生物科学的世纪。大脑思维机理、癌症防治、基因测序
               就像其他基础学科一样，生命科学的成果是用于指导人类的生产活动 探索神秘的自然界和人类本身的过程就是最本质的、最大的乐趣和回报
             </p>
-            <div class="time font-14 color-text-2">时间：7.28 11:20-13:20 </div>
+            <div class="time font-14 color-text-2">时间：7.28 11:20-13:20</div>
           </div>
         </div>
         <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shengming.jpg')"></div>
@@ -878,6 +878,7 @@
   } from './data';
   import {setShareInfo} from '../../../shared/utils/share';
   import {initWechat} from '../../../shared/utils/wechat';
+  import {setTitle} from '../../../shared/utils/title';
 
   @Component({})
   export default class ActivateComponent extends Vue {
@@ -928,6 +929,7 @@
 
     created() {
       this.init();
+      setTitle('2018造就FUTURE年度大会');
       this.$nextTick(() => {
         this.guestDom = this.$refs['container'] as HTMLElement;
       })
@@ -949,8 +951,8 @@
       if (isInWechat) {
         await initWechat();
         setShareInfo(
-          '2018·造就未来大会',
-          `为你打开通向未知和未来的大门`,
+          '2018造就FUTURE年度大会',
+          `蔡康永、马岩松...邀你一同踏入奇思妙想新纪元！`,
           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
           `${host.self}/wv/future`
         );
