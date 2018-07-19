@@ -394,6 +394,7 @@
       try {
         this.columnInfo = await getColumnInfo(this.id);
         this.items = await listColumnItems(this.id);
+        this.autoBuy();
       } catch (e) {
         if (e instanceof ApiError && e.code === ApiCode.ErrNotFound) {
           this.isNotFound = true;
@@ -571,6 +572,12 @@
             this.createOrder();
           }
         }
+      }
+    }
+
+    autoBuy() {
+      if (!this.columnInfo.paid && this.userInfo.isMember && this.columnInfo.memberFee.value === 0) {
+        this.createOrder();
       }
     }
 
