@@ -54,7 +54,9 @@
               :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
         <div class="icon" @click="togglePraise()" :class="{'active': isPraised}">
           <div class="font-content"><i class="bi bi-new-praise"></i></div>
-          <div><span>点赞 {{courseInfo.praisedTotal}}</span></div>
+          <div>
+            <span>点赞 <!--隐藏数量{{courseInfo.praisedTotal}}--></span>
+          </div>
         </div>
         <div class="icon" @click="toggleFavorite()" :class="{'active': isFavorited}">
           <div class="font-content"><i class="bi bi-new-favorite"></i></div>
@@ -62,7 +64,7 @@
         </div>
         <div class="icon" @click="goComment">
           <div class="font-content"><i class="bi bi-new-comment"></i></div>
-          <div><span>评论 {{courseInfo.commentTotal}}</span></div>
+          <div><span>评论 <!--隐藏数量{{courseInfo.commentTotal}}--></span></div>
         </div>
       </footer>
     </div>

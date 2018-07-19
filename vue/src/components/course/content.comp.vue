@@ -98,11 +98,13 @@
               :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
         <div class="icon" @click="togglePraise()" :class="{'active': isPraised}">
           <div class="font-content"><i class="bi bi-new-praise"></i></div>
-          <div><span>点赞 {{itemInfo.current.praisedTotal}}</span></div>
+          <div>
+            <span>点赞 <!--隐藏数量{{itemInfo.current.praisedTotal}}--></span>
+          </div>
         </div>
         <div class="icon" @click="goComment">
           <div class="font-content"><i class="bi bi-new-comment"></i></div>
-          <div><span>评论 {{itemInfo.current.commentTotal}}</span></div>
+          <div><span>评论 <!--隐藏数量{{itemInfo.current.commentTotal}}--></span></div>
         </div>
       </footer>
     </div>
