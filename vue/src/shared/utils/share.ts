@@ -6,18 +6,19 @@ import {appendAfterEachHook} from "../../hooks";
 
 declare const wx: any;
 
-let _title = '', _desc = '', _cover = '', _link = '';
+let _title = '', _desc = '', _cover = '', _link = '', _timeLineTitle = '';
 
 export const wechatSetShareInfo = async (title: string, desc: string, cover: string, link: string) => {
   _title = title;
   _desc = desc;
   _cover = cover;
   _link = link;
+  _timeLineTitle = `${title},${desc}`;
 
-  if (desc.length > 19) desc = `${desc.slice(0, 18)}...`;
+  //if (desc.length > 19) desc = `${desc.slice(0, 18)}...`;
 
   wx.onMenuShareTimeline({
-    title: title, // 分享标题
+    title: _timeLineTitle, // 分享标题
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
@@ -78,7 +79,9 @@ export const iosSetShareInfo = async (title: string, desc: string, cover: string
   _link = link;
 
   await initIOS();
-  callHandler('setShareInfo', {title: title, desc: desc, cover: cover, link: link}, () => {}, () => {});
+  callHandler('setShareInfo', {title: title, desc: desc, cover: cover, link: link}, () => {
+  }, () => {
+  });
   return;
 };
 
@@ -109,7 +112,9 @@ export const wechatShare = () => {
 
 export const iosShare = async () => {
   await initIOS();
-  callHandler('share', {title: _title, desc: _desc, cover: _cover, link: _link}, () => {}, () => {});
+  callHandler('share', {title: _title, desc: _desc, cover: _cover, link: _link}, () => {
+  }, () => {
+  });
   return;
 };
 
