@@ -155,7 +155,7 @@
             this.$router.push({path: `/columns/${id}`});
           } else {
             showTips('会员专属');
-            this.$router.push({path: '/new-member/action'});
+            this.$router.push({path: '/new-member/action',query:{needBack:'/course/list'}});
           }
         }
         return;

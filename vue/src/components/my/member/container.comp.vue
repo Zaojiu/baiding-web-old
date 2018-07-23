@@ -247,6 +247,7 @@
     timeOver = '';
     isAndroid = isAndroid && isInApp;
     isPaying = false;
+    needBack = '';
 
     @Watch('$route.name')
     setNavIndex() {
@@ -275,6 +276,7 @@
       } catch (e) {
 
       }
+      this.needBack = this.$route.query["needBack"]||'';
       this.init();
     }
 
@@ -568,7 +570,11 @@
     }
 
     async payOrder(orderNo: string) {
-      await pay(orderNo, `${host.self}/new-member/card`);
+      let redirectUrl = `${host.self}/new-member/card`;
+      if (this.needBack) {
+        redirectUrl = `${host.self}${this.needBack}`;
+      }
+      await pay(orderNo, redirectUrl);
       setPaymentNone();
       this.userInfo = await refreshUserInfo();
       this.init();
