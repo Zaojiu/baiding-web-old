@@ -156,6 +156,11 @@ export const router = new Router({
           component: () => System.import('./components/course/featured.comp.vue')
         },
         {
+          path: '/course/list',
+          name: 'course.list.main',
+          component: () => System.import('./components/course/list.comp.vue')
+        },
+        {
           path: '/group/:groupId',
           component: () => System.import('./components/course/container.comp.vue'),
           children: [

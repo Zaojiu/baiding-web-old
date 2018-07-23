@@ -3,6 +3,20 @@ import {del, get, post} from "./xhr";
 import {Course, CourseItem, CourseItemCommentModel, CourseItemDetail, CommentModel, InvitedModel} from "./course.model";
 import {params} from "../utils/utils";
 
+export const listCourses = async (marker = '', isForMember = false): Promise<Course[]> => {
+  const query = {isForMember, marker};
+  const url = `${host.io}/api/course/v2/courses/featured?${params(query)}`;
+  const res = await get(url);
+  const result = res.data.result;
+  const CourseList: Course[] = [];
+  result.forEach((itemData: any) => {
+    const item = new Course(itemData);
+    CourseList.push(item);
+  });
+
+  return CourseList;
+};
+
 export const getCourseInfo = async (id: string): Promise<Course> => {
   const url = `${host.io}/api/course/courses/${id}`;
   const res = await get(url);
@@ -193,9 +207,9 @@ export const getInvitedByInfo = async (itemId: string, uid: string) => {
 
 // 接受课程
 export const acceptInvited = async (itemId: string, uid: number) => {
-    const url = `${host.io}/api/course/courses/items/${itemId}/invited_by`;
-    const postData = {
-      uid: uid
-    };
-    await post(url, postData);
+  const url = `${host.io}/api/course/courses/items/${itemId}/invited_by`;
+  const postData = {
+    uid: uid
+  };
+  await post(url, postData);
 };
