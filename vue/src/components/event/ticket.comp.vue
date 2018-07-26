@@ -4,10 +4,10 @@
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <error class="abs-center" v-else-if="isNotFound">无此活动</error>
     <div class="event" v-else @click="isPaymentPopup = false">
-      <top-nav></top-nav>
+      <top-nav v-if="!isInMiniApp"></top-nav>
       <app-download-tips
         class="app-download-tips"
-        v-if="isAppDownloadTipsShow"
+        v-if="isAppDownloadTipsShow&&!isInMiniApp"
         @close="isAppDownloadTipsShow = false"
       ></app-download-tips>
       <img class="cover" :src="event.cover169Url" alt="头图"/>
@@ -352,6 +352,8 @@
   import MySwiperComponent from '../../shared/my-swiper.comp.vue';
   import {Store} from "../../shared/utils/store";
 
+  declare const wx: any;
+
   @Component({
     components: {
       appDownloadTips: appDownloadTips,
@@ -378,6 +380,7 @@
     ticketImgIndex = 0;
     isAndroid = isAndroid && isInApp;
     isAppDownloadTipsShow = false;
+    isInMiniApp = false;
 
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
@@ -433,6 +436,7 @@
       }
       if (isInWechat) {
         await initWechat();
+        this.isInMiniApp = Store.memoryStore.get('miniApp');
       }
       this.setShareInfo();
       this.checkDate(this.event);
@@ -558,8 +562,8 @@
       }
 
       //小程序端购买跳转
-      if (Store.memoryStore.get('miniApp')){
-        console.log('当前在小程序中');
+      if (Store.memoryStore.get('miniApp')) {
+        wx.miniProgram.navigateTo({ url: `/zaojiu/user/order/order?items=${encodeURIComponent(JSON.stringify([query]))}` });
         return;
       }
 
