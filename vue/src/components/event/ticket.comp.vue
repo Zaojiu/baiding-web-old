@@ -437,8 +437,12 @@
       this.setShareInfo();
       this.checkDate(this.event);
 
+      //票种大于0，已绑定电话号码
       if (this.event.meta.tickets.length && this.canBuy()) {
-        this.ticketSelected = this.event.meta.tickets[0];
+        let tickets = this.event.meta.tickets.filter((item) => {
+          return item.leftTotal > 0;
+        });
+        this.ticketSelected = tickets[0];
         this.ticketCount = 1;
 
         this.timer = setInterval(() => {
@@ -448,8 +452,11 @@
     }
 
     checkTicketCount() {
-      if (this.ticketCount > this.ticketSelected.leftTotal) {
+      if (this.ticketCount > this.ticketSelected.leftTotal && this.ticketSelected.leftTotal > 0) {
         this.ticketCount = this.ticketSelected.leftTotal;
+      }
+      if (this.ticketSelected.leftTotal <= 0) {
+        this.ticketCount = 0;
       }
     }
 
@@ -547,6 +554,12 @@
       if (this.isAndroid) {
         await initIOS();
         callHandler('payOrder', `${host.self}/orders?items=${encodeURIComponent(JSON.stringify([query]))}`);
+        return;
+      }
+
+      //小程序端购买跳转
+      if (Store.memoryStore.get('miniApp')){
+        console.log('当前在小程序中');
         return;
       }
 

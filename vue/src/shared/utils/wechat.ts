@@ -4,6 +4,7 @@ import {AxiosResponse} from "axios";
 import {showTips} from "../../store/tip";
 import {appendAfterEachHook} from "../../hooks";
 import {isAndroid, isInWechat, isiOS} from './utils';
+import {Store} from './store';
 
 declare const wx: any;
 
@@ -105,7 +106,11 @@ export const initWechat = async (): Promise<void> => {
 
     wx.ready(() => {
       console.log('wechat ready');
-
+      if ((window as any).__wxjs_environment === 'miniprogram') {
+        Store.memoryStore.set('miniApp', true);
+      } else {
+        Store.memoryStore.set('miniApp', false);
+      }
       wx.onVoiceRecordEnd({
         // 录音时间超过一分钟没有停止的时候会执行 complete 回调
         complete: (res: any) => {
