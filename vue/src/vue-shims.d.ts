@@ -5,6 +5,7 @@ declare module '*.vue' {
 
 declare const System: any;
 declare const _: any;
+declare const wx: any;
 
 declare function setInterval(callback: (...args: any[]) => void, ms: number, ...args: any[]): number;
 
