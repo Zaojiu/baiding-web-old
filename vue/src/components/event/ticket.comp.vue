@@ -563,7 +563,14 @@
 
       //小程序端购买跳转
       if (Store.memoryStore.get('miniApp')) {
-        wx.miniProgram.navigateTo({ url: `/zaojiu/user/order/order?items=${encodeURIComponent(JSON.stringify([query]))}` });
+        wx.miniProgram.navigateTo({
+          url: `/zaojiu/user/order/order?items=${encodeURIComponent(JSON.stringify([query]))}`,
+          success: () => {
+            if (this.timer) {
+              clearInterval(this.timer);
+            }
+          }
+        });
         return;
       }
 

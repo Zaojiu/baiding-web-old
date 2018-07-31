@@ -1,8 +1,10 @@
 <template>
-  <div class="content">
+  <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
+  <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
+  <div class="content" v-else>
     <div class="member-card">
-      <div v-for="item in listImg" class="image-cover" @click="actionImgCover(item)">
-        <img :src="item.cover"/>
+      <div v-for="item in columnList" class="image-cover" @click="actionImgCover(item)">
+        <img :src="item.coverSmall169Url"/>
       </div>
       <ul v-if="listText.length">
         <li v-for=" text in listText "><span class="dot"></span><span v-html="text"></span></li>
@@ -99,19 +101,23 @@
   import Vue from 'vue';
   import {Component, Watch} from 'vue-property-decorator';
   import {initIOS, callHandler} from "../../shared/utils/ios";
-  import {getUserInfoCache} from "../../shared/api/user.api";
+  import {getUserInfoCache} from '../../shared/api/user.api';
   import {UserInfoModel} from '../../shared/api/user.model';
   import {isInApp} from "../../shared/utils/utils";
   import {showTips} from '../../store/tip';
+  import {listColumn} from '../../shared/api/column.api'
+  import {Column} from '../../shared/api/column.model';
 
   @Component({})
   export default class Course extends Vue {
     isInApp: boolean = isInApp;
     listText: string[] = [];
-    listImg: any[] = [];
+    columnList: Column[] = [];
     userInfo: UserInfoModel;
     defaultCover = 'assets/img/default-cover.jpg';
     lockAction = false;
+    isError = false;
+    isLoading = false;
 
     created() {
       this.init();
@@ -122,26 +128,8 @@
       this.init();
     }
 
-    init() {
+    async init() {
       this.isInApp = isInApp;
-      this.listImg = [
-        {
-          id: '5aa8d12f0b603c0001b68a37',
-          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9'
-        },
-        {
-          id: '5a911d1f0b603c0001c24160',
-          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9'
-        },
-        {
-          id: '5a5f080551281300015d4449',
-          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9'
-        },
-        {
-          id: '5b0d0b195abd5900016a58ba',
-          cover: 'https://og9s6vxbs.qnssl.com/cover/img/FsTeV8zqpcbVJnsQ4xsc2ujZC5G1-1527733436.jpg~16-9'
-        },
-      ];
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
@@ -152,6 +140,18 @@
         this.listText = [
           '五折购买在线《大师之课》'
         ];
+      }
+      this.initData();
+    }
+
+    async initData() {
+      try {
+        this.isLoading = true;
+        this.columnList = await listColumn();
+      } catch (e) {
+        this.isError = true;
+      } finally {
+        this.isLoading = false;
       }
     }
 
