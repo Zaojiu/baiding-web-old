@@ -449,7 +449,7 @@
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
-          'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png',
+          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
           url
         );
       }
