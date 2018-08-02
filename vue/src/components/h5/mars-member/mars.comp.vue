@@ -394,7 +394,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
   import {getUserInfoCache} from "../../../shared/api/user.api";
   import {UserInfoModel} from '../../../shared/api/user.model';
   import {isOnLargeScreen, isAndroid, isiOS} from '../../../shared/utils/utils';
@@ -427,13 +427,18 @@
 
 
     created() {
+      this.share();
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
         this.prepareVideo();
-        this.share();
       }
+    }
+
+    @Watch('$route.name')
+    setNavIndex() {
+      this.share();
     }
 
     async share() {

@@ -326,11 +326,11 @@
 
 
     created() {
+      this.share();
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
-        this.share();
         //this.prepareVideo();
       }
     }
