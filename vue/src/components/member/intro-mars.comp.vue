@@ -254,10 +254,13 @@
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
-  import {isInApp} from "../../shared/utils/utils";
+  import {isInApp,isInWechat} from "../../shared/utils/utils";
   import {checkOrderFee} from "../../shared/api/order.api";
   import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition} from '../../shared/utils/utils';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
+  import {initWechat} from "../../shared/utils/wechat";
+  import {setShareInfo} from "../../shared/utils/share";
+  import {host} from "../../env/environment";
 
   @Component
   export default class IntroMarsComponent extends Vue {
@@ -273,11 +276,26 @@
     player: ZaojiuPlayerInstance;
 
     created() {
+      this.share();
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
         this.prepareVideo();
+      }
+    }
+
+    async share() {
+      if (isInWechat) {
+        await initWechat();
+        let url = `${host.self}/wv/intro-mars`;
+        let title = '造就火星计划';
+        setShareInfo(
+          title,
+          '一起探索科技创新与未来的前沿',
+          'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png',
+          url
+        );
       }
     }
 
