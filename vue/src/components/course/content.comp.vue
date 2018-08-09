@@ -66,7 +66,7 @@
         </div>
       </div>
 
-      <div id="comments" class="comments block">
+      <div id="comments" v-if="showComment" class="comments block">
         <h2>评论</h2>
 
         <div v-if="comments">
@@ -94,7 +94,7 @@
         <div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>
         <div ref="bottom"></div>
       </div>
-      <footer class="tool-bar" v-show="!(isVideoPlayed && isLandscape)" ref="toolBar"
+      <footer class="tool-bar" v-if="showComment" v-show="!(isVideoPlayed && isLandscape)" ref="toolBar"
               :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
         <div class="icon" @click="togglePraise()" :class="{'active': isPraised}">
           <div class="font-content"><i class="bi bi-new-praise"></i></div>
@@ -722,6 +722,7 @@
     isToolbarShow = false;
     invitedBy = '';
     marker = '';
+    showComment = false;
 
     created() {
       this.courseId = this.$route.params['courseId'];
@@ -859,6 +860,9 @@
     }
 
     async initComments(needScroll: boolean) {
+      if (!this.showComment){
+        return;
+      }
       this.comments = [];
       await this.fetchComments();
       if (needScroll) {
