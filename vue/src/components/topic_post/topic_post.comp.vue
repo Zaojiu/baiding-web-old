@@ -30,7 +30,7 @@
             </section>
             <section class="article article-content" v-html="talkInfo.content" v-once></section>
 
-            <section id="comments" class="comments">
+            <section id="comments" class="comments" v-if="showCommit">
               <h2>评论</h2>
 
               <div v-if="comments">
@@ -375,6 +375,7 @@
     isCommentError = false;
     isCommentOnLatest = false;
     isInApp: boolean;
+    showCommit = false;//展示评论列表
 
     created() {
       this.id = this.$route.params['id'];
@@ -423,6 +424,9 @@
     }
 
     async fetchComments() {
+      if (!this.showCommit) {
+        return;
+      }
       this.isCommentLoading = true;
       this.isCommentError = false;
 

@@ -26,7 +26,7 @@
 
       </div>
 
-      <div id="comments" class="comments block">
+      <div id="comments" class="comments block" v-if="showComment">
         <h2>评论</h2>
 
         <div v-if="comments">
@@ -54,7 +54,9 @@
         <div class="more-comments" v-else @click="fetchComments()">加载更多评论</div>
         <div ref="bottom"></div>
       </div>
-      <footer class="tool-bar" ref="toolBar"
+      <footer class="tool-bar"
+              ref="toolBar"
+              v-if="showComment"
               :class="{'footer-show': isToolbarShow,'footer-hide': !isToolbarShow}">
         <div class="icon" @click="togglePraise()" :class="{'active': isPraised}">
           <div class="font-content"><i class="bi bi-new-praise"></i></div>
@@ -433,6 +435,7 @@
     userInfo: UserInfoModel;
     isToolbarShow = false;
     marker = '';
+    showComment = false;
 
     created() {
       this.itemChanged();
@@ -472,6 +475,9 @@
     }
 
     async initComments(needScroll: boolean) {
+      if (this.showComment){
+        return;
+      }
       this.comments = [];
       await this.fetchComments();
       if (needScroll) {
