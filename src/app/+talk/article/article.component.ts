@@ -58,6 +58,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isNewApp: boolean;
   closeVideo: boolean;
   isVideoEle: any;
+  showComment = false;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('videoPlayer') player: VideoPlayerComponent;
@@ -166,6 +167,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   refreshComments(needScrollToComment = true) {
+    if (!this.showComment) {
+      return;
+    }
     this.comments = [];
     this.listComments().then(() => {
       if (needScrollToComment) setTimeout(() => this.scrollToComment());

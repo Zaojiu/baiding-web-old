@@ -84,7 +84,7 @@
     </div>
   </section>
 
-  <section class="comments" [ngClass]="{hidden: !isOnScreen && isLandscape}">
+  <section *ngIf="showComment" class="comments" [ngClass]="{hidden: !isOnScreen && isLandscape}">
     <h2 #commentTitle>评论</h2>
 
     <div class="comment" *ngFor="let comment of comments">
@@ -112,7 +112,7 @@
     <div class="no-more-comments" *ngIf="!isCommentLoading && comments.length && !hasMoreComments">到底咯~</div>
   </section>
 
-  <footer *ngIf="talkInfo && !isNewApp && !isAndroid" [ngClass]="{hidden: !isOnScreen && isLandscape}" #toolBar>
+  <footer *ngIf="talkInfo && !isNewApp && !isAndroid && showComment" [ngClass]="{hidden: !isOnScreen && isLandscape}" #toolBar>
     <div class="icon" [ngClass]="{'activate': talkInfo.isPraised}" (click)="talkInfo.isPraised ? unpraise() : praise()">
       <div class="font-content"><i class="bi bi-new-praise"></i></div>
       <div><span>点赞 {{talkInfo.praiseTotal}}</span></div>
