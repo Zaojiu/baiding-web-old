@@ -315,7 +315,6 @@
           'https://og9s6vxbs.qnssl.com/member/member-only-video.png'
         ];
         this.listText = [
-          '500场精心剪辑的高清演讲视频',
           '专享演讲者深度访谈及幕后花絮'
         ];
       }

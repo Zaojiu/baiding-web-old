@@ -138,7 +138,6 @@
       if (!this.userInfo || !this.userInfo.member.valid) {
         this.lockAction = true;
         this.listText = [
-          '五折购买在线《大师之课》'
         ];
       }
       this.initData();
