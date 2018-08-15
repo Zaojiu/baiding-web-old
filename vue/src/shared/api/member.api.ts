@@ -32,7 +32,7 @@ export const listMemberRights = async (): Promise<MemberRight[]> => {
   const data = resp.data || [];
   if (data.length) {
     rights = data.filter((r: any) => {
-      return r.total > 0;
+      return r.available > 0;
     }).map((r: any) => {
       return new MemberRight(r);
     });
