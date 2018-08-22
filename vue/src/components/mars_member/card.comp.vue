@@ -14,6 +14,7 @@
   .member-card {
     color: #fff;
     overflow: hidden;
+    padding-top: 24px;
 
     .discount {
       color: #fff;
