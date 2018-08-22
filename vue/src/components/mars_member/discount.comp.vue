@@ -83,7 +83,7 @@
   .content {
     height: 100%;
     overflow: auto;
-    padding: 4px 20px 0 20px;
+    padding: 24px 0 0 0;
   }
 
   .member-card {

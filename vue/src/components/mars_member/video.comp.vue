@@ -65,6 +65,7 @@
       bottom: 0;
       right: 0;
       overflow: auto;
+      padding-top: 24px;
     }
 
     .main {

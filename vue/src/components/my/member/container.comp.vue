@@ -168,7 +168,7 @@
         }
       }
       .member-content {
-        padding: 20px 20px 0 20px;
+        padding: 0 20px;
         background-color: rgb(26, 26, 26);
         overflow: hidden;
       }

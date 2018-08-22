@@ -21,7 +21,7 @@
     overflow: hidden;
     position: relative;
     height: 0;
-    padding-top: 66.67%;
+    padding-top: 56.25%;
 
     .slideshow {
       position: absolute;
@@ -100,11 +100,10 @@
     timer: any;//定时器
     mark = 0; //比对图片索引的变量
     imgArray = [
-      'https://og9s6vxbs.qnssl.com/memers/member-action-first.jpg',
-      'https://og9s6vxbs.qnssl.com/memers/member-action-s.jpg',
-      'https://og9s6vxbs.qnssl.com/memers/member-action-t.jpg',
-      'https://og9s6vxbs.qnssl.com/memers/member-action-f.jpg',
-      'https://og9s6vxbs.qnssl.com/memers/member-action-fi.jpg'
+      'https://og9s6vxbs.qnssl.com/member/member-action-1.jpg',
+      'https://og9s6vxbs.qnssl.com/member/member-action-2.jpg',
+      'https://og9s6vxbs.qnssl.com/member/member-action-3.jpg',
+      'https://og9s6vxbs.qnssl.com/member/member-action-4.jpg'
     ];
 
     created() {
