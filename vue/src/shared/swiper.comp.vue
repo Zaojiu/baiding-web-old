@@ -21,7 +21,7 @@
     overflow: hidden;
     position: relative;
     height: 0;
-    padding-top: 56.25%;
+    padding-top: 66.67%;
 
     .slideshow {
       position: absolute;
@@ -39,6 +39,7 @@
 
     img {
       width: 100%;
+      border-radius: 8px;
     }
 
     .bar {
