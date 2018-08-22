@@ -17,7 +17,6 @@
   .content {
     height: 100%;
     overflow: auto;
-    margin-top: -20px;
     padding-top: 20px;
   }
 
