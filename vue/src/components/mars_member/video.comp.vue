@@ -179,6 +179,8 @@
 
     .member-card {
       color: #fff;
+      padding-top: 24px;
+
       .image-cover {
         font-size: 0;
         img {
