@@ -1,5 +1,5 @@
 <template>
-  <div class="member-card">
+  <div class="member-card" :class="{'no-padding-top':noPadding}">
     <div v-for="item in listImg" class="image-cover">
       <img :src="item"/>
     </div>
@@ -97,6 +97,10 @@
       color: #d6ad60;
     }
   }
+
+  .no-padding-top {
+    padding-top: 0;
+  }
 </style>
 
 <script lang="ts">
@@ -108,7 +112,9 @@
   import {listMemberRights} from '../../shared/api/member.api';
   import {MemberRight} from "../../shared/api/member.model";
 
-  @Component({})
+  @Component({
+    props: ['noPadding'],
+  })
   export default class Action extends Vue {
     isInApp: boolean = isInApp;
     listText: string[] = [];
@@ -117,6 +123,7 @@
     userInfo: UserInfoModel;
     rights: MemberRight[] = [];
     memberType = 0;//0普通会员，1火星会员
+    noPadding: boolean; //props
 
     created() {
       this.init();
@@ -128,6 +135,10 @@
       if (this.userInfo.member.memberId && this.userInfo.member.memberId === 'member-mars') {
         // 火星会员
         this.memberType = 1;
+        this.listImg = [
+          'https://og9s6vxbs.qnssl.com/members/mars-member-card.png'
+        ];
+      } else if (this.userInfo.member.memberId === 'member-aia-mars') {
         this.listImg = [
           'https://og9s6vxbs.qnssl.com/members/mars-member-card.png'
         ];
