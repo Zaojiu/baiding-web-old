@@ -29,10 +29,10 @@
                   v-model="wechatNumber"
                   v-validate="{rules: {required: true}}"
                   v-has-value
-                  placeholder="手机号"
+                  placeholder="微信号"
                 >
               </div>
-              <p class="helper error" v-if="errors.first('wechatNumber:required')">请填写手机号</p>
+              <p class="helper error" v-if="errors.first('wechatNumber:required')">请填写微信号</p>
             </div>
 
             <div class="form-group-new"
