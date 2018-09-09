@@ -44,7 +44,9 @@ export const m = {
     mobileLength: '手机号码为11位数字',
     passwordLength: '密码长度为8-32位，字符不限',
     binding: '绑定中...',
-    bindAndLink: '绑定手机号码，方便造就客服联系',
+    
+    //bindAndLink: '绑定手机号码，方便造就客服联系',
+    bindAndLink: '',
     bindSuccess: '手机号码绑定成功',
     liveRegistration: '直播报名信息',
     realName: '请填写您的真实姓名',
