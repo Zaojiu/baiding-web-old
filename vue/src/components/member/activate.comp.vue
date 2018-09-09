@@ -22,19 +22,6 @@
               <p class="helper error" v-if="errors.first('memberCode:required')">请填写会员卡号</p>
             </div>
 
-            <div class="form-group-new" :class="{'has-error': errors.has('wechatNumber')}">
-              <div class="input-group">
-                <input
-                  name="wechatNumber"
-                  v-model="wechatNumber"
-                  v-validate="{rules: {required: true}}"
-                  v-has-value
-                  placeholder="微信号"
-                >
-              </div>
-              <p class="helper error" v-if="errors.first('wechatNumber:required')">请填写微信号</p>
-            </div>
-
             <div class="form-group-new"
                  :class="{'has-error': errors.has('name')}">
               <div class="input-group">
