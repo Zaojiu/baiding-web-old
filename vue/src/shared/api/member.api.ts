@@ -5,9 +5,9 @@ import {MemberRight} from "./member.model";
 import {params} from "../utils/utils";
 import {Discount} from "./order.model";
 
-export const activateMember = async (code: string, realname: string, company: string, position: string): Promise<void> => {
+export const activateMember = async (code: string, wechat: string, realname: string, company: string, position: string): Promise<void> => {
   const url = `${host.io}/api/user/member/activate`;
-  const data = {code, realname, company, position};
+  const data = {code, wechat, realname, company, position};
 
   try {
     await post(url, data);
