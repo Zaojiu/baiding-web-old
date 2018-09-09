@@ -188,7 +188,8 @@
   export default class ActivateComponent extends Vue {
     userInfo = getUserInfoCache();
     memberCode = '';
-    wechatNumber = '';
+    //edit by ywz for 会员激活页不需要输入微信号
+    wechatNumber = 'wechat';
     name = '';
     company = '';
     title = '';
