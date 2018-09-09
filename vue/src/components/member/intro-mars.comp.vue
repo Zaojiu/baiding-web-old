@@ -8,6 +8,7 @@
       }">
         <div class="player" id="player" @click="isVideoPlayed = true"></div>
 
+
         <div class="live-cover" v-if="!isVideoPlayed">
           <img
             class="cover-image"
