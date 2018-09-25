@@ -25,9 +25,8 @@ class MemoryStore implements StoreInterface {
 class LocalStore implements StoreInterface {
   set(key: string, value: any) {
     try {
-      localStorage.setItem(key, JSON.stringify(value) || 'null');
-    } catch (e) {
-    }
+      localStorage.setItem(key, JSON.stringify(value) || "null");
+    } catch (e) {}
   }
 
   get(key: string): any {
@@ -37,7 +36,7 @@ class LocalStore implements StoreInterface {
     } catch (e) {
       return null;
     }
-    if (typeof str !== 'string') return null;
+    if (typeof str !== "string") return null;
     return JSON.parse(str);
   }
 
@@ -52,8 +51,7 @@ export class Store {
   static memoryStore: StoreInterface = new MemoryStore();
   static localStore: StoreInterface = new LocalStore();
 
-  constructor() {
-  }
+  constructor() {}
 
   static set(key: string, value: any) {
     Store.memoryStore.set(key, value);

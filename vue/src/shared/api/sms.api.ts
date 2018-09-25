@@ -1,24 +1,29 @@
-import {host} from "../../env/environment";
-import {post} from "./xhr";
+import { host } from "../../env/environment";
+import { post } from "./xhr";
 
 export enum SmsScene {
   Login = 1,
   ResetPassword,
   BindMobile,
-  Signup,
+  Signup
 }
 
 export enum SmsType {
   Text = 1,
-  Voice,
+  Voice
 }
 
-export const sendSmsByLoginUser = async (mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: { [key: number]: string }): Promise<void> => {
+export const sendSmsByLoginUser = async (
+  mobile: string,
+  scene: SmsScene,
+  type = SmsType.Text,
+  codeMap?: { [key: number]: string }
+): Promise<void> => {
   const url = `${host.io}/api/user/sms`;
   const data = {
     mobile: mobile,
     scene: scene,
-    type: type,
+    type: type
   };
 
   await post(url, data);
@@ -26,15 +31,30 @@ export const sendSmsByLoginUser = async (mobile: string, scene: SmsScene, type =
   return;
 };
 
-export const sendSmsByGuest = async (mobile: string, scene: SmsScene, type = SmsType.Text, codeMap?: { [key: number]: string }): Promise<void> => {
+export const sendSmsByGuest = async (
+  mobile: string,
+  scene: SmsScene,
+  type = SmsType.Text,
+  codeMap?: { [key: number]: string }
+): Promise<void> => {
   const url = `${host.io}/api/user/login/sms`;
   const data = {
     mobile: mobile,
     scene: scene,
-    type: type,
+    type: type
   };
 
-  await post(url, data, {codeMap: codeMap});
+  await post(url, data, { codeMap: codeMap });
 
+  return;
+};
+
+export const validateSMSCode = async (
+  phoneNumber: string,
+  smsCode: string
+): Promise<void> => {
+  const url = `${host.io}/api/user/v2/validateSmsCode`;
+  const data = { mobile: phoneNumber, smsCode: smsCode };
+  await post(url, data);
   return;
 };
