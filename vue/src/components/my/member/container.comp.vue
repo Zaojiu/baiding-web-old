@@ -13,29 +13,29 @@
         <ul class="nav">
           <li v-if="isMember"
               @click="changeNav(0)"
-              :class="{'active':navIndex===0,'little-padding':memberType!==1}">
+              :class="{'active':navIndex===0,'little-padding':!likeMarsPower}">
             会员卡
           </li>
           <li v-if="!isMember"
               @click="changeNav(1)"
-              :class="{'active':navIndex===1,'little-padding':memberType!==1}">
+              :class="{'active':navIndex===1,'little-padding':!likeMarsPower}">
             特别优惠
           </li>
-          <li v-if="isMember&&memberType === 1"
+          <li v-if="isMember&&likeMarsPower"
               @click="changeNav(2)"
-              :class="{'active':navIndex===2,'little-padding':memberType!==1}">
+              :class="{'active':navIndex===2,'little-padding':!likeMarsPower}">
             计划表
           </li>
           <li @click="changeNav(3)"
-              :class="{'active':navIndex===3,'little-padding':memberType!==1}">
+              :class="{'active':navIndex===3,'little-padding':!likeMarsPower}">
             专属视频
           </li>
           <li @click="changeNav(4)"
-              :class="{'active':navIndex===4,'little-padding':memberType!==1}">
+              :class="{'active':navIndex===4,'little-padding':!likeMarsPower}">
             会员课程
           </li>
           <li v-if="!isAndroid" @click="changeNav(5)"
-              :class="{'active':navIndex===5,'little-padding':memberType!==1}">
+              :class="{'active':navIndex===5,'little-padding':!likeMarsPower}">
             干货下载
           </li>
         </ul>
@@ -52,7 +52,7 @@
                @touchmove="touchMove"
                @touchend="touchEnd">
         <transition name="slide-left">
-          <router-view :is-member="isMember"></router-view>
+          <router-view :is-member="isMember" :noPadding="true"></router-view>
         </transition>
       </section>
       <footer v-if="!isMember">
@@ -243,11 +243,12 @@
     originY: number;
     moveClientY: number;
     showBuyBtn = false;
-    memberType = -1;//-1非会员 0 普通会员，1 火星会员
+    memberType = -1;//-1非会员 0 普通会员，1 火星会员，2联名卡
     timeOver = '';
     isAndroid = isAndroid && isInApp;
     isPaying = false;
     needBack = '';
+    likeMarsPower = false;//是否联名卡权益和火星会员权益，用于控制UI
 
     @Watch('$route.name')
     setNavIndex() {
@@ -276,7 +277,7 @@
       } catch (e) {
 
       }
-      this.needBack = this.$route.query["needBack"]||'';
+      this.needBack = this.$route.query["needBack"] || '';
       this.init();
     }
 
@@ -294,8 +295,12 @@
           this.timeOver = this.userInfo.member.expiredAt.endOf('day').fromNow();
           this.showBuyBtn = true;
         }
-        if (this.userInfo.member.memberId && this.userInfo.member.memberId === 'member-mars') {
+        if (this.userInfo.member.memberId === 'member-mars') {
           this.memberType = 1;
+          this.likeMarsPower = true;
+        } else if (this.userInfo.member.memberId === 'member-aia-mars') {
+          this.likeMarsPower = true;
+          this.memberType = 2;
         } else {
           this.memberType = 0;
         }
@@ -461,6 +466,7 @@
           }
           break;
         case 1: //火星会员
+        case 2: //联名卡
           switch (this.navIndex) {
             case 0:
               if (up) {

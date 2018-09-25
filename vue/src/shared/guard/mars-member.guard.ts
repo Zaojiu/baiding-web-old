@@ -41,7 +41,7 @@ export const memberPlanGuard = () => {
         router.push({path: '/new-member/action'});
         return false;
       } else {
-        if (userInfo.member.memberId === 'member-mars') {
+        if (userInfo.member.memberId === 'member-mars' || userInfo.member.memberId === 'member-aia-mars') {
           return true;
         } else {
           router.push({path: '/new-member/card'});
