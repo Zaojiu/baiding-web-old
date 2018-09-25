@@ -8,7 +8,6 @@
       }">
         <div class="player" id="player" @click="isVideoPlayed = true"></div>
 
-
         <div class="live-cover" v-if="!isVideoPlayed">
           <img
             class="cover-image"
@@ -38,13 +37,13 @@
 <style lang="scss" scoped>
   .container {
     height: 100vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 
     .video-content {
       flex-shrink: 0;
       overflow: hidden;
-      //padding-top: 56.25%;
       background-color: #0A0A17;
 
       .video {
@@ -106,6 +105,7 @@
           display: flex;
           flex-direction: column-reverse;
           pointer-events: none;
+          background-color: #000;
 
           .cover-thumbnail-wrapper {
             position: absolute;
@@ -134,7 +134,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            //object-fit: cover;
             text-indent: -10000px;
           }
 
@@ -255,28 +255,38 @@
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
-  import {isInApp,isInWechat} from "../../shared/utils/utils";
-  import {checkOrderFee} from "../../shared/api/order.api";
+  import {isInApp, isInWechat, isInWeiBo} from "../../shared/utils/utils";
   import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition} from '../../shared/utils/utils';
   import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
   import {initWechat} from "../../shared/utils/wechat";
   import {setShareInfo} from "../../shared/utils/share";
   import {host} from "../../env/environment";
+  import {createOrder} from "../../shared/api/order.api";
+  import {ApiError} from "../../shared/api/xhr";
+  import {ApiCode} from "../../shared/api/code-map.enum";
+  import {Store} from "../../shared/utils/store";
+  import {showTips} from "../../store/tip";
+  import {getRelativePath} from "../../shared/utils/utils";
+  import {ApiErrorMessage} from "../../shared/api/code-map.enum";
+  import {setPaymentNone} from "../../store/payment";
+  import {pay} from "../../shared/api/pay.api";
 
   @Component
   export default class IntroMarsComponent extends Vue {
     defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/members/mars-member-card.png';
     userInfo: UserInfoModel | null = null;
     fee = new Money(1000000);
-    memberOrderObject = new PostOrderObject('member-mars', OrderObjectType.Member, 1); // hardcode temporary
     isOnScreen = isOnLargeScreen;
     isVideoPlayed = false;
     isLandscape = false;
     coverUrl = '';
     seeking = false;
     player: ZaojiuPlayerInstance;
+    memberType = 'member-aia-mars';
+    isPaying = false;
 
     created() {
+      this.handlePayResultForRedirect();
       this.share();
       try {
         this.userInfo = getUserInfoCache(false);
@@ -284,6 +294,27 @@
       } finally {
         this.prepareVideo();
       }
+    }
+
+    async handlePayResultForRedirect() {
+      const query = this.$route.query;
+      const payResult = query['payResult'];
+
+      if (!payResult) return true;
+
+      if (payResult === 'success') {
+        showTips('支付成功');
+        setTimeout(() => {
+          this.$router.push({path: '/new-member/card'});
+        }, 10)
+      } else if (payResult === 'cancel') {
+        showTips('订单未支付');
+      } else {
+        showTips('支付失败，请重试');
+        console.error(decodeURIComponent(payResult));
+      }
+
+      return false;
     }
 
     async share() {
@@ -342,27 +373,21 @@
 
     get btnText(): string {
       let text: string;
-      if (this.userInfo && this.userInfo.isMember) {
-        if (this.userInfo.member.memberId == "member-year") {
-          let fee = new Money(1000000 - 21800);
-          text = `升级成为火星会员 ${fee.toYuan('', '元/2年')}(已优惠${new Money(21800).toYuan('')}元)`;
-        } else if (this.userInfo.member.memberId == "member-mars") {
-          text = '已是火星会员，查看我的权益';
-        } else {
-          text = `购买造就火星会员 ${this.fee.toYuan('', '元/2年')}`;
-        }
+      if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId == this.memberType) {
+        text = '已购买造就-友邦火星联名卡，查看我的权益';
       } else {
-        text = `购买造就火星会员 ${this.fee.toYuan('', '元/2年')}`;
+        let fee = new Money(1000000);
+        text = `购买造就.友邦火星联名卡 ${fee.toYuan('', '元/2年')}`;
       }
-
       return text;
     }
 
     btnClick() {
-      if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId === 'member-mars') {
+      if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId === this.memberType) {
         this.goMyMember();
       } else {
-        this.buy();
+        // this.buy();
+        this.goIntro();
       }
     }
 
@@ -374,18 +399,88 @@
       }
     }
 
-    async buy() {
+    /*async buy() {
       if (!this.userInfo) {
-        this.$router.push({path: '/signin', query: {redirectTo: `/member/intro-mars`}});
+        this.$router.push({path: '/signin', query: {redirectTo: `/member/aia-intro-mars`}});
         return;
       }
 
-      if (this.userInfo.isMember && this.userInfo.member.memberId === 'member-mars') return;
+      if (this.userInfo.isMember && this.userInfo.member.memberId === this.memberType) return;
 
       this.$router.push({
         path: '/orders',
-        query: {items: encodeURIComponent(JSON.stringify([this.memberOrderObject]))}
+        query: {
+          items: encodeURIComponent(JSON.stringify([new PostOrderObject(this.memberType, OrderObjectType.Member, 1)])) // hardcode temporary
+        }
       });
+    }*/
+
+    checkMobileBinded(to: string) {
+      // 未绑定手机
+      if (this.userInfo && this.userInfo.isMobileBinded) {
+        return true;
+      }
+      this.$router.push({path: '/mobile-bind-event', query: {redirectTo: to}});
+      return false;
+    };
+
+    async goIntro() {
+      this.userInfo = getUserInfoCache();
+
+      //安卓端购买跳转
+      /*if (this.isAndroid) {
+        await initIOS();
+        callHandler('payOrder', `${host.self}/orders?items=${encodeURIComponent(JSON.stringify([this.memberOrderObject]))}`);
+        return;
+      }*/
+
+      // web 创建订单
+      if (!this.checkMobileBinded(this.$route.fullPath)) {
+        return;
+      }
+      this.createOrder();
+    }
+
+    //订单
+    async createOrder() {
+      if (this.isPaying) return;
+
+      this.isPaying = true;
+
+      try {
+        const orderMeta = await createOrder([new PostOrderObject(this.memberType, OrderObjectType.Member, 1)], [], false);
+        await this.payOrder(orderMeta.orderNo);
+      } catch (e) {
+        if (e instanceof ApiError) {
+          const code = e.code;
+
+          if (code === ApiCode.ErrOrderNeedProcessOthers) {
+            const oldOrderNum = e.originError.response && e.originError.response.data.data.orderNo;
+            this.payOrder(oldOrderNum);
+          } else if (e.isUnauthorized) {
+            Store.memoryStore.delete('userInfo');
+            showTips(`请登录`);
+            this.$router.push({path: '/signin', query: {redirectTo: getRelativePath(location.href, '/lives')}});
+          } else {
+            const errMessage = ApiErrorMessage[code] || `未知错误: ${code}`;
+            showTips(errMessage);
+          }
+
+          throw e;
+        }
+      } finally {
+        this.isPaying = false;
+      }
+    }
+
+    async payOrder(orderNo: string) {
+      let redirectUrl = `${host.self}/wv/aia-intro-mars`;
+      await pay(orderNo, redirectUrl);
+      setPaymentNone();
+      showTips('支付成功');
+      if (!isInWechat && !isInApp && !isInWeiBo) {
+        this.$router.push({path: '/new-member/card'})
+      }
     }
   }
 </script>
