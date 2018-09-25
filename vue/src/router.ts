@@ -1,800 +1,879 @@
-import Vue from 'vue';
-import Router, {Route} from 'vue-router';
+import Vue from "vue";
+import Router, { Route } from "vue-router";
 
-import baseComp from './components/base.comp.vue';
-import talksComp from './components/talks/content.comp.vue';
-import topic_post from './components/topic_post/topic_post.comp.vue';
-import errorComp from './components/error/error.comp.vue';
-import {authGuard} from './shared/guard/user-auth.guard';
-import {memberActionGuard, memberCardGuard, memberPlanGuard} from './shared/guard/mars-member.guard';
-import {execRouteTask} from './shared/guard/route-task';
-import {mobileBindedGuard} from './shared/guard/mobile-binded.guard';
-import {memberActivateCompGuard} from './shared/guard/member-activate-comp.guard';
-import {getRelativePath, scrollPosition} from './shared/utils/utils';
-import {signinGuard} from './shared/guard/signin-comp.guard';
-import {mobileBindedCompGuard} from './shared/guard/mobile-binded-comp.guard';
-import {afterHooks, beforeHooks} from './hooks';
-import {liveInfoResolver} from './shared/resolver/live-info.resolver';
+import baseComp from "./components/base.comp.vue";
+import talksComp from "./components/talks/content.comp.vue";
+import topic_post from "./components/topic_post/topic_post.comp.vue";
+import errorComp from "./components/error/error.comp.vue";
+import { authGuard, auth4MobileGuard } from "./shared/guard/user-auth.guard";
+import {
+  memberActionGuard,
+  memberCardGuard,
+  memberPlanGuard
+} from "./shared/guard/mars-member.guard";
+import { execRouteTask } from "./shared/guard/route-task";
+import { mobileBindedGuard } from "./shared/guard/mobile-binded.guard";
+import { memberActivateCompGuard } from "./shared/guard/member-activate-comp.guard";
+import { getRelativePath, scrollPosition } from "./shared/utils/utils";
+import {
+  signinGuard,
+  signin4BindMobileGuard
+} from "./shared/guard/signin-comp.guard";
+import {
+  mobileBindedCompGuard,
+  wechatBindMobileCompGuard
+} from "./shared/guard/mobile-binded-comp.guard";
+import { afterHooks, beforeHooks } from "./hooks";
+import { liveInfoResolver } from "./shared/resolver/live-info.resolver";
 
-import memberContainer from './components/my/member/container.comp.vue';
+import memberContainer from "./components/my/member/container.comp.vue";
 
 //老版本iOS使用，未来可选择删除
-import memberContent from './components/my/iosInAppPayMember/content.comp.vue';
-import iosMemberContainer from './components/my/iosInAppPayMember/container.comp.vue';
+import memberContent from "./components/my/iosInAppPayMember/content.comp.vue";
+import iosMemberContainer from "./components/my/iosInAppPayMember/container.comp.vue";
 //
 
-import MemberVideoComponent from './components/member_video/list.comp.vue';
+import MemberVideoComponent from "./components/member_video/list.comp.vue";
 
-import marsMemberDiscount from './components/mars_member/discount.comp.vue';
-import marsMemberContainer from './components/mars_member/container.comp.vue';
-import marsMemberCard from './components/mars_member/card.comp.vue';
-import marsMemberVideo from './components/mars_member/video.comp.vue';
-import marsMemberCourse from './components/mars_member/course.comp.vue';
-import marsMemberDownload from './components/mars_member/download.comp.vue';
-import marsMemberPlanList from './components/mars_member/planList.comp.vue';
+import marsMemberDiscount from "./components/mars_member/discount.comp.vue";
+import marsMemberContainer from "./components/mars_member/container.comp.vue";
+import marsMemberCard from "./components/mars_member/card.comp.vue";
+import marsMemberVideo from "./components/mars_member/video.comp.vue";
+import marsMemberCourse from "./components/mars_member/course.comp.vue";
+import marsMemberDownload from "./components/mars_member/download.comp.vue";
+import marsMemberPlanList from "./components/mars_member/planList.comp.vue";
 
 Vue.use(Router);
 
 export const router = new Router({
-  mode: 'history',
+  mode: "history",
   scrollBehavior(to: any, from: any, savedPosition: any): any {
     return scrollPosition;
   },
   routes: [
     {
-      path: '/',
+      path: "/",
       component: baseComp,
       children: [
         {
-          path: '/lives',
-          name: 'lives',
-          component: () => System.import('./components/lives/lives.comp.vue'),
+          path: "/lives",
+          name: "lives",
+          component: () => System.import("./components/lives/lives.comp.vue")
         },
         {
-          path: '/lives/:id/info',
-          name: 'live-info',
+          path: "/lives/:id/info",
+          name: "live-info",
           beforeEnter(to, from, next) {
             const tasks = [liveInfoResolver()];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/lives/live-info.comp.vue'),
+          component: () =>
+            System.import("./components/lives/live-info.comp.vue")
         },
         {
-          path: '/signin',
-          name: 'signin',
+          path: "/signin",
+          name: "signin",
           meta: {
-            title: '登录',
+            title: "登录"
           },
           beforeEnter(to, from, next) {
-            const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
+            const redirectTo = getRelativePath(
+              to.query["redirectTo"],
+              "/lives"
+            );
             const tasks = [signinGuard(redirectTo)];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/signin/signin.comp.vue'),
+          component: () => System.import("./components/signin/signin.comp.vue")
         },
         {
-          path: '/mobile-bind',
-          name: 'mobileBind',
+          path: "/signin4BindMobile",
+          name: "signin4BindMobile",
           meta: {
-            title: '绑定手机',
+            title: "登录"
+          },
+          beforeEnter(to, from, next) {
+            const redirectTo = getRelativePath(
+              to.query["redirectTo"],
+              "/mobile-bind-event"
+            );
+            const tasks = [signin4BindMobileGuard(redirectTo)];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import("./components/signin/signin.comp.vue")
+        },
+        {
+          path: "/mobile-bind",
+          name: "mobileBind",
+          meta: {
+            title: "绑定手机"
           },
           beforeEnter(to, from, next) {
             const tasks = [authGuard(), mobileBindedCompGuard()];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/signin/mobile-bind.comp.vue'),
+          component: () =>
+            System.import("./components/signin/mobile-bind.comp.vue")
         },
         {
-          path: '/mobile-bind-event',
-          name: 'mobileBind.event',
+          path: "/mobile-bind-event",
+          name: "mobileBind.event",
           meta: {
-            title: '绑定手机',
+            title: "绑定手机"
           },
           beforeEnter(to, from, next) {
-            const tasks = [authGuard(), mobileBindedCompGuard()];
+            const tasks = [wechatBindMobileCompGuard()];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/signin/mobile-bind-event.comp.vue'),
+          component: () =>
+            System.import("./components/signin/mobile-bind-event.comp.vue")
         },
         {
-          path: '/forget-password',
-          name: 'forgetPassword',
+          path: "/forget-password",
+          name: "forgetPassword",
           meta: {
-            title: '忘记密码',
+            title: "忘记密码"
           },
           beforeEnter(to, from, next) {
-            const redirectTo = getRelativePath(to.query['redirectTo'], '/lives');
+            const redirectTo = getRelativePath(
+              to.query["redirectTo"],
+              "/lives"
+            );
             const tasks = [signinGuard(redirectTo)];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/signin/forget-password.comp.vue'),
+          component: () =>
+            System.import("./components/signin/forget-password.comp.vue")
         },
         {
-          path: '/app_course/cover/:id',
-          component: () => System.import('./components/app_course/cover.comp.vue'),
+          path: "/app_course/cover/:id",
+          component: () =>
+            System.import("./components/app_course/cover.comp.vue"),
           children: [
             {
-              name: 'appCourseCove.main',
-              path: ''
+              name: "appCourseCove.main",
+              path: ""
             },
             {
-              name: 'appCourseCover.post-comment',
-              path: 'post-comment',
+              name: "appCourseCover.post-comment",
+              path: "post-comment",
               meta: {
-                title: '发表评论',
+                title: "发表评论"
               },
-              component: () => System.import('./components/app_course/post-comment.comp.vue')
+              component: () =>
+                System.import("./components/app_course/post-comment.comp.vue")
             }
           ]
         },
         {
-          path: '/app_course/item/:id',
-          component: () => System.import('./components/app_course/itemContent.comp.vue'),
+          path: "/app_course/item/:id",
+          component: () =>
+            System.import("./components/app_course/itemContent.comp.vue"),
           children: [
             {
-              name: 'appCourseItem.main',
-              path: ''
+              name: "appCourseItem.main",
+              path: ""
             },
             {
-              name: 'appCourseItem.post-comment',
-              path: 'post-comment',
+              name: "appCourseItem.post-comment",
+              path: "post-comment",
               meta: {
-                title: '发表评论',
+                title: "发表评论"
               },
-              component: () => System.import('./components/app_course/post-comment.comp.vue')
+              component: () =>
+                System.import("./components/app_course/post-comment.comp.vue")
             }
           ]
         },
         {
-          path: '/app_course/item/:itemId/invited_by/:uid',
-          name: 'course.invited.main',
-          component: () => System.import('./components/course/shareMiddle.comp.vue')
+          path: "/app_course/item/:itemId/invited_by/:uid",
+          name: "course.invited.main",
+          component: () =>
+            System.import("./components/course/shareMiddle.comp.vue")
         },
         {
-          path: '/course/featured',
-          name: 'course.featured.main',
-          component: () => System.import('./components/course/featured.comp.vue')
+          path: "/course/featured",
+          name: "course.featured.main",
+          component: () =>
+            System.import("./components/course/featured.comp.vue")
         },
         {
-          path: '/course/list',
-          name: 'course.list.main',
-          component: () => System.import('./components/course/list.comp.vue')
+          path: "/course/list",
+          name: "course.list.main",
+          component: () => System.import("./components/course/list.comp.vue")
         },
         {
-          path: '/group/:groupId',
-          component: () => System.import('./components/course/container.comp.vue'),
+          path: "/group/:groupId",
+          component: () =>
+            System.import("./components/course/container.comp.vue"),
           children: [
             {
-              name: 'group.main',
-              path: ''
+              name: "group.main",
+              path: ""
             },
             {
-              name: 'group.cover',
-              path: 'cover',
-              component: () => System.import('./components/group/list.comp.vue')
+              name: "group.cover",
+              path: "cover",
+              component: () => System.import("./components/group/list.comp.vue")
             },
             {
-              name: 'group.publish',
-              path: 'publish',
-              component: () => System.import('./components/group/publish.comp.vue')
+              name: "group.publish",
+              path: "publish",
+              component: () =>
+                System.import("./components/group/publish.comp.vue")
             }
           ]
         },
         {
-          path: '/group/:groupId/:msg',
-          name: 'group.message.comment',
+          path: "/group/:groupId/:msg",
+          name: "group.message.comment",
           meta: {
-            title: '评论'
+            title: "评论"
           },
-          component: () => System.import('./components/group/comment.comp.vue'),
+          component: () => System.import("./components/group/comment.comp.vue")
         },
         {
-          path: '/course/:courseId',
-          component: () => System.import('./components/course/container.comp.vue'),
+          path: "/course/:courseId",
+          component: () =>
+            System.import("./components/course/container.comp.vue"),
           children: [
             {
-              name: 'course.main',
-              path: ''
+              name: "course.main",
+              path: ""
             },
             {
-              name: 'course.cover',
-              path: 'cover',
-              component: () => System.import('./components/course/cover.comp.vue')
+              name: "course.cover",
+              path: "cover",
+              component: () =>
+                System.import("./components/course/cover.comp.vue")
             }
           ]
         },
         {
-          path: '/course/:courseId/items/:itemId',
+          path: "/course/:courseId/items/:itemId",
           beforeEnter(to, from, next) {
             const tasks = [authGuard(), mobileBindedGuard(true)];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/course/content.comp.vue'),
+          component: () =>
+            System.import("./components/course/content.comp.vue"),
           children: [
             {
-              name: 'course.item.main',
-              path: ''
+              name: "course.item.main",
+              path: ""
             },
             {
-              name: 'course.item.post-comment',
-              path: 'post-comment',
+              name: "course.item.post-comment",
+              path: "post-comment",
               meta: {
-                title: '发表评论',
+                title: "发表评论"
               },
-              component: () => System.import('./components/course/post-comment.comp.vue'),
+              component: () =>
+                System.import("./components/course/post-comment.comp.vue")
             }
           ]
         },
         {
-          path: '/talks/:id',
+          path: "/talks/:id",
           component: talksComp,
           children: [
             {
-              name: 'talks.main',
-              path: ''
+              name: "talks.main",
+              path: ""
             },
             {
-              name: 'talks.post-comment',
-              path: 'post-comment',
+              name: "talks.post-comment",
+              path: "post-comment",
               meta: {
-                title: '发表评论',
+                title: "发表评论"
               },
               beforeEnter(to, from, next) {
                 const tasks = [authGuard(), mobileBindedGuard()];
                 execRouteTask(tasks, to, from, next);
               },
-              component: () => System.import('./components/talks/post-comment.comp.vue'),
+              component: () =>
+                System.import("./components/talks/post-comment.comp.vue")
             }
           ]
         },
         {
-          path: '/topic_post/:id',
+          path: "/topic_post/:id",
           component: topic_post,
           children: [
             {
-              name: 'topic_post.main',
-              path: ''
+              name: "topic_post.main",
+              path: ""
             },
             {
-              name: 'topic_post.post-comment',
-              path: 'post-comment',
+              name: "topic_post.post-comment",
+              path: "post-comment",
               meta: {
-                title: '发表评论',
+                title: "发表评论"
               },
               beforeEnter(to, from, next) {
                 const tasks = [authGuard(), mobileBindedGuard()];
                 execRouteTask(tasks, to, from, next);
               },
-              component: () => System.import('./components/topic_post/post-comment.comp.vue'),
+              component: () =>
+                System.import("./components/topic_post/post-comment.comp.vue")
             }
           ]
         },
         {
-          path: '/member/video',
+          path: "/member/video",
           component: MemberVideoComponent,
           children: [
             {
-              name: 'member_video.main',
-              path: ''
+              name: "member_video.main",
+              path: ""
             }
           ]
         },
         {
-          path: '/wv/pop_quiz',
-          component: () => System.import('./components/pop_quiz/index.comp.vue'),
+          path: "/wv/pop_quiz",
+          component: () =>
+            System.import("./components/pop_quiz/index.comp.vue"),
           children: [
             {
-              name: 'pop_quiz.main',
-              path: ''
+              name: "pop_quiz.main",
+              path: ""
             },
             {
-              name: 'pop_quiz.question',
-              path: 'question',
-              component: () => System.import('./components/pop_quiz/question.comp.vue'),
+              name: "pop_quiz.question",
+              path: "question",
+              component: () =>
+                System.import("./components/pop_quiz/question.comp.vue")
             },
             {
-              name: 'pop_quiz.my',
-              path: 'my/:id',
-              component: () => System.import('./components/pop_quiz/my.comp.vue'),
+              name: "pop_quiz.my",
+              path: "my/:id",
+              component: () =>
+                System.import("./components/pop_quiz/my.comp.vue")
             },
             {
-              name: 'pop_quiz.rank',
-              path: 'rank',
-              component: () => System.import('./components/pop_quiz/rank.comp.vue'),
+              name: "pop_quiz.rank",
+              path: "rank",
+              component: () =>
+                System.import("./components/pop_quiz/rank.comp.vue")
             },
             {
-              name: 'pop_quiz.receive',
-              path: 'receive/:id',
-              component: () => System.import('./components/pop_quiz/receive-prizes.comp.vue'),
+              name: "pop_quiz.receive",
+              path: "receive/:id",
+              component: () =>
+                System.import("./components/pop_quiz/receive-prizes.comp.vue")
             }
           ]
         },
         {
-          path: '/member/activate',
-          name: 'member.activate',
+          path: "/member/activate",
+          name: "member.activate",
           meta: {
-            title: '激活会员',
+            title: "激活会员"
           },
           beforeEnter(to, from, next) {
             // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
-            const tasks = [authGuard(), mobileBindedGuard(true)];
+            const tasks = [auth4MobileGuard(), mobileBindedGuard(true)];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/member/activate.comp.vue'),
+          component: () =>
+            System.import("./components/member/activate.comp.vue")
         },
         {
-          path: '/member/intro',
-          name: 'member.intro',
+          path: "/member/intro",
+          name: "member.intro",
           meta: {
-            title: '造就会员',
+            title: "造就会员"
           },
-          component: () => System.import('./components/member/intro.comp.vue'),
+          component: () => System.import("./components/member/intro.comp.vue")
         },
         {
-          path: '/member/intro-mars',
-          name: 'member.intro-mars',
+          path: "/member/intro-mars",
+          name: "member.intro-mars",
           meta: {
-            title: '造就火星会员',
+            title: "造就火星会员"
           },
-          component: () => System.import('./components/member/intro-mars.comp.vue'),
+          component: () =>
+            System.import("./components/member/intro-mars.comp.vue")
         },
         {
-          path: '/wv/appPay-guide/:id',
-          name: 'appPay.guide',
+          path: "/wv/appPay-guide/:id",
+          name: "appPay.guide",
           meta: {
-            title: '绑定引导',
+            title: "绑定引导"
           },
-          component: () => System.import('./components/appPay_guide/content.comp.vue'),
+          component: () =>
+            System.import("./components/appPay_guide/content.comp.vue")
         },
         {
-          path: '/new-member',
+          path: "/new-member",
           meta: {
-            title: '造就新会员',
+            title: "造就新会员"
           },
           children: [
             {
-              path: '',
-              name: 'new-member.main',
-              redirect: 'video'
+              path: "",
+              name: "new-member.main",
+              redirect: "video"
             },
             {
-              path: 'card',
-              name: 'new-member.card',
+              path: "card",
+              name: "new-member.card",
 
               beforeEnter(to, from, next) {
                 const tasks = [memberCardGuard()];
                 execRouteTask(tasks, to, from, next);
               },
-              component: marsMemberCard,
+              component: marsMemberCard
             },
             {
-              path: 'action',
-              name: 'new-member.action',
+              path: "action",
+              name: "new-member.action",
               beforeEnter(to, from, next) {
                 const tasks = [memberActionGuard()];
                 execRouteTask(tasks, to, from, next);
               },
-              component: marsMemberDiscount,
+              component: marsMemberDiscount
             },
             {
-              path: 'plan',
-              name: 'new-member.plan',
+              path: "plan",
+              name: "new-member.plan",
               beforeEnter(to, from, next) {
                 const tasks = [memberPlanGuard()];
                 execRouteTask(tasks, to, from, next);
               },
-              component: marsMemberPlanList,
+              component: marsMemberPlanList
             },
             {
-              name: 'new-member.video',
-              path: 'video',
+              name: "new-member.video",
+              path: "video",
               component: marsMemberVideo
             },
             {
-              name: 'new-member.course',
-              path: 'course',
-              component: marsMemberCourse,
+              name: "new-member.course",
+              path: "course",
+              component: marsMemberCourse
             },
             {
-              name: 'new-member.download',
-              path: 'download',
+              name: "new-member.download",
+              path: "download",
               component: marsMemberDownload
-            },
+            }
           ],
-          component: memberContainer,
+          component: memberContainer
         },
         {
-          path: '/mars-member',
+          path: "/mars-member",
           meta: {
-            title: '造就火星会员',
+            title: "造就火星会员"
           },
           component: marsMemberContainer,
           children: [
             {
-              path: '',
-              redirect: 'video'
+              path: "",
+              redirect: "video"
             },
             {
-              path: 'card',
-              component: marsMemberCard,
+              path: "card",
+              component: marsMemberCard
             },
             {
-              path: 'action',
-              component: marsMemberDiscount,
+              path: "action",
+              component: marsMemberDiscount
             },
             {
-              path: 'video',
+              path: "video",
               component: marsMemberVideo
             },
             {
-              path: 'course',
-              component: marsMemberCourse,
+              path: "course",
+              component: marsMemberCourse
             },
             {
-              path: 'download',
+              path: "download",
               component: marsMemberDownload
             },
             {
-              path: 'plan',
+              path: "plan",
               component: marsMemberPlanList
             }
           ]
         },
         {
-          path: '/wv/ios-member',
+          path: "/wv/ios-member",
           meta: {
-            title: '造就新会员',
+            title: "造就新会员"
           },
           children: [
             {
-              path: '',
-              redirect: 'action'
+              path: "",
+              redirect: "action"
             },
             {
-              path: 'card',
-              name: 'ios-member.card',
-              component: memberContent,
-            },
-            {
-              path: 'action',
-              name: 'ios-member.action',
-              component: memberContent,
-            },
-            {
-              name: 'ios-member.video',
-              path: 'video',
+              path: "card",
+              name: "ios-member.card",
               component: memberContent
             },
             {
-              name: 'ios-member.course',
-              path: 'course',
-              component: memberContent,
-            },
-            {
-              name: 'ios-member.download',
-              path: 'download',
+              path: "action",
+              name: "ios-member.action",
               component: memberContent
             },
+            {
+              name: "ios-member.video",
+              path: "video",
+              component: memberContent
+            },
+            {
+              name: "ios-member.course",
+              path: "course",
+              component: memberContent
+            },
+            {
+              name: "ios-member.download",
+              path: "download",
+              component: memberContent
+            }
           ],
-          component: iosMemberContainer,
+          component: iosMemberContainer
         },
         {
-          path: '/my',
-          name: 'my',
+          path: "/my",
+          name: "my",
           meta: {
-            title: '个人中心',
+            title: "个人中心"
           },
           beforeEnter(to, from, next) {
             const tasks = [authGuard()];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/my/my.comp.vue'),
+          component: () => System.import("./components/my/my.comp.vue")
         },
         {
-          path: '/my/member',
-          name: 'my.member',
+          path: "/my/member",
+          name: "my.member",
           meta: {
-            title: '会员',
+            title: "会员"
           },
-          alias: '/member/info', // compatible with angular
+          alias: "/member/info", // compatible with angular
           beforeEnter(to, from, next) {
             const tasks = [authGuard(), mobileBindedGuard()];
             execRouteTask(tasks, to, from, next);
           },
-          component: () => System.import('./components/my/member.comp.vue'),
+          component: () => System.import("./components/my/member.comp.vue"),
           children: [
             {
-              path: 'rights/:id',
+              path: "rights/:id",
               meta: {
-                title: '会员权益',
+                title: "会员权益"
               },
-              name: 'my.member.rights',
-              component: () => System.import('./components/my/member-rights.comp.vue'),
-            },
-          ]
-        },
-        {
-          path: '/my/orders',
-          name: 'my.orders',
-          meta: {
-            title: '我的订单',
-          },
-          beforeEnter(to, from, next) {
-            const tasks = [authGuard(), mobileBindedGuard()];
-            execRouteTask(tasks, to, from, next);
-          },
-          component: () => System.import('./components/my/order.comp.vue'),
-        },
-        {
-          path: '/my/tickets',
-          name: 'my.tickets',
-          meta: {
-            title: '我的票券',
-          },
-          beforeEnter(to, from, next) {
-            const tasks = [authGuard(), mobileBindedGuard()];
-            execRouteTask(tasks, to, from, next);
-          },
-          component: () => System.import('./components/my/ticket.comp.vue'),
-        },
-        {
-          path: '/my/address',
-          name: 'my.address',
-          meta: {
-            title: '收货地址',
-          },
-          beforeEnter(to, from, next) {
-            const tasks = [authGuard(), mobileBindedGuard()];
-            execRouteTask(tasks, to, from, next);
-          },
-          component: () => System.import('./components/my/address.comp.vue'),
-          children: [
-            {
-              path: 'edit/:id?',
-              name: 'my.address.edit',
-              component: () => System.import('./components/my/edit-address.comp.vue'),
-            },
-          ]
-        },
-        {
-          path: '/orders/:id?',
-          name: 'orders',
-          meta: {
-            title: '订单',
-          },
-          beforeEnter(to, from, next) {
-            const tasks = [authGuard(), mobileBindedGuard()];
-            execRouteTask(tasks, to, from, next);
-          },
-          component: () => System.import('./components/order/order.comp.vue'),
-        },
-        {
-          path: '/events',
-          name: 'event',
-          meta: {
-            title: '现场'
-          },
-          component: () => System.import('./components/event/list.comp.vue'),
-        },
-        {
-          path: '/events/:id/tickets',
-          name: 'event.ticket',
-          meta: {
-            title: '购票',
-          },
-          component: () => System.import('./components/event/ticket.comp.vue'),
-        },
-        {
-          path: '/columns',
-          name: 'column',
-          meta: {
-            title: '专栏',
-          },
-          component: () => System.import('./components/columns/list.comp.vue'),
-        },
-        {
-          path: '/columns/:id',
-          name: 'column.cover',
-          component: () => System.import('./components/columns/cover.comp.vue'),
-        },
-        {
-          path: '/columns/:id/items/:itemId',
-          beforeEnter(to, from, next) {
-            const tasks = [authGuard(), mobileBindedGuard()];
-            execRouteTask(tasks, to, from, next);
-          },
-          component: () => System.import('./components/columns/content.comp.vue'),
-          children: [
-            {
-              name: 'column.item.main',
-              path: ''
-            },
-            {
-              name: 'column.item.post-comment',
-              path: 'post-comment',
-              meta: {
-                title: '发表评论',
-              },
-              component: () => System.import('./components/columns/post-comment.comp.vue'),
+              name: "my.member.rights",
+              component: () =>
+                System.import("./components/my/member-rights.comp.vue")
             }
           ]
         },
         {
-          path: '/wv/wiee',
-          component: () => System.import('./components/wiee/banner.comp.vue'),
+          path: "/my/orders",
+          name: "my.orders",
+          meta: {
+            title: "我的订单"
+          },
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import("./components/my/order.comp.vue")
+        },
+        {
+          path: "/my/tickets",
+          name: "my.tickets",
+          meta: {
+            title: "我的票券"
+          },
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import("./components/my/ticket.comp.vue")
+        },
+        {
+          path: "/my/address",
+          name: "my.address",
+          meta: {
+            title: "收货地址"
+          },
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import("./components/my/address.comp.vue"),
           children: [
             {
-              path: '',
-              name: 'wiee.banner',
+              path: "edit/:id?",
+              name: "my.address.edit",
+              component: () =>
+                System.import("./components/my/edit-address.comp.vue")
+            }
+          ]
+        },
+        {
+          path: "/orders/:id?",
+          name: "orders",
+          meta: {
+            title: "订单"
+          },
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import("./components/order/order.comp.vue")
+        },
+        {
+          path: "/events",
+          name: "event",
+          meta: {
+            title: "现场"
+          },
+          component: () => System.import("./components/event/list.comp.vue")
+        },
+        {
+          path: "/events/:id/tickets",
+          name: "event.ticket",
+          meta: {
+            title: "购票"
+          },
+          component: () => System.import("./components/event/ticket.comp.vue")
+        },
+        {
+          path: "/columns",
+          name: "column",
+          meta: {
+            title: "专栏"
+          },
+          component: () => System.import("./components/columns/list.comp.vue")
+        },
+        {
+          path: "/columns/:id",
+          name: "column.cover",
+          component: () => System.import("./components/columns/cover.comp.vue")
+        },
+        {
+          path: "/columns/:id/items/:itemId",
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/columns/content.comp.vue"),
+          children: [
+            {
+              name: "column.item.main",
+              path: ""
+            },
+            {
+              name: "column.item.post-comment",
+              path: "post-comment",
               meta: {
-                title: '造就思想节',
+                title: "发表评论"
+              },
+              component: () =>
+                System.import("./components/columns/post-comment.comp.vue")
+            }
+          ]
+        },
+        {
+          path: "/wv/wiee",
+          component: () => System.import("./components/wiee/banner.comp.vue"),
+          children: [
+            {
+              path: "",
+              name: "wiee.banner",
+              meta: {
+                title: "造就思想节"
               }
             },
             {
-              path: 'index',
-              name: 'wiee.main',
+              path: "index",
+              name: "wiee.main",
               meta: {
-                title: '造就思想节',
+                title: "造就思想节"
               },
-              component: () => System.import('./components/wiee/index.comp.vue'),
+              component: () => System.import("./components/wiee/index.comp.vue")
             },
             {
-              path: 'index/en',
-              name: 'wiee.main.en',
+              path: "index/en",
+              name: "wiee.main.en",
               meta: {
-                title: '造就思想节',
+                title: "造就思想节"
               },
-              component: () => System.import('./components/wiee/index.en.comp.vue'),
+              component: () =>
+                System.import("./components/wiee/index.en.comp.vue")
             },
             {
-              path: 'guests/:id',
+              path: "guests/:id",
               meta: {
-                title: '嘉宾详情',
+                title: "嘉宾详情"
               },
-              component: () => System.import('./components/wiee/guests/main.comp.vue'),
+              component: () =>
+                System.import("./components/wiee/guests/main.comp.vue")
             },
             {
-              path: 'detail',
-              name: 'wiee.detail',
+              path: "detail",
+              name: "wiee.detail",
               meta: {
-                title: 'WIEE',
+                title: "WIEE"
               },
-              component: () => System.import('./components/wiee/detail/main.comp.vue'),
+              component: () =>
+                System.import("./components/wiee/detail/main.comp.vue")
             },
             {
-              path: 'navigation',
-              component: () => System.import('./components/wiee/map/main.comp.vue'),
+              path: "navigation",
+              component: () =>
+                System.import("./components/wiee/map/main.comp.vue"),
               children: [
                 {
-                  path: '',
-                  name: 'wiee.map',
+                  path: "",
+                  name: "wiee.map",
                   meta: {
-                    title: 'WIEE大会 地图',
+                    title: "WIEE大会 地图"
                   }
                 },
                 {
-                  path: ':id',
-                  name: 'wiee.map.detail',
+                  path: ":id",
+                  name: "wiee.map.detail",
                   meta: {
-                    title: 'WIEE大会 地图',
+                    title: "WIEE大会 地图"
                   },
-                  component: () => System.import('./components/wiee/map/detail.comp.vue'),
-                },
+                  component: () =>
+                    System.import("./components/wiee/map/detail.comp.vue")
+                }
               ]
             },
             {
-              path: 'group/:groupId',
-              component: () => System.import('./components/wiee/group/list.comp.vue'),
+              path: "group/:groupId",
+              component: () =>
+                System.import("./components/wiee/group/list.comp.vue"),
               children: [
                 {
-                  path: '',
+                  path: "",
                   meta: {
-                    title: '造就思想节交流圈'
+                    title: "造就思想节交流圈"
                   },
-                  name: 'wiee.group.main'
+                  name: "wiee.group.main"
                 },
                 {
-                  path: 'publish',
-                  name: 'wiee.group.publish',
+                  path: "publish",
+                  name: "wiee.group.publish",
                   meta: {
-                    title: '发布'
+                    title: "发布"
                   },
-                  component: () => System.import('./components/wiee/group/publish.comp.vue'),
+                  component: () =>
+                    System.import("./components/wiee/group/publish.comp.vue")
                 },
                 {
-                  path: 'msg',
-                  name: 'wiee.group.message.comment',
+                  path: "msg",
+                  name: "wiee.group.message.comment",
                   meta: {
-                    title: '评论'
+                    title: "评论"
                   },
-                  component: () => System.import('./components/wiee/group/comment.comp.vue'),
-                },
+                  component: () =>
+                    System.import("./components/wiee/group/comment.comp.vue")
+                }
               ]
             },
             {
-              path: 'desc',
-              component: () => System.import('./components/wiee/desc/main.comp.vue'),
+              path: "desc",
+              component: () =>
+                System.import("./components/wiee/desc/main.comp.vue")
             }
           ]
         },
         {
-          path: '/wv/reservation',
-          component: () => System.import('./components/h5/reservation/reservation.comp.vue'),
+          path: "/wv/reservation",
+          component: () =>
+            System.import("./components/h5/reservation/reservation.comp.vue"),
           children: [
             {
-              path: '',
-              name: '预约嘉宾',
+              path: "",
+              name: "预约嘉宾"
             },
             {
-              path: ':id',
-              name: '反馈',
-              component: () => System.import('./components/h5/reservation/success.comp.vue'),
+              path: ":id",
+              name: "反馈",
+              component: () =>
+                System.import("./components/h5/reservation/success.comp.vue")
             }
           ]
         },
         {
-          path: '/wv/intro-mars',
-          component: () => System.import('./components/h5/mars-member/mars.comp.vue'),
+          path: "/wv/intro-mars",
+          component: () =>
+            System.import("./components/h5/mars-member/mars.comp.vue"),
           children: [
             {
-              path: '',
-              name: 'mars',
+              path: "",
+              name: "mars",
               meta: {
-                title: '火星会员',
+                title: "火星会员"
               }
             },
             {
-              path: 'success',
-              name: 'mars.success',
+              path: "success",
+              name: "mars.success",
               meta: {
-                title: '开通成功',
+                title: "开通成功"
               },
-              component: () => System.import('./components/h5/mars-member/success.comp.vue'),
-            },
+              component: () =>
+                System.import("./components/h5/mars-member/success.comp.vue")
+            }
           ]
         },
         {
-          path: '/wv/zaojiu-renwen',
-          component: () => System.import('./components/h5/zj-renwen/main.comp.vue'),
+          path: "/wv/zaojiu-renwen",
+          component: () =>
+            System.import("./components/h5/zj-renwen/main.comp.vue"),
           children: [
             {
-              path: '',
-              name: 'zaojiu.renwen',
+              path: "",
+              name: "zaojiu.renwen",
               meta: {
-                title: '造就人文',
+                title: "造就人文"
               }
-            },
+            }
           ]
         },
         {
-          path: '/wv/future',
-          component: () => System.import('./components/h5/future-meeting/index.comp.vue'),
+          path: "/wv/future",
+          component: () =>
+            System.import("./components/h5/future-meeting/index.comp.vue"),
           children: [
             {
-              path: '',
-              name: 'zaojiu.future',
+              path: "",
+              name: "zaojiu.future",
               meta: {
-                title: '2018造就FUTURE年度大会',
+                title: "2018造就FUTURE年度大会"
               }
-            },
+            }
           ]
         },
         {
-          path: '/500',
-          name: 'error',
-          component: errorComp,
+          path: "/500",
+          name: "error",
+          component: errorComp
         },
         {
-          path: '/404',
-          name: 'notfound',
-          component: () => System.import('./components/notfound/notfound.comp.vue'),
+          path: "/404",
+          name: "notfound",
+          component: () =>
+            System.import("./components/notfound/notfound.comp.vue")
         },
         {
-          path: '*',
-          component: () => System.import('./components/notfound/notfound.comp.vue'),
+          path: "*",
+          component: () =>
+            System.import("./components/notfound/notfound.comp.vue")
         }
       ]
-    },
+    }
   ]
 });
 
