@@ -400,24 +400,34 @@ export const router = new Router({
             System.import("./components/member/intro-mars.comp.vue")
         },
         {
-          path: '/wv/aia-intro-mars',
-          name: 'member.aia-intro-mars',
+          path: "/member/intro-mars-sf",
+          name: "member.intro-mars",
           meta: {
-            title: '友邦联名卡',
+            title: "造就火星会员"
           },
-          component: () => System.import('./components/member/aia-intro-mars.comp.vue'),
+          component: () =>
+            System.import("./components/member/aia-intro-mars-sf.comp.vue")
         },
         {
-          path: '/wv/pact',
-          name: 'pact.main',
+          path: "/wv/aia-intro-mars",
+          name: "member.aia-intro-mars",
           meta: {
-            title: '用户协议',
+            title: "友邦联名卡"
           },
-          component: () => System.import('./components/member/pact.comp.vue'),
+          component: () =>
+            System.import("./components/member/aia-intro-mars.comp.vue")
         },
         {
-          path: '/wv/appPay-guide/:id',
-          name: 'appPay.guide',
+          path: "/wv/pact",
+          name: "pact.main",
+          meta: {
+            title: "用户协议"
+          },
+          component: () => System.import("./components/member/pact.comp.vue")
+        },
+        {
+          path: "/wv/appPay-guide/:id",
+          name: "appPay.guide",
           meta: {
             title: "绑定引导"
           },

@@ -21,9 +21,9 @@
       </header>
     </div>-->
     <div class="content">
-      <img src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/text0自有.jpg" />
       <img src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/text1自有.jpg" />
       <div class="img-group margin-bot">
         <img src="https://og9s6vxbs.qnssl.com/aia/principle.jpg" />
         <div class="btn-detail left" @click="goTalk(0)">详情</div>
@@ -40,8 +40,8 @@
         <img src="https://og9s6vxbs.qnssl.com/aia/hacking_growth.jpg" />
         <div class="btn-detail right" @click="goTalk(3)">详情</div>
       </div>
-      <img src="https://og9s6vxbs.qnssl.com/aia/text2.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/aia/card.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/text2自有.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/card自有.jpg" />
     </div>
     <div class="footer-btn"></div>
     <div class="btn-cover" @click="btnClick()"></div>
@@ -378,7 +378,7 @@
     async share() {
       if (isInWechat) {
         await initWechat();
-        let url = `${host.self}/wv/pact`;
+        let url = `${host.self}/member/intro-mars-sf`;
         let title = '用户协议';
         setShareInfo(
           title,
@@ -389,53 +389,13 @@
       }
     }
 
-    prepareVideo() {
-      System.import('zaojiu-player').then((player: ZaojiuPlayer) => {
-        this.player = new player({
-          element: 'player',
-          playList: [{
-            src: '',// todo url
-            quality: '标清',
-            mimetype: 'video/mp4'
-          }, {
-            src: 'https://og9s6vxbs.qnssl.com/members/mars-member.mp4',// todo url
-            quality: '高清',
-            mimetype: 'video/mp4'
-          }],
-        });
-        this.player.event$.subscribe((e: PlayerEvent) => {
-          switch (e.type) {
-            case 'play':
-              break;
-            case 'error':
-              this.isVideoPlayed = true;
-              break;
-            case 'seeking':
-              this.seeking = true;
-              break;
-            case 'playing':
-              this.seeking = false;
-              break;
-          }
-        });
-      });
-
-      // 横竖屏polyfill
-      System.import('o9n').then((o9n: any) => {
-        this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
-        o9n.orientation.onchange = (evt: any) => {
-          this.isLandscape = evt.target.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
-        }
-      });
-    }
-
     get btnText(): string {
       let text: string;
       if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId == this.memberType) {
-        text = '已购买造就-友邦火星联名卡，查看我的权益';
+        text = '已购买造就火星卡，查看我的权益';
       } else {
         let fee = new Money(1000000);
-        text = `购买造就.友邦火星联名卡 ${fee.toYuan('', '元/2年')}`;
+        text = `购买造就火星卡 ${fee.toYuan('', '元/2年')}`;
       }
       return text;
     }

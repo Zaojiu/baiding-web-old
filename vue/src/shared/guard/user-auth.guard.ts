@@ -67,9 +67,6 @@ export const auth4MobileGuard = () => {
             host.self
           }/member/activate`;
           return false;
-        } else {
-          //TODO
-          return true;
         }
       }
     } catch (err) {
@@ -80,9 +77,6 @@ export const auth4MobileGuard = () => {
           host.self
         }/member/activate`;
         return false;
-      } else {
-        //TODO
-        return true;
       }
     }
     return true;
