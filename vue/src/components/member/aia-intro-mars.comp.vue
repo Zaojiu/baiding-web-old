@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
+  <div class="container" v-else>
     <!--<div class="video-content">
       <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
@@ -21,9 +22,9 @@
       </header>
     </div>-->
     <div class="content">
-      <img src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
+      <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
+      <img class="mars-action" src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />
+      <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
       <div class="img-group margin-bot">
         <img src="https://og9s6vxbs.qnssl.com/aia/principle.jpg" />
         <div class="btn-detail left" @click="goTalk(0)">详情</div>
@@ -36,12 +37,16 @@
         <img src="https://og9s6vxbs.qnssl.com/aia/history&future.jpg" />
         <div class="btn-detail left" @click="goTalk(2)">详情</div>
       </div>
-      <div class="img-group">
+      <div class="img-group" style="margin-top:60px">
         <img src="https://og9s6vxbs.qnssl.com/aia/hacking_growth.jpg" />
         <div class="btn-detail right" @click="goTalk(3)">详情</div>
       </div>
       <img src="https://og9s6vxbs.qnssl.com/aia/text2.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/aia/card.jpg" />
+      <div class="card-content">
+        <!--<img class="card-action" src="https://og9s6vxbs.qnssl.com/aia/card.jpg" />-->
+        <img class="card-action" src="https://og9s6vxbs.qnssl.com/aia/mars_card.png" />
+      </div>
+      <div style="padding-bottom: 56.25px;"></div>
     </div>
     <div class="footer-btn"></div>
     <div class="btn-cover" @click="btnClick()"></div>
@@ -177,8 +182,61 @@
     .content {
       background: #000;
       font-size: 0;
-      overflow: auto;
-      padding-bottom: 56.25px;
+      overflow-x: hidden;
+      width: 100%;
+      overflow-y: auto;
+
+      .position{
+        position: relative;
+        z-index: 2;
+      }
+
+      @keyframes scale-mars {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.3);
+        }
+      }
+      @keyframes scale-card {
+        0% {
+          background-size: auto 250%;
+        }
+        100% {
+          background-size: auto 120%;
+        }
+      }
+
+      .mars-action{
+        animation: scale-mars 10s 1 both linear;
+      }
+
+      .card-action{
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 88%;
+
+      }
+
+      .card-content{
+        position: relative;
+        margin: auto;
+        width: 330/375*100%;
+        height: 0;
+        padding-top: 88%;
+        border-radius: 50%;
+        font-size: 0;
+        background-image: url("https://og9s6vxbs.qnssl.com/aia/4.jpg");
+        background-repeat: no-repeat;
+        // animation: scale-card 5s 1 both cubic-bezier(0, 0, 0, 0.57); todo 放出动画 注释background-size属性
+        background-position: 47% 66%;
+        background-size: auto 120%;
+      }
 
       .margin-bot {
         margin-bottom: 3.25rem;
@@ -325,8 +383,14 @@
     player: ZaojiuPlayerInstance;
     memberType = 'member-aia-mars';
     isPaying = false;
+    isLoading = false;
 
     created() {
+      this.preLoadImg([
+        'https://og9s6vxbs.qnssl.com/aia/text0.jpg',
+        'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg',
+        'https://og9s6vxbs.qnssl.com/aia/text1.jpg'
+      ]);
       this.handlePayResultForRedirect();
       this.share();
       try {
@@ -358,19 +422,37 @@
       return false;
     }
 
+    preLoadImg(urlArray: Array<string>){
+      let count = 1;
+      let that =this;
+      this.isLoading = true;
+      urlArray.forEach((item)=>{
+        let img = new Image();
+        img.src = item;
+        img.onload = function () {
+          count += 1;
+          if (count === urlArray.length){
+            setTimeout(function () {
+              that.isLoading = false;
+            },1);
+          }
+        }
+      });
+    }
+
     goTalk(type: number) {
       switch (type) {
         case 0:
-          window.location.href = 'https://www.zaojiu.com/talks/5a997206288d39000119c2be';
+          window.location.href = 'https://mp.weixin.qq.com/s/ewC2su1rr3OWQ-yZVmy5SQ';
           break;
         case 1:
-          window.location.href = 'https://www.zaojiu.com/talks/';
+          window.location.href = 'https://mp.weixin.qq.com/s/gxu-nP9qTFUdF9a3qS5s7Q';
           break;
         case 2:
-          window.location.href = 'https://www.zaojiu.com/talks/';
+          window.location.href = 'https://mp.weixin.qq.com/s/liMOKIBDePgukPTuBEy94w';
           break;
         case 3:
-          window.location.href = 'https://www.zaojiu.com/talks/';
+          window.location.href = 'https://mp.weixin.qq.com/s/0N7FegkuGaHXdxEcsZvm3g';
           break;
       }
     }
@@ -378,8 +460,8 @@
     async share() {
       if (isInWechat) {
         await initWechat();
-        let url = `${host.self}/member/intro-mars`;
-        let title = '造就火星计划';
+        let url = `${host.self}/wv/pact`;
+        let title = '用户协议';
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
