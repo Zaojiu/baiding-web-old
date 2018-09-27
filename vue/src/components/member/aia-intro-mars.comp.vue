@@ -378,8 +378,8 @@
     async share() {
       if (isInWechat) {
         await initWechat();
-        let url = `${host.self}/member/intro-mars`;
-        let title = '造就火星计划';
+        let url = `${host.self}/wv/aia-intro-mars`;
+        let title = '友邦造就联名卡';
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
