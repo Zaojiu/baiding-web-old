@@ -40,5 +40,3 @@ Thumbs.db
 /angular-cli.dev.json
 /angular-cli.prod.json
 hack/Dockerfile
-package-lock.json
-package.json
