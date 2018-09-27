@@ -88,10 +88,24 @@ export const refreshUserInfo4MobileBind = async () => {
   Store.localStore.delete("userinfo");
 };
 
-export const refreshUserInfo = async (
-  needHandleError = false
-): Promise<UserInfoModel> => {
-  Store.memoryStore.delete("userInfo");
+export const getUserInfoCacheDiyRedirectTo = (needSignin = true, redirectTo: string): UserInfoModel => {
+  const userInfoCache = Store.memoryStore.get('userInfo');
+  if (!userInfoCache) {
+    if (needSignin) {
+      if (isInWeiBo) {
+        showLoginPopUp();
+      } else {
+        router.push({path: '/signin', query: {redirectTo: redirectTo}});
+      }
+    }
+    throw new Error('user no login');
+  }
+
+  return new UserInfoModel(userInfoCache);
+};
+
+export const refreshUserInfo = async (needHandleError = false): Promise<UserInfoModel> => {
+  Store.memoryStore.delete('userInfo');
   return getUserInfo(needHandleError);
 };
 
