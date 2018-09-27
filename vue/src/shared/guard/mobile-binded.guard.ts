@@ -6,6 +6,8 @@ export const mobileBindedGuard = (needNew = false) => {
   return (to: Route, from: Route): boolean => {
     let userInfo;
 
+
+    
     try {
       userInfo = getUserInfoCache(false);
     } catch (err) {

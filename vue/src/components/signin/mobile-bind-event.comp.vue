@@ -215,6 +215,7 @@ export default class MobileBindedComponent extends Vue {
       this.$route.query["redirectTo"],
       "/lives"
     );
+    refreshUserInfo4MobileBind();
   }
 
   clearError(controlKey: string, errorKey: string) {
@@ -232,8 +233,6 @@ export default class MobileBindedComponent extends Vue {
   }
 
   async submit() {
-    refreshUserInfo4MobileBind();
-
     this.isSubmitting = true;
     showTips(this.$t("m.signIn.binding") as string);
 

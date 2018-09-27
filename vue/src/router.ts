@@ -5,7 +5,11 @@ import baseComp from "./components/base.comp.vue";
 import talksComp from "./components/talks/content.comp.vue";
 import topic_post from "./components/topic_post/topic_post.comp.vue";
 import errorComp from "./components/error/error.comp.vue";
-import { authGuard, auth4MobileGuard } from "./shared/guard/user-auth.guard";
+import {
+  authGuard,
+  auth4MobileGuardN,
+  auth4MobileGuard
+} from "./shared/guard/user-auth.guard";
 import {
   memberActionGuard,
   memberCardGuard,
@@ -372,7 +376,7 @@ export const router = new Router({
           },
           beforeEnter(to, from, next) {
             // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
-            const tasks = [auth4MobileGuard(), mobileBindedGuard(true)];
+            const tasks = [auth4MobileGuard()];
             execRouteTask(tasks, to, from, next);
           },
           component: () =>
