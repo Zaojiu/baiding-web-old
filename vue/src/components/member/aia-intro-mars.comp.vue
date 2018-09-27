@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="video-content">
+    <!--<div class="video-content">
       <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
@@ -19,18 +19,33 @@
           <div class="big-play"></div>
         </div>
       </header>
-    </div>
+    </div>-->
     <div class="content">
-      <div class="cover">
-        <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/memers/mars-intro.jpeg?t=1">
-        <div style="padding: 15px;color:#afafaf;text-align: center;font-size: 14px;">
-          年度会员升级优惠218元。
-          <br>
-          如需开票请联系造就会员客服微信zaojiu6。
-        </div>
+      <img src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
+      <div class="img-group margin-bot">
+        <img src="https://og9s6vxbs.qnssl.com/aia/principle.jpg" />
+        <div class="btn-detail left" @click="goTalk(0)">详情</div>
       </div>
+      <div class="img-group margin-bot">
+        <img src="https://og9s6vxbs.qnssl.com/aia/tap.jpg" />
+        <div class="btn-detail right" @click="goTalk(1)">详情</div>
+      </div>
+      <div class="img-group margin-bot">
+        <img src="https://og9s6vxbs.qnssl.com/aia/history&future.jpg" />
+        <div class="btn-detail left" @click="goTalk(2)">详情</div>
+      </div>
+      <div class="img-group">
+        <img src="https://og9s6vxbs.qnssl.com/aia/hacking_growth.jpg" />
+        <div class="btn-detail right" @click="goTalk(3)">详情</div>
+      </div>
+      <img src="https://og9s6vxbs.qnssl.com/aia/text2.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/card.jpg" />
     </div>
-    <button class="button button-primary" @click="btnClick()">{{btnText}}</button>
+    <div class="footer-btn"></div>
+    <div class="btn-cover" @click="btnClick()"></div>
+    <!--<button class="button button-primary" @click="btnClick()">{{btnText}}</button>-->
   </div>
 </template>
 
@@ -160,67 +175,93 @@
     }
 
     .content {
-      flex-grow: 1;
+      background: #000;
+      font-size: 0;
       overflow: auto;
+      padding-bottom: 56.25px;
 
-      .cover {
+      .margin-bot {
+        margin-bottom: 3.25rem;
+      }
+
+      .img-group {
         position: relative;
 
-        .tips {
-          position: absolute;
-          bottom: 22px;
-          left: 16px;
-          color: $color-w;
-          font-size: 13px;
-          line-height: 1em;
+        .btn-detail {
+          font-size: 1rem;
+          text-align: center;
+          line-height: 2.75rem;
+          color:#fff;
           font-weight: bold;
+          border-radius: 24px;
+          height: 2.75rem;
+          width: 6.25rem;
+          position: absolute;
+          bottom: 2.25rem;
+          background: linear-gradient(90deg, #ff9232, #e34103);
+        }
 
-          .price {
-            margin-top: 11px;
-            padding: 7px 6px 6px 3px;
-            font-size: 17px;
-            border: solid 1px $color-w;
-          }
+        .left {
+          left: 9%;
+        }
+
+        .right {
+          right: 9%;
         }
       }
 
-      .block {
-        position: relative;
-        margin: 15px;
-        padding: 15px;
-        background-color: #686bb2;
-
-        &:before {
-          content: '';
-          position: absolute;
-          height: 0;
-          width: 0;
-          right: -1px;
-          top: -1px;
-          border: solid 12px $color-w;
-          border-left-color: transparent;
-          border-bottom-color: transparent;
-        }
-
-        .title, ol {
-          font-size: $font-size-14;
-          color: $color-w;
-        }
-
-        .title {
-          line-height: 1em;
-          font-weight: bold;
-          margin-bottom: 10px;
-        }
-
-        ol {
-          padding-left: 15px;
-          line-height: 1.45em;
-        }
+      img {
+        width: 100%;
       }
     }
 
-    .button {
+    @keyframes circle-opacity {
+      0% {
+        opacity: 1;
+        transform: scale(1); }
+      50% {
+        opacity: 0.6;
+        transform: scale(1.15); }
+      100% {
+        opacity: 1;
+        transform: scale(1); }
+    }
+
+    .footer-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 14px;
+      height: 4.12rem;
+      width: 4.12rem;
+      background: linear-gradient(195deg, #bf6823, #b12400);
+      border-radius: 17.6vw;
+      box-shadow: 4px 4px 8px 0 #000;
+      animation: circle-opacity 2s infinite;
+      animation-delay: .6s;
+    }
+
+    .btn-cover {
+      position: fixed;
+      height: 3.5rem;
+      width: 3.5rem;
+      bottom: calc(20px + 0.31rem);
+      right: calc(14px + 0.31rem);
+      background-color: #00d3c1;
+      -webkit-box-pack: center;
+      -moz-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -moz-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      z-index: 2;
+      padding: 10px;
+      border-radius: 56px;
+      background: url(https://og9s6vxbs.qnssl.com/aia/buy_now.png) no-repeat;
+      background-size: 100% 100%;
+    }
+    /*.button {
       position: relative;
       flex-shrink: 0;
       border-radius: 0;
@@ -244,7 +285,7 @@
         border-right-color: transparent;
         border-bottom-color: transparent;
       }
-    }
+    }*/
   }
 </style>
 
@@ -292,7 +333,7 @@
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
-        this.prepareVideo();
+        // this.prepareVideo();
       }
     }
 
@@ -315,6 +356,23 @@
       }
 
       return false;
+    }
+
+    goTalk(type: number) {
+      switch (type) {
+        case 0:
+          window.location.href = 'https://www.zaojiu.com/talks/5a997206288d39000119c2be';
+          break;
+        case 1:
+          window.location.href = 'https://www.zaojiu.com/talks/';
+          break;
+        case 2:
+          window.location.href = 'https://www.zaojiu.com/talks/';
+          break;
+        case 3:
+          window.location.href = 'https://www.zaojiu.com/talks/';
+          break;
+      }
     }
 
     async share() {
