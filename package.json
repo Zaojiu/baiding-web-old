@@ -67,7 +67,6 @@
     "@types/jquery": "^2.0.33",
     "@types/moment-duration-format": "^1.3.1",
     "@types/node": "^6.0.42",
-    "@types/tapable": "^0.2.5",
     "angular-cli": "git://github.com/duxiaofeng-github/angular-cli-dist.git#aa78acd867cb60749592175546b7c79480d90a20",
     "codelyzer": "~0.0.26",
     "jasmine-core": "2.4.1",
