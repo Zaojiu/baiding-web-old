@@ -132,7 +132,7 @@
       }
       // 微信中如果没有登录，直接在这里授权登录，如果已经登录则进入下一页面，如果不在微信，进入下一页面再用手机号登录
       if (isInWechat) {
-        this.userInfo = getUserInfoCacheDiyRedirectTo(true, `${host.self}/wv/yb-intro-mars`);
+        this.userInfo = getUserInfoCacheDiyRedirectTo(true, `${host.self}/wv/aia-intro-mars`);
         if (this.userInfo) {
           this.$router.push({path: `/wv/aia-intro-mars`});
         }
