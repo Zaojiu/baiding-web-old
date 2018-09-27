@@ -57,7 +57,21 @@ export const getUserInfo4MobileBind = (needSignin = true): UserInfoModel => {
   return new UserInfoModel(userInfoCache);
 };
 
-export const getUserInfo4Mobile = (needSignin = true): boolean => {
+export const getUserInfo4MobileN = async (): Promise<boolean> => {
+  const url = `${host.io}/api/user`;
+  const res = await get(url, { needHandleError: true });
+  alert(1);
+  if (res.status == 401) {
+    alert(2);
+    return false;
+  }
+  const userInfo = new UserInfoModel(res.data);
+  Store.memoryStore.set("userInfo", userInfo);
+  Store.localStore.set("userinfo", userInfo); // angular使用userinfo
+  return true;
+};
+
+export const getUserInfo4Mobile = async (): Promise<boolean> => {
   const userInfoCache = Store.memoryStore.get("userInfo");
   if (!userInfoCache) {
     const userInfoLocalCache = Store.localStore.get("userinfo");
