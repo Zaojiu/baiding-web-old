@@ -90,8 +90,8 @@
   import {getUserInfoCacheDiyRedirectTo} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
   import {isInWechat} from "../../shared/utils/utils";
-  import {initWechat} from "../../shared/utils/wechat";
-  import {setShareInfo} from "../../shared/utils/share";
+  /*import {initWechat} from "../../shared/utils/wechat";
+  import {setShareInfo} from "../../shared/utils/share";*/
   import {host} from "../../env/environment";
   import {showTips} from "../../store/tip";
 
@@ -101,7 +101,6 @@
     isChecked = false;
 
     created() {
-      this.share();
     }
 
     // 点击接受直接进入
@@ -112,11 +111,11 @@
       }
     }*/
 
-    async share() {
+    /*async share() {
       if (isInWechat) {
         await initWechat();
-        let url = `${host.self}/wv/pact`;
-        let title = '用户协议';
+        let url = `${host.self}/member/intro-mars`;
+        let title = '造就火星计划';
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
@@ -124,7 +123,7 @@
           url
         );
       }
-    }
+    }*/
 
     agreePact() {
       if (!this.isChecked) {
@@ -133,7 +132,7 @@
       }
       // 微信中如果没有登录，直接在这里授权登录，如果已经登录则进入下一页面，如果不在微信，进入下一页面再用手机号登录
       if (isInWechat) {
-        this.userInfo = getUserInfoCacheDiyRedirectTo(true, `${host.self}/wv/aia-intro-mars`);
+        this.userInfo = getUserInfoCacheDiyRedirectTo(true, `${host.self}/wv/yb-intro-mars`);
         if (this.userInfo) {
           this.$router.push({path: `/wv/aia-intro-mars`});
         }

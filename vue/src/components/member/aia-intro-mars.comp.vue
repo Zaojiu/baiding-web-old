@@ -361,16 +361,16 @@
     goTalk(type: number) {
       switch (type) {
         case 0:
-          window.location.href = 'https://mp.weixin.qq.com/s/ewC2su1rr3OWQ-yZVmy5SQ';
+          window.location.href = 'https://www.zaojiu.com/talks/5a997206288d39000119c2be';
           break;
         case 1:
-          window.location.href = 'https://mp.weixin.qq.com/s/gxu-nP9qTFUdF9a3qS5s7Q';
+          window.location.href = 'https://www.zaojiu.com/talks/';
           break;
         case 2:
-          window.location.href = 'https://mp.weixin.qq.com/s/liMOKIBDePgukPTuBEy94w';
+          window.location.href = 'https://www.zaojiu.com/talks/';
           break;
         case 3:
-          window.location.href = 'https://mp.weixin.qq.com/s/0N7FegkuGaHXdxEcsZvm3g';
+          window.location.href = 'https://www.zaojiu.com/talks/';
           break;
       }
     }
@@ -378,8 +378,8 @@
     async share() {
       if (isInWechat) {
         await initWechat();
-        let url = `${host.self}/wv/pact`;
-        let title = '用户协议';
+        let url = `${host.self}/member/intro-mars`;
+        let title = '造就火星计划';
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
