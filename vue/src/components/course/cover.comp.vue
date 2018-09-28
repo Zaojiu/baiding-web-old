@@ -355,7 +355,7 @@
       position: fixed;
       width: 100%;
       max-width: 1024px;
-      bottom: 50px;
+      bottom: 0px;
       background-color: $color-w;
       display: flex;
 

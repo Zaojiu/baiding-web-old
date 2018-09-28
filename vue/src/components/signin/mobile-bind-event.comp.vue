@@ -1,6 +1,6 @@
 <template>
   <div class="mobile-bind-container">
-    <section class="user-section" v-if="!userInfo">
+    <section class="user-section">
       <img class="avatar-45 avatar-round" :src="userInfo.avatar" alt="头像">
       <div class="nick">{{userInfo.nick}}</div>
     </section>
@@ -91,206 +91,162 @@
 </template>
 
 <style lang="scss" scoped>
-.mobile-bind-container {
-  section {
-    padding: 30px 15px;
-    border-bottom: solid 10px #f8f8f8;
-
-    h2 {
-      font-size: $font-size-18;
-      color: $color-dark-gray;
-      text-align: center;
-      line-height: 1em;
-      font-weight: bold;
-    }
-  }
-
-  .user-section {
-    padding: 30px;
-    text-align: center;
-  }
-
-  .footer-section {
-    padding: 30px;
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f8f8;
-
-    .form-group {
-      margin: 0;
-      width: 100%;
-    }
-  }
-
-  .nick {
-    margin-top: 10px;
-    font-size: $font-size-20;
-    color: $color-dark-gray;
-  }
-
-  .mobile-group {
-    position: relative;
-
-    .bi-close-2 {
-      position: absolute;
-      right: 0;
-      top: 22px;
-    }
-  }
-
-  .sms-code-group {
-    position: relative;
-
-    .sms-sender {
-      position: absolute;
-      right: 0;
-      top: 0;
-      color: $color-brand;
-      text-decoration: none;
-      font-size: $font-size-14;
-      padding: 24px 0 8px;
-
-      &.disabled {
-        opacity: 0.5;
+  .mobile-bind-container {
+    section {
+      padding: 30px 15px;
+      border-bottom: solid 10px #f8f8f8;
+      h2 {
+        font-size: $font-size-18;
         color: $color-dark-gray;
+        text-align: center;
+        line-height: 1em;
+        font-weight: bold;
       }
     }
+    .user-section {
+      padding: 30px;
+      text-align: center;
+    }
+    .footer-section {
+      padding: 30px;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f8f8;
+      .form-group {
+        margin: 0;
+        width: 100%;
+      }
+    }
+    .nick {
+      margin-top: 10px;
+      font-size: $font-size-20;
+      color: $color-dark-gray;
+    }
+    .mobile-group {
+      position: relative;
+      .bi-close-2 {
+        position: absolute;
+        right: 0;
+        top: 22px;
+      }
+    }
+    .sms-code-group {
+      position: relative;
+      .sms-sender {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: $color-brand;
+        text-decoration: none;
+        font-size: $font-size-14;
+        padding: 24px 0 8px;
+        &.disabled {
+          opacity: .5;
+          color: $color-dark-gray;
+        }
+      }
+    }
+    .tips {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: $color-gray;
+    }
   }
-
-  .tips {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-    color: $color-gray;
-  }
-}
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import {
-  refreshUserInfo,
-  getUserInfo4MobileBind
-} from "../../shared/api/user.api";
-import { UserInfoModel } from "../../shared/api/user.model";
-import { regexpMobile, getRelativePath } from "../../shared/utils/utils";
-import {
-  SmsScene,
-  SmsType,
-  sendSmsByGuest,
-  validateSMSCode
-} from "../../shared/api/sms.api";
-import { showTips } from "../../store/tip";
-import {
-  bindMobile,
-  refreshUserInfo4MobileBind
-} from "../../shared/api/user.api";
-import { form } from "../../shared/form";
-import { ApiCode } from "../../shared/api/code-map.enum";
-import { host } from "../../env/environment";
-import { BindMobile } from "../../shared/utils/auth";
-
-@Component({
-  directives: form
-})
-export default class MobileBindedComponent extends Vue {
-  userInfo = getUserInfo4MobileBind();
-  phoneNumber = "";
-  smsCode = "";
-  password = "";
-  smsBtnText = "";
-  smsBtnAvailable = true;
-  isSubmitting = false;
-  redirectTo: string;
-  regexpMobile = regexpMobile;
-
-  created() {
-    this.smsBtnText = this.$t("m.signIn.sendVerificationCode") as string;
-    this.userInfo = getUserInfo4MobileBind();
-    this.redirectTo = getRelativePath(
-      this.$route.query["redirectTo"],
-      "/lives"
-    );
-    refreshUserInfo4MobileBind();
-  }
-
-  clearError(controlKey: string, errorKey: string) {
-    if (this.$validator.errors.firstByRule(controlKey, errorKey)) {
-      this.$validator.errors.remove(controlKey);
+  import Vue from 'vue';
+  import {Component} from 'vue-property-decorator';
+  import {refreshUserInfo, getUserInfoCache} from '../../shared/api/user.api';
+  import {UserInfoModel} from "../../shared/api/user.model";
+  import {regexpMobile, getRelativePath} from '../../shared/utils/utils';
+  import {SmsScene, SmsType, sendSmsByLoginUser} from '../../shared/api/sms.api';
+  import {showTips} from "../../store/tip";
+  import {bindMobile} from '../../shared/api/user.api';
+  import {form} from '../../shared/form';
+  import {ApiCode} from '../../shared/api/code-map.enum';
+  @Component({
+    directives: form,
+  })
+  export default class MobileBindedComponent extends Vue {
+    userInfo = getUserInfoCache();
+    phoneNumber = '';
+    smsCode = '';
+    password = '';
+    smsBtnText = '';
+    smsBtnAvailable = true;
+    isSubmitting = false;
+    redirectTo: string;
+    regexpMobile = regexpMobile;
+    created() {
+      this.smsBtnText = this.$t('m.signIn.sendVerificationCode') as string;
+      this.userInfo = getUserInfoCache();
+      this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');
     }
-  }
-
-  validateAndSubmit() {
-    this.$validator.validateScopes();
-
-    if (this.$validator.errors.any()) return;
-
-    this.submit();
-  }
-
-  async submit() {
-    this.isSubmitting = true;
-    showTips(this.$t("m.signIn.binding") as string);
-
-    try {
-      await validateSMSCode(this.phoneNumber, this.smsCode);
-      var callTo = `${host.self}${this.redirectTo}`;
-      location.href = `${
-        host.auth
-      }/oauth2/wechat/redirect?isBindMobile=${BindMobile}&mobile=${
-        this.phoneNumber
-      }&pwd=${this.password}&to=${callTo}`;
-    } catch (e) {
-      switch (e.code) {
-        case ApiCode.ErrSigninInvalidSmsCode:
-          this.$validator.errors.add("smsCode", "wrong sms code", "wrongcode");
-          break;
+    clearError(controlKey: string, errorKey: string) {
+      if (this.$validator.errors.firstByRule(controlKey, errorKey)) {
+        this.$validator.errors.remove(controlKey);
       }
-      throw e;
-    } finally {
-      this.isSubmitting = false;
     }
-
-    // showTips(this.$t("m.signIn.bindSuccess") as string);
-    // this.$router.push({ path: this.redirectTo });
-  }
-
-  async sendSMS() {
-    const isMobileValid = !this.$validator.errors.has("phoneNumber");
-
-    if (!isMobileValid)
-      showTips(this.$t("m.signIn.tellPhoneVerificationCode") as string);
-
-    if (!this.smsBtnAvailable || !isMobileValid) return;
-
-    this.smsBtnAvailable = false;
-
-    try {
-      await sendSmsByGuest(this.phoneNumber, SmsScene.BindMobile);
-    } catch (e) {
-      this.smsBtnAvailable = true;
-      throw e;
+    validateAndSubmit() {
+      this.$validator.validateScopes();
+      if (this.$validator.errors.any()) return;
+      this.submit();
     }
-
-    let timer: number;
-    let countDown = 60;
-
-    this.smsBtnText = `${countDown}s`;
-    showTips(this.$t("m.signIn.sendVerificationCodeSuccess") as string);
-    timer = setInterval(() => {
-      countDown--;
-      if (countDown === 0) {
+    async submit() {
+      this.isSubmitting = true;
+      showTips(this.$t('m.signIn.binding') as string);
+      try {
+        await bindMobile(this.phoneNumber, this.smsCode, this.password, '', '', '');
+      } catch (e) {
+        const code = e.code;
+        switch (code) {
+          case ApiCode.ErrSigninInvalidSmsCode:
+            this.$validator.errors.add('smsCode', 'wrong sms code', 'wrongcode');
+            break;
+        }
+        throw e;
+      } finally {
+        this.isSubmitting = false;
+      }
+      try {
+        await refreshUserInfo();
+      } catch (e) {
+        location.reload();
+        return;
+      }
+      showTips(this.$t('m.signIn.bindSuccess') as string);
+      this.$router.push({path: this.redirectTo});
+    }
+    async sendSMS() {
+      const isMobileValid = !this.$validator.errors.has('phoneNumber');
+      if (!isMobileValid) showTips(this.$t('m.signIn.tellPhoneVerificationCode') as string);
+      if (!this.smsBtnAvailable || !isMobileValid) return;
+      this.smsBtnAvailable = false;
+      try {
+        await sendSmsByLoginUser(this.phoneNumber, SmsScene.BindMobile)
+      } catch (e) {
         this.smsBtnAvailable = true;
-        this.smsBtnText = this.$t("m.signIn.sendVerificationCode") as string;
-        clearInterval(timer);
-      } else {
-        this.smsBtnText = `${countDown}s`;
+        throw e;
       }
-    }, 1000);
+      let timer: number;
+      let countDown = 60;
+      this.smsBtnText = `${countDown}s`;
+      showTips(this.$t('m.signIn.sendVerificationCodeSuccess') as string);
+      timer = setInterval(() => {
+        countDown--;
+        if (countDown === 0) {
+          this.smsBtnAvailable = true;
+          this.smsBtnText = this.$t('m.signIn.sendVerificationCode') as string;
+          clearInterval(timer);
+        } else {
+          this.smsBtnText = `${countDown}s`;
+        }
+      }, 1000);
+    }
   }
-}
 </script>

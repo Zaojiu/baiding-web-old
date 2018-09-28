@@ -90,8 +90,8 @@
   import {getUserInfoCacheDiyRedirectTo} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
   import {isInWechat} from "../../shared/utils/utils";
-  /*import {initWechat} from "../../shared/utils/wechat";
-  import {setShareInfo} from "../../shared/utils/share";*/
+  import {initWechat} from "../../shared/utils/wechat";
+  import {setShareInfo} from "../../shared/utils/share";
   import {host} from "../../env/environment";
   import {showTips} from "../../store/tip";
 
@@ -101,6 +101,7 @@
     isChecked = false;
 
     created() {
+      this.share();
     }
 
     // 点击接受直接进入
@@ -111,11 +112,11 @@
       }
     }*/
 
-    /*async share() {
+    async share() {
       if (isInWechat) {
         await initWechat();
-        let url = `${host.self}/member/intro-mars`;
-        let title = '造就火星计划';
+        let url = `${host.self}/wv/pact`;
+        let title = '用户协议';
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
@@ -123,7 +124,7 @@
           url
         );
       }
-    }*/
+    }
 
     agreePact() {
       if (!this.isChecked) {
