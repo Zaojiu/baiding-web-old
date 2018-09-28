@@ -481,6 +481,23 @@
       });
     }
 
+    goTalk(type: number) {
+      switch (type) {
+        case 0:
+          window.location.href = 'https://mp.weixin.qq.com/s/ewC2su1rr3OWQ-yZVmy5SQ';
+          break;
+        case 1:
+          window.location.href = 'https://mp.weixin.qq.com/s/gxu-nP9qTFUdF9a3qS5s7Q';
+          break;
+        case 2:
+          window.location.href = 'https://mp.weixin.qq.com/s/liMOKIBDePgukPTuBEy94w';
+          break;
+        case 3:
+          window.location.href = 'https://mp.weixin.qq.com/s/0N7FegkuGaHXdxEcsZvm3g';
+          break;
+      }
+    }
+
     get btnText(): string {
       let text: string;
       if (this.userInfo && this.userInfo.isMember) {

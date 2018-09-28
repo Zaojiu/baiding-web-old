@@ -3,10 +3,10 @@
     <div class="content">
       <router-view></router-view>
     </div>
-    <footer>
+    <!-- <footer>
       <div class="bar-tab" @click="goToCourse"><img :src="courseImg"/></div>
       <div class="bar-tab" @click="goToGroup"><img :src="groupImg"/></div>
-    </footer>
+    </footer> -->
   </div>
 </template>
 

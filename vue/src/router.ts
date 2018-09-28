@@ -126,7 +126,8 @@ export const router = new Router({
             title: "绑定手机"
           },
           beforeEnter(to, from, next) {
-            const tasks = [wechatBindMobileCompGuard()];
+            // const tasks = [wechatBindMobileCompGuard()];
+            const tasks = [authGuard(), mobileBindedCompGuard()];
             execRouteTask(tasks, to, from, next);
           },
           component: () =>
@@ -375,10 +376,12 @@ export const router = new Router({
             title: "激活会员"
           },
           beforeEnter(to, from, next) {
-            // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
-            const tasks = [auth4MobileGuard()];
-            execRouteTask(tasks, to, from, next);
-          },
+          // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
+          const tasks = [authGuard(), mobileBindedGuard(true)];
+
+          // const tasks = [auth4MobileGuard()];
+          execRouteTask(tasks, to, from, next);
+                                      },
           component: () =>
             System.import("./components/member/activate.comp.vue")
         },
