@@ -54,7 +54,7 @@
         <div class="btn-detail right" @click="goTalk(3)">详情</div>
       </div>
       <img src="https://og9s6vxbs.qnssl.com/mars_member/text2.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/mars_member/card.jpg" />
+      <img src="https://og9s6vxbs.qnssl.com/aia/card自有.jpg" />
       <div style="padding-bottom: 56.25px;"></div>
     </div>
     <div class="footer-btn"></div>
