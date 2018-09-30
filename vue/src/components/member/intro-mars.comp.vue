@@ -1,27 +1,6 @@
 <template>
-  <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
-  <div class="container" v-else>
-    <!--<div class="video-content">
-      <header :class="{
-        'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
-        'played': isVideoPlayed,
-        'played-landscape': isVideoPlayed && isLandscape
-      }">
-        <div class="player" id="player" @click="isVideoPlayed = true"></div>
+  <div class="container">
 
-
-        <div class="live-cover" v-if="!isVideoPlayed">
-          <img
-            class="cover-image"
-            alt="话题间封面"
-            :src="coverUrl"
-            @error="coverUrl = defaultCoverUrl"
-          >
-
-          <div class="big-play"></div>
-        </div>
-      </header>
-    </div>-->
     <!--<div class="content">
       <div class="cover">
         <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/memers/mars-intro.jpeg?t=1">
@@ -35,7 +14,28 @@
     <button class="button button-primary" @click="btnClick()">{{btnText}}</button>-->
     <div class="content">
       <img src="https://og9s6vxbs.qnssl.com/mars_member/text0.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />
+      <!--<img src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />-->
+      <div class="video-content">
+        <header :class="{
+        'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
+        'played': isVideoPlayed,
+        'played-landscape': isVideoPlayed && isLandscape
+      }">
+          <div class="player" id="player" @click="isVideoPlayed = true"></div>
+
+
+          <div class="live-cover" v-if="!isVideoPlayed">
+            <img
+              class="cover-image"
+              alt="话题间封面"
+              :src="coverUrl"
+              @error="coverUrl = defaultCoverUrl"
+            >
+
+            <div class="big-play"></div>
+          </div>
+        </header>
+      </div>
       <img src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
       <div class="img-group margin-bot">
         <img src="https://og9s6vxbs.qnssl.com/aia/principle.jpg" />
@@ -63,6 +63,7 @@
 </template>
 
 <style lang="scss" scoped>
+
   .container {
     height: 100vh;
     display: flex;
@@ -158,10 +159,12 @@
       background-size: 100% 100%;
     }
 
-    /*.video-content {
+    .video-content {
       flex-shrink: 0;
       overflow: hidden;
       //padding-top: 56.25%;
+      width: 98%;
+      margin: 0 auto;
       background-color: #0A0A17;
 
       .video {
@@ -223,7 +226,7 @@
           display: flex;
           flex-direction: column-reverse;
           pointer-events: none;
-
+          background-color: #000;
           .cover-thumbnail-wrapper {
             position: absolute;
             top: 0;
@@ -251,7 +254,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            //object-fit: cover;
             text-indent: -10000px;
           }
 
@@ -361,8 +364,9 @@
         border-right-color: transparent;
         border-bottom-color: transparent;
       }
-    }*/
+    }
   }
+
 </style>
 
 <script lang="ts">
@@ -395,17 +399,17 @@
     isLoading = false;
 
     created() {
-      this.preLoadImg([
-        'https://og9s6vxbs.qnssl.com/aia/text0.jpg',
-        'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg',
-        'https://og9s6vxbs.qnssl.com/aia/text1.jpg'
-      ]);
+      // this.preLoadImg([
+      //   'https://og9s6vxbs.qnssl.com/aia/text0.jpg',
+      //   'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg',
+      //   'https://og9s6vxbs.qnssl.com/aia/text1.jpg'
+      // ]);
       this.share();
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
-        // this.prepareVideo(); todo 如果要视屏，将这句和css，html中的注释放出
+         this.prepareVideo(); //todo 如果要视屏，将这句和css，html中的注释放出
       }
     }
 
