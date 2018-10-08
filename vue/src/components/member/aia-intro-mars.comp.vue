@@ -188,7 +188,7 @@
 
       .position{
         position: relative;
-        z-index: 2;
+
       }
 
       @keyframes scale-mars {

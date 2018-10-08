@@ -23,22 +23,24 @@ export const getOrder = async (orderNo: string, showItems = true, showDiscounts 
   return new Order(res.data);
 };
 
-export const createOrder = async (objects: PostOrderObject[], discounts: string[] = [], needHandleError = true, cashbackId = ''): Promise<OrderMeta> => {
-
+export const createOrder = async (objects: PostOrderObject[], discounts: string[] = [], needHandleError = true, cashbackId = '' , isPerfer?: boolean): Promise<OrderMeta> => {
+  console.log(isPerfer)
   let url = '';
   if (cashbackId) {
     let query = {
       cashbackId
     };
     url = `${host.io}/api/wallet/order?${params(query)}`;
-  } else {
+  } else if (isPerfer !== '') {
+      url = `${host.io}/api/wallet/order?isPerfer=` + isPerfer;
+  }else {
     url = `${host.io}/api/wallet/order`;
   }
   const data = {
     items: objects || [],
-    discounts,
   };
   const res = await post(url, data, {needHandleError: needHandleError});
+
   return new OrderMeta(res.data);
 };
 

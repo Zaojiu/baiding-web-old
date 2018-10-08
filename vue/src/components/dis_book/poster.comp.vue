@@ -1,24 +1,24 @@
 <template>
   <div>
     <div class="poster-con">
-      <div class="indexB">
+      <div class="indexB" >
         <img :src="coverUrl" alt="">
       </div>
       <div class="indexL">
-        <p class="tit">造就·拆书</p>
-        <div class="pos-img">
+        <p class="tit" >造就·拆书</p>
+        <div class="pos-img" >
           <img :src="coverUrl" alt="">
         </div>
-        <div class="pos-time">
-          <span v-text="totalVol"></span> / <span>{{formatSeconds(duration)}}</span>
+        <div class="pos-time" >
+          <span v-text="totalVol"></span>课 / <span>{{formatSeconds(duration)}}</span>
         </div>
         <div class="pos-txt">
-          <h3 v-text="subject"></h3>
+          <h3 v-text="subject" ></h3>
          <div v-html="shareContent">
          </div>
         </div>
-        <div class="poster-footer">
-          <div class="img">
+        <div class="poster-footer" >
+          <div class="img" @click="getDetail()">
             <img src="https://www.zaojiu.com/assets/images/zaojiu_code@2x.png" alt="造就">
           </div>
           <div class="txt">
@@ -45,27 +45,47 @@ import {Component, Watch} from 'vue-property-decorator';
 import { concat } from 'rxjs/operator/concat';
    @Component
   export default class poster extends Vue {
+     isApp = isInApp;
        coverUrl='';
       subject='';
       shareContent='';
       duration=0;
       totalVol=0;
+    isShare=false;//是否分享
         @Watch('$route')
     created() {
-      console.log(this.$route.params['id'])
-       axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+      console.log(this.$route.params['id']);
+      this.share();
+         axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
+        // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl;
         this.subject = list.subject;
         this.shareContent = list.shareContent;
         this.duration = list.defaultItemInfo.duration;
         this.totalVol = list.totalVol;
-         
-       })
-     
-    }
-     
 
+       })
+
+    }
+     async share() {
+       if (isInWechat) {
+         await initWechat();
+         let url = `${host.self}/book/poster/`+this.$route.params['id'];
+         let title = '拆书';
+         setShareInfo(
+           title,
+           '一起探索科技创新与未来的前沿',
+           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+           url
+         );
+         axios.get(`${host.io}/api/wallet/order`).then(res=>{});
+         this.$router.push({path: '/book/detail/`'+this.$route.params['id']})
+       }
+     }
+      getDetail(){
+        this.$router.push({path: '/book/detail/`'+this.$route.params['id']})
+      }
       formatSeconds(msd:any){
         let time:number = parseFloat(msd) / 1000;
         let num:number=60;
@@ -86,7 +106,7 @@ import { concat } from 'rxjs/operator/concat';
       }
     }
 
-  
+
 </script>
 
 
@@ -125,7 +145,7 @@ import { concat } from 'rxjs/operator/concat';
       }
       .pos-img{
         width: 120px;
-        height: 170px;
+        //height: 170px;
         margin:0px auto 20px auto;
 
         img{
