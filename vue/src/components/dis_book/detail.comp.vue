@@ -102,8 +102,8 @@
     isMember=false;
     created() {
       //获取信息
-      //axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
-        axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
+       // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
