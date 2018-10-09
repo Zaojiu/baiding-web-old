@@ -31,7 +31,7 @@ export const createOrder = async (objects: PostOrderObject[], discounts: string[
       cashbackId
     };
     url = `${host.io}/api/wallet/order?${params(query)}`;
-  } else if (isPerfer !== '') {
+  } else if (isPerfer !== null) {
       url = `${host.io}/api/wallet/order?isPerfer=` + isPerfer;
   }else {
     url = `${host.io}/api/wallet/order`;

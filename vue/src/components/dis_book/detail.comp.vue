@@ -53,7 +53,6 @@
   import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
   import {isInApp, isInWechat, isInWeiBo} from "../../shared/utils/utils";
   import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition} from '../../shared/utils/utils';
-  import {ZaojiuPlayer, ZaojiuPlayerInstance, PlayerEvent} from "zaojiu-player";
   import {initWechat} from "../../shared/utils/wechat";
   import {setShareInfo} from "../../shared/utils/share";
   import {host} from "../../env/environment";
@@ -68,16 +67,15 @@
   import {pay} from "../../shared/api/pay.api";
   import axios from 'axios';
   import jquery from 'jquery'
+
   @Component
   export default class poster extends Vue {
     userInfo: UserInfoModel | null = null;
-    fee = new Money(1000000);
     isOnScreen = isOnLargeScreen;
     isVideoPlayed = false;
     isLandscape = false;
     coverUrl = '';
     seeking = false;
-    player: ZaojiuPlayerInstance;
     memberType = 'member-aia-mars';
     isPaying = false;
     isLoading = false;
@@ -88,7 +86,6 @@
     totalFee=0;
     groupBuyFee=0;
     isOn=false;
-    isPurchased=false;//是否购买
     isAudio = false;//是否有音频
     audioUrl='';//音频地址
     playFlag=false;//播放状态
@@ -99,11 +96,15 @@
     clickType=false;//购买类型
     isPaid=false;//是否购买
     isApp = isInApp;
+    myAudio: any;
     created() {
+
       console.log(this.$route.params['id']);
       //获取信息
-       axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
-      //axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+      // axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
+      axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+        this.$refs.player as HTMLElement;
+
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl;
         this.subject = list.subject;
@@ -115,7 +116,9 @@
         this.isPaid = res.data.resUserInfo.isPaid;
         if(this.isPaid && list.defaultItemInfo.audioUrl!='' && list.defaultItemInfo.audioUrl!=null){
           this.audioUrl = list.defaultItemInfo.audioUrl;
-          this.$refs.player.src=this.audioUrl;
+
+          this.myAudio =new Audio(this.audioUrl);
+
           this.isAudio = true;
         }
 
@@ -129,22 +132,26 @@
 
     }
     mounted() {
-      this.addEventListeners()
 
     }
     beforeDestroyed() {
-      this.removeEventListeners()
     }
     beforeUpdate(){
       this.cdTime = this.dTime - this.cTime;
       //时间格式化
       const sss = Math.floor(this.cTime) / Math.floor(this.dTime);
       this.cdTimeJ = Math.round( sss* 100);
-
+    }
+    //定时
+    setTime(){
+      setInterval(()=>{
+        this.cTime = this.myAudio.currentTime;
+        this.dTime = this.myAudio.duration;
+      },500);
 
     }
     //点击购买
-    btnClick(type){
+    btnClick(type:false){
         this.clickType = type;
         //是否有用户信息
        if (this.userInfo) {
@@ -249,45 +256,32 @@
     }
     //播放/暂停
     palyPause(){
+          this.setTime()
           if(this.playFlag==false){
-            this.$refs.player.play();
+            this.myAudio.play();
+
+            console.log(this.myAudio.duration)
+            console.log(this.myAudio.currentTime)
+
             this.playFlag = true;
             this.isOn = true;
           }else{
-            this.$refs.player.pause();
+            this.myAudio.pause();
             this.playFlag = false;
             this.isOn = false;
           }
     }
 
 
-    //监测音频时间
-    addEventListeners () {
-      const self = this;
-      self.$refs.player.addEventListener('timeupdate', self._currentTime)
-        self.$refs.player.addEventListener('canplay', self._durationTime)
 
-    }
-    removeEventListeners  () {
-      const self = this;
-      self.$refs.player.removeEventListener('timeupdate', self._currentTime)
-      self.$refs.player.removeEventListener('canplay', self._durationTime)
 
-    }
-    _currentTime () {
-      const self = this;
-      self.cTime = parseInt(self.$refs.player.currentTime)
-    }
-    _durationTime () {
-      const self = this;
-      self.dTime = parseInt(self.$refs.player.duration)
-    }
 
 //转换音频时长显示
-     transTime(time) {
+     transTime(time:any) {
 
-      let duration = parseInt(time);
-      let minute = parseInt(duration/60);
+      let duration:any = parseInt(time);
+      let vDuration:any = duration/60;
+      let minute:any = parseInt(vDuration);
       let sec = duration%60+'';
       let isM0 = ':';
       if(minute == 0){
@@ -303,25 +297,27 @@
     }
     //点击进度条
     clickPgs(e:any){
+      let _$:any = $('#pgs');
 
-      let startX = $('#pgs').offset().left;
+      let startX = _$.offset().left;
       let endX = e.clientX;  //点击事件的x坐标
-       let rate=(endX - startX) / $('#pgs').width();
+       let rate=(endX - startX) / _$.width();
       $("#circle").css({"left":(endX-startX-1)+"px"});
-      this.$refs.player.currentTime=rate*this.$refs.player.duration;
+      this.myAudio.currentTime=rate*this.myAudio.duration;
 
 
     }
     //拖拉进度条
     touchmoveCricle(e:any){
       e.preventDefault();
-      let startX = $("#pgs").offset().left;
+      let _$:any = $("#pgs");
+      let startX:number = _$.offset().left;
       let endX = e.touches[0].clientX;
 
-       if((endX+1) > startX && endX < (startX+$('#pgs').width())){  //触摸范围大于进度条起点，小于进度条终点
+       if((endX+1) > startX && endX < (startX+_$.width())){  //触摸范围大于进度条起点，小于进度条终点
          $("#circle").css({"left":(endX-startX-1)+"px"});
-         let rate = (endX - startX) / $('#pgs').width();;
-         this.$refs.player.currentTime=rate*this.$refs.player.duration;
+         let rate = (endX - startX) / _$.width();
+         this.myAudio.currentTime=rate*this.myAudio.duration;
        }
     }
     //课程时间格式化
