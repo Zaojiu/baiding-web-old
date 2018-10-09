@@ -880,20 +880,6 @@ export const router = new Router({
           ]
         },
         {
-          path: "/book/:id",
-          component: () =>
-            System.import("./components/dis_book/home.comp.vue"),
-          children: [
-            {
-              path: "",
-              name: "zaojiu.book",
-              meta: {
-                title: "书籍"
-              }
-            }
-          ]
-        },
-        {
           path: "/book/poster/:id",
           component: () =>
             System.import("./components/dis_book/poster.comp.vue"),
@@ -922,7 +908,7 @@ export const router = new Router({
           ]
         },
         {
-          path: "book/summary/:id",
+          path: "/book/summary/:id",
           component: () =>
             System.import("./components/dis_book/summary.comp.vue"),
           children: [

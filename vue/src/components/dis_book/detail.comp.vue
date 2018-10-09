@@ -34,7 +34,7 @@
 
       </div>
       <div class="go_money" v-show="!isPaid && !isApp">
-        <div class="left isMember" v-if="isMember" @click="btnClick(false)"><span class="txt-line">原价:{{totalFee}}元</span><span >会员价:{{isMember}}元</span></div>
+        <div class="left isMember" v-if="isMember" @click="btnClick(false)"><span class="txt-line">原价:{{totalFee}}元</span><span >会员价:{{memberFee}}元</span></div>
         <div class="left" v-if="!isMember" @click="btnClick(false)"><span >{{totalFee}}</span>元</div>
         <div class="right" @click="btnClick(true)">
           <p>{{groupBuyFee}}元</p>
@@ -102,8 +102,8 @@
     isMember=false;
     created() {
       //获取信息
-      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
-        //axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+      //axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
+        axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -158,8 +158,8 @@
       if (this.userInfo) {
 
       } else {
-        //this.goIntro();
-        this.createOrder();
+        this.goIntro();
+
       }
     }
     async goIntro() {
@@ -413,7 +413,7 @@
       }
       .pos-txt{
         margin: 0 15px;
-        padding-bottom: 20px;
+        padding-bottom: 60px;
         h3{
           font-size: 20px;
           width: 260px;
