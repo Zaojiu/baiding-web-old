@@ -18,11 +18,8 @@
          </div>
         </div>
         <div class="poster-footer" >
-          <div class="img" @click="getDetail()">
-            <img src="https://www.zaojiu.com/assets/images/zaojiu_code@2x.png" alt="造就">
-          </div>
-          <div class="txt">
-            <h4>长按识别二维码学习课程</h4>
+          <div class="txt" @click="getDetail()">
+            <h4>查看课程详情</h4>
             <p>内容来自造就 APP</p>
           </div>
 
@@ -59,7 +56,7 @@ import { concat } from 'rxjs/operator/concat';
          axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
         // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
-        this.coverUrl =  list.coverUrl;
+        this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
         this.shareContent = list.shareContent;
         this.duration = list.defaultItemInfo.duration;
@@ -84,7 +81,7 @@ import { concat } from 'rxjs/operator/concat';
        }
      }
       getDetail(){
-        this.$router.push({path: '/book/detail/`'+this.$route.params['id']})
+        this.$router.push({path: '/book/detail/'+this.$route.params['id']})
       }
       formatSeconds(msd:any){
         let time:number = parseFloat(msd) / 1000;
@@ -192,7 +189,7 @@ import { concat } from 'rxjs/operator/concat';
           }
         }
         .txt{
-          margin-left: 90px;
+         text-align: center;
           color: #fff;
           line-height: 28px;
           padding: 12px 0;

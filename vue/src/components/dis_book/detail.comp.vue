@@ -34,7 +34,8 @@
 
       </div>
       <div class="go_money" v-show="!isPaid && !isApp">
-        <div class="left" @click="btnClick(false)">{{totalFee}}元</div>
+        <div class="left isMember" v-if="isMember" @click="btnClick(false)"><span class="txt-line">原价:{{totalFee}}元</span><span >会员价:{{isMember}}元</span></div>
+        <div class="left" v-if="!isMember" @click="btnClick(false)"><span >{{totalFee}}</span>元</div>
         <div class="right" @click="btnClick(true)">
           <p>{{groupBuyFee}}元</p>
           <span>分享海报享团购价</span>
@@ -85,6 +86,7 @@
     totalVol=0;
     totalFee=0;
     groupBuyFee=0;
+    memberFee=0;
     isOn=false;
     isAudio = false;//是否有音频
     audioUrl='';//音频地址
@@ -97,28 +99,28 @@
     isPaid=false;//是否购买
     isApp = isInApp;
     myAudio: any;
+    isMember=false;
     created() {
-
-      console.log(this.$route.params['id']);
       //获取信息
-      // axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
-      axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
-        this.$refs.player as HTMLElement;
-
+      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
+        //axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
-        this.coverUrl =  list.coverUrl;
+        this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
         this.content = list.content;
         this.duration = list.defaultItemInfo.duration;
         this.totalVol = list.totalVol;
         this.totalFee = list.totalFee/100;
         this.groupBuyFee = list.groupBuyFee/100;
-        this.isPaid = res.data.resUserInfo.isPaid;
+        this.isMember = list.memberFee/100;
+        this.isPaid =  res.data.resUserInfo.isPaid;
+          if (this.userInfo && this.userInfo.isMember) {
+            this.isMember = true;
+          }
+
         if(this.isPaid && list.defaultItemInfo.audioUrl!='' && list.defaultItemInfo.audioUrl!=null){
           this.audioUrl = list.defaultItemInfo.audioUrl;
-
-          this.myAudio =new Audio(this.audioUrl);
-
+          this.myAudio.src=this.audioUrl;
           this.isAudio = true;
         }
 
@@ -131,35 +133,34 @@
       }
 
     }
+
+
     mounted() {
+      this.myAudio = this.$refs.player;
+      this.addEventListeners()
 
     }
     beforeDestroyed() {
+      this.removeEventListeners()
     }
     beforeUpdate(){
       this.cdTime = this.dTime - this.cTime;
       //时间格式化
       const sss = Math.floor(this.cTime) / Math.floor(this.dTime);
       this.cdTimeJ = Math.round( sss* 100);
-    }
-    //定时
-    setTime(){
-      setInterval(()=>{
-        this.cTime = this.myAudio.currentTime;
-        this.dTime = this.myAudio.duration;
-      },500);
+
 
     }
     //点击购买
-    btnClick(type:false){
-        this.clickType = type;
-        //是否有用户信息
-       if (this.userInfo) {
+    btnClick(type:any){
+      this.clickType = type;
+      //是否有用户信息
+      if (this.userInfo) {
 
-       } else {
-         //this.goIntro();
-         this.createOrder();
-       }
+      } else {
+        //this.goIntro();
+        this.createOrder();
+      }
     }
     async goIntro() {
       this.userInfo = getUserInfoCache();//获取用户信息
@@ -256,28 +257,42 @@
     }
     //播放/暂停
     palyPause(){
-          this.setTime()
-          if(this.playFlag==false){
-            this.myAudio.play();
-
-            console.log(this.myAudio.duration)
-            console.log(this.myAudio.currentTime)
-
-            this.playFlag = true;
-            this.isOn = true;
-          }else{
-            this.myAudio.pause();
-            this.playFlag = false;
-            this.isOn = false;
-          }
+      if(this.playFlag==false){
+        this.myAudio.play();
+        this.playFlag = true;
+        this.isOn = true;
+      }else{
+        this.myAudio.pause();
+        this.playFlag = false;
+        this.isOn = false;
+      }
     }
 
 
+    //监测音频时间
+    addEventListeners () {
+      const self = this;
+      this.myAudio.addEventListener('timeupdate', self._currentTime)
+      this.myAudio.addEventListener('canplay', self._durationTime)
 
+    }
+    removeEventListeners  () {
+      const self = this;
+      this.myAudio.removeEventListener('timeupdate', self._currentTime)
+      this.myAudio.removeEventListener('canplay', self._durationTime)
 
+    }
+    _currentTime () {
+      const self = this;
+      self.cTime = parseInt(this.myAudio.currentTime)
+    }
+    _durationTime () {
+      const self = this;
+      self.dTime = parseInt(this.myAudio.duration)
+    }
 
 //转换音频时长显示
-     transTime(time:any) {
+    transTime(time:any) {
 
       let duration:any = parseInt(time);
       let vDuration:any = duration/60;
@@ -297,11 +312,10 @@
     }
     //点击进度条
     clickPgs(e:any){
-      let _$:any = $('#pgs');
-
+      let _$:any = $("#pgs");
       let startX = _$.offset().left;
       let endX = e.clientX;  //点击事件的x坐标
-       let rate=(endX - startX) / _$.width();
+      let rate=(endX - startX) / _$.width();
       $("#circle").css({"left":(endX-startX-1)+"px"});
       this.myAudio.currentTime=rate*this.myAudio.duration;
 
@@ -311,14 +325,14 @@
     touchmoveCricle(e:any){
       e.preventDefault();
       let _$:any = $("#pgs");
-      let startX:number = _$.offset().left;
+      let startX = _$.offset().left;
       let endX = e.touches[0].clientX;
 
-       if((endX+1) > startX && endX < (startX+_$.width())){  //触摸范围大于进度条起点，小于进度条终点
-         $("#circle").css({"left":(endX-startX-1)+"px"});
-         let rate = (endX - startX) / _$.width();
-         this.myAudio.currentTime=rate*this.myAudio.duration;
-       }
+      if((endX+1) > startX && endX < (startX+_$.width())){  //触摸范围大于进度条起点，小于进度条终点
+        $("#circle").css({"left":(endX-startX-1)+"px"});
+        let rate = (endX - startX) / _$.width();
+        this.myAudio.currentTime=rate*this.myAudio.duration;
+      }
     }
     //课程时间格式化
     formatSeconds(msd:any){
@@ -460,6 +474,18 @@
         text-align: center;
         line-height: 50px;
       }
+      .isMember{
+        font-size: 14px;
+      }
+      .txt-line{
+        font-weight: normal;
+        text-decoration: line-through;
+        padding-right: 10px;
+        position: absolute;
+        top: -13px;
+        left: 11px;
+        font-size: 12px;
+      }
       .right{
         float: right;
         text-align: center;
@@ -473,7 +499,9 @@
           font-weight: 700;
           line-height: 18px;
           margin: 10px 0 1px 0;
+
         }
+
         span{
           font-size: 12px;
           line-height: 14px;
