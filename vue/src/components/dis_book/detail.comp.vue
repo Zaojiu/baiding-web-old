@@ -112,7 +112,7 @@
         this.totalVol = list.totalVol;
         this.totalFee = list.totalFee/100;
         this.groupBuyFee = list.groupBuyFee/100;
-        this.isMember = list.memberFee/100;
+        this.memberFee = list.memberFee/100;
         this.isPaid =  res.data.resUserInfo.isPaid;
           if (this.userInfo && this.userInfo.isMember) {
             this.isMember = true;
