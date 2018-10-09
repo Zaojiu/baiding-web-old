@@ -102,8 +102,8 @@
     isMember=false;
     created() {
       //获取信息
-      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
-        //axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+      //axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
+        axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -155,12 +155,10 @@
     btnClick(type:any){
       this.clickType = type;
       //是否有用户信息
-      if (this.userInfo) {
 
-      } else {
         this.goIntro();
 
-      }
+
     }
     async goIntro() {
       this.userInfo = getUserInfoCache();//获取用户信息
