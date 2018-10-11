@@ -132,6 +132,7 @@
     async init() {
       this.userInfo = getUserInfoCache(false);
       this.rights = await listMemberRights();
+      console.log(this.userInfo.member.memberId);
       if (this.userInfo.member.memberId && this.userInfo.member.memberId === 'member-mars') {
         // 火星会员
         this.memberType = 1;
@@ -140,7 +141,7 @@
         ];
       } else if (this.userInfo.member.memberId === 'member-aia-mars') {
         this.listImg = [
-          'https://og9s6vxbs.qnssl.com/members/mars-member-card.png'
+          'https://og9s6vxbs.qnssl.com/members/mars-member-aia-card.png'
         ];
       } else {
         // 普通会员

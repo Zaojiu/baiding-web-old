@@ -71,17 +71,19 @@ import { concat } from 'rxjs/operator/concat';
 
     }
      async share() {
-        const wx: any;
+        let wx: any;
+       let _this:any =this;
        if (isInWechat) {
          await initWechat();
            wx.updateTimelineShareData({
              title: '造就-拆书', // 分享标题
              link: `${host.self}/book/poster/`+this.$route.params['id'], // 分享链接，
              imgUrl: 'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg', // 分享图标
-           }, function(res) {
+           }, function(res:any) {
              if(res == 'success'){
                axios.get(`${host.io}/api/wallet/order`).then(res=>{});
-               this.$router.push({path: '/book/detail/'+this.$route.params['id']})
+
+               _this.$router.push({path: '/book/detail/'+_this.$route.params['id']})
              }
 
            });
