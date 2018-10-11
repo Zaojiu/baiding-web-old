@@ -573,11 +573,11 @@
           display: inline-block;
           width: 36px;
           height: 36px;
-          background:url('../../assets/img/play2@3x.png') no-repeat center;
+          background:url('assets/img/play2@3x.png') no-repeat center;
           background-size: 100% 100%;
         }
         .on{
-          background: url('../../assets/img/play@3x.png') no-repeat center;
+          background: url('assets/img/play@3x.png') no-repeat center;
           background-size: 100% 100%;
         }
         .time_p{
