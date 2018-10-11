@@ -97,11 +97,14 @@
     isApp = isInApp;
     myAudio: any;
     isMember=false;
-    created() {
 
+
+
+    mounted() {
       //获取信息
-      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
-        // axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
+      axios.defaults.withCredentials = true; //让ajax携带cookie
+      //axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
+        axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -134,11 +137,6 @@
       } catch (e) {
       } finally {
       }
-
-    }
-
-
-    mounted() {
       this.myAudio = this.$refs.player;
       this.addEventListeners()
 

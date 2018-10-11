@@ -51,10 +51,10 @@ import { concat } from 'rxjs/operator/concat';
       duration=0;
       totalVol=0;
     isShare=true;//是否分享
-        @Watch('$route')
-    created() {
-      console.log(this.$route.params['id']);
+        mounted() {
+
       this.share();
+          axios.defaults.withCredentials = true; //让ajax携带cookie
          axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
         // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
