@@ -1,11 +1,13 @@
 <template>
   <div>
     <div class="poster-con">
+
       <div class="indexB" >
         <img :src="coverUrl" alt="">
       </div>
       <div class="indexL">
         <p class="tit" >造就·拆书</p>
+        <p class="share" v-if="isShare==false">分享该海报页，即可畅听拆书音频</p>
         <div class="pos-img" >
           <img :src="coverUrl" alt="">
         </div>
@@ -48,7 +50,7 @@ import { concat } from 'rxjs/operator/concat';
       shareContent='';
       duration=0;
       totalVol=0;
-    isShare=false;//是否分享
+    isShare=true;//是否分享
         @Watch('$route')
     created() {
       console.log(this.$route.params['id']);
@@ -61,6 +63,9 @@ import { concat } from 'rxjs/operator/concat';
         this.shareContent = list.shareContent;
         this.duration = list.defaultItemInfo.duration;
         this.totalVol = list.totalVol;
+        if(res.data.resUserInfo.isPaid == true && res.data.resUserInfo.purchaseType==2 && res.data.resUserInfo.isShare==false){
+          this.isShare = false;
+        }
 
        })
 
@@ -77,7 +82,7 @@ import { concat } from 'rxjs/operator/concat';
            url
          );
          axios.get(`${host.io}/api/wallet/order`).then(res=>{});
-         this.$router.push({path: '/book/detail/`'+this.$route.params['id']})
+         this.$router.push({path: '/book/detail/'+this.$route.params['id']})
        }
      }
       getDetail(){
@@ -122,6 +127,7 @@ import { concat } from 'rxjs/operator/concat';
       left: 0;
       z-index: -1;
       opacity: .1;
+      width: 100%;
       img{
         width: 100%;
       }
@@ -139,6 +145,11 @@ import { concat } from 'rxjs/operator/concat';
         padding: 5px 46px;
         font-weight: 700;
         transform: rotate(-45deg);
+      }
+      .share{
+        text-align: center;
+        line-height: 40px;
+        color: #fff;
       }
       .pos-img{
         width: 120px;

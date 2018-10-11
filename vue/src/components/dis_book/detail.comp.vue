@@ -1,17 +1,17 @@
 <template>
   <div class="content">
-    <div class="title" v-show="!isApp">
+    <div class="title" >
       <h2>详情</h2>
     </div>
     <div class="poster-con">
       <div class="indexL">
-        <div class="pos-img" v-show="!isApp">
+        <div class="pos-img" >
           <img :src="coverUrl" alt="">
         </div>
-        <div class="pos-time" v-show="!isApp">
+        <div class="pos-time" >
           <span>课程时长</span> <span>{{formatSeconds(duration)}}</span>
         </div>
-        <div class="audio" v-show="isPaid && !isApp">
+        <div class="audio" v-show="isPaid ">
           <audio ref="player" id="article_audio" class="audio-id" controls  ></audio>
           <div class="audio_box">
             <a id="play_btn" class="play_btn" v-bind:class="{ on: isOn }" @click="palyPause()"></a>
@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="pos-txt" >
-          <h3 v-text="subject" v-show="!isApp"></h3>
+          <h3 v-text="subject" ></h3>
           <div v-html="content">
           </div>
         </div>
@@ -51,7 +51,7 @@
   import {Money} from '../../shared/utils/utils';
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {UserInfoModel} from '../../shared/api/user.model';
-  import {PostOrderObject, OrderObjectType} from "../../shared/api/order.model";
+  import {PostOrderObject, PostOrderObjectBook, OrderObjectType} from "../../shared/api/order.model";
   import {isInApp, isInWechat, isInWeiBo} from "../../shared/utils/utils";
   import {isOnLargeScreen, isAndroid, isiOS, setScrollPosition} from '../../shared/utils/utils';
   import {initWechat} from "../../shared/utils/wechat";
@@ -101,9 +101,10 @@
     myAudio: any;
     isMember=false;
     created() {
+
       //获取信息
       axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
-       // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+        // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -114,9 +115,14 @@
         this.groupBuyFee = list.groupBuyFee/100;
         this.memberFee = list.memberFee/100;
         this.isPaid =  res.data.resUserInfo.isPaid;
-          if (this.userInfo && this.userInfo.isMember) {
-            this.isMember = true;
-          }
+
+        //优惠购买未分享
+        if(this.isPaid == true && res.data.resUserInfo.purchaseType==2 && res.data.resUserInfo.isShare==false){
+          this.$router.push({path: '/book/poster/'+this.$route.params['id']})
+        }
+        if (this.userInfo && this.userInfo.isMember) {
+          this.isMember = true;
+        }
 
         if(this.isPaid && list.defaultItemInfo.audioUrl!='' && list.defaultItemInfo.audioUrl!=null){
           this.audioUrl = list.defaultItemInfo.audioUrl;
@@ -156,7 +162,7 @@
       this.clickType = type;
       //是否有用户信息
 
-        this.goIntro();
+      this.goIntro();
 
 
     }
@@ -186,7 +192,7 @@
       if (payResult === 'success') {
         showTips('支付成功');
         setTimeout(() => {
-          this.$router.push({path: '/book/detail/`'+this.$route.params['id']})
+            this.$router.push({path: '/book/detail/'+this.$route.params['id']})
         }, 10)
       } else if (payResult === 'cancel') {
         showTips('订单未支付');
@@ -218,7 +224,8 @@
       this.isPaying = true;
 
       try {
-        const orderMeta = await createOrder([new PostOrderObject(this.memberType, OrderObjectType.Member, 1)], [], false,'',this.clickType);
+        var bookId = this.$route.params['id'];
+        const orderMeta = await createOrder([new PostOrderObjectBook(bookId, OrderObjectType.Course, 1, this.clickType)], [], false,'');
         await this.payOrder(orderMeta.orderNo);
       } catch (e) {
         if (e instanceof ApiError) {
@@ -249,8 +256,13 @@
       await pay(orderNo, redirectUrl);
       setPaymentNone();
       showTips('支付成功');
+      if(this.clickType){
+        this.$router.push({path: '/book/poster/'+this.$route.params['id']})
+      }else{
+        this.$router.push({path: '/book/detail/'+this.$route.params['id']})
+      }
       //
-      this.$router.push({path: '/book/detail/`'+this.$route.params['id']})
+
       //this.$router.push({path: '/book/poster/`'+this.$route.params['id']})
     }
     //播放/暂停
@@ -360,156 +372,156 @@
 <style lang="scss" scoped>
   .content{
 
-  .poster-con{
-    //background: rgba(0,0,0,0.8) url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1538384263908&di=ff9e0ac0b0a9a632b0042dfc96c51670&imgtype=0&src=http%3A%2F%2Fpic42.photophoto.cn%2F20170202%2F0008118265891464_b.jpg")no-repeat center;
-    //background-size: cover;
+    .poster-con{
+      //background: rgba(0,0,0,0.8) url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1538384263908&di=ff9e0ac0b0a9a632b0042dfc96c51670&imgtype=0&src=http%3A%2F%2Fpic42.photophoto.cn%2F20170202%2F0008118265891464_b.jpg")no-repeat center;
+      //background-size: cover;
 
-    opacity: 0.9;
+      opacity: 0.9;
 
-    overflow: hidden;
-    position: relative;
-    .indexB{
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      opacity: .1;
-      img{
-        width: 100%;
-      }
-    }
-    .indexL{
-      padding-top: 30px;
-      z-index: 4;
-      .tit{
+      overflow: hidden;
+      position: relative;
+      .indexB{
         position: absolute;
-        top: 18px;
-        left: -42px;
-
-        font-size: 14px;
-        padding: 5px 46px;
-        font-weight: 700;
-        transform: rotate(-45deg);
-      }
-      .pos-img{
-        width: 120px;
-        //height: 170px;
-        margin:0px auto 20px auto;
-
+        top: 0;
+        left: 0;
+        z-index: -1;
+        opacity: .1;
         img{
           width: 100%;
-          height: 100%;
         }
       }
-      .pos-time{
-        text-align: center;
-        font-size: 14px;
+      .indexL{
+        padding-top: 30px;
+        z-index: 4;
+        .tit{
+          position: absolute;
+          top: 18px;
+          left: -42px;
 
-      }
-      .audio{
-        margin-top: 15px;
-      }
-      .pos-txt{
-        margin: 0 15px;
-        padding-bottom: 60px;
-        h3{
-          font-size: 20px;
-          width: 260px;
-          text-align: center;
-
-          padding-top: 20px;
-          padding-bottom: 20px ;
-          margin: 0 auto;
-        }
-        p{
-          margin-top: 20px;
           font-size: 14px;
-          line-height: 28px;
+          padding: 5px 46px;
+          font-weight: 700;
+          transform: rotate(-45deg);
         }
-      }
-      .poster-footer{
-        margin:30px 15px 0 15px;
-        overflow: hidden;
-        padding-bottom: 40px;
-        .img{
+        .pos-img{
+          width: 120px;
+          //height: 170px;
+          margin:0px auto 20px auto;
 
-          width: 75px;
-          height: 75px;
-          float: left;
           img{
             width: 100%;
             height: 100%;
           }
         }
-        .txt{
-          margin-left: 90px;
-          color: #fff;
-          line-height: 28px;
-          padding: 12px 0;
-          h4{
-            font-size: 16px;
+        .pos-time{
+          text-align: center;
+          font-size: 14px;
+
+        }
+        .audio{
+          margin-top: 15px;
+        }
+        .pos-txt{
+          margin: 0 15px;
+          padding-bottom: 60px;
+          h3{
+            font-size: 20px;
+            width: 260px;
+            text-align: center;
+
+            padding-top: 20px;
+            padding-bottom: 20px ;
+            margin: 0 auto;
           }
           p{
+            margin-top: 20px;
             font-size: 14px;
+            line-height: 28px;
+          }
+        }
+        .poster-footer{
+          margin:30px 15px 0 15px;
+          overflow: hidden;
+          padding-bottom: 40px;
+          .img{
+
+            width: 75px;
+            height: 75px;
+            float: left;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .txt{
+            margin-left: 90px;
+            color: #fff;
+            line-height: 28px;
+            padding: 12px 0;
+            h4{
+              font-size: 16px;
+            }
+            p{
+              font-size: 14px;
+            }
           }
         }
       }
-    }
 
-    .go_money{
-      position: fixed;
-      height: 50px;
-      bottom:0;
-      left: 0;
-      width: 100%;
-      background: #fff;
-      .left{
-        float: left;
-        width: 38%;
-        color: #00edda;
-        font-size: 18px;
-        font-weight: 700;
-        text-align: center;
-        line-height: 50px;
-      }
-      .isMember{
-        font-size: 14px;
-      }
-      .txt-line{
-        font-weight: normal;
-        text-decoration: line-through;
-        padding-right: 10px;
-        position: absolute;
-        top: -13px;
-        left: 11px;
-        font-size: 12px;
-      }
-      .right{
-        float: right;
-        text-align: center;
-        width: 62%;
-        background: #00edda;
-
-        color: #fff;
+      .go_money{
+        position: fixed;
         height: 50px;
-        p{
+        bottom:0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        .left{
+          float: left;
+          width: 38%;
+          color: #00edda;
           font-size: 18px;
           font-weight: 700;
-          line-height: 18px;
-          margin: 10px 0 1px 0;
-
+          text-align: center;
+          line-height: 50px;
         }
-
-        span{
+        .isMember{
+          font-size: 14px;
+        }
+        .txt-line{
+          font-weight: normal;
+          text-decoration: line-through;
+          padding-right: 10px;
+          position: absolute;
+          top: -13px;
+          left: 11px;
           font-size: 12px;
-          line-height: 14px;
-          display: inherit;
         }
+        .right{
+          float: right;
+          text-align: center;
+          width: 62%;
+          background: #00edda;
+
+          color: #fff;
+          height: 50px;
+          p{
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 18px;
+            margin: 10px 0 1px 0;
+
+          }
+
+          span{
+            font-size: 12px;
+            line-height: 14px;
+            display: inherit;
+          }
+        }
+
       }
 
     }
-
-  }
     .title{
       line-height: 40px;
       h2{
