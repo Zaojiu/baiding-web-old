@@ -71,20 +71,26 @@ import { concat } from 'rxjs/operator/concat';
 
     }
      async share() {
+        const wx: any;
        if (isInWechat) {
          await initWechat();
-         let url = `${host.self}/book/poster/`+this.$route.params['id'];
-         let title = '拆书';
-         setShareInfo(
-           title,
-           '一起探索科技创新与未来的前沿',
-           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
-           url
-         );
-         axios.get(`${host.io}/api/wallet/order`).then(res=>{});
-         this.$router.push({path: '/book/detail/'+this.$route.params['id']})
+           wx.updateTimelineShareData({
+             title: '造就-拆书', // 分享标题
+             link: `${host.self}/book/poster/`+this.$route.params['id'], // 分享链接，
+             imgUrl: 'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg', // 分享图标
+           }, function(res) {
+             if(res == 'success'){
+               axios.get(`${host.io}/api/wallet/order`).then(res=>{});
+               this.$router.push({path: '/book/detail/'+this.$route.params['id']})
+             }
+
+           });
        }
      }
+
+
+
+
       getDetail(){
         this.$router.push({path: '/book/detail/'+this.$route.params['id']})
       }
