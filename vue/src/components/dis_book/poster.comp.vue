@@ -55,7 +55,7 @@ import { concat } from 'rxjs/operator/concat';
     created() {
       console.log(this.$route.params['id']);
       this.share();
-         axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
+         axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
         // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';

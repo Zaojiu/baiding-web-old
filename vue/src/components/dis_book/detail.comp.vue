@@ -1,8 +1,5 @@
 <template>
   <div class="content">
-    <div class="title" >
-      <h2>详情</h2>
-    </div>
     <div class="poster-con">
       <div class="indexL">
         <div class="pos-img" >
@@ -103,8 +100,8 @@
     created() {
 
       //获取信息
-      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']).then(res=>{
-        // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
+        // axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
