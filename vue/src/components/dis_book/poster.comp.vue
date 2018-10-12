@@ -7,7 +7,7 @@
       </div>
       <div class="indexL">
         <p class="tit">造就·拆书</p>
-        <p class="share" v-if="isShare==false">分享该海报页，即可畅听拆书音频</p>
+        <p class="share" v-if="isShare==false && isApp==false">分享该海报页，即可畅听拆书音频</p>
         <div class="pos-img" >
           <img :src="coverUrl" alt="">
         </div>
@@ -56,7 +56,7 @@ import { concat } from 'rxjs/operator/concat';
       this.share();
           axios.defaults.withCredentials = true; //让ajax携带cookie
          axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
-        // axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
+         //axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;

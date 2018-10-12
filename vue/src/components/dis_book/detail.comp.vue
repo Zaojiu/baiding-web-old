@@ -254,11 +254,7 @@
       await pay(orderNo, redirectUrl);
       setPaymentNone();
       showTips('支付成功');
-      if(this.clickType){
-        this.$router.push({path: '/book/poster/'+this.$route.params['id']})
-      }else{
         this.$router.push({path: '/book/detail/'+this.$route.params['id']})
-      }
       //
 
       //this.$router.push({path: '/book/poster/`'+this.$route.params['id']})
