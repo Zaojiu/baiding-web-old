@@ -20,7 +20,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     imgUrl: cover, // 分享图标
     success: () => {
       axios.get(`${host.io}/api/wallet/order`);
-      location.href =  `https:www.zaojiu.com/book/detail` + goLink ;
+      location.href =  `${host.self}/book/detail` + goLink ;
     },
     cancel: () => {
     }
@@ -33,7 +33,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     imgUrl: cover, // 分享图标
     success: () => {
       axios.get(`${host.io}/api/wallet/order`);
-      location.href =  `https:www.zaojiu.com/book/detail` + goLink ;
+      location.href =  `${host.self}/book/detail` + goLink ;
     },
     cancel: () => {
     }
@@ -46,7 +46,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     imgUrl: cover, // 分享图标
     success: () => {
       axios.get(`${host.io}/api/wallet/order`);
-      location.href =  `https:www.zaojiu.com/book/detail` + goLink ;
+      location.href =  `${host.self}/book/detail` + goLink ;
     },
     cancel: () => {
     }
@@ -59,7 +59,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     imgUrl: cover, // 分享图标
     success: () => {
       axios.get(`${host.io}/api/wallet/order`);
-      location.href =  `https:www.zaojiu.com/book/detail` + goLink ;
+      location.href =  `${host.self}/book/detail` + goLink ;
     },
     cancel: () => {
     }
@@ -72,7 +72,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     imgUrl: cover, // 分享图标
     success: () => {
       axios.get(`${host.io}/api/wallet/order`);
-      location.href =  `https:www.zaojiu.com/book/detail` + goLink ;
+      location.href =  `${host.self}/book/detail` + goLink ;
     },
     cancel: () => {
     }
