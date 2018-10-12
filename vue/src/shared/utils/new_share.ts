@@ -5,7 +5,7 @@ import {environment, host} from "../../env/environment";
 import {appendAfterEachHook} from "../../hooks" ;
 import axios from 'axios' ;
 declare const wx: any;
-
+axios.defaults.withCredentials = true;
 let _title = '', _desc = '', _cover = '', _link = '', _timeLineTitle = '', _goLink = '' ;
 export const wechatSetShareInfo = async (title: string, desc: string, cover: string, link: string, goLink: string) => {
   _title = title;
