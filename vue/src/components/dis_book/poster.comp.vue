@@ -6,7 +6,7 @@
         <img :src="coverUrl" alt="">
       </div>
       <div class="indexL">
-        <p class="tit" >造就·拆书</p>
+        <p class="tit">造就·拆书</p>
         <p class="share" v-if="isShare==false">分享该海报页，即可畅听拆书音频</p>
         <div class="pos-img" >
           <img :src="coverUrl" alt="">
@@ -50,7 +50,7 @@ import { concat } from 'rxjs/operator/concat';
       shareContent='';
       duration=0;
       totalVol=0;
-    isShare=true;//是否分享
+      isShare=true;//是否分享
         mounted() {
 
       this.share();
@@ -71,28 +71,75 @@ import { concat } from 'rxjs/operator/concat';
 
     }
      async share() {
-        let wx: any;
-       let _this:any =this;
        if (isInWechat) {
          await initWechat();
-           wx.updateTimelineShareData({
-             title: '造就-拆书', // 分享标题
-             link: `${host.self}/book/poster/`+this.$route.params['id'], // 分享链接，
-             imgUrl: 'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg', // 分享图标
-           }, function(res:any) {
-             if(res == 'success'){
-               axios.get(`${host.io}/api/wallet/order`).then(res=>{});
+         this.wechatSetShareInfo('造就-拆书',`${host.self}/book/poster/`+this.$route.params['id'],'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg')
 
-               _this.$router.push({path: '/book/detail/'+_this.$route.params['id']})
-             }
-
-           });
        }
      }
+      //分享
+      async wechatSetShareInfo(title: string, link: string, cover: string)   {
+        let wx: any;
+        wx.onMenuShareTimeline({
+          title: title, // 分享标题
+          link: link, // 分享链接
+          imgUrl: cover, // 分享图标
+          success: () => {
+            this.sucGo()
+          },
+          cancel: () => {
+          }
+        });
 
+        wx.onMenuShareAppMessage({
+          title: title, // 分享标题
+          link: link, // 分享链接
+          imgUrl: cover, // 分享图标
+          success: () => {
+            this.sucGo()
+          },
+          cancel: () => {
 
+          }
+        });
 
+        wx.onMenuShareQQ({
+          title: title, // 分享标题
+          link: link, // 分享链接
+          imgUrl: cover, // 分享图标
+          success: () => {
+            this.sucGo()
+          },
+          cancel: () => {
+          }
+        });
 
+        wx.onMenuShareWeibo({
+          title: title, // 分享标题
+          link: link, // 分享链接
+          imgUrl: cover, // 分享图标
+          success: () => {
+            this.sucGo()
+          },
+          cancel: () => {
+          }
+        });
+
+        wx.onMenuShareQZone({
+          title: title, // 分享标题
+          link: link, // 分享链接
+          imgUrl: cover, // 分享图标
+          success: () => {
+            this.sucGo()
+          },
+          cancel: () => {
+          }
+        })
+    }
+      sucGo(){
+        axios.get(`${host.io}/api/wallet/order`).then(res=>{});
+        this.$router.push({path: '/book/detail/'+this.$route.params['id']})
+      }
       getDetail(){
         this.$router.push({path: '/book/detail/'+this.$route.params['id']})
       }
