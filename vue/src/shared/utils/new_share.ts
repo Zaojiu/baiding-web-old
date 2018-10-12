@@ -142,16 +142,16 @@ if (isInWechat) {
 
 export const share = _share;
 
-export const setDefaultShareInfo = (shareTitle?: string, shareDesc?: string, shareCover?: string, shareLink?: string, goLink?: string, isInheritShareInfo?: boolean) => {
+export const setDefaultShareInfo = (shareTitle?: string, shareDesc?: string, shareCover?: string, shareLink?: string, shareGoLink?: string, isInheritShareInfo?: boolean) => {
   shareTitle = shareTitle || environment.config.name;
   shareDesc = shareDesc || environment.config.slogan;
   shareCover = shareCover || `${host.assets}/assets/img/zaojiu-logo.jpg`;
   shareLink = shareLink || `${host.self}/lives`; // 默认分享首页地址
-  goLink =  goLink || ``;
+  shareGoLink =  shareGoLink || ``;
   if (isInheritShareInfo && _title && _desc && _cover && _link && _goLink) {
     setShareInfo(_title, _desc, _cover, _link , _goLink);
   } else {
-    setShareInfo(shareTitle, shareDesc, shareCover, shareLink, goLink);
+    setShareInfo(shareTitle, shareDesc, shareCover, shareLink, shareGoLink);
   }
 };
 
@@ -160,7 +160,7 @@ appendAfterEachHook((to, from) => {
   const shareDesc = to.meta.shareDesc;
   const shareCover = to.meta.shareCover;
   const shareLink = to.meta.shareLink;
-  const goLink = to.meta.goLink;
+  const goLink = to.meta.shareGoLink;
   const isInheritShareInfo = !!to.meta.isInheritShareInfo;
   setDefaultShareInfo(shareTitle, shareDesc, shareCover, shareLink, goLink, isInheritShareInfo);
 });
