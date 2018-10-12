@@ -19,7 +19,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      axios.get(`${host.io}/api/course/resources/share/` + goLink);
+      axios.post(`${host.io}/api/course/resources/share/` + goLink);
       location.href =  `${host.self}/book/detail/` + goLink ;
     },
     cancel: () => {
@@ -32,7 +32,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      axios.get(`${host.io}/api/course/resources/share/` + goLink);
+      axios.post(`${host.io}/api/course/resources/share/` + goLink);
       location.href =  `${host.self}/book/detail/` + goLink ;
     },
     cancel: () => {
@@ -45,7 +45,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      axios.get(`${host.io}/api/course/resources/share/` + goLink);
+      axios.post(`${host.io}/api/course/resources/share/` + goLink);
       location.href =  `${host.self}/book/detail/` + goLink ;
     },
     cancel: () => {
@@ -58,7 +58,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      axios.get(`${host.io}/api/course/resources/share/` + goLink);
+      axios.post(`${host.io}/api/course/resources/share/` + goLink);
       location.href =  `${host.self}/book/detail/` + goLink ;
     },
     cancel: () => {
@@ -71,7 +71,7 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
     link: link, // 分享链接
     imgUrl: cover, // 分享图标
     success: () => {
-      axios.get(`${host.io}/api/course/resources/share/` + goLink);
+      axios.post(`${host.io}/api/course/resources/share/` + goLink);
       location.href =  `${host.self}/book/detail/` + goLink ;
     },
     cancel: () => {
