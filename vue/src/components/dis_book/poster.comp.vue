@@ -38,7 +38,7 @@ import {Component, Watch} from 'vue-property-decorator';
   import {getUserInfoCache} from "../../shared/api/user.api";
   import {isInApp,isInWechat} from "../../shared/utils/utils";
   import {initWechat} from "../../shared/utils/wechat";
-  import {setShareInfo} from "../../shared/utils/share";
+  import {setShareInfo} from "../../shared/utils/new_share";
   import axios from 'axios';
   import {host} from "../../env/environment";
 import { concat } from 'rxjs/operator/concat';
@@ -70,71 +70,21 @@ import { concat } from 'rxjs/operator/concat';
        })
 
     }
+
      async share() {
        if (isInWechat) {
          await initWechat();
-         this.wechatSetShareInfo('造就-拆书',`${host.self}/book/poster/`+this.$route.params['id'],'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg')
-
+         let url = `${host.self}/book/poster/`+this.$route.params['id'];
+         let goUrl = this.$route.params['id'];
+         let title = '造就-拆书';
+         setShareInfo(
+           title,
+           '造就-拆书海报',
+           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+           url,
+           goUrl
+         );
        }
-     }
-      //分享
-      async wechatSetShareInfo(title: string, link: string, cover: string)   {
-        let wx: any;
-        wx.onMenuShareTimeline({
-          title: title, // 分享标题
-          link: link, // 分享链接
-          imgUrl: cover, // 分享图标
-          success: () => {
-            this.sucGo()
-          },
-          cancel: () => {
-          }
-        });
-
-        wx.onMenuShareAppMessage({
-          title: title, // 分享标题
-          link: link, // 分享链接
-          imgUrl: cover, // 分享图标
-          success: () => {
-            this.sucGo()
-          },
-          cancel: () => {
-
-          }
-        });
-
-        wx.onMenuShareQQ({
-          title: title, // 分享标题
-          link: link, // 分享链接
-          imgUrl: cover, // 分享图标
-          success: () => {
-            this.sucGo()
-          },
-          cancel: () => {
-          }
-        });
-
-        wx.onMenuShareWeibo({
-          title: title, // 分享标题
-          link: link, // 分享链接
-          imgUrl: cover, // 分享图标
-          success: () => {
-            this.sucGo()
-          },
-          cancel: () => {
-          }
-        });
-
-        wx.onMenuShareQZone({
-          title: title, // 分享标题
-          link: link, // 分享链接
-          imgUrl: cover, // 分享图标
-          success: () => {
-            this.sucGo()
-          },
-          cancel: () => {
-          }
-        })
     }
       sucGo(){
         axios.get(`${host.io}/api/wallet/order`).then(res=>{});
@@ -162,6 +112,10 @@ import { concat } from 'rxjs/operator/concat';
         return result;
       }
     }
+
+
+
+
 
 
 </script>
