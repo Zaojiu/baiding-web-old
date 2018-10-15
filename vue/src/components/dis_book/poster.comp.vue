@@ -6,7 +6,8 @@
         <img :src="coverUrl" alt="">
       </div>
       <div class="indexL">
-        <p class="tit">造就·拆书</p>
+        <!-- <p class="tit">造就·拆书</p> -->
+        <div class=bg_tit></div>
         <p class="share" v-if="isShare==false && isApp==false">分享该海报页，即可畅听拆书音频</p>
         <div class="pos-img" >
           <img :src="coverUrl" alt="">
@@ -16,13 +17,12 @@
         </div>
         <div class="pos-txt">
           <h3 v-text="subject" ></h3>
-         <div v-html="shareContent">
+         <div class="ht_class" v-html="shareContent">
          </div>
         </div>
         <div class="poster-footer" >
           <div class="txt" @click="getDetail()">
-            <h4>查看课程详情</h4>
-            <p>内容来自造就 APP</p>
+            <h4>查看详情</h4>
           </div>
 
         </div>
@@ -123,11 +123,9 @@ import { concat } from 'rxjs/operator/concat';
 
 <style lang="scss" scoped>
   .poster-con{
-    //background: rgba(0,0,0,0.8) url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1538384263908&di=ff9e0ac0b0a9a632b0042dfc96c51670&imgtype=0&src=http%3A%2F%2Fpic42.photophoto.cn%2F20170202%2F0008118265891464_b.jpg")no-repeat center;
-    //background-size: cover;
+    
 
-    opacity: 0.9;
-    background-color:black;
+    background-color:rgba(0,0,0,0.8);
     overflow: hidden;
     position: relative;
     .indexB{
@@ -135,8 +133,8 @@ import { concat } from 'rxjs/operator/concat';
       top: 0;
       left: 0;
       z-index: -1;
-      opacity: .1;
       width: 100%;
+       filter: blur(16px);
       img{
         width: 100%;
       }
@@ -144,6 +142,15 @@ import { concat } from 'rxjs/operator/concat';
     .indexL{
       padding-top: 30px;
       z-index: 4;
+      .bg_tit{
+        width: 75px;
+        height: 75px;
+        background: url('https://og9s6vxbs.qnssl.com/book/book-title.png') no-repeat center;
+        position: absolute;
+        top: 0;
+        left: 0;
+            background-size: cover;
+      }
       .tit{
         position: absolute;
         top: 18px;
@@ -163,7 +170,7 @@ import { concat } from 'rxjs/operator/concat';
       .pos-img{
         width: 120px;
         //height: 170px;
-        margin:0px auto 20px auto;
+        margin:0px auto 10px auto;
 
         img{
           width: 100%;
@@ -188,14 +195,15 @@ import { concat } from 'rxjs/operator/concat';
           padding-bottom: 20px ;
           margin: 0 auto;
         }
-        p{
-          margin-top: 20px;
-          font-size: 14px;
-          line-height: 28px;
-        }
+       .ht_class{
+         font-size: 14px;
+         line-height: 28px;
+         color: rgba(255,255,255,0.54);
+
+       }
       }
       .poster-footer{
-        margin:30px 15px 0 15px;
+        margin:20px 15px 0 15px;
         overflow: hidden;
         padding-bottom: 40px;
         .img{
@@ -211,14 +219,13 @@ import { concat } from 'rxjs/operator/concat';
         .txt{
          text-align: center;
           color: #fff;
-          line-height: 28px;
-          padding: 12px 0;
+          line-height: 40px;
+          background: rgb(0, 211, 193);
+          border-radius: 4px;
           h4{
             font-size: 16px;
           }
-          p{
-            font-size: 14px;
-          }
+          
         }
       }
     }

@@ -25,7 +25,7 @@
         </div>
         <div class="pos-txt" >
           <h3 v-text="subject" ></h3>
-          <div v-html="content">
+          <div class="ht_class" v-html="content">
           </div>
         </div>
 
@@ -104,7 +104,7 @@
       //获取信息
       axios.defaults.withCredentials = true; //让ajax携带cookie
       axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
-         //axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
+        // axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -134,7 +134,7 @@
         if (this.userInfo && this.userInfo.isMember) {
           this.isMember = true;
         }
-
+        //音频内容
         if(this.isPaid && list.defaultItemInfo.audioUrl!='' && list.defaultItemInfo.audioUrl!=null){
           this.audioUrl = list.defaultItemInfo.audioUrl;
           this.myAudio.src=this.audioUrl;
@@ -375,8 +375,7 @@
   .content{
 
     .poster-con{
-      //background: rgba(0,0,0,0.8) url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1538384263908&di=ff9e0ac0b0a9a632b0042dfc96c51670&imgtype=0&src=http%3A%2F%2Fpic42.photophoto.cn%2F20170202%2F0008118265891464_b.jpg")no-repeat center;
-      //background-size: cover;
+     
 
       opacity: 0.9;
 
@@ -408,7 +407,8 @@
         .pos-img{
           width: 120px;
           //height: 170px;
-          margin:0px auto 20px auto;
+          margin:0px auto 10px auto;
+           
 
           img{
             width: 100%;
@@ -435,10 +435,10 @@
             padding-bottom: 20px ;
             margin: 0 auto;
           }
-          p{
-            margin-top: 20px;
+          .ht_class{
             font-size: 14px;
             line-height: 28px;
+            
           }
         }
         .poster-footer{
