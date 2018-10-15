@@ -8,7 +8,7 @@
         <div class="pos-time" >
           <span>课程时长</span> <span>{{formatSeconds(duration)}}</span>
         </div>
-        <div class="audio" v-show="isPaid ">
+        <div class="audio" v-show="(isPaid && purchaseType==2 && isShare ==true) || (isPaid && purchaseType==1)">
           <audio ref="player" id="article_audio" class="audio-id" controls  ></audio>
           <div class="audio_box">
             <a id="play_btn" class="play_btn" v-bind:class="{ on: isOn }" @click="palyPause()"></a>
@@ -97,14 +97,14 @@
     isApp = isInApp;
     myAudio: any;
     isMember=false;
-
-
+    purchaseType=1;//是否为优惠 1.不是2.是
+    isShare=false; //是否分享
 
     mounted() {
       //获取信息
       axios.defaults.withCredentials = true; //让ajax携带cookie
       axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
-       //  axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
+        // axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -115,11 +115,13 @@
         this.groupBuyFee = list.groupBuyFee/100;
         this.memberFee = list.memberFee/100;
         this.isPaid =  res.data.resUserInfo.isPaid;
+        this.purchaseType = res.data.resUserInfo.purchaseType;
+          this.isShare = res.data.resUserInfo.isShare;
         //不在app中
         if(this.isApp == false){
           //优惠购买未分享
           if(this.isPaid == true && res.data.resUserInfo.purchaseType==2 && res.data.resUserInfo.isShare==false){
-            this.$router.push({path: '/book/poster/'+this.$route.params['id']})
+            //this.$router.push({path: '/book/poster/'+this.$route.params['id']})
           }
         }
 
