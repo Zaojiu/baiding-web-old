@@ -8,13 +8,13 @@
         <div class="pos-time" >
           <span>课程时长</span> <span>{{formatSeconds(duration)}}</span>
         </div>
-        <div class="audio" v-show="(isPaid && purchaseType==2 && isShare ==true) || (isPaid && purchaseType==1)">
+        <div class="audio" v-show="isShowAudio">
           <audio ref="player" id="article_audio" class="audio-id" controls  ></audio>
           <div class="audio_box">
             <a id="play_btn" class="play_btn" v-bind:class="{ on: isOn }" @click="palyPause()"></a>
             <div id="pgs" class="pgs" @click="clickPgs($event)">
               <div id="progress" class="pgs-play" v-bind:style="{ width: cdTimeJ+'%' }"></div>
-              <div id="circle" class="circle" @touchmove="touchmoveCricle($event)" @touchstart="" v-bind:style="{ left: cdTimeJ+'%' }"></div>
+              <div id="circle" class="circle" @touchmove="touchmoveCricle($event)"  v-bind:style="{ left: cdTimeJ+'%' }"></div>
             </div>
             <div class="time_p clearfix">
               <span id="playedTime" class="playedTime"></span>
@@ -99,12 +99,12 @@
     isMember=false;
     purchaseType=1;//是否为优惠 1.不是2.是
     isShare=false; //是否分享
-
+    isShowAudio=false;
     mounted() {
       //获取信息
       axios.defaults.withCredentials = true; //让ajax携带cookie
       axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
-        // axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
+         //axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -121,10 +121,16 @@
         if(this.isApp == false){
           //优惠购买未分享
           if(this.isPaid == true && res.data.resUserInfo.purchaseType==2 && res.data.resUserInfo.isShare==false){
-            //this.$router.push({path: '/book/poster/'+this.$route.params['id']})
+            this.$router.push({path: '/book/poster/'+this.$route.params['id']})
           }
         }
-
+        //音频显示
+        if(this.isPaid && this.purchaseType==2 && this.isShare ==true){
+          this.isShowAudio=true;
+        }
+        if(this.isPaid && this.purchaseType==1){
+          this.isShowAudio=true;
+        }
         if (this.userInfo && this.userInfo.isMember) {
           this.isMember = true;
         }
