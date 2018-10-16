@@ -14,9 +14,9 @@
 
   .member-activate {
     overflow: hidden;
-    height: 100vh;
+    //height: 100vh;
     .content {
-      height: calc(100vh - 50px);
+      //height: calc(100vh - 50px);
     }
     footer {
       background-color: #fff;

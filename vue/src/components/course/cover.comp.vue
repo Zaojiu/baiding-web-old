@@ -86,7 +86,7 @@
   .courses {
     background-color: $color-gray5;
     overflow: auto;
-    height: calc(100vh - 50px);
+    //height: calc(100vh - 50px);
 
     .cover {
       position: relative;
@@ -357,7 +357,7 @@
       max-width: 1024px;
       bottom: 0px;
       background-color: $color-w;
-      display: flex;
+      left: 0;
 
       .button {
         border-radius: 0;
