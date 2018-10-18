@@ -12,7 +12,11 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
   _desc = desc;
   _cover = cover;
   _link = link;
-  _timeLineTitle = `${title},${desc}`;
+  if(_desc!==''){
+    _timeLineTitle = `${title},${desc}`;
+  }else{
+    _timeLineTitle = `${title}${desc}`;
+  }
   _goLink = goLink;
   wx.onMenuShareTimeline({
     title: _timeLineTitle, // 分享标题

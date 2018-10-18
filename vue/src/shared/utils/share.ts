@@ -13,7 +13,12 @@ export const wechatSetShareInfo = async (title: string, desc: string, cover: str
   _desc = desc;
   _cover = cover;
   _link = link;
-  _timeLineTitle = `${title},${desc}`;
+  if(_desc!==''&& _desc!==null){
+    _timeLineTitle = `${title},${desc}`;
+  }else{
+    _timeLineTitle = `${title}${desc}`;
+  }
+  
 
   //if (desc.length > 19) desc = `${desc.slice(0, 18)}...`;
 

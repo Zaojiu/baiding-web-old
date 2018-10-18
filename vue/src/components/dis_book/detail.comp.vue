@@ -143,6 +143,7 @@
 
       })
       this.handlePayResultForRedirect();
+      this.share();
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
@@ -162,6 +163,20 @@
       this.cdTimeJ = Math.round( sss* 100);
 
 
+    }
+    async share() {
+      if (isInWechat) {
+        await initWechat();
+        let url = `${host.self}/wv/pact`;
+        let title = '造就-拆书';
+        let desc =this.subject;
+        setShareInfo(
+          title,
+          desc,
+          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+          url
+        );
+      }
     }
     //点击购买
     btnClick(type:any){

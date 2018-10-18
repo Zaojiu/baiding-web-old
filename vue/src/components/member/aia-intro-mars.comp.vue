@@ -1,7 +1,11 @@
 <template>
-  <bd-loading class="abs-center" v-if="isLoading"></bd-loading>
-  <div class="container" v-else>
-    <!--<div class="video-content">
+  <!-- <bd-loading class="abs-center" v-if="isLoading"></bd-loading> -->
+  <div class="container">
+   
+    <div class="content">
+      <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
+        <!-- <img class="mars-action" src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" /> -->
+ <div class="video-content">
       <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
@@ -20,11 +24,7 @@
           <div class="big-play"></div>
         </div>
       </header>
-    </div>-->
-    <div class="content">
-      <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
-        <img class="mars-action" src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />
-
+    </div>
       <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
       <div class="img-group margin-bot">
         <img src="https://og9s6vxbs.qnssl.com/aia/principle.jpg" />
@@ -191,7 +191,7 @@
         position: relative;
 
       }
-
+    
       @keyframes scale-mars {
         0% {
           transform: scale(1);
@@ -373,7 +373,7 @@
 
   @Component
   export default class IntroMarsComponent extends Vue {
-    defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/members/mars-member-card.png';
+    defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg';
     userInfo: UserInfoModel | null = null;
     fee = new Money(1000000);
     isOnScreen = isOnLargeScreen;
@@ -398,7 +398,7 @@
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
-        // this.prepareVideo();
+         this.prepareVideo();
       }
     }
 
@@ -481,7 +481,7 @@
             quality: '标清',
             mimetype: 'video/mp4'
           }, {
-            src: 'https://og9s6vxbs.qnssl.com/members/mars-member.mp4',// todo url
+            src: 'https://og9s6vxbs.qnssl.com/members/mar-member-2.mov',// todo url
             quality: '高清',
             mimetype: 'video/mp4'
           }],
