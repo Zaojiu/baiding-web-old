@@ -6,7 +6,7 @@
       <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
         <!-- <img class="mars-action" src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" /> -->
  <div class="video-content">
-      <header :class="{
+      <!-- <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
         'played-landscape': isVideoPlayed && isLandscape
@@ -23,7 +23,17 @@
 
           <div class="big-play"></div>
         </div>
-      </header>
+      </header> -->
+       <div id="playBtn" v-show="!isVideoShow" @click="showVideo()" class="circle" >
+            <div class="circle_inner_play">
+            </div>
+        </div>
+        <video v-show="isVideoShow"  class='pVideo' ref='videoP'
+    poster='https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg'
+    src="https://og9s6vxbs.qnssl.com/members/mar-member-2.mov"
+     controls controlsList="nodownload" preload="auto" 
+      webkit-playsinline="true"  x5-playsinline></video>
+      <div class="coverBg" v-show="!isVideoShow" ></div>
     </div>
       <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
       <div class="img-group margin-bot">
@@ -66,7 +76,58 @@
       flex-shrink: 0;
       overflow: hidden;
       background-color: #0A0A17;
+      position: relative;
+.coverBg{
+        width: 100%;
+        height: 200px;
+        background:url('https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg') no-repeat center;
+        background-size:cover; 
+      }
+       .circle {
+        border: solid 1px #fff;
+        border-radius: 50px;
+        height: 50px;
+        position: absolute;
+        width: 50px;
+        top: 50%;
+        left: 50%;
+        margin-top: -25px;
+        margin-left: -25px;
+        .circle_inner_play {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 0 10px 20px;
+        border-color: transparent transparent transparent #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -10px 0 0 -7px;
+    }
+    }
 
+    .circle:hover {
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+    }
+
+
+    
+.pVideo{
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        // display: none;
+      }
+video::-webkit-media-controls {
+    overflow: hidden !important;
+}
+video::-webkit-media-controls-enclosure {
+  overflow: hidden !important;
+} 
       .video {
         position: absolute;
         top: 0;
@@ -385,7 +446,7 @@
     memberType = 'member-aia-mars';
     isPaying = false;
     isLoading = false;
-
+isVideoShow=false;
     created() {
       this.preLoadImg([
         'https://og9s6vxbs.qnssl.com/aia/text0.jpg',
@@ -400,6 +461,11 @@
       } finally {
          this.prepareVideo();
       }
+    }
+    showVideo(){
+      this.isVideoShow=true;
+      let videoT:any = this.$refs.videoP;
+      videoT.play();
     }
 
     async handlePayResultForRedirect() {

@@ -51,9 +51,12 @@ import { concat } from 'rxjs/operator/concat';
       duration=0;
       totalVol=0;
       isShare=true;//是否分享
+      created(){
+
+      }
         mounted() {
 
-      this.share();
+     
           axios.defaults.withCredentials = true; //让ajax携带cookie
          axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
          //axios.get('http://www.zaojiu.fm/assets/book.json').then(res=>{
@@ -66,7 +69,7 @@ import { concat } from 'rxjs/operator/concat';
         if(res.data.resUserInfo.isPaid == true && res.data.resUserInfo.purchaseType==2 && res.data.resUserInfo.isShare==false){
           this.isShare = false;
         }
-
+    this.share();
        })
 
     }
@@ -76,11 +79,11 @@ import { concat } from 'rxjs/operator/concat';
          await initWechat();
          let url = `${host.self}/book/poster/`+this.$route.params['id'];
          let goUrl = this.$route.params['id'];
-         let title = '造就-拆书';
+         let title = this.subject;
          setShareInfo(
            title,
            '造就-拆书海报',
-           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+           'https://og9s6vxbs.qnssl.com/zaojiuUNI@3x.png',
            url,
            goUrl
          );

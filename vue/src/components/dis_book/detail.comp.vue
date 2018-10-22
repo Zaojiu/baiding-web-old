@@ -24,13 +24,13 @@
           </div>
         </div>
         <div class="pos-txt" >
-          <h3 v-text="subject" ></h3>
+          <h3 v-text="subject" id="subjectTit" ref='subjectTit' ></h3>
           <div class="ht_class" v-html="content">
           </div>
         </div>
 
       </div>
-      <div class="go_money" v-show="!isPaid && !isApp">
+      <div class="go_money" v-show="!isBottomShow">
         <div class="left isMember" v-if="isMember" @click="btnClick(false)"><span class="txt-line">原价:{{totalFee}}元</span><span >会员价:{{memberFee}}元</span></div>
         <div class="left" v-if="!isMember" @click="btnClick(false)"><span >{{totalFee}}</span>元</div>
         <div class="right" @click="btnClick(true)">
@@ -100,11 +100,13 @@
     purchaseType=1;//是否为优惠 1.不是2.是
     isShare=false; //是否分享
     isShowAudio=false;
-    mounted() {
-      //获取信息
+    isBottomShow=false;//购买是否显示
+
+    created(){
+//获取信息
       axios.defaults.withCredentials = true; //让ajax携带cookie
-      axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
-        // axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
+       axios.get(`${host.io}/api/course/resources/`+this.$route.params['id']+'?t='+new Date().getTime()).then(res=>{
+        //axios.get('http://www.zaojiu.fm/assets/book.json?t='+new Date().getTime() ).then(res=>{
         const list = res.data.resourceInfo;
         this.coverUrl =  list.coverUrl+'~5-7';
         this.subject = list.subject;
@@ -117,6 +119,7 @@
         this.isPaid =  res.data.resUserInfo.isPaid;
         this.purchaseType = res.data.resUserInfo.purchaseType;
           this.isShare = res.data.resUserInfo.isShare;
+         
         //不在app中
         if(this.isApp == false){
           //优惠购买未分享
@@ -140,10 +143,21 @@
           this.myAudio.src=this.audioUrl;
           this.isAudio = true;
         }
-
+        
+        if(this.isPaid==true || this.isApp==true){
+            this.isBottomShow=true;
+        }
+        if(isInWechat){
+          this.getInfo();
+        }
+        this.share();
       })
+    }
+    mounted() {
+      
       this.handlePayResultForRedirect();
-      this.share();
+     
+      
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
@@ -167,13 +181,12 @@
     async share() {
       if (isInWechat) {
         await initWechat();
-        let url = `${host.self}/wv/pact`;
-        let title = '造就-拆书';
-        let desc =this.subject;
+        let url = `${host.self}/book/detail/`+this.$route.params['id'];
+        let title = this.subject;
         setShareInfo(
           title,
-          desc,
-          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+          'www.zaojiu.com',
+          'https://og9s6vxbs.qnssl.com/zaojiuUNI@3x.png',
           url
         );
       }
@@ -182,13 +195,17 @@
     btnClick(type:any){
       this.clickType = type;
       //是否有用户信息
-
+      
+      this.getInfo();
       this.goIntro();
 
 
     }
-    async goIntro() {
+    getInfo(){
       this.userInfo = getUserInfoCache();//获取用户信息
+    }
+    async goIntro() {
+     
 
       //安卓端购买跳转
       /*if (this.isAndroid) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" @scroll="scrolls()">
 
     <!--<div class="content">
       <div class="cover">
@@ -15,8 +15,8 @@
     <div class="content">
       <img src="https://og9s6vxbs.qnssl.com/mars_member/text0.jpg" />
       <!--<img src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />-->
-      <div class="video-content">
-        <header :class="{
+      <div class="video-content" ref="topScroll" >
+        <!-- <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
         'played': isVideoPlayed,
         'played-landscape': isVideoPlayed && isLandscape
@@ -34,7 +34,17 @@
 
             <div class="big-play"></div>
           </div>
-        </header>
+        </header> -->
+        <div id="playBtn" v-show="!isVideoShow" @click="showVideo()" class="circle" >
+            <div class="circle_inner_play">
+            </div>
+        </div>
+        <video v-show="isVideoShow"  class='pVideo' ref='videoP'
+    poster='https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg'
+    src="https://og9s6vxbs.qnssl.com/members/mars-member.mp4"
+     controls controlsList="nodownload" preload="auto" 
+      webkit-playsinline="true"  x5-playsinline></video>
+      <div class="coverBg" v-show="!isVideoShow" ></div>
       </div>
       <img src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
       <div class="img-group margin-bot">
@@ -158,7 +168,12 @@
       background: url(https://og9s6vxbs.qnssl.com/aia/buy_now.png) no-repeat;
       background-size: 100% 100%;
     }
-
+    .videoFixed{
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
     .video-content {
       flex-shrink: 0;
       overflow: hidden;
@@ -166,7 +181,58 @@
       width: 98%;
       margin: 0 auto;
       background-color: #0A0A17;
+      position: relative;
+      .coverBg{
+        width: 100%;
+        height: 200px;
+        background:url('https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg') no-repeat center;
+        background-size:cover; 
+      }
+       .circle {
+        border: solid 1px #fff;
+        border-radius: 50px;
+        height: 50px;
+        position: absolute;
+        width: 50px;
+        top: 50%;
+        left: 50%;
+        margin-top: -25px;
+        margin-left: -25px;
+        .circle_inner_play {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 0 10px 20px;
+        border-color: transparent transparent transparent #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -10px 0 0 -7px;
+    }
+    }
 
+    .circle:hover {
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+    }
+
+
+    
+.pVideo{
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        // display: none;
+      }
+video::-webkit-media-controls {
+    overflow: hidden !important;
+}
+video::-webkit-media-controls-enclosure {
+  overflow: hidden !important;
+} 
       .video {
         position: absolute;
         top: 0;
@@ -383,7 +449,7 @@
   import {initWechat} from "../../shared/utils/wechat";
   import {setShareInfo} from "../../shared/utils/share";
   import {host} from "../../env/environment";
-
+  import jquery from 'jquery'
   @Component
   export default class IntroMarsComponent extends Vue {
     defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg';
@@ -397,7 +463,9 @@
     seeking = false;
     player: ZaojiuPlayerInstance;
     isLoading = false;
-
+    isVideoShow=false;
+    isOn=false;
+    scroll=0;
     created() {
       // this.preLoadImg([
       //   'https://og9s6vxbs.qnssl.com/aia/text0.jpg',
@@ -409,7 +477,7 @@
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
       } finally {
-         this.prepareVideo(); //todo 如果要视屏，将这句和css，html中的注释放出
+         //this.prepareVideo(); //todo 如果要视屏，将这句和css，html中的注释放出
       }
     }
 
@@ -430,7 +498,11 @@
         }
       });
     }
-
+    showVideo(){
+      this.isVideoShow=true;
+      let videoT:any = this.$refs.videoP;
+      videoT.play();
+    }
     async share() {
       if (isInWechat) {
         await initWechat();
@@ -444,45 +516,25 @@
         );
       }
     }
+   
+    mounted() {
+     
+      // window.addEventListener('scroll',this.scrolls,true)
+      // }
+      // scrolls(e:any){
+      //   let topSc:any =this.$refs.topScroll;
+      //   let topNum = topSc.getBoundingClientRect().top;
 
-    prepareVideo() {
-      System.import('zaojiu-player').then((player: ZaojiuPlayer) => {
-        this.player = new player({
-          element: 'player',
-          playList: [{
-            src: '',// todo url
-            quality: '标清',
-            mimetype: 'video/mp4'
-          }, {
-            src: 'https://og9s6vxbs.qnssl.com/members/mars-member.mp4',// todo url
-            quality: '高清',
-            mimetype: 'video/mp4'
-          }],
-        });
-        this.player.event$.subscribe((e: PlayerEvent) => {
-          switch (e.type) {
-            case 'play':
-              break;
-            case 'error':
-              this.isVideoPlayed = true;
-              break;
-            case 'seeking':
-              this.seeking = true;
-              break;
-            case 'playing':
-              this.seeking = false;
-              break;
-          }
-        });
-      });
+      //   // console.log(document.documentElement.scrollTop);
+      //     if(topNum<=0){
+      //       this.isOn = true;
+      //       console.log(this.isOn);
+      //     }else{
+      //       this.isOn = false;
+      //       console.log(this.isOn);
+      //     }
+      //   }
 
-      // 横竖屏polyfill
-      System.import('o9n').then((o9n: any) => {
-        this.isLandscape = o9n.orientation.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
-        o9n.orientation.onchange = (evt: any) => {
-          this.isLandscape = evt.target.type.indexOf('landscape') !== -1 && (isAndroid || isiOS);
-        }
-      });
     }
 
     goTalk(type: number) {
