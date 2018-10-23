@@ -390,9 +390,9 @@
           let numS = parseInt(numT);
           let numM:any = (parseFloat(numT)-numS)*60;
 
-          result = numS + "分" + parseInt(numM) + "秒";
+          result = numS + "’" + parseInt(numM) + "’’";//课程时长 52’36’’
         }else {
-          result = (time) + "秒";
+          result = (time) + "’";
         }
       }
       return result;
@@ -445,12 +445,14 @@
           img{
             width: 100%;
             height: 100%;
+            box-shadow: 0 5px 16px rgba(0,0,0,0.3);
+            border-radius: 5px;
           }
         }
         .pos-time{
           text-align: center;
           font-size: 14px;
-
+              color: rgba(166,166,166,1);
         }
         .audio{
           margin-top: 15px;
@@ -466,12 +468,19 @@
             padding-top: 20px;
             padding-bottom: 20px ;
             margin: 0 auto;
+                color: rgba(33,33,33,1);
           }
           .ht_class{
             font-size: 14px;
             line-height: 28px;
-            
+             color: rgba(166,166,166,1);
+             p{
+             font-size: 14px;
+            line-height: 28px;
+            color: rgba(166,166,166,1);
+            }
           }
+         
         }
         .poster-footer{
           margin:30px 15px 0 15px;
@@ -514,7 +523,7 @@
           width: 38%;
           color: #00edda;
           font-size: 18px;
-          font-weight: 700;
+          font-weight: 600;
           text-align: center;
           line-height: 50px;
         }
@@ -540,7 +549,7 @@
           height: 50px;
           p{
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 600;
             line-height: 18px;
             margin: 10px 0 1px 0;
 

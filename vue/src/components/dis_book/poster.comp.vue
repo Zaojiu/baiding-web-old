@@ -107,9 +107,9 @@ import { concat } from 'rxjs/operator/concat';
             let numS = parseInt(numT);
             let numM:any = (parseFloat(numT)-numS)*60;
 
-            result = numS + "分" + parseInt(numM) + "秒";
+            result = numS + "’" + parseInt(numM) + "’’";//课程时长 52’36’’
           }else {
-            result = (time) + "秒";
+            result = (time) + "’";
           }
         }
         return result;
