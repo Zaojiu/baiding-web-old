@@ -8,7 +8,7 @@
       <div class="indexL">
         <!-- <p class="tit">造就·拆书</p> -->
         <div class=bg_tit></div>
-        <p class="share" v-if="isShare==false && isApp==false">分享该海报页，即可畅听拆书音频</p>
+        <p class="share" v-if="isShare==false && isApp==false">分享该海报页，即可畅听音频</p>
         <div class="pos-img" >
           <img :src="coverUrl" alt="">
         </div>
@@ -82,7 +82,7 @@ import { concat } from 'rxjs/operator/concat';
          let title = this.subject;
          setShareInfo(
            title,
-           '造就-拆书海报',
+           '造就-听书海报',
            'https://og9s6vxbs.qnssl.com/zaojiuUNI@3x.png',
            url,
            goUrl

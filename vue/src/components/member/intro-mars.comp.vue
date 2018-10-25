@@ -507,10 +507,10 @@ video::-webkit-media-controls-enclosure {
       if (isInWechat) {
         await initWechat();
         let url = `${host.self}/member/intro-mars`;
-        let title = '造就&友邦火星计划联名卡 正式招募';
+        let title = '造就火星计划';
         setShareInfo(
           title,
-          '造就与AIA友邦，基于对新事物共同的好奇心，关注个人自我成长，携手发布火星计划联名卡。',
+          '一起探索科技创新与未来的前沿',
           'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
           url
         );

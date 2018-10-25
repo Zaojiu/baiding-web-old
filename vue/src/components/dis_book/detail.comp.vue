@@ -6,7 +6,7 @@
           <img :src="coverUrl" alt="">
         </div>
         <div class="pos-time" >
-          <span>课程时长</span> <span>{{formatSeconds(duration)}}</span>
+          <span>音频时长</span> <span>{{formatSeconds(duration)}}</span>
         </div>
         <div class="audio" v-show="isShowAudio">
           <audio ref="player" id="article_audio" class="audio-id" controls  ></audio>
@@ -65,6 +65,7 @@
   import {pay} from "../../shared/api/pay.api";
   import axios from 'axios';
   import jquery from 'jquery'
+import { constants } from 'fs';
 
   @Component
   export default class poster extends Vue {
@@ -96,11 +97,12 @@
     isPaid=false;//是否购买
     isApp = isInApp;
     myAudio: any;
-    isMember=false;
+    isMember=false;//会员
     purchaseType=1;//是否为优惠 1.不是2.是
     isShare=false; //是否分享
     isShowAudio=false;
     isBottomShow=false;//购买是否显示
+    
 
     created(){
 //获取信息
@@ -127,30 +129,38 @@
             this.$router.push({path: '/book/poster/'+this.$route.params['id']})
           }
         }
+        //用户
+        if (this.userInfo && this.userInfo.isMember) {
+          this.isMember = true;
+        }
+        debugger;
+        console.log(list.memberFee,this.memberFee);
         //音频显示
-        if(this.isPaid && this.purchaseType==2 && this.isShare ==true){
+        if((this.isPaid && this.purchaseType==2 && this.isShare ==true) || (this.isMember==true && this.memberFee==0) ){
           this.isShowAudio=true;
         }
         if(this.isPaid && this.purchaseType==1){
           this.isShowAudio=true;
         }
-        if (this.userInfo && this.userInfo.isMember) {
-          this.isMember = true;
-        }
+       
+      
         //音频内容
         if(this.isPaid && list.defaultItemInfo.audioUrl!='' && list.defaultItemInfo.audioUrl!=null){
           this.audioUrl = list.defaultItemInfo.audioUrl;
           this.myAudio.src=this.audioUrl;
           this.isAudio = true;
         }
-        
-        if(this.isPaid==true || this.isApp==true){
+        //购买按钮
+        if(this.isPaid==true || this.isApp==true ||(this.isMember==true && this.memberFee==0)){
             this.isBottomShow=true;
         }
         if(isInWechat){
           this.getInfo();
         }
         this.share();
+
+        //  console.log(this.memberFee)
+        document.title = this.subject;
       })
     }
     mounted() {
@@ -256,7 +266,7 @@
 
     //订单
     async createOrder() {
-      console.log(this.clickType);
+      // console.log(this.clickType);
       if (this.isPaying) return;
 
       this.isPaying = true;
