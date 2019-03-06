@@ -100,18 +100,24 @@ for target in $@; do
             docker_killrm
             ;;
         build.prod.docker)
+
             docker_start
             docker_exec npm run build.prod
+
             ;;
         build.test-prod.docker)
+
             docker_start
             docker_exec npm run build.test-prod
             ;;
         serve.dev.docker)
+
             docker_start
             docker_exec npm run serve.dev
+
             ;;
         serve.prod.docker)
+
             docker_start
             docker_exec npm run serve.prod
             ;;
@@ -130,7 +136,7 @@ for target in $@; do
             ./node_modules/.bin/ng build -e test-prod -prod --aot
             ;;
         serve.dev)
-            ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0 -e dev --hmr
+            ./node_modules/.bin/ng serve -p 9001 -H 0.0.0.0 -e dev --hmr
             ;;
         serve.prod)
             ./node_modules/.bin/ng serve -p 9000 -H 0.0.0.0 -e prod -prod --aot

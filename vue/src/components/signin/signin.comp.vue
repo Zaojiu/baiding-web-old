@@ -82,9 +82,9 @@
               name="password"
               type="password"
               v-model="password"
-              minlength="8"
+              minlength="6"
               maxlength="32"
-              v-validate="{rules: {min: 8, max: 32, required: true}}"
+              v-validate="{rules: {min: 6, max: 32, required: true}}"
               v-has-value
               @input="clearError('password', 'wrongpassword')"
             >
@@ -382,6 +382,7 @@
     ev = '';
 
     created() {
+
       this.ev = this.$i18n.locale;
       this.smsBtnText = this.$t('m.signIn.sendVerificationCode') as string;
       this.redirectTo = getRelativePath(this.$route.query['redirectTo'], '/lives');
@@ -429,7 +430,6 @@
     async submit() {
       this.isSubmitting = true;
       showTips(this.$t('m.signIn.singInLoading') as string);
-
       const errorMessage = _.assign({}, {
         [ApiCode.ErrSigninInvalidPassword]: this.smsCode ? (this.$t('m.signIn.verificationCodeError') as string) : (this.$t('m.signIn.passwordError') as string)
       }, SigninErrorMessage);

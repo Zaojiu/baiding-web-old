@@ -120,7 +120,7 @@
         setShareInfo(
           title,
           '造就与AIA友邦，基于对新事物共同的好奇心，关注个人自我成长，携手发布火星计划联名卡。',
-          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+          'https://baiding-pub.zaojiu.com/zaojiu-logo.jpg',
           url
         );
       }

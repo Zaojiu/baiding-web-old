@@ -449,6 +449,7 @@
     showComment = false;
 
     created() {
+
       this.itemChanged();
     }
 
@@ -474,6 +475,7 @@
 
       try {
         this.courseInfo = await getCourseInfo(this.id);
+        console.log(this.courseInfo.speaker.coverUrl);
         this.isPraised = this.courseInfo.currentUserInfo.praised;
         this.isFavorited = this.courseInfo.currentUserInfo.favorited;
       } catch (e) {

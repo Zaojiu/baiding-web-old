@@ -2,7 +2,7 @@
   <div class="container">
     <header class="header">
       <div class="img" @click="goToNextPage('index')"><img
-        src="https://og9s6vxbs.qnssl.com/wiee/zao/back-home.png"/></div>
+        src="https://baiding-pub.zaojiu.com/wiee/zao/back-home.png"/></div>
       <!--<span @click="showMenu = true" class="font-set"><i class="bi bi-menu"></i></span>
       <div class="menu" v-if="showMenu">
         <div class="menu-list">
@@ -12,7 +12,7 @@
           <ul class="menu-ul">
             <li @click="goTo('index')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu01.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu01.png"/>
               </div>
               <div class="text">
                 <h4>首页</h4>
@@ -21,7 +21,7 @@
             </li>
             <li @click="goTo('guests')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu02.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu02.png"/>
               </div>
               <div class="text">
                 <h4>嘉宾</h4>
@@ -30,7 +30,7 @@
             </li>
             <li @click="goTo('plan')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu03.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu03.png"/>
               </div>
               <div class="text">
                 <h4>行程</h4>
@@ -39,7 +39,7 @@
             </li>
             <li @click="goTo('map')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu04.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu04.png"/>
               </div>
               <div class="text">
                 <h4>地图</h4>
@@ -48,7 +48,7 @@
             </li>
             <li @click="goTo('live')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu05.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu05.png"/>
               </div>
               <div class="text">
                 <h4>直播</h4>
@@ -64,7 +64,7 @@
       </div>-->
     </header>
     <section class="content">
-      <img src="https://og9s6vxbs.qnssl.com/wiee/zao/detail.png"/>
+      <img src="https://baiding-pub.zaojiu.com/wiee/zao/detail.png"/>
     </section>
   </div>
 </template>
@@ -195,7 +195,7 @@
             .btn {
               width: 170px;
               font-weight: bold;
-              background: url("https://og9s6vxbs.qnssl.com/wiee/index/side-btn.png") no-repeat;
+              background: url("https://baiding-pub.zaojiu.com/wiee/index/side-btn.png") no-repeat;
               background-size: 100% 100%;
               font-size: 17px;
               line-height: 17px;

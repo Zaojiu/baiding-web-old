@@ -4,7 +4,7 @@
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="main" v-else>
       <article>
-        <img src="https://og9s6vxbs.qnssl.com/question_prize/bg.png"/>
+        <img src="https://baiding-pub.zaojiu.com/question_prize/bg.png"/>
         <div class="content">
           <div class="rank-list">
             <div class="rank-head">

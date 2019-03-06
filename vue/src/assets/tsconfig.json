@@ -1,0 +1,30 @@
+{
+  "code": 0,
+  "message": "短视频详情",
+  "Results": {
+    "tags": [
+      {
+        "id": "1",
+        "name": "大数据",
+        "url":"http://staticfile.zaojiu.tv/lhXbdztsfziL1FgofXDMnI6LuaGO_480P_600K",
+        "follow":false,
+        "like":true
+      },
+      {
+        "id": "2",
+        "name": "区块链",
+        "url":"http://staticfile.zaojiu.tv/lhXbdztsfziL1FgofXDMnI6LuaGO_480P_600K",
+        "follow":true,
+        "like":false
+      },
+      {
+        "id": "3",
+        "name": "人工智能",
+        "url":"http://staticfile.zaojiu.tv/lhXbdztsfziL1FgofXDMnI6LuaGO_480P_600K",
+        "follow":false,
+        "like":false
+      }
+    ]
+
+  }
+}

@@ -50,7 +50,12 @@
               </div>
             </div>
 
-            <div class="live-desc">{{liveInfo.desc}}</div>
+            <div class="live-desc" style=" white-space: pre-wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;">{{liveInfo.desc}}</div>
 
             <live-cover class="live-cover" [liveInfo]="liveInfo"></live-cover>
 
@@ -137,7 +142,12 @@
               </div>
             </div>
 
-            <div class="live-desc">{{liveInfo.desc}}</div>
+            <div class="live-desc" style=" white-space: pre-wrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;">{{liveInfo.desc}}</div>
 
             <live-cover class="live-cover" [liveInfo]="liveInfo"></live-cover>
 

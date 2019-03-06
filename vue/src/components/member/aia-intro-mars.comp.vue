@@ -3,8 +3,8 @@
   <div class="container">
    
     <div class="content">
-      <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text0.jpg" />
-        <!-- <img class="mars-action" src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" /> -->
+      <img class="position" src="https://baiding-pub.zaojiu.com/aia/text0.jpg" />
+        <!-- <img class="mars-action" src="https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg" /> -->
  <div class="video-content">
       <!-- <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
@@ -29,40 +29,46 @@
             </div>
         </div>
         <video v-show="isVideoShow"  class='pVideo' ref='videoP'
-    poster='https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg'
-    src="https://og9s6vxbs.qnssl.com/members/mar-member-2.mov"
+    poster='https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg'
+    src="https://baiding-pub.zaojiu.com/members/mar-member-2.mov"
      controls controlsList="nodownload" preload="auto" 
       webkit-playsinline="true"  x5-playsinline></video>
       <div class="coverBg" v-show="!isVideoShow" ></div>
     </div>
-      <img class="position" src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
+      <img class="position" src="https://baiding-pub.zaojiu.com/aia/text1.jpg" />
       <div class="img-group margin-bot">
-        <img src="https://og9s6vxbs.qnssl.com/aia/principle.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/principle.jpg" />
         <div class="btn-detail left" @click="goTalk(0)">详情</div>
       </div>
       <div class="img-group margin-bot">
-        <img src="https://og9s6vxbs.qnssl.com/aia/tap.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/tap.jpg" />
         <div class="btn-detail right" @click="goTalk(1)">详情</div>
       </div>
       <div class="img-group margin-bot">
-        <img src="https://og9s6vxbs.qnssl.com/aia/history&future.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/history&future.jpg" />
         <div class="btn-detail left" @click="goTalk(2)">详情</div>
       </div>
       <div class="img-group" style="margin-top:60px">
-        <img src="https://og9s6vxbs.qnssl.com/aia/hacking_growth.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/hacking_growth.jpg" />
         <div class="btn-detail right" @click="goTalk(3)">详情</div>
       </div>
-      <img src="https://og9s6vxbs.qnssl.com/aia/text2.jpg" />
+      <img src="https://baiding-pub.zaojiu.com/aia/text2.jpg" />
       <div class="card-content">
-        <!--<img class="card-action" src="https://og9s6vxbs.qnssl.com/aia/card.jpg" />-->
-        <img class="card-action" src="https://og9s6vxbs.qnssl.com/aia/mars_card.png" />
+        <!--<img class="card-action" src="https://baiding-pub.zaojiu.com/aia/card.jpg" />-->
+        <img class="card-action" src="https://baiding-pub.zaojiu.com/aia/mars_card.png" />
       </div>
+
       <div style="padding-bottom: 56.25px;"></div>
+
     </div>
     <div class="footer-btn"></div>
     <div class="btn-cover" @click="btnClick()"></div>
     <!--<button class="button button-primary" @click="btnClick()">{{btnText}}</button>-->
+
   </div>
+
+
+
 </template>
 
 <style lang="scss" scoped>
@@ -80,7 +86,7 @@
 .coverBg{
         width: 100%;
         height: 200px;
-        background:url('https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg') no-repeat center;
+        background:url('https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg') no-repeat center;
         background-size:cover; 
       }
        .circle {
@@ -293,7 +299,7 @@ video::-webkit-media-controls-enclosure {
         padding-top: 88%;
         border-radius: 50%;
         font-size: 0;
-        background-image: url("https://og9s6vxbs.qnssl.com/aia/4.jpg");
+        background-image: url("https://baiding-pub.zaojiu.com/aia/4.jpg");
         background-repeat: no-repeat;
         // animation: scale-card 5s 1 both cubic-bezier(0, 0, 0, 0.57); todo 放出动画 注释background-size属性
         background-position: 47% 66%;
@@ -378,7 +384,7 @@ video::-webkit-media-controls-enclosure {
       z-index: 2;
       padding: 10px;
       border-radius: 56px;
-      background: url(https://og9s6vxbs.qnssl.com/aia/buy_now.png) no-repeat;
+      background: url(https://baiding-pub.zaojiu.com/aia/buy_now.png) no-repeat;
       background-size: 100% 100%;
     }
     /*.button {
@@ -434,7 +440,7 @@ video::-webkit-media-controls-enclosure {
 
   @Component
   export default class IntroMarsComponent extends Vue {
-    defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg';
+    defaultCoverUrl = 'https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg';
     userInfo: UserInfoModel | null = null;
     fee = new Money(1000000);
     isOnScreen = isOnLargeScreen;
@@ -449,12 +455,14 @@ video::-webkit-media-controls-enclosure {
 isVideoShow=false;
     created() {
       this.preLoadImg([
-        'https://og9s6vxbs.qnssl.com/aia/text0.jpg',
-        'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg',
-        'https://og9s6vxbs.qnssl.com/aia/text1.jpg'
+        'https://baiding-pub.zaojiu.com/aia/text0.jpg',
+        'https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg',
+        'https://baiding-pub.zaojiu.com/aia/text1.jpg'
       ]);
       this.handlePayResultForRedirect();
       this.share();
+      this.goMoney();
+
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {
@@ -532,7 +540,7 @@ isVideoShow=false;
         setShareInfo(
           title,
           '造就与AIA友邦，基于对新事物共同的好奇心，关注个人自我成长，携手发布火星计划联名卡。',
-          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+          'https://baiding-pub.zaojiu.com/zaojiu-logo.jpg',
           url
         );
       }
@@ -547,7 +555,7 @@ isVideoShow=false;
             quality: '标清',
             mimetype: 'video/mp4'
           }, {
-            src: 'https://og9s6vxbs.qnssl.com/members/mar-member-2.mov',// todo url
+            src: 'https://baiding-pub.zaojiu.com/members/mar-member-2.mov',// todo url
             quality: '高清',
             mimetype: 'video/mp4'
           }],
@@ -590,14 +598,31 @@ isVideoShow=false;
     }
 
     btnClick() {
+      //是否填写表单
+      let aiaxUser: any;
+      aiaxUser = sessionStorage.getItem('aiasUser');
+
+      if(aiaxUser==null){
+        this.$router.push({path: '/wv/form'});
+        return ;
+      }
       if (this.userInfo && this.userInfo.isMember && this.userInfo.member.memberId === this.memberType) {
         this.goMyMember();
       } else {
         // this.buy();
         this.goIntro();
       }
-    }
+      }
 
+    goMoney(){
+      //是否填写表单
+      let aiaxUser: any;
+      aiaxUser = sessionStorage.getItem('aiasUser');
+
+      if(aiaxUser!=null){
+        this.btnClick();
+      }
+    }
     goMyMember() {
       if (isInApp) {
         this.$router.push({path: '/new-member/card?login=1'});
@@ -685,6 +710,7 @@ isVideoShow=false;
       await pay(orderNo, redirectUrl);
       setPaymentNone();
       showTips('支付成功');
+      sessionStorage.removeItem('aiasUser');
       if (!isInWechat && !isInApp && !isInWeiBo) {
         this.$router.push({path: '/new-member/card'})
       }

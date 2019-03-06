@@ -6,7 +6,7 @@ import {IosBridgeService} from "../../ios-bridge/ios-bridge.service";
 export class IosAuthService implements AuthBridge {
   constructor(private iosBridgeService: IosBridgeService) {
   }
-
+// 跳转原生登录
   auth(redirectTo?: string) {
     let query = redirectTo ? {to: redirectTo} : null;
 

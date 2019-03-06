@@ -165,8 +165,8 @@
   export default class Index extends Vue {
     isLoading = false;
     isError = false;
-    lifeCardImg = 'https://og9s6vxbs.qnssl.com/question_prize/qa-life-card-b.png';
-    giftImg = 'https://og9s6vxbs.qnssl.com/question_prize/qa-gift-b.png';
+    lifeCardImg = 'https://baiding-pub.zaojiu.com/question_prize/qa-life-card-b.png';
+    giftImg = 'https://baiding-pub.zaojiu.com/question_prize/qa-gift-b.png';
     id = '';
     chance = 0;
     prizes = [];

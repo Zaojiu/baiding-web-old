@@ -5,7 +5,7 @@
     <div class="content">
       <div class="mobile">24小时专线对接:<a href="tel:18817962164"> 18817962164</a></div>
       <div class="cover" style="font-size: 0">
-        <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/members/mars-intro-nopay.jpeg">
+        <img style="width:100%;" src="https://baiding-pub.zaojiu.com/members/mars-intro-nopay.jpeg">
         <div style=""></div>
       </div>
     </div>
@@ -308,7 +308,7 @@
     directives: form,
   })
   export default class IntroMarsComponent extends Vue {
-    defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/members/mars-member-card.png';
+    defaultCoverUrl = 'https://baiding-pub.zaojiu.com/members/mars-member-card.png';
     userInfo: UserInfoModel | null = null;
     fee = new Money(1000000);
     memberOrderObject = new PostOrderObject('member-mars', OrderObjectType.Member, 1); // hardcode temporary
@@ -343,7 +343,7 @@
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
-          'https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png',
+          'https://baiding-pub.zaojiu.com/reservation/zaojiu-logo.png',
           url
         );
       }
@@ -358,7 +358,7 @@
             quality: '标清',
             mimetype: 'video/mp4'
           }, {
-            src: 'https://og9s6vxbs.qnssl.com/members/mars-member.mp4',// todo url
+            src: 'https://baiding-pub.zaojiu.com/members/mars-member.mp4',// todo url
             quality: '高清',
             mimetype: 'video/mp4'
           }],

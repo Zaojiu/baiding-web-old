@@ -1,6 +1,7 @@
 export enum ApiCode {
   OK = 200,
   ErrNeedToLogin = 401,
+  ErrNeedToLogin401 = '401',
   ErrNotFound = 404,
   ErrUnauthorized = 20001,
   ErrExpiredToken = 20004,

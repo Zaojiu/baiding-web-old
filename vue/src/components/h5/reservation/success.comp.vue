@@ -5,7 +5,7 @@
         <header>NO.{{bookId}} 约问成功！</header>
         <div class="guest-tips">
           <div class="avatar">
-            <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
+            <div class="bg"><img src="https://baiding-pub.zaojiu.com/reservation/zaojiu-logo.png"/></div>
           </div>
           <div class="description description-b">
             恭喜您，您是第<span>{{bookId}}</span>位约问题的观众。 我们将会把您的问题在嘉宾演讲结束后给到嘉宾。 您的问题将有机会在所有Talk环节结束后，得到嘉宾今天的现场回答。
@@ -13,7 +13,7 @@
         </div>
         <!--<div class="guest-tips">
           <div class="avatar">
-            <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-logo.png"/></div>
+            <div class="bg"><img src="https://baiding-pub.zaojiu.com/reservation/zaojiu-logo.png"/></div>
           </div>
           <div class="description description-s">Ta的Talk开始时间是<span>{{guest.meetTime}}</span>,不要忘了！</div>
         </div>-->
@@ -27,7 +27,7 @@
       <h3>约问已满</h3>
       <p>真的很抱歉，由于时间原因，预约的现场问题回答名额已满，但是我们已经记住你的问题啦！我们会统一整理发给嘉宾，请关注造就微信公众号，一有回复我们会发出来哦！</p>
       <div class="qrcode">
-        <img src="https://og9s6vxbs.qnssl.com/reservation/zaojiu-qrcode.jpg"/>
+        <img src="https://baiding-pub.zaojiu.com/reservation/zaojiu-qrcode.jpg"/>
       </div>
       <div class="bottom">
         <button @click="back">约问其他嘉宾</button>
@@ -202,11 +202,11 @@
         }
 
         .description-b {
-          background: url("https://og9s6vxbs.qnssl.com/reservation/text-l.png") no-repeat;
+          background: url("https://baiding-pub.zaojiu.com/reservation/text-l.png") no-repeat;
           background-size: 100% 100%;
         }
         .description-s {
-          background: url("https://og9s6vxbs.qnssl.com/reservation/text-s.png") no-repeat;
+          background: url("https://baiding-pub.zaojiu.com/reservation/text-s.png") no-repeat;
           background-size: 100% 100%;
         }
       }
@@ -259,7 +259,7 @@
         setShareInfo(
           '约问嘉宾问题',
           `留下一个你想向嘉宾提的问题`,
-          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
+          'https://baiding-pub.zaojiu.com/wiee/wiee-share.jpg',
           `${host.self}/wv/reservation`
         );
       }

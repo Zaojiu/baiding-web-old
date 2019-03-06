@@ -113,7 +113,8 @@ export class CommentApiService {
     };
     if (toUids.length) query.toUids = toUids.join(',');
 
-    const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments?${$.param(query)}`;
+    // const url = `${environment.config.host.io}/api/live/streams/${liveId}/comments?${$.param(query)}`;
+    const url = `assets/mock-data/ticket.json`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       let comments: CommentModel[] = [];

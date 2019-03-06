@@ -458,6 +458,7 @@
     }
 
     async initData() {
+
       this.isLoading = true;
       this.isError = false;
 
@@ -489,19 +490,19 @@
       this.isCommentLoading = true;
       this.isCommentError = false;
 
-      try {
-        const lastMarker = this.marker;
-        const commentsData = await listComments(this.id, COMMENT_COUNT, lastMarker);
-        const comments = commentsData.comments;
-        this.marker = commentsData.marker;
-        this.isCommentOnLatest = !this.marker;
-        this.comments.push(...comments);
-      } catch (e) {
-        this.isCommentError = true;
-        throw e;
-      } finally {
-        this.isCommentLoading = false;
-      }
+      // try {
+      //   const lastMarker = this.marker;
+      //   const commentsData = await listComments(this.id, COMMENT_COUNT, lastMarker);
+      //   const comments = commentsData.comments;
+      //   this.marker = commentsData.marker;
+      //   this.isCommentOnLatest = !this.marker;
+      //   this.comments.push(...comments);
+      // } catch (e) {
+      //   this.isCommentError = true;
+      //   throw e;
+      // } finally {
+      //   this.isCommentLoading = false;
+      // }
     }
 
 

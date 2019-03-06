@@ -138,7 +138,7 @@ export class DdiComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getBtnTop();
-    this.cover = 'https://og9s6vxbs.qnssl.com/ddi/ddi-cover.png';
+    this.cover = 'https://baiding-pub.zaojiu.com/ddi/ddi-cover.png';
     this.urlSub = this.route.url.subscribe(url => this.resetLoader(url));
   }
 

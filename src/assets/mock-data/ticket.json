@@ -1,36 +1,172 @@
 {
-  "result": [
-    {
-      "id": "593920d234d28300017861de",
-      "subject": "造就TALK@上海:《跃迁》——终身学习时代的能力清单",
-      "desc": "<p>你正在被机器取代。</p><ul><li>为什么说，在不远的未来，仅凭努力将无法实现个人价值？</li><li>为什么说，你现在掌握的知识体系，一夜之间就有可能完全过时？</li><li>为什么说，你和你的公司找不到精准发展目标，就将被瞬间淘汰？</li></ul><p>站在数据浪潮的节点，旧有思维方式将被全面颠覆，只有跃迁——通过超长的方式来实现“认知精进”，才能摆脱知识焦虑，找到破局关键。</p><p>在这里，我们汇集六位认知领域水平最高的重量级讲者，为你分享人工智能时代的跃迁之道。</p>",
-      "coverUrl": "https://oaiscdhir.qnssl.com/F557A85F-63CA-4192-8861-75649275841D.png",
-      "meta": {
-        "startAt": "2017-08-20T14:00:00.000+08:00",
-        "endAt": "2017-08-20T17:00:00.000+08:00",
-        "province": "上海",
-        "city": "上海",
-        "address": "长宁区虹桥路1650号国际舞蹈中心",
-        "location": [
-          0,
-          0
-        ],
-        "speakersId": [
-          "1"
-        ]
+  "result": [{
+    "id": "5c39c702636d9c00015ba2f2",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422504122,
+    "toUids": null,
+    "content": "啊，主持人不错",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547290370564102557",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39c57213ce1e0001ecf9ba",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422485388,
+    "toUids": null,
+    "content": "老奶奶好和蔼，真像外婆",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547289970570709169",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39c54913ce1e0001ecf9b9",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422504444,
+    "toUids": null,
+    "content": "樊先生讲的时候 台下竟然都走得差不多了？！",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547289929075900717",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39b755636d9c00015ba2dd",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422541352,
+    "toUids": null,
+    "content": "又可以啦！",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547286357408615922",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39b652636d9c00015ba2dc",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422504122,
+    "toUids": null,
+    "content": "刷新一下试试",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547286098134543215",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39b63b13ce1e0001ecf99c",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422503843,
+    "toUids": null,
+    "content": "怎么我无法看？还是留在讲台？",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547286075450460882",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39b5e413ce1e0001ecf99b",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422504122,
+    "toUids": null,
+    "content": "能了",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547285988352307079",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39b5d013ce1e0001ecf99a",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422503843,
+    "toUids": null,
+    "content": "你们能看到吗？",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547285968902023546",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39b5c3636d9c00015ba2d9",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422504122,
+    "toUids": null,
+    "content": "终于",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547285955798098180",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }, {
+    "id": "5c39b56b13ce1e0001ecf999",
+    "streamId": "5c2dc1b2bdd5270001a91b54",
+    "msgId": "",
+    "parentId": "",
+    "uid": 15422503843,
+    "toUids": null,
+    "content": "怎么摘的？",
+    "isRoot": false,
+    "hidden": false,
+    "createdAt": "1547285867181533884",
+    "totalReplies": 0,
+    "replies": null,
+    "users": null
+  }],
+  "include": {
+    "users": {
+      "15422485388": {
+        "uid": 15422485388,
+        "avatar": "https://thirdwx.qlogo.cn/mmopen/vi_32/BwGRfrzqyeKPpxAeYqsiaxOWfNNU39ouerYY08ZiaFQ07iaCicfIKy5cGJMQSQDrKaXkgovkaO9bOVouYUxO0Wp8JQ/132",
+        "nick": "Pen-Oy"
+      },
+      "15422503843": {
+        "uid": 15422503843,
+        "avatar": "https://thirdwx.qlogo.cn/mmopen/vi_32/K2VFymc3tOlWnjCVeljXTgIuPib6syp5vPwWDVm3NjgrGIAVaLtTic0e3A0SBLUFJ4x7dtFyCD00efqVOGibWxeqg/132",
+        "nick": "财富猫"
+      },
+      "15422504122": {
+        "uid": 15422504122,
+        "avatar": "https://thirdwx.qlogo.cn/mmopen/vi_32/6HCSicSibD0eTliaHia5pW6icx1zHe3Qv3GtP1DmkgxZXicdsszydEOpRiaMFzeyvA9bchICiayxCICdSmKnPibh0EDFbzw/132",
+        "nick": "ಠ_ಠ"
+      },
+      "15422504444": {
+        "uid": 15422504444,
+        "avatar": "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83epF22TvZVfLPHUs5TMDLUtjia5Kfcn21ibBUORV30rVBCbWs5wlj8QicOh1SUhIGWDE5SYFOmiaqF6ibhQ/132",
+        "nick": "valenzr"
+      },
+      "15422541352": {
+        "uid": 15422541352,
+        "avatar": "https://thirdwx.qlogo.cn/mmopen/vi_32/NruuuyZvve2icCH4JzyGjtqprj3vFIibPhunjXhY2KscPLic4PSNnAomX4hG8s3gDNEakyroXSDjeUzwqLqiaOOUtQ/132",
+        "nick": "解海峰"
       }
     }
-  ],
-  "include": {
-    "speakers": [
-      {
-        "id": "1",
-        "uid": 0,
-        "name": "黄执中",
-        "title": "华语辩论十大风云人物<br>《奇葩说》第三季冠军<br>米果文化课程总监",
-        "desc": "输出，是把知识升级为自我认知的最佳方式，输出的过程必然伴随沟通。会说话，是未来社会的核心竞争力之一。值得注意的是，“说话”是作为一项独立技能存在，且可以通过训练实现升级、跃迁的。",
-        "coverUrl": "https://oaiscdhir.qnssl.com/368458F5-E0E6-411B-907A-B566397EC58D.png"
-      }
-    ]
   }
 }

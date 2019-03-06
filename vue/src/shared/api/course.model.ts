@@ -426,3 +426,4 @@ export class InvitedModel {
       new InvitedCourseUserInfoModel(null);
   }
 }
+

@@ -1,0 +1,31 @@
+{
+  "order": {
+    "orderNo": "20181103112057724564",
+    "uid": 15422574096,
+    "orderType": 1,
+    "subject": "如何打造极致的旅行体验——旅行定制师",
+    "totalDiscountedFee": 2900,
+    "totalFee": 2900,
+    "totalPrice": 9900,
+    "clientIp": "117.144.130.250",
+    "status": 3,
+    "createdAt": "2018-11-03T11:20:57.938556+08:00",
+    "expiredAt": "2018-11-03T12:20:57.938556+08:00",
+    "finishedAt": "0001-01-01T00:00:00Z"
+  },
+  "items": [{
+    "orderNo": "20181103112057724564",
+    "subject": "如何打造极致的旅行体验——旅行定制师",
+    "objectType": 9,
+    "objectId": "5bbae59b0aff8800010596c7",
+    "detail": {
+      "cover": "https://baiding-pub.zaojiu.com/cover/img/Fr2SjMz4qbk6mLu3iOspaEUtpXy3-1538975400.jpg",
+      "desc": "打造旅行产品的设计师,创造旅行体验的艺术家,通过专业的行程设计和预定服务，为客户带来节约时间和金钱的最佳旅行体验",
+      "extra": null
+    },
+    "discountedFee": 2900,
+    "fee": 2900,
+    "price": 9900,
+    "nums": 1
+  }]
+}

@@ -725,12 +725,14 @@
     showComment = false;
 
     created() {
+
       this.courseId = this.$route.params['courseId'];
       this.itemChanged();
     }
 
     @Watch('$route')
     async itemChanged() {
+
       this.id = this.$route.params['itemId'];
       if (!this.fromPaymentResult()) {
         await this.initData();

@@ -12,7 +12,7 @@
         ></video-player>
 
         <div class="live-cover" *ngIf="isVideoCoverShown">
-          <img class="live-cover" style="width: 100%" src="https://og9s6vxbs.qnssl.com/redbook/reb-book-live-cover.png"/>
+          <img class="live-cover" style="width: 100%" src="https://baiding-pub.zaojiu.com/redbook/reb-book-live-cover.png"/>
           <i class="bi bi-play-fill" *ngIf="!liveInfo.isCreated()"></i>
         </div>
       </div>
@@ -20,14 +20,14 @@
     <div class="bg-cover">
       <img
         alt="背景图"
-        src="https://og9s6vxbs.qnssl.com/redbook/redbook-bg.png">
+        src="https://baiding-pub.zaojiu.com/redbook/redbook-bg.png">
     </div>
     <footer>
       <div class="reb-book-btn" (click)="bookLive()" *ngIf="!liveInfo.booked && liveInfo.isCreated() && !booking">
-        <img src="https://og9s6vxbs.qnssl.com/redbook/reb-book-tip.png?t=2">
+        <img src="https://baiding-pub.zaojiu.com/redbook/reb-book-tip.png?t=2">
       </div>
       <div class="reb-book-btn" (click)="go()" *ngIf="(liveInfo.booked&&liveInfo.isCreated()&&!booking)||(liveInfo.isStarted()&&!booking)">
-        <img src="https://og9s6vxbs.qnssl.com/redbook/red-book-enter.png?t=2">
+        <img src="https://baiding-pub.zaojiu.com/redbook/red-book-enter.png?t=2">
       </div>
       <p>已开启直播提醒，直播开始时你会收到提醒</p>
     </footer>

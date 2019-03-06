@@ -19,6 +19,7 @@
     transition: opacity .5s;
     line-height: 1.5em;
     text-align: center;
+    z-index: 1000000;
 
     &.is-opened {
       opacity: 1;

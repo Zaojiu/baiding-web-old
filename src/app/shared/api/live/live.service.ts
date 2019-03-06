@@ -179,7 +179,8 @@ export class LiveService {
         return this.liveInfoPromise;
       }
     }
-    const url = `${environment.config.host.io}/api/live/objects/${id}/info`;
+    // const url = `${environment.config.host.io}/api/live/objects/${id}/info`;
+    const url = `assets/mock-data/talk.json`;
     this.liveInfoPromise = this.http.get(url).toPromise().then(res => {
       const data = res.json();
       return this.parseLiveInfo(data.object, data.users, data.currentUserInfo);
@@ -266,6 +267,7 @@ export class LiveService {
       status: LivePublishedStatus.Published //默认显示已经发布的内容
     };
     const url = `${environment.config.host.io}/api/live/streams/owner/${uid}?${$.param(query)}`;
+    // const url = `assets/mock-data/live-center.json`;
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
 
@@ -337,7 +339,8 @@ export class LiveService {
       size: size,
       marker: markerId
     };
-    const url = `${environment.config.host.io}/api/live/now/streams?${$.param(query)}`;
+    // const url = `${environment.config.host.io}/api/live/now/streams?${$.param(query)}`;
+    const url = `assets/mock-data/lives.json`;
     return this.http.get(url).toPromise().then((res) => {
       let data = res.json();
 
@@ -553,6 +556,7 @@ export class LiveService {
 
   getShareRanking(id: string): Promise<ShareRankingModel[]> {
     const url = `${environment.config.host.io}/api/live/streams/${id}/users/share/ranking`;
+    // const url = `assets/mock-data/ranking.json`;
 
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
@@ -569,6 +573,7 @@ export class LiveService {
 
   getMyShareCard(id: string): Promise<string> {
     const url = `${host.io}/api/live/streams/${id}/share/card/my`;
+    // const url = `assets/mock-data/share-card.json`;
 
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();

@@ -3,7 +3,7 @@
 
     <!--<div class="content">
       <div class="cover">
-        <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/memers/mars-intro.jpeg?t=1">
+        <img style="width:100%;" src="https://baiding-pub.zaojiu.com/memers/mars-intro.jpeg?t=1">
         <div style="padding: 15px;color:#afafaf;text-align: center;font-size: 14px;">
           年度会员升级优惠218元。
           <br>
@@ -13,8 +13,8 @@
     </div>
     <button class="button button-primary" @click="btnClick()">{{btnText}}</button>-->
     <div class="content">
-      <img src="https://og9s6vxbs.qnssl.com/mars_member/text0.jpg" />
-      <!--<img src="https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg" />-->
+      <img src="https://baiding-pub.zaojiu.com/mars_member/text0.jpg" />
+      <!--<img src="https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg" />-->
       <div class="video-content" ref="topScroll" >
         <!-- <header :class="{
         'sticky': isVideoPlayed && !isLandscape && !isOnScreen,
@@ -40,31 +40,31 @@
             </div>
         </div>
         <video v-show="isVideoShow"  class='pVideo' ref='videoP'
-    poster='https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg'
-    src="https://og9s6vxbs.qnssl.com/members/mars-member.mp4"
+    poster='https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg'
+    src="https://baiding-pub.zaojiu.com/members/mars-member.mp4"
      controls controlsList="nodownload" preload="auto" 
       webkit-playsinline="true"  x5-playsinline></video>
       <div class="coverBg" v-show="!isVideoShow" ></div>
       </div>
-      <img src="https://og9s6vxbs.qnssl.com/aia/text1.jpg" />
+      <img src="https://baiding-pub.zaojiu.com/aia/text1.jpg" />
       <div class="img-group margin-bot">
-        <img src="https://og9s6vxbs.qnssl.com/aia/principle.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/principle.jpg" />
         <div class="btn-detail left" @click="goTalk(0)">详情</div>
       </div>
       <div class="img-group margin-bot">
-        <img src="https://og9s6vxbs.qnssl.com/aia/tap.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/tap.jpg" />
         <div class="btn-detail right" @click="goTalk(1)">详情</div>
       </div>
       <div class="img-group margin-bot">
-        <img src="https://og9s6vxbs.qnssl.com/aia/history&future.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/history&future.jpg" />
         <div class="btn-detail left" @click="goTalk(2)">详情</div>
       </div>
       <div class="img-group" style="margin-top:60px">
-        <img src="https://og9s6vxbs.qnssl.com/aia/hacking_growth.jpg" />
+        <img src="https://baiding-pub.zaojiu.com/aia/hacking_growth.jpg" />
         <div class="btn-detail right" @click="goTalk(3)">详情</div>
       </div>
-      <img src="https://og9s6vxbs.qnssl.com/mars_member/text2.jpg" />
-      <img src="https://og9s6vxbs.qnssl.com/aia/card自有.jpg" />
+      <img src="https://baiding-pub.zaojiu.com/mars_member/text2.jpg" />
+      <img src="https://baiding-pub.zaojiu.com/aia/card自有.jpg" />
       <div style="padding-bottom: 56.25px;"></div>
     </div>
     <div class="footer-btn"></div>
@@ -165,7 +165,7 @@
       z-index: 2;
       padding: 10px;
       border-radius: 56px;
-      background: url(https://og9s6vxbs.qnssl.com/aia/buy_now.png) no-repeat;
+      background: url(https://baiding-pub.zaojiu.com/aia/buy_now.png) no-repeat;
       background-size: 100% 100%;
     }
     .videoFixed{
@@ -185,7 +185,7 @@
       .coverBg{
         width: 100%;
         height: 200px;
-        background:url('https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg') no-repeat center;
+        background:url('https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg') no-repeat center;
         background-size:cover; 
       }
        .circle {
@@ -452,7 +452,7 @@ video::-webkit-media-controls-enclosure {
   import jquery from 'jquery'
   @Component
   export default class IntroMarsComponent extends Vue {
-    defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg';
+    defaultCoverUrl = 'https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg';
     userInfo: UserInfoModel | null = null;
     fee = new Money(1000000);
     memberOrderObject = new PostOrderObject('member-mars', OrderObjectType.Member, 1); // hardcode temporary
@@ -468,9 +468,9 @@ video::-webkit-media-controls-enclosure {
     scroll=0;
     created() {
       // this.preLoadImg([
-      //   'https://og9s6vxbs.qnssl.com/aia/text0.jpg',
-      //   'https://og9s6vxbs.qnssl.com/aia/marsPhoto.jpg',
-      //   'https://og9s6vxbs.qnssl.com/aia/text1.jpg'
+      //   'https://baiding-pub.zaojiu.com/aia/text0.jpg',
+      //   'https://baiding-pub.zaojiu.com/aia/marsPhoto.jpg',
+      //   'https://baiding-pub.zaojiu.com/aia/text1.jpg'
       // ]);
       this.share();
       try {
@@ -511,7 +511,7 @@ video::-webkit-media-controls-enclosure {
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
-          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+          'https://baiding-pub.zaojiu.com/zaojiu-logo.jpg',
           url
         );
       }

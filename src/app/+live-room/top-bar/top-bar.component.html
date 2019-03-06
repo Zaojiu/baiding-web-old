@@ -12,7 +12,7 @@
     </a>
   </div>
 
-  <topbar-switch-btn class="switch-btn" [isCommentOpened]="isCommentOpened" [onlineCount]="onlineCount"
+  <topbar-switch-btn class="switch-btn" [isCommentOpened]="isCommentOpened" [onlineCount]="onlineCount" [openId]="liveInfo.id"
                      [isOpened]="isCommentOpened" [btnText]="btnText"
                      (toggling)="toggleComment($event)"></topbar-switch-btn>
 

@@ -21,7 +21,7 @@
     </div>
 
     <img class="avatar-round avatar"
-         :src="isLogin?userInfo.avatar:'https://og9s6vxbs.qnssl.com/default-user.png'"
+         :src="isLogin?userInfo.avatar:'https://baiding-pub.zaojiu.com/default-user.png'"
          alt="用户头像">
     <div class="nick">{{isLogin?userInfo.nick:'未登录'}}</div>
 
@@ -209,6 +209,7 @@
     }
 
     initData() {
+
       try {
         this.userInfo = getUserInfoCache(false);
       } catch (e) {

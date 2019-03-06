@@ -12,14 +12,14 @@ export enum SmsType {
   Text = 1,
   Voice
 }
-
+// 发送验证码
 export const sendSmsByLoginUser = async (
   mobile: string,
   scene: SmsScene,
   type = SmsType.Text,
   codeMap?: { [key: number]: string }
 ): Promise<void> => {
-  const url = `${host.io}/api/user/sms`;
+  const url = `${host.io}/api/user/login/sms`;
   const data = {
     mobile: mobile,
     scene: scene,
@@ -30,7 +30,7 @@ export const sendSmsByLoginUser = async (
 
   return;
 };
-
+//发送短信验证码
 export const sendSmsByGuest = async (
   mobile: string,
   scene: SmsScene,
@@ -48,7 +48,7 @@ export const sendSmsByGuest = async (
 
   return;
 };
-
+//手机验证码验证
 export const validateSMSCode = async (
   phoneNumber: string,
   smsCode: string

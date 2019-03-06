@@ -5,7 +5,7 @@
     <header class="header">
       <div class="img" @click="goToNextPage('detail')">
         <img
-          src="https://og9s6vxbs.qnssl.com/wiee/index/home-right.png?t=1"/>
+          src="https://baiding-pub.zaojiu.com/wiee/index/home-right.png?t=1"/>
       </div>
       <div class="right">
         <span class="language" @click="changeLang">
@@ -22,7 +22,7 @@
           <ul class="menu-ul">
             <li @click="goTo('index')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu01.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu01.png"/>
               </div>
               <div class="text">
                 <h4>HOME</h4>
@@ -30,7 +30,7 @@
             </li>
             <li @click="goTo('guests')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu02.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu02.png"/>
               </div>
               <div class="text">
                 <h4>GUESTS</h4>
@@ -38,7 +38,7 @@
             </li>
             <li @click="goTo('plan')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu03.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu03.png"/>
               </div>
               <div class="text">
                 <h4>AGENDA</h4>
@@ -46,7 +46,7 @@
             </li>
             <li @click="goTo('map')">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu04.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu04.png"/>
               </div>
               <div class="text">
                 <h4>MAP</h4>
@@ -54,7 +54,7 @@
             </li>
             <li @click="goTo('live')" v-if="liveInfoListAll.length>0">
               <div class="icon">
-                <img src="https://og9s6vxbs.qnssl.com/wiee/index/menu05.png"/>
+                <img src="https://baiding-pub.zaojiu.com/wiee/index/menu05.png"/>
               </div>
               <div class="text">
                 <h4>LIVE</h4>
@@ -73,19 +73,19 @@
              :style="{overflow:showMenu?'hidden':'auto'}"
     >
       <div class="index">
-        <img src="https://og9s6vxbs.qnssl.com/wiee/index/bg-en.jpg"/>
+        <img src="https://baiding-pub.zaojiu.com/wiee/index/bg-en.jpg"/>
         <div class="index-action">
           <div class="img-wiee">
-            <img src="https://og9s6vxbs.qnssl.com/wiee/index/wiee-zaojiu.png"/>
+            <img src="https://baiding-pub.zaojiu.com/wiee/index/wiee-zaojiu.png"/>
           </div>
           <div class="img" style="cursor: pointer;" @click="goTo('index')">
-            <img src="https://og9s6vxbs.qnssl.com/wiee/index/down.png"/>
+            <img src="https://baiding-pub.zaojiu.com/wiee/index/down.png"/>
           </div>
         </div>
       </div>
 
       <div id="index" class="zao-detail">
-        <h2><img src="https://og9s6vxbs.qnssl.com/wiee/detail/ZAO.png"/></h2>
+        <h2><img src="https://baiding-pub.zaojiu.com/wiee/detail/ZAO.png"/></h2>
         <p>
           René Descartes said, "I think, therefore I am". It is thinking that makes human’s existence valuable, and
           ideas are dazzling sparkles of thinking.
@@ -127,7 +127,7 @@
 
       <div id="guests" class="guest">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/guests-en.png"/>
+          <img src="https://baiding-pub.zaojiu.com/wiee/detail/guests-en.png"/>
         </h2>
         <div class="guest-show">
           <img :src="guestObj.url"/>
@@ -152,7 +152,7 @@
 
       <div id="plan" class="plan">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/agenda-en.png"/>
+          <img src="https://baiding-pub.zaojiu.com/wiee/detail/agenda-en.png"/>
         </h2>
         <nav class="plan-nav">
           <span class="item" :class="{'active':planIndex === 0}" @click="choosePlan(0)">MAY 19</span>
@@ -183,10 +183,10 @@
 
       <div id="map" class="map">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map-en.png"/>
+          <img src="https://baiding-pub.zaojiu.com/wiee/detail/map-en.png"/>
         </h2>
         <div class="map-content">
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/map-detail-en.png"/>
+          <img src="https://baiding-pub.zaojiu.com/wiee/detail/map-detail-en.png"/>
         </div>
         <div class="map-btn">
           <button @click="goToNextPage('navigation')">
@@ -197,12 +197,12 @@
 
       <div id="live" class="live" v-if="liveInfoListAll.length>0">
         <h2>
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/live-en.png"/>
+          <img src="https://baiding-pub.zaojiu.com/wiee/detail/live-en.png"/>
         </h2>
         <header class="live-banner">
           <img class="img" :src="liveInfo.cover169Url" @error="liveInfo.cover169Url = defaultImg"/>
           <div class="play" @click="goToLiveRoom(liveInfo.id)">
-            <img src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png"/>
+            <img src="https://baiding-pub.zaojiu.com/wiee/detail/play.png"/>
           </div>
           <div class="tips" v-if="liveInfo.isStarted">Live：{{liveInfo.subject}}</div>
         </header>
@@ -228,13 +228,13 @@
       <div class="collaboration" id="a">
         <h5>Partners</h5>
         <div class="co-content">
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/link-1.png"/>
+          <img src="https://baiding-pub.zaojiu.com/wiee/detail/link-1.png"/>
         </div>
       </div>
       <div class="collaboration padding-60">
         <h5>Sponsor</h5>
         <div class="co-content">
-          <img src="https://og9s6vxbs.qnssl.com/wiee/detail/link-2.png"/>
+          <img src="https://baiding-pub.zaojiu.com/wiee/detail/link-2.png"/>
         </div>
       </div>
     </section>
@@ -418,7 +418,7 @@
             .btn {
               width: 170px;
               font-weight: bold;
-              background: url("https://og9s6vxbs.qnssl.com/wiee/index/side-btn.png") no-repeat;
+              background: url("https://baiding-pub.zaojiu.com/wiee/index/side-btn.png") no-repeat;
               background-size: 100% 100%;
               font-size: 17px;
               line-height: 44px;
@@ -571,7 +571,7 @@
             left: 50%;
             top: 50%;
             transform: translateX(-50%) translateY(-50%);
-            background: url("https://og9s6vxbs.qnssl.com/wiee/detail/play.png") center top no-repeat;
+            background: url("https://baiding-pub.zaojiu.com/wiee/detail/play.png") center top no-repeat;
             background-size: 100% 100%;
             pointer-events: none;
             height: 48px;
@@ -749,7 +749,7 @@
               border: 0;
               // border: 1px solid rgb(255, 255, 255);
               border-radius: 40px;
-              background: url("https://og9s6vxbs.qnssl.com/wiee/detail/guest-btn.jpg") no-repeat;
+              background: url("https://baiding-pub.zaojiu.com/wiee/detail/guest-btn.jpg") no-repeat;
               background-size: 100% 100%;
 
               &:first-child {
@@ -960,7 +960,7 @@
 
               .desc {
                 padding: 10px 18px;
-                background: url("https://og9s6vxbs.qnssl.com/wiee/detail/rest.png") repeat;
+                background: url("https://baiding-pub.zaojiu.com/wiee/detail/rest.png") repeat;
                 background-size: 100% 100%;
                 margin: 20px 0;
 
@@ -1011,7 +1011,7 @@
             border-radius: 23px;
             font-size: 17px;
             font-weight: bold;
-            background: url("https://og9s6vxbs.qnssl.com/wiee/detail/live-style.png?t=1") no-repeat;
+            background: url("https://baiding-pub.zaojiu.com/wiee/detail/live-style.png?t=1") no-repeat;
             background-size: 100% 100%;
           }
         }
@@ -1150,7 +1150,7 @@
             border-radius: 23px;
             font-size: 17px;
             font-weight: bold;
-            background: url("https://og9s6vxbs.qnssl.com/wiee/detail/live-style.png") no-repeat;
+            background: url("https://baiding-pub.zaojiu.com/wiee/detail/live-style.png") no-repeat;
             background-size: 100% 100%;
           }
         }
@@ -1225,7 +1225,7 @@
     isOnScreen = isOnLargeScreen;
     isVideoPlayed = false;
     isLandscape = false;
-    coverUrl = 'https://og9s6vxbs.qnssl.com/wiee/video-cover.jpg';
+    coverUrl = 'https://baiding-pub.zaojiu.com/wiee/video-cover.jpg';
     seeking = false;
     player: ZaojiuPlayerInstance;
 
@@ -1249,7 +1249,7 @@
         setShareInfo(
           '造就思想节：发现最有创造力的思想',
           `科技与人文交汇的十字路口`,
-          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
+          'https://baiding-pub.zaojiu.com/wiee/wiee-share.jpg',
           `${host.self}/wv/wiee`
         );
       }
@@ -1356,7 +1356,7 @@
             quality: '标清',
             mimetype: 'video/mp4'
           }, {
-            src: 'https://og9s6vxbs.qnssl.com/wiee/video.mp4',
+            src: 'https://baiding-pub.zaojiu.com/wiee/video.mp4',
             quality: '高清',
             mimetype: 'video/mp4'
           }],

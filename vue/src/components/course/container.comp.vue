@@ -51,8 +51,8 @@
   export default class MallContainer extends Vue {
     courseId: string = '';
     groupId: string = '';
-    courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
-    groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
+    courseImg = 'https://baiding-pub.zaojiu.com/course/course-icon.png';
+    groupImg = 'https://baiding-pub.zaojiu.com/course/group-icon.png';
 
     created() {
       if (this.$route.query['courseId']) {
@@ -82,13 +82,13 @@
       if (routeName === 'course.cover') {
         this.courseId = this.$route.params['courseId'];
         this.groupId = this.$route.query['groupId'];
-        this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon-active.png';
-        this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon.png';
+        this.courseImg = 'https://baiding-pub.zaojiu.com/course/course-icon-active.png';
+        this.groupImg = 'https://baiding-pub.zaojiu.com/course/group-icon.png';
       } else if(routeName === 'group.cover') {
         this.groupId = this.$route.params['groupId'];
         this.courseId = this.$route.query['courseId'];
-        this.groupImg = 'https://og9s6vxbs.qnssl.com/course/group-icon-active.png';
-        this.courseImg = 'https://og9s6vxbs.qnssl.com/course/course-icon.png';
+        this.groupImg = 'https://baiding-pub.zaojiu.com/course/group-icon-active.png';
+        this.courseImg = 'https://baiding-pub.zaojiu.com/course/course-icon.png';
       }
     }
 

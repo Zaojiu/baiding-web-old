@@ -133,8 +133,7 @@ import { constants } from 'fs';
         if (this.userInfo && this.userInfo.isMember) {
           this.isMember = true;
         }
-        debugger;
-        console.log(list.memberFee,this.memberFee);
+
         //音频显示
         if((this.isPaid && this.purchaseType==2 && this.isShare ==true) || (this.isMember==true && this.memberFee==0) ){
           this.isShowAudio=true;
@@ -196,7 +195,7 @@ import { constants } from 'fs';
         setShareInfo(
           title,
           'www.zaojiu.com',
-          'https://og9s6vxbs.qnssl.com/zaojiuUNI@3x.png',
+          'https://baiding-pub.zaojiu.com/zaojiuUNI@3x.png',
           url
         );
       }
@@ -531,7 +530,7 @@ import { constants } from 'fs';
         .left{
           float: left;
           width: 38%;
-          color: #00edda;
+          color: $color-brand;
           font-size: 18px;
           font-weight: 600;
           text-align: center;
@@ -553,7 +552,7 @@ import { constants } from 'fs';
           float: right;
           text-align: center;
           width: 62%;
-          background: #00edda;
+          background: $color-brand;
 
           color: #fff;
           height: 50px;
@@ -610,7 +609,7 @@ import { constants } from 'fs';
             left: 0;
             width: 0;
             height: 100%;
-            background-color: rgba(0,211,193,1);
+            background-color: $color-brand;
             z-index: 1;
           }
           .circle{
@@ -631,11 +630,11 @@ import { constants } from 'fs';
           display: inline-block;
           width: 36px;
           height: 36px;
-          background:url('https://og9s6vxbs.qnssl.com/book/play2@3x.png') no-repeat center;
+          background:url('https://baiding-pub.zaojiu.com/book/play2@3x.png') no-repeat center;
           background-size: 100% 100%;
         }
         .on{
-          background: url('https://og9s6vxbs.qnssl.com/book/play@3x.png') no-repeat center;
+          background: url('https://baiding-pub.zaojiu.com/book/play@3x.png') no-repeat center;
           background-size: 100% 100%;
         }
         .time_p{

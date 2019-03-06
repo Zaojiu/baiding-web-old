@@ -5,8 +5,10 @@
 
 export const host = {
   self: 'http://www.zaojiu.tv',
-  auth: '//auth.zaojiu.tv',
-  io: '//io.zaojiu.tv',
+  auth: '//api.baidingchat.com/api',
+  //io: '//io.zaojiu.tv',
+  // io: '//io.zaojiu.fm',
+  io: 'http://api.baidingchat.com',
   assets: 'http://www.zaojiu.tv',
   weinre: 'http://192.168.1.203:10000',
 };

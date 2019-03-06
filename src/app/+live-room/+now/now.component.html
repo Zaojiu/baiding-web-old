@@ -7,7 +7,11 @@
       <div class="info">
         <div class="title">{{liveInfo.subject}}</div>
         <div class="time">{{liveTime[liveInfo.id]}}</div>
-        <div class="desc" *ngIf="liveInfo.desc">{{liveInfo.desc}}</div>
+        <div class="desc" style="overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;" *ngIf="liveInfo.desc">{{liveInfo.desc}}</div>
       </div>
     </div>
 

@@ -1,4 +1,4 @@
-import { get, post } from "./xhr";
+import {del, get, post} from './xhr';
 import { host } from "../../env/environment";
 import {
   UserDetailInfoModel,
@@ -8,16 +8,20 @@ import {
 import { AxiosResponse } from "axios";
 import { Store } from "../utils/store";
 import { router } from "../../router";
-import { isInWeiBo } from "../utils/utils";
+import { isInWeiBo,isInApp } from "../utils/utils";
 import { showLoginPopUp } from "../../store/loginPopUp";
 // add by ywz
 import { NotBindMobile } from "../utils/auth";
-
+import axios from "axios";
+import {initIOS, callHandler} from "../../shared/utils/ios";
+import {showTips} from "../../store/tip";
+//获取用户信息
 export const getUserInfo = async (
   needHandleError = true
 ): Promise<UserInfoModel> => {
   const url = `${host.io}/api/user`;
-  const res = await get(url, { needHandleError: needHandleError });
+  // const url = `http://www.baidingchat.com/assets/user.json`;
+   const res = await get(url, { needHandleError: needHandleError });
   const userInfo = new UserInfoModel(res.data);
   Store.memoryStore.set("userInfo", userInfo);
   Store.localStore.set("userinfo", userInfo); // angular使用userinfo
@@ -31,7 +35,7 @@ export const getUserInfoCache = (needSignin = true): UserInfoModel => {
       // 在微博app webview中，登录使用弹窗登录组件
       if (isInWeiBo) {
         showLoginPopUp();
-      } else {
+      }else {
         router.push({ path: "/signin", query: { redirectTo: location.href } });
       }
     }
@@ -59,8 +63,9 @@ export const getUserInfo4MobileBind = (needSignin = true): UserInfoModel => {
 
 export const getUserInfo4MobileN = async (): Promise<boolean> => {
   const url = `${host.io}/api/user`;
+  // const url = `http://www.zaojiu.fm/assets/user.json`;
   const res = await get(url, { needHandleError: true });
-  alert(1);
+
   if (res.status == 401) {
     alert(2);
     return false;
@@ -139,13 +144,14 @@ export const getWechatSigninQrcode = async (
   }
   return new WechatSigninQrcodeModel(res.data);
 };
-
+// 密码登录
 export const signin = async (
   username: string,
   password: string,
   codeMap?: { [key: number]: string }
 ): Promise<void> => {
-  const url = `${host.io}/api/user/login`;
+  const url = `${host.io}/api/user/login?useSms=false`;
+
   const data: { [key: string]: string } = { username, password };
   await post(url, data, { codeMap: codeMap });
   await getUserInfo();
@@ -211,4 +217,19 @@ export const resetPassword = async (
 
   await post(url, data, { codeMap: codeMap });
   return;
+};
+//关注
+//参数（id,关注类型（0讲者1标签）,关注或取消）
+export const getFollow = async ( id: string, type: number, tf: boolean ) => {
+
+  let succ = await get(`${host.io}/api/zj/homePages/attention/${id}?type=${type}&isAttention=${tf}`);
+  return succ.data.results;
+};
+//喜欢
+//参数（id,喜欢类型后台固定（如视频：118）,喜欢或取消）
+// api/zj/homePages/hitAction/{id}?type=1&isFavorite=true
+export const getLike = async ( id: string, type: number, tf: boolean ) => {
+
+  let succ = await get(`${host.io}/api/zj/homePages/hitAction/${id}?type=${type}&isFavorite=${tf}`);
+  return succ.data.results;
 };

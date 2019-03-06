@@ -1,0 +1,20 @@
+{
+  "totalDiscountedFee": 25200,
+  "totalFee": 25200,
+  "totalPrice": 35000,
+  "items": [{
+    "subject": "邀请函：诗歌、音乐与生活——造就UNI《审美的诞生》线下课招生|上午场-诗歌之美",
+    "objectType": 4,
+    "objectId": "5be90f3b37ebb90001172aec-5be915ff37ebb90001172aee",
+    "detail": {
+      "cover": "https://og9s6vxbs.qnssl.com/cover/img/Fj-cENPbvr5rAYQVwVCAVX9cVjyM-1542026547.png",
+      "desc": "",
+      "extra": null
+    },
+    "fee": 25200,
+    "price": 35000,
+    "nums": 1,
+    "discountedFee": 25200
+  }],
+  "discounts": []
+}

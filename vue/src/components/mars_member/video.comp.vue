@@ -315,7 +315,7 @@
         }
       } else {
         this.listImg = [
-          'https://og9s6vxbs.qnssl.com/member/member-only-video.png'
+          'https://baiding-pub.zaojiu.com/member/member-only-video.png'
         ];
         this.listText = [
           '专享演讲者深度访谈及幕后花絮'

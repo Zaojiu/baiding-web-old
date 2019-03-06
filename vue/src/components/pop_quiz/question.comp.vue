@@ -31,8 +31,8 @@
             <div class="logo"><img :src="userInfo.avatar"/></div>
             {{userInfo.nick}}
           </div>
-          <img v-if="Score<=100" src="https://og9s6vxbs.qnssl.com/question_prize/bg.png"/>
-          <img src="https://og9s6vxbs.qnssl.com/question_prize/bg-s.png" v-else/>
+          <img v-if="Score<=100" src="https://baiding-pub.zaojiu.com/question_prize/bg.png"/>
+          <img src="https://baiding-pub.zaojiu.com/question_prize/bg-s.png" v-else/>
         </header>
         <div class="middle">
           <h3><span class="num">{{Score}}</span>分</h3>
@@ -49,7 +49,7 @@
           <div class="close" @click="giftAsideOpen = false"><i class="bi bi-qa-cancle"></i></div>
           <div v-if="!showGift" class="box">
             <div class="box-img">
-              <img src="https://og9s6vxbs.qnssl.com/question_prize/qa-gift-text.png"/>
+              <img src="https://baiding-pub.zaojiu.com/question_prize/qa-gift-text.png"/>
             </div>
             <button @click="showGiftFun">领取星际能量</button>
           </div>

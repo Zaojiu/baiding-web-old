@@ -1,9 +1,9 @@
 <template>
-  <div class="download-tips">
+  <div class="download-tips" style=" z-index: 11111 !important;">
     <i class="bi bi-close" @click="$emit('close')"></i>
     <div class="tips">
       造就App
-      <small>_REPL_SLOGAN_</small>
+      <small>发现创造力</small>
     </div>
     <a class="download-btn" @click="redirectToYingYongBao">立即下载</a>
   </div>
@@ -16,6 +16,9 @@
     display: flex;
     width: 100%;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
 
     .bi-close {
       flex-shrink: 0;

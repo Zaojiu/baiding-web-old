@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>_REPL_SITE_NAME_</title>
+  <title>zaojiuTV</title>
   <base href="/">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -20,15 +20,12 @@
   </script>
   <!-- Google Tag Manager -->
   <script type="text/javascript">
-    var dataLayer = dataLayer || [];
-    var gaid = '_REPL_GAID_';
-    if (gaid.indexOf('_REPL_') == 0) {
-      gaid = 'UA-75377537-3';
-    }
-    dataLayer.push({
-      'gaid': gaid,
-      'version': ''
-    });
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-132557083-1', 'auto');
+    ga('send', 'pageview');
   </script>
   <script>(function (w, d, s, l, i) {
     w[l] = w[l] || [];
@@ -257,7 +254,27 @@
       <div class="sk-child sk-bounce3"></div>
     </div>
   </div>
+
 </bd-app>
 <script type="text/javascript" src="https://oe5u0e10o.qnssl.com/trackjs.com/tracker.js"></script>
+<script>
+  window.onload =function()
+  {
+    var usl = '';
+    setInterval(function () {
+      var url = window.location.href.substring((window.location.href).lastIndexOf('com')+4);
+      if (window.ga && (usl ==='' || usl !== url)) {
+        window.ga('set', {
+          page: url,
+          title: document.title
+        });
+        window.ga('send', 'pageview');
+        usl = url;
+        console.log(usl,document.title);
+      }
+
+    },2000)
+  }
+</script>
 </body>
 </html>

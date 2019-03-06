@@ -32,29 +32,33 @@
         </div>
       </div>
       <div class="detail">
+
+
         <div class="item-name">
           <span
             class="ticket"
-            :class="{'active': ticket.id === ticketSelected.id, 'disabled': !ticket.leftTotal}"
-            v-for="ticket in event.meta.tickets"
-            @click="ticket.leftTotal && chooseTicket(ticket)"
+            :class="{active:index == countGroup, 'disabled': !ticket.leftTotal}"
+            v-for="(ticket,index) in event.meta.tickets"
+            @click="ticket.leftTotal && chooseTicket(ticket,$event,index)"
           >{{ticket.name}}
           </span>
         </div>
         <div class="item-count">
           <div class="adjuster">
-            <span class="decrease" @click="ticketCount > 1 ? ticketCount=ticketCount-1 : true"></span>
-            <input class="count-input" type="number" placeholder="数量" step="1" min="1" :max="ticketSelected.leftTotal"
+            <span class="decrease" @click="ticketCount > minCount ? ticketCount=ticketCount-1 : true"></span>
+            <input class="count-input" type="number" placeholder="数量" step="1" :min="minCount" :max="ticketSelected.leftTotal"
                    v-model.number="ticketCount">
             <span class="increase"
-                  @click="ticketSelected.leftTotal > ticketCount ? ticketCount=ticketCount+1 : true"></span>
+                  @click="numAdd()"></span>
           </div>
           <p class="error" v-if="isTicketCountError">输入数量错误，请输入大于0的整数</p>
         </div>
+
       </div>
       <div class="amount">
         <bd-loading v-if="isAmoutLoading"></bd-loading>
         <span v-if="!isAmoutLoading">{{amount.toYuan()}}</span>
+        <!--<span>￥{{amount}}</span>-->
       </div>
       <div>
         <button class="button button-primary" @click="gotoOrder()">{{$t('m.event.buyNow')}}</button>
@@ -229,7 +233,23 @@
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-
+        .group_purchase{
+          .btn{
+            font-size: 12px;
+            border: 1px solid $color-gray3;
+            border-radius: 3px;
+            padding: 5px 8px;
+            cursor: pointer;
+            transition: all .3s;
+            margin-right: 10px;
+            color: $color-dark-gray;
+          }
+          &.active{
+            background-color: $color-brand;
+            border-color: $color-brand;
+            color: $color-w;
+          }
+        }
         .item-name {
           overflow: auto;
 
@@ -351,6 +371,7 @@
   import {showImageStall} from '../../store/image-stall';
   import MySwiperComponent from '../../shared/my-swiper.comp.vue';
   import {Store} from "../../shared/utils/store";
+  import jquery from 'jquery';
 
   declare const wx: any;
 
@@ -372,6 +393,7 @@
     ticketCount = 0;
     isTicketCountError = false;
     amount = new Money(0);
+
     isAmoutLoading = false;
     debounceTimer = 0;
     ticketSelected = new EventTicketModel({});
@@ -381,7 +403,11 @@
     isAndroid = isAndroid && isInApp;
     isAppDownloadTipsShow = false;
     isInMiniApp = false;
-
+    //特殊
+    isGroup=false;//团购票
+    minCount=1;//最少购买数值
+    countGroup=0;//选中下标
+    isOver=false;
     @Watch('ticketCount')
     onTicketCountChanged(val: number, oldVal: number) {
       this.checkTicketCount();
@@ -404,6 +430,7 @@
     }
 
     async created() {
+
       if (!isInApp) {
         this.isAppDownloadTipsShow = true;
       }
@@ -413,6 +440,19 @@
       if (Store.localStore.get('eventClickedBuy')) {
         this.buy();
       }
+
+      //特殊团购
+      if(this.$route.params['id']=='5be6454f37ebb90001172ade'){
+
+         this.isGroup=true;
+      }
+
+      let txt:string = this.event.meta.tickets[0].name;
+
+        this.getGroupNum(txt);
+
+
+
     }
 
     setShareInfo() {
@@ -454,13 +494,54 @@
         }, 3000);
       }
     }
-
+    mounted(){
+      this.isOver=true;
+    }
+    //获取团购人数
+    getGroupNum(txt:any){
+      if(this.isGroup==true){
+      if(txt.indexOf('人团购')!=-1) {//是否为团购票
+        let num: any = txt.slice(0, txt.indexOf('人团购'));
+        if (this.ticketSelected.leftTotal >= parseInt(num)) {
+          this.minCount = parseInt(num);
+          this.ticketCount = parseInt(num);
+        } else {
+          console.log('票数不够');
+        }
+      }else{
+        this.minCount=1;
+        this.ticketCount=1;
+      }
+      }
+    }
+    //加票数
+    numAdd(){
+      this.ticketSelected.leftTotal > this.ticketCount ? this.ticketCount=this.ticketCount+1 : true;
+      let $html =  $('.active');
+      let txt = $html.next().text();//下一个
+      if(this.isGroup==true){
+      if(txt.indexOf('人团购')!=-1) {//是否为团购票
+        let num: any = txt.slice(0, txt.indexOf('人团购'));//获取下一个的人数
+        if (this.ticketCount >= parseInt(num)) {
+          this.countGroup=this.countGroup+1;
+          this.minCount = parseInt(num);
+          this.ticketSelected =this.event.meta.tickets[this.countGroup];
+          this.checkFee(this.ticketCount);
+        }
+      }
+      }
+    }
     checkTicketCount() {
       if (this.ticketCount > this.ticketSelected.leftTotal && this.ticketSelected.leftTotal > 0) {
         this.ticketCount = this.ticketSelected.leftTotal;
       }
       if (this.ticketSelected.leftTotal <= 0) {
         this.ticketCount = 0;
+      }
+      if(this.isGroup==true){
+        if (this.ticketCount<this.minCount) {
+          this.ticketCount = this.minCount;
+        }
       }
     }
 
@@ -475,18 +556,32 @@
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
 
       this.debounceTimer = setTimeout(async () => {
-        this.isAmoutLoading = true;
 
-        const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, count);
+          this.isAmoutLoading = true;
+          const query = new PostOrderObject(`${this.id}-${this.ticketSelected.id}`, OrderObjectType.Event, count);
+          try {
+            const orderFee = await checkOrderFee([query]);
+            this.amount = orderFee.totalDiscountedFee;
 
-        try {
-          const orderFee = await checkOrderFee([query]);
-          this.amount = orderFee.totalDiscountedFee;
-        } finally {
-          this.isAmoutLoading = false;
-        }
+          } finally {
+            this.isAmoutLoading = false;
+          }
+
+          // this.isAmoutLoading = true;
+          // try{
+          //   let soMoney:any = 25500*this.ticketCount;
+          //   this.amount=soMoney;
+          //   let money:any = this.toYuanF(this.amount);
+          //   this.amount=money;
+          // }finally{
+          //   this.isAmoutLoading = false;
+          // }
       }, 500);
+
     }
+    // toYuanF(num:any){
+    //   return (num/100).toFixed(2);
+    // }
 
     checkDate(event: EventModel, timer = 0) {
       if (moment().isBefore(event.meta.applyStartAtParsed)) {
@@ -580,10 +675,16 @@
       });
     }
 
-    chooseTicket(ticket: EventTicketModel) {
-      this.ticketSelected = ticket;
-      this.checkTicketCount();
-      this.checkFee(this.ticketCount);
+    //点击切换票种类
+    chooseTicket(ticket: EventTicketModel,event:any,index:number) {
+      if(this.isOver==true) {
+        this.countGroup = index;
+        this.ticketSelected = ticket;//选中的内容
+        let text: any = event.currentTarget.innerHTML;
+        this.getGroupNum(text);//获取团购人数
+        this.checkTicketCount();
+        this.checkFee(this.ticketCount);
+      }
     }
 
     chooeseImg(num: number) {

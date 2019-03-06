@@ -1,0 +1,29 @@
+{
+  "mobile": {
+    "number": "13011111111",
+    "updatedAt": ""
+  },
+  "avatar": "www.baidu.com",
+  "realname": "造就",
+  "nick": "unicorn",
+  "createdAt": "",
+  "uid": 1004,
+  "isSubscribed": false,
+  "site": {
+    "publish": false,
+    "slug": ""
+  },
+  "permissions": {
+    "publish": false
+  },
+  "member": {
+    "valid": false,
+    "expiredAt": "",
+    "joinAt": ""
+  },
+  "email": {
+    "unverified": "",
+    "updatedAt": ""
+  },
+  "updatedAt": ""
+}

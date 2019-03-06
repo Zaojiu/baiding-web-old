@@ -312,7 +312,7 @@
         await this.getDownloadList();
       } else {
         this.listImg = [
-          'https://og9s6vxbs.qnssl.com/member/member-download.png'
+          'https://baiding-pub.zaojiu.com/member/member-download.png'
         ];
         this.listText = [
           '可订阅并下载近千个专属演讲视频',

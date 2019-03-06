@@ -3,7 +3,7 @@
     <transition name="slide-left">
       <div class="content" v-show="show">
         <div class="banner">
-          <div class="bg"><img src="https://og9s6vxbs.qnssl.com/reservation/banner.jpg?t=1"/></div>
+          <div class="bg"><img src="https://baiding-pub.zaojiu.com/reservation/banner.jpg?t=1"/></div>
           <div class="text">
             <div class="text-content">
               <p>留下一个你想向嘉宾提的问题，前{{maxMeet}}名有机会在Talk环节后获得嘉宾的现场解答哦！</p>
@@ -30,7 +30,7 @@
       <div class="aside-main">
         <h2 class="aside-title">
           你的问题
-          <img @click="closeSide" class="close" src="https://og9s6vxbs.qnssl.com/wiee/close.png"/>
+          <img @click="closeSide" class="close" src="https://baiding-pub.zaojiu.com/wiee/close.png"/>
         </h2>
         <div class="aside-content">
           <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
@@ -138,7 +138,7 @@
           left: 50%;
           transform: translateX(-50%);
           padding-top: 24.03%;
-          background: url("https://og9s6vxbs.qnssl.com/reservation/text-t.png") no-repeat;
+          background: url("https://baiding-pub.zaojiu.com/reservation/text-t.png") no-repeat;
           background-size: 100% 100%;
 
           .text-content {
@@ -220,7 +220,7 @@
               color: #fff;
               border-radius: 15px;
               font-size: 12px;
-              background: url("https://og9s6vxbs.qnssl.com/reservation/btn-s.png") no-repeat;
+              background: url("https://baiding-pub.zaojiu.com/reservation/btn-s.png") no-repeat;
               background-size: 100% 100%;
             }
           }
@@ -350,7 +350,7 @@
         setShareInfo(
           '约问嘉宾问题',
           `留下一个你想向嘉宾提的问题`,
-          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
+          'https://baiding-pub.zaojiu.com/wiee/wiee-share.jpg',
           `${host.self}${this.$route.fullPath}`
         );
       }

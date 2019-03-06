@@ -26,6 +26,7 @@ Vue.component('top-nav', topNav);
 Vue.component('bd-loading', bdLoading);
 Vue.component('error', error);
 
+
 (async () => {
   try {
     await getUserInfo(false);

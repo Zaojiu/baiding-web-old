@@ -135,7 +135,7 @@ export class DqlComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.cover = 'https://og9s6vxbs.qnssl.com/dql/dql-cover.jpg';
+    this.cover = 'https://baiding-pub.zaojiu.com/dql/dql-cover.jpg';
     this.urlSub = this.route.url.subscribe(url => this.resetLoader(url));
   }
 

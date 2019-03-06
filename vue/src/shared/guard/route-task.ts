@@ -22,7 +22,7 @@ export const execRouteTask = (tasks: Task | Task[],
                            index: number) => {
     if (index > taskArr.length - 1) {
       next();
-      return
+      return;
     }
 
     let task = taskArr[index];
@@ -38,6 +38,7 @@ export const execRouteTask = (tasks: Task | Task[],
       execTask(to, from, next, index + 1);
     } else {
       next(result);
+
     }
   };
 

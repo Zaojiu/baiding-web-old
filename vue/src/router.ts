@@ -31,7 +31,7 @@ import { afterHooks, beforeHooks } from "./hooks";
 import { liveInfoResolver } from "./shared/resolver/live-info.resolver";
 
 import memberContainer from "./components/my/member/container.comp.vue";
-
+import appMemberContainer from "./components/my/member/app-container.comp.vue";
 //老版本iOS使用，未来可选择删除
 import memberContent from "./components/my/iosInAppPayMember/content.comp.vue";
 import iosMemberContainer from "./components/my/iosInAppPayMember/container.comp.vue";
@@ -47,9 +47,18 @@ import marsMemberCourse from "./components/mars_member/course.comp.vue";
 import marsMemberDownload from "./components/mars_member/download.comp.vue";
 import marsMemberPlanList from "./components/mars_member/planList.comp.vue";
 
+
+import itemMarsMemberDiscount from "./components/app_items/mars_member/discount.comp.vue";
+import itemMarsMemberContainer from "./components/app_items/mars_member/container.comp.vue";
+import itemMarsMemberCard from "./components/app_items/mars_member/card.comp.vue";
+import itemMarsMemberVideo from "./components/app_items/mars_member/video.comp.vue";
+import itemMarsMemberCourse from "./components/app_items/mars_member/course.comp.vue";
+import itemMarsMemberDownload from "./components/app_items/mars_member/download.comp.vue";
+import itemMarsMemberPlanList from "./components/app_items/mars_member/planList.comp.vue";
 Vue.use(Router);
 
 export const router = new Router({
+
   mode: "history",
   scrollBehavior(to: any, from: any, savedPosition: any): any {
     return scrollPosition;
@@ -85,9 +94,11 @@ export const router = new Router({
               to.query["redirectTo"],
               "/lives"
             );
+            console.log(redirectTo);
             const tasks = [signinGuard(redirectTo)];
             execRouteTask(tasks, to, from, next);
           },
+
           component: () => System.import("./components/signin/signin.comp.vue")
         },
         {
@@ -255,6 +266,7 @@ export const router = new Router({
           ]
         },
         {
+
           path: "/course/:courseId/items/:itemId",
           beforeEnter(to, from, next) {
             const tasks = [authGuard(), mobileBindedGuard(true)];
@@ -275,6 +287,140 @@ export const router = new Router({
               },
               component: () =>
                 System.import("./components/course/post-comment.comp.vue")
+            }
+          ]
+        },
+        //新版app课程相关
+        {
+          path: "/app_course/cover/:id",
+          component: () =>
+            System.import("./components/app_course/cover.comp.vue"),
+          children: [
+            {
+              name: "appCourseCove.main",
+              path: ""
+            },
+            {
+              name: "appCourseCover.post-comment",
+              path: "post-comment",
+              meta: {
+                title: "发表评论"
+              },
+              component: () =>
+                System.import("./components/app_course/post-comment.comp.vue")
+            }
+          ]
+        },
+        {
+          path: "/app_course/item/:id",
+          component: () =>
+            System.import("./components/app_course/itemContent.comp.vue"),
+          children: [
+            {
+              name: "appCourseItem.main",
+              path: ""
+            },
+            {
+              name: "appCourseItem.post-comment",
+              path: "post-comment",
+              meta: {
+                title: "发表评论"
+              },
+              component: () =>
+                System.import("./components/app_course/post-comment.comp.vue")
+            }
+          ]
+        },
+        {
+          path: "app/app_course/item/:itemId/invited_by/:uid",
+          name: "course.invited.main",
+          component: () =>
+            System.import("./components/app_items/course/shareMiddle.comp.vue")
+        },
+        {
+          path: "app/course/featured",
+          name: "course.featured.main",
+          component: () =>
+            System.import("./components/app_items/course/featured.comp.vue")
+        },
+        {
+          path: "app/course/list",
+          name: "course.list.main",
+          component: () => System.import("./components/app_items/course/list.comp.vue")
+        },
+        {
+          path: "app/course/h5_list",
+          name: "course.list.main",
+          component: () => System.import("./components/app_items/course/h5.list.comp.vue")
+        },
+        {
+          path: "app/group/:groupId",
+          component: () =>
+            System.import("./components/app_items/course/container.comp.vue"),
+          children: [
+            {
+              name: "group.main",
+              path: ""
+            },
+            {
+              name: "group.cover",
+              path: "cover",
+              component: () => System.import("./components/group/list.comp.vue")
+            },
+            {
+              name: "group.publish",
+              path: "publish",
+              component: () =>
+                System.import("./components/group/publish.comp.vue")
+            }
+          ]
+        },
+        {
+          path: "/group/:groupId/:msg",
+          name: "group.message.comment",
+          meta: {
+            title: "评论"
+          },
+          component: () => System.import("./components/group/comment.comp.vue")
+        },
+        {
+          path: "app/course/:courseId",
+          component: () =>
+            System.import("./components/app_items/course/container.comp.vue"),
+          children: [
+            {
+              name: "course.main",
+              path: ""
+            },
+            {
+              name: "course.cover",
+              path: "cover",
+              component: () =>
+                System.import("./components/app_items/course/cover.comp.vue")
+            }
+          ]
+        },
+        {
+          path: "app/course/:courseId/items/:itemId",
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard(true)];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/app_items/course/content.comp.vue"),
+          children: [
+            {
+              name: "course.item.main",
+              path: ""
+            },
+            {
+              name: "course.item.post-comment",
+              path: "post-comment",
+              meta: {
+                title: "发表评论"
+              },
+              component: () =>
+                System.import("./components/app_items/course/post-comment.comp.vue")
             }
           ]
         },
@@ -376,12 +522,12 @@ export const router = new Router({
             title: "激活会员"
           },
           beforeEnter(to, from, next) {
-          // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
-          const tasks = [authGuard(), mobileBindedGuard(true)];
+            // const tasks = [authGuard(), mobileBindedGuard(), memberActivateCompGuard()];
+            const tasks = [authGuard(), mobileBindedGuard(true)];
 
-          // const tasks = [auth4MobileGuard()];
-          execRouteTask(tasks, to, from, next);
-                                      },
+            // const tasks = [auth4MobileGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
           component: () =>
             System.import("./components/member/activate.comp.vue")
         },
@@ -417,6 +563,14 @@ export const router = new Router({
             title: '用户协议',
           },
           component: () => System.import('./components/member/pact.comp.vue'),
+        },
+        {
+          path: '/wv/form',
+          name: 'pact.main',
+          meta: {
+            title: '火星联名卡登记表',
+          },
+          component: () => System.import('./components/member/mars-from.comp.vue'),
         },
         {
           path: '/wv/appPay-guide/:id',
@@ -484,6 +638,7 @@ export const router = new Router({
           ],
           component: memberContainer
         },
+
         {
           path: "/mars-member",
           meta: {
@@ -519,6 +674,65 @@ export const router = new Router({
               path: "plan",
               component: marsMemberPlanList
             }
+          ]
+        },
+        {
+          path: "/app-member",
+          meta: {
+            title: "造就火星会员"
+          },
+          component: appMemberContainer,
+          children: [
+
+            {
+              path: "",
+              name: "app-member.main",
+              redirect: "video"
+            },
+            {
+              path: "card",
+              name: "app-member.card",
+
+              beforeEnter(to, from, next) {
+                const tasks = [memberCardGuard()];
+                execRouteTask(tasks, to, from, next);
+              },
+              component: itemMarsMemberCard
+            },
+            {
+              path: "action",
+              name: "app-member.action",
+              beforeEnter(to, from, next) {
+                const tasks = [memberActionGuard()];
+                execRouteTask(tasks, to, from, next);
+              },
+              component: itemMarsMemberDiscount
+            },
+            {
+              path: "plan",
+              name: "app-member.plan",
+              beforeEnter(to, from, next) {
+                const tasks = [memberPlanGuard()];
+                execRouteTask(tasks, to, from, next);
+              },
+              component: itemMarsMemberPlanList
+            },
+            {
+              name: "app-member.video",
+              path: "video",
+              component: itemMarsMemberVideo
+            },
+            {
+              name: "app-member.course",
+              path: "course",
+              component: itemMarsMemberCourse
+            },
+            {
+              name: "app-member.download",
+              path: "download",
+              component: itemMarsMemberDownload
+            }
+
           ]
         },
         {
@@ -566,7 +780,9 @@ export const router = new Router({
             title: "个人中心"
           },
           beforeEnter(to, from, next) {
+
             const tasks = [authGuard()];
+            // debugger;
             execRouteTask(tasks, to, from, next);
           },
           component: () => System.import("./components/my/my.comp.vue")
@@ -606,6 +822,30 @@ export const router = new Router({
             execRouteTask(tasks, to, from, next);
           },
           component: () => System.import("./components/my/order.comp.vue")
+        },
+        {
+          path: "app/my/orders",
+          name: "my.orders",
+          meta: {
+            title: "我的订单"
+          },
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import("./components/app_items/my/order.comp.vue")
+        },
+        {
+          path: "app/my/orders/:id",
+          name: "orders",
+          meta: {
+            title: "订单详情"
+          },
+          beforeEnter(to, from, next) {
+            const tasks = [authGuard(), mobileBindedGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () => System.import("./components/app_items/my/order-detail.comp.vue")
         },
         {
           path: "/my/tickets",
@@ -651,6 +891,8 @@ export const router = new Router({
           },
           component: () => System.import("./components/order/order.comp.vue")
         },
+
+
         {
           path: "/events",
           name: "event",
@@ -668,6 +910,38 @@ export const router = new Router({
           component: () => System.import("./components/event/ticket.comp.vue")
         },
         {
+          path: "app/events",
+          name: "event",
+          meta: {
+            title: "现场"
+          },
+          component: () => System.import("./components/app_items/event/list.comp.vue")
+        },
+        {
+          path: "app/events/:id/tickets",
+          name: "event.ticket",
+          meta: {
+            title: "购票"
+          },
+          component: () => System.import("./components/app_items/event/ticket.comp.vue")
+        },
+        {
+          path: "app/events/:id/tickets/purchase",
+          name: "event.ticket",
+          meta: {
+            title: "购票详情"
+          },
+          component: () => System.import("./components/app_items/event/ticket-purchase.comp.vue")
+        },
+        {
+          path: "app/order/pay/:id",
+          name: "event.ticket",
+          meta: {
+            title: "支付订单"
+          },
+          component: () => System.import("./components/app_items/order/order.comp.vue")
+        },
+        {
           path: "/columns",
           name: "column",
           meta: {
@@ -683,10 +957,12 @@ export const router = new Router({
         {
           path: "/columns/:id/items/:itemId",
           beforeEnter(to, from, next) {
+
             const tasks = [authGuard(), mobileBindedGuard()];
             execRouteTask(tasks, to, from, next);
           },
           component: () =>
+
             System.import("./components/columns/content.comp.vue"),
           children: [
             {
@@ -829,7 +1105,7 @@ export const router = new Router({
           ]
         },
         {
-          path: "/wv/intro-mars",
+          path: "x/intro-mars",
           component: () =>
             System.import("./components/h5/mars-member/mars.comp.vue"),
           children: [
@@ -888,7 +1164,7 @@ export const router = new Router({
               path: "",
               name: "zaojiu.book",
               meta: {
-                title: "拆书海报"
+                title: "听书海报"
               }
             }
           ]
@@ -902,21 +1178,71 @@ export const router = new Router({
               path: "",
               name: "zaojiu.book",
               meta: {
-                title: "拆书详情"
+                title: "听书详情"
               }
             }
           ]
         },
         {
-          path: "/book/summary/:id",
+          path: "/items/video/:id",
+          meta: {
+            title: "视频"
+          },
           component: () =>
-            System.import("./components/dis_book/summary.comp.vue"),
+            System.import("./components/app_items/video/video.comp.vue"),
+
+        },
+        {
+          path: "/items/videoTxt/:id",
+          meta: {
+            title: "视频介绍"
+          },
+          component: () =>
+            System.import("./components/app_items/video/video-txt.comp.vue"),
+
+        },
+        {
+          path: "/items/videoT/:id",
+          meta: {
+            title: "视频介绍"
+          },
+          component: () =>
+            System.import("./components/app_items/video/video-t.comp.vue"),
+
+        },
+        {
+          path: "/items/smallVideo/:id",
+          meta: {
+            title: "短视频"
+          },
+          component: () =>
+            System.import("./components/app_items/video/smallVideo.comp.vue"),
+
+        },
+        {
+          path: "app/book/detail/:id",
+          component: () =>
+            System.import("./components/app_items/book/detail.comp.vue"),
           children: [
             {
               path: "",
-              name: "zaojiu.book",
+              name: "new.book",
               meta: {
-                title: ""
+                title: "听书海报"
+              }
+            }
+          ]
+        },
+        {
+          path: "app/book/poster/:id",
+          component: () =>
+            System.import("./components/app_items/book/poster.comp.vue"),
+          children: [
+            {
+              path: "",
+              name: "new.poster",
+              meta: {
+                title: "听书详情"
               }
             }
           ]
@@ -925,6 +1251,109 @@ export const router = new Router({
           path: "/500",
           name: "error",
           component: errorComp
+        },
+        {
+          path: "/app/userAd/:id",
+          name: "notfound",
+          meta: {
+            title: "讲者主页"
+          },
+          component: () =>
+            System.import("./components/app_items/userAd/home.comp.vue")
+        },
+        {
+          path: "/app/labelAd/:id",
+          name: "notfound",
+          meta: {
+            title: "标签主页"
+          },
+          component: () =>
+            System.import("./components/app_items/userAd/label.comp.vue")
+        },
+        {
+          path: "/app/see",
+          name: "notfound",
+          meta: {
+            title: "我看过的"
+          },
+          beforeEnter(to, from, next) {
+
+            const tasks = [authGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/app_items/my/see.comp.vue")
+        },
+        {
+          path: "/app/like",
+          name: "notfound",
+          meta: {
+            title: "我喜欢的"
+          },
+          beforeEnter(to, from, next) {
+
+            const tasks = [authGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/app_items/my/like.comp.vue")
+        },
+        {
+          path: "/app/card",
+          name: "notfound",
+          meta: {
+            title: "我的卡包"
+          },
+          beforeEnter(to, from, next) {
+
+            const tasks = [authGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/app_items/my/card.comp.vue")
+        },
+        {
+          path: "/app/order/card",
+          name: "notfound",
+          meta: {
+            title: "选取优惠券"
+          },
+          beforeEnter(to, from, next) {
+
+            const tasks = [authGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/app_items/order/card-order.comp.vue")
+        },
+        {
+          path: "/app/follow",
+          name: "notfound",
+          meta: {
+            title: "我的关注"
+          },
+          beforeEnter(to, from, next) {
+
+            const tasks = [authGuard()];
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/app_items/my/follow.comp.vue")
+        },
+        {
+          path: "/app/collection",
+          name: "notfound",
+          meta: {
+            title: "我收藏的"
+          },
+          beforeEnter(to, from, next) {
+
+            const tasks = [authGuard()];
+            // debugger;
+            execRouteTask(tasks, to, from, next);
+          },
+          component: () =>
+            System.import("./components/app_items/my/collection.comp.vue")
         },
         {
           path: "/404",
@@ -953,6 +1382,7 @@ router.afterEach((to, from) => {
 });
 
 router.beforeEach((to, from, next) => {
+
   if (beforeHooks.length) {
     beforeHooks.forEach(hook => hook(to, from, next));
   } else {

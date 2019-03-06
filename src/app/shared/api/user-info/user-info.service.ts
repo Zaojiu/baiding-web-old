@@ -53,6 +53,7 @@ export class UserInfoService {
 
   getUserInfo(autoHandleError = true): Promise<UserInfoModel> {
     return this.http.get(`${environment.config.host.io}/api/user`, {useIntercept: autoHandleError}).toPromise().then(res => {
+    // return this.http.get(`/assets/mock-data/user.json`, {useIntercept: autoHandleError}).toPromise().then(res => {
       let data = res.json();
       let userInfo = this.parseUserInfo(data);
       StoreService.localStore.set('userinfo', userInfo);
@@ -66,6 +67,7 @@ export class UserInfoService {
     if (publicUserInfo[uid]) return Promise.resolve(publicUserInfo[uid]);
 
     return this.http.get(`${environment.config.host.io}/api/user/${uid}`).toPromise()
+    // return this.http.get(`assets/mock-data/user.json`).toPromise()
       .then(res => {
         let data = res.json();
         let info = this.parseUserPublicInfo(data);
@@ -161,7 +163,7 @@ export class UserInfoService {
   }
 
   signin(username: string, password: string, codeMap?: {[key: number]: string}): Promise<void> {
-    const url = `${environment.config.host.io}/api/user/login`;
+    const url = `${environment.config.host.io}/api/user/login?useSms=false`;
     const data: {[key: string]: string} = {username, password};
     return this.http.post(url, data, {customCodeMap: codeMap}).toPromise().then(() => {
       return this.getUserInfo(false);

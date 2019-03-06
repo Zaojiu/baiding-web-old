@@ -1,10 +1,10 @@
-<a class="topbar-switch-btn" [ngClass]="{'opened': isOpened}" (click)="emitToggleEvent()">
-  <div class="people-count-wrapper" [ngClass]="{'is-opened':isCommentOpened,'is-closed':!isCommentOpened}">
+<a class="topbar-switch-btn" [ngClass]="{'opened': isOpened }" (click)="emitToggleEvent()">
+  <div class="people-count-wrapper" [ngClass]="{'is-opened':isCommentOpened ,'is-closed':!isCommentOpened}">
     <span class="people-count">
       <i class="bi bi-people"></i>
       {{onlineCount}}人
     </span>
-    <span class="toggler">
+    <span class="toggler" [ngClass]="{'togHide':isShow}">
     <span class="toggler-inner" [innerHtml]="_btnText"></span>
   </span>
   </div>

@@ -1,0 +1,28 @@
+{
+  "code": "0",
+  "message": "成功",
+  "results": {
+    "originalPrice": 0,
+    "totlePrice": 0,
+    "speakerId": 691,
+    "title": "测试长视频",
+    "type": 121,
+    "duration": 100,
+    "mp4fhd": "https://oj78p37rr.qnssl.com/1543910552717150%202.mp4",
+    "speakerTitle": "屌丝程序员",
+    "company": "阿里啪啪",
+    "id": 731,
+    "text": "<p>测试长视频id测试长视频id测试长视频id测试长视频id测试长视频id测试长视频id测试长视频id</p>",
+    "isFavourite": 0,
+    "mp3": "https://zaojiu.ku6.com/media/lgaBH8fGkX-QlVenv0j5dWBEbzmb?e=1544202000&token=Qa9nc-s0Ye2U8iHKefkJW4APRQZ_npOKUB9JUO5b:kIGYqxH90fTjvq5sBKZKw-DLaKo",
+    "mp4hd": "https://oj78p37rr.qnssl.com/1543910552717150%202.mp4",
+    "image": "https://staticfile.zaojiu.com/FpHku7ZZjX7KibAuTYnQVw3Ii5ht?imageMogr2/crop/!953x953a167a0/thumbnail/300x300",
+    "mp4sd540p": "https://oj78p37rr.qnssl.com/1543910552717150%202.mp4",
+    "memberPrice": 0,
+    "speakerImage": "https://staticfile.zaojiu.com/FpHku7ZZjX7KibAuTYnQVw3Ii5ht?imageMogr2/crop/!953x953a167a0/thumbnail/300x300",
+    "favourite": 0,
+    "isAttention": 0,
+    "isPaid": 0,
+    "mp4sd": "https://oj78p37rr.qnssl.com/1543910552717150%202.mp4"
+  }
+}

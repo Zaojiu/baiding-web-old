@@ -46,7 +46,7 @@ export class FuDanComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.route.snapshot.data['shareTitle'] = `复旦大学EMBA`;
     this.route.snapshot.data['shareDesc'] = `复旦大学EMBA-直播列表`;
-    this.route.snapshot.data['shareCover'] = 'https://og9s6vxbs.qnssl.com/fudan/cover.jpg';
+    this.route.snapshot.data['shareCover'] = 'https://baiding-pub.zaojiu.com/fudan/cover.jpg';
     this.route.snapshot.data['shareLink'] = `${host.self}/lives/fudan`;
 
     this.isLoading = true;

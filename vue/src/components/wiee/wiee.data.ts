@@ -6,8 +6,8 @@ export const guests = [
     enName: 'Chris Anderson',
     desc: ['3DR 首席执行官，《连线》杂志前主编，《长尾》、《免费》、《创客》作者'],
     enDesc: ['CEO of 3DR, Former Editor-in-chief of WIRED Magazine, Author of “The Long Tail”, “FREE” and “Makers”'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsChris-Anderson_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsChris-Anderson_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsChris-Anderson_s.jpg'
   },
   {
     index: 1,
@@ -16,8 +16,8 @@ export const guests = [
     enName: 'Don Norman',
     desc: ['设计思想家，加利福尼亚大学圣地亚哥分校设计实验室主任，《设计心理学》作者，同济大学名誉教授'],
     enDesc: ['Design thinker, Director of Design Laboratory, University of California, San Diego, author of “Design Psychology”, Honorary Professor of Tongji University'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsDon-Norman_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsDon-Norman_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsDon-Norman_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsDon-Norman_s.jpg'
   },
   {
     index: 2,
@@ -26,8 +26,8 @@ export const guests = [
     enName: 'Tuula Teeri',
     desc: ['瑞典皇家工程院院长'],
     enDesc: ['President of the Royal Swedish Academy of Engineering'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Teeri_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Teeri_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsTuula-Teeri_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsTuula-Teeri_s.jpg'
   },
   {
     index: 3,
@@ -36,8 +36,8 @@ export const guests = [
     enName: 'Jochen Goller',
     desc: ['宝马集团大中华区总裁兼首席执行官'],
     enDesc: ['President and CEO of Greater China Region of BMW Group'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsJochen-Goller_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsJochen-Goller_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsJochen-Goller_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsJochen-Goller_s.jpg'
   },
   {
     index: 4,
@@ -46,8 +46,8 @@ export const guests = [
     enName: 'Tuula Antola',
     desc: ['芬兰Espoo市副市长'],
     enDesc: ['Deputy Mayor of Espoo, Finland'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Antola_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsTuula-Antola_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsTuula-Antola_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsTuula-Antola_s.jpg'
   },
   {
     index: 5,
@@ -56,8 +56,8 @@ export const guests = [
     enName: 'Zhang Yangyang',
     desc: ['光启科学有限公司行政总裁'],
     enDesc: ['Executive President of Kuangchi Science'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestszhangyangyang_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestszhangyangyang_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestszhangyangyang_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestszhangyangyang_s.jpg'
   },
   {
     index: 6,
@@ -66,8 +66,8 @@ export const guests = [
     enName: 'Liu Song',
     desc: ['阿里巴巴集团副总裁'],
     enDesc: ['Vice-President of Alibaba Group'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsliusong_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsliusong_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsliusong_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsliusong_s.jpg'
   },
   {
     index: 7,
@@ -77,8 +77,8 @@ export const guests = [
     desc: ['米兰理工大学副校长、设计学院院长', 'Cumulus国际艺术、设计与媒体院校联盟 主席'],
     enDesc: ['Vice-President of Polytechnic University of Milan and Dean of the School of Design\n' +
     'President of Cumulus International Association of Universities and Colleges of Art, Design and Media'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsLuisa-Collina_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsLuisa-Collina_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsLuisa-Collina_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsLuisa-Collina_s.jpg'
   },
   {
     index: 8,
@@ -87,8 +87,8 @@ export const guests = [
     enName: 'Luo Xin',
     desc: ['特邀主持、上海东方卫视创意总监、记者、新闻评论员'],
     enDesc: ['Chief correspondent of DRAGON TV, Director of the Department of Broadcasting and Hosting, Shanghai Theatre Academy'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsluoxin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsluoxin_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsluoxin_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsluoxin_s.jpg'
   },
   {
     index: 9,
@@ -97,8 +97,8 @@ export const guests = [
     enName: 'Wu Zhiqiang',
     desc: ['中国工程院 院士、同济大学副校长'],
     enDesc: ['Academician of the Chinese Academy of Engineering, Vice-President of Tongji University'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestswuzhiqiang_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswuzhiqiang_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestswuzhiqiang_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestswuzhiqiang_s.jpg'
   },
   {
     index: 10,
@@ -107,8 +107,8 @@ export const guests = [
     enName: 'Li Bin',
     desc: ['蔚来创始人、董事长'],
     enDesc: ['Founder and Chairman of NIO Auto'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestslibin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslibin_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestslibin_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestslibin_s.jpg'
   },
   {
     index: 11,
@@ -117,8 +117,8 @@ export const guests = [
     enName: 'Kent Larson',
     desc: ['麻省理工学院媒体实验室城市科学实验室主任'],
     enDesc: ['Director of City Science Laboratory, MIT Media Lab'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsKent-Larson_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKent-Larson_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsKent-Larson_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsKent-Larson_s.jpg'
   },
   {
     index: 12,
@@ -127,8 +127,8 @@ export const guests = [
     enName: 'Li Ningning',
     desc: ['小米科技小米生态链工业设计高级总监'],
     enDesc: ['Senior Director of Industrial Design of Xiaomi Technology'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsliningning_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsliningning_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsliningning_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsliningning_s.jpg'
   },
   {
     index: 13,
@@ -137,8 +137,8 @@ export const guests = [
     enName: 'Lou Yongqi',
     desc: ['同济大学设计创意学院 院长 教授'],
     enDesc: ['Dean and Professor of School of Design and Creativity, Tongji University'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestslouyongqi_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestslouyongqi_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestslouyongqi_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestslouyongqi_s.jpg'
   },
   {
     index: 14,
@@ -147,8 +147,8 @@ export const guests = [
     enName: 'Sun Xiaohua',
     desc: ['同济大学设计创意学院 副院长 教授'],
     enDesc: ['Associate Dean and Professor of School of Design and Creativity, Tongji University'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestssunxiaohua_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestssunxiaohua_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestssunxiaohua_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestssunxiaohua_s.jpg'
   },
   {
     index: 15,
@@ -157,8 +157,8 @@ export const guests = [
     enName: 'Jarmo Souminem',
     desc: ['阿尔托大学/同济大学设计创意学院 教授'],
     enDesc: ['Professor of School of Design and Creativity, Aalto University / Tongji University'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsJarmo-Souminem_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsJarmo-Souminem_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsJarmo-Souminem_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsJarmo-Souminem_s.jpg'
   },
   {
     index: 16,
@@ -167,8 +167,8 @@ export const guests = [
     enName: 'Cao Nan',
     desc: ['同济大学大数据可视化实验室 主任 教授'],
     enDesc: ['Director and Professor of Big Data Visualization Laboratory, Tongji University'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestscaonan_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestscannan_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestscaonan_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestscannan_s.jpg'
   },
   {
     index: 17,
@@ -177,8 +177,8 @@ export const guests = [
     enName: 'Peter Vesterbacka',
     desc: ['愤怒的小鸟联合创始人，SLUSH联合创始人'],
     enDesc: ['Co-founder of Angry Birds and SLUSH'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsPeter-Vesterbacka_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsPeter-Vesterbacka_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsPeter-Vesterbacka_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsPeter-Vesterbacka_s.jpg'
   },
   {
     index: 18,
@@ -187,8 +187,8 @@ export const guests = [
     enName: 'Srini Srinivasan',
     desc: ['世界设计组织（WDO）当选主席'],
     enDesc: ['President of World Design Organization'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsSrini-Srinivasan_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsSrini-Srinivasan_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsSrini-Srinivasan_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsSrini-Srinivasan_s.jpg'
   },
   {
     index: 19,
@@ -197,8 +197,8 @@ export const guests = [
     enName: 'Zhao Junning',
     desc: ['万科国际学校 校长'],
     enDesc: ['Principal of Shanghai Vanke International School'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestszhaojunning_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestszhaojunning_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestszhaojunning_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestszhaojunning_s.jpg'
   },
   {
     index: 20,
@@ -207,8 +207,8 @@ export const guests = [
     enName: 'Wang Xin',
     desc: ['馒头商学院创始人'],
     enDesc: ['Founder of MTEDU.com'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestswangxin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswnagixin_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestswangxin_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestswnagixin_s.jpg'
   },
   {
     index: 21,
@@ -217,8 +217,8 @@ export const guests = [
     enName: 'Wang Min',
     desc: ['长江学者、原中央美术学院设计学院院长'],
     enDesc: ['Member of Chang Jiang Scholars Program, former Dean of the School of Design, Central Academy of Fine Arts'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestswangmin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestswangmin_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestswangmin_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestswangmin_s.jpg'
   },
   {
     index: 22,
@@ -227,8 +227,8 @@ export const guests = [
     enName: 'Ami Vitale',
     desc: ['国家地理杂志摄影师'],
     enDesc: ['Photographer of National Geographic Magazine'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsAmi-Vitale_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsAmi-Vitale_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsAmi-Vitale_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsAmi-Vitale_s.jpg'
   },
   {
     index: 23,
@@ -237,8 +237,8 @@ export const guests = [
     enName: 'Piotr Loj',
     desc: ['Virtual VR Dream首席执行官'],
     enDesc: ['CEO of Virtual VR Dream'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsPiotr-Loj_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsPiotr-Loj_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsPiotr-Loj_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsPiotr-Loj_s.jpg'
   },
   {
     index: 24,
@@ -247,8 +247,8 @@ export const guests = [
     enName: 'Kyle Lawrence Mertensmeyer',
     desc: ['上海高德芬创始合伙人、首席设计师'],
     enDesc: ['Founder of Godolphin and CONSULATE'],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsKyle-Lawrence_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsKyle-Lawrence_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsKyle-Lawrence_s.jpg'
   },
   {
     index: 25,
@@ -256,8 +256,8 @@ export const guests = [
     name: '奥雷·伯曼 Ole Bouman',
     desc: ['设计互联 馆长'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guestsOle-Bouman_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guestsOle-Bouman_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guestsOle-Bouman_s.jpg'
   },
   {
     index: 26,
@@ -266,8 +266,8 @@ export const guests = [
     enName: '',
     desc: ['芬兰阿尔托大学校长'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ilkka_Niemelä_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ilkka_Niemelä_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Ilkka_Niemelä_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Ilkka_Niemelä_s.jpg'
   },
   {
     index: 27,
@@ -276,8 +276,8 @@ export const guests = [
     enName: '',
     desc: ['造就创始人&CEO'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/tangweiwei_s.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/tangweiwei_b.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/tangweiwei_s.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/tangweiwei_b.jpg'
   },
   {
     index: 28,
@@ -286,8 +286,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室科学家'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ronan_Doorley_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ronan_Doorley_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Ronan_Doorley_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Ronan_Doorley_s.jpg'
   },
   {
     index: 29,
@@ -296,8 +296,8 @@ export const guests = [
     enName: '',
     desc: ['安道尔科学实验室主任'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Marc_Pons_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Marc_Pons_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Marc_Pons_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Marc_Pons_s.jpg'
   },
   {
     index: 30,
@@ -306,8 +306,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室博士研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Micheal_Lin_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Micheal_Lin_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Micheal_Lin_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Micheal_Lin_s.jpg'
   },
   {
     index: 31,
@@ -316,8 +316,8 @@ export const guests = [
     enName: '',
     desc: ['堡城市科学实验室主任、汉堡港口大学教授'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Jörg_Noennig_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Jörg_Noennig_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Jörg_Noennig_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Jörg_Noennig_s.jpg'
   },
   {
     index: 32,
@@ -326,8 +326,8 @@ export const guests = [
     enName: '',
     desc: ['芬兰阿尔托大学地产公司首席执行官'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Antti_Tuomela_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Antti_Tuomela_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Antti_Tuomela_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Antti_Tuomela_s.jpg'
   },
   {
     index: 33,
@@ -336,8 +336,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室科学家'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Arnaud_Grignard_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Arnaud_Grignard_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Arnaud_Grignard_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Arnaud_Grignard_s.jpg'
   },
   {
     index: 34,
@@ -346,8 +346,8 @@ export const guests = [
     enName: '',
     desc: ['同济大学设计与创意学院副院长，研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/make_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/make_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/make_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/make_s.jpg'
   },
   {
     index: 35,
@@ -356,8 +356,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室博士研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ariel_Noyman_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Ariel_Noyman_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Ariel_Noyman_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Ariel_Noyman_s.jpg'
   },
   {
     index: 36,
@@ -366,8 +366,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Markus_ElKatsha_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Markus_ElKatsha_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Markus_ElKatsha_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Markus_ElKatsha_s.jpg'
   },
   {
     index: 37,
@@ -376,8 +376,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室博士研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Yasushi_Sakai_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Yasushi_Sakai_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Yasushi_Sakai_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Yasushi_Sakai_s.jpg'
   },
   {
     index: 38,
@@ -386,8 +386,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室科学家'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Luis_Alonso_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Luis_Alonso_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Luis_Alonso_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Luis_Alonso_s.jpg'
   },
   {
     index: 39,
@@ -396,8 +396,8 @@ export const guests = [
     enName: '',
     desc: ['云锋金融集团首席执行官'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/liting_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/liting_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/liting_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/liting_s.jpg'
   },
   {
     index: 40,
@@ -406,8 +406,8 @@ export const guests = [
     enName: '',
     desc: ['贝塔网络金融科技CEO', '前嘉实基金副总经理，首席投资官'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/daijingjiao_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/daijingjiao_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/daijingjiao_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/daijingjiao_s.jpg'
   },
   {
     index: 41,
@@ -416,8 +416,8 @@ export const guests = [
     enName: '',
     desc: ['西安建筑科技大学建筑学院教授/刘克成设计工作室主持人'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/liukecheng_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/liukecheng_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/liukecheng_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/liukecheng_s.jpg'
   },
   {
     index: 42,
@@ -426,8 +426,8 @@ export const guests = [
     enName: '',
     desc: ['同济大学设计创意学院副教授、意大利建筑师协会注册一级建筑师，“上海千人计划”专家'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Tiziano_Cattaneo_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Tiziano_Cattaneo_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Tiziano_Cattaneo_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Tiziano_Cattaneo_s.jpg'
   },
   {
     index: 43,
@@ -436,8 +436,8 @@ export const guests = [
     enName: '',
     desc: ['独立设计师、艺术家'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangzhoujie_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangzhoujie_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/zhangzhoujie_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/zhangzhoujie_s.jpg'
   },
   {
     index: 44,
@@ -446,8 +446,8 @@ export const guests = [
     enName: '',
     desc: ['独立艺术家、策展人/广州美术学院建筑艺术设计学院兼职副教授'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhuye_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhuye_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/zhuye_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/zhuye_s.jpg'
   },
   {
     index: 45,
@@ -456,8 +456,8 @@ export const guests = [
     enName: '',
     desc: ['艺术家，设计师，策展人'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/liuyi_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/liuyi_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/liuyi_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/liuyi_s.jpg'
   },
   {
     index: 46,
@@ -466,8 +466,8 @@ export const guests = [
     enName: '',
     desc: ['DRAFTARCH建筑事务所合伙人'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/Andrea_Bergonzini_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/Andrea_Bergonzini_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/Andrea_Bergonzini_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/Andrea_Bergonzini_s.jpg'
   },
   {
     index: 47,
@@ -476,8 +476,8 @@ export const guests = [
     enName: '',
     desc: ['麻省理工学院媒体实验室博士研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangyan_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/zhangyan_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/zhangyan_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/zhangyan_s.jpg'
   },
   {
     index: 48,
@@ -486,8 +486,8 @@ export const guests = [
     enName: '',
     desc: ['共享交通初创公司Chariot创始人及董事会成员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/wiee/guests/AliVahabzadeh_b.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/wiee/guests/AliVahabzadeh_s.jpg'
+    url: 'https://baiding-pub.zaojiu.com/wiee/guests/AliVahabzadeh_b.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/wiee/guests/AliVahabzadeh_s.jpg'
   },
 ];
 

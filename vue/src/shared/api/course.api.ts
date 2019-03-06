@@ -2,12 +2,29 @@ import {host} from "../../env/environment";
 import {del, get, post} from "./xhr";
 import {Course, CourseItem, CourseItemCommentModel, CourseItemDetail, CommentModel, InvitedModel} from "./course.model";
 import {params} from "../utils/utils";
-
+//课程列表
 export const listCourses = async (marker = '', isForMember = false): Promise<Course[]> => {
   const query = {isForMember, marker};
   const url = `${host.io}/api/course/v2/courses/featured?${params(query)}`;
+  // const url = `http://www.zaojiu.fm/assets/course_list.json`;
   const res = await get(url);
   const result = res.data.result;
+  console.log(res.data);
+  const CourseList: Course[] = [];
+  result.forEach((itemData: any) => {
+    const item = new Course(itemData);
+    CourseList.push(item);
+  });
+
+  return CourseList;
+};
+export const listCourses2 = async (marker = '', isForMember = false): Promise<Course[]> => {
+  const query = {isForMember, marker};
+  const url = `${host.io}/api/course/v2/courses/featured?${params(query)}`;
+  // const url = `http://www.zaojiu.fm/assets/course_list2.json`;
+  const res = await get(url);
+  const result = res.data.result;
+  console.log(res.data);
   const CourseList: Course[] = [];
   result.forEach((itemData: any) => {
     const item = new Course(itemData);
@@ -18,6 +35,7 @@ export const listCourses = async (marker = '', isForMember = false): Promise<Cou
 };
 
 export const getCourseInfo = async (id: string): Promise<Course> => {
+  // const url = `${host.io}/api/course/courses/${id}`;
   const url = `${host.io}/api/course/courses/${id}`;
   const res = await get(url);
   const data = res.data.course;
@@ -25,10 +43,11 @@ export const getCourseInfo = async (id: string): Promise<Course> => {
 
   return new Course(data, currentUserInfo);
 };
-
+// 课程详情
 export const listCourseItems = async (id: string, size = 100, marker = ''): Promise<CourseItem[]> => {
   const query = {size, marker};
-  const url = `${host.io}/api/course/courses/${id}/items_info?${params(query)}`;
+  // const url = `${host.io}/api/course/courses/${id}/items_info?${params(query)}`;
+  const url = `${host.io}/api/course/courses/${id}/items_info`;
   const res = await get(url);
 
   const data = res.data.result || [];
@@ -43,7 +62,9 @@ export const listCourseItems = async (id: string, size = 100, marker = ''): Prom
 
 export const getCourseItemDetail = async (id: string, invitedBy = ''): Promise<CourseItemDetail> => {
   const query = {'invited_by': invitedBy};
-  const url = `${host.io}/api/course/courses/items/${id}?${params(query)}`;
+  // const url = `${host.io}/api/course/courses/items/${id}?${params(query)}`;
+  const url = `${host.io}/api/course/courses/items/${id}`;
+  // const url = `http://www.zaojiu.fm/assets/course_items.json`;
   const res = await get(url);
   const data = res.data;
 
@@ -213,3 +234,4 @@ export const acceptInvited = async (itemId: string, uid: number) => {
   };
   await post(url, postData);
 };
+

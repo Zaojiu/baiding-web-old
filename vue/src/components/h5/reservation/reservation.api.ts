@@ -8,8 +8,8 @@ export const bookGuestsMockData = [
     name: '黎耕',
     desc: ['中国科学院国家天文台副研究员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/cover/img/FiF0gSZVatRcZr8XTfomCeHfW0wH-1525317837.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FiF0gSZVatRcZr8XTfomCeHfW0wH-1525317837.jpg'
+    url: 'https://baiding-pub.zaojiu.com/cover/img/FiF0gSZVatRcZr8XTfomCeHfW0wH-1525317837.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/cover/img/FiF0gSZVatRcZr8XTfomCeHfW0wH-1525317837.jpg'
   },
   {
     index: 2,
@@ -18,8 +18,8 @@ export const bookGuestsMockData = [
     enName: '',
     desc: ['长江学者,南京大学天文与空间科学学院教授'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/cover/img/FittMFwPVVGvfCj_Y69UcLgu91n0-1525328485.jpeg',
-    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FittMFwPVVGvfCj_Y69UcLgu91n0-1525328485.jpeg'
+    url: 'https://baiding-pub.zaojiu.com/cover/img/FittMFwPVVGvfCj_Y69UcLgu91n0-1525328485.jpeg',
+    cover: 'https://baiding-pub.zaojiu.com/cover/img/FittMFwPVVGvfCj_Y69UcLgu91n0-1525328485.jpeg'
   },
 
   {
@@ -29,8 +29,8 @@ export const bookGuestsMockData = [
     enName: '',
     desc: ['南京大学天文与空间科学学院院长'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/cover/img/FjeNaMuSN9AIntSvy0JxUiuVEVcm-1525317874.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FjeNaMuSN9AIntSvy0JxUiuVEVcm-1525317874.jpg'
+    url: 'https://baiding-pub.zaojiu.com/cover/img/FjeNaMuSN9AIntSvy0JxUiuVEVcm-1525317874.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/cover/img/FjeNaMuSN9AIntSvy0JxUiuVEVcm-1525317874.jpg'
   },
   {
     index: 4,
@@ -39,8 +39,8 @@ export const bookGuestsMockData = [
     enName: '',
     desc: ['长江学者,中国天文学会副理事长'],
     enDesc: ['Photographer of National Geographic Magazine'],
-    url: 'https://og9s6vxbs.qnssl.com/cover/img/FjnanqiTVUwt7DI49HdfouQxyUXe-1525317893.png',
-    cover: 'https://og9s6vxbs.qnssl.com/cover/img/FjnanqiTVUwt7DI49HdfouQxyUXe-1525317893.png'
+    url: 'https://baiding-pub.zaojiu.com/cover/img/FjnanqiTVUwt7DI49HdfouQxyUXe-1525317893.png',
+    cover: 'https://baiding-pub.zaojiu.com/cover/img/FjnanqiTVUwt7DI49HdfouQxyUXe-1525317893.png'
   },
   {
     index: 5,
@@ -49,8 +49,8 @@ export const bookGuestsMockData = [
     enName: '',
     desc: [',紫金山天文台研究员,暗物质粒子探测卫星“悟空”团队成员'],
     enDesc: [''],
-    url: 'https://og9s6vxbs.qnssl.com/cover/img/Fur44Xb6DTfp3_6q6Ob9BGZQXJWs-1525402007.jpg',
-    cover: 'https://og9s6vxbs.qnssl.com/cover/img/Fur44Xb6DTfp3_6q6Ob9BGZQXJWs-1525402007.jpg'
+    url: 'https://baiding-pub.zaojiu.com/cover/img/Fur44Xb6DTfp3_6q6Ob9BGZQXJWs-1525402007.jpg',
+    cover: 'https://baiding-pub.zaojiu.com/cover/img/Fur44Xb6DTfp3_6q6Ob9BGZQXJWs-1525402007.jpg'
   }
 ];
 

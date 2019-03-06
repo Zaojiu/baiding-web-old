@@ -35,6 +35,7 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
     this.redirectTo = this.route.snapshot.queryParams['redirectTo'] || '/lives';
     this.redirectTo = this.redirectTo.replace(host.self, '');
     if (this.redirectTo === '/' || !this.redirectTo.startsWith('/')) this.redirectTo = '/lives';

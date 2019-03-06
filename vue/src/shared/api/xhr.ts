@@ -15,7 +15,7 @@ interface Config extends AxiosRequestConfig {
 }
 
 export class ApiError extends Error {
-  code: number;
+  code: any;
   message: string;
   originError: AxiosError;
 
@@ -29,7 +29,7 @@ export class ApiError extends Error {
   }
 
   get isUnauthorized(): boolean {
-    return this.code === ApiCode.ErrUnauthorized || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrExpiredToken;
+    return this.code === ApiCode.ErrUnauthorized || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrNeedToLogin401 || this.code === ApiCode.ErrNeedToLogin || this.code === ApiCode.ErrExpiredToken;
   }
 
   get isNeedBindMobile(): boolean {

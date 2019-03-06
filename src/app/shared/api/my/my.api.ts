@@ -19,6 +19,7 @@ export class MyApiService {
     if (marker) query.marker = marker;
 
     const url = `${environment.config.host.io}/api/live/my/history/objects?${$.param(query)}`;
+    // const url = `assets/mock-data/objects.json`;
     return this.http.get(url).toPromise().then(res => {
       let data = res.json();
       data.result = data.result || [];
@@ -71,6 +72,7 @@ export class MyApiService {
 
   tickets(): Promise<TicketModel[]> {
     const url = `${environment.config.host.io}/api/live/my/events/tickets`;
+    // const url = `http://www.zaojiu.fm/assets/tickets.json`;
     return this.http.get(url).toPromise().then(res => {
       const data = res.json();
       const result = data.result || [];

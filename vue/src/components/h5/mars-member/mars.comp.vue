@@ -23,7 +23,7 @@
     <div class="content">
       <div class="cover" style="font-size: 0">
         <div class="mobile">24小时专线对接:<a href="tel:18817962164"> 18817962164</a></div>
-        <img style="width:100%;" src="https://og9s6vxbs.qnssl.com/members/mars-intro-nopay.jpeg">
+        <img style="width:100%;" src="https://baiding-pub.zaojiu.com/members/mars-intro-nopay.jpeg">
         <div style=""></div>
       </div>
     </div>
@@ -32,7 +32,7 @@
       <div class="aside-main">
         <h2 class="aside-title">
           您的信息
-          <img @click="closeSide" class="close" src="https://og9s6vxbs.qnssl.com/wiee/close.png"/>
+          <img @click="closeSide" class="close" src="https://baiding-pub.zaojiu.com/wiee/close.png"/>
         </h2>
         <div class="aside-content">
           <form class="main-form" name="form" @submit.prevent="validateAndSubmit()" v-focus-first-invalid>
@@ -411,7 +411,7 @@
     directives: form,
   })
   export default class IntroMarsComponent extends Vue {
-    defaultCoverUrl = 'https://og9s6vxbs.qnssl.com/members/mars-member-card.png';
+    defaultCoverUrl = 'https://baiding-pub.zaojiu.com/members/mars-member-card.png';
     userInfo: UserInfoModel | null = null;
     isOnScreen = isOnLargeScreen;
     isVideoPlayed = false;
@@ -449,7 +449,7 @@
         setShareInfo(
           title,
           '一起探索科技创新与未来的前沿',
-          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+          'https://baiding-pub.zaojiu.com/zaojiu-logo.jpg',
           url
         );
       }
@@ -464,7 +464,7 @@
             quality: '标清',
             mimetype: 'video/mp4'
           }, {
-            src: 'https://og9s6vxbs.qnssl.com/members/mars-member.mp4',
+            src: 'https://baiding-pub.zaojiu.com/members/mars-member.mp4',
             quality: '高清',
             mimetype: 'video/mp4'
           }],

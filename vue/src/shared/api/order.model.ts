@@ -46,6 +46,42 @@ export class PostOrderObject {
   }
 }
 
+export class PostOrderObjectBook {
+  objectId: string;
+  objectType: OrderObjectType;
+  nums: number;
+  discount: number; // 0 计算折扣，1不计算折扣
+  isPerfer: boolean; //是否优惠购买
+
+  constructor(objectId: string, objectType: OrderObjectType, nums: number, isPerfer: boolean, discount?: boolean) {
+    this.objectId = objectId;
+    this.objectType = objectType;
+    this.nums = nums;
+    this.discount = discount ? 1 : 0;
+    this.isPerfer = isPerfer;
+  }
+
+  get isTypeMember() {
+    return this.objectType === OrderObjectType.Member;
+  }
+
+  get isTypeEvent() {
+    return this.objectType === OrderObjectType.Event;
+  }
+
+  get isTypeTalk() {
+    return this.objectType === OrderObjectType.Talk;
+  }
+
+  get isTypeMedia() {
+    return this.objectType === OrderObjectType.Media;
+  }
+
+  get isTypeLive() {
+    return this.objectType === OrderObjectType.LiveStream;
+  }
+}
+
 export class OrderObject {
   orderNo: string;
   subject: string;

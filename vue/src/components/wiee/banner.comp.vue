@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <article class="wiee-container" v-if="showTips">
-      <div class="bg"><img class="bg-img" src="https://og9s6vxbs.qnssl.com/wiee/bg.jpg"/></div>
+      <div class="bg"><img class="bg-img" src="https://baiding-pub.zaojiu.com/wiee/bg.jpg"/></div>
       <button class="jump" @click="jump">跳过{{time}}S</button>
     </article>
     <router-view></router-view>
@@ -102,7 +102,7 @@
         setShareInfo(
           title,
           '科技与人文交汇的十字路口',
-          'https://og9s6vxbs.qnssl.com/wiee/wiee-share.jpg',
+          'https://baiding-pub.zaojiu.com/wiee/wiee-share.jpg',
           url
         );
       }

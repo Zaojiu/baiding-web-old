@@ -118,7 +118,9 @@ export class TopBarComponent implements OnInit, OnDestroy {
   }
 
   toggleComment(isOpened: boolean) {
+    // console.log(isOpened);
     this.isCommentOpenedChange.emit(isOpened);
+
   }
 
   fireShare() {

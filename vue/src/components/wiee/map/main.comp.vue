@@ -27,13 +27,13 @@
       </div>
     </div>-->
     <div class="map" ref="map">
-      <img src="https://og9s6vxbs.qnssl.com/wiee/traffic-map.jpg" border="0" alt="地图"/>
+      <img src="https://baiding-pub.zaojiu.com/wiee/traffic-map.jpg" border="0" alt="地图"/>
     </div>
     <div class="aside" v-if="showSide">
       <div class="aside-main">
         <h2 class="title">
           {{sideTitle}}
-          <img @click="closeSide" class="close" src="https://og9s6vxbs.qnssl.com/wiee/close.png"/>
+          <img @click="closeSide" class="close" src="https://baiding-pub.zaojiu.com/wiee/close.png"/>
         </h2>
         <div class="content">
           <p>{{sideContent}}</p>

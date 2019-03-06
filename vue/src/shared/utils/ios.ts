@@ -5,7 +5,6 @@ declare const window: any;
 let jsBridge: any;
 export const initIOS = (): Promise<void> => {
   if (jsBridge) return Promise.resolve();
-
   return new Promise<void>((resolve, reject) => {
     if (window.WebViewJavascriptBridge) {
       jsBridge = window.WebViewJavascriptBridge;
@@ -32,6 +31,7 @@ export const callHandler = (...args: any[]) => {
   }
 
   jsBridge.callHandler(...args);
+
 };
 
 export const copyText = (text: string): Promise<any> => {

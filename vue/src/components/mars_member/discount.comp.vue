@@ -242,7 +242,7 @@
     init() {
       this.isInApp = isInApp;
       this.listImg = [
-        'https://og9s6vxbs.qnssl.com/member/member-action.png'
+        'https://baiding-pub.zaojiu.com/member/member-action.png'
       ];
     }
   }

@@ -130,8 +130,8 @@
       switch (this.$route.name) {
         case "ios-member.card":
           this.listImg = [
-            'https://og9s6vxbs.qnssl.com/member/member-one.png',
-            'https://og9s6vxbs.qnssl.com/member/member-two.png'
+            'https://baiding-pub.zaojiu.com/member/member-one.png',
+            'https://baiding-pub.zaojiu.com/member/member-two.png'
           ];
           this.listText = [];
           this.inTab = 0;
@@ -139,7 +139,7 @@
         case "ios-member.action":
           this.showRemarks = true;
           this.listImg = [
-            'https://og9s6vxbs.qnssl.com/member/member-action.png'
+            'https://baiding-pub.zaojiu.com/member/member-action.png'
           ];
           this.listText = [
             '线上福利:<br/>' +
@@ -160,7 +160,7 @@
         case "ios-member.video":
           this.showVideoBtn = true;
           this.listImg = [
-            'https://og9s6vxbs.qnssl.com/member/member-only-video.png'
+            'https://baiding-pub.zaojiu.com/member/member-only-video.png'
           ];
           this.listText = [
             '500场精心剪辑的高清演讲视频',
@@ -170,9 +170,9 @@
           break;
         case "ios-member.course":
           this.listImg = [
-            'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9',
-            'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9',
-            'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9'
+            'https://baiding-pub.zaojiu.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9',
+            'https://baiding-pub.zaojiu.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9',
+            'https://baiding-pub.zaojiu.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9'
           ];
           this.listText = [
             '五折购买在线《大师之课》'
@@ -181,7 +181,7 @@
           break;
         case "ios-member.download":
           this.listImg = [
-            'https://og9s6vxbs.qnssl.com/member/member-download.png'
+            'https://baiding-pub.zaojiu.com/member/member-download.png'
           ];
           this.listText = [
             '可订阅并下载近千个专属演讲视频',
@@ -196,11 +196,11 @@
     actionImgCover(item: string) {
       // 在线课程跳转到课程
       if (this.inTab === 3) {
-        if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9') {
+        if (item === 'https://baiding-pub.zaojiu.com/cover/img/FrvrNDD_POewjr-JeRmkMyT5Cd81-1521093982.png~16-9') {
           this.$router.push({path: '/columns/5a5f080551281300015d4449'});
-        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9') {
+        } else if (item === 'https://baiding-pub.zaojiu.com/cover/img/FhWbgkZc7hamg2-5QdVku4W8ekkT-1521093786.png~16-9') {
           this.$router.push({path: '/columns/5a911d1f0b603c0001c24160'});
-        } else if (item === 'https://og9s6vxbs.qnssl.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9') {
+        } else if (item === 'https://baiding-pub.zaojiu.com/cover/img/FvPvY8l4lOYBAfCDbCCpRdA-803H-1521013118.png~16-9') {
           this.$router.push({path: '/columns/5aa8d12f0b603c0001b68a37'});
         }
       }

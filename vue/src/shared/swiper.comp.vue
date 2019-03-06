@@ -100,10 +100,10 @@
     timer: any;//定时器
     mark = 0; //比对图片索引的变量
     imgArray = [
-      'https://og9s6vxbs.qnssl.com/member/member-action-1.jpg',
-      'https://og9s6vxbs.qnssl.com/member/member-action-2.jpg',
-      'https://og9s6vxbs.qnssl.com/member/member-action-3.jpg',
-      'https://og9s6vxbs.qnssl.com/member/member-action-4.jpg'
+      'https://baiding-pub.zaojiu.com/member/member-action-1.jpg',
+      'https://baiding-pub.zaojiu.com/member/member-action-2.jpg',
+      'https://baiding-pub.zaojiu.com/member/member-action-3.jpg',
+      'https://baiding-pub.zaojiu.com/member/member-action-4.jpg'
     ];
 
     created() {

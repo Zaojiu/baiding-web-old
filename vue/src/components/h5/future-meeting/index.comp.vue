@@ -9,7 +9,7 @@
     >
       <div class="head-content">
         <div class="img">
-          <!--<img src="https://og9s6vxbs.qnssl.com/futrue/logo-new.png"/>-->
+          <!--<img src="https://baiding-pub.zaojiu.com/futrue/logo-new.png"/>-->
         </div>
         <div class="right">
           <span @click="showMenuSide" style="cursor: pointer;" class="font-set font-14"><i
@@ -20,7 +20,7 @@
     <section class="content">
 
       <div class="img-cover">
-        <img src="https://og9s6vxbs.qnssl.com/futrue/banner-n-n.jpg"/>
+        <img src="https://baiding-pub.zaojiu.com/futrue/banner-n-n.jpg"/>
       </div>
 
       <p class="desc font-14">
@@ -37,7 +37,7 @@
             <div class="time font-14 color-text-3">时间：7.28 13:30-15:30</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/chengshi.jpg')"></div>
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/chengshi.jpg')"></div>
       </div>
       <div class="guest-content">
         <div class="panel">
@@ -66,7 +66,7 @@
             <div class="time font-14 color-text-5">时间：7.29 11:20-13:20</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/yule.jpg')"></div>
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/yule.jpg')"></div>
       </div>
       <div class="guest-content">
         <div class="panel">
@@ -95,7 +95,7 @@
             <div class="time font-14 color-text-4">时间：7.28 15:40-17:40</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/tansuo.jpg')"></div>
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/tansuo.jpg')"></div>
       </div>
       <div class="guest-content">
         <div class="panel">
@@ -124,7 +124,7 @@
             <div class="time font-14 color-text-1">时间：7.28 9:00-11:10</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/zhineng.jpg')">
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/zhineng.jpg')">
         </div>
       </div>
       <div class="guest-content">
@@ -155,7 +155,7 @@
             <div class="time font-14 color-text-2">时间：7.28 11:20-13:20</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shengming.jpg')"></div>
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/shengming.jpg')"></div>
       </div>
       <div class="guest-content">
         <div class="panel">
@@ -184,7 +184,7 @@
             <div class="time font-14 color-text-6">时间：7.29 9:00-11:10</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/kongjian.jpg')"></div>
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/kongjian.jpg')"></div>
       </div>
       <div class="guest-content">
         <div class="panel">
@@ -215,7 +215,7 @@
             <div class="time font-14 color-text-7">时间：7.29 13:30-15:30</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/shangye.jpg')"></div>
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/shangye.jpg')"></div>
       </div>
       <div class="guest-content">
         <div class="panel">
@@ -244,7 +244,7 @@
             <div class="time font-14 color-text-8">时间：7.29 15:40-17:40</div>
           </div>
         </div>
-        <div class="img" style="background-image: url('https://og9s6vxbs.qnssl.com/futrue/wo.jpg')"></div>
+        <div class="img" style="background-image: url('https://baiding-pub.zaojiu.com/futrue/wo.jpg')"></div>
       </div>
       <div class="guest-content">
         <div class="panel">
@@ -265,7 +265,7 @@
 
       <div class="other-space">
         <h2>
-          <img class="img" src="https://og9s6vxbs.qnssl.com/futrue/icon-1.png"/>
+          <img class="img" src="https://baiding-pub.zaojiu.com/futrue/icon-1.png"/>
           <span>外部空间</span>
         </h2>
         <h3>
@@ -278,21 +278,21 @@
           你除了可以把握到最新的技术、最前沿的科学、最符合时代脉搏的趋势和最具爆炸增长的可能，更重要的是，
           <span>亲眼见到漫威动画的手稿</span>！
           漫威迷们！你们的福利来了！你们将看到资深漫画师Billy为Marvel漫画公司创作的许多作品的原手稿，如《蜘蛛侠》、《X战警》、《新复仇者联盟》、《雷神托尔》等！更有机会预先浏览新作《他她英雄》的部分手稿哦！
-          <img src="https://og9s6vxbs.qnssl.com/futrue/other-space-1.jpg"/>
+          <img src="https://baiding-pub.zaojiu.com/futrue/other-space-1.jpg"/>
           家长们带领您的孩子观看机器人大战！了解如何给机器人编程？提高孩子的智力，打开“想象力和创造力”世界的大门！
-          <img src="https://og9s6vxbs.qnssl.com/futrue/other-space-2.jpg"/>
+          <img src="https://baiding-pub.zaojiu.com/futrue/other-space-2.jpg"/>
           亲身体验“百度”用纯熟的AI技术打造的“小度智能音箱”。
-          <img src="https://og9s6vxbs.qnssl.com/futrue/other-space-3.jpg"/>
+          <img src="https://baiding-pub.zaojiu.com/futrue/other-space-3.jpg"/>
         </p>
       </div>
 
       <!--<div id="map" class="map">
         <h2>
-          <img class="img" src="https://og9s6vxbs.qnssl.com/futrue/icon-2.png"/>
+          <img class="img" src="https://baiding-pub.zaojiu.com/futrue/icon-2.png"/>
           <span>大会地址</span>
         </h2>
         <div class="map-content">
-          <img src="https://og9s6vxbs.qnssl.com/futrue/map.jpg"/>
+          <img src="https://baiding-pub.zaojiu.com/futrue/map.jpg"/>
         </div>
       </div>-->
     </section>
@@ -304,7 +304,7 @@
         <ul class="menu-ul">
           <li @click="jumpTo('intelligent')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-3.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-3.png"/>
             </div>
             <div class="text">
               <h4>未来智能</h4>
@@ -313,7 +313,7 @@
           </li>
           <li @click="jumpTo('live')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-4.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-4.png"/>
             </div>
             <div class="text">
               <h4>未来生命</h4>
@@ -322,7 +322,7 @@
           </li>
           <li @click="jumpTo('city')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-5.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-5.png"/>
             </div>
             <div class="text">
               <h4>未来城市</h4>
@@ -331,7 +331,7 @@
           </li>
           <li @click="jumpTo('explore')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-6.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-6.png"/>
             </div>
             <div class="text">
               <h4>未来探索</h4>
@@ -340,7 +340,7 @@
           </li>
           <li @click="jumpTo('recreation')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-7.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-7.png"/>
             </div>
             <div class="text">
               <h4>未来娱乐</h4>
@@ -349,7 +349,7 @@
           </li>
           <li @click="jumpTo('space')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-8.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-8.png"/>
             </div>
             <div class="text">
               <h4>未来空间</h4>
@@ -358,7 +358,7 @@
           </li>
           <li @click="jumpTo('business')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-9.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-9.png"/>
             </div>
             <div class="text">
               <h4>未来商业</h4>
@@ -367,7 +367,7 @@
           </li>
           <li @click="jumpTo('me')">
             <div class="icon">
-              <img src="https://og9s6vxbs.qnssl.com/futrue/icon-10.png"/>
+              <img src="https://baiding-pub.zaojiu.com/futrue/icon-10.png"/>
             </div>
             <div class="text">
               <h4>未来的我</h4>
@@ -547,7 +547,7 @@
       z-index: 2;
       padding: 10px;
       border-radius: 56px;
-      background: url("https://og9s6vxbs.qnssl.com/futrue/btn.png") no-repeat;
+      background: url("https://baiding-pub.zaojiu.com/futrue/btn.png") no-repeat;
       background-size: 100% 100%;
     }
 
@@ -888,7 +888,7 @@
     showMenu = false;
     defaultImg = '/assets/img/default-cover.jpg';
     lang = 'zh';
-    coverUrl = 'https://og9s6vxbs.qnssl.com/wiee/video-cover.jpg';
+    coverUrl = 'https://baiding-pub.zaojiu.com/wiee/video-cover.jpg';
     changeNav = false;
     scrollTop = 0;
     guestsIndexMap: { [key: string]: number } = {
@@ -953,7 +953,7 @@
         setShareInfo(
           '2018造就FUTURE年度大会',
           `蔡康永、马岩松...邀你踏入奇思妙想新纪元！`,
-          'https://og9s6vxbs.qnssl.com/zaojiu-logo.jpg',
+          'https://baiding-pub.zaojiu.com/zaojiu-logo.jpg',
           `${host.self}/wv/future`
         );
       }

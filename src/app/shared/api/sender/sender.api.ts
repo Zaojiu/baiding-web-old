@@ -22,7 +22,7 @@ export class SenderApiService {
   }
 
   sendSmsByLoginUser(mobile: string, scene: SmsScene, type = SmsType.Text): Promise<void> {
-    const url = `${host.io}/api/user/sms`;
+    const url = `${host.io}/api/user/login/sms`;
     const data = {
       mobile: mobile,
       scene: scene,

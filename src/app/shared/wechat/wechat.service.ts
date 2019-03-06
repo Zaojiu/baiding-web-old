@@ -70,6 +70,7 @@ export class WechatConfigService {
   }
 
   init(): Promise<void> {
+
     console.log('wechat init');
 
     if (!this.needResign) return Promise.resolve();

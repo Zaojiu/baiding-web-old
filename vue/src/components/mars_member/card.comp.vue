@@ -137,16 +137,16 @@
         // 火星会员
         this.memberType = 1;
         this.listImg = [
-          'https://og9s6vxbs.qnssl.com/members/mars-member-card.png'
+          'https://baiding-pub.zaojiu.com/members/mars-member-card.png'
         ];
       } else if (this.userInfo.member.memberId === 'member-aia-mars') {
         this.listImg = [
-          'https://og9s6vxbs.qnssl.com/members/mars-member-aia-card.png'
+          'https://baiding-pub.zaojiu.com/members/mars-member-aia-card.png'
         ];
       } else {
         // 普通会员
         this.listImg = [
-          'https://og9s6vxbs.qnssl.com/member/member-one.png'
+          'https://baiding-pub.zaojiu.com/member/member-one.png'
         ];
       }
       this.isInApp = isInApp;

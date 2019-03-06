@@ -2,7 +2,7 @@
   <div class="member-activate">
     <div class="main-content">
       <div class="cover">
-        <img src="https://og9s6vxbs.qnssl.com/member/member-one.png" alt="会员卡">
+        <img src="https://baiding-pub.zaojiu.com/member/member-one.png" alt="会员卡">
       </div>
 
       <div class="top-section">

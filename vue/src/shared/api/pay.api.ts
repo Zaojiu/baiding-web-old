@@ -74,8 +74,8 @@ const alipayPay = async (orderNo: string, redirectTo?: string) => {
 };
 
 const wechatPay = async (orderNo: string, redirectTo?: string): Promise<void> => {
-  const payUrl = `${host.io}/api/wallet/order/${orderNo}/pay`;
 
+  const payUrl = `${host.io}/api/wallet/order/${orderNo}/pay`;
   let resp: AxiosResponse;
   try {
     resp = await post(payUrl, {"platform": PayPlatform.Wechat});
@@ -294,8 +294,8 @@ const androidPay = async (orderNo: string): Promise<void> => {
     }, 3 * 1000);
   });
 };
-
-export const pay = async (orderNo: string, redirectTo?: string): Promise<void> => {
+// 判断支付方式
+export const pay = async (orderNo: string, redirectTo?: string ): Promise<void> => {
   if (isInWechat && !isWindowsWechat) {
     return wechatPay(orderNo, redirectTo);
   } else if (isInApp && isiOS) {

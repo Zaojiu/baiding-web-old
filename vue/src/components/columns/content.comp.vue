@@ -748,6 +748,7 @@
     showComment = false;
 
     created() {
+      debugger;
       this.columnId = this.$route.params['id'];
       this.itemChanged();
     }
@@ -773,6 +774,7 @@
 
     @Watch('$route')
     async itemChanged() {
+
       this.id = this.$route.params['itemId'];
       if (!this.fromPaymentResult()) {
         await this.initData();

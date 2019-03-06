@@ -47,7 +47,7 @@ export class ChangSanJiaoComponent implements OnInit, OnDestroy, AfterViewChecke
 
     this.route.snapshot.data['shareTitle'] = `活力长三角，青商新机遇`;
     this.route.snapshot.data['shareDesc'] = `打造世界级产业集群，构建长三角竞争新环境。`;
-    this.route.snapshot.data['shareCover'] = `https://og9s6vxbs.qnssl.com/cover/img/Fte2KrHT3TgRCXC70qgpJT8EINNq-1527036137.jpg~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip`;
+    this.route.snapshot.data['shareCover'] = `https://baiding-pub.zaojiu.com/cover/img/Fte2KrHT3TgRCXC70qgpJT8EINNq-1527036137.jpg~1-1?imageMogr2/auto-orient/thumbnail/!120x120r/gravity/Center/crop/120x120/strip`;
     this.route.snapshot.data['shareLink'] = `${host.self}/lives/changsanjiao2018`;
 
     this.isLoading = true;

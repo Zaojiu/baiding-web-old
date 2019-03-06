@@ -67,6 +67,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.markOnline();
 
     // 监听路由变化, 刷新liveInfo
@@ -218,6 +219,7 @@ export class LiveRoomComponent implements OnInit, OnDestroy {
     return this.liveService.getLiveInfo(this.id, true).then(liveInfo => {
       let oldInfo = this.liveInfo;
       this.liveInfo = liveInfo;
+
       if (oldInfo) this.liveInfo.praisedAnimations = oldInfo.praisedAnimations;
       return;
     });

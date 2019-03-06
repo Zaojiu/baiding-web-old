@@ -83,7 +83,7 @@ import { concat } from 'rxjs/operator/concat';
          setShareInfo(
            title,
            '造就-听书海报',
-           'https://og9s6vxbs.qnssl.com/zaojiuUNI@3x.png',
+           'https://baiding-pub.zaojiu.com/zaojiuUNI@3x.png',
            url,
            goUrl
          );
@@ -148,7 +148,7 @@ import { concat } from 'rxjs/operator/concat';
       .bg_tit{
         width: 75px;
         height: 75px;
-        background: url('https://og9s6vxbs.qnssl.com/book/book-title.png') no-repeat center;
+        background: url('https://baiding-pub.zaojiu.com/book/book-title.png') no-repeat center;
         position: absolute;
         top: 0;
         left: 0;
@@ -158,7 +158,7 @@ import { concat } from 'rxjs/operator/concat';
         position: absolute;
         top: 18px;
         left: -42px;
-        background-color: #00edda;
+        background-color: $color-brand;
         font-size: 14px;
         color: #fff;
         padding: 5px 46px;
@@ -223,7 +223,7 @@ import { concat } from 'rxjs/operator/concat';
          text-align: center;
           color: #fff;
           line-height: 40px;
-          background: rgb(0, 211, 193);
+          background: $color-brand;
           border-radius: 4px;
           h4{
             font-size: 16px;

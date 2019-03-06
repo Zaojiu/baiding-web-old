@@ -64,7 +64,7 @@
                     <span>{{item.duration}}</span>
                   </div>
                   <div class="play">
-                    <img src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png"/>
+                    <img src="https://baiding-pub.zaojiu.com/wiee/detail/play.png"/>
                   </div>
                 </div>
                 <h3>{{item.subject}}</h3>
@@ -83,7 +83,7 @@
                 <div class="img">
                   <img :src="item.coverUrl" @error="item.coverUrl = defaultImg"/>
                   <div class="play">
-                    <img src="https://og9s6vxbs.qnssl.com/wiee/detail/play.png"/>
+                    <img src="https://baiding-pub.zaojiu.com/wiee/detail/play.png"/>
                   </div>
                 </div>
                 <h3>{{item.subject}}</h3>

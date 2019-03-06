@@ -4,7 +4,7 @@
     <error class="abs-center" v-else-if="isError" @retry="initData()"></error>
     <div class="main" v-else>
       <article>
-        <img class="bg" src="https://og9s6vxbs.qnssl.com/question_prize/home.gif"/>
+        <img class="bg" src="https://baiding-pub.zaojiu.com/question_prize/home.gif"/>
         <header>
           <div class="life-card" @click="goToMy('card')"><img :src="lifeCardImg"/><span>复活卡×{{chance}}</span></div>
           <div class="life-gift" @click="goToMy('gift')"><img :src="giftImg"/><span>奖品</span></div>
@@ -146,9 +146,9 @@
     userInfo: UserInfoModel;
     chance = 0;
     shareUid = '';
-    lifeCardImg = 'https://og9s6vxbs.qnssl.com/question_prize/qa-life-card.png';
-    giftImg = 'https://og9s6vxbs.qnssl.com/question_prize/qa-gift.png';
-    startImg = 'https://og9s6vxbs.qnssl.com/question_prize/qa-start.png';
+    lifeCardImg = 'https://baiding-pub.zaojiu.com/question_prize/qa-life-card.png';
+    giftImg = 'https://baiding-pub.zaojiu.com/question_prize/qa-gift.png';
+    startImg = 'https://baiding-pub.zaojiu.com/question_prize/qa-start.png';
 
     @Watch('$route.name')
     setNavIndex() {
